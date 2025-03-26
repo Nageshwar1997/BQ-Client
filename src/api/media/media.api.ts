@@ -3,7 +3,7 @@ import api from "../../configs/axios.instance.config";
 
 export const get_home_videos = async () => {
   try {
-    const response = await api.get("/");
+    const response = await api.get("/media/videos/home");
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
