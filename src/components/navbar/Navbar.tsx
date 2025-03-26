@@ -35,7 +35,12 @@ const Navbar = () => {
   );
 
   // Sets the hovered index when mouse enters an element
-  const handleMouseEnter = (index: number) => setHoveredIndex(index);
+  const handleMouseEnter = (index: number) => {
+    setHoveredIndex(index);
+    if (!isNavbarAtTop || !isNavbarHovered) {
+      setIsNavbarHovered(true);
+    }
+  };
 
   // Sets container hover state to true when mouse enters the container
   const handleContainerMouseEnter = () => setIsContainerHovered(true);
@@ -78,9 +83,7 @@ const Navbar = () => {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        // If bottom section is not visible in viewport, we are "at the top"
         setIsNavbarAtTop(!entry.isIntersecting);
-        console.log("IntersectionObserver:", entry.isIntersecting);
       },
       {
         root: null,
