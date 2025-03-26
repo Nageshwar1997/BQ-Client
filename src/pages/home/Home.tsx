@@ -1,24 +1,10 @@
-// import VideoCarousel from "./components/VideoCarousel";
-
-import { useEffect } from "react";
+import VideoCarousel from "./components/VideoCarousel";
 
 const Home = () => {
-  const fetchData = async () => {
-    const resp = await fetch(
-      "https://bq-backend.vercel.app/api/media/videos/home",
-      {
-        method: "GET",
-      }
-    );
-    const data = await resp.json();
-    console.log("DATA", data);
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
   return (
-    <div className="w-full h-full lg:-mt-16">{/* <VideoCarousel /> */}</div>
+    <div className="w-full h-full lg:-mt-16">
+      <VideoCarousel />
+    </div>
   );
 };
 
