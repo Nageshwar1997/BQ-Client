@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 const Home = () => {
   const fetchData = async () => {
-    const resp = await fetch("https://test-backend-five-beryl.vercel.app", {
+    const resp = await fetch("https://test-backend-five-beryl.vercel.app/api/media/videos/home", {
       method: "GET",
     });
     const data = await resp.json();
