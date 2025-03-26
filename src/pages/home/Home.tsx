@@ -5,7 +5,7 @@ import { useEffect } from "react";
 const Home = () => {
   const fetchData = async () => {
     const resp = await fetch(
-      "https://bq-backend.vercel.app/api/media/videos/home",
+      "https://bq-backend.vercel.app",
       {
         method: "GET",
       }
