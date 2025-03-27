@@ -13,7 +13,7 @@ const Footer = () => {
               alt="Logo"
               className="object-cover w-fit h-10 sm:h-12 lg:h-16"
             />
-            <span className="md:mr-3 lg:mr-4 min-w-3">
+            <span className="mr-3 lg:mr-4 min-w-3">
               <hr className="h-px border border-primary rounded-full" />
             </span>
             <h1 className="font-[550] tracking-tight text-[22px] lg:text-[32px] bg-clip-text text-transparent bg-golden-gradient">
