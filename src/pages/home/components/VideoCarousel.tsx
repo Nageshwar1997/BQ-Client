@@ -123,9 +123,9 @@ const VideoCarousel = () => {
               className="bg-primary-50 hover:bg-primary p-1 rounded-full"
             >
               {isMuted ? (
-                <VolumeMaxIcon className="[&>path]:stroke-primary-inverted" />
+                <VolumeMaxIcon className="[&>path]:stroke-primary-inverted w-4 h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6" />
               ) : (
-                <VolumeMuteIcon className="[&>path]:stroke-primary-inverted" />
+                <VolumeMuteIcon className="[&>path]:stroke-primary-inverted w-4 h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6" />
               )}
             </button>
             {/* Index Buttons */}
@@ -134,7 +134,7 @@ const VideoCarousel = () => {
                 <button
                   key={index}
                   onClick={() => handleIndexClick(index)}
-                  className="w-5 h-5 rounded-full border-none opacity-80 hover:opacity-100"
+                  className="w-4 h-4 lg:w-5 lg:h-5 rounded-full border-none opacity-80 hover:opacity-100"
                   style={
                     index === currentIndex
                       ? {
