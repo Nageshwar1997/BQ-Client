@@ -163,7 +163,7 @@ const Navbar = () => {
         <div className="w-full h-16 flex items-center px-2 sm:px-5">
           <div className="h-12 sm:h-14 md:min-h-16 md:h-full flex items-center justify-center">
             <img
-              src="./images/logo/B_Q.png"
+              src="./images/logo/BQ.webp"
               alt="Logo"
               className="object-cover w-fit max-h-16 h-full sticky top-0 left-0"
             />
@@ -254,7 +254,7 @@ const Navbar = () => {
       <div className="w-full flex items-center justify-between gap-2 px-2 sm:px-3 md:px-4 lg:hidden">
         <div className="h-12 md:h-14 max-h-14 flex items-center justify-center lg:hidden">
           <img
-            src="./images/logo/B_Q.png"
+            src="./images/logo/BQ.webp"
             alt="Logo"
             className="object-cover w-fit h-full"
           />

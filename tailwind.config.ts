@@ -69,6 +69,8 @@ export default {
       backgroundImage: {
         "accent-duo": "var(--accent-duo)",
         "silver-duo": "var(--silver-duo)",
+        "golden-gradient":
+          "linear-gradient(114deg,#feeca4 0%, #e8c03d 20%, #fcc54f 35%, #b2b2b2 50%, #ffdf2c 65%, #efd336 80%, #fcf0be 100%)",
         "sky-blue-burst": "var(--sky-blue-burst)",
         "gradient-line": "var(--gradient-line)",
         "gradient-dark-fade-bottom": "var(--gradient-dark-fade-bottom)",
