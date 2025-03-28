@@ -224,11 +224,14 @@ const Navbar = () => {
               ))}
             </div>
             <SearchInput
+              name="desktopSearch"
               className={`${
                 isNavbarAtTop || isNavbarHovered
                   ? ""
                   : "border dark:border-tertiary light:border-tertiary-inverted bg-transparent light:[&>input]:placeholder:text-tertiary-inverted dark:[&>input]:placeholder:text-tertiary light:[&_svg>path]:stroke-tertiary-inverted dark:[&_svg>path]:stroke-tertiary"
               }`}
+              onChange={(e) => console.log(e.target.value)}
+              autocomplete="new-password"
             />
             <UserMenuIcons
               className={`${
@@ -259,7 +262,10 @@ const Navbar = () => {
             className="object-cover w-fit h-full"
           />
         </div>
-        <SearchInput className="sm:!flex lg:!hidden h-7 md:h-8" />
+        <SearchInput
+          name="mobileSearch"
+          className="sm:!flex lg:!hidden h-7 md:h-8"
+        />
         <div className="lg:hidden flex items-center gap-3 base:gap-5">
           {!isMobileNavbarOpened && <UserMenuIcons />}
           <span
