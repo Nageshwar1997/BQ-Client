@@ -1,69 +1,113 @@
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useGetHomeVideos } from "../../../api/media/media.service";
-import CloudinaryPlayer from "./CloudinaryPlayer";
+
+import ShowError from "../../../components/errors/ShowError";
+import {
+  LeftArrowIcon,
+  RightArrowIcon,
+  VolumeMaxIcon,
+  VolumeMuteIcon,
+} from "../../../icons";
 
 const VideoCarousel = () => {
-  const { data, isLoading, error } = useGetHomeVideos();
-  const videos = data?.videos || [];
-
   const [currentIndex, setCurrentIndex] = useState(0);
-  const currentVideo = videos[currentIndex];
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [progress, setProgress] = useState(0);
+  const [isMuted, setIsMuted] = useState(true);
 
-  const nextVideo = () => {
-    setCurrentIndex((prev) => (prev + 1) % videos.length);
+  const { data, isLoading, isError } = useGetHomeVideos();
+  const videos = data?.videos;
+
+  const handlePrev = useCallback(() => {
+    if (!videos || videos.length === 0) return;
+    setCurrentIndex((prev) => (prev === 0 ? videos.length - 1 : prev - 1));
+  }, [videos]);
+
+  const handleNext = useCallback(() => {
+    if (!videos || videos.length === 0) return;
+    setCurrentIndex((prev) => (prev === videos.length - 1 ? 0 : prev + 1));
+  }, [videos]);
+
+  const handleIndexClick = (index: number) => {
+    setCurrentIndex(index);
   };
-
-  const prevVideo = () => {
-    setCurrentIndex((prev) => (prev - 1 + videos.length) % videos.length);
-  };
-
-  if (isLoading) return <div>Loading videos...</div>;
-  if (error) return <div>Failed to load videos.</div>;
-  if (!videos.length) return <div>No videos available.</div>;
 
   return (
-    <div className="relative w-full h-full border border-red-500">
-      <CloudinaryPlayer
-        key={currentVideo.public_id} // 👈 Ensure component remounts on video change
-        id={`video-${currentVideo.public_id}`}
-        publicId={currentVideo.public_id}
-        playerConfig={{
-          muted: true,
-          autoplay: true,
-          loop: false,
-          controls: false,
-          posterOptions: {
-            transformation: { effect: "blur" },
-          },
-        }}
-        onEnded={nextVideo} // 👈 Pass callback for auto-next
-      />
-
-      {/* Controls */}
-      <div className="absolute bottom-0 left-0 w-full py-4 px-6 text-white bg-black/40 flex items-center justify-between">
-        <button
-          onClick={prevVideo}
-          className="text-white bg-gray-800 px-3 py-1 rounded"
-        >
-          Prev
-        </button>
-        <div className="flex items-center gap-2">
-          {videos?.map((_: object, index: number) => (
-            <span
-              key={index}
-              className={`w-3 h-3 rounded-full ${
-                index === currentIndex ? "bg-white" : "bg-gray-500"
-              }`}
-            />
-          ))}
+    <div className="relative w-full h-full max-h-[540px] aspect-[8/3] group">
+      {isLoading && !isError ? (
+        <div className="w-full h-full bg-silver animate-pulse" />
+      ) : !isLoading && isError ? (
+        <div className="w-full h-full text-center content-center border">
+          <ShowError
+            headingText="Unable to load videos"
+            descriptionText="Please try again or refresh page"
+            showHrLine
+          />
         </div>
-        <button
-          onClick={nextVideo}
-          className="text-white bg-gray-800 px-3 py-1 rounded"
-        >
-          Next
-        </button>
-      </div>
+      ) : (
+        <div className="w-full h-full">
+          <video
+            ref={videoRef}
+            controls={false}
+            muted={isMuted}
+            // crossOrigin="anonymous"
+            className="object-cover w-full h-full"
+            poster={videos[currentIndex]?.posterUrl}
+          />
+
+          {["prev", "next"].map((type, index) => (
+            <button
+              key={index}
+              onClick={type === "prev" ? handlePrev : handleNext}
+              className={`absolute top-1/2 ${
+                type === "prev" ? "left-4" : "right-4"
+              } transform -translate-y-1/2 bg-primary-50 hover:bg-primary p-3 rounded-full hidden group-hover:lg:block`}
+            >
+              {type === "prev" ? (
+                <LeftArrowIcon className="fill-primary-inverted w-4 h-4" />
+              ) : (
+                <RightArrowIcon className="fill-primary-inverted w-4 h-4" />
+              )}
+            </button>
+          ))}
+          <div className="absolute bottom-0 p-4 w-full flex items-center justify-between">
+            {/* Mute Toggle */}
+            <button
+              onClick={() => setIsMuted(!isMuted)}
+              className="bg-primary-50 hover:bg-primary p-1 rounded-full"
+            >
+              {isMuted ? (
+                <VolumeMaxIcon className="[&>path]:stroke-primary-inverted w-4 h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6" />
+              ) : (
+                <VolumeMuteIcon className="[&>path]:stroke-primary-inverted w-4 h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6" />
+              )}
+            </button>
+            {/* Index Buttons */}
+            <div className="flex flex-wrap justify-center gap-2">
+              {videos.map((_: never, index: number) => (
+                <div
+                  key={index}
+                  onClick={() => handleIndexClick(index)}
+                  className="w-2 h-2 md:w-4 md:h-4 lg:w-5 lg:h-5 rounded-full border-none opacity-80 hover:opacity-100"
+                  style={
+                    index === currentIndex
+                      ? {
+                          background: `conic-gradient(var(--blue-crayola-c) ${progress}%, var(--silver-jet) ${progress}%)`,
+                          WebkitMask:
+                            "radial-gradient(farthest-side, transparent calc(100% - 4px), var(--silver) calc(100% - 4px))",
+                          mask: "radial-gradient(farthest-side, transparent calc(100% - 4px), var(--silver) calc(100% - 4px))",
+                        }
+                      : {
+                          border: "4px solid var(--silver-jet)",
+                          background: "transparent",
+                        }
+                  }
+                ></div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
