@@ -5,6 +5,7 @@ export const useGetHomeVideos = () => {
   return useQuery({
     queryKey: ["get_home_videos"],
     queryFn: get_home_videos,
+    retry: false,
     staleTime: Infinity,
     gcTime: Infinity,
     placeholderData: keepPreviousData,

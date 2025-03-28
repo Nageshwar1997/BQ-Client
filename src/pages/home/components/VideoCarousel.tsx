@@ -98,7 +98,7 @@ const VideoCarousel = () => {
             controls={false}
             muted={isMuted}
             className="object-cover w-full h-full"
-            // poster={videos[currentIndex]?.posterUrl || ""}
+            poster={videos[currentIndex]?.posterUrl || ""}
           />
 
           {["prev", "next"].map((type, index) => (
