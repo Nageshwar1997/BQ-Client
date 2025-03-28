@@ -38,7 +38,6 @@ const Footer = () => {
           ))}
         </div>
       </div>
-      <div className="w-full h-40"></div>
     </div>
   );
 };
