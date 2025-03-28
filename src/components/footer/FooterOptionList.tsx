@@ -31,7 +31,7 @@ const FooterOptionList = ({
       >
         {options.map((link, i: number) => {
           return (
-            <p key={i} className="text-nowrap">
+            <p key={i} className="text-nowrap cursor-pointer">
               {link.title}
             </p>
           );

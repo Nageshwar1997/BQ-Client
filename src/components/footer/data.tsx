@@ -31,7 +31,7 @@ export const footerCategories = [
         title: "Ethics",
       },
       {
-        title: "Press / Media",
+        title: "Press/Media",
       },
     ],
   },
