@@ -13,16 +13,16 @@ export const awards = [
 
 export const footerCategories = [
   {
-    title: "Company Info",
+    title: "Company",
     options: [
       {
         title: "About Us",
       },
       {
-        title: "Careers",
+        title: "Partner With Us",
       },
       {
-        title: "Partner With Us",
+        title: "Careers",
       },
       {
         title: "Sustainability",
@@ -36,25 +36,48 @@ export const footerCategories = [
     ],
   },
   {
+    title: "Quick Links",
+    options: [
+      {
+        title: "My Account",
+      },
+      {
+        title: "Order History",
+      },
+      {
+        title: "Wishlist",
+      },
+      {
+        title: "Refer a Friend",
+      },
+      {
+        title: "Store Locator",
+      },
+      {
+        title: "Become a Seller",
+      },
+    ],
+  },
+  {
     title: "Products",
     options: [
       {
         title: "For You",
       },
       {
-        title: "Lips",
+        title: "Lip Care",
       },
       {
-        title: "Eyes",
+        title: "Special Collection",
       },
       {
-        title: "Face",
+        title: "Face Care",
       },
       {
-        title: "Skin",
+        title: "Skin Care",
       },
       {
-        title: "Skin",
+        title: "Eye Care",
       },
     ],
   },
@@ -76,9 +99,6 @@ export const footerCategories = [
       {
         title: "Track My Order",
       },
-      {
-        title: "How to Use Our Products",
-      },
     ],
   },
   {
@@ -88,39 +108,16 @@ export const footerCategories = [
         title: "Privacy Policy",
       },
       {
-        title: "Terms & Conditions",
+        title: "Cookie Policy",
       },
       {
-        title: "Cookie Policy",
+        title: "Terms & Conditions",
       },
       {
         title: "Disclaimer",
       },
       {
-        title: "Accessibility Statement",
-      },
-    ],
-  },
-  {
-    title: "Quick Links",
-    options: [
-      {
-        title: "My Account",
-      },
-      {
-        title: "Wishlist",
-      },
-      {
-        title: "Order History",
-      },
-      {
-        title: "Refer a Friend",
-      },
-      {
-        title: "Store Locator",
-      },
-      {
-        title: "Become a Seller / Partner",
+        title: "Accessibility",
       },
     ],
   },

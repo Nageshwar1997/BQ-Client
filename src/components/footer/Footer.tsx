@@ -1,10 +1,11 @@
 import useThemeStore from "../../store/theme.store";
 import { awards, footerCategories } from "./data";
+import FooterOptionList from "./FooterOptionList";
 
 const Footer = () => {
   const { theme } = useThemeStore();
   return (
-    <div className="w-full text-center space-y-6 py-6 md:px-4 lg:px-20 lg:py-10">
+    <div className="w-full text-center space-y-6 py-6 md:px-4 lg:px-10 xl:px-20 lg:py-10">
       <div className="w-full flex flex-col md:flex-row gap-2 lg:gap-4 items-center justify-between">
         <div className="flex flex-col items-center md:items-start">
           <div className="flex items-center justify-center">
@@ -38,24 +39,32 @@ const Footer = () => {
           ))}
         </div>
       </div>
-      <div className="flex flex-col lg:flex-row gap-6 lg:gap-20 lg:grid lg:grid-cols-5 items-start mt-6 text-primary-battleship-davys-gray-inverted text-sm px-4 md:px-0">
-        <div className="border-b w-full border-silver opacity-30 lg:hidden" />
-        <div className="grid grid-cols-2 text-center lg:text-left lg:flex flex-col gap-4 justify-start w-full lg:w-[160px] text-base">
-          {footerCategories.map((link, index) => (
-            <div key={index} className="">
-              <p className="text-platinum-black-inverted font-medium uppercase">
-                {link.title}
-              </p>
-              {link.options.map((li, i) => {
-                return (
-                  <div key={i} className="">
-                    {li.title}
-                  </div>
-                );
-              })}
-            </div>
-          ))}
-        </div>
+      <div className="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-10 xl:gap-20 mt-6 text-primary-battleship-davys-gray-inverted text-sm px-4 md:px-0">
+        <div className="border-b w-full border-silver opacity-30 col-span-3 lg:hidden" />
+        <FooterOptionList
+          isFirst={true}
+          title={footerCategories[0].title}
+          options={footerCategories[0].options}
+        />
+        <div className="border-b w-full border-silver opacity-30 col-span-3 sm:hidden" />
+        <FooterOptionList
+          title={footerCategories[1].title}
+          options={footerCategories[1].options}
+        />
+        <FooterOptionList
+          title={footerCategories[2].title}
+          options={footerCategories[2].options}
+        />
+        <div className="border-b w-full border-silver opacity-30 lg:hidden col-span-3" />
+        <FooterOptionList
+          title={footerCategories[3].title}
+          options={footerCategories[3].options}
+        />
+        <FooterOptionList
+          title={footerCategories[4].title}
+          options={footerCategories[4].options}
+        />
+        <div className="border-b w-full border-silver opacity-30 lg:hidden col-span-3" />
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ const SearchInput = ({
 }: SearchInputProps) => {
   return (
     <div
-      className={`max-w-[400px] lg:max-w-[500px] xl:max-w-[600px] w-full flex-grow h-9 rounded-md overflow-hidden bg-secondary-inverted xl:flex items-center border border-transparent focus-within:shadow-lg focus-within:shadow-primary-10 focus-within:border-primary-50 ${className}`}
+      className={`max-w-[400px] lg:max-w-[500px] xl:max-w-[600px] w-full flex-grow h-9 hidden rounded-md overflow-hidden bg-secondary-inverted xl:flex items-center border border-transparent focus-within:shadow-lg focus-within:shadow-primary-10 focus-within:border-primary-50 ${className}`}
     >
       <input
         name={name}
