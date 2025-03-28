@@ -98,7 +98,7 @@ const VideoCarousel = () => {
             controls={false}
             muted={isMuted}
             className="object-cover w-full h-full"
-            poster={videos[currentIndex]?.posterUrl || ""}
+            // poster={videos[currentIndex]?.posterUrl || ""}
           />
 
           {["prev", "next"].map((type, index) => (
@@ -131,7 +131,7 @@ const VideoCarousel = () => {
             {/* Index Buttons */}
             <div className="flex flex-wrap justify-center gap-2">
               {videos.map((_: never, index: number) => (
-                <button
+                <div
                   key={index}
                   onClick={() => handleIndexClick(index)}
                   className="w-2 h-2 md:w-4 md:h-4 lg:w-5 lg:h-5 rounded-full border-none opacity-80 hover:opacity-100"
@@ -142,14 +142,13 @@ const VideoCarousel = () => {
                           WebkitMask:
                             "radial-gradient(farthest-side, transparent calc(100% - 4px), var(--silver) calc(100% - 4px))",
                           mask: "radial-gradient(farthest-side, transparent calc(100% - 4px), var(--silver) calc(100% - 4px))",
-                          backgroundColor: "transparent",
                         }
                       : {
                           border: "4px solid var(--silver-jet)",
-                          backgroundColor: "transparent",
+                          background: "transparent",
                         }
                   }
-                />
+                ></div>
               ))}
             </div>
           </div>
