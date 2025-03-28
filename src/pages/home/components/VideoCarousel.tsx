@@ -97,8 +97,9 @@ const VideoCarousel = () => {
             ref={videoRef}
             controls={false}
             muted={isMuted}
+            // crossOrigin="anonymous"
             className="object-cover w-full h-full"
-            // poster={videos[currentIndex]?.posterUrl || ""}
+            poster={videos[currentIndex]?.posterUrl}
           />
 
           {["prev", "next"].map((type, index) => (
