@@ -231,7 +231,6 @@ const Navbar = () => {
                   : "border dark:border-tertiary light:border-tertiary-inverted bg-transparent light:[&>input]:placeholder:text-tertiary-inverted dark:[&>input]:placeholder:text-tertiary light:[&_svg>path]:stroke-tertiary-inverted dark:[&_svg>path]:stroke-tertiary"
               }`}
               onChange={(e) => console.log(e.target.value)}
-              autocomplete="new-password"
             />
             <UserMenuIcons
               className={`${
