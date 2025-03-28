@@ -1,22 +1,33 @@
-import { useCallback, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
+import type { VideoPlayer as CloudinaryVideoPlayer } from "cloudinary-video-player";
+import { videoPlayer } from "cloudinary-video-player";
 import { useGetHomeVideos } from "../../../api/media/media.service";
-
-import ShowError from "../../../components/errors/ShowError";
 import {
   LeftArrowIcon,
   RightArrowIcon,
   VolumeMaxIcon,
   VolumeMuteIcon,
 } from "../../../icons";
+import ShowError from "../../../components/errors/ShowError";
 
-const VideoCarousel = () => {
+const videoIds = [
+  "Beautinique/Home_Videos/1742127444038_1_Makeup_Reimagine",
+  "Beautinique/Home_Videos/1742130132099_3_Glide_Peptide_SPF50_PA++_Lip_Treatment_Must-Have_for_Daily_Protection",
+  "Beautinique/Home_Videos/1742719884229_SUGAR_Ace_of_Face_Dewy_Foundation_New_Launch_SUGAR_Cosmetics",
+];
+
+const CloudinaryVideoCarousel: FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [progress, setProgress] = useState(0);
   const [isMuted, setIsMuted] = useState(true);
-
+  const [progress, setProgress] = useState(0);
   const { data, isLoading, isError } = useGetHomeVideos();
   const videos = data?.videos;
+
+  const cloudinaryRef = useRef<
+    null | ((...args: unknown[]) => CloudinaryVideoPlayer)
+  >(null);
+  const playerInstanceRef = useRef<CloudinaryVideoPlayer | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const handlePrev = useCallback(() => {
     if (!videos || videos.length === 0) return;
@@ -31,6 +42,55 @@ const VideoCarousel = () => {
   const handleIndexClick = (index: number) => {
     setCurrentIndex(index);
   };
+
+  useEffect(() => {
+    if (!cloudinaryRef.current) {
+      cloudinaryRef.current = videoPlayer as (
+        ...args: unknown[]
+      ) => CloudinaryVideoPlayer;
+    }
+
+    if (playerInstanceRef.current) {
+      playerInstanceRef.current.dispose();
+      playerInstanceRef.current = null;
+    }
+
+    const player = cloudinaryRef.current(
+      "cloudinary-video",
+      {
+        cloud_name: "dag2xvurz",
+        secure: true,
+        controls: true,
+        muted: isMuted,
+      },
+      () => {
+        player.source(videoIds[currentIndex], {
+          autoplay: true,
+          muted: isMuted,
+          controls: false,
+          loop: false,
+        });
+        playerInstanceRef.current = player;
+      }
+    );
+
+    const videoElement = document.getElementById(
+      "cloudinary-video"
+    ) as HTMLVideoElement;
+    if (videoElement) {
+      videoElement.addEventListener("ended", handleNext);
+    }
+
+    return () => {
+      if (videoElement) {
+        videoElement.removeEventListener("ended", handleNext);
+      }
+      if (playerInstanceRef.current) {
+        playerInstanceRef.current.dispose();
+        playerInstanceRef.current = null;
+      }
+    };
+  }, [currentIndex, handleNext, isMuted]);
 
   return (
     <div className="relative w-full h-full max-h-[540px] aspect-[8/3] group">
@@ -48,11 +108,8 @@ const VideoCarousel = () => {
         <div className="w-full h-full">
           <video
             ref={videoRef}
-            controls={false}
-            muted={isMuted}
-            // crossOrigin="anonymous"
-            className="object-cover w-full h-full"
-            poster={videos[currentIndex]?.posterUrl}
+            id="cloudinary-video"
+            className="w-full h-full object-cover border border-red-500"
           />
 
           {["prev", "next"].map((type, index) => (
@@ -112,4 +169,4 @@ const VideoCarousel = () => {
   );
 };
 
-export default VideoCarousel;
+export default CloudinaryVideoCarousel;
