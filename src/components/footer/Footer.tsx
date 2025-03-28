@@ -1,5 +1,5 @@
 import useThemeStore from "../../store/theme.store";
-import { awards } from "./data";
+import { awards, footerCategories } from "./data";
 
 const Footer = () => {
   const { theme } = useThemeStore();
@@ -27,7 +27,7 @@ const Footer = () => {
             </span>
           </p>
         </div>
-        <div className="flex flex-col sm:flex-row items-center justify-end gap-2 lg:gap-4">
+        <div className="flex flex-col base:flex-row items-center justify-end gap-2 lg:gap-4">
           {awards.map((award, ind) => (
             <img
               key={ind}
@@ -35,6 +35,25 @@ const Footer = () => {
               alt={award.name}
               className="w-fit h-10 md:h-12 lg:h-14 object-contain"
             />
+          ))}
+        </div>
+      </div>
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-20 lg:grid lg:grid-cols-5 items-start mt-6 text-primary-battleship-davys-gray-inverted text-sm px-4 md:px-0">
+        <div className="border-b w-full border-silver opacity-30 lg:hidden" />
+        <div className="grid grid-cols-2 text-center lg:text-left lg:flex flex-col gap-4 justify-start w-full lg:w-[160px] text-base">
+          {footerCategories.map((link, index) => (
+            <div key={index} className="">
+              <p className="text-platinum-black-inverted font-medium uppercase">
+                {link.title}
+              </p>
+              {link.options.map((li, i) => {
+                return (
+                  <div key={i} className="">
+                    {li.title}
+                  </div>
+                );
+              })}
+            </div>
           ))}
         </div>
       </div>
