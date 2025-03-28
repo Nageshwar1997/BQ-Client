@@ -11,7 +11,7 @@ const Footer = () => {
             <img
               src="./images/logo/BQ.webp"
               alt="Logo"
-              className="object-cover max-w-20 lg:max-w-24 border w-full h-10 sm:h-12 lg:h-16"
+              className="object-contain max-w-20 lg:max-w-24 border w-full h-10 sm:h-12 lg:h-16"
             />
             <span className="mr-3 lg:mr-4 min-w-3">
               <hr className="h-px block border-none bg-gradient-line" />
@@ -33,7 +33,7 @@ const Footer = () => {
               key={ind}
               src={theme === "dark" ? award.darkImage : award.lightImage}
               alt={award.name}
-              className="w-fit h-10 md:h-12 lg:h-14 shrink-0"
+              className="w-fit h-10 md:h-12 lg:h-14 shrink-0 object-contain"
             />
           ))}
         </div>

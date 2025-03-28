@@ -165,7 +165,7 @@ const Navbar = () => {
             <img
               src="./images/logo/BQ.webp"
               alt="Logo"
-              className="object-cover w-fit max-h-16 h-full sticky top-0 left-0"
+              className="object-contain w-fit max-h-16 h-full sticky top-0 left-0"
             />
           </div>
           <div
