@@ -43,29 +43,22 @@ const Footer = () => {
         </div>
         <div className="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-10 xl:gap-20 mt-6 text-primary-battleship-davys-gray-inverted text-sm px-4 md:px-0">
           <div className="border-b w-full border-silver opacity-30 col-span-3 lg:hidden" />
-          <FooterOptionList
-            isFirst={true}
-            title={footerCategories[0].title}
-            options={footerCategories[0].options}
-          />
-          <div className="border-b w-full border-silver opacity-30 col-span-3 sm:hidden" />
-          <FooterOptionList
-            title={footerCategories[1].title}
-            options={footerCategories[1].options}
-          />
-          <FooterOptionList
-            title={footerCategories[2].title}
-            options={footerCategories[2].options}
-          />
-          <div className="border-b w-full border-silver opacity-30 lg:hidden col-span-3" />
-          <FooterOptionList
-            title={footerCategories[3].title}
-            options={footerCategories[3].options}
-          />
-          <FooterOptionList
-            title={footerCategories[4].title}
-            options={footerCategories[4].options}
-          />
+          {footerCategories.map((category, index) => (
+            <>
+              {index === 1 && (
+                <div className="border-b w-full border-silver opacity-30 col-span-3 sm:hidden" />
+              )}
+              <FooterOptionList
+                key={index}
+                isFirst={index === 0}
+                title={category.title}
+                options={category.options}
+              />
+              {index === 2 && (
+                <div className="border-b w-full border-silver opacity-30 lg:hidden col-span-3" />
+              )}
+            </>
+          ))}
         </div>
       </div>
       <div className="border-b w-full border-silver opacity-30" />
