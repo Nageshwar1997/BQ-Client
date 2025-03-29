@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import useThemeStore from "../../store/theme.store";
 import { awards, footerCategories, socialMediaLinks } from "./data";
@@ -44,12 +45,11 @@ const Footer = () => {
         <div className="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-10 xl:gap-20 mt-6 text-primary-battleship-davys-gray-inverted text-sm px-4 md:px-0">
           <div className="border-b w-full border-silver opacity-30 col-span-3 lg:hidden" />
           {footerCategories.map((category, index) => (
-            <>
+            <Fragment key={index}>
               {index === 1 && (
                 <div className="border-b w-full border-silver opacity-30 col-span-3 sm:hidden" />
               )}
               <FooterOptionList
-                key={index}
                 isFirst={index === 0}
                 title={category.title}
                 options={category.options}
@@ -57,7 +57,7 @@ const Footer = () => {
               {index === 2 && (
                 <div className="border-b w-full border-silver opacity-30 lg:hidden col-span-3" />
               )}
-            </>
+            </Fragment>
           ))}
         </div>
       </div>
