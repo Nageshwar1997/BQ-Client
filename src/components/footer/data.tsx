@@ -1,3 +1,11 @@
+import {
+  GitHubFillIcon,
+  FaceBookFillIcon,
+  InstagramFillIcon,
+  LinkedInBoxFillIcon,
+  YoutubeFillIcon,
+} from "../../icons";
+
 export const awards = [
   {
     name: "Forbes",
@@ -120,5 +128,33 @@ export const footerCategories = [
         title: "Accessibility",
       },
     ],
+  },
+];
+
+export const socialMediaLinks = [
+  {
+    id: 1,
+    icon: <GitHubFillIcon />,
+    url: "https://discord.gg/k3JrKtKNad",
+  },
+  {
+    id: 2,
+    icon: <YoutubeFillIcon />,
+    url: "https://www.youtube.com/@Ctruh",
+  },
+  {
+    id: 3,
+    icon: <LinkedInBoxFillIcon />,
+    url: "https://www.linkedin.com/company/ctruh/",
+  },
+  {
+    id: 4,
+    icon: <InstagramFillIcon />,
+    url: "https://www.instagram.com/hello_ctruh/",
+  },
+  {
+    id: 5,
+    icon: <FaceBookFillIcon />,
+    url: "https://facebook.com/people/Ctruh/100090491642974",
   },
 ];

@@ -26,7 +26,7 @@ const FooterOptionList = ({
       </p>
       <div
         className={`grid grid-cols-1 ${
-          isFirst ? " grid-cols-2 sm:grid-cols-1" : ""
+          isFirst ? "grid-cols-2 sm:grid-cols-1" : ""
         } gap-2`}
       >
         {options.map((link, i: number) => {

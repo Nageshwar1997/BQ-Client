@@ -9,13 +9,13 @@ import Register from "../pages/auth/Register";
 import Login from "../pages/auth/Login";
 import NotFound from "../pages/error/NotFound";
 import SomethingWentWrong from "../pages/error/SomethingWentWrong";
-import LoadingPage from "../components/loaders/LoadingPage";
+import LoadingScreen from "../components/loaders/LoadingScreen";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <Suspense fallback={<LoadingPage />}>
+      <Suspense fallback={<LoadingScreen />}>
         <Main />
       </Suspense>
     ),
