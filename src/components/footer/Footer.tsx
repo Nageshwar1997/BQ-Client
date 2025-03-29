@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import useThemeStore from "../../store/theme.store";
 import { awards, footerCategories, socialMediaLinks } from "./data";
 import FooterOptionList from "./FooterOptionList";
@@ -73,12 +74,14 @@ const Footer = () => {
           {socialMediaLinks.map(
             (item) =>
               item.url && (
-                <div
+                <Link
+                  to={item.url}
                   key={item.id}
+                  target="_blank"
                   className="[&>svg>path]:fill-primary-battleship-davys-gray-inverted cursor-pointer"
                 >
                   {item.icon}
-                </div>
+                </Link>
               )
           )}
         </div>

@@ -4,6 +4,7 @@ import {
   InstagramFillIcon,
   LinkedInBoxFillIcon,
   YoutubeFillIcon,
+  WhatsappFillIcon,
 } from "../../icons";
 
 export const awards = [
@@ -134,27 +135,32 @@ export const footerCategories = [
 export const socialMediaLinks = [
   {
     id: 1,
-    icon: <GitHubFillIcon />,
-    url: "https://discord.gg/k3JrKtKNad",
+    icon: <YoutubeFillIcon />,
+    url: "https://www.youtube.com/@nageshpawar1997",
   },
   {
     id: 2,
-    icon: <YoutubeFillIcon />,
-    url: "https://www.youtube.com/@Ctruh",
+    icon: <InstagramFillIcon />,
+    url: "https://www.instagram.com/aspiring_web_developer",
   },
   {
     id: 3,
     icon: <LinkedInBoxFillIcon />,
-    url: "https://www.linkedin.com/company/ctruh/",
+    url: "https://www.linkedin.com/in/nageshwar-pawar-a25041289",
   },
   {
     id: 4,
-    icon: <InstagramFillIcon />,
-    url: "https://www.instagram.com/hello_ctruh/",
+    icon: <FaceBookFillIcon />,
+    url: "https://www.facebook.com/nageshwar1997",
   },
   {
     id: 5,
-    icon: <FaceBookFillIcon />,
-    url: "https://facebook.com/people/Ctruh/100090491642974",
+    icon: <GitHubFillIcon />,
+    url: "https://github.com/nageshwar1997",
+  },
+  {
+    id: 6,
+    icon: <WhatsappFillIcon />,
+    url: "https://wa.me/+919730870409",
   },
 ];
