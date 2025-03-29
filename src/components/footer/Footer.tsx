@@ -78,7 +78,7 @@ const Footer = () => {
                   to={item.url}
                   key={item.id}
                   target="_blank"
-                  className="[&>svg>path]:fill-primary-battleship-davys-gray-inverted cursor-pointer"
+                  className="[&>svg>_g]:fill-primary-inverted [&>svg>path]:fill-primary-battleship-davys-gray-inverted cursor-pointer"
                 >
                   {item.icon}
                 </Link>
