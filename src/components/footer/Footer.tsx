@@ -71,19 +71,16 @@ const Footer = () => {
       <div className="border-b w-full border-silver opacity-30" />
       <div className="w-full flex flex-col lg:flex-row-reverse items-center justify-center gap-5 my-6">
         <div className="flex gap-5 items-center">
-          {socialMediaLinks.map(
-            (item) =>
-              item.url && (
-                <Link
-                  to={item.url}
-                  key={item.id}
-                  target="_blank"
-                  className="[&>svg>_g]:fill-primary-inverted [&>svg>path]:fill-primary-battleship-davys-gray-inverted cursor-pointer"
-                >
-                  {item.icon}
-                </Link>
-              )
-          )}
+          {socialMediaLinks.map((item) => (
+            <Link
+              to={item.url}
+              key={item.id}
+              target="_blank"
+              className="[&>svg>_g]:fill-primary-inverted [&>svg>path]:fill-primary-battleship-davys-gray-inverted cursor-pointer"
+            >
+              {item.icon}
+            </Link>
+          ))}
         </div>
         <div className="px-[10%] text-sm text-primary-battleship-davys-gray-inverted text-center">
           &copy; 2025&nbsp;
