@@ -10,19 +10,19 @@ const CategoriesGrid = () => {
       <HeadingWithDescription
         titleTexts={["Product Categories"]}
         className="!py-5 [&>h1]:!leading-none [&>h1>span]:!leading-none"
-        wrapperClassName="[&>hr]:w-2/3"
+        wrapperClassName="lg:[&>hr]:w-2/3"
         descriptionText={
           "Exclusive beauty products crafted to enhance your natural glow, from skincare to makeup essentials"
         }
         horizontalLine="bottom"
       />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 pt-8 pb-6 lg:pb-32 max-w-7xl mx-[35px] xl:mx-auto">
+      <div className="w-full px-5 lg:px-40 py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8">
         {categories.map((category, index) => (
           <CategoryCard
             key={index}
             {...category}
             className={`col-span-full ${
-              index > 2 ? "lg:col-span-6" : "lg:col-span-4"
+              index > 2 ? "lg:col-span-6 lg:h-[500px]" : "lg:col-span-4"
             }`}
           />
         ))}

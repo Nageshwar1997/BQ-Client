@@ -32,7 +32,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="723.873"
         y2="113.785"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="19.8729"
@@ -40,7 +40,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="683.873"
         y2="93.7847"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="-20.1271"
@@ -48,7 +48,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="643.873"
         y2="73.7847"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="-60.1271"
@@ -56,7 +56,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="603.873"
         y2="53.7847"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="-100.127"
@@ -64,7 +64,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="563.873"
         y2="33.7847"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="99.8729"
@@ -72,7 +72,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="763.873"
         y2="133.785"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="139.873"
@@ -80,7 +80,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="803.873"
         y2="153.785"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="179.873"
@@ -88,7 +88,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="843.873"
         y2="173.785"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="219.873"
@@ -96,7 +96,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="883.873"
         y2="193.785"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="259.873"
@@ -104,7 +104,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="923.873"
         y2="213.785"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="299.873"
@@ -112,7 +112,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="963.873"
         y2="233.785"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="339.873"
@@ -120,7 +120,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="1003.87"
         y2="253.785"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="379.873"
@@ -128,7 +128,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="1043.87"
         y2="273.785"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="419.873"
@@ -136,7 +136,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="1083.87"
         y2="293.785"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="459.873"
@@ -144,7 +144,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="1123.87"
         y2="313.785"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="499.873"
@@ -152,7 +152,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="1163.87"
         y2="333.785"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="539.873"
@@ -160,7 +160,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="1203.87"
         y2="353.785"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="579.873"
@@ -168,7 +168,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="1243.87"
         y2="373.785"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="619.873"
@@ -176,7 +176,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="1283.87"
         y2="393.785"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="659.873"
@@ -184,7 +184,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="1323.87"
         y2="413.785"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="-109.875"
@@ -192,7 +192,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="557.897"
         y2="757.322"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="-69.875"
@@ -200,7 +200,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="597.897"
         y2="737.322"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="-29.875"
@@ -208,7 +208,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="637.897"
         y2="717.322"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="10.125"
@@ -216,7 +216,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="677.897"
         y2="697.322"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="50.125"
@@ -224,7 +224,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="717.897"
         y2="677.322"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="90.125"
@@ -232,7 +232,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="757.897"
         y2="657.322"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="130.125"
@@ -240,7 +240,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="797.897"
         y2="637.322"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="170.125"
@@ -248,7 +248,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="837.897"
         y2="617.322"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="210.125"
@@ -256,7 +256,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="877.897"
         y2="597.322"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="250.125"
@@ -264,7 +264,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="917.897"
         y2="577.322"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="290.125"
@@ -272,7 +272,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="957.897"
         y2="557.322"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="330.125"
@@ -280,7 +280,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="997.897"
         y2="537.322"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="370.125"
@@ -288,7 +288,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="1037.9"
         y2="517.322"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="410.125"
@@ -296,7 +296,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="1077.9"
         y2="497.322"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="450.125"
@@ -304,7 +304,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="1117.9"
         y2="477.322"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="490.125"
@@ -312,7 +312,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="1157.9"
         y2="457.322"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="530.125"
@@ -320,7 +320,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="1197.9"
         y2="437.322"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
       <line
         x1="570.125"
@@ -328,7 +328,7 @@ const LineGrid = ({ className }: { className?: string }) => (
         x2="1237.9"
         y2="417.322"
         stroke="#333333"
-        stroke-width="0.5"
+        strokeWidth="0.5"
       />
     </g>
     <defs>
@@ -340,8 +340,8 @@ const LineGrid = ({ className }: { className?: string }) => (
         gradientUnits="userSpaceOnUse"
         gradientTransform="translate(487.588 412.2) rotate(-90) scale(242.49 422.369)"
       >
-        <stop stop-color="white" />
-        <stop offset="1" stop-color="white" stop-opacity="0" />
+        <stop stopColor="white" />
+        <stop offset="1" stopColor="white" stopOpacity="0" />
       </radialGradient>
     </defs>
   </svg>
