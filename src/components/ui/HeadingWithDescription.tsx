@@ -40,7 +40,7 @@ const HeadingWithDescription = ({
           );
         })}
         {descriptionText && (
-          <p className="text-description text-center font-metropolis font-normal mt-4 lg:mt-0 leading-6 text-base">
+          <p className="text-tertiary opacity-75 text-center font-metropolis font-normal mt-4 lg:mt-0 leading-6 text-base">
             {Array.isArray(descriptionText)
               ? descriptionText?.map((desc, i) => (
                   <span key={i}>

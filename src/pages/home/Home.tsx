@@ -1,4 +1,4 @@
-import CategoriesGrid from "./components/CategoriesGrid";
+import CategoriesGrid from "./components/categoriesGrid/CategoriesGrid";
 import HomeHero from "./components/HomeHero";
 import VideoCarousel from "./components/VideoCarousel";
 
