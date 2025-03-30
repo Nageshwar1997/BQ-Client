@@ -2,12 +2,21 @@ import { Link } from "react-router-dom";
 import Button from "../../../components/button/Button";
 import { RightArrowIcon } from "../../../icons";
 import LineGrid from "../../../components/ui/LineGrid";
+import useThemeStore from "../../../store/theme.store";
 
 const HomeHero = () => {
+  const { theme } = useThemeStore();
   return (
     <div className="relative w-full h-fit overflow-hidden py-5 bg-gradient-to-t from-[#fe026b] to-transparent">
       <div className="flex justify-center items-center flex-col lg:flex-row gap-5 px-3 lg:px-16 py-5">
-        <div className="flex flex-col items-center lg:items-start text-center lg:text-left w-full">
+        <div className="flex flex-col items-center lg:items-start text-center lg:text-left px-10 lg:px-0 w-full">
+          <div className="mb-6 rounded-full py-2 pl-3 pr-4 border border-primary-50 backdrop-blur-md">
+            <img
+              alt="award"
+              src={`/images/home/announcement-${theme}.png`}
+              className="w-56 base:w-64 relative  h-full object-contain "
+            />
+          </div>
           <h1 className="text-3xl md:text-4xl leading-[48px] md:leading-[52px] lg:text-left font-semibold">
             <span className="bg-silver-duo bg-clip-text text-transparent">
               India's First Beauty Brand that Delivers Products Directly to the
@@ -30,8 +39,8 @@ const HomeHero = () => {
           </Link>
         </div>
         <div className="relative flex items-center justify-center w-[518px] h-[351px]">
-          <LineGrid className="absolute -top-10 -right-10 [&_line]:stroke-primary-50 [&_line]:opacity-50" />
-          <div className='max-w-[300px] max-h-[280px] md:max-w-[370px] md:max-h-[340px] w-full h-full bg-[url("/images/logo/BQ.webp")] bg-cover bg-center bg-no-repeat bg-opacity-50 border' />
+          <LineGrid className="absolute -top-10 -right-20 [&_line]:stroke-primary-50 [&_line]:opacity-50 z-0" />
+          <div className='max-w-[300px] max-h-[280px] md:max-w-[350px] md:max-h-[310px] w-full h-full bg-[url("/images/logo/BQ.webp")] bg-cover bg-center bg-no-repeat bg-opacity-50 lg:mt-28 z-[1]' />
         </div>
       </div>
     </div>
