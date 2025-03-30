@@ -18,7 +18,7 @@ const CategoryCard = memo(
       if (images && images.length > 0) {
         intervalId = setInterval(() => {
           setImageUrl(images[Math.floor(Math.random() * images.length)].img);
-        }, 1500);
+        }, 2000);
       }
       return () => clearInterval(intervalId);
       // eslint-disable-next-line react-hooks/exhaustive-deps
