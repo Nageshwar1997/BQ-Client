@@ -22,6 +22,12 @@
     #b519df 66%,
     #fe026c 100%
   );
+  --light-pink-gradient: linear-gradient(
+    57deg,
+    rgba(249, 119, 255, 0.84) 40%,
+    rgba(54, 212, 255, 1) 88%,
+    rgba(177, 231, 201, 1) 100%
+  );
 }
 
 [theme="dark"] {
