@@ -13,15 +13,25 @@ const CategoryCard = memo(
     images: { img: string }[];
   }) => {
     const [imageUrl, setImageUrl] = useState(images[0].img);
+    const [isHovered, setIsHovered] = useState(false);
+
     useEffect(() => {
-      const intervalId = setInterval(() => {
-        setImageUrl(images[Math.floor(Math.random() * images.length)].img);
-      }, 2000);
+      let intervalId: number;
+
+      if (!isHovered) {
+        intervalId = setInterval(() => {
+          setImageUrl(images[Math.floor(Math.random() * images.length)].img);
+        }, 2000);
+      }
+
       return () => clearInterval(intervalId);
-    }, [images]);
+    }, [images, isHovered]);
+
     return (
       <div
         className={`relative border-rounded-corners-gradient shadow-light-dark-soft bg-black cursor-pointer rounded-3xl overflow-hidden group hover:shadow-xl ${className}`}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
         <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-primary-inverted to-transparent px-6 pt-8 pb-6 flex flex-col items-center justify-center z-[1] group-hover:opacity-0 transition-opacity duration-500">
           <h3 className="text-xl font-medium leading-6 mb-2 text-secondary">
