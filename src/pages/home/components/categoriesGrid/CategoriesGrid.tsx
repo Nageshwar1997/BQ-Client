@@ -6,23 +6,27 @@ import CategoryCard from "./childrens/CategoryCard";
 const CategoriesGrid = () => {
   const categories = useMemo(() => HOME_CATEGORIES_DATA, []);
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center w-full px-10 lg:px-28">
       <HeadingWithDescription
         titleTexts={["Product Categories"]}
-        className="!py-5 [&>h1]:!leading-none [&>h1>span]:!leading-none"
+        className="!py-6 text-center"
         wrapperClassName="lg:[&>hr]:w-2/3"
         descriptionText={
-          "Exclusive beauty products crafted to enhance your natural glow, from skincare to makeup essentials"
+          "Exclusive beauty products crafted to enhance your natural glow, from skincare to makeup essentials."
         }
         horizontalLine="bottom"
       />
-      <div className="w-full px-5 lg:px-40 py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8">
+      <div className="w-full py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10 place-items-center">
         {categories.map((category, index) => (
           <CategoryCard
             key={index}
             {...category}
-            className={`col-span-full ${
-              index > 2 ? "lg:col-span-6 lg:h-[500px]" : "lg:col-span-4"
+            className={`w-[300px] sm:w-full ${
+              index > 3
+                ? "sm:col-span-2 sm:[&_img]:h-[380px] lg:h-[250px] xl:h-72"
+                : index > 2
+                ? ""
+                : ""
             }`}
           />
         ))}
@@ -30,5 +34,4 @@ const CategoriesGrid = () => {
     </div>
   );
 };
-
 export default CategoriesGrid;
