@@ -10,7 +10,6 @@ const Main = () => {
       <main>
         <Outlet />
       </main>
-
       <Footer />
     </ErrorBoundary>
   );

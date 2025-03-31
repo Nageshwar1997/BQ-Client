@@ -16,17 +16,17 @@ const CategoriesGrid = () => {
         }
         horizontalLine="bottom"
       />
-      <div className="w-full py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10 place-items-center">
+      <div className="w-full py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-12 gap-6 lg:gap-10 place-items-center">
         {categories.map((category, index) => (
           <CategoryCard
             key={index}
             {...category}
             className={`w-[300px] sm:w-full ${
-              index > 3
-                ? "sm:col-span-2 sm:[&_img]:h-[380px] lg:h-[250px] xl:h-72"
-                : index > 2
-                ? ""
-                : ""
+              index === 4 ? "sm:col-span-2 sm:[&_img]:h-[350px]" : ""
+            } ${
+              index > 2
+                ? "xl:col-span-6 lg:[&_img]:h-[250px] xl:[&_img]:h-[350px]"
+                : "xl:col-span-4"
             }`}
           />
         ))}
