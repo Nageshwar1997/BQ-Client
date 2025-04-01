@@ -11,7 +11,7 @@ import {
 import UserMenuIcons from "./components/UserMenuIcons";
 import { navbarCategoriesData } from "./data";
 import SearchInput from "./components/SearchInput";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import HoveredComponent from "./components/HoveredComponent";
 import Button from "../button/Button";
 import { BottomGradient } from "../Gradients";
@@ -21,7 +21,6 @@ const Navbar = () => {
   const navbarRef = useRef<HTMLDivElement>(null);
 
   const { pathname } = useLocation();
-  const navigate = useNavigate();
 
   const [isMobileNavbarOpened, setIsMobileNavbarOpened] =
     useState<boolean>(false);
@@ -177,7 +176,7 @@ const Navbar = () => {
           >
             <div className="flex items-center gap-2 h-full">
               {levelOneCategories.map((item, index) => (
-                <div className="h-full relative" key={item.id}>
+                <Link to={`/products${item.path}`} className="h-full relative" key={item.id}>
                   {/* Left Curve */}
                   {hoveredIndex === index && (
                     <div className="absolute left-px transform -translate-x-full bg-secondary-inverted bottom-0 h-3 w-3 z-[52]">
@@ -223,7 +222,7 @@ const Navbar = () => {
                       <div className="bg-tertiary-inverted h-full w-full rounded-bl-full border-b border-l border-primary-battleship-davys-gray" />
                     </div>
                   )}
-                </div>
+                </Link>
               ))}
             </div>
             <SearchInput

@@ -10,6 +10,7 @@ import LoginRedirect from "./LoginRedirect";
 import NotFound from "../pages/error/NotFound";
 import SomethingWentWrong from "../pages/error/SomethingWentWrong";
 import LoadingScreen from "../components/loaders/LoadingScreen";
+import CategoryProducts from "../pages/product/categoryProducts/CategoryProducts";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,18 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
+      },
+      {
+        path: "products/:levelOneCategory",
+        element: <CategoryProducts />,
+      },
+      {
+        path: "products/:levelOneCategory/:levelTwoCategory",
+        element: <CategoryProducts />,
+      },
+      {
+        path: "products/:levelOneCategory/:levelTwoCategory/:levelThreeCategory",
+        element: <CategoryProducts />,
       },
     ],
   },
