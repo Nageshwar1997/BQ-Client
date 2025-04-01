@@ -10,6 +10,7 @@ export interface SocialCommunityItem {
 
 export interface LevelOneCategoryType {
   id: number;
+  path: string;
   level: number;
   label: string;
   category: string;
@@ -19,6 +20,7 @@ export interface LevelOneCategoryType {
 
 export interface LevelTwoCategoryType {
   id: number;
+  path: string;
   level: number;
   label: string;
   category: string;
@@ -31,6 +33,7 @@ export interface LevelTwoCategoryType {
 
 export interface LevelThreeCategoryType {
   id: number;
+  path: string;
   level: number;
   label: string;
   category: string;

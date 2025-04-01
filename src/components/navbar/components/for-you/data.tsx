@@ -1,11 +1,22 @@
 import { PlayIcon, ChatIcon } from "../../../../icons";
-import { SocialCommunityItem } from "../../types";
-export const new_new = {
+import { levelOneCategoryPath } from "../../data";
+import { LevelTwoCategoryType, SocialCommunityItem } from "../../types";
+
+const basePath = levelOneCategoryPath.for_you;
+const levelTwoCategoryPath = {
+  new: `${basePath}/new`,
+  sugar_play: `${basePath}/sugar_play`,
+  offers: `${basePath}/offers`,
+  blogs: `${basePath}/blogs`,
+};
+
+export const new_new: LevelTwoCategoryType = {
   id: 1,
   level: 2,
   heading: "Latest Trends",
   label: "New",
   category: "new",
+  path: levelTwoCategoryPath.new,
   videoUrl:
     "https://res.cloudinary.com/drbhw0nwt/video/upload/sp_auto/v1739693059/videos/wvq939qkdpzgchfpzk2m.m3u8",
   thumbnail:
@@ -15,6 +26,7 @@ export const new_new = {
     {
       id: 1,
       level: 3,
+      path: "",
       label: "",
       category: "",
       description: "",
@@ -23,12 +35,13 @@ export const new_new = {
   ],
 };
 
-export const sugar_play = {
+export const sugar_play: LevelTwoCategoryType = {
   id: 2,
   level: 2,
   heading: "Best Sellers",
   label: "Sugar Play",
   category: "sugar_play",
+  path: levelTwoCategoryPath.sugar_play,
   videoUrl:
     "https://res.cloudinary.com/drbhw0nwt/video/upload/sp_auto/v1739693059/videos/wvq939qkdpzgchfpzk2m.m3u8",
   description: "Shop beauty products top-rated & loved by enthusiasts.",
@@ -37,6 +50,7 @@ export const sugar_play = {
       id: 1,
       level: 3,
       label: "",
+      path: "",
       category: "",
       description: "",
       icon: () => <svg />, // not in use only for typescript warning
@@ -44,12 +58,13 @@ export const sugar_play = {
   ],
 };
 
-export const offers = {
+export const offers: LevelTwoCategoryType = {
   id: 3,
   level: 2,
   heading: "Exclusive Deals",
   label: "Offers",
   category: "offers",
+  path: levelTwoCategoryPath.offers,
   videoUrl:
     "https://res.cloudinary.com/drbhw0nwt/video/upload/sp_auto/v1739693059/videos/wvq939qkdpzgchfpzk2m.m3u8",
   description: "Grab discounts on premium cosmetics for a limited time.",
@@ -58,6 +73,7 @@ export const offers = {
       id: 1,
       level: 3,
       label: "",
+      path: "",
       category: "",
       description: "",
       icon: () => <svg />, // not in use only for typescript warning
@@ -65,12 +81,13 @@ export const offers = {
   ],
 };
 
-export const blogs = {
+export const blogs: LevelTwoCategoryType = {
   id: 4,
   level: 2,
   heading: "Beauty Insights",
   label: "Blogs",
   category: "blogs",
+  path: levelTwoCategoryPath.blogs,
   videoUrl:
     "https://res.cloudinary.com/drbhw0nwt/video/upload/sp_auto/v1739693059/videos/wvq939qkdpzgchfpzk2m.m3u8",
   description: "Explore top beauty tips, trends, & skincare routines.",
@@ -78,6 +95,7 @@ export const blogs = {
     {
       id: 1,
       level: 3,
+      path: "",
       label: "",
       category: "",
       description: "",
