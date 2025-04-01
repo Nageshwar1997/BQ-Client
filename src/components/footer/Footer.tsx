@@ -12,11 +12,13 @@ const Footer = () => {
         <div className="w-full flex flex-col md:flex-row gap-2 lg:gap-4 items-center justify-between">
           <div className="flex flex-col items-center md:items-start">
             <div className="flex items-center justify-center">
-              <img
-                src="./images/logo/BQ.webp"
-                alt="Logo"
-                className="object-contain max-w-20 lg:max-w-24 w-full h-10 sm:h-12 lg:h-16"
-              />
+              <Link to="/">
+                <img
+                  src="/images/logo/BQ.webp"
+                  alt="Logo"
+                  className="object-contain max-w-20 lg:max-w-24 w-full h-10 sm:h-12 lg:h-16"
+                />
+              </Link>
               <span className="mr-3 lg:mr-4 min-w-3">
                 <hr className="h-px block border-none bg-gradient-line" />
               </span>
