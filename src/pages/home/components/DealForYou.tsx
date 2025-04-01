@@ -15,14 +15,14 @@ const DealForYou = () => {
   }, []);
 
   return (
-    <div className="relative w-full mx-auto overflow-hidden rounded-lg shadow-lg">
+    <div className="relative w-full mx-auto overflow-hidden shadow-lg">
       <HeadingWithDescription
         titleTexts={["Special Deals"]}
         className="py-2 text-center [&>h1]:leading-none"
         wrapperClassName="lg:[&>hr]:w-1/2 py-4"
         horizontalLine="bottom"
       />
-      <div className="overflow-hidden rounded-lg">
+      <div className="overflow-hidden">
         <img
           src={HOME_DEALS_DATA[currentIndex].img}
           alt={`Deal ${currentIndex + 1}`}

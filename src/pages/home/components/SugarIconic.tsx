@@ -3,7 +3,7 @@ import { SUGAR_ICONICS_DATA } from "../data";
 
 const SugarIconic = () => {
   return (
-    <div className="relative w-full mx-auto overflow-hidden rounded-lg shadow-lg px-[5%]">
+    <div className="relative w-full mx-auto shadow-lg px-[5%]">
       <HeadingWithDescription
         titleTexts={["Sugar Iconics In-Focus"]}
         className="py-2 text-center [&>h1]:leading-none"
