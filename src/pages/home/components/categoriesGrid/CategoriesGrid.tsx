@@ -16,7 +16,7 @@ const CategoriesGrid = () => {
         }
         horizontalLine="bottom"
       />
-      <div className="w-full pt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-12 gap-6 lg:gap-10 place-items-center">
+      <div className="w-full py-5 sm:py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-12 gap-6 lg:gap-10 place-items-center">
         {categories.map((category, index) => (
           <CategoryCard
             key={index}
