@@ -3,8 +3,7 @@ import {
   dummyFeedbacks,
   highlightedCategoryOptions,
 } from "../components/navbar/data";
-
-const ENCRYPTION_SECRET_KEY = import.meta.env.VITE_ENCRYPTION_SECRET_KEY;
+import { ENCRYPTION_SECRET_KEY } from "../envs/index.env";
 
 export const encryptData = (data: string): string => {
   return CryptoJS.AES.encrypt(data, ENCRYPTION_SECRET_KEY).toString();
@@ -33,8 +32,7 @@ export const getUserToken = () => {
     localStorage.getItem("token") || sessionStorage.getItem("token");
 
   if (!token) {
-    console.log("No token found");
-    return null;
+    throw new Error("No Token found");
   }
 
   return JSON.parse(

@@ -132,6 +132,7 @@ export interface UserTypes {
 
 export interface UserStoreType {
   user: UserTypes | null;
+  isAuthenticated: boolean;
   setUser: (user: UserTypes) => void;
   logout: () => void;
 }
