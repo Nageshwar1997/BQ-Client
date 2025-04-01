@@ -15,7 +15,7 @@ const DealForYou = () => {
   }, []);
 
   return (
-    <div className="relative w-full mx-auto overflow-hidden rounded-lg shadow-lg px-[5%]">
+    <div className="relative w-full mx-auto overflow-hidden rounded-lg shadow-lg">
       <HeadingWithDescription
         titleTexts={["Special Deals"]}
         className="py-2 text-center [&>h1]:leading-none"
