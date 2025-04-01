@@ -10,16 +10,13 @@ import LoginRedirect from "./LoginRedirect";
 import NotFound from "../pages/error/NotFound";
 import SomethingWentWrong from "../pages/error/SomethingWentWrong";
 import LoadingScreen from "../components/loaders/LoadingScreen";
-import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
       <Suspense fallback={<LoadingScreen />}>
-        <PrivateRoute>
-          <Main />
-        </PrivateRoute>
+        <Main />
       </Suspense>
     ),
     children: [
