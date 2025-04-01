@@ -27,7 +27,7 @@ const Collections = () => {
                     : "lg:pb-2"
                 }`}
               >
-                <CategoryLabel text={label} />
+                <CategoryLabel text={label} path={`/products${category.path}`} />
                 <SubCategories subCategories={subCategories} />
               </div>
             );
@@ -36,11 +36,11 @@ const Collections = () => {
       ))}
       <div className="grid base:grid-cols-2 md:grid-cols-1 gap-2 base:col-span-2 md:col-span-1 w-full">
         <div className="space-y-4 min-w-[200px] max-w-[300px] pb-4 lg:pb-2 border-b border-primary-battleship-davys-gray">
-          <CategoryLabel text={"Peoples Love BQ"} />
+          <CategoryLabel text={"Peoples Love BQ"} className="cursor-default" />
           <TestimonialCarousel testimonials={testimonials} />
         </div>
         <div className="space-y-4 min-w-[200px] max-w-[300px] pb-4 lg:pb-2 border-b border-primary-battleship-davys-gray lg:border-none">
-          <CategoryLabel text={"Partner with us"} />
+          <CategoryLabel text={"Partner with us"} className="cursor-default" />
           <div className="px-3 space-y-4">
             <span className="bg-accent-duo bg-clip-text text-transparent italic text-sm font-medium leading-[21px]">
               Together, we're Unstoppable!

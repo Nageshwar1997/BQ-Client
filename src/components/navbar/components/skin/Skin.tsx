@@ -18,14 +18,14 @@ const Skin = () => {
               key={index}
               className="space-y-4 min-w-[200px] max-w-[300px] pb-4 lg:pb-0 border-b border-primary-battleship-davys-gray lg:border-none"
             >
-              <CategoryLabel text={label} />
+              <CategoryLabel text={label} path={`/products${category.path}`} />
               <SubCategories subCategories={subCategories} />
             </div>
           );
         })}
         <div className="hidden md:block lg:hidden w-full max-h-[250px] col-span-2 overflow-y-scroll shadow-lg shadow-secondary-inverted rounded-2xl">
           <img
-            src="./images/navbar/moisturizer.jpg"
+            src="/images/navbar/moisturizer.jpg"
             alt=""
             className="w-full h-full object-cover object-center opacity-95 hover:opacity-100 cursor-pointer"
             loading="lazy"

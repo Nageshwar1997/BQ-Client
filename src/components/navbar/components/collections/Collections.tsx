@@ -22,7 +22,7 @@ const Collections = () => {
                   : ""
               }`}
             >
-              <CategoryLabel text={label} />
+              <CategoryLabel text={label} path={`/products${category.path}`} />
               <SubCategories
                 subCategories={subCategories}
                 className={

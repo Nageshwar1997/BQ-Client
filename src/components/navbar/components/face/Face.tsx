@@ -54,7 +54,10 @@ const Face = () => {
                     : ""
                 }`}
               >
-                <CategoryLabel text={label} />
+                <CategoryLabel
+                  text={label}
+                  path={`/products${category.path}`}
+                />
                 <SubCategories subCategories={subCategories} />
               </div>
             );

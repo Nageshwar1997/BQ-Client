@@ -23,14 +23,14 @@ const Eyes = () => {
                 : "lg:pb-2"
             }`}
           >
-            <CategoryLabel text={label} />
+            <CategoryLabel text={label} path={`/products${category.path}`} />
             <SubCategories subCategories={subCategories} />
           </div>
         );
       })}
       <div className="hidden lg:block w-full max-h-[185px] xl:max-h-[220px] col-span-2 overflow-hidden shadow-lg shadow-secondary-inverted rounded-xl mt-10">
         <img
-          src="./images/navbar/Mascara.jpg"
+          src="/images/navbar/Mascara.jpg"
           alt=""
           className="w-full h-full object-cover object-center opacity-95 hover:opacity-100 cursor-pointer"
           loading="lazy"

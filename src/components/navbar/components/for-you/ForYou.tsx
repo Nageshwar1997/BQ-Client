@@ -22,13 +22,17 @@ const ForYou = () => {
               {/* Desktop View */}
               <div className="hidden lg:flex flex-col gap-6">
                 {/* Top Heading Label */}
-                <CategoryLabel text={category?.heading as string} />
+                <CategoryLabel
+                  text={category?.heading as string}
+                  path={`/products${category.path}`}
+                />
                 <div
                   className="flex flex-col gap-2 p-3 hover:bg-platinum-black rounded-xl cursor-pointer group relative"
                   onMouseEnter={() => setPlayingVideoIndex(index)}
                 >
                   <CategoryLabel
                     text={category?.label}
+                    path={`/products${category.path}`}
                     className="capitalize text-silver-jet group-hover:text-primary !px-0"
                   />
                   <p className="text-xs text-primary-battleship-davys-gray-inverted group-hover:text-silver-jet font-normal tracking-tight leading-5 line-clamp-2">
@@ -70,12 +74,14 @@ const ForYou = () => {
                 <div className="w-1/2 sm:w-2/3 flex flex-col items-start justify-start gap-1 sm:gap-3">
                   <CategoryLabel
                     text={category?.heading as string}
+                    path={`/products${category.path}`}
                     className="!px-0 !mt-0 py-1 border-b border-secondary-battleship-davys-gray text-left"
                   />
                   <div className="flex gap-4 cursor-pointer justify-between items-center pt-1">
                     <div className="flex gap-1 flex-col items-start">
                       <CategoryLabel
                         text={category.label}
+                        path={`/products${category.path}`}
                         className="capitalize font-metropolis text-silver-jet !px-0 !mt-0 text-left"
                       />
                       <p className="text-[10.5px] sm:text-xs md:text-sm pt-1 leading-[18px] text-primary-battleship-davys-gray-inverted text-left">

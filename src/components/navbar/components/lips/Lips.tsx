@@ -26,7 +26,7 @@ const Lips = () => {
                 : "lg:border-none"
             }`}
           >
-            <CategoryLabel text={label} />
+            <CategoryLabel text={label} path={`/products${category.path}`} />
             <SubCategories subCategories={subCategories} />
           </div>
         );
@@ -34,7 +34,7 @@ const Lips = () => {
       <div className="w-full min-h-[190px] xl:max-h-[220px] mt-10 col-span-2 shadow-lg shadow-secondary-inverted hidden xl:flex items-center justify-center gap-5">
         <span className="w-1/2 h-full rounded-xl overflow-hidden">
           <img
-            src="./images/navbar/Lipstick1.jpg"
+            src="/images/navbar/Lipstick1.jpg"
             alt=""
             className="h-full object-cover object-center opacity-95 hover:opacity-100 cursor-pointer"
             loading="lazy"
@@ -42,7 +42,7 @@ const Lips = () => {
         </span>
         <span className="w-1/2 h-full rounded-xl overflow-hidden">
           <img
-            src="./images/navbar/Lipstick2.jpg"
+            src="/images/navbar/Lipstick2.jpg"
             alt=""
             className="h-full object-cover object-center opacity-95 hover:opacity-100 cursor-pointer"
             loading="lazy"
