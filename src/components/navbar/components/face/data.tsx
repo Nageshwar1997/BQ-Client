@@ -1,4 +1,3 @@
-import { levelOneCategoryPath } from "../../data";
 import { LevelTwoCategoryType } from "../../types";
 import {
   BananaPowderIcon,
@@ -30,7 +29,7 @@ import {
   WaterResistantFoundationIcon,
 } from "../icons";
 
-const basePath = levelOneCategoryPath.face;
+const basePath = "/face";
 
 export const face_makeup: LevelTwoCategoryType = {
   id: 1,

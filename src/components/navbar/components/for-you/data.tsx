@@ -1,8 +1,7 @@
 import { PlayIcon, ChatIcon } from "../../../../icons";
-import { levelOneCategoryPath } from "../../data";
 import { LevelTwoCategoryType, SocialCommunityItem } from "../../types";
 
-const basePath = levelOneCategoryPath.for_you;
+const basePath = "/for_you";
 const levelTwoCategoryPath = {
   new: `${basePath}/new`,
   sugar_play: `${basePath}/sugar_play`,

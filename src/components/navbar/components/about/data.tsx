@@ -1,4 +1,3 @@
-import { levelOneCategoryPath } from "../../data";
 import { LevelTwoCategoryType } from "../../types";
 import {
   AboutUsIcon,
@@ -15,7 +14,7 @@ import {
   ValuesAndCultureIcon,
 } from "../icons";
 
-const basePath = levelOneCategoryPath.about;
+const basePath = "/about";
 
 export const company: LevelTwoCategoryType = {
   id: 1,

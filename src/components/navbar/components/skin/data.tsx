@@ -1,4 +1,3 @@
-import { levelOneCategoryPath } from "../../data";
 import { LevelTwoCategoryType } from "../../types";
 import {
   NightCreamIcon,
@@ -17,7 +16,7 @@ import {
   FacePackIcon,
 } from "../icons";
 
-const basePath = levelOneCategoryPath.skin;
+const basePath = "/skin";
 
 export const moisturizers: LevelTwoCategoryType = {
   id: 1,

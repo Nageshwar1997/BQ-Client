@@ -1,4 +1,3 @@
-import { levelOneCategoryPath } from "../../data";
 import { LevelTwoCategoryType } from "../../types";
 import {
   AllIcon,
@@ -30,7 +29,7 @@ import {
   ValueSetIcon,
 } from "../icons";
 
-const basePath = levelOneCategoryPath.collections;
+const basePath = "/collections";
 
 export const bath_and_body: LevelTwoCategoryType = {
   id: 1,

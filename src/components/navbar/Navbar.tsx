@@ -177,11 +177,7 @@ const Navbar = () => {
           >
             <div className="flex items-center gap-2 h-full">
               {levelOneCategories.map((item, index) => (
-                <div
-                  className="h-full relative"
-                  key={item.id}
-                  // onClick={() => navigate(item.path)}
-                >
+                <div className="h-full relative" key={item.id}>
                   {/* Left Curve */}
                   {hoveredIndex === index && (
                     <div className="absolute left-px transform -translate-x-full bg-secondary-inverted bottom-0 h-3 w-3 z-[52]">

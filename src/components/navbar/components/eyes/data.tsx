@@ -1,4 +1,3 @@
-import { levelOneCategoryPath } from "../../data";
 import { LevelTwoCategoryType } from "../../types";
 import {
   BrowDefinerIcon,
@@ -21,7 +20,7 @@ import {
   WaterproofMascara,
 } from "../icons";
 
-const basePath = levelOneCategoryPath.eyes;
+const basePath = "/eyes";
 
 export const kohl_and_kajal: LevelTwoCategoryType = {
   id: 1,

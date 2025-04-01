@@ -1,4 +1,3 @@
-import { levelOneCategoryPath } from "../../data";
 import { LevelTwoCategoryType } from "../../types";
 import {
   TransferLipstickIcon,
@@ -25,7 +24,7 @@ import {
   SmudgeProofLipstickIcon,
 } from "../icons";
 
-const basePath = levelOneCategoryPath.lips;
+const basePath = "/lips";
 
 export const finish_types: LevelTwoCategoryType = {
   id: 1,
