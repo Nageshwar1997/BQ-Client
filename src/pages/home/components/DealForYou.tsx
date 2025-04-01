@@ -22,11 +22,13 @@ const DealForYou = () => {
         wrapperClassName="lg:[&>hr]:w-1/2 py-4"
         horizontalLine="bottom"
       />
-      <img
-        src={HOME_DEALS_DATA[currentIndex].img}
-        alt={`Deal ${currentIndex + 1}`}
-        className={`w-full object-contain rounded-lg transition-opacity duration-700 ${""}`}
-      />
+      <div className="overflow-hidden rounded-lg">
+        <img
+          src={HOME_DEALS_DATA[currentIndex].img}
+          alt={`Deal ${currentIndex + 1}`}
+          className={`w-full object-contain scale-100 hover:scale-105 transition-transform duration-[1.5s] ease-in-out cursor-pointer`}
+        />
+      </div>
 
       {/* Dots Indicator */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
