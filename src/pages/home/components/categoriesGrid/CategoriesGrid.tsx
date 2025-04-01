@@ -21,6 +21,7 @@ const CategoriesGrid = () => {
           <CategoryCard
             key={index}
             {...category}
+            intervalDuration={(index + 1) * 1000}
             className={`w-[300px] sm:w-full ${
               index === 4 ? "sm:col-span-2 sm:[&_img]:h-[350px]" : ""
             } ${

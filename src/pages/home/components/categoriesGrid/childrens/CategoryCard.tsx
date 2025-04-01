@@ -6,11 +6,13 @@ const CategoryCard = memo(
     description,
     className = "",
     images,
+    intervalDuration = 10000,
   }: {
     title: string;
     description: string;
     className?: string;
     images: { img: string }[];
+    intervalDuration: number;
   }) => {
     const imageRef = useRef<HTMLImageElement>(null);
     const intervalRef = useRef<number | null>(null);
@@ -23,7 +25,7 @@ const CategoryCard = memo(
               images[Math.floor(Math.random() * images.length)].img;
             imageRef.current.src = randomImage;
           }
-        }, 2000);
+        }, intervalDuration);
       }
     };
 
@@ -37,7 +39,7 @@ const CategoryCard = memo(
     useEffect(() => {
       startImageRotation();
       return () => stopImageRotation();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
