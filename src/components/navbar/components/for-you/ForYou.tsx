@@ -26,13 +26,17 @@ const ForYou = () => {
                   text={category?.heading as string}
                   path={`/products${category.path}`}
                 />
-                <div
+                <Link
+                  to={
+                    ["offers", "blogs"].includes(category.category)
+                      ? category.path
+                      : `/products${category.path}`
+                  }
                   className="flex flex-col gap-2 p-3 hover:bg-platinum-black rounded-xl cursor-pointer group relative"
                   onMouseEnter={() => setPlayingVideoIndex(index)}
                 >
                   <CategoryLabel
                     text={category?.label}
-                    path={`/products${category.path}`}
                     className="capitalize text-silver-jet group-hover:text-primary !px-0"
                   />
                   <p className="text-xs text-primary-battleship-davys-gray-inverted group-hover:text-silver-jet font-normal tracking-tight leading-5 line-clamp-2">
@@ -66,7 +70,7 @@ const ForYou = () => {
                       />
                     )}
                   </div>
-                </div>
+                </Link>
               </div>
 
               {/* Mobile View */}

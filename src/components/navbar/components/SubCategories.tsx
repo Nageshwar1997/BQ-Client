@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { isHighlightedOption } from "../../../utils";
 import { LevelThreeCategoryType } from "../types";
 
@@ -14,7 +15,8 @@ const SubCategories = ({
         const isHighlighted = isHighlightedOption(subCategory.category);
         const Icon = subCategory.icon;
         return (
-          <div
+          <Link
+            to={`/products${subCategory.path}`}
             key={index}
             className={`flex justify-start gap-2 p-2 border border-transparent hover:bg-white-smoke-night-inverted rounded-xl cursor-pointer ${
               isHighlighted
@@ -40,7 +42,7 @@ const SubCategories = ({
                 {subCategory.description}
               </p>
             </div>
-          </div>
+          </Link>
         );
       })}
     </div>

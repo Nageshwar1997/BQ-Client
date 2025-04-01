@@ -5,8 +5,8 @@ const basePath = "/for_you";
 const levelTwoCategoryPath = {
   new: `${basePath}/new`,
   sugar_play: `${basePath}/sugar_play`,
-  offers: `${basePath}/offers`,
-  blogs: `${basePath}/blogs`,
+  offers: `/offers`,
+  blogs: `/blogs`,
 };
 
 export const new_new: LevelTwoCategoryType = {

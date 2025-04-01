@@ -11,6 +11,8 @@ import NotFound from "../pages/error/NotFound";
 import SomethingWentWrong from "../pages/error/SomethingWentWrong";
 import LoadingScreen from "../components/loaders/LoadingScreen";
 import CategoryProducts from "../pages/product/categoryProducts/CategoryProducts";
+import Offers from "../pages/offers/Offers";
+import Blogs from "../pages/blogs/Blogs";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +26,14 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
+      },
+      {
+        path: "offers",
+        element: <Offers />,
+      },
+      {
+        path: "blogs",
+        element: <Blogs />,
       },
       {
         path: "products/:levelOneCategory",
