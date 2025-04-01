@@ -1,6 +1,7 @@
 import CategoriesGrid from "./components/categoriesGrid/CategoriesGrid";
 import DealForYou from "./components/DealForYou";
 import HomeHero from "./components/HomeHero";
+import SugarIconic from "./components/SugarIconic";
 import VideoCarousel from "./components/VideoCarousel";
 
 const Home = () => {
@@ -10,6 +11,7 @@ const Home = () => {
       <HomeHero />
       <CategoriesGrid />
       <DealForYou />
+      <SugarIconic />
     </div>
   );
 };

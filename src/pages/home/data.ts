@@ -135,3 +135,14 @@ export const HOME_DEALS_DATA = [
     img: "/images/home/Deals/Teal-Trousseau.webp",
   },
 ];
+export const SUGAR_ICONICS_DATA = [
+  {
+    img: "/images/home/Sugar-Iconic/2022.webp",
+  },
+  {
+    img: "/images/home/Sugar-Iconic/2023.webp",
+  },
+  {
+    img: "/images/home/Sugar-Iconic/2024.webp",
+  },
+];
