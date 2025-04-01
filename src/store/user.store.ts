@@ -4,12 +4,13 @@ import { removeUserLocal, removeUserSession } from "../utils";
 
 export const useUserStore = create<UserStoreType>((set) => ({
   user: null,
+  isAuthenticated: false,
 
-  setUser: (user) => set({ user }),
+  setUser: (user) => set({ user, isAuthenticated: true }),
 
   logout: () => {
     removeUserLocal();
     removeUserSession();
-    set(() => ({ user: null }));
+    set(() => ({ user: null, isAuthenticated: false }));
   },
 }));

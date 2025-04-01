@@ -33,8 +33,7 @@ export const getUserToken = () => {
     localStorage.getItem("token") || sessionStorage.getItem("token");
 
   if (!token) {
-    console.log("No token found");
-    return null;
+    throw new Error("No Master Token found");
   }
 
   return JSON.parse(

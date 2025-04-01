@@ -5,18 +5,21 @@ import { lazy, Suspense } from "react";
 const Main = lazy(() => import("../pages/main/Main"));
 
 import Home from "../pages/home/Home";
-import Register from "../pages/auth/Register";
-import Login from "../pages/auth/Login";
+import RegisterRedirect from "./RegisterRedirect";
+import LoginRedirect from "./LoginRedirect";
 import NotFound from "../pages/error/NotFound";
 import SomethingWentWrong from "../pages/error/SomethingWentWrong";
 import LoadingScreen from "../components/loaders/LoadingScreen";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
       <Suspense fallback={<LoadingScreen />}>
-        <Main />
+        <PrivateRoute>
+          <Main />
+        </PrivateRoute>
       </Suspense>
     ),
     children: [
@@ -28,11 +31,11 @@ const router = createBrowserRouter([
   },
   {
     path: "register",
-    element: <Register />,
+    element: <RegisterRedirect />,
   },
   {
     path: "login",
-    element: <Login />,
+    element: <LoginRedirect />,
   },
   {
     path: "error",
