@@ -99,27 +99,39 @@ const skin = [
 export const HOME_CATEGORIES_DATA = [
   {
     title: "Lips Care",
-    description: "Boost customer engagement",
+    description: "Soothe Lip Skin",
     images: lips,
   },
   {
     title: "Eyes Care",
-    description: "Enhance purchase confidence",
+    description: "Beautiful Eye Care",
     images: eyes,
   },
   {
     title: "Face Care",
-    description: "Increase sales understanding",
+    description: "Enhance facial aesthetics",
     images: face,
   },
   {
     title: "Skin Care",
-    description: "Drive customer satisfaction",
+    description: "Healthy Glowing Skin",
     images: skin,
   },
   {
     title: "BQ Collection",
-    description: "Improve conversion rate",
+    description: "Exclusive Special Collections",
     images: collections,
+  },
+];
+
+export const HOME_DEALS_DATA = [
+  {
+    img: "/images/home/Deals/500-off.webp",
+  },
+  {
+    img: "/images/home/Deals/Manicure-Kit-Offer.webp",
+  },
+  {
+    img: "/images/home/Deals/Teal-Trousseau.webp",
   },
 ];

@@ -6,7 +6,7 @@ import CategoryCard from "./childrens/CategoryCard";
 const CategoriesGrid = () => {
   const categories = useMemo(() => HOME_CATEGORIES_DATA, []);
   return (
-    <div className="flex flex-col items-center w-full px-10 lg:px-28">
+    <div className="flex flex-col items-center w-full px-[5%]">
       <HeadingWithDescription
         titleTexts={["Product Categories"]}
         className="!py-6 text-center"

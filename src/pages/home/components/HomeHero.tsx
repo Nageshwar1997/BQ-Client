@@ -7,17 +7,17 @@ import useThemeStore from "../../../store/theme.store";
 const HomeHero = () => {
   const { theme } = useThemeStore();
   return (
-    <div className="relative w-full h-fit overflow-hidden py-5 bg-gradient-to-t from-[#fe026b] to-transparent">
-      <div className="flex justify-center items-center flex-col lg:flex-row gap-5 px-3 lg:px-16 py-5">
-        <div className="flex flex-col items-center lg:items-start text-center lg:text-left px-10 lg:px-0 w-full">
-          <div className="mb-6 rounded-full py-2 pl-3 pr-4 border border-primary-50 backdrop-blur-md">
+    <div className="relative w-full h-fit overflow-hidden py-5 bg-gradient-to-t from-[#fe026b] to-transparent px-[5%]">
+      <div className="flex justify-center items-center flex-col lg:flex-row gap-5 py-5">
+        <div className="flex flex-col items-center lg:items-start text-center lg:text-left w-full">
+          <div className="mb-6 rounded-full py-2 px-4 border border-primary-50 backdrop-blur-md">
             <img
               alt="award"
               src={`/images/home/announcement-${theme}.png`}
-              className="w-56 base:w-64 relative  h-full object-contain "
+              className="w-56 base:w-64 relative h-full object-contain"
             />
           </div>
-          <h1 className="text-3xl md:text-4xl leading-[48px] md:leading-[52px] lg:text-left font-semibold">
+          <h1 className="text-2xl md:text-4xl leading-10 md:leading-[48px] lg:text-left font-semibold">
             <span className="bg-silver-duo bg-clip-text text-transparent">
               India's First Beauty Brand that Delivers Products Directly to the
               Customer
@@ -26,7 +26,7 @@ const HomeHero = () => {
           <h1 className="bg-silver-duo bg-clip-text text-transparent font-semibold tracking-wide py-5 text-4xl sm:text-5xl md:text-7xl">
             BEAUTINIQUE
           </h1>
-          <h1 className="font-medium md:text-4xl text-3xl tracking-[16px] lg:tracking-[20px] opacity-80">
+          <h1 className="font-medium text-2xl md:text-3xl lg:text-4xl tracking-[12px] lg:tracking-[16px] opacity-80">
             ON THE WEB
           </h1>
           <Link to="/register" className="mt-8">
