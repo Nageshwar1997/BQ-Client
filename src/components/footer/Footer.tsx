@@ -14,15 +14,15 @@ const Footer = () => {
             <div className="flex items-center justify-center">
               <Link to="/">
                 <img
-                  src="/images/logo/BQ.webp"
+                  src="/images/logo/BQ_white_logo.webp"
                   alt="Logo"
-                  className="object-contain max-w-20 lg:max-w-24 w-full h-10 sm:h-12 lg:h-16"
+                  className="object-contain max-w-20 lg:max-w-24 w-full h-10 sm:h-12 lg:h-16 mix-blend-difference"
                 />
               </Link>
-              <span className="mr-3 lg:mr-4 min-w-3">
+              <span className="mr-1 min-w-3">
                 <hr className="h-px block border-none bg-gradient-line" />
               </span>
-              <h1 className="font-[550] tracking-tight text-[22px] lg:text-[32px] bg-clip-text text-transparent bg-golden-gradient">
+              <h1 className="font-[550] tracking-tight text-[22px] lg:text-[32px] text-primary">
                 BEAUTINIQUE
               </h1>
             </div>
@@ -78,11 +78,8 @@ const Footer = () => {
           ))}
         </div>
         <div className="px-[10%] text-sm text-primary-battleship-davys-gray-inverted text-center">
-          &copy; 2025&nbsp;
-          <span className="bg-clip-text text-transparent bg-golden-gradient font-medium">
-            BEAUTINIQUE
-          </span>
-          . All rights reserved. Designed with ♥ by
+          &copy; 2025&nbsp; Beautinique Pvt. Ltd. All rights reserved. Designed
+          with ♥ by
           <span className="bg-clip-text text-transparent bg-accent-duo text-nowrap font-medium">
             &nbsp;Nageshwar Pawar
           </span>

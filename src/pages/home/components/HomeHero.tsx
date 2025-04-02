@@ -7,7 +7,7 @@ import useThemeStore from "../../../store/theme.store";
 const HomeHero = () => {
   const { theme } = useThemeStore();
   return (
-    <div className="relative w-full h-fit overflow-hidden py-5 bg-gradient-to-t from-[#fe026b] to-transparent px-[5%]">
+    <div className="relative w-full h-fit overflow-hidden py-5 bg-beautinique-gradient px-[5%]">
       <div className="flex justify-center items-center flex-col lg:flex-row gap-5 py-5">
         <div className="flex flex-col items-center lg:items-start text-center lg:text-left w-full">
           <div className="mb-6 rounded-full py-2 px-4 border border-primary-50 backdrop-blur-md">
@@ -31,9 +31,11 @@ const HomeHero = () => {
           </h1>
           <Link to="/register" className="mt-8">
             <Button
-              pattern="primary"
+              pattern="secondary"
               content={"Register Now"}
-              rightIcon={<RightArrowIcon className="w-5 h-5 fill-white" />}
+              rightIcon={
+                <RightArrowIcon className="w-5 h-5 fill-secondary-inverted" />
+              }
               className="py-4 !px-6 !gap-3"
             />
           </Link>

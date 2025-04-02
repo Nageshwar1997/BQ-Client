@@ -17,8 +17,8 @@
     linear-gradient(107deg, #2579f9 -65.15%, #244cf8 90.95%);
   --beautinique-gradient: linear-gradient(
     135deg,
-    #00b0ff 0%,
-    #2f63f5 33%,
+    var(--picton-blue-c) 0%,
+    var(--blue-crayola-c) 33%,
     #b519df 66%,
     #fe026c 100%
   );
