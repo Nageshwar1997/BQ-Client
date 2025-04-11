@@ -10,31 +10,38 @@ const decryptUser = (encryptedUser: string | null): UserTypes | null => {
 
   try {
     const bytes = CryptoJS.AES.decrypt(encryptedUser, ENCRYPTION_SECRET_KEY);
-    return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    const decrypted = bytes.toString(CryptoJS.enc.Utf8);
+    return JSON.parse(decrypted);
   } catch (error) {
     console.error("Failed to decrypt user:", error);
+    sessionStorage.removeItem("user");
     return null;
   }
 };
 
-export const useUserStore = create<UserStoreType>((set) => ({
-  user: decryptUser(sessionStorage.getItem("user")), // Decrypt when initializing
-  isAuthenticated: !!sessionStorage.getItem("user"),
+export const useUserStore = create<UserStoreType>((set) => {
+  const encrypted = sessionStorage.getItem("user");
+  const user = decryptUser(encrypted);
 
-  setUser: (user) => {
-    const encryptedUser = CryptoJS.AES.encrypt(
-      JSON.stringify(user),
-      ENCRYPTION_SECRET_KEY
-    ).toString();
+  return {
+    user,
+    isAuthenticated: !!user,
 
-    sessionStorage.setItem("user", encryptedUser);
-    set({ user, isAuthenticated: true });
-  },
+    setUser: (user) => {
+      const encryptedUser = CryptoJS.AES.encrypt(
+        JSON.stringify(user),
+        ENCRYPTION_SECRET_KEY
+      ).toString();
 
-  logout: () => {
-    sessionStorage.removeItem("user");
-    removeUserLocal();
-    removeUserSession();
-    set(() => ({ user: null, isAuthenticated: false }));
-  },
-}));
+      sessionStorage.setItem("user", encryptedUser);
+      set({ user, isAuthenticated: true });
+    },
+
+    logout: () => {
+      sessionStorage.removeItem("user");
+      removeUserLocal();
+      removeUserSession();
+      set(() => ({ user: null, isAuthenticated: false }));
+    },
+  };
+});
