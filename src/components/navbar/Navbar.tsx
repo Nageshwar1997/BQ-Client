@@ -168,7 +168,7 @@ const Navbar = () => {
             className="h-12 sm:h-14 md:min-h-16 md:h-full flex items-center justify-center"
           >
             <img
-              src="/images/logo/BQ.webp"
+              src="/images/logo/BQ_gradient_logo.webp"
               alt="Logo"
               className="object-contain w-fit max-h-16 h-full sticky top-0 left-0"
             />
