@@ -4,7 +4,7 @@ import { socialCommunity } from "./data";
 import Button from "../../../button/Button";
 import { Link } from "react-router-dom";
 import { PlayIcon } from "../../../../icons";
-// import HLSVideoPlayer from "../../../videoPlayers/HLSVideoPlayer";
+import VideoPlayer from "../../../videoPlayers/VideoPlayer";
 import { LevelTwoCategoryType } from "../../types";
 import CategoryLabel from "../CategoryLabel";
 
@@ -44,26 +44,16 @@ const ForYou = () => {
                   </p>
                   <div className="relative max-w-[250px] h-[150px] overflow-hidden rounded-lg group-hover:shadow-sm group-hover:shadow-primary-inverted">
                     {playingVideoIndex === index ? (
-                      // <HLSVideoPlayer
-                      //   className="w-full h-full object-cover"
-                      //   videoUrl={category.videoUrl as string}
-                      //   posterURL="https://res.cloudinary.com/drbhw0nwt/video/upload/w_1920,h_1080,c_fill,so_1/v1739693059/videos/wvq939qkdpzgchfpzk2m.jpg"
-                      // />
-                      <img
-                        src={
-                          "https://res.cloudinary.com/drbhw0nwt/video/upload/so_5/videos/wvq939qkdpzgchfpzk2m.jpg" as string //LINK - Without width, height, quality & timestamp
-                          // "https://res.cloudinary.com/drbhw0nwt/video/upload/w_1920,h_1080,c_fill,so_1/v1739693059/videos/wvq939qkdpzgchfpzk2m.jpg" //LINK - With width, height, quality & timestamp
-                        } // Replace with a thumbnail URL
-                        alt="Video Thumbnail"
-                        className="w-full h-full object-cover rounded-lg"
-                        loading="lazy"
+                      <VideoPlayer
+                        className="w-full h-full object-cover"
+                        videoUrl={category.videoUrl as string}
+                        posterUrl={category.thumbnail}
+                        autoPlay={true}
+                        isMuted={true}
                       />
                     ) : (
                       <img
-                        src={
-                          "https://res.cloudinary.com/drbhw0nwt/video/upload/so_5/videos/wvq939qkdpzgchfpzk2m.jpg" as string //LINK - Without width, height, quality & timestamp
-                          // "https://res.cloudinary.com/drbhw0nwt/video/upload/w_1920,h_1080,c_fill,so_1/v1739693059/videos/wvq939qkdpzgchfpzk2m.jpg" //LINK - With width, height, quality & timestamp
-                        } // Replace with a thumbnail URL
+                        src={category.thumbnail}
                         alt="Video Thumbnail"
                         className="w-full h-full object-cover rounded-lg"
                         loading="lazy"
@@ -96,26 +86,17 @@ const ForYou = () => {
                 </div>
                 <div className="relative max-w-[200px] h-[120px] border border-primary-10 w-1/2 sm:w-1/3 overflow-hidden rounded-lg bg-platinum-black group-hover:bg-smoke-eerie flex items-center justify-center">
                   {playingVideoIndex === index ? (
-                    // <HLSVideoPlayer
-                    //   className="w-full h-full object-cover rounded-lg"
-                    //   videoUrl={category.videoUrl as string}
-                    //   // posterURL="https://res.cloudinary.com/drbhw0nwt/video/upload/w_1920,h_1080,c_fill,so_1/v1739693059/videos/wvq939qkdpzgchfpzk2m.jpg"
-                    // />
-                    <img
-                      src={
-                        "https://res.cloudinary.com/drbhw0nwt/video/upload/so_5/videos/wvq939qkdpzgchfpzk2m.jpg" as string
-                      }
-                      alt="Video Thumbnail"
+                    <VideoPlayer
+                      videoUrl={category.videoUrl as string}
+                      posterUrl={category.thumbnail}
                       className="w-full h-full object-cover rounded-md"
-                      loading="lazy"
+                      autoPlay={true}
+                      isMuted={true}
                     />
                   ) : (
                     <>
-                      {/* Show Poster */}
                       <img
-                        src={
-                          "https://res.cloudinary.com/drbhw0nwt/video/upload/so_5/videos/wvq939qkdpzgchfpzk2m.jpg" as string
-                        }
+                        src={category.thumbnail}
                         alt="Video Thumbnail"
                         className="w-full h-full object-cover rounded-md"
                         loading="lazy"
