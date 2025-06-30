@@ -61,7 +61,7 @@ const UploadProfile = ({
                 name={name}
                 type="file"
                 className="hidden"
-                accept="image/*"
+                accept="image/webp, image/png, image/jpeg, image/jpg"
                 onChange={handleImageChange}
               />
             </div>
