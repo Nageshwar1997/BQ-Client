@@ -34,8 +34,6 @@ const Navbar = () => {
     (item) => item.level === 1
   );
 
-  console.log("levelOneCategories", levelOneCategories);
-
   // Sets the hovered index when mouse enters an element
   const handleMouseEnter = (index: number) => {
     setHoveredIndex(index);
