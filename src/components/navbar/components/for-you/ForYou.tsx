@@ -30,7 +30,9 @@ const ForYou = () => {
                   to={
                     ["offers", "blogs"].includes(category.category)
                       ? category.path
-                      : `/products${category.path}`
+                      : `/products${category.path}${
+                          category.category === "new" ? "/new_arrivals" : "/sugar_play"
+                        }`
                   }
                   className="flex flex-col gap-2 p-3 hover:bg-platinum-black rounded-xl cursor-pointer group relative"
                   onMouseEnter={() => setPlayingVideoIndex(index)}
