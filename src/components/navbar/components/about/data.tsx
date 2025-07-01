@@ -108,7 +108,7 @@ export const careers: LevelTwoCategoryType = {
       level: 3,
       label: "Values/Culture",
       category: "values_culture",
-      path: `${basePath}/careers/values-culture`,
+      path: `${basePath}/careers/values_culture`,
       icon: ValuesAndCultureIcon,
       description:
         "Experience our vibrant culture driven by values of growth and innovation.",
@@ -128,7 +128,7 @@ export const careers: LevelTwoCategoryType = {
       level: 3,
       label: "Retail/E-Commerce",
       category: "retail_e_commerce",
-      path: `${basePath}/careers/retail-e-commerce`,
+      path: `${basePath}/careers/retail_e_commerce`,
       icon: RetailECommerceIcon,
       description:
         "Explore roles in retail and e-commerce driving our digital success.",
@@ -141,14 +141,14 @@ export const trust_center: LevelTwoCategoryType = {
   level: 2,
   label: "Trust Center & Legal",
   category: "trust_center_and_legal",
-  path: `${basePath}/trust-center-and-legal`,
+  path: `${basePath}/trust_center_and_legal`,
   subCategories: [
     {
       id: 1,
       level: 3,
       label: "Compliance",
       category: "compliance",
-      path: `${basePath}/trust-center-and-legal/compliance`,
+      path: `${basePath}/trust_center_and_legal/compliance`,
       icon: ComplianceIcon,
       description:
         "Understand our compliance standards ensuring trust and transparency.",
@@ -158,7 +158,7 @@ export const trust_center: LevelTwoCategoryType = {
       level: 3,
       label: "Privacy/Policy",
       category: "privacy_policy",
-      path: `${basePath}/trust-center-and-legal/privacy-policy`,
+      path: `${basePath}/trust_center_and_legal/privacy_policy`,
       icon: PrivacyPolicyIcon,
       description:
         "Learn about our privacy practices and data protection commitments.",
@@ -168,7 +168,7 @@ export const trust_center: LevelTwoCategoryType = {
       level: 3,
       label: "Terms & Conditions",
       category: "terms_and_conditions",
-      path: `${basePath}/trust-center-and-legal/terms-and-conditions`,
+      path: `${basePath}/trust_center_and_legal/terms_and_conditions`,
       icon: TermsAndConditionsIcon,
       description:
         "Review our terms and conditions for using our products and services.",

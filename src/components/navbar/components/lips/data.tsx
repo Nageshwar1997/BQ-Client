@@ -31,14 +31,14 @@ export const finish_types: LevelTwoCategoryType = {
   level: 2,
   label: "Finish Types",
   category: "finish_types",
-  path: `${basePath}/finish-types`,
+  path: `${basePath}/finish_types`,
   subCategories: [
     {
       id: 1,
       level: 3,
       label: "Matte Lipstick",
       category: "matte_lipstick",
-      path: `${basePath}/finish-types/matte-lipstick`,
+      path: `${basePath}/finish_types/matte_lipstick`,
       icon: MatteLipstickIcon,
       description:
         "Velvety matte finish with long-lasting, intense color payoff everywhere.",
@@ -48,7 +48,7 @@ export const finish_types: LevelTwoCategoryType = {
       level: 3,
       label: "Satin Lipstick",
       category: "satin_lipstick",
-      path: `${basePath}/finish-types/satin-lipstick`,
+      path: `${basePath}/finish_types/satin_lipstick`,
       icon: SatinLipstickIcon,
       description:
         "Smooth, creamy texture with a luminous, semi-matte finish always.",
@@ -58,7 +58,7 @@ export const finish_types: LevelTwoCategoryType = {
       level: 3,
       label: "Hi-Shine Lipstick",
       category: "hi_shine_lipstick",
-      path: `${basePath}/finish-types/hi-shine-lipstick`,
+      path: `${basePath}/finish_types/hi_shine_lipstick`,
       icon: HiShineLipstickIcon,
       description:
         "Glossy finish for a shiny, luscious look with rich pigment beautifully.",
@@ -68,7 +68,7 @@ export const finish_types: LevelTwoCategoryType = {
       level: 3,
       label: "Lip Gloss",
       category: "lip_gloss",
-      path: `${basePath}/finish-types/lip-gloss`,
+      path: `${basePath}/finish_types/lip_gloss`,
       icon: LipGlossIcon,
       description:
         "Sheer to medium coverage with a high-shine, glossy finish flawlessly.",
@@ -81,14 +81,14 @@ export const lipstick_forms: LevelTwoCategoryType = {
   level: 2,
   label: "Lipstick Forms",
   category: "lipstick_forms",
-  path: `${basePath}/lipstick-forms`,
+  path: `${basePath}/lipstick_forms`,
   subCategories: [
     {
       id: 1,
       level: 3,
       label: "Liquid Lipstick",
       category: "liquid_lipstick",
-      path: `${basePath}/lipstick-forms/liquid-lipstick`,
+      path: `${basePath}/lipstick_forms/liquid_lipstick`,
       icon: LiquidLipstickIcon,
       description:
         "Rich, long-lasting color with a lightweight, matte finish beautifully.",
@@ -98,7 +98,7 @@ export const lipstick_forms: LevelTwoCategoryType = {
       level: 3,
       label: "Powder Lipstick",
       category: "powder_lipstick",
-      path: `${basePath}/lipstick-forms/powder-lipstick`,
+      path: `${basePath}/lipstick_forms/powder_lipstick`,
       icon: PowderLipstickIcon,
       description:
         "Weightless powder formula with a soft-focus, matte effect perfectly.",
@@ -108,7 +108,7 @@ export const lipstick_forms: LevelTwoCategoryType = {
       level: 3,
       label: "Crayon Lipstick",
       category: "crayon_lipstick",
-      path: `${basePath}/lipstick-forms/crayon-lipstick`,
+      path: `${basePath}/lipstick_forms/crayon_lipstick`,
       icon: CrayonLipstickIcon,
       description:
         "Easy-to-apply crayon for precise lines and bold color payoff smoothly.",
@@ -118,7 +118,7 @@ export const lipstick_forms: LevelTwoCategoryType = {
       level: 3,
       label: "Bullet Lipstick",
       category: "bullet_lipstick",
-      path: `${basePath}/lipstick-forms/bullet-lipstick`,
+      path: `${basePath}/lipstick_forms/bullet_lipstick`,
       icon: BulletLipstickIcon,
       description:
         "Classic bullet shape with smooth, creamy, full-coverage color always.",
@@ -131,14 +131,14 @@ export const long_lasting_lipsticks: LevelTwoCategoryType = {
   level: 2,
   label: "Long-Lasting Lipsticks",
   category: "long_lasting_lipsticks",
-  path: `${basePath}/long-lasting-lipsticks`,
+  path: `${basePath}/long_lasting_lipsticks`,
   subCategories: [
     {
       id: 1,
       level: 3,
       label: "Transfer Proof Lipstick",
       category: "transfer_proof_lipstick",
-      path: `${basePath}/long-lasting-lipsticks/transfer-proof-lipstick`,
+      path: `${basePath}/long_lasting_lipsticks/transfer_proof_lipstick`,
       icon: TransferLipstickIcon,
       description:
         "Stays put all day without smudging or fading for long-lasting wear.",
@@ -148,7 +148,7 @@ export const long_lasting_lipsticks: LevelTwoCategoryType = {
       level: 3,
       label: "Water Proof Lipstick",
       category: "water_proof_lipstick",
-      path: `${basePath}/long-lasting-lipsticks/water-proof-lipstick`,
+      path: `${basePath}/long_lasting_lipsticks/water_proof_lipstick`,
       icon: WaterproofLipstickIcon,
       description:
         "Resistant to water and sweat, ensuring color stays vibrant always.",
@@ -158,7 +158,7 @@ export const long_lasting_lipsticks: LevelTwoCategoryType = {
       level: 3,
       label: "Lip Tint & Stain",
       category: "lip_tint_and_stain",
-      path: `${basePath}/long-lasting-lipsticks/lip-tint-and-stain`,
+      path: `${basePath}/long_lasting_lipsticks/lip_tint_and_stain`,
       icon: LipTintAndSatinIcon,
       description:
         "Lightweight tint with a natural finish that lasts for hours smoothly.",
@@ -168,7 +168,7 @@ export const long_lasting_lipsticks: LevelTwoCategoryType = {
       level: 3,
       label: "Smudge Proof",
       category: "smudge_proof_lipstick",
-      path: `${basePath}/long-lasting-lipsticks/smudge-proof-lipstick`,
+      path: `${basePath}/long_lasting_lipsticks/smudge_proof_lipstick`,
       icon: SmudgeProofLipstickIcon,
       description:
         "No smudging or transferring, providing a flawless look perfectly.",
@@ -181,14 +181,14 @@ export const lip_care: LevelTwoCategoryType = {
   level: 2,
   label: "Lip Care",
   category: "lip_care",
-  path: `${basePath}/lip-care`,
+  path: `${basePath}/lip_care`,
   subCategories: [
     {
       id: 1,
       level: 3,
       label: "Lip Primer & Scrub",
       category: "lip_primer_and_scrub",
-      path: `${basePath}/lip-care/lip-primer-and-scrub`,
+      path: `${basePath}/lip_care/lip_primer_and_scrub`,
       icon: LipPrimerIcon,
       description:
         "Preps lips for smooth application and enhances color beautifully.",
@@ -198,7 +198,7 @@ export const lip_care: LevelTwoCategoryType = {
       level: 3,
       label: "Lipstick Fixer & Remover",
       category: "lipstick_fixer_and_remover",
-      path: `${basePath}/lip-care/lipstick-fixer-and-remover`,
+      path: `${basePath}/lip_care/lipstick_fixer_and_remover`,
       icon: LipstickRemoverIcon,
       description:
         "Ensures long wear and easy removal without residue effortlessly.",
@@ -208,7 +208,7 @@ export const lip_care: LevelTwoCategoryType = {
       level: 3,
       label: "Lip Balm",
       category: "lip_balm",
-      path: `${basePath}/lip-care/lip-balm`,
+      path: `${basePath}/lip_care/lip_balm`,
       icon: LipBalmIcon,
       description:
         "Deeply hydrates and protects lips from dryness and cracking.",
@@ -218,7 +218,7 @@ export const lip_care: LevelTwoCategoryType = {
       level: 3,
       label: "Tinted Lip Balm",
       category: "tinted_lip_balm",
-      path: `${basePath}/lip-care/tinted-lip-balm`,
+      path: `${basePath}/lip_care/tinted_lip_balm`,
       icon: TintedLipBalmIcon,
       description:
         "Hydration with a hint of color for a natural, radiant look daily.",
@@ -231,14 +231,14 @@ export const lip_enhancers_and_other: LevelTwoCategoryType = {
   level: 2,
   label: "Lip Enhancers & Other",
   category: "lip_enhancers_and_other",
-  path: `${basePath}/lip-enhancers-and-other`,
+  path: `${basePath}/lip_enhancers_and_other`,
   subCategories: [
     {
       id: 1,
       level: 3,
       label: "Lip Liner",
       category: "lip_liner",
-      path: `${basePath}/lip-enhancers-and-other/lip-liner`,
+      path: `${basePath}/lip_enhancers_and_other/lip_liner`,
       icon: LipLinerIcon,
       description:
         "Defines lips with precision, shaping and preventing feathering daily.",
@@ -248,7 +248,7 @@ export const lip_enhancers_and_other: LevelTwoCategoryType = {
       level: 3,
       label: "Lip Glitter",
       category: "lip_glitter",
-      path: `${basePath}/lip-enhancers-and-other/lip-glitter`,
+      path: `${basePath}/lip_enhancers_and_other/lip_glitter`,
       icon: LipGlitterIcon,
       description:
         "Adds sparkle and shine for a glamorous, bold look on special occasions.",
@@ -258,7 +258,7 @@ export const lip_enhancers_and_other: LevelTwoCategoryType = {
       level: 3,
       label: "View All",
       category: "view_all",
-      path: `${basePath}/lip-enhancers-and-other/view-all`,
+      path: `${basePath}/lip_enhancers_and_other/view_all`,
       icon: AllIcon,
       description:
         "Explore the complete range of lip products for every need beautifully.",
@@ -271,14 +271,14 @@ export const lipstick_sets_and_combos: LevelTwoCategoryType = {
   level: 2,
   label: "Lipstick Set & Combo",
   category: "lipstick_set_and_combo",
-  path: `${basePath}/lipstick-set-and-combo`,
+  path: `${basePath}/lipstick_set_and_combo`,
   subCategories: [
     {
       id: 1,
       level: 3,
       label: "Lipstick Set",
       category: "lipstick_set",
-      path: `${basePath}/lipstick-set-and-combo/lipstick-set`,
+      path: `${basePath}/lipstick_set_and_combo/lipstick_set`,
       icon: LipstickSetIcon,
       description:
         "Multiple shades in one set for versatile, everyday looks beautifully.",
@@ -288,7 +288,7 @@ export const lipstick_sets_and_combos: LevelTwoCategoryType = {
       level: 3,
       label: "Lipstick Combo",
       category: "lipstick_combo",
-      path: `${basePath}/lipstick-set-and-combo/lipstick-combo`,
+      path: `${basePath}/lipstick_set_and_combo/lipstick_combo`,
       icon: LipstickComboIcon,
       description:
         "Perfectly paired lip products for a complete, cohesive look always.",
@@ -298,7 +298,7 @@ export const lipstick_sets_and_combos: LevelTwoCategoryType = {
       level: 3,
       label: "Lip Palette",
       category: "lip_palette",
-      path: `${basePath}/lipstick-set-and-combo/lip-palette`,
+      path: `${basePath}/lipstick_set_and_combo/lip_palette`,
       icon: LipPaletteIcon,
       description:
         "Versatile palette with various shades for creative, bold looks daily.",
