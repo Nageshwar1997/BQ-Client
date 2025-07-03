@@ -1,9 +1,9 @@
 import { FC } from "react";
-import { SVGType } from "../../types";
+import { IconProps } from "../../types";
 
 export interface SocialCommunityItem {
   id: number;
-  icon: SVGType;
+  icon: FC<IconProps>;
   label: string;
   link: string;
 }
@@ -37,7 +37,7 @@ export interface LevelThreeCategoryType {
   level: number;
   label: string;
   category: string;
-  icon: SVGType;
+  icon: FC<IconProps>;
   description: string;
 }
 

@@ -1,6 +1,6 @@
-import { IconType } from "../../../types";
+import { IconProps } from "../../../types";
 
-export const NightCreamIcon = ({ className }: IconType) => (
+export const NightCreamIcon = ({ className }: IconProps) => (
   <svg
     height="24"
     width="24"
@@ -29,7 +29,7 @@ export const NightCreamIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const EyeCreamIcon = ({ className }: IconType) => (
+export const EyeCreamIcon = ({ className }: IconProps) => (
   <svg
     height="24"
     width="24"
@@ -45,7 +45,7 @@ export const EyeCreamIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const SerumIcon = ({ className }: IconType) => (
+export const SerumIcon = ({ className }: IconProps) => (
   <svg
     width="24"
     height="24"
@@ -67,7 +67,7 @@ export const SerumIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const SkinCareKitIcon = ({ className }: IconType) => (
+export const SkinCareKitIcon = ({ className }: IconProps) => (
   <svg
     width="24"
     height="24"
@@ -82,7 +82,7 @@ export const SkinCareKitIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const CleanserIcon = ({ className }: IconType) => (
+export const CleanserIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={24}
@@ -115,7 +115,7 @@ export const CleanserIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const FaceWashIcon = ({ className }: IconType) => (
+export const FaceWashIcon = ({ className }: IconProps) => (
   <svg
     height="24"
     width="24"
@@ -137,7 +137,7 @@ export const FaceWashIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const ExfoliatorIcon = ({ className }: IconType) => (
+export const ExfoliatorIcon = ({ className }: IconProps) => (
   <svg
     width={24}
     height={24}
@@ -149,7 +149,7 @@ export const ExfoliatorIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const SunscreenIcon = ({ className }: IconType) => (
+export const SunscreenIcon = ({ className }: IconProps) => (
   <svg
     height="24"
     width="24"
@@ -173,7 +173,7 @@ export const SunscreenIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const AquaholicIcon = ({ className }: IconType) => (
+export const AquaholicIcon = ({ className }: IconProps) => (
   <svg
     height="26"
     width="26"
@@ -188,7 +188,7 @@ export const AquaholicIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const CoffeeCultureIcon = ({ className }: IconType) => (
+export const CoffeeCultureIcon = ({ className }: IconProps) => (
   <svg
     height="24"
     width="24"
@@ -203,7 +203,7 @@ export const CoffeeCultureIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const CitrusIcon = ({ className }: IconType) => (
+export const CitrusIcon = ({ className }: IconProps) => (
   <svg
     height="24"
     width="24"
@@ -224,7 +224,7 @@ export const CitrusIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const SheetMaskIcon = ({ className }: IconType) => (
+export const SheetMaskIcon = ({ className }: IconProps) => (
   <svg
     width="24"
     height="24"
@@ -250,7 +250,7 @@ export const SheetMaskIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const FacePackIcon = ({ className }: IconType) => (
+export const FacePackIcon = ({ className }: IconProps) => (
   <svg
     width="24"
     height="24"
@@ -262,7 +262,7 @@ export const FacePackIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const AllIcon = ({ className }: IconType) => (
+export const AllIcon = ({ className }: IconProps) => (
   <svg
     width="24"
     height="24"
@@ -278,7 +278,7 @@ export const AllIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const TransferLipstickIcon = ({ className }: IconType) => (
+export const TransferLipstickIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 511.999 511.999"
@@ -290,7 +290,7 @@ export const TransferLipstickIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const MatteLipstickIcon = ({ className }: IconType) => (
+export const MatteLipstickIcon = ({ className }: IconProps) => (
   <svg
     height="24"
     viewBox="-80 0 512 512"
@@ -305,7 +305,7 @@ export const MatteLipstickIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const LiquidLipstickIcon = ({ className }: IconType) => (
+export const LiquidLipstickIcon = ({ className }: IconProps) => (
   <svg
     height="24"
     width="24"
@@ -319,7 +319,7 @@ export const LiquidLipstickIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const PowderLipstickIcon = ({ className }: IconType) => (
+export const PowderLipstickIcon = ({ className }: IconProps) => (
   <svg
     height="24"
     width="24"
@@ -338,7 +338,7 @@ export const PowderLipstickIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const CrayonLipstickIcon = ({ className }: IconType) => (
+export const CrayonLipstickIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -355,7 +355,7 @@ export const CrayonLipstickIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const SatinLipstickIcon = ({ className }: IconType) => (
+export const SatinLipstickIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -372,7 +372,7 @@ export const SatinLipstickIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const BulletLipstickIcon = ({ className }: IconType) => (
+export const BulletLipstickIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -388,7 +388,7 @@ export const BulletLipstickIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const LipGlossIcon = ({ className }: IconType) => (
+export const LipGlossIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -405,7 +405,7 @@ export const LipGlossIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const WaterproofLipstickIcon = ({ className }: IconType) => (
+export const WaterproofLipstickIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -424,7 +424,7 @@ export const WaterproofLipstickIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const SmudgeProofLipstickIcon = ({ className }: IconType) => (
+export const SmudgeProofLipstickIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -447,7 +447,7 @@ export const SmudgeProofLipstickIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const HiShineLipstickIcon = ({ className }: IconType) => (
+export const HiShineLipstickIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -474,7 +474,7 @@ export const HiShineLipstickIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const LipLinerIcon = ({ className }: IconType) => (
+export const LipLinerIcon = ({ className }: IconProps) => (
   <svg
     height="24"
     width="24"
@@ -496,7 +496,7 @@ export const LipLinerIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const LipGlitterIcon = ({ className }: IconType) => (
+export const LipGlitterIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -511,7 +511,7 @@ export const LipGlitterIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const LipTintAndSatinIcon = ({ className }: IconType) => (
+export const LipTintAndSatinIcon = ({ className }: IconProps) => (
   <svg
     height="24"
     width="24"
@@ -530,7 +530,7 @@ export const LipTintAndSatinIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const LipPrimerIcon = ({ className }: IconType) => (
+export const LipPrimerIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -548,7 +548,7 @@ export const LipPrimerIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const LipstickRemoverIcon = ({ className }: IconType) => (
+export const LipstickRemoverIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -567,7 +567,7 @@ export const LipstickRemoverIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const LipBalmIcon = ({ className }: IconType) => (
+export const LipBalmIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -583,7 +583,7 @@ export const LipBalmIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const TintedLipBalmIcon = ({ className }: IconType) => (
+export const TintedLipBalmIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -595,7 +595,7 @@ export const TintedLipBalmIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const LipstickSetIcon = ({ className }: IconType) => (
+export const LipstickSetIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -611,7 +611,7 @@ export const LipstickSetIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const LipstickComboIcon = ({ className }: IconType) => (
+export const LipstickComboIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -627,7 +627,7 @@ export const LipstickComboIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const LipPaletteIcon = ({ className }: IconType) => (
+export const LipPaletteIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -655,7 +655,7 @@ export const LipPaletteIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const KohlIcon = ({ className }: IconType) => (
+export const KohlIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -668,7 +668,7 @@ export const KohlIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const KajalIcon = ({ className }: IconType) => (
+export const KajalIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -680,7 +680,7 @@ export const KajalIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const SmudgeProofKajalIcon = ({ className }: IconType) => (
+export const SmudgeProofKajalIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -695,7 +695,7 @@ export const SmudgeProofKajalIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const VolumizingMascaraIcon = ({ className }: IconType) => (
+export const VolumizingMascaraIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -710,7 +710,7 @@ export const VolumizingMascaraIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const CurlLengtheningMascaraIcon = ({ className }: IconType) => (
+export const CurlLengtheningMascaraIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -732,7 +732,7 @@ export const CurlLengtheningMascaraIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const WaterproofMascara = ({ className }: IconType) => (
+export const WaterproofMascara = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -747,7 +747,7 @@ export const WaterproofMascara = ({ className }: IconType) => (
   </svg>
 );
 
-export const LiquidEyelinerIcon = ({ className }: IconType) => (
+export const LiquidEyelinerIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -764,7 +764,7 @@ export const LiquidEyelinerIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const GelEyelinerIcon = ({ className }: IconType) => (
+export const GelEyelinerIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -777,7 +777,7 @@ export const GelEyelinerIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const PenEyelinerIcon = ({ className }: IconType) => (
+export const PenEyelinerIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -793,7 +793,7 @@ export const PenEyelinerIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const EyeshadowPaletteIcon = ({ className }: IconType) => (
+export const EyeshadowPaletteIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -816,7 +816,7 @@ export const EyeshadowPaletteIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const LiquidEyeshadow = ({ className }: IconType) => (
+export const LiquidEyeshadow = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -833,7 +833,7 @@ export const LiquidEyeshadow = ({ className }: IconType) => (
   </svg>
 );
 
-export const GlitterEyeshadow = ({ className }: IconType) => (
+export const GlitterEyeshadow = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -848,7 +848,7 @@ export const GlitterEyeshadow = ({ className }: IconType) => (
   </svg>
 );
 
-export const BrowDefinerIcon = ({ className }: IconType) => (
+export const BrowDefinerIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -860,7 +860,7 @@ export const BrowDefinerIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const BrowPencilIcon = ({ className }: IconType) => (
+export const BrowPencilIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -877,7 +877,7 @@ export const BrowPencilIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const BrowGelIcon = ({ className }: IconType) => (
+export const BrowGelIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -890,7 +890,7 @@ export const BrowGelIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const EyelashesIcon = ({ className }: IconType) => (
+export const EyelashesIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -905,7 +905,7 @@ export const EyelashesIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const EyeComboIcon = ({ className }: IconType) => (
+export const EyeComboIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -934,7 +934,7 @@ export const EyeComboIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const EyeGiftSetIcon = ({ className }: IconType) => (
+export const EyeGiftSetIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -949,7 +949,7 @@ export const EyeGiftSetIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const AboutUsIcon = ({ className }: IconType) => (
+export const AboutUsIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -961,7 +961,7 @@ export const AboutUsIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const MissionVisionValuesIcon = ({ className }: IconType) => (
+export const MissionVisionValuesIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -976,7 +976,7 @@ export const MissionVisionValuesIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const TeamIcon = ({ className }: IconType) => (
+export const TeamIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -992,7 +992,7 @@ export const TeamIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const ContactUsIcon = ({ className }: IconType) => (
+export const ContactUsIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1004,7 +1004,7 @@ export const ContactUsIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const ValuesAndCultureIcon = ({ className }: IconType) => (
+export const ValuesAndCultureIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1019,7 +1019,7 @@ export const ValuesAndCultureIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const OpeningsIcon = ({ className }: IconType) => (
+export const OpeningsIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1031,7 +1031,7 @@ export const OpeningsIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const RetailECommerceIcon = ({ className }: IconType) => (
+export const RetailECommerceIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1043,7 +1043,7 @@ export const RetailECommerceIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const NewsRoomIcon = ({ className }: IconType) => (
+export const NewsRoomIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1062,7 +1062,7 @@ export const NewsRoomIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const AwardsIcon = ({ className }: IconType) => (
+export const AwardsIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1077,7 +1077,7 @@ export const AwardsIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const ComplianceIcon = ({ className }: IconType) => (
+export const ComplianceIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1097,7 +1097,7 @@ export const ComplianceIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const PrivacyPolicyIcon = ({ className }: IconType) => (
+export const PrivacyPolicyIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1109,7 +1109,7 @@ export const PrivacyPolicyIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const TermsAndConditionsIcon = ({ className }: IconType) => (
+export const TermsAndConditionsIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1125,7 +1125,7 @@ export const TermsAndConditionsIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const FoundationIcon = ({ className }: IconType) => (
+export const FoundationIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1153,7 +1153,7 @@ export const FoundationIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const BBCreamIcon = ({ className }: IconType) => (
+export const BBCreamIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1171,7 +1171,7 @@ export const BBCreamIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const CompactPowderIcon = ({ className }: IconType) => (
+export const CompactPowderIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1186,7 +1186,7 @@ export const CompactPowderIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const LoosePowderIcon = ({ className }: IconType) => (
+export const LoosePowderIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1203,7 +1203,7 @@ export const LoosePowderIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const BananaPowderIcon = ({ className }: IconType) => (
+export const BananaPowderIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1232,7 +1232,7 @@ export const BananaPowderIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const SPFFoundationIcon = ({ className }: IconType) => (
+export const SPFFoundationIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1246,7 +1246,7 @@ export const SPFFoundationIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const SindoorIcon = ({ className }: IconType) => (
+export const SindoorIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1258,7 +1258,7 @@ export const SindoorIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const HighlighterIcon = ({ className }: IconType) => (
+export const HighlighterIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1273,7 +1273,7 @@ export const HighlighterIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const LiquidHighlighterIcon = ({ className }: IconType) => (
+export const LiquidHighlighterIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1289,7 +1289,7 @@ export const LiquidHighlighterIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const BlushIcon = ({ className }: IconType) => (
+export const BlushIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1319,7 +1319,7 @@ export const BlushIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const CheekStainIcon = ({ className }: IconType) => (
+export const CheekStainIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1348,7 +1348,7 @@ export const CheekStainIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const SettingSprayIcon = ({ className }: IconType) => (
+export const SettingSprayIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1360,7 +1360,7 @@ export const SettingSprayIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const CompactIcon = ({ className }: IconType) => (
+export const CompactIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1377,7 +1377,7 @@ export const CompactIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const FixerIcon = ({ className }: IconType) => (
+export const FixerIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1389,7 +1389,7 @@ export const FixerIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const LiquidFoundationIcon = ({ className }: IconType) => (
+export const LiquidFoundationIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1403,7 +1403,7 @@ export const LiquidFoundationIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const MatteFoundationIcon = ({ className }: IconType) => (
+export const MatteFoundationIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1418,7 +1418,7 @@ export const MatteFoundationIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const WaterResistantFoundationIcon = ({ className }: IconType) => (
+export const WaterResistantFoundationIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1437,7 +1437,7 @@ export const WaterResistantFoundationIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const HighCoverageFoundationIcon = ({ className }: IconType) => (
+export const HighCoverageFoundationIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1455,7 +1455,7 @@ export const HighCoverageFoundationIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const StickFoundationIcon = ({ className }: IconType) => (
+export const StickFoundationIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1471,7 +1471,7 @@ export const StickFoundationIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const BestForDrySkinIcon = ({ className }: IconType) => (
+export const BestForDrySkinIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1490,7 +1490,7 @@ export const BestForDrySkinIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const BestForOilySkinIcon = ({ className }: IconType) => (
+export const BestForOilySkinIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1507,7 +1507,7 @@ export const BestForOilySkinIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const MakeupRemoverIcon = ({ className }: IconType) => (
+export const MakeupRemoverIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1539,7 +1539,7 @@ export const MakeupRemoverIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const PrimerIcon = ({ className }: IconType) => (
+export const PrimerIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1559,7 +1559,7 @@ export const PrimerIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const BronzerIcon = ({ className }: IconType) => (
+export const BronzerIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1585,7 +1585,7 @@ export const BronzerIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const ContourIcon = ({ className }: IconType) => (
+export const ContourIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"
@@ -1601,7 +1601,7 @@ export const ContourIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const ColorConcealerIcon = ({ className }: IconType) => (
+export const ColorConcealerIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1617,7 +1617,7 @@ export const ColorConcealerIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const ColorCorrectorIcon = ({ className }: IconType) => (
+export const ColorCorrectorIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1668,7 +1668,7 @@ export const ColorCorrectorIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const ShowerGelIcon = ({ className }: IconType) => (
+export const ShowerGelIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1683,7 +1683,7 @@ export const ShowerGelIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const SoapIcon = ({ className }: IconType) => (
+export const SoapIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1708,7 +1708,7 @@ export const SoapIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const BodyLotionIcon = ({ className }: IconType) => (
+export const BodyLotionIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1721,7 +1721,7 @@ export const BodyLotionIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const BodySprayIcon = ({ className }: IconType) => (
+export const BodySprayIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1738,7 +1738,7 @@ export const BodySprayIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const HandWashIcon = ({ className }: IconType) => (
+export const HandWashIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1754,7 +1754,7 @@ export const HandWashIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const FootCreamIcon = ({ className }: IconType) => (
+export const FootCreamIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1773,7 +1773,7 @@ export const FootCreamIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const HandCreamIcon = ({ className }: IconType) => (
+export const HandCreamIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1788,7 +1788,7 @@ export const HandCreamIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const LipIcon = ({ className }: IconType) => (
+export const LipIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1803,7 +1803,7 @@ export const LipIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const EyeOutlineIcon = ({ className }: IconType) => (
+export const EyeOutlineIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1822,7 +1822,7 @@ export const EyeOutlineIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const FaceIcon = ({ className }: IconType) => (
+export const FaceIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1844,7 +1844,7 @@ export const FaceIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const NailIcon = ({ className }: IconType) => (
+export const NailIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1874,7 +1874,7 @@ export const NailIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const SkincareIcon = ({ className }: IconType) => (
+export const SkincareIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1888,7 +1888,7 @@ export const SkincareIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const BodyCareIcon = ({ className }: IconType) => (
+export const BodyCareIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1905,7 +1905,7 @@ export const BodyCareIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const BestOfSugarPopIcon = ({ className }: IconType) => (
+export const BestOfSugarPopIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1918,7 +1918,7 @@ export const BestOfSugarPopIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const ShampooIcon = ({ className }: IconType) => (
+export const ShampooIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1930,7 +1930,7 @@ export const ShampooIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const ConditionerIcon = ({ className }: IconType) => (
+export const ConditionerIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1946,7 +1946,7 @@ export const ConditionerIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const HairOilIcon = ({ className }: IconType) => (
+export const HairOilIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1958,7 +1958,7 @@ export const HairOilIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const HairSerumIcon = ({ className }: IconType) => (
+export const HairSerumIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1976,7 +1976,7 @@ export const HairSerumIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const HairMaskIcon = ({ className }: IconType) => (
+export const HairMaskIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -1991,7 +1991,7 @@ export const HairMaskIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const ComboIcon = ({ className }: IconType) => (
+export const ComboIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -2011,7 +2011,7 @@ export const ComboIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const LipstickSetGiftIcon = ({ className }: IconType) => (
+export const LipstickSetGiftIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -2036,7 +2036,7 @@ export const LipstickSetGiftIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const SugarMerchIcon = ({ className }: IconType) => (
+export const SugarMerchIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -2059,7 +2059,7 @@ export const SugarMerchIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const MakeupKitIcon = ({ className }: IconType) => (
+export const MakeupKitIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -2100,7 +2100,7 @@ export const MakeupKitIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const CorporateGiftingIcon = ({ className }: IconType) => (
+export const CorporateGiftingIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -2115,7 +2115,7 @@ export const CorporateGiftingIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const ValueSetIcon = ({ className }: IconType) => (
+export const ValueSetIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -2161,7 +2161,7 @@ export const ValueSetIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const SugarSetIcon = ({ className }: IconType) => (
+export const SugarSetIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
