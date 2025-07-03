@@ -20,7 +20,7 @@ import { EyeIcon, EyeOffIcon } from "../../icons";
 import Radio from "../../components/input/Radio";
 import Button from "../../components/button/Button";
 import Checkbox from "../../components/input/Checkbox";
-import { saveUserLocal, saveUserSession } from "../../utils";
+import { saveLocalToken, saveSessionToken } from "../../utils";
 import { useLoginUser } from "../../api/auth/auth.service";
 import LoadingPage from "../../components/loaders/LoadingPage";
 import DarkMode from "../../components/DarkMode";
@@ -79,11 +79,11 @@ const Login = () => {
       onSettled(data, error) {
         if (data && !error) {
           if (bodyData.remember) {
-            saveUserLocal(data?.token);
+            saveLocalToken(data?.token);
           } else {
-            saveUserSession(data?.token);
+            saveSessionToken(data?.token);
           }
-          navigate("/");
+          setTimeout(() => navigate("/"), 500);
         }
         if (error) {
           console.error("Error from mutation:", error);
