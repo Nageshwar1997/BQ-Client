@@ -3,40 +3,40 @@ import {
   dummyFeedbacks,
   highlightedCategoryOptions,
 } from "../components/navbar/data";
-import { ENCRYPTION_SECRET_KEY } from "../envs/index.env";
+import { envs } from "../envs/index.env";
 
 export const encryptData = (data: string): string => {
-  return CryptoJS.AES.encrypt(data, ENCRYPTION_SECRET_KEY).toString();
+  return CryptoJS.AES.encrypt(data, envs.ENCRYPTION_SECRET_KEY).toString();
 };
 
 export const saveUserLocal = (data: string) => {
   removeUserSession();
-  localStorage.setItem("token", encryptData(JSON.stringify(data)));
+  localStorage.setItem("user_token", encryptData(JSON.stringify(data)));
 };
 
 export const saveUserSession = (data: string) => {
   removeUserLocal();
-  sessionStorage.setItem("token", encryptData(JSON.stringify(data)));
+  sessionStorage.setItem("user_token", encryptData(JSON.stringify(data)));
 };
 
 export const removeUserLocal = () => {
-  localStorage.removeItem("token");
+  localStorage.removeItem("user_token");
 };
 
 export const removeUserSession = () => {
-  sessionStorage.removeItem("token");
+  sessionStorage.removeItem("user_token");
 };
 
 export const getUserToken = () => {
-  const token =
-    localStorage.getItem("token") || sessionStorage.getItem("token");
+  const user_token =
+    localStorage.getItem("user_token") || sessionStorage.getItem("user_token");
 
-  if (!token) {
+  if (!user_token) {
     throw new Error("No Token found");
   }
 
   return JSON.parse(
-    CryptoJS.AES.decrypt(token, ENCRYPTION_SECRET_KEY).toString(
+    CryptoJS.AES.decrypt(user_token, envs.ENCRYPTION_SECRET_KEY).toString(
       CryptoJS.enc.Utf8
     )
   );
