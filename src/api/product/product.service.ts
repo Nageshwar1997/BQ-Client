@@ -8,10 +8,14 @@ export const useGetAllProducts = () => {
     mutationFn: ({
       data,
       params,
+      queryParams,
     }: {
       data?: IProductPossibleBodyFields;
-      params: { page: number; limit: number };
-    }) => get_all_products({ data, params }),
+      params?: { page: number; limit: number };
+      queryParams?: Record<string, string>;
+    }) => {
+      return get_all_products({ data, params, queryParams });
+    },
     onSuccess: (data) => {
       toastSuccessMessage(data?.message || "Product fetched successfully!");
     },

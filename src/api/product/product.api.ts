@@ -6,9 +6,11 @@ import { IProductPossibleBodyFields } from "../../types";
 export const get_all_products = async ({
   data,
   params,
+  queryParams,
 }: {
   data?: IProductPossibleBodyFields;
-  params: { page: number; limit: number };
+  params?: { page: number; limit: number };
+  queryParams?: Record<string, string>;
 }) => {
   try {
     const { method, url } = productRoutes.getAllProducts;
@@ -19,7 +21,7 @@ export const get_all_products = async ({
         populateFields: data?.populateFields, // shades, category, seller, reviews
         requiredFields: data?.requiredFields, // requiredFields
       },
-      params, // ✅ page & limit as query params
+      params: { ...params, ...queryParams }, // ✅ page & limit as query params
     });
 
     return response.data;
