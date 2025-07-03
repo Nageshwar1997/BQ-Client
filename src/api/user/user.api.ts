@@ -4,10 +4,10 @@ import { getUserToken } from "../../utils";
 
 export const get_user_details = async () => {
   try {
-    const token = getUserToken();
+    const user_token = getUserToken();
     const response = await api.get("/user", {
       headers: {
-        Authorization: `${token}`,
+        Authorization: `${user_token}`,
       },
     });
     return response.data;
