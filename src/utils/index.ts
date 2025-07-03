@@ -9,6 +9,12 @@ export const encryptData = (data: string): string => {
   return CryptoJS.AES.encrypt(data, envs.ENCRYPTION_SECRET_KEY).toString();
 };
 
+export const decryptData = (data: string): string => {
+  return CryptoJS.AES.decrypt(data, envs.ENCRYPTION_SECRET_KEY).toString(
+    CryptoJS.enc.Utf8
+  );
+};
+
 export const saveUserLocal = (data: string) => {
   removeUserSession();
   localStorage.setItem("user_token", encryptData(JSON.stringify(data)));
@@ -17,6 +23,24 @@ export const saveUserLocal = (data: string) => {
 export const saveUserSession = (data: string) => {
   removeUserLocal();
   sessionStorage.setItem("user_token", encryptData(JSON.stringify(data)));
+};
+
+export const getUserLocal = () => {
+  const user_token = localStorage.getItem("user_token");
+  if (user_token) {
+    const decryptedData = decryptData(user_token);
+    return JSON.parse(decryptedData);
+  }
+  return null;
+};
+
+export const getUserSession = () => {
+  const userToken = localStorage.getItem("user_token");
+  if (userToken) {
+    const decryptedData = decryptData(userToken);
+    return JSON.parse(decryptedData);
+  }
+  return null;
 };
 
 export const removeUserLocal = () => {
@@ -34,12 +58,8 @@ export const getUserToken = () => {
   if (!user_token) {
     throw new Error("No Token found");
   }
-
-  return JSON.parse(
-    CryptoJS.AES.decrypt(user_token, envs.ENCRYPTION_SECRET_KEY).toString(
-      CryptoJS.enc.Utf8
-    )
-  );
+  const decryptedData = decryptData(user_token);
+  return JSON.parse(decryptedData);
 };
 
 export const getTodaysFeedback = (
