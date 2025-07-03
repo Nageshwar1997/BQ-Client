@@ -4,12 +4,10 @@ import { CATEGORY_IMAGE_DATA } from "./data";
 const CategoryProducts = () => {
   const { pathname } = useLocation();
 
-  console.log("pathname", pathname);
   const paths = pathname
     .split("/")
     .filter((path) => path !== "")
     .slice(1, 4);
-
 
   const levelOneCat = CATEGORY_IMAGE_DATA[paths[0]];
   const levelTwoCat = levelOneCat?.subCategories?.find(
@@ -22,12 +20,14 @@ const CategoryProducts = () => {
 
   return (
     <div className="lg:-mt-16">
-      {finalCategoryImgData.img && (
-        <img
-          src={finalCategoryImgData.img}
-          alt={finalCategoryImgData.category}
-        />
-      )}
+      <img
+        src={
+          finalCategoryImgData.img ??
+          // Change it later to the new default placeholder image
+          "/images/category-images/for-you/new.webp"
+        }
+        alt={finalCategoryImgData.category}
+      />
     </div>
   );
 };
