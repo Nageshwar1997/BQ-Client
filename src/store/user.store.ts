@@ -1,50 +1,35 @@
 import { create } from "zustand";
-import CryptoJS from "crypto-js";
 import { UserStoreType, UserTypes } from "../types";
-import { removeUserLocal, removeUserSession } from "../utils";
-import { envs } from "../envs/index.env";
+import { encryptData, decryptData, removeStorageUser } from "../utils";
 
-// Function to decrypt user data
-const decryptUser = (encryptedUser: string | null): UserTypes | null => {
-  if (!encryptedUser) return null;
-
-  try {
-    const bytes = CryptoJS.AES.decrypt(
-      encryptedUser,
-      envs.ENCRYPTION_SECRET_KEY
-    );
-    const decrypted = bytes.toString(CryptoJS.enc.Utf8);
-    return JSON.parse(decrypted);
-  } catch (error) {
-    console.error("Failed to decrypt user:", error);
-    sessionStorage.removeItem("user");
-    return null;
-  }
-};
+const SESSION_KEY = "user" as const;
 
 export const useUserStore = create<UserStoreType>((set) => {
-  const encrypted = sessionStorage.getItem("user");
-  const user = decryptUser(encrypted);
+  const encrypted = sessionStorage.getItem(SESSION_KEY);
+  let user: UserTypes | null = null;
+
+  try {
+    const decrypted = decryptData(encrypted || "");
+    user = decrypted ? JSON.parse(decrypted) : null;
+  } catch (err) {
+    console.error("Failed to parse decrypted user:", err);
+    sessionStorage.removeItem(SESSION_KEY);
+  }
 
   return {
     user,
     isAuthenticated: !!user,
 
     setUser: (user) => {
-      const encryptedUser = CryptoJS.AES.encrypt(
-        JSON.stringify(user),
-        envs.ENCRYPTION_SECRET_KEY
-      ).toString();
-
-      sessionStorage.setItem("user", encryptedUser);
+      const encryptedUser = encryptData(user);
+      sessionStorage.setItem(SESSION_KEY, encryptedUser);
       set({ user, isAuthenticated: true });
     },
 
     logout: () => {
-      sessionStorage.removeItem("user");
-      removeUserLocal();
-      removeUserSession();
-      set(() => ({ user: null, isAuthenticated: false }));
+      sessionStorage.removeItem(SESSION_KEY);
+      removeStorageUser();
+      set({ user: null, isAuthenticated: false });
     },
   };
 });

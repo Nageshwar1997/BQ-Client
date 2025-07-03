@@ -4,62 +4,63 @@ import {
   highlightedCategoryOptions,
 } from "../components/navbar/data";
 import { envs } from "../envs/index.env";
+const TOKEN_KEY = "user_token";
+const SECRET_KEY = envs.ENCRYPTION_SECRET_KEY;
 
-export const encryptData = (data: string): string => {
-  return CryptoJS.AES.encrypt(data, envs.ENCRYPTION_SECRET_KEY).toString();
+// --- Encrypt/Decrypt Utility ---
+export const encryptData = (data: object | string): string => {
+  const stringData = typeof data === "string" ? data : JSON.stringify(data);
+  return CryptoJS.AES.encrypt(stringData, SECRET_KEY).toString();
 };
 
-export const decryptData = (data: string): string => {
-  return CryptoJS.AES.decrypt(data, envs.ENCRYPTION_SECRET_KEY).toString(
-    CryptoJS.enc.Utf8
-  );
-};
-
-export const saveUserLocal = (data: string) => {
-  removeUserSession();
-  localStorage.setItem("user_token", encryptData(JSON.stringify(data)));
-};
-
-export const saveUserSession = (data: string) => {
-  removeUserLocal();
-  sessionStorage.setItem("user_token", encryptData(JSON.stringify(data)));
-};
-
-export const getUserLocal = () => {
-  const user_token = localStorage.getItem("user_token");
-  if (user_token) {
-    const decryptedData = decryptData(user_token);
-    return JSON.parse(decryptedData);
+export const decryptData = (encrypted: string): string | null => {
+  try {
+    const bytes = CryptoJS.AES.decrypt(encrypted, SECRET_KEY);
+    const decrypted = bytes.toString(CryptoJS.enc.Utf8);
+    return decrypted || null;
+  } catch (err) {
+    console.error("Decryption failed:", err);
+    return null;
   }
-  return null;
 };
 
-export const getUserSession = () => {
-  const userToken = localStorage.getItem("user_token");
-  if (userToken) {
-    const decryptedData = decryptData(userToken);
-    return JSON.parse(decryptedData);
-  }
-  return null;
+// --- Save Token ---
+export const saveLocalToken = (data: string) => {
+  removeSessionToken();
+  localStorage.setItem(TOKEN_KEY, encryptData(data));
 };
 
-export const removeUserLocal = () => {
-  localStorage.removeItem("user_token");
+export const saveSessionToken = (data: string) => {
+  removeLocalToken();
+  sessionStorage.setItem(TOKEN_KEY, encryptData(data));
 };
 
-export const removeUserSession = () => {
-  sessionStorage.removeItem("user_token");
+// --- Get Raw Token ---
+export const getStorageToken = (): string | null => {
+  return localStorage.getItem(TOKEN_KEY) || sessionStorage.getItem(TOKEN_KEY);
 };
 
 export const getUserToken = () => {
-  const user_token =
-    localStorage.getItem("user_token") || sessionStorage.getItem("user_token");
+  const token = getStorageToken();
+  if (!token) return null;
 
-  if (!user_token) {
-    throw new Error("No Token found");
+  const decrypted = decryptData(token);
+  if (!decrypted) return null;
+
+  try {
+    return JSON.parse(decrypted);
+  } catch (err) {
+    console.error("JSON parsing failed:", err);
+    return null;
   }
-  const decryptedData = decryptData(user_token);
-  return JSON.parse(decryptedData);
+};
+
+// --- Clear Token ---
+export const removeLocalToken = () => localStorage.removeItem(TOKEN_KEY);
+export const removeSessionToken = () => sessionStorage.removeItem(TOKEN_KEY);
+export const removeStorageUser = () => {
+  removeLocalToken();
+  removeSessionToken();
 };
 
 export const getTodaysFeedback = (
