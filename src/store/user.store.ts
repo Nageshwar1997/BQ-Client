@@ -2,14 +2,17 @@ import { create } from "zustand";
 import CryptoJS from "crypto-js";
 import { UserStoreType, UserTypes } from "../types";
 import { removeUserLocal, removeUserSession } from "../utils";
-import { ENCRYPTION_SECRET_KEY } from "../envs/index.env";
+import { envs } from "../envs/index.env";
 
 // Function to decrypt user data
 const decryptUser = (encryptedUser: string | null): UserTypes | null => {
   if (!encryptedUser) return null;
 
   try {
-    const bytes = CryptoJS.AES.decrypt(encryptedUser, ENCRYPTION_SECRET_KEY);
+    const bytes = CryptoJS.AES.decrypt(
+      encryptedUser,
+      envs.ENCRYPTION_SECRET_KEY
+    );
     const decrypted = bytes.toString(CryptoJS.enc.Utf8);
     return JSON.parse(decrypted);
   } catch (error) {
@@ -30,7 +33,7 @@ export const useUserStore = create<UserStoreType>((set) => {
     setUser: (user) => {
       const encryptedUser = CryptoJS.AES.encrypt(
         JSON.stringify(user),
-        ENCRYPTION_SECRET_KEY
+        envs.ENCRYPTION_SECRET_KEY
       ).toString();
 
       sessionStorage.setItem("user", encryptedUser);
