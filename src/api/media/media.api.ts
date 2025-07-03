@@ -1,9 +1,11 @@
 import { AxiosError } from "axios";
 import api from "../../configs/axios.instance.config";
+import { mediaRoutes } from "../api.routes";
 
 export const get_home_videos = async () => {
   try {
-    const response = await api.get("/media/videos/home");
+    const { method, url } = mediaRoutes.getHomeVideos;
+    const response = await api.request({ method, url });
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
