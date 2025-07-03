@@ -1,9 +1,4 @@
-import { IconType } from "../types";
-
-export type IconProps = {
-  className?: string;
-  onClick?: () => void;
-};
+import { IconProps } from "../types";
 
 export const SunIcon = ({ className }: IconProps) => (
   <svg
@@ -327,7 +322,7 @@ export const CloseIcon = ({ className }: IconProps) => (
   </svg>
 );
 
-export const PlayIcon = ({ className }: IconType) => (
+export const PlayIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="17"
@@ -343,7 +338,7 @@ export const PlayIcon = ({ className }: IconType) => (
     />
   </svg>
 );
-export const ChatIcon = ({ className }: IconType) => (
+export const ChatIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -396,7 +391,7 @@ export const MessageIcon = ({ className }: IconProps) => (
   </svg>
 );
 
-export const YellowStarIcon = ({ className }: IconType) => (
+export const YellowStarIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -463,7 +458,7 @@ export const YellowStarIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const LeftArrowIcon = ({ className }: IconType) => (
+export const LeftArrowIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -475,7 +470,7 @@ export const LeftArrowIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const RightArrowIcon = ({ className }: IconType) => (
+export const RightArrowIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -487,7 +482,7 @@ export const RightArrowIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const VolumeMaxIcon = ({ className }: IconType) => (
+export const VolumeMaxIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -506,7 +501,7 @@ export const VolumeMaxIcon = ({ className }: IconType) => (
   </svg>
 );
 
-export const VolumeMuteIcon = ({ className }: IconType) => (
+export const VolumeMuteIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
