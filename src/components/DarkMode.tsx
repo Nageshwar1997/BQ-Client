@@ -1,4 +1,5 @@
-import { IconProps, MoonIcon, SunIcon } from "../icons";
+import { IconProps } from "../types";
+import { MoonIcon, SunIcon } from "../icons";
 import useThemeStore from "../store/theme.store";
 
 function DarkMode({ className }: IconProps) {
