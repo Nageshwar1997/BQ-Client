@@ -1,14 +1,13 @@
 import { AxiosError } from "axios";
 import api from "../../configs/axios.instance.config";
+import { LoginFormInputProps } from "../../types";
+import { authRoutes } from "../api.routes";
 
-// Manually Register
-export const register_user = async (bodyData: FormData) => {
+// Using Email Id or Phone Number & Password (Type Manually)
+export const login_user = async (data: Partial<LoginFormInputProps>) => {
   try {
-    const response = await api.post("/auth/register", bodyData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const { method, url } = authRoutes.login;
+    const response = await api.request({ method, url, data });
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -19,10 +18,11 @@ export const register_user = async (bodyData: FormData) => {
   }
 };
 
-// Using Email Id or Phone Number & Password (Type Manually)
-export const login_user = async (bodyData: FormData) => {
+// Manually Register
+export const register_user = async (data: FormData) => {
   try {
-    const response = await api.post("/auth/login", bodyData);
+    const { method, url } = authRoutes.login;
+    const response = await api.request({ method, url, data });
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {

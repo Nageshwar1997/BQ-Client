@@ -21,7 +21,7 @@ import Radio from "../../components/input/Radio";
 import Button from "../../components/button/Button";
 import Checkbox from "../../components/input/Checkbox";
 import { saveUserLocal, saveUserSession } from "../../utils";
-import { useLoginUser } from "../../api/user/auth.service";
+import { useLoginUser } from "../../api/auth/auth.service";
 import LoadingPage from "../../components/loaders/LoadingPage";
 import DarkMode from "../../components/DarkMode";
 
@@ -65,17 +65,17 @@ const Login = () => {
   };
 
   const onSubmit = (bodyData: LoginFormInputProps) => {
-    const formData = new FormData();
+    const finalData: Partial<LoginFormInputProps> = {
+      password: bodyData.password,
+    };
 
     if (bodyData.loginMethod === "email" && bodyData.email) {
-      formData.append("email", bodyData.email);
+      finalData.email = bodyData.email;
     } else if (bodyData.loginMethod === "phoneNumber" && bodyData.phoneNumber) {
-      formData.append("phoneNumber", bodyData.phoneNumber);
+      finalData.phoneNumber = bodyData.phoneNumber;
     }
 
-    formData.append("password", bodyData.password);
-
-    userLoginMutation.mutate(formData, {
+    userLoginMutation.mutate(finalData, {
       onSettled(data, error) {
         if (data && !error) {
           if (bodyData.remember) {
