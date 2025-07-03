@@ -1,6 +1,5 @@
 import {
   ChangeEvent,
-  FC,
   HTMLInputAutoCompleteAttribute,
   KeyboardEvent,
   ReactNode,
@@ -113,11 +112,7 @@ export interface HorizontalScrollType {
   right: boolean;
 }
 
-export interface IconType {
-  className?: string;
-}
-
-export type SVGType = FC<SVGProps<SVGSVGElement>>;
+export type IconProps = SVGProps<SVGSVGElement>;
 
 export interface UserTypes {
   _id: string;
@@ -135,4 +130,99 @@ export interface UserStoreType {
   isAuthenticated: boolean;
   setUser: (user: UserTypes) => void;
   logout: () => void;
+}
+
+export interface QueryParams {
+  [key: string]: string;
+}
+
+export interface CategoryType {
+  level: number;
+  name: string;
+  category: string;
+}
+
+export type LevelThreeCategoryType = CategoryType;
+
+export interface LevelTwoCategoryType extends CategoryType {
+  subCategories: LevelThreeCategoryType[];
+}
+
+export interface LevelOneCategoryType extends CategoryType {
+  subCategories: LevelTwoCategoryType[];
+}
+
+export interface ShadeType {
+  _id?: string;
+  shadeName: string;
+  colorCode: string;
+  stock: number | undefined;
+  images: (File | string)[];
+}
+
+export interface ProductType {
+  title: string;
+  brand: string;
+  description: string;
+  howToUse?: string;
+  ingredients?: string;
+  additionalDetails?: string;
+  categoryLevelOne: { name: string; category: string };
+  categoryLevelTwo: { name: string; category: string };
+  categoryLevelThree: { name: string; category: string };
+  originalPrice: number | undefined;
+  sellingPrice: number | undefined;
+  totalStock: number | undefined;
+  commonImages: (File | string)[];
+  shades?: ShadeType[];
+}
+
+export interface PopulatedCategory {
+  _id: string;
+  name: string;
+  category: string;
+  level: number;
+  parentCategory: {
+    _id: string;
+    name: string;
+    category: string;
+    level: number;
+    parentCategory: {
+      _id: string;
+      name: string;
+      category: string;
+      level: number;
+    };
+  };
+}
+
+export interface FetchedProductType extends ProductType {
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+  commonImages: string[];
+  discount: number;
+  sellingPrice: number;
+  originalPrice: number;
+  category: PopulatedCategory;
+  shades: ShadeType[];
+}
+
+export interface ReviewType {
+  rating: number;
+  title: string;
+  comment: string;
+  images: (string | File)[];
+  videos: (string | File)[];
+  user: string;
+}
+
+export interface IProductPossibleBodyFields {
+  requiredFields?: (keyof FetchedProductType)[];
+  populateFields?: {
+    shades?: (keyof ShadeType | "images")[];
+    seller?: Exclude<keyof UserTypes, "password">[];
+    category?: (keyof CategoryType | "parentCategory")[];
+    reviews?: (keyof ReviewType | "images" | "videos")[];
+  };
 }
