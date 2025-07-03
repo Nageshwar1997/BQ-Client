@@ -19,7 +19,7 @@ import { registerSchema } from "./helpers/auth.schema";
 import { useRegisterUser } from "../../api/auth/auth.service";
 import LoadingPage from "../../components/loaders/LoadingPage";
 import DarkMode from "../../components/DarkMode";
-import { saveUserLocal, saveUserSession } from "../../utils";
+import { saveLocalToken, saveSessionToken } from "../../utils";
 
 interface PasswordVisibilityType {
   password: boolean;
@@ -70,11 +70,11 @@ const Register = () => {
       onSettled(data, error) {
         if (data && !error) {
           if (bodyData.remember) {
-            saveUserLocal(data?.token);
+            saveLocalToken(data?.token);
           } else {
-            saveUserSession(data?.token);
+            saveSessionToken(data?.token);
           }
-          setTimeout(() => navigate("/"), 600);
+          setTimeout(() => navigate("/"), 500);
         }
         if (error) {
           console.error("Error from mutation:", error);
