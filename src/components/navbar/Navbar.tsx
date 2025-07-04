@@ -105,6 +105,7 @@ const Navbar = () => {
     setIsContainerHovered(false);
     setIsMobileNavbarOpened(false);
     setActiveIndices([]);
+    setIsNavbarHovered(false);
   }, [pathname]);
 
   // Disables body scroll when the mobile navbar is opened
