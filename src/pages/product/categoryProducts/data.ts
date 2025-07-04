@@ -16,25 +16,25 @@ type CategoryImageDataType = {
 export const CATEGORY_IMAGE_DATA: CategoryImageDataType = {
   for_you: {
     category: "for_you",
-    img: "/images/category-images/for-you/new.webp",
+    img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751646152/Beautinique/Category_Images/7-4-2025_1751646152150_New.webp",
     subCategories: [
       {
         category: "new",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751646152/Beautinique/Category_Images/7-4-2025_1751646152150_New.webp",
         subCategories: [
           {
             category: "new_arrivals",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751646152/Beautinique/Category_Images/7-4-2025_1751646152150_New.webp",
           },
         ],
       },
       {
         category: "sugar_play",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751646152/Beautinique/Category_Images/7-4-2025_1751646152166_Sugar_Play.webp",
         subCategories: [
           {
             category: "sugar_play",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751646152/Beautinique/Category_Images/7-4-2025_1751646152166_Sugar_Play.webp",
           },
         ],
       },
@@ -42,129 +42,129 @@ export const CATEGORY_IMAGE_DATA: CategoryImageDataType = {
   },
   lips: {
     category: "lips",
-    img: "/images/category-images/for-you/new.webp",
+    img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647020/Beautinique/Category_Images/7-4-2025_1751647020348_Lips.webp",
     subCategories: [
       {
         category: "finish_types",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647122/Beautinique/Category_Images/7-4-2025_1751647122238_Lipsticks.webp",
         subCategories: [
           {
             category: "matte_lipstick",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647020/Beautinique/Category_Images/7-4-2025_1751647020348_Lips.webp",
           },
           {
             category: "satin_lipstick",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153458_Collection.webp",
           },
           {
             category: "hi_shine_lipstick",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153458_Collection.webp",
           },
           {
             category: "lip_gloss",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647020/Beautinique/Category_Images/7-4-2025_1751647020348_Lips.webp",
           },
         ],
       },
       {
         category: "lipstick_forms",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153458_Collection.webp",
         subCategories: [
           {
             category: "liquid_lipstick",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647020/Beautinique/Category_Images/7-4-2025_1751647020348_Lips.webp",
           },
           {
             category: "powder_lipstick",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647408/Beautinique/Category_Images/7-4-2025_1751647408012_Powder.webp",
           },
           {
             category: "crayon_lipstick",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647408/Beautinique/Category_Images/7-4-2025_1751647408012_Powder.webp",
           },
           {
             category: "bullet_lipstick",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647408/Beautinique/Category_Images/7-4-2025_1751647408012_Powder.webp",
           },
         ],
       },
       {
         category: "long_lasting_lipsticks",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153480_La-La-Love.webp",
         subCategories: [
           {
             category: "transfer_proof_lipstick",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647020/Beautinique/Category_Images/7-4-2025_1751647020348_Lips.webp",
           },
           {
             category: "water_proof_lipstick",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153480_La-La-Love.webp",
           },
           {
             category: "lip_tint_and_stain",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153480_La-La-Love.webp",
           },
           {
             category: "smudge_proof_lipstick",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153480_La-La-Love.webp",
           },
         ],
       },
       {
         category: "lip_care",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647020/Beautinique/Category_Images/7-4-2025_1751647020348_Lips.webp",
         subCategories: [
           {
             category: "lip_primer_and_scrub",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650181/Beautinique/Category_Images/7-4-2025_1751650181649_Primer.webp",
           },
           {
             category: "lipstick_fixer_and_remover",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647020/Beautinique/Category_Images/7-4-2025_1751647020348_Lips.webp",
           },
           {
             category: "lip_balm",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647020/Beautinique/Category_Images/7-4-2025_1751647020348_Lips.webp",
           },
           {
             category: "tinted_lip_balm",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647020/Beautinique/Category_Images/7-4-2025_1751647020348_Lips.webp",
           },
         ],
       },
       {
         category: "lip_enhancers_and_other",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751651100/Beautinique/Category_Images/7-4-2025_1751651100120_Lip-Cream.webp",
         subCategories: [
           {
             category: "lip_liner",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751651100/Beautinique/Category_Images/7-4-2025_1751651100120_Lip-Cream.webp",
           },
           {
             category: "lip_glitter",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751651100/Beautinique/Category_Images/7-4-2025_1751651100120_Lip-Cream.webp",
           },
           {
             category: "view_all",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751653191/Beautinique/Category_Images/7-4-2025_1751653191664_Sugar-Pop-Bag.jpg",
           },
         ],
       },
       {
         category: "lipstick_set_and_combo",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647558/Beautinique/Category_Images/7-4-2025_1751647558674_Lipsticks-Sets.webp",
         subCategories: [
           {
             category: "lipstick_set",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647558/Beautinique/Category_Images/7-4-2025_1751647558674_Lipsticks-Sets.webp",
           },
           {
             category: "lipstick_combo",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647558/Beautinique/Category_Images/7-4-2025_1751647558674_Lipsticks-Sets.webp",
           },
           {
             category: "lip_palette",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153495_Beauty-Saving-Offer.webp",
           },
         ],
       },
@@ -172,89 +172,89 @@ export const CATEGORY_IMAGE_DATA: CategoryImageDataType = {
   },
   skin: {
     category: "skin",
-    img: "/images/category-images/for-you/new.webp",
+    img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649312/Beautinique/Category_Images/7-4-2025_1751649311972_Your-Skin.webp",
     subCategories: [
       {
         category: "moisturizers",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649312/Beautinique/Category_Images/7-4-2025_1751649311972_Your-Skin.webp",
         subCategories: [
           {
             category: "night_cream",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153458_Collection.webp",
           },
           {
             category: "eye_cream",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650267/Beautinique/Category_Images/7-4-2025_1751650267526_Eyes.webp",
           },
           {
             category: "serum",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153544_Sugar-Elite.webp",
           },
           {
             category: "skincare_kit",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649052/Beautinique/Category_Images/7-4-2025_1751649052471_Vaneeta-kit.webp",
           },
         ],
       },
       {
         category: "cleansing_and_exfoliation",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649312/Beautinique/Category_Images/7-4-2025_1751649311972_Your-Skin.webp",
         subCategories: [
           {
             category: "cleanser",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649312/Beautinique/Category_Images/7-4-2025_1751649311972_Your-Skin.webp",
           },
           {
             category: "face_wash",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649704/Beautinique/Category_Images/7-4-2025_1751649704730_Face.webp",
           },
           {
             category: "exfoliator_and_scrub",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649312/Beautinique/Category_Images/7-4-2025_1751649311972_Your-Skin.webp",
           },
           {
             category: "sunscreen",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649312/Beautinique/Category_Images/7-4-2025_1751649311972_Your-Skin.webp",
           },
         ],
       },
       {
         category: "natures_blend",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153544_Sugar-Elite.webp",
         subCategories: [
           {
             category: "aquaholic",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153544_Sugar-Elite.webp",
           },
           {
             category: "coffee_culture",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153544_Sugar-Elite.webp",
           },
           {
             category: "citrus_got_real",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153544_Sugar-Elite.webp",
           },
           {
             category: "view_all",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153544_Sugar-Elite.webp",
           },
         ],
       },
       {
         category: "face_mask",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649704/Beautinique/Category_Images/7-4-2025_1751649704730_Face.webp",
         subCategories: [
           {
             category: "sheet_mask",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649704/Beautinique/Category_Images/7-4-2025_1751649704730_Face.webp",
           },
           {
             category: "face_pack",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649704/Beautinique/Category_Images/7-4-2025_1751649704730_Face.webp",
           },
           {
             category: "view_all",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649704/Beautinique/Category_Images/7-4-2025_1751649704730_Face.webp",
           },
         ],
       },
@@ -262,167 +262,167 @@ export const CATEGORY_IMAGE_DATA: CategoryImageDataType = {
   },
   face: {
     category: "face",
-    img: "/images/category-images/for-you/new.webp",
+    img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649704/Beautinique/Category_Images/7-4-2025_1751649704730_Face.webp",
     subCategories: [
       {
         category: "face_makeup",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649704/Beautinique/Category_Images/7-4-2025_1751649704730_Face.webp",
         subCategories: [
           {
             category: "foundation",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649854/Beautinique/Category_Images/7-4-2025_1751649854080_Foundation.webp",
           },
           {
             category: "bb_cream",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649854/Beautinique/Category_Images/7-4-2025_1751649854080_Foundation.webp",
           },
           {
             category: "compact_powder",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649704/Beautinique/Category_Images/7-4-2025_1751649704730_Face.webp",
           },
           {
             category: "loose_powder",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649704/Beautinique/Category_Images/7-4-2025_1751649704730_Face.webp",
           },
           {
             category: "banana_powder",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649704/Beautinique/Category_Images/7-4-2025_1751649704730_Face.webp",
           },
           {
             category: "spf_foundation",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649704/Beautinique/Category_Images/7-4-2025_1751649704730_Face.webp",
           },
         ],
       },
       {
         category: "traditional_and_essentials",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153495_Beauty-Saving-Offer.webp",
         subCategories: [
           {
             category: "sindoor",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153495_Beauty-Saving-Offer.webp",
           },
         ],
       },
       {
         category: "cheeks_and_glow",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153458_Collection.webp",
         subCategories: [
           {
             category: "highlighter",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153458_Collection.webp",
           },
           {
             category: "liquid_highlighter",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153458_Collection.webp",
           },
           {
             category: "blush",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650082/Beautinique/Category_Images/7-4-2025_1751650081924_Blush.webp",
           },
           {
             category: "cheek_stain",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153458_Collection.webp",
           },
         ],
       },
       {
         category: "setting_and_finishing",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647408/Beautinique/Category_Images/7-4-2025_1751647408012_Powder.webp",
         subCategories: [
           {
             category: "setting_spray",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647408/Beautinique/Category_Images/7-4-2025_1751647408012_Powder.webp",
           },
           {
             category: "compact",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647408/Beautinique/Category_Images/7-4-2025_1751647408012_Powder.webp",
           },
           {
             category: "fixer",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647408/Beautinique/Category_Images/7-4-2025_1751647408012_Powder.webp",
           },
         ],
       },
       {
         category: "foundations_by_finish",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649854/Beautinique/Category_Images/7-4-2025_1751649854080_Foundation.webp",
         subCategories: [
           {
             category: "liquid_foundation",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649854/Beautinique/Category_Images/7-4-2025_1751649854080_Foundation.webp",
           },
           {
             category: "matte_foundation",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649854/Beautinique/Category_Images/7-4-2025_1751649854080_Foundation.webp",
           },
           {
             category: "water_resistant_foundation",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649854/Beautinique/Category_Images/7-4-2025_1751649854080_Foundation.webp",
           },
           {
             category: "high_coverage_foundation",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649854/Beautinique/Category_Images/7-4-2025_1751649854080_Foundation.webp",
           },
           {
             category: "stick_foundation",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649854/Beautinique/Category_Images/7-4-2025_1751649854080_Foundation.webp",
           },
         ],
       },
       {
         category: "foundations_by_skin_type",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649854/Beautinique/Category_Images/7-4-2025_1751649854080_Foundation.webp",
         subCategories: [
           {
             category: "best_for_dry_skin",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649854/Beautinique/Category_Images/7-4-2025_1751649854080_Foundation.webp",
           },
           {
             category: "best_for_oily_skin",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649854/Beautinique/Category_Images/7-4-2025_1751649854080_Foundation.webp",
           },
         ],
       },
       {
         category: "primers_and_removers",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650181/Beautinique/Category_Images/7-4-2025_1751650181649_Primer.webp",
         subCategories: [
           {
             category: "makeup_remover",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650920/Beautinique/Category_Images/7-4-2025_1751650920058_Tapsi-Sugar-Makeup.webp",
           },
           {
             category: "primer",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650181/Beautinique/Category_Images/7-4-2025_1751650181649_Primer.webp",
           },
         ],
       },
       {
         category: "bronzers_and_contours",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153544_Sugar-Elite.webp",
         subCategories: [
           {
             category: "bronzer",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153544_Sugar-Elite.webp",
           },
           {
             category: "contour",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153544_Sugar-Elite.webp",
           },
         ],
       },
       {
         category: "concealers_and_correctors",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153544_Sugar-Elite.webp",
         subCategories: [
           {
             category: "color_concealer",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153544_Sugar-Elite.webp",
           },
           {
             category: "color_corrector",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153544_Sugar-Elite.webp",
           },
         ],
       },
@@ -430,113 +430,113 @@ export const CATEGORY_IMAGE_DATA: CategoryImageDataType = {
   },
   eyes: {
     category: "eyes",
-    img: "/images/category-images/for-you/new.webp",
+    img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650267/Beautinique/Category_Images/7-4-2025_1751650267526_Eyes.webp",
     subCategories: [
       {
         category: "kohl_and_kajal",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650492/Beautinique/Category_Images/7-4-2025_1751650492382_Kohls-and-kajal.webp",
         subCategories: [
           {
             category: "kohl",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650492/Beautinique/Category_Images/7-4-2025_1751650492382_Kohls-and-kajal.webp",
           },
           {
             category: "kajal",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650492/Beautinique/Category_Images/7-4-2025_1751650492382_Kohls-and-kajal.webp",
           },
           {
             category: "smudge_proof_kajal",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650492/Beautinique/Category_Images/7-4-2025_1751650492382_Kohls-and-kajal.webp",
           },
         ],
       },
       {
         category: "mascaras",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650592/Beautinique/Category_Images/7-4-2025_1751650592254_Mascara.webp",
         subCategories: [
           {
             category: "volumizing_mascara",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650592/Beautinique/Category_Images/7-4-2025_1751650592254_Mascara.webp",
           },
           {
             category: "curl_lengthening_mascara",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650592/Beautinique/Category_Images/7-4-2025_1751650592254_Mascara.webp",
           },
           {
             category: "waterproof_mascara",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650592/Beautinique/Category_Images/7-4-2025_1751650592254_Mascara.webp",
           },
         ],
       },
       {
         category: "eyeliners",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650267/Beautinique/Category_Images/7-4-2025_1751650267526_Eyes.webp",
         subCategories: [
           {
             category: "liquid_eyeliner",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650267/Beautinique/Category_Images/7-4-2025_1751650267526_Eyes.webp",
           },
           {
             category: "gel_eyeliner",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650267/Beautinique/Category_Images/7-4-2025_1751650267526_Eyes.webp",
           },
           {
             category: "pen_eyeliner",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650267/Beautinique/Category_Images/7-4-2025_1751650267526_Eyes.webp",
           },
         ],
       },
       {
         category: "eyeshadow",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650267/Beautinique/Category_Images/7-4-2025_1751650267526_Eyes.webp",
         subCategories: [
           {
             category: "eyeshadow_palette",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650267/Beautinique/Category_Images/7-4-2025_1751650267526_Eyes.webp",
           },
           {
             category: "liquid_eyeshadow",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650267/Beautinique/Category_Images/7-4-2025_1751650267526_Eyes.webp",
           },
           {
             category: "glitter_eyeshadow",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650267/Beautinique/Category_Images/7-4-2025_1751650267526_Eyes.webp",
           },
         ],
       },
       {
         category: "eyebrows",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650655/Beautinique/Category_Images/7-4-2025_1751650655914_Eyebrow.webp",
         subCategories: [
           {
             category: "brow_definer",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650655/Beautinique/Category_Images/7-4-2025_1751650655914_Eyebrow.webp",
           },
           {
             category: "brow_pencil",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650655/Beautinique/Category_Images/7-4-2025_1751650655914_Eyebrow.webp",
           },
           {
             category: "brow_gel",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650655/Beautinique/Category_Images/7-4-2025_1751650655914_Eyebrow.webp",
           },
         ],
       },
       {
         category: "eye_value_set",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647408/Beautinique/Category_Images/7-4-2025_1751647408012_Powder.webp",
         subCategories: [
           {
             category: "eyelashes",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650267/Beautinique/Category_Images/7-4-2025_1751650267526_Eyes.webp",
           },
           {
             category: "eye_gift_set",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647408/Beautinique/Category_Images/7-4-2025_1751647408012_Powder.webp",
           },
           {
             category: "eye_combo",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751650267/Beautinique/Category_Images/7-4-2025_1751650267526_Eyes.webp",
           },
         ],
       },
@@ -544,137 +544,137 @@ export const CATEGORY_IMAGE_DATA: CategoryImageDataType = {
   },
   collections: {
     category: "collections",
-    img: "/images/category-images/for-you/new.webp",
+    img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153458_Collection.webp",
     subCategories: [
       {
         category: "bath_and_body",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153458_Collection.webp",
         subCategories: [
           {
             category: "shower_gel",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153458_Collection.webp",
           },
           {
             category: "soap",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153458_Collection.webp",
           },
           {
             category: "body_lotion",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153458_Collection.webp",
           },
           {
             category: "body_spray",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153458_Collection.webp",
           },
           {
             category: "hand_wash",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153458_Collection.webp",
           },
           {
             category: "foot_cream",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153458_Collection.webp",
           },
           {
             category: "hand_cream",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153458_Collection.webp",
           },
         ],
       },
       {
         category: "sugar_pop",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647973/Beautinique/Category_Images/7-4-2025_1751647973400_Pretty-Picks-Makeup.webp",
         subCategories: [
           {
             category: "lips",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647973/Beautinique/Category_Images/7-4-2025_1751647973417_Ultrastay.webp",
           },
           {
             category: "eyes",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647973/Beautinique/Category_Images/7-4-2025_1751647973405_Complete_Makeup_Kit.webp",
           },
           {
             category: "face",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647973/Beautinique/Category_Images/7-4-2025_1751647973405_Complete_Makeup_Kit.webp",
           },
           {
             category: "nails",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647973/Beautinique/Category_Images/7-4-2025_1751647973405_Complete_Makeup_Kit.webp",
           },
           {
             category: "skincare",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647973/Beautinique/Category_Images/7-4-2025_1751647973405_Complete_Makeup_Kit.webp",
           },
           {
             category: "body_care",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647973/Beautinique/Category_Images/7-4-2025_1751647973405_Complete_Makeup_Kit.webp",
           },
           {
             category: "best_of_sugar_pop",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647973/Beautinique/Category_Images/7-4-2025_1751647973407_All_In_One.gif",
           },
         ],
       },
       {
         category: "hair_care",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153544_Sugar-Elite.webp",
         subCategories: [
           {
             category: "shampoo",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153544_Sugar-Elite.webp",
           },
           {
             category: "conditioner",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153544_Sugar-Elite.webp",
           },
           {
             category: "hair_oil",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153544_Sugar-Elite.webp",
           },
           {
             category: "serum",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153544_Sugar-Elite.webp",
           },
           {
             category: "hair_mask",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153544_Sugar-Elite.webp",
           },
           {
             category: "combo",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153544_Sugar-Elite.webp",
           },
           {
             category: "view_all",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153544_Sugar-Elite.webp",
           },
         ],
       },
       {
         category: "gifting",
-        img: "/images/category-images/for-you/new.webp",
+        img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751648747/Beautinique/Category_Images/7-4-2025_1751648747422_gifting.webp",
         subCategories: [
           {
             category: "lipstick_set",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647408/Beautinique/Category_Images/7-4-2025_1751647408012_Powder.webp",
           },
           {
             category: "sugar_merch",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153466_Free-Suagar-Pop.webp",
           },
           {
             category: "value_set",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647408/Beautinique/Category_Images/7-4-2025_1751647408012_Powder.webp",
           },
           {
             category: "makeup_kit",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751649052/Beautinique/Category_Images/7-4-2025_1751649052471_Vaneeta-kit.webp",
           },
           {
             category: "corporate_gifting",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153466_Free-Suagar-Pop.webp",
           },
           {
             category: "sugar_set",
-            img: "/images/category-images/for-you/new.webp",
+            img: "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751647408/Beautinique/Category_Images/7-4-2025_1751647408012_Powder.webp",
           },
         ],
       },

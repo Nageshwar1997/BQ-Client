@@ -22,7 +22,6 @@ const CategoryProducts = () => {
     const finalCategoryImgData = levelThreeCat || levelTwoCat || levelOneCat;
 
     imgRef.current = finalCategoryImgData;
-
   }, [paths]);
 
   const allProducts = useGetAllProducts();
@@ -46,9 +45,8 @@ const CategoryProducts = () => {
     <div className="lg:-mt-16">
       <img
         src={
-          imgRef.current?.img ??
-          // Change it later to the new default placeholder image
-          "/images/category-images/for-you/new.webp"
+          imgRef.current?.img ||
+          "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153544_Sugar-Elite.webp"
         }
         alt={imgRef.current?.category}
       />
