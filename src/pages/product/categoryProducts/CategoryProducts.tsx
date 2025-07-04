@@ -1,15 +1,23 @@
 import { useLocation } from "react-router-dom";
 import { CATEGORY_IMAGE_DATA } from "./data";
 import { useGetAllProducts } from "../../../api/product/product.service";
-import { useEffect, useRef } from "react";
+import { useEffect, useState, useMemo } from "react";
 
 const CategoryProducts = () => {
   const { pathname } = useLocation();
-  const imgRef = useRef<Record<"img" | "category", string> | null>(null);
-  const paths = pathname
-    .split("/")
-    .filter((path) => path !== "")
-    .slice(1, 4);
+  const [categoryImage, setCategoryImage] = useState<{
+    img: string;
+    category: string;
+  } | null>(null);
+
+  const paths = useMemo(
+    () =>
+      pathname
+        .split("/")
+        .filter((path) => path !== "")
+        .slice(1, 4),
+    [pathname]
+  );
 
   useEffect(() => {
     const levelOneCat = CATEGORY_IMAGE_DATA[paths[0]];
@@ -21,7 +29,7 @@ const CategoryProducts = () => {
     );
     const finalCategoryImgData = levelThreeCat || levelTwoCat || levelOneCat;
 
-    imgRef.current = finalCategoryImgData;
+    setCategoryImage(finalCategoryImgData || null);
   }, [paths]);
 
   const allProducts = useGetAllProducts();
@@ -45,10 +53,10 @@ const CategoryProducts = () => {
     <div className="lg:-mt-16">
       <img
         src={
-          imgRef.current?.img ||
+          categoryImage?.img ||
           "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153544_Sugar-Elite.webp"
         }
-        alt={imgRef.current?.category}
+        alt={categoryImage?.category || "Category"}
       />
     </div>
   );
