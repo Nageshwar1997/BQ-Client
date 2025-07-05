@@ -62,3 +62,18 @@ select:-webkit-autofill:focus  */
   background-origin: border-box;
   background-clip: padding-box, border-box;
 }
+
+/* Min Max Slider Style */
+.range-slider-thumb-base {
+  @apply w-4 h-4 bg-[#d000ff] rounded-full cursor-pointer relative z-[3];
+}
+.range-slider-thumb::-webkit-slider-thumb {
+  @apply range-slider-thumb-base;
+  pointer-events: all;
+  -webkit-appearance: none;
+}
+
+.range-slider-thumb::-moz-range-thumb {
+  pointer-events: all;
+  @apply range-slider-thumb-base;
+}
