@@ -38,6 +38,48 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
     updateTrackBackground();
   }, [minPrice, maxPrice]);
 
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const prevMin = useRef(minPrice);
+  const prevMax = useRef(maxPrice);
+  const maxChangeRef = useRef(false); // track if user interacted with max
+
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
+    // If user ever changes max from default, mark it
+    if (maxPrice !== MAX_PRICE) {
+      maxChangeRef.current = true;
+    }
+
+    debounceRef.current = setTimeout(() => {
+      const hasMinChanged = prevMin.current !== minPrice;
+      const hasMaxChanged = prevMax.current !== maxPrice;
+
+      // Update refs after change
+      if (hasMinChanged) prevMin.current = minPrice;
+      if (hasMaxChanged) prevMax.current = maxPrice;
+
+      // Min Logic
+      if (minPrice === 0) {
+        removeParam("min");
+      } else {
+        setParams({ min: String(minPrice) });
+      }
+
+      // Max Logic
+      if (maxPrice === MAX_PRICE && !maxChangeRef.current) {
+        removeParam("max");
+      } else if (maxChangeRef.current) {
+        setParams({ max: String(maxPrice) });
+      }
+    }, 600);
+
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [minPrice, maxPrice]);
+
   return (
     <section
       className={`h-full flex gap-6 bg-primary-inverted select-none ${className}`}
