@@ -1,4 +1,3 @@
-import Spline from "@splinetool/react-spline";
 import Branding from "../../../components/Branding";
 
 const AuthRobot = () => {
@@ -18,12 +17,6 @@ const AuthRobot = () => {
           Become a part of our community
         </h2>
         <Branding type="light" />
-      </div>
-      <div className="relative h-full flex flex-col items-center justify-center">
-        <Spline
-          scene="https://prod.spline.design/EDAPwzBU58Csa1Gc/scene.splinecode"
-          className="z-20 bg-transparent"
-        />
       </div>
     </div>
   );
