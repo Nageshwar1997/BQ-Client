@@ -8,12 +8,14 @@ interface FiltersProps {
   className?: string;
 }
 
+const MAX_PRICE = 1500;
+
 function Filters({ showFilter, className = "" }: FiltersProps) {
   const { queryParams, setParams, removeParam } = useQueryParams();
   const [showInStock, setShowInStock] = useState<boolean>(false);
   const [showPriceRange, setShowPriceRange] = useState<boolean>(true);
   const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(1499);
+  const [maxPrice, setMaxPrice] = useState(MAX_PRICE);
   const trackRef = useRef<HTMLDivElement>(null);
 
   const calcPercent = (value: number, min: number, max: number) =>
@@ -22,13 +24,13 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
   useEffect(() => {
     const updateTrackBackground = () => {
       if (trackRef.current) {
-        const minPercent = calcPercent(minPrice, 0, 1499);
-        const maxPercent = calcPercent(maxPrice, 0, 1499);
+        const minPercent = calcPercent(minPrice, 0, MAX_PRICE);
+        const maxPercent = calcPercent(maxPrice, 0, MAX_PRICE);
         trackRef.current.style.backgroundImage = `linear-gradient(
           to right,
           transparent ${minPercent}%,
-          #D000FF ${minPercent}%,
-          #D000FF ${maxPercent}%,
+          var(--primary) ${minPercent}%,
+          var(--primary) ${maxPercent}%,
           transparent ${maxPercent}%
         )`;
       }
@@ -37,7 +39,9 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
   }, [minPrice, maxPrice]);
 
   return (
-    <section className={`h-full flex gap-6 bg-[red] select-none ${className}`}>
+    <section
+      className={`h-full flex gap-6 bg-primary-inverted select-none ${className}`}
+    >
       <div
         className={`flex flex-col gap-4 p-4 transform transition-all duration-500 ease-in-out ${
           showFilter ? "w-[300px]" : "md:w-0"
@@ -46,7 +50,7 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
         {/* Availability Filter */}
         <div className="flex flex-col">
           <div
-            className={`py-4 border-b border-b-primary flex flex-col transition-all duration-500 ${
+            className={`py-4 border-b border-b-primary-50 flex flex-col transition-all duration-500 ${
               showInStock ? "gap-4" : "gap-0"
             }`}
           >
@@ -80,7 +84,7 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
                 }}
                 className="flex items-center"
               >
-                <Checkbox className="[&>div]:w-10 [&>div]:h-5 [&>div]:bg-primary-inverted [&>div]:after:h-3 [&>div]:after:w-3" />
+                <Checkbox className="!w-10 !h-5 !bg-primary peer-checked:bg-primary after:!bg-primary-inverted after:!h-3 after:!w-3 peer-checked:after:bg-accent-duo after:border-tertiary-inverted" />
               </button>
               <span>In stock only</span>
             </div>
@@ -90,7 +94,7 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
         {/* Price Filter */}
         <div className="flex flex-col">
           <div
-            className={`py-4 border-b border-b-primary flex flex-col transition-all duration-500 ${
+            className={`py-4 border-b border-b-primary-50 flex flex-col transition-all duration-500 ${
               showPriceRange ? "gap-4" : "gap-0"
             }`}
           >
@@ -115,56 +119,57 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
               }`}
             >
               {/* Min Input */}
-              <div className="flex gap-2 items-center">
-                <label
-                  htmlFor="min-price"
-                  className="text-sm w-16 text-primary"
-                >
-                  Min:
-                </label>
-                <input
-                  id="min-price"
-                  type="number"
-                  min={0}
-                  max={maxPrice - 1}
-                  value={minPrice}
-                  onChange={(e) => {
-                    const value = Number(e.target.value);
-                    if (value < maxPrice) setMinPrice(value);
-                  }}
-                  className="w-full px-2 py-1 border rounded text-sm text-black number-input-mouse-control-none"
-                />
+              <div className="flex justify-between gap-3">
+                <div className="w-full flex items-center border border-primary-50 rounded overflow-hidden">
+                  <label
+                    htmlFor="min-price"
+                    className="text-sm text-primary px-2 py-2 border-r border-r-primary-50 bg-primary-30 h-full"
+                  >
+                    Min
+                  </label>
+                  <input
+                    id="min-price"
+                    type="number"
+                    min={0}
+                    max={maxPrice - 1}
+                    value={minPrice}
+                    onChange={(e) => {
+                      const value = Number(e.target.value);
+                      if (value < maxPrice) setMinPrice(value);
+                    }}
+                    className="w-full px-2 py-1 text-sm text-primary bg-primary-10 h-full border border-none outline-none number-input-mouse-control-none"
+                  />
+                </div>
+                <div className="w-px h-9 bg-primary-50"></div>
+                {/* Max Input */}
+                <div className="w-full flex items-center border border-primary-50 rounded overflow-hidden">
+                  <label
+                    htmlFor="max-price"
+                    className="text-sm text-primary px-2 py-2 border-r border-r-primary-50 bg-primary-30 h-full"
+                  >
+                    Max:
+                  </label>
+                  <input
+                    id="max-price"
+                    type="number"
+                    min={minPrice + 1}
+                    max={MAX_PRICE}
+                    value={maxPrice}
+                    onChange={(e) => {
+                      const value = Number(e.target.value);
+                      if (value > minPrice) setMaxPrice(value);
+                    }}
+                    className="w-full px-2 py-1 text-sm text-primary bg-primary-10 h-full border border-none outline-none number-input-mouse-control-none"
+                  />
+                </div>
               </div>
-
-              {/* Max Input */}
-              <div className="flex gap-2 items-center">
-                <label
-                  htmlFor="max-price"
-                  className="text-sm w-16 text-primary"
-                >
-                  Max:
-                </label>
-                <input
-                  id="max-price"
-                  type="number"
-                  min={minPrice + 1}
-                  max={1499}
-                  value={maxPrice}
-                  onChange={(e) => {
-                    const value = Number(e.target.value);
-                    if (value > minPrice) setMaxPrice(value);
-                  }}
-                  className="w-full px-2 py-1 border rounded text-sm text-black number-input-mouse-control-none"
-                />
-              </div>
-
               {/* Range Slider */}
               <div className="relative w-full select-none">
                 <div className="relative h-10">
                   <input
                     type="range"
                     min={0}
-                    max={1499}
+                    max={MAX_PRICE}
                     step={10}
                     value={minPrice}
                     onChange={(e) =>
@@ -177,7 +182,7 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
                   <input
                     type="range"
                     min={0}
-                    max={1499}
+                    max={MAX_PRICE}
                     step={10}
                     value={maxPrice}
                     onChange={(e) =>
@@ -189,7 +194,7 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
                   />
                   <div
                     ref={trackRef}
-                    className="absolute top-1/2 h-1 w-full -translate-y-1/2 bg-gray-300 rounded z-10"
+                    className="absolute top-1/2 h-[3px] w-full -translate-y-1/2 bg-primary-30 rounded"
                   />
                 </div>
               </div>
