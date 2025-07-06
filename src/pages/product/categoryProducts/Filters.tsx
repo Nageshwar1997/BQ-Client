@@ -14,8 +14,8 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
   const { queryParams, setParams, removeParam } = useQueryParams();
   const [showInStock, setShowInStock] = useState<boolean>(false);
   const [showPriceRange, setShowPriceRange] = useState<boolean>(false);
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(MAX_PRICE);
+  const [minPrice, setMinPrice] = useState("0");
+  const [maxPrice, setMaxPrice] = useState(String(MAX_PRICE));
   const trackRef = useRef<HTMLDivElement>(null);
 
   const calcPercent = (value: number, min: number, max: number) =>
@@ -24,15 +24,19 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
   useEffect(() => {
     const updateTrackBackground = () => {
       if (trackRef.current) {
-        const minPercent = calcPercent(minPrice, 0, MAX_PRICE);
-        const maxPercent = calcPercent(maxPrice, 0, MAX_PRICE);
-        trackRef.current.style.backgroundImage = `linear-gradient(
-          to right,
-          transparent ${minPercent}%,
-          var(--primary) ${minPercent}%,
-          var(--primary) ${maxPercent}%,
-          transparent ${maxPercent}%
-        )`;
+        const parsedMin = Number(minPrice);
+        const parsedMax = Number(maxPrice);
+        if (!isNaN(parsedMin) && !isNaN(parsedMax)) {
+          const minPercent = calcPercent(parsedMin, 0, MAX_PRICE);
+          const maxPercent = calcPercent(parsedMax, 0, MAX_PRICE);
+          trackRef.current.style.backgroundImage = `linear-gradient(
+            to right,
+            transparent ${minPercent}%,
+            var(--primary) ${minPercent}%,
+            var(--primary) ${maxPercent}%,
+            transparent ${maxPercent}%
+          )`;
+        }
       }
     };
     updateTrackBackground();
@@ -46,8 +50,10 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
-    // If user ever changes max from default, mark it
-    if (maxPrice !== MAX_PRICE) {
+    const parsedMin = Number(minPrice);
+    const parsedMax = Number(maxPrice);
+
+    if (!isNaN(parsedMax) && parsedMax !== MAX_PRICE) {
       maxChangeRef.current = true;
     }
 
@@ -55,22 +61,25 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
       const hasMinChanged = prevMin.current !== minPrice;
       const hasMaxChanged = prevMax.current !== maxPrice;
 
-      // Update refs after change
       if (hasMinChanged) prevMin.current = minPrice;
       if (hasMaxChanged) prevMax.current = maxPrice;
 
       // Min Logic
-      if (minPrice === 0) {
+      if (minPrice === "" || isNaN(parsedMin) || parsedMin === 0) {
         removeParam("min");
       } else {
-        setParams({ min: String(minPrice) });
+        setParams({ min: String(parsedMin) });
       }
 
       // Max Logic
-      if (maxPrice === MAX_PRICE && !maxChangeRef.current) {
+      if (
+        maxPrice === "" ||
+        isNaN(parsedMax) ||
+        (parsedMax === MAX_PRICE && !maxChangeRef.current)
+      ) {
         removeParam("max");
       } else if (maxChangeRef.current) {
-        setParams({ max: String(maxPrice) });
+        setParams({ max: String(parsedMax) });
       }
     }, 600);
 
@@ -173,11 +182,13 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
                     id="min-price"
                     type="number"
                     min={0}
-                    max={maxPrice - 1}
+                    max={Number(maxPrice) - 1}
                     value={minPrice}
                     onChange={(e) => {
-                      const value = Number(e.target.value);
-                      if (value < maxPrice) setMinPrice(value);
+                      const value = e.target.value;
+                      if (value === "" || Number(value) < Number(maxPrice)) {
+                        setMinPrice(value);
+                      }
                     }}
                     className="w-full px-2 py-1 text-sm text-primary bg-primary-10 h-full border border-none outline-none number-input-mouse-control-none"
                   />
@@ -194,12 +205,14 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
                   <input
                     id="max-price"
                     type="number"
-                    min={minPrice + 1}
+                    min={Number(minPrice) + 1}
                     max={MAX_PRICE}
                     value={maxPrice}
                     onChange={(e) => {
-                      const value = Number(e.target.value);
-                      if (value > minPrice) setMaxPrice(value);
+                      const value = e.target.value;
+                      if (value === "" || Number(value) > Number(minPrice)) {
+                        setMaxPrice(value);
+                      }
                     }}
                     className="w-full px-2 py-1 text-sm text-primary bg-primary-10 h-full border border-none outline-none number-input-mouse-control-none"
                   />
@@ -213,10 +226,12 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
                     min={0}
                     max={MAX_PRICE}
                     step={10}
-                    value={minPrice}
+                    value={Number(minPrice) || 0}
                     onChange={(e) =>
                       setMinPrice(
-                        Math.min(Number(e.target.value), maxPrice - 1)
+                        String(
+                          Math.min(Number(e.target.value), Number(maxPrice) - 1)
+                        )
                       )
                     }
                     className="range-slider-thumb absolute w-full h-full bg-transparent pointer-events-none appearance-none z-20"
@@ -226,10 +241,12 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
                     min={0}
                     max={MAX_PRICE}
                     step={10}
-                    value={maxPrice}
+                    value={Number(maxPrice) || 0}
                     onChange={(e) =>
                       setMaxPrice(
-                        Math.max(Number(e.target.value), minPrice + 1)
+                        String(
+                          Math.max(Number(e.target.value), Number(minPrice) + 1)
+                        )
                       )
                     }
                     className="range-slider-thumb absolute w-full h-full bg-transparent pointer-events-none appearance-none z-20"
