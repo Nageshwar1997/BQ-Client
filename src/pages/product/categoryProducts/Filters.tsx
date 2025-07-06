@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import Checkbox from "../../../components/input/Checkbox";
 import useQueryParams from "../../../hooks/useQueryParams";
-import { DropdownIcon } from "../../../icons";
+import {
+  CheckedIcon,
+  DropdownIcon,
+  PercentIcon,
+  RupeesIcon,
+} from "../../../icons";
 
 interface FiltersProps {
   showFilter?: boolean;
@@ -15,64 +20,58 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
   const { queryParams, setParams, removeParam } = useQueryParams();
   const [showInStock, setShowInStock] = useState<boolean>(false);
   const [showPriceRange, setShowPriceRange] = useState<boolean>(false);
-  const [showDiscountRange, setShowDiscountRange] = useState<boolean>(false);
+  const [showDiscountRange, setShowDiscountRange] = useState<boolean>(true);
 
   const [minPrice, setMinPrice] = useState("0");
   const [maxPrice, setMaxPrice] = useState(String(MAX_PRICE));
   const [minDiscount, setMinDiscount] = useState("0");
-  const [maxDiscount, setMaxDiscount] = useState(String(MAX_DISCOUNT));
-  const trackRef = useRef<HTMLDivElement>(null);
-  const trackRef2 = useRef<HTMLDivElement>(null);
+
+  const priceTrackRef = useRef<HTMLDivElement>(null);
+  const discountTrackRef = useRef<HTMLDivElement>(null);
 
   const calcPercent = (value: number, min: number, max: number) =>
     ((value - min) / (max - min)) * 100;
 
+  // PRICE track
   useEffect(() => {
-    const updateTrackBackground = () => {
-      if (trackRef.current) {
-        const parsedMin = Number(minPrice);
-        const parsedMax = Number(maxPrice);
-        if (!isNaN(parsedMin) && !isNaN(parsedMax)) {
-          const minPercent = calcPercent(parsedMin, 0, MAX_PRICE);
-          const maxPercent = calcPercent(parsedMax, 0, MAX_PRICE);
-          trackRef.current.style.backgroundImage = `linear-gradient(
-            to right,
-            transparent ${minPercent}%,
-            var(--primary) ${minPercent}%,
-            var(--primary) ${maxPercent}%,
-            transparent ${maxPercent}%
-          )`;
-        }
+    if (priceTrackRef.current) {
+      const parsedMin = Number(minPrice);
+      const parsedMax = Number(maxPrice);
+      if (!isNaN(parsedMin) && !isNaN(parsedMax)) {
+        const minPercent = calcPercent(parsedMin, 0, MAX_PRICE);
+        const maxPercent = calcPercent(parsedMax, 0, MAX_PRICE);
+        priceTrackRef.current.style.backgroundImage = `linear-gradient(
+          to right,
+          transparent ${minPercent}%,
+          var(--primary) ${minPercent}%,
+          var(--primary) ${maxPercent}%,
+          transparent ${maxPercent}%
+        )`;
       }
-    };
-    updateTrackBackground();
+    }
   }, [minPrice, maxPrice]);
 
+  // DISCOUNT track (min only)
   useEffect(() => {
-    const updateTrackBackground = () => {
-      if (trackRef2.current) {
-        const parsedMin = Number(minDiscount);
-        const parsedMax = Number(maxDiscount);
-        if (!isNaN(parsedMin) && !isNaN(parsedMax)) {
-          const minPercent = calcPercent(parsedMin, 0, MAX_DISCOUNT);
-          const maxPercent = calcPercent(parsedMax, 0, MAX_DISCOUNT);
-          trackRef2.current.style.backgroundImage = `linear-gradient(
-            to right,
-            transparent ${minPercent}%,
-            var(--primary) ${minPercent}%,
-            var(--primary) ${maxPercent}%,
-            transparent ${maxPercent}%
-          )`;
-        }
+    if (discountTrackRef.current) {
+      const parsedMin = Number(minDiscount);
+      if (!isNaN(parsedMin)) {
+        const minPercent = calcPercent(parsedMin, 0, MAX_DISCOUNT);
+        discountTrackRef.current.style.backgroundImage = `linear-gradient(
+          to right,
+          var(--primary) ${minPercent}%,
+          transparent ${minPercent}%,
+          transparent 100%
+        )`;
       }
-    };
-    updateTrackBackground();
-  }, [minDiscount, maxDiscount]);
+    }
+  }, [minDiscount]);
 
+  // Debounce price filter
   const debouncePriceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const prevMinPrice = useRef(minPrice);
   const prevMaxPrice = useRef(maxPrice);
-  const maxPriceRangeChangeRef = useRef(false); // track if user interacted with max
+  const maxPriceRangeChangeRef = useRef(false);
 
   useEffect(() => {
     if (debouncePriceRef.current) clearTimeout(debouncePriceRef.current);
@@ -116,46 +115,25 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [minPrice, maxPrice]);
 
+  // Debounce minDiscount
   const debounceDiscountRef = useRef<ReturnType<typeof setTimeout> | null>(
     null
   );
   const prevMinDiscount = useRef(minDiscount);
-  const prevMaxDiscount = useRef(maxDiscount);
-  const maxDiscountRangeChangeRef = useRef(false);
 
   useEffect(() => {
     if (debounceDiscountRef.current) clearTimeout(debounceDiscountRef.current);
 
     const parsedMin = Number(minDiscount);
-    const parsedMax = Number(maxDiscount);
-
-    if (!isNaN(parsedMax) && parsedMax !== 100) {
-      maxDiscountRangeChangeRef.current = true;
-    }
 
     debounceDiscountRef.current = setTimeout(() => {
       const hasMinChanged = prevMinDiscount.current !== minDiscount;
-      const hasMaxChanged = prevMaxDiscount.current !== maxDiscount;
-
       if (hasMinChanged) prevMinDiscount.current = minDiscount;
-      if (hasMaxChanged) prevMaxDiscount.current = maxDiscount;
 
-      // Min Logic
       if (minDiscount === "" || isNaN(parsedMin) || parsedMin === 0) {
         removeParam("dMin");
       } else {
         setParams({ dMin: String(parsedMin) });
-      }
-
-      // Max Logic
-      if (
-        maxDiscount === "" ||
-        isNaN(parsedMax) ||
-        (parsedMax === 100 && !maxDiscountRangeChangeRef.current)
-      ) {
-        removeParam("dMax");
-      } else if (maxDiscountRangeChangeRef.current) {
-        setParams({ dMax: String(parsedMax) });
       }
     }, 600);
 
@@ -164,7 +142,7 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
         clearTimeout(debounceDiscountRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [minDiscount, maxDiscount]);
+  }, [minDiscount]);
 
   return (
     <section
@@ -172,11 +150,10 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
     >
       <div
         className={`flex flex-col gap-4 p-4 transform transition-all duration-500 ease-in-out ${
-          showFilter ? "w-[300px]" : "md:w-0"
+          showFilter ? "w-[280px]" : "md:w-0"
         } overflow-hidden`}
       >
         {/* Availability Filter */}
-        <div className="flex flex-col">
           <div
             className={`py-4 border-b border-b-primary-50 flex flex-col transition-all duration-500 ${
               showInStock ? "gap-4" : "gap-0"
@@ -186,9 +163,14 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
               onClick={() => setShowInStock(!showInStock)}
               className="flex items-center gap-2 justify-between"
             >
-              <span className="uppercase text-sm text-nowrap sm:text-base text-primary font-medium">
-                AVAILABILITY
-              </span>
+              <div className="flex items-center gap-1">
+                <span className="uppercase text-sm sm:text-base text-primary font-medium">
+                  AVAILABILITY
+                </span>
+                (
+                <CheckedIcon className="w-4 h-4 [&>path]:stroke-[2.15] -m-[4px]" />
+                )
+              </div>
               <DropdownIcon
                 className={`w-6 h-6 transition-transform duration-500 ${
                   showInStock ? "rotate-180" : "rotate-0"
@@ -217,10 +199,7 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
               <span>In stock only</span>
             </div>
           </div>
-        </div>
-
         {/* Price Filter */}
-        <div className="flex flex-col">
           <div
             className={`py-4 border-b border-b-primary-50 flex flex-col transition-all duration-500 ${
               showPriceRange ? "gap-4" : "gap-0"
@@ -230,9 +209,14 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
               onClick={() => setShowPriceRange(!showPriceRange)}
               className="flex items-center gap-2 justify-between"
             >
-              <span className="uppercase text-sm text-nowrap sm:text-base text-primary font-medium">
-                PRICE
-              </span>
+              <div className="flex items-center gap-1">
+                <span className="uppercase text-sm sm:text-base text-primary font-medium">
+                  PRICE
+                </span>
+                (
+                <RupeesIcon className="w-4 h-4 [&>path]:stroke-[2.15] -m-[4px]" />
+                )
+              </div>
               <DropdownIcon
                 className={`w-6 h-6 transition-transform duration-500 ${
                   showPriceRange ? "rotate-180" : "rotate-0"
@@ -240,7 +224,7 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
               />
             </button>
             <div
-              className={`flex flex-col gap-4 overflow-hidden transition-all duration-500 ease-in-out ${
+              className={`flex flex-col gap-1 overflow-hidden transition-all duration-500 ease-in-out ${
                 showPriceRange
                   ? "max-h-60 opacity-100 scale-y-100"
                   : "max-h-0 opacity-0 scale-y-0"
@@ -329,136 +313,87 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
                     className="range-slider-thumb absolute w-full h-full bg-transparent pointer-events-none appearance-none z-20"
                   />
                   <div
-                    ref={trackRef}
+                    ref={priceTrackRef}
                     className="absolute top-1/2 h-[3px] w-full -translate-y-1/2 bg-primary-30 rounded"
                   />
                 </div>
               </div>
             </div>
           </div>
-        </div>
         {/* Discount Filter */}
-        <div className="flex flex-col">
-          <div
-            className={`py-4 border-b border-b-primary-50 flex flex-col transition-all duration-500 ${
-              showDiscountRange ? "gap-4" : "gap-0"
-            }`}
+        <div
+          className={`py-4 border-b border-b-primary-50 flex flex-col transition-all duration-500 ${
+            showDiscountRange ? "gap-4" : "gap-0"
+          }`}
+        >
+          <button
+            onClick={() => setShowDiscountRange(!showDiscountRange)}
+            className="flex items-center gap-2 justify-between"
           >
-            <button
-              onClick={() => setShowDiscountRange(!showDiscountRange)}
-              className="flex items-center gap-2 justify-between"
-            >
+            <div className="flex items-center gap-1">
               <span className="uppercase text-sm sm:text-base text-primary font-medium">
                 DISCOUNT
               </span>
-              <DropdownIcon
-                className={`w-6 h-6 transition-transform duration-500 ${
-                  showDiscountRange ? "rotate-180" : "rotate-0"
-                }`}
-              />
-            </button>
-
-            <div
-              className={`flex flex-col gap-4 overflow-hidden transition-all duration-500 ease-in-out ${
-                showDiscountRange
-                  ? "max-h-60 opacity-100 scale-y-100"
-                  : "max-h-0 opacity-0 scale-y-0"
+              (
+              <PercentIcon className="w-4 h-4 [&>path]:stroke-[2.15] -m-[3.5px]" />
+              )
+            </div>
+            <DropdownIcon
+              className={`w-6 h-6 transition-transform duration-500 ${
+                showDiscountRange ? "rotate-180" : "rotate-0"
               }`}
-            >
-              {/* Min & Max Discount Inputs */}
-              <div className="flex justify-between gap-3">
-                <div className="w-full flex items-center border border-primary-50 rounded overflow-hidden">
-                  <label
-                    htmlFor="min-discount"
-                    className="text-sm text-primary px-2 py-2 border-r border-r-primary-50 bg-primary-30 h-full"
-                  >
-                    Min
-                  </label>
-                  <input
-                    id="min-discount"
-                    type="number"
-                    min={0}
-                    max={Number(maxDiscount) - 1}
-                    value={minDiscount}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (value === "" || Number(value) < Number(maxDiscount)) {
-                        setMinDiscount(value);
-                      }
-                    }}
-                    className="w-full px-2 py-1 text-sm text-primary bg-primary-10 h-full border-none outline-none number-input-mouse-control-none"
-                  />
-                </div>
-                <div className="w-px h-9 bg-primary-50"></div>
-                <div className="w-full flex items-center border border-primary-50 rounded overflow-hidden">
-                  <label
-                    htmlFor="max-discount"
-                    className="text-sm text-primary px-2 py-2 border-r border-r-primary-50 bg-primary-30 h-full"
-                  >
-                    Max
-                  </label>
-                  <input
-                    id="max-discount"
-                    type="number"
-                    min={Number(minDiscount) + 1}
-                    max={100}
-                    value={maxDiscount}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (value === "" || Number(value) > Number(minDiscount)) {
-                        setMaxDiscount(value);
-                      }
-                    }}
-                    className="w-full px-2 py-1 text-sm text-primary bg-primary-10 h-full border-none outline-none number-input-mouse-control-none"
-                  />
-                </div>
-              </div>
+            />
+          </button>
 
-              {/* Discount Range Slider */}
-              <div className="relative w-full select-none">
-                <div className="relative h-10">
-                  <input
-                    type="range"
-                    min={0}
-                    max={100}
-                    step={5}
-                    value={Number(minDiscount) || 0}
-                    onChange={(e) =>
-                      setMinDiscount(
-                        String(
-                          Math.min(
-                            Number(e.target.value),
-                            Number(maxDiscount) - 1
-                          )
-                        )
-                      )
-                    }
-                    className="range-slider-thumb absolute w-full h-full bg-transparent pointer-events-none appearance-none z-20"
-                  />
-                  <input
-                    type="range"
-                    min={0}
-                    max={100}
-                    step={5}
-                    value={Number(maxDiscount) || 0}
-                    onChange={(e) =>
-                      setMaxDiscount(
-                        String(
-                          Math.max(
-                            Number(e.target.value),
-                            Number(minDiscount) + 1
-                          )
-                        )
-                      )
-                    }
-                    className="range-slider-thumb absolute w-full h-full bg-transparent pointer-events-none appearance-none z-20"
-                  />
-                  <div
-                    ref={trackRef2}
-                    className="absolute top-1/2 h-[3px] w-full -translate-y-1/2 bg-primary-30 rounded"
-                  />
-                </div>
-              </div>
+          <div
+            className={`flex flex-col gap-1 overflow-hidden transition-all duration-500 ease-in-out ${
+              showDiscountRange
+                ? "max-h-60 opacity-100 scale-y-100"
+                : "max-h-0 opacity-0 scale-y-0"
+            }`}
+          >
+            {/* Discount Input */}
+            <div className="w-full flex items-center border border-primary-50 rounded overflow-hidden">
+              <label
+                htmlFor="min-discount"
+                className="text-sm px-2 py-2 border-r border-r-primary-50 bg-primary-30 h-full"
+              >
+                0 - 100
+              </label>
+              <input
+                id="min-discount"
+                type="number"
+                min={0}
+                max={100}
+                value={minDiscount}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === "" || Number(value) <= 100) {
+                    setMinDiscount(value);
+                  } else if (Number(value) > 100) setMinDiscount("100");
+                }}
+                className="flex-1 px-2 py-1 text-sm text-primary bg-primary-10 h-full border-none outline-none number-input-mouse-control-none"
+              />
+            </div>
+
+            {/* Range Slider for minDiscount only */}
+            <div className="relative w-full h-10 select-none">
+              <input
+                type="range"
+                min={0}
+                max={100}
+                step={5}
+                value={Number(minDiscount) || 0}
+                onChange={(e) => {
+                  const value = Math.min(Number(e.target.value), 100);
+                  setMinDiscount(String(value));
+                }}
+                className="range-slider-thumb absolute w-full h-full bg-transparent pointer-events-none appearance-none z-20"
+              />
+              <div
+                ref={discountTrackRef}
+                className="absolute top-1/2 h-[3px] w-full -translate-y-1/2 bg-primary-30 rounded"
+              />
             </div>
           </div>
         </div>
