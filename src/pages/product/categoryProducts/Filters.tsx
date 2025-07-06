@@ -9,7 +9,6 @@ import {
 } from "../../../icons";
 
 interface FiltersProps {
-  showFilter?: boolean;
   className?: string;
 }
 type TFilter = Record<"inStock" | "priceRange" | "discountRange", boolean>;
@@ -27,7 +26,7 @@ const INITIAL_RANGES: TRange = { min: "0", max: `${MAX_PRICE}`, discount: "0" };
 const calcPercent = (value: number, min: number, max: number) =>
   ((value - min) / (max - min)) * 100;
 
-function Filters({ showFilter, className = "" }: FiltersProps) {
+function Filters({ className = "" }: FiltersProps) {
   const { queryParams, setParams, removeParam } = useQueryParams();
   const [openedFilters, setOpenedFilters] = useState<TFilter>(INITIAL_FILTERS);
   const [ranges, setRanges] = useState<TRange>(INITIAL_RANGES);
@@ -151,11 +150,7 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
     <section
       className={`h-full flex gap-6 bg-primary-inverted select-none ${className}`}
     >
-      <div
-        className={`flex flex-col gap-4 p-4 transform transition-all duration-500 ease-in-out ${
-          showFilter ? "w-[280px]" : "md:w-0"
-        } overflow-hidden`}
-      >
+      <div className={`w-full flex flex-col gap-4 py-4 px-6`}>
         {/* Availability Filter */}
         <div
           className={`py-4 border-b border-b-primary-50 flex flex-col transition-all duration-500 ${
