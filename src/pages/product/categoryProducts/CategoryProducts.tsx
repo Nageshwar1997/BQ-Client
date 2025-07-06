@@ -2,8 +2,9 @@ import { useLocation } from "react-router-dom";
 import { CATEGORY_IMAGE_DATA } from "./data";
 // import { useGetAllProducts } from "../../../api/product/product.service";
 import { useEffect, useState, useMemo } from "react";
-import { DropdownIcon, FilterIcon } from "../../../icons";
+import { FilterIcon, UpDownArrowIcon } from "../../../icons";
 import Filters from "./Filters";
+import SortBy from "./SortBy";
 
 type TCategoryImage = { img: string; category: string };
 
@@ -75,24 +76,42 @@ const CategoryProducts = () => {
             <span className="uppercase text-sm sm:text-base text-primary">
               FILTER
             </span>
-            {/* <DropdownIcon /> */}
-            <FilterIcon className="stroke-primary w-5 h-5 [&>path]:stroke-[1.5]" />
+            <FilterIcon
+              className={`stroke-primary w-5 h-5 [&>path]:stroke-[1.5] transform transition-all duration-500 ${
+                showFilter ? "scale-100 scale-x-[-1]" : ""
+              }`}
+            />
           </button>
-          <button className="flex items-center gap-2 px-11 py-[14px] border-l border-l-primary-50  base:tracking-widest">
+          <button
+            className="flex items-center gap-2 px-11 py-[14px] border-l border-l-primary-50  base:tracking-widest group"
+            onClick={() => {
+              setShowSortBy((prev) => !prev);
+              setShowFilter(false);
+            }}
+          >
             <span className="uppercase text-sm text-nowrap sm:text-base text-primary">
               SORT BY
             </span>
-            <DropdownIcon className="w-6 h-6 " />
+            <UpDownArrowIcon
+              className={`w-5 h-5 [&>path]:stroke-[1.6] transform transition-all duration-500 ${
+                showSortBy ? "scale-100 scale-x-[-1]" : ""
+              }`}
+            />
           </button>
         </div>
         <div className="grow bg-primary-inverted flex">
           <Filters
             className={`sticky top-[118px] transform transition-all duration-500 ease-in-out overflow-hidden ${
-              showFilter ? "w-[300px]" : "w-0"
+              showFilter ? "w-[270px]" : "w-0"
             }`}
           />
 
           <div className="flex-1 bg-pink-300 p-4 min-h-[1000px]">Body</div>
+          <SortBy
+            className={`sticky top-[118px] transform transition-all duration-500 ease-in-out overflow-hidden ${
+              showSortBy ? "w-[200px]" : "w-0"
+            }`}
+          />
         </div>
       </div>
     </div>
