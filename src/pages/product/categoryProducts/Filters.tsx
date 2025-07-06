@@ -164,7 +164,7 @@ function Filters({ className = "" }: FiltersProps) {
             className="flex items-center gap-2 justify-between"
           >
             <div className="flex items-center gap-1">
-              <span className="uppercase text-sm sm:text-base text-primary font-medium">
+              <span className="uppercase text-sm sm:text-base text-primary font-medium whitespace-nowrap">
                 AVAILABILITY
               </span>
               (
@@ -196,7 +196,7 @@ function Filters({ className = "" }: FiltersProps) {
             >
               <Checkbox className="!w-10 !h-5 !bg-primary peer-checked:bg-primary after:!bg-primary-inverted after:!h-3 after:!w-3 peer-checked:after:bg-accent-duo after:border-tertiary-inverted" />
             </button>
-            <span>In stock only</span>
+            <span className="whitespace-nowrap">In stock only</span>
           </div>
         </div>
         {/* Price Filter */}
@@ -235,12 +235,12 @@ function Filters({ className = "" }: FiltersProps) {
                 : "max-h-0 opacity-0 scale-y-0"
             }`}
           >
-            {/* Min Input */}
-            <div className="flex justify-between gap-3">
+            <div className="flex justify-between gap-2">
+              {/* Min Input */}
               <div className="w-full flex items-center border border-primary-50 rounded overflow-hidden">
                 <label
                   htmlFor="min-price"
-                  className="text-sm text-primary px-2 py-2 border-r border-r-primary-50 bg-primary-30 h-full"
+                  className="text-xs text-primary px-2 py-2 border-r border-r-primary-50 bg-primary-30 h-full text-center flex items-center justify-center"
                 >
                   Min
                 </label>
@@ -264,7 +264,7 @@ function Filters({ className = "" }: FiltersProps) {
               <div className="w-full flex items-center border border-primary-50 rounded overflow-hidden">
                 <label
                   htmlFor="max-price"
-                  className="text-sm text-primary px-2 py-2 border-r border-r-primary-50 bg-primary-30 h-full"
+                  className="text-xs text-primary px-2 py-2 border-r border-r-primary-50 bg-primary-30 h-full text-center flex items-center justify-center"
                 >
                   Max:
                 </label>
@@ -366,7 +366,7 @@ function Filters({ className = "" }: FiltersProps) {
             <div className="w-full flex items-center border border-primary-50 rounded overflow-hidden">
               <label
                 htmlFor="min-discount"
-                className="text-sm px-2 py-2 border-r border-r-primary-50 bg-primary-30 h-full"
+                className="text-xs text-primary px-2 py-2 border-r border-r-primary-50 bg-primary-30 h-full text-center flex items-center justify-center"
               >
                 0 - 100
               </label>
