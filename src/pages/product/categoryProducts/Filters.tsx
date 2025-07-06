@@ -12,31 +12,34 @@ interface FiltersProps {
   showFilter?: boolean;
   className?: string;
 }
+type TFilter = Record<"inStock" | "priceRange" | "discountRange", boolean>;
+type TRange = Record<"min" | "max" | "discount", string>;
 
 const MAX_PRICE = 1500;
 const MAX_DISCOUNT = 100;
+const INITIAL_FILTERS: TFilter = {
+  inStock: false,
+  priceRange: false,
+  discountRange: false,
+};
+const INITIAL_RANGES: TRange = { min: "0", max: `${MAX_PRICE}`, discount: "0" };
+
+const calcPercent = (value: number, min: number, max: number) =>
+  ((value - min) / (max - min)) * 100;
 
 function Filters({ showFilter, className = "" }: FiltersProps) {
   const { queryParams, setParams, removeParam } = useQueryParams();
-  const [showInStock, setShowInStock] = useState<boolean>(false);
-  const [showPriceRange, setShowPriceRange] = useState<boolean>(false);
-  const [showDiscountRange, setShowDiscountRange] = useState<boolean>(true);
-
-  const [minPrice, setMinPrice] = useState("0");
-  const [maxPrice, setMaxPrice] = useState(String(MAX_PRICE));
-  const [minDiscount, setMinDiscount] = useState("0");
+  const [openedFilters, setOpenedFilters] = useState<TFilter>(INITIAL_FILTERS);
+  const [ranges, setRanges] = useState<TRange>(INITIAL_RANGES);
 
   const priceTrackRef = useRef<HTMLDivElement>(null);
   const discountTrackRef = useRef<HTMLDivElement>(null);
 
-  const calcPercent = (value: number, min: number, max: number) =>
-    ((value - min) / (max - min)) * 100;
-
   // PRICE track
   useEffect(() => {
     if (priceTrackRef.current) {
-      const parsedMin = Number(minPrice);
-      const parsedMax = Number(maxPrice);
+      const parsedMin = Number(ranges.min);
+      const parsedMax = Number(ranges.max);
       if (!isNaN(parsedMin) && !isNaN(parsedMax)) {
         const minPercent = calcPercent(parsedMin, 0, MAX_PRICE);
         const maxPercent = calcPercent(parsedMax, 0, MAX_PRICE);
@@ -49,12 +52,12 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
         )`;
       }
     }
-  }, [minPrice, maxPrice]);
+  }, [ranges.min, ranges.max]);
 
   // DISCOUNT track (min only)
   useEffect(() => {
     if (discountTrackRef.current) {
-      const parsedMin = Number(minDiscount);
+      const parsedMin = Number(ranges.discount);
       if (!isNaN(parsedMin)) {
         const minPercent = calcPercent(parsedMin, 0, MAX_DISCOUNT);
         discountTrackRef.current.style.backgroundImage = `linear-gradient(
@@ -65,47 +68,47 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
         )`;
       }
     }
-  }, [minDiscount]);
+  }, [ranges.discount]);
 
   // Debounce price filter
   const debouncePriceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const prevMinPrice = useRef(minPrice);
-  const prevMaxPrice = useRef(maxPrice);
+  const prevMinPrice = useRef(ranges.min);
+  const prevMaxPrice = useRef(ranges.max);
   const maxPriceRangeChangeRef = useRef(false);
 
   useEffect(() => {
     if (debouncePriceRef.current) clearTimeout(debouncePriceRef.current);
 
-    const parsedMin = Number(minPrice);
-    const parsedMax = Number(maxPrice);
+    const parsedMin = Number(ranges.min);
+    const parsedMax = Number(ranges.max);
 
     if (!isNaN(parsedMax) && parsedMax !== MAX_PRICE) {
       maxPriceRangeChangeRef.current = true;
     }
 
     debouncePriceRef.current = setTimeout(() => {
-      const hasMinChanged = prevMinPrice.current !== minPrice;
-      const hasMaxChanged = prevMaxPrice.current !== maxPrice;
+      const hasMinChanged = prevMinPrice.current !== ranges.min;
+      const hasMaxChanged = prevMaxPrice.current !== ranges.max;
 
-      if (hasMinChanged) prevMinPrice.current = minPrice;
-      if (hasMaxChanged) prevMaxPrice.current = maxPrice;
+      if (hasMinChanged) prevMinPrice.current = ranges.min;
+      if (hasMaxChanged) prevMaxPrice.current = ranges.max;
 
       // Min Logic
-      if (minPrice === "" || isNaN(parsedMin) || parsedMin === 0) {
-        removeParam("pMin");
+      if (ranges.min === "" || isNaN(parsedMin) || parsedMin === 0) {
+        removeParam("min");
       } else {
-        setParams({ pMin: String(parsedMin) });
+        setParams({ min: String(parsedMin) });
       }
 
       // Max Logic
       if (
-        maxPrice === "" ||
+        ranges.max === "" ||
         isNaN(parsedMax) ||
         (parsedMax === MAX_PRICE && !maxPriceRangeChangeRef.current)
       ) {
-        removeParam("pMax");
+        removeParam("max");
       } else if (maxPriceRangeChangeRef.current) {
-        setParams({ pMax: String(parsedMax) });
+        setParams({ max: String(parsedMax) });
       }
     }, 600);
 
@@ -113,27 +116,27 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
       if (debouncePriceRef.current) clearTimeout(debouncePriceRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [minPrice, maxPrice]);
+  }, [ranges.min, ranges.max]);
 
   // Debounce minDiscount
   const debounceDiscountRef = useRef<ReturnType<typeof setTimeout> | null>(
     null
   );
-  const prevMinDiscount = useRef(minDiscount);
+  const prevMinDiscount = useRef(ranges.discount);
 
   useEffect(() => {
     if (debounceDiscountRef.current) clearTimeout(debounceDiscountRef.current);
 
-    const parsedMin = Number(minDiscount);
+    const parsedMin = Number(ranges.discount);
 
     debounceDiscountRef.current = setTimeout(() => {
-      const hasMinChanged = prevMinDiscount.current !== minDiscount;
-      if (hasMinChanged) prevMinDiscount.current = minDiscount;
+      const hasMinChanged = prevMinDiscount.current !== ranges.discount;
+      if (hasMinChanged) prevMinDiscount.current = ranges.discount;
 
-      if (minDiscount === "" || isNaN(parsedMin) || parsedMin === 0) {
-        removeParam("dMin");
+      if (ranges.discount === "" || isNaN(parsedMin) || parsedMin === 0) {
+        removeParam("discount");
       } else {
-        setParams({ dMin: String(parsedMin) });
+        setParams({ discount: String(parsedMin) });
       }
     }, 600);
 
@@ -142,7 +145,7 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
         clearTimeout(debounceDiscountRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [minDiscount]);
+  }, [ranges.discount]);
 
   return (
     <section
@@ -154,180 +157,192 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
         } overflow-hidden`}
       >
         {/* Availability Filter */}
-          <div
-            className={`py-4 border-b border-b-primary-50 flex flex-col transition-all duration-500 ${
-              showInStock ? "gap-4" : "gap-0"
-            }`}
-          >
-            <button
-              onClick={() => setShowInStock(!showInStock)}
-              className="flex items-center gap-2 justify-between"
-            >
-              <div className="flex items-center gap-1">
-                <span className="uppercase text-sm sm:text-base text-primary font-medium">
-                  AVAILABILITY
-                </span>
-                (
-                <CheckedIcon className="w-4 h-4 [&>path]:stroke-[2.15] -m-[4px]" />
-                )
-              </div>
-              <DropdownIcon
-                className={`w-6 h-6 transition-transform duration-500 ${
-                  showInStock ? "rotate-180" : "rotate-0"
-                }`}
-              />
-            </button>
-            <div
-              className={`flex items-center gap-4 overflow-hidden transition-all duration-500 ease-in-out ${
-                showInStock
-                  ? "max-h-20 opacity-100 scale-y-100"
-                  : "max-h-0 opacity-0 scale-y-0"
-              }`}
-            >
-              <button
-                onClick={() => {
-                  if (queryParams.inStock === "true") {
-                    removeParam("inStock");
-                  } else {
-                    setParams({ inStock: "true" });
-                  }
-                }}
-                className="flex items-center"
-              >
-                <Checkbox className="!w-10 !h-5 !bg-primary peer-checked:bg-primary after:!bg-primary-inverted after:!h-3 after:!w-3 peer-checked:after:bg-accent-duo after:border-tertiary-inverted" />
-              </button>
-              <span>In stock only</span>
-            </div>
-          </div>
-        {/* Price Filter */}
-          <div
-            className={`py-4 border-b border-b-primary-50 flex flex-col transition-all duration-500 ${
-              showPriceRange ? "gap-4" : "gap-0"
-            }`}
-          >
-            <button
-              onClick={() => setShowPriceRange(!showPriceRange)}
-              className="flex items-center gap-2 justify-between"
-            >
-              <div className="flex items-center gap-1">
-                <span className="uppercase text-sm sm:text-base text-primary font-medium">
-                  PRICE
-                </span>
-                (
-                <RupeesIcon className="w-4 h-4 [&>path]:stroke-[2.15] -m-[4px]" />
-                )
-              </div>
-              <DropdownIcon
-                className={`w-6 h-6 transition-transform duration-500 ${
-                  showPriceRange ? "rotate-180" : "rotate-0"
-                }`}
-              />
-            </button>
-            <div
-              className={`flex flex-col gap-1 overflow-hidden transition-all duration-500 ease-in-out ${
-                showPriceRange
-                  ? "max-h-60 opacity-100 scale-y-100"
-                  : "max-h-0 opacity-0 scale-y-0"
-              }`}
-            >
-              {/* Min Input */}
-              <div className="flex justify-between gap-3">
-                <div className="w-full flex items-center border border-primary-50 rounded overflow-hidden">
-                  <label
-                    htmlFor="min-price"
-                    className="text-sm text-primary px-2 py-2 border-r border-r-primary-50 bg-primary-30 h-full"
-                  >
-                    Min
-                  </label>
-                  <input
-                    id="min-price"
-                    type="number"
-                    min={0}
-                    max={Number(maxPrice) - 1}
-                    value={minPrice}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (value === "" || Number(value) < Number(maxPrice)) {
-                        setMinPrice(value);
-                      }
-                    }}
-                    className="w-full px-2 py-1 text-sm text-primary bg-primary-10 h-full border border-none outline-none number-input-mouse-control-none"
-                  />
-                </div>
-                <div className="w-px h-9 bg-primary-50"></div>
-                {/* Max Input */}
-                <div className="w-full flex items-center border border-primary-50 rounded overflow-hidden">
-                  <label
-                    htmlFor="max-price"
-                    className="text-sm text-primary px-2 py-2 border-r border-r-primary-50 bg-primary-30 h-full"
-                  >
-                    Max:
-                  </label>
-                  <input
-                    id="max-price"
-                    type="number"
-                    min={Number(minPrice) + 1}
-                    max={MAX_PRICE}
-                    value={maxPrice}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (value === "" || Number(value) > Number(minPrice)) {
-                        setMaxPrice(value);
-                      }
-                    }}
-                    className="w-full px-2 py-1 text-sm text-primary bg-primary-10 h-full border border-none outline-none number-input-mouse-control-none"
-                  />
-                </div>
-              </div>
-              {/* Range Slider */}
-              <div className="relative w-full select-none">
-                <div className="relative h-10">
-                  <input
-                    type="range"
-                    min={0}
-                    max={MAX_PRICE}
-                    step={10}
-                    value={Number(minPrice) || 0}
-                    onChange={(e) =>
-                      setMinPrice(
-                        String(
-                          Math.min(Number(e.target.value), Number(maxPrice) - 1)
-                        )
-                      )
-                    }
-                    className="range-slider-thumb absolute w-full h-full bg-transparent pointer-events-none appearance-none z-20"
-                  />
-                  <input
-                    type="range"
-                    min={0}
-                    max={MAX_PRICE}
-                    step={10}
-                    value={Number(maxPrice) || 0}
-                    onChange={(e) =>
-                      setMaxPrice(
-                        String(
-                          Math.max(Number(e.target.value), Number(minPrice) + 1)
-                        )
-                      )
-                    }
-                    className="range-slider-thumb absolute w-full h-full bg-transparent pointer-events-none appearance-none z-20"
-                  />
-                  <div
-                    ref={priceTrackRef}
-                    className="absolute top-1/2 h-[3px] w-full -translate-y-1/2 bg-primary-30 rounded"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        {/* Discount Filter */}
         <div
           className={`py-4 border-b border-b-primary-50 flex flex-col transition-all duration-500 ${
-            showDiscountRange ? "gap-4" : "gap-0"
+            openedFilters.inStock ? "gap-4" : "gap-0"
           }`}
         >
           <button
-            onClick={() => setShowDiscountRange(!showDiscountRange)}
+            onClick={() => {
+              setOpenedFilters((prev) => ({ ...prev, inStock: !prev.inStock }));
+            }}
+            className="flex items-center gap-2 justify-between"
+          >
+            <div className="flex items-center gap-1">
+              <span className="uppercase text-sm sm:text-base text-primary font-medium">
+                AVAILABILITY
+              </span>
+              (
+              <CheckedIcon className="w-4 h-4 [&>path]:stroke-[2.15] -m-[4px]" />
+              )
+            </div>
+            <DropdownIcon
+              className={`w-6 h-6 transition-transform duration-500 ${
+                openedFilters.inStock ? "rotate-180" : "rotate-0"
+              }`}
+            />
+          </button>
+          <div
+            className={`flex items-center gap-4 overflow-hidden transition-all duration-500 ease-in-out ${
+              openedFilters.inStock
+                ? "max-h-20 opacity-100 scale-y-100"
+                : "max-h-0 opacity-0 scale-y-0"
+            }`}
+          >
+            <button
+              onClick={() => {
+                if (queryParams.inStock === "true") {
+                  removeParam("inStock");
+                } else {
+                  setParams({ inStock: "true" });
+                }
+              }}
+              className="flex items-center"
+            >
+              <Checkbox className="!w-10 !h-5 !bg-primary peer-checked:bg-primary after:!bg-primary-inverted after:!h-3 after:!w-3 peer-checked:after:bg-accent-duo after:border-tertiary-inverted" />
+            </button>
+            <span>In stock only</span>
+          </div>
+        </div>
+        {/* Price Filter */}
+        <div
+          className={`py-4 border-b border-b-primary-50 flex flex-col transition-all duration-500 ${
+            openedFilters.priceRange ? "gap-4" : "gap-0"
+          }`}
+        >
+          <button
+            onClick={() =>
+              setOpenedFilters((prev) => ({
+                ...prev,
+                priceRange: !prev.priceRange,
+              }))
+            }
+            className="flex items-center gap-2 justify-between"
+          >
+            <div className="flex items-center gap-1">
+              <span className="uppercase text-sm sm:text-base text-primary font-medium">
+                PRICE
+              </span>
+              (
+              <RupeesIcon className="w-4 h-4 [&>path]:stroke-[2.15] -m-[4px]" />
+              )
+            </div>
+            <DropdownIcon
+              className={`w-6 h-6 transition-transform duration-500 ${
+                openedFilters.priceRange ? "rotate-180" : "rotate-0"
+              }`}
+            />
+          </button>
+          <div
+            className={`flex flex-col gap-1 overflow-hidden transition-all duration-500 ease-in-out ${
+              openedFilters.priceRange
+                ? "max-h-60 opacity-100 scale-y-100"
+                : "max-h-0 opacity-0 scale-y-0"
+            }`}
+          >
+            {/* Min Input */}
+            <div className="flex justify-between gap-3">
+              <div className="w-full flex items-center border border-primary-50 rounded overflow-hidden">
+                <label
+                  htmlFor="min-price"
+                  className="text-sm text-primary px-2 py-2 border-r border-r-primary-50 bg-primary-30 h-full"
+                >
+                  Min
+                </label>
+                <input
+                  id="min-price"
+                  type="number"
+                  min={0}
+                  max={Number(ranges.max) - 1}
+                  value={ranges.min}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value === "" || Number(value) < Number(ranges.max)) {
+                      setRanges((prev) => ({ ...prev, min: value }));
+                    }
+                  }}
+                  className="w-full px-2 py-1 text-sm text-primary bg-primary-10 h-full border border-none outline-none number-input-mouse-control-none"
+                />
+              </div>
+              <div className="w-px h-9 bg-primary-50"></div>
+              {/* Max Input */}
+              <div className="w-full flex items-center border border-primary-50 rounded overflow-hidden">
+                <label
+                  htmlFor="max-price"
+                  className="text-sm text-primary px-2 py-2 border-r border-r-primary-50 bg-primary-30 h-full"
+                >
+                  Max:
+                </label>
+                <input
+                  id="max-price"
+                  type="number"
+                  min={Number(ranges.min) + 1}
+                  max={MAX_PRICE}
+                  value={ranges.max}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value === "" || Number(value) > Number(ranges.min)) {
+                      setRanges((prev) => ({ ...prev, max: value }));
+                    }
+                  }}
+                  className="w-full px-2 py-1 text-sm text-primary bg-primary-10 h-full border border-none outline-none number-input-mouse-control-none"
+                />
+              </div>
+            </div>
+            {/* Range Slider */}
+            <div className="relative w-full select-none">
+              <div className="relative h-10">
+                <input
+                  type="range"
+                  min={0}
+                  max={MAX_PRICE}
+                  step={10}
+                  value={Number(ranges.min) || 0}
+                  onChange={(e) => {
+                    const value = Math.min(
+                      Number(e.target.value),
+                      Number(ranges.max) - 1
+                    );
+                    setRanges((prev) => ({ ...prev, min: `${value}` }));
+                  }}
+                  className="range-slider-thumb absolute w-full h-full bg-transparent pointer-events-none appearance-none z-20"
+                />
+                <input
+                  type="range"
+                  min={0}
+                  max={MAX_PRICE}
+                  step={10}
+                  value={Number(ranges.max) || 0}
+                  onChange={(e) => {
+                    const value = Math.max(
+                      Number(e.target.value),
+                      Number(ranges.min) + 1
+                    );
+                    setRanges((prev) => ({ ...prev, max: `${value}` }));
+                  }}
+                  className="range-slider-thumb absolute w-full h-full bg-transparent pointer-events-none appearance-none z-20"
+                />
+                <div
+                  ref={priceTrackRef}
+                  className="absolute top-1/2 h-[3px] w-full -translate-y-1/2 bg-primary-30 rounded"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* Discount Filter */}
+        <div
+          className={`py-4 border-b border-b-primary-50 flex flex-col transition-all duration-500 ${
+            openedFilters.discountRange ? "gap-4" : "gap-0"
+          }`}
+        >
+          <button
+            onClick={() =>
+              setOpenedFilters((prev) => ({
+                ...prev,
+                discountRange: !prev.discountRange,
+              }))
+            }
             className="flex items-center gap-2 justify-between"
           >
             <div className="flex items-center gap-1">
@@ -340,14 +355,14 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
             </div>
             <DropdownIcon
               className={`w-6 h-6 transition-transform duration-500 ${
-                showDiscountRange ? "rotate-180" : "rotate-0"
+                openedFilters.discountRange ? "rotate-180" : "rotate-0"
               }`}
             />
           </button>
 
           <div
             className={`flex flex-col gap-1 overflow-hidden transition-all duration-500 ease-in-out ${
-              showDiscountRange
+              openedFilters.discountRange
                 ? "max-h-60 opacity-100 scale-y-100"
                 : "max-h-0 opacity-0 scale-y-0"
             }`}
@@ -365,12 +380,14 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
                 type="number"
                 min={0}
                 max={100}
-                value={minDiscount}
+                value={ranges.discount}
                 onChange={(e) => {
                   const value = e.target.value;
                   if (value === "" || Number(value) <= 100) {
-                    setMinDiscount(value);
-                  } else if (Number(value) > 100) setMinDiscount("100");
+                    setRanges((prev) => ({ ...prev, discount: value }));
+                  } else if (Number(value) > 100) {
+                    setRanges((prev) => ({ ...prev, discount: "100" }));
+                  }
                 }}
                 className="flex-1 px-2 py-1 text-sm text-primary bg-primary-10 h-full border-none outline-none number-input-mouse-control-none"
               />
@@ -383,10 +400,10 @@ function Filters({ showFilter, className = "" }: FiltersProps) {
                 min={0}
                 max={100}
                 step={5}
-                value={Number(minDiscount) || 0}
+                value={Number(ranges.discount) || 0}
                 onChange={(e) => {
                   const value = Math.min(Number(e.target.value), 100);
-                  setMinDiscount(String(value));
+                  setRanges((prev) => ({ ...prev, discount: `${value}` }));
                 }}
                 className="range-slider-thumb absolute w-full h-full bg-transparent pointer-events-none appearance-none z-20"
               />
