@@ -1,14 +1,19 @@
 import { useLocation } from "react-router-dom";
 import { CATEGORY_IMAGE_DATA } from "./data";
-import { useGetAllProducts } from "../../../api/product/product.service";
+// import { useGetAllProducts } from "../../../api/product/product.service";
 import { useEffect, useState, useMemo } from "react";
+import { DropdownIcon, FilterIcon } from "../../../icons";
+import Filters from "./Filters";
+
+type TCategoryImage = { img: string; category: string };
 
 const CategoryProducts = () => {
   const { pathname } = useLocation();
-  const [categoryImage, setCategoryImage] = useState<{
-    img: string;
-    category: string;
-  } | null>(null);
+  const [categoryImage, setCategoryImage] = useState<TCategoryImage | null>(
+    null
+  );
+  const [showFilter, setShowFilter] = useState<boolean>(false);
+  const [showSortBy, setShowSortBy] = useState<boolean>(false);
 
   const paths = useMemo(
     () =>
@@ -32,25 +37,25 @@ const CategoryProducts = () => {
     setCategoryImage(finalCategoryImgData || null);
   }, [paths]);
 
-  const allProducts = useGetAllProducts();
+  // const allProducts = useGetAllProducts();
 
-  useEffect(() => {
-    allProducts.mutate({
-      data: {
-        requiredFields: ["title"],
-      },
-      params: { page: 1, limit: 10 },
-      queryParams: {
-        category_1: paths[0],
-        category_2: paths[1],
-        category_3: paths[2],
-      },
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   allProducts.mutate({
+  //     data: {
+  //       requiredFields: ["title"],
+  //     },
+  //     params: { page: 1, limit: 10 },
+  //     queryParams: {
+  //       category_1: paths[0],
+  //       category_2: paths[1],
+  //       category_3: paths[2],
+  //     },
+  //   });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [paths]);
 
   return (
-    <div className="lg:-mt-16">
+    <div className="lg:-mt-16 flex flex-col">
       <img
         src={
           categoryImage?.img ||
@@ -58,6 +63,38 @@ const CategoryProducts = () => {
         }
         alt={categoryImage?.category || "Category"}
       />
+      <div className="grow flex flex-col">
+        <div className="sticky top-16 h-[54px] bg-primary-inverted flex items-center justify-between border-y border-y-primary-50 z-10">
+          <button
+            className="flex items-center gap-2 px-11 py-[14px] border-r border-r-primary-50 base:tracking-widest"
+            onClick={() => {
+              setShowFilter((prev) => !prev);
+              setShowSortBy(false);
+            }}
+          >
+            <span className="uppercase text-sm sm:text-base text-primary">
+              FILTER
+            </span>
+            {/* <DropdownIcon /> */}
+            <FilterIcon className="stroke-primary w-5 h-5 [&>path]:stroke-[1.5]" />
+          </button>
+          <button className="flex items-center gap-2 px-11 py-[14px] border-l border-l-primary-50  base:tracking-widest">
+            <span className="uppercase text-sm text-nowrap sm:text-base text-primary">
+              SORT BY
+            </span>
+            <DropdownIcon className="w-6 h-6 " />
+          </button>
+        </div>
+        <div className="grow bg-primary-inverted flex">
+          <Filters
+            className={`sticky top-[118px] transform transition-all duration-500 ease-in-out overflow-hidden ${
+              showFilter ? "w-[300px]" : "w-0"
+            }`}
+          />
+
+          <div className="flex-1 bg-pink-300 p-4 min-h-[1000px]">Body</div>
+        </div>
+      </div>
     </div>
   );
 };
