@@ -1,5 +1,5 @@
 import { ChangeEvent } from "react";
-import { CheckMark, InfoIcon } from "../../icons";
+import { CheckedCircleIcon, InfoIcon } from "../../icons";
 import { InputProps } from "../../types";
 
 const PhoneInput = ({
@@ -81,7 +81,7 @@ const PhoneInput = ({
           {isError ? (
             <InfoIcon className="w-3 h-3 md:w-4 md:h-4 fill-red-500" />
           ) : (
-            <CheckMark className="w-3 h-3 md:w-4 md:h-4 fill-green-500" />
+            <CheckedCircleIcon className="w-3 h-3 md:w-4 md:h-4 fill-green-500" />
           )}
           <span>{isError ? errorText : successText}</span>
         </p>
