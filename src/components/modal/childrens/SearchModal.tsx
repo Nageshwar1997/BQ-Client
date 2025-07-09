@@ -43,66 +43,66 @@ const dummyProducts = [
     category: "Fragrance",
     brand: "Scentura",
   },
-  //   {
-  //     _id: "5",
-  //     title: "ProGlam Eyeshadow Palette",
-  //     commonImages: [
-  //       "https://dummyimage.com/600x400/444/fff&text=Image+5a",
-  //       "https://dummyimage.com/600x400/444/fff&text=Image+5b",
-  //     ],
-  //     category: "Tools",
-  //     brand: "ProGlam",
-  //   },
-  //   {
-  //     _id: "6",
-  //     title: "Naturique Face Serum",
-  //     commonImages: [
-  //       "https://dummyimage.com/600x400/555/fff&text=Image+6a",
-  //       "https://dummyimage.com/600x400/555/fff&text=Image+6b",
-  //     ],
-  //     category: "Skincare",
-  //     brand: "Naturique",
-  //   },
-  //   {
-  //     _id: "7",
-  //     title: "ColorRush Lipstick",
-  //     commonImages: [
-  //       "https://dummyimage.com/600x400/666/fff&text=Image+7a",
-  //       "https://dummyimage.com/600x400/666/fff&text=Image+7b",
-  //     ],
-  //     category: "Makeup",
-  //     brand: "ColorRush",
-  //   },
-  //   {
-  //     _id: "8",
-  //     title: "LushLocks Shampoo",
-  //     commonImages: [
-  //       "https://dummyimage.com/600x400/777/fff&text=Image+8a",
-  //       "https://dummyimage.com/600x400/777/fff&text=Image+8b",
-  //     ],
-  //     category: "Haircare",
-  //     brand: "LushLocks",
-  //   },
-  //   {
-  //     _id: "9",
-  //     title: "AromaLux Perfume",
-  //     commonImages: [
-  //       "https://dummyimage.com/600x400/888/fff&text=Image+9a",
-  //       "https://dummyimage.com/600x400/888/fff&text=Image+9b",
-  //     ],
-  //     category: "Fragrance",
-  //     brand: "AromaLux",
-  //   },
-  //   {
-  //     _id: "10",
-  //     title: "GlowGear Face Brush",
-  //     commonImages: [
-  //       "https://dummyimage.com/600x400/999/fff&text=Image+10a",
-  //       "https://dummyimage.com/600x400/999/fff&text=Image+10b",
-  //     ],
-  //     category: "Tools",
-  //     brand: "GlowGear",
-  //   },
+  {
+    _id: "5",
+    title: "ProGlam Eyeshadow Palette",
+    commonImages: [
+      "https://dummyimage.com/600x400/444/fff&text=Image+5a",
+      "https://dummyimage.com/600x400/444/fff&text=Image+5b",
+    ],
+    category: "Tools",
+    brand: "ProGlam",
+  },
+  {
+    _id: "6",
+    title: "Naturique Face Serum",
+    commonImages: [
+      "https://dummyimage.com/600x400/555/fff&text=Image+6a",
+      "https://dummyimage.com/600x400/555/fff&text=Image+6b",
+    ],
+    category: "Skincare",
+    brand: "Naturique",
+  },
+  {
+    _id: "7",
+    title: "ColorRush Lipstick",
+    commonImages: [
+      "https://dummyimage.com/600x400/666/fff&text=Image+7a",
+      "https://dummyimage.com/600x400/666/fff&text=Image+7b",
+    ],
+    category: "Makeup",
+    brand: "ColorRush",
+  },
+  {
+    _id: "8",
+    title: "LushLocks Shampoo",
+    commonImages: [
+      "https://dummyimage.com/600x400/777/fff&text=Image+8a",
+      "https://dummyimage.com/600x400/777/fff&text=Image+8b",
+    ],
+    category: "Haircare",
+    brand: "LushLocks",
+  },
+  {
+    _id: "9",
+    title: "AromaLux Perfume",
+    commonImages: [
+      "https://dummyimage.com/600x400/888/fff&text=Image+9a",
+      "https://dummyimage.com/600x400/888/fff&text=Image+9b",
+    ],
+    category: "Fragrance",
+    brand: "AromaLux",
+  },
+  {
+    _id: "10",
+    title: "GlowGear Face Brush",
+    commonImages: [
+      "https://dummyimage.com/600x400/999/fff&text=Image+10a",
+      "https://dummyimage.com/600x400/999/fff&text=Image+10b",
+    ],
+    category: "Tools",
+    brand: "GlowGear",
+  },
 ];
 
 const SearchModal = () => {
@@ -115,7 +115,7 @@ const SearchModal = () => {
   );
 
   return (
-    <div className="w-full h-full flex flex-col gap-2 py-2">
+    <div className="w-full h-full flex flex-col gap-2 pt-2">
       {/* Search Input */}
       <Input
         placeholder="Search products here..."
@@ -141,7 +141,9 @@ const SearchModal = () => {
           />
         </div>
       )}
-      <div className="flex-1 overflow-y-auto rounded-lg bg-smoke-eerie shadow-inner">
+
+      {/* Result Container */}
+      <div className="flex-1 max-h-[350px] overflow-y-auto rounded-lg bg-smoke-eerie shadow-inner">
         {filteredProducts.length > 0 ? (
           <ul className="flex flex-col gap-1 p-1">
             {filteredProducts.map((product) => (
