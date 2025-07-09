@@ -34,6 +34,16 @@ function Filters({ className = "" }: FiltersProps) {
   const priceTrackRef = useRef<HTMLDivElement>(null);
   const discountTrackRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    setRanges((prev) => ({
+      ...prev,
+      min: queryParams.min ?? prev.min,
+      max: queryParams.max ?? prev.max,
+      discount: queryParams.discount ?? prev.discount,
+    }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // PRICE track
   useEffect(() => {
     if (priceTrackRef.current) {
