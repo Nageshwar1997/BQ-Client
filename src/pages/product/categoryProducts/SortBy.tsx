@@ -12,7 +12,7 @@ function Filters({ className = "" }: SortByProps) {
     <section
       className={`h-full flex gap-6 bg-primary-inverted select-none ${className}`}
     >
-      <ul className={`w-full flex flex-col gap-1 p-4`}>
+      <ul className={`w-full flex flex-col gap-0.5 py-4 px-7`}>
         {SORT_BY_OPTIONS.map((opt) => (
           <li
             key={opt.value}
@@ -21,10 +21,10 @@ function Filters({ className = "" }: SortByProps) {
                 ? removeParam("sortBy")
                 : setParams({ sortBy: opt.value })
             }
-            className={`text-sm sm:text-base text-primary font-medium cursor-pointer px-3 py-2 transform hover:-translate-x-2 transition-all hover:duration-300 whitespace-nowrap ${
+            className={`w-fit text-sm sm:text-base text-primary font-medium cursor-pointer py-2 transform hover:-translate-x-2 transition-all hover:duration-300 whitespace-nowrap ${
               current === opt.value
                 ? "-translate-x-2 text-primary"
-                : "text-tertiary"
+                : "text-primary-50"
             }`}
           >
             {opt.label}
