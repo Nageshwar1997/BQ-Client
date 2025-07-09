@@ -229,7 +229,7 @@ const Navbar = () => {
                 </Link>
               ))}
             </div>
-            <SearchInput
+            {/* <SearchInput
               name="desktopSearch"
               className={`${
                 isNavbarAtTop || isNavbarHovered
@@ -237,7 +237,7 @@ const Navbar = () => {
                   : "border dark:border-tertiary light:border-tertiary-inverted bg-transparent light:[&>input]:placeholder:text-tertiary-inverted dark:[&>input]:placeholder:text-tertiary light:[&_svg>path]:stroke-tertiary-inverted dark:[&_svg>path]:stroke-tertiary"
               }`}
               onChange={(e) => console.log(e.target.value)}
-            />
+            /> */}
             <UserMenuIcons
               className={`${
                 isNavbarAtTop || isNavbarHovered
@@ -270,10 +270,10 @@ const Navbar = () => {
             className="object-cover w-fit h-full"
           />
         </Link>
-        <SearchInput
+        {/* <SearchInput
           name="mobileSearch"
           className="sm:!flex lg:!hidden h-7 md:h-8"
-        />
+        /> */}
         <div className="lg:hidden flex items-center gap-3 base:gap-5">
           {!isMobileNavbarOpened && <UserMenuIcons />}
           <span

@@ -69,10 +69,10 @@ const UploadProfile = ({
         </label>
       </div>
       {errorText && (
-        <span className="w-full flex gap-1 justify-center items-center text-[11px] leading-tight mt-2 text-red-500 border">
+        <div className="w-full flex gap-1 justify-center items-center text-[11px] leading-tight mt-2 text-red-500 border">
           <InfoIcon className="w-3 h-3 md:w-4 md:h-4 fill-red-500" />
-          {errorText}
-        </span>
+          <span className="leading-none">{errorText}</span>
+        </div>
       )}
     </div>
   );

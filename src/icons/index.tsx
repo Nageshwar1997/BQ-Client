@@ -7,11 +7,11 @@ export const SunIcon = ({ className }: IconProps) => (
     height="24"
     viewBox="0 0 24 24"
     fill="none"
+    stroke="black"
     className={className}
   >
     <path
       d="M12 2V4M12 20V22M4 12H2M6.31412 6.31412L4.8999 4.8999M17.6859 6.31412L19.1001 4.8999M6.31412 17.69L4.8999 19.1042M17.6859 17.69L19.1001 19.1042M22 12H20M17 12C17 14.7614 14.7614 17 12 17C9.23858 17 7 14.7614 7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12Z"
-      stroke="black"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -26,11 +26,11 @@ export const MoonIcon = ({ className }: IconProps) => (
     height="24"
     viewBox="0 0 24 24"
     fill="none"
+    stroke="black"
     className={className}
   >
     <path
       d="M21.9548 12.9566C20.5779 15.3719 17.9791 17.0003 15 17.0003C10.5817 17.0003 7 13.4186 7 9.00033C7 6.02096 8.62867 3.42199 11.0443 2.04517C5.96975 2.52631 2 6.79961 2 12.0001C2 17.5229 6.47715 22.0001 12 22.0001C17.2002 22.0001 21.4733 18.0308 21.9548 12.9566Z"
-      stroke="black"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -41,11 +41,11 @@ export const MoonIcon = ({ className }: IconProps) => (
 export const InfoIcon = ({ className }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className={`min-w-[18px] h-[18px] fill-red ${className}`}
     width="24"
     height="24"
     viewBox="0 0 24 24"
     fill="black"
+    className={className}
   >
     <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11 7H13V9H11V7ZM11 11H13V17H11V11Z" />
   </svg>
@@ -149,11 +149,11 @@ export const UserCircleIcon = ({ className }: IconProps) => (
     height="24"
     viewBox="0 0 24 24"
     fill="none"
+    stroke="black"
     className={className}
   >
     <path
       d="M5.3163 19.4384C5.92462 18.0052 7.34492 17 9 17H15C16.6551 17 18.0754 18.0052 18.6837 19.4384M16 9.5C16 11.7091 14.2091 13.5 12 13.5C9.79086 13.5 8 11.7091 8 9.5C8 7.29086 9.79086 5.5 12 5.5C14.2091 5.5 16 7.29086 16 9.5ZM22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z"
-      stroke="black"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -232,11 +232,11 @@ export const ShoppingBag = ({ className }: IconProps) => (
     height="24"
     viewBox="0 0 24 24"
     fill="none"
+    stroke="black"
     className={className}
   >
     <path
       d="M16.0004 9V6C16.0004 3.79086 14.2095 2 12.0004 2C9.79123 2 8.00037 3.79086 8.00037 6V9M3.59237 10.352L2.99237 16.752C2.82178 18.5717 2.73648 19.4815 3.03842 20.1843C3.30367 20.8016 3.76849 21.3121 4.35839 21.6338C5.0299 22 5.94374 22 7.77142 22H16.2293C18.057 22 18.9708 22 19.6423 21.6338C20.2322 21.3121 20.6971 20.8016 20.9623 20.1843C21.2643 19.4815 21.179 18.5717 21.0084 16.752L20.4084 10.352C20.2643 8.81535 20.1923 8.04704 19.8467 7.46616C19.5424 6.95458 19.0927 6.54511 18.555 6.28984C17.9444 6 17.1727 6 15.6293 6L8.37142 6C6.82806 6 6.05638 6 5.44579 6.28984C4.90803 6.54511 4.45838 6.95458 4.15403 7.46616C3.80846 8.04704 3.73643 8.81534 3.59237 10.352Z"
-      stroke="black"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -251,11 +251,11 @@ export const BuildingIcon = ({ className }: IconProps) => (
     height="24"
     viewBox="0 0 24 24"
     fill="none"
+    stroke="black"
     className={className}
   >
     <path
       d="M15 21V15.6C15 15.0399 15 14.7599 14.891 14.546C14.7951 14.3578 14.6422 14.2049 14.454 14.109C14.2401 14 13.9601 14 13.4 14H10.6C10.0399 14 9.75992 14 9.54601 14.109C9.35785 14.2049 9.20487 14.3578 9.10899 14.546C9 14.7599 9 15.0399 9 15.6V21M3 7C3 8.65685 4.34315 10 6 10C7.65685 10 9 8.65685 9 7C9 8.65685 10.3431 10 12 10C13.6569 10 15 8.65685 15 7C15 8.65685 16.3431 10 18 10C19.6569 10 21 8.65685 21 7M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V6.2C21 5.0799 21 4.51984 20.782 4.09202C20.5903 3.71569 20.2843 3.40973 19.908 3.21799C19.4802 3 18.9201 3 17.8 3H6.2C5.0799 3 4.51984 3 4.09202 3.21799C3.71569 3.40973 3.40973 3.71569 3.21799 4.09202C3 4.51984 3 5.07989 3 6.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z"
-      stroke="black"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -271,12 +271,12 @@ export const HeartIcon = ({ className }: IconProps) => (
     viewBox="0 0 24 24"
     fill="none"
     className={className}
+    stroke="black"
   >
     <path
       fillRule="evenodd"
       clipRule="evenodd"
       d="M11.9932 5.13581C9.9938 2.7984 6.65975 2.16964 4.15469 4.31001C1.64964 6.45038 1.29697 10.029 3.2642 12.5604C4.89982 14.6651 9.84977 19.1041 11.4721 20.5408C11.6536 20.7016 11.7444 20.7819 11.8502 20.8135C11.9426 20.8411 12.0437 20.8411 12.1361 20.8135C12.2419 20.7819 12.3327 20.7016 12.5142 20.5408C14.1365 19.1041 19.0865 14.6651 20.7221 12.5604C22.6893 10.029 22.3797 6.42787 19.8316 4.31001C17.2835 2.19216 13.9925 2.7984 11.9932 5.13581Z"
-      stroke="black"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -291,11 +291,11 @@ export const SearchIcon = ({ className }: IconProps) => (
     height="24"
     viewBox="0 0 24 24"
     fill="none"
+    stroke="black"
     className={className}
   >
     <path
       d="M21 21L16.65 16.65M11 6C13.7614 6 16 8.23858 16 11M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
-      stroke="black"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"

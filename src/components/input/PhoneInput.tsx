@@ -83,7 +83,9 @@ const PhoneInput = ({
           ) : (
             <CheckedCircleIcon className="w-3 h-3 md:w-4 md:h-4 fill-green-500" />
           )}
-          <span>{isError ? errorText : successText}</span>
+          <span className="leading-none">
+            {isError ? errorText : successText}
+          </span>
         </p>
       )}
     </div>

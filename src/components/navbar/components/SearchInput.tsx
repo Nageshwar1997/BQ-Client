@@ -28,7 +28,7 @@ const SearchInput = ({
         placeholder="Search Beautinique"
         className="w-full h-full pl-4 pr-1 py-1 text-sm focus:outline-none focus:border-none bg-transparent placeholder:text-primary-50"
       />
-      <SearchIcon className="w-5 h-5 [&>path]:stroke-primary-50 mr-3" />
+      <SearchIcon className="w-5 h-5 stroke-primary-50 mr-3" />
     </div>
   );
 };
