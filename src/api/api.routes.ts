@@ -6,8 +6,8 @@ export const authRoutes = {
 export const productRoutes = {
   // uploadProduct: { method: "POST", url: "/products/upload" },
   // updateProduct: { method: "PATCH", url: "/products/product/update" },
-  getAllProducts: { method: "POST", url: "/products/all" },
-  getProductById: { method: "POST", url: "/products/product" },
+  getAllProducts: { method: "GET", url: "/products/all" },
+  getProductById: { method: "GET", url: "/products/product" },
   // deleteProduct: { method: "DELETE", url: "/products/product/delete" },
 };
 
