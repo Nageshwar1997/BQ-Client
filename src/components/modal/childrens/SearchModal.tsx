@@ -1,118 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CloseIcon, SearchIcon } from "../../../icons";
 import Input from "../../input/Input";
+import { useGetAllProducts } from "../../../api/product/product.service";
+import SearchModalSkeleton from "../../skeletons/childrens/SearchModalSkeleton";
+import ShowError from "../../errors/ShowError";
+import { FetchedProductType } from "../../../types";
+import EmptyData from "../../empty-data/EmptyData";
 
-const dummyProducts = [
-  {
-    _id: "1",
-    title: "GlowCare Face Moisturizer",
-    commonImages: [
-      "https://dummyimage.com/600x400/000/fff&text=Image+1a",
-      "https://dummyimage.com/600x400/000/fff&text=Image+1b",
-    ],
-    category: "Skincare",
-    brand: "GlowCare",
-  },
-  {
-    _id: "2",
-    title: "BeautiPro Foundation",
-    commonImages: [
-      "https://dummyimage.com/600x400/111/fff&text=Image+2a",
-      "https://dummyimage.com/600x400/111/fff&text=Image+2b",
-    ],
-    category: "Makeup",
-    brand: "BeautiPro",
-  },
-  {
-    _id: "3",
-    title: "HairEssence Shampoo",
-    commonImages: [
-      "https://dummyimage.com/600x400/222/fff&text=Image+3a",
-      "https://dummyimage.com/600x400/222/fff&text=Image+3b",
-    ],
-    category: "Haircare",
-    brand: "HairEssence",
-  },
-  {
-    _id: "4",
-    title: "Scentura Eau de Parfum",
-    commonImages: [
-      "https://dummyimage.com/600x400/333/fff&text=Image+4a",
-      "https://dummyimage.com/600x400/333/fff&text=Image+4b",
-    ],
-    category: "Fragrance",
-    brand: "Scentura",
-  },
-  {
-    _id: "5",
-    title: "ProGlam Eyeshadow Palette",
-    commonImages: [
-      "https://dummyimage.com/600x400/444/fff&text=Image+5a",
-      "https://dummyimage.com/600x400/444/fff&text=Image+5b",
-    ],
-    category: "Tools",
-    brand: "ProGlam",
-  },
-  {
-    _id: "6",
-    title: "Naturique Face Serum",
-    commonImages: [
-      "https://dummyimage.com/600x400/555/fff&text=Image+6a",
-      "https://dummyimage.com/600x400/555/fff&text=Image+6b",
-    ],
-    category: "Skincare",
-    brand: "Naturique",
-  },
-  {
-    _id: "7",
-    title: "ColorRush Lipstick",
-    commonImages: [
-      "https://dummyimage.com/600x400/666/fff&text=Image+7a",
-      "https://dummyimage.com/600x400/666/fff&text=Image+7b",
-    ],
-    category: "Makeup",
-    brand: "ColorRush",
-  },
-  {
-    _id: "8",
-    title: "LushLocks Shampoo",
-    commonImages: [
-      "https://dummyimage.com/600x400/777/fff&text=Image+8a",
-      "https://dummyimage.com/600x400/777/fff&text=Image+8b",
-    ],
-    category: "Haircare",
-    brand: "LushLocks",
-  },
-  {
-    _id: "9",
-    title: "AromaLux Perfume",
-    commonImages: [
-      "https://dummyimage.com/600x400/888/fff&text=Image+9a",
-      "https://dummyimage.com/600x400/888/fff&text=Image+9b",
-    ],
-    category: "Fragrance",
-    brand: "AromaLux",
-  },
-  {
-    _id: "10",
-    title: "GlowGear Face Brush",
-    commonImages: [
-      "https://dummyimage.com/600x400/999/fff&text=Image+10a",
-      "https://dummyimage.com/600x400/999/fff&text=Image+10b",
-    ],
-    category: "Tools",
-    brand: "GlowGear",
-  },
-];
 
 const SearchModal = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const filteredProducts = dummyProducts.filter(
-    (product) =>
-      product.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.category.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const allProducts = useGetAllProducts();
+
+  useEffect(() => {
+    allProducts.mutate({
+      data: {
+        requiredFields: ["title", "category", "brand", "commonImages"],
+        populateFields: { category: ["name"] },
+      },
+      params: { page: 1, limit: 10 },
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  console.log("allProducts", allProducts.data);
 
   return (
     <div className="w-full h-full flex flex-col gap-2 pt-2">
@@ -143,10 +55,18 @@ const SearchModal = () => {
       )}
 
       {/* Result Container */}
-      <div className="flex-1 max-h-[350px] overflow-y-auto rounded-lg bg-smoke-eerie shadow-inner">
-        {filteredProducts.length > 0 ? (
+      <div className="flex-1 max-h-[350px] w-full h-full overflow-y-auto rounded-lg bg-smoke-eerie shadow-inner">
+        {allProducts.isPending ? (
+          <SearchModalSkeleton />
+        ) : allProducts.isError ? (
+          <ShowError
+            headingText="Something went wrong"
+            descriptionText="Please try again later."
+            className="gap-1"
+          />
+        ) : allProducts.data?.products?.length ? (
           <ul className="flex flex-col gap-1 p-1">
-            {filteredProducts.map((product) => (
+            {allProducts.data?.products?.map((product: FetchedProductType) => (
               <li
                 key={product._id}
                 className="border border-primary-30 flex items-center gap-2 transition cursor-pointer p-1 rounded hover:bg-primary-inverted-30"
@@ -161,16 +81,22 @@ const SearchModal = () => {
                     {product.title}
                   </h3>
                   <p className="text-[10px] text-tertiary line-clamp-1">
-                    {product.brand} - {product.category}
+                    {product.brand} - {product.category.name}
                   </p>
                 </div>
               </li>
             ))}
           </ul>
         ) : (
-          <div className="p-6 text-center text-sm text-muted">
-            No results found for <strong>{searchQuery}</strong>
-          </div>
+          searchQuery && (
+            <EmptyData
+              content={
+                <>
+                  No results found for <strong>{searchQuery}</strong>
+                </>
+              }
+            />
+          )
         )}
       </div>
     </div>
