@@ -1,48 +1,49 @@
-import { useMutation } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { get_all_products, get_product_by_id } from "./product.api";
-import { IProductPossibleBodyFields } from "../../types";
-import { toastErrorMessage, toastSuccessMessage } from "../../utils/toasts";
+import {
+  TUseGetAllProductInfinite,
+  TUseGetAllProducts,
+  TUseGetProduct,
+} from "../types";
 
-export const useGetAllProducts = () => {
-  return useMutation({
-    mutationFn: ({
-      data,
-      params,
-      queryParams,
-    }: {
-      data?: IProductPossibleBodyFields;
-      params?: { page: number; limit: number };
-      queryParams?: Record<string, string>;
-    }) => {
-      return get_all_products({ data, params, queryParams });
+export const useGetAllProducts = ({
+  data,
+  queryParams,
+  enabled = true,
+}: TUseGetAllProducts) => {
+  return useQuery({
+    queryKey: ["get_all_products_non_infinite", data, queryParams],
+    queryFn: () => get_all_products({ data, queryParams }),
+    enabled,
+  });
+};
+
+export const useGetAllProductsInfinite = ({
+  data,
+  pageParams,
+  queryParams,
+}: TUseGetAllProductInfinite) => {
+  return useInfiniteQuery({
+    queryKey: ["get_all_products_infinite", data, queryParams],
+    initialPageParam: 1,
+    queryFn: async ({ pageParam = 1 }) => {
+      return get_all_products({
+        data,
+        pageParams: { page: pageParam, limit: pageParams.limit },
+        queryParams,
+      });
     },
-    onSuccess: (data) => {
-      toastSuccessMessage(data?.message || "Product fetched successfully!");
-    },
-    onError: (error: unknown) => {
-      toastErrorMessage(
-        typeof error === "string" ? error : "Failed to fetch product!"
-      );
+    getNextPageParam: (lastPage, allPages) => {
+      const hasMore = lastPage?.data?.data?.length === pageParams.limit;
+      return hasMore ? allPages.length + 1 : undefined;
     },
   });
 };
 
-export const useGetProductById = () => {
-  return useMutation({
-    mutationFn: ({
-      data,
-      params,
-    }: {
-      data: IProductPossibleBodyFields;
-      params: { productId: string };
-    }) => get_product_by_id({ data, params }),
-    onSuccess: (data) => {
-      toastSuccessMessage(data?.message || "Product fetched successfully!");
-    },
-    onError: (error: unknown) => {
-      toastErrorMessage(
-        typeof error === "string" ? error : "Failed to fetch product!"
-      );
-    },
+export const useGetProductById = ({ data, queryParams }: TUseGetProduct) => {
+  return useQuery({
+    queryKey: ["get_product_by_id", data, queryParams],
+    queryFn: () => get_product_by_id({ data, queryParams }),
+    enabled: !!queryParams?.productId,
   });
 };

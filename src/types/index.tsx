@@ -216,13 +216,3 @@ export interface ReviewType {
   videos: (string | File)[];
   user: string;
 }
-
-export interface IProductPossibleBodyFields {
-  requiredFields?: (keyof FetchedProductType)[];
-  populateFields?: {
-    shades?: (keyof ShadeType | "images")[];
-    seller?: Exclude<keyof UserTypes, "password">[];
-    category?: (keyof CategoryType | "parentCategory")[];
-    reviews?: (keyof ReviewType | "images" | "videos")[];
-  };
-}
