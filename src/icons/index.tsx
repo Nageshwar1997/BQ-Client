@@ -284,7 +284,7 @@ export const HeartIcon = ({ className }: IconProps) => (
   </svg>
 );
 
-export const SearchIcon = ({ className }: IconProps) => (
+export const SearchIcon = (props: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -292,7 +292,7 @@ export const SearchIcon = ({ className }: IconProps) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="black"
-    className={className}
+    {...props}
   >
     <path
       d="M21 21L16.65 16.65M11 6C13.7614 6 16 8.23858 16 11M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
@@ -310,11 +310,11 @@ export const MenuIcon = ({ className }: IconProps) => (
     height="24"
     viewBox="0 0 24 24"
     fill="none"
+    stroke="black"
     className={className}
   >
     <path
       d="M3 12H21M3 6H21M3 18H21"
-      stroke="black"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -322,18 +322,18 @@ export const MenuIcon = ({ className }: IconProps) => (
   </svg>
 );
 
-export const CloseIcon = ({ className }: IconProps) => (
+export const CloseIcon = (props: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
     height="24"
     viewBox="0 0 24 24"
     fill="none"
-    className={className}
+    stroke="black"
+    {...props}
   >
     <path
       d="M18 6L6 18M6 6L18 18"
-      stroke="black"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
