@@ -17,11 +17,12 @@ export const get_all_products = async ({
     const response = await api.request({
       method,
       url,
-      data: {
-        populateFields: data?.populateFields, // shades, category, seller, reviews
-        requiredFields: data?.requiredFields, // requiredFields
+      params: {
+        ...params,
+        ...queryParams,
+        populateFields: data?.populateFields,
+        requiredFields: data?.requiredFields,
       },
-      params: { ...params, ...queryParams }, // ✅ page & limit as query params
     });
 
     return response.data;
@@ -45,9 +46,10 @@ export const get_product_by_id = async ({
     const response = await api.request({
       method,
       url: `${url}/${params.productId}`,
-      data: {
-        populateFields: data?.populateFields, // shades, category, seller, reviews
-        requiredFields: data?.requiredFields, // requiredFields
+      params: {
+        ...params,
+        populateFields: data?.populateFields,
+        requiredFields: data?.requiredFields,
       },
     });
     return response.data;

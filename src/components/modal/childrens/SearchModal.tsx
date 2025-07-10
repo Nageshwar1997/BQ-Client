@@ -7,7 +7,6 @@ import ShowError from "../../errors/ShowError";
 import { FetchedProductType } from "../../../types";
 import EmptyData from "../../empty-data/EmptyData";
 
-
 const SearchModal = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
 
@@ -16,7 +15,7 @@ const SearchModal = () => {
   useEffect(() => {
     allProducts.mutate({
       data: {
-        requiredFields: ["title", "category", "brand", "commonImages"],
+        requiredFields: ["title", "brand", "commonImages"],
         populateFields: { category: ["name"] },
       },
       params: { page: 1, limit: 10 },
