@@ -1,27 +1,21 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CloseIcon, SearchIcon } from "../../../icons";
 import Input from "../../input/Input";
-import { useGetAllProducts } from "../../../api/product/product.service";
-import SearchModalSkeleton from "../../skeletons/childrens/SearchModalSkeleton";
+import { useGetAllProductsInfinite } from "../../../api/product/product.service";
+import SearchModalSkeleton from "../../skeletons/children/SearchModalSkeleton";
 import ShowError from "../../errors/ShowError";
-import { FetchedProductType } from "../../../types";
 import EmptyData from "../../empty-data/EmptyData";
 
 const SearchModal = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const allProducts = useGetAllProducts();
-
-  useEffect(() => {
-    allProducts.mutate({
-      data: {
-        requiredFields: ["title", "brand", "commonImages"],
-        populateFields: { category: ["name"] },
-      },
-      params: { page: 1, limit: 10 },
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const allProducts = useGetAllProductsInfinite({
+    data: {
+      requiredFields: ["title", "brand", "commonImages"],
+      populateFields: { category: ["name"] },
+    },
+    pageParams: { limit: 10 },
+  });
 
   console.log("allProducts", allProducts.data);
 
@@ -63,30 +57,31 @@ const SearchModal = () => {
             descriptionText="Please try again later."
             className="gap-1"
           />
-        ) : allProducts.data?.products?.length ? (
-          <ul className="flex flex-col gap-1 p-1">
-            {allProducts.data?.products?.map((product: FetchedProductType) => (
-              <li
-                key={product._id}
-                className="border border-primary-30 flex items-center gap-2 transition cursor-pointer p-1 rounded hover:bg-primary-inverted-30"
-              >
-                <img
-                  src={product.commonImages[0]}
-                  alt={product.brand}
-                  className="w-8 h-8 object-cover rounded aspect-square"
-                />
-                <div className="flex flex-col">
-                  <h3 className="text-xs font-medium text-secondary line-clamp-1">
-                    {product.title}
-                  </h3>
-                  <p className="text-[10px] text-tertiary line-clamp-1">
-                    {product.brand} - {product.category.name}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
         ) : (
+          //   : allProducts.data?.products?.length ? (
+          // <ul className="flex flex-col gap-1 p-1">
+          //   {allProducts.data?.products?.map((product: FetchedProductType) => (
+          //     <li
+          //       key={product._id}
+          //       className="border border-primary-30 flex items-center gap-2 transition cursor-pointer p-1 rounded hover:bg-primary-inverted-30"
+          //     >
+          //       <img
+          //         src={product.commonImages[0]}
+          //         alt={product.brand}
+          //         className="w-8 h-8 object-cover rounded aspect-square"
+          //       />
+          //       <div className="flex flex-col">
+          //         <h3 className="text-xs font-medium text-secondary line-clamp-1">
+          //           {product.title}
+          //         </h3>
+          //         <p className="text-[10px] text-tertiary line-clamp-1">
+          //           {product.brand} - {product.category.name}
+          //         </p>
+          //       </div>
+          //     </li>
+          //   ))}
+          // </ul>
+          //   )
           searchQuery && (
             <EmptyData
               content={

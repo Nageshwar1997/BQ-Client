@@ -8,7 +8,7 @@ import {
 } from "../../../icons";
 import { useState } from "react";
 import Modal from "../../modal";
-import SearchModal from "../../modal/childrens/SearchModal";
+import SearchModal from "../../modal/children/SearchModal";
 
 const UserMenuIcons = ({ className }: { className?: string }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
