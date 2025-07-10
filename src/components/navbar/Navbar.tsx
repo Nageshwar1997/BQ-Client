@@ -10,7 +10,7 @@ import {
 } from "../../icons";
 import UserMenuIcons from "./components/UserMenuIcons";
 import { navbarCategoriesData } from "./data";
-import SearchInput from "./components/SearchInput";
+// import SearchInput from "./components/SearchInput";
 import { Link, useLocation } from "react-router-dom";
 import HoveredComponent from "./components/HoveredComponent";
 import Button from "../button/Button";
@@ -170,11 +170,8 @@ const Navbar = () => {
               className="object-contain w-fit max-h-16 h-full sticky top-0 left-0"
             />
           </Link>
-          <div
-            className="h-full w-full flex items-center gap-7 justify-between pl-4 xl:pl-6 relative"
-            ref={navbarRef}
-          >
-            <div className="flex items-center gap-2 h-full">
+          <div className="h-full w-full flex items-center gap-7 justify-between pl-4 xl:pl-6 relative">
+            <div className="flex items-center gap-2 h-full" ref={navbarRef}>
               {levelOneCategories.map((item, index) => (
                 <Link
                   to={`/products${item.path}`}
@@ -284,9 +281,9 @@ const Navbar = () => {
             }}
           >
             {isMobileNavbarOpened ? (
-              <CloseIcon className="[&>path]:stroke-tertiary w-6 h-6 md:w-8 md:h-8" />
+              <CloseIcon className="stroke-tertiary w-6 h-6 md:w-8 md:h-8" />
             ) : (
-              <MenuIcon className="[&>path]:stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
+              <MenuIcon className="stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
             )}
           </span>
         </div>
