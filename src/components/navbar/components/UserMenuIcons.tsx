@@ -6,30 +6,31 @@ import {
   ShoppingBag,
   UserCircleIcon,
 } from "../../../icons";
+import { useState } from "react";
+import Modal from "../../modal";
+import SearchModal from "../../modal/childrens/SearchModal";
 
 const UserMenuIcons = ({ className }: { className?: string }) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
-    <div className={`flex gap-2 md:gap-3 xl:gap-5 ${className}`}>
-      {/* Search Icon (Hidden on SM & XL screens) */}
-      <span>
-        <SearchIcon className="stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
-      </span>
-      <span>
+    <>
+      <Modal
+        children={<SearchModal />}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
+      <div className={`flex gap-2 md:gap-3 xl:gap-5 ${className}`}>
+        <SearchIcon
+          onClick={() => setIsOpen(true)}
+          className="stroke-tertiary w-5 h-5 md:w-6 md:h-6"
+        />
         <UserCircleIcon className="stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
-      </span>
-      <span>
         <BuildingIcon className="stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
-      </span>
-      <span>
         <ShoppingBag className="stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
-      </span>
-      <span>
         <HeartIcon className="stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
-      </span>
-      <span>
         <DarkMode />
-      </span>
-    </div>
+      </div>
+    </>
   );
 };
 
