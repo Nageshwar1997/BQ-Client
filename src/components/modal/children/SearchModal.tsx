@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
 import { CloseIcon, SearchIcon } from "../../../icons";
 import Input from "../../input/Input";
 import { useGetAllProductsInfinite } from "../../../api/product/product.service";
@@ -17,6 +18,22 @@ const SearchModal = () => {
     },
     pageParams: { limit: 10 },
   });
+  const { ref: sanityRef, inView } = useInView();
+
+  const fetchNextPage = useCallback(() => {
+    if (
+      inView &&
+      productsQuery.hasNextPage &&
+      !productsQuery.isFetchingNextPage
+    ) {
+      productsQuery.fetchNextPage();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView, productsQuery.hasNextPage]);
+
+  useEffect(() => {
+    fetchNextPage();
+  }, [fetchNextPage]);
 
   const productsData =
     productsQuery.data?.pages?.flatMap((page) => page.products) || [];
@@ -52,7 +69,7 @@ const SearchModal = () => {
       {/* Result Container */}
       <div className="flex-1 max-h-[350px] w-full h-full overflow-y-auto rounded-lg bg-smoke-eerie shadow-inner">
         {productsQuery.isPending ? (
-          <SearchModalSkeleton />
+          <SearchModalSkeleton count={6} />
         ) : productsQuery.isError ? (
           <ShowError
             headingText="Something went wrong"
@@ -61,10 +78,11 @@ const SearchModal = () => {
           />
         ) : productsData?.length ? (
           <ul className="flex flex-col gap-1 p-1">
-            {productsData?.map((product: FetchedProductType) => (
+            {productsData?.map((product: FetchedProductType, index) => (
               <li
                 key={product._id}
                 className="border border-primary-30 flex items-center gap-2 transition cursor-pointer p-1 rounded hover:bg-primary-inverted-30"
+                ref={index === productsData.length - 1 ? sanityRef : null}
               >
                 <img
                   src={product.commonImages[0]}
@@ -81,6 +99,9 @@ const SearchModal = () => {
                 </div>
               </li>
             ))}
+            {productsQuery.isFetchingNextPage && (
+              <SearchModalSkeleton count={1} />
+            )}
           </ul>
         ) : (
           searchQuery && (

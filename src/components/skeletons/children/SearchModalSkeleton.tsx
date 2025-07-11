@@ -1,9 +1,9 @@
 import Skeleton from "..";
 
-const SearchModalSkeleton = () => {
+const SearchModalSkeleton = ({ count }: { count: number }) => {
   return (
     <div className="w-full flex flex-col gap-1 p-1">
-      {Array.from({ length: 6 }).map((_, index) => (
+      {Array.from({ length: count }).map((_, index) => (
         <div
           key={index}
           className="border border-primary-30 flex items-center gap-2 p-1 rounded"

@@ -34,7 +34,7 @@ export const useGetAllProductsInfinite = ({
       });
     },
     getNextPageParam: (lastPage, allPages) => {
-      const hasMore = lastPage?.data?.data?.length === pageParams.limit;
+      const hasMore = lastPage.products.length === pageParams.limit;
       return hasMore ? allPages.length + 1 : undefined;
     },
   });
