@@ -99,3 +99,14 @@ export const getTodaysFeedback = (
 // It return a boolean value is level 3 category option is highlighted or not
 export const isHighlightedOption = (option: string) =>
   highlightedCategoryOptions.includes(option);
+
+export const debounce = <Args extends unknown[]>(
+  fn: (...args: Args) => void,
+  delay = 300
+): ((...args: Args) => void) => {
+  let timer: ReturnType<typeof setTimeout>;
+  return (...args: Args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), delay);
+  };
+};

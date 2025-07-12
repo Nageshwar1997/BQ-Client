@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CloseIcon, SearchIcon } from "../../../icons";
 import Input from "../../input/Input";
 import { useGetAllProducts } from "../../../api/product/product.service";
@@ -7,34 +7,36 @@ import ShowError from "../../errors/ShowError";
 import EmptyData from "../../empty-data/EmptyData";
 import { FetchedProductType } from "../../../types";
 import { TUseGetAllProducts } from "../../../api/types";
+import { debounce } from "../../../utils";
 
 const SearchModal = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const debouncedSetQuery = useMemo(
+    () =>
+      debounce((value: string) => {
+        setDebouncedQuery(value.trim());
+      }, 600),
+    []
+  );
 
   useEffect(() => {
-    if (timerRef.current) clearTimeout(timerRef.current);
+    debouncedSetQuery(searchQuery);
+  }, [searchQuery, debouncedSetQuery]);
 
-    timerRef.current = setTimeout(() => {
-      setDebouncedQuery(searchQuery.trim());
-    }, 600);
-
-    // cleanup on unmount
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-    };
-  }, [searchQuery]);
-
-  const queryParams: TUseGetAllProducts = {
-    data: {
-      requiredFields: ["title", "brand", "commonImages"],
-      populateFields: { category: ["name"] },
-    },
-    pageParams: { page: 1, limit: 5 },
-    queryParams: { search: debouncedQuery },
-    enabled: !!debouncedQuery,
-  };
+  const queryParams: TUseGetAllProducts = useMemo(
+    () => ({
+      data: {
+        requiredFields: ["title", "brand", "commonImages"],
+        populateFields: { category: ["name"] },
+      },
+      pageParams: { page: 1, limit: 5 },
+      queryParams: { search: debouncedQuery },
+      enabled: !!debouncedQuery,
+    }),
+    [debouncedQuery]
+  );
 
   const productsQuery = useGetAllProducts(queryParams);
   const products = productsQuery.data?.products ?? [];
