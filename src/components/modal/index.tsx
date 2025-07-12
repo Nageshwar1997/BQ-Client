@@ -5,9 +5,17 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children: JSX.Element;
+  containerClassName?: string;
+  className?: string;
 }
 
-const Modal = ({ isOpen, onClose, children }: ModalProps) => {
+const Modal = ({
+  isOpen,
+  onClose,
+  children,
+  containerClassName = "",
+  className = "",
+}: ModalProps) => {
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -26,11 +34,11 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-primary-50"
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-primary-50 p-8 ${containerClassName}`}
       onClick={onClose}
     >
       <div
-        className="bg-tertiary-inverted rounded-xl shadow-lg px-6 py-8 w-full max-w-md max-h-[90vh] overflow-hidden relative"
+        className={`bg-tertiary-inverted rounded-xl shadow-lg px-6 py-8 w-full max-w-md max-h-[90vh] overflow-hidden relative ${className}`}
         onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
       >
         <CloseIcon
