@@ -9,11 +9,12 @@ import {
 export const useGetAllProducts = ({
   data,
   queryParams,
+  pageParams,
   enabled = true,
 }: TUseGetAllProducts) => {
   return useQuery({
-    queryKey: ["get_all_products_non_infinite", data, queryParams],
-    queryFn: () => get_all_products({ data, queryParams }),
+    queryKey: ["get_all_products_non_infinite", data, queryParams, pageParams],
+    queryFn: () => get_all_products({ data, queryParams, pageParams }),
     enabled,
   });
 };
@@ -24,7 +25,7 @@ export const useGetAllProductsInfinite = ({
   queryParams,
 }: TUseGetAllProductInfinite) => {
   return useInfiniteQuery({
-    queryKey: ["get_all_products_infinite", data, queryParams],
+    queryKey: ["get_all_products_infinite", data, queryParams, pageParams],
     initialPageParam: 1,
     queryFn: async ({ pageParam = 1 }) => {
       return get_all_products({
