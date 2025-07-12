@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { CATEGORY_IMAGE_DATA } from "./data";
-// import { useGetAllProducts } from "../../../api/product/product.service";
+// import { useGetAllProductsInfinite } from "../../../api/product/product.service";
 import { useEffect, useState, useMemo } from "react";
 import { FilterIcon, UpDownArrowIcon } from "../../../icons";
 import Filters from "./Filters";
@@ -38,22 +38,15 @@ const CategoryProducts = () => {
     setCategoryImage(finalCategoryImgData || null);
   }, [paths]);
 
-  // const allProducts = useGetAllProducts();
-
-  // useEffect(() => {
-  //   allProducts.mutate({
-  //     data: {
-  //       requiredFields: ["title"],
-  //     },
-  //     params: { page: 1, limit: 10 },
-  //     queryParams: {
-  //       category_1: paths[0],
-  //       category_2: paths[1],
-  //       category_3: paths[2],
-  //     },
-  //   });
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [paths]);
+  // const allProductsQuery = useGetAllProductsInfinite({
+  //   pageParams: { limit: 1 },
+  //   data: { requiredFields: ["title"] },
+  //   queryParams: {
+  //     category_1: paths[0],
+  //     category_2: paths[1],
+  //     category_3: paths[2],
+  //   },
+  // });
 
   return (
     <div className="lg:-mt-16 flex flex-col">
