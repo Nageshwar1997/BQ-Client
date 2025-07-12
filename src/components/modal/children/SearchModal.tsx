@@ -1,42 +1,43 @@
-import { useCallback, useEffect, useState } from "react";
-import { useInView } from "react-intersection-observer";
+import { useEffect, useRef, useState } from "react";
 import { CloseIcon, SearchIcon } from "../../../icons";
 import Input from "../../input/Input";
-import { useGetAllProductsInfinite } from "../../../api/product/product.service";
+import { useGetAllProducts } from "../../../api/product/product.service";
 import SearchModalSkeleton from "../../skeletons/children/SearchModalSkeleton";
 import ShowError from "../../errors/ShowError";
 import EmptyData from "../../empty-data/EmptyData";
 import { FetchedProductType } from "../../../types";
+import { TUseGetAllProducts } from "../../../api/types";
 
 const SearchModal = () => {
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const productsQuery = useGetAllProductsInfinite({
+  useEffect(() => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+
+    timerRef.current = setTimeout(() => {
+      setDebouncedQuery(searchQuery.trim());
+    }, 600);
+
+    // cleanup on unmount
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, [searchQuery]);
+
+  const queryParams: TUseGetAllProducts = {
     data: {
       requiredFields: ["title", "brand", "commonImages"],
       populateFields: { category: ["name"] },
     },
-    pageParams: { limit: 10 },
-  });
-  const { ref: sanityRef, inView } = useInView();
+    pageParams: { page: 1, limit: 5 },
+    queryParams: { search: debouncedQuery },
+    enabled: !!debouncedQuery,
+  };
 
-  const fetchNextPage = useCallback(() => {
-    if (
-      inView &&
-      productsQuery.hasNextPage &&
-      !productsQuery.isFetchingNextPage
-    ) {
-      productsQuery.fetchNextPage();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inView, productsQuery.hasNextPage]);
-
-  useEffect(() => {
-    fetchNextPage();
-  }, [fetchNextPage]);
-
-  const productsData =
-    productsQuery.data?.pages?.flatMap((page) => page.products) || [];
+  const productsQuery = useGetAllProducts(queryParams);
+  const products = productsQuery.data?.products ?? [];
 
   return (
     <div className="w-full h-full flex flex-col gap-2 pt-2">
@@ -49,70 +50,68 @@ const SearchModal = () => {
         name="searchQuery"
         className="w-full"
       />
-
       {/* Query Info */}
-      {searchQuery && (
-        <div className="flex items-center justify-between px-3 py-2 text-tertiary bg-smoke-eerie rounded shadow-sm mb-1">
-          <div className="flex items-center gap-2 text-xs">
-            <SearchIcon className="stroke-tertiary w-4 h-4" />
-            <span className="line-clamp-1">
-              Showing results for: <strong>{searchQuery}</strong>
-            </span>
-          </div>
-          <CloseIcon
-            className="stroke-tertiary w-4 h-4 cursor-pointer hover:stroke-primary transition"
-            onClick={() => setSearchQuery("")}
-          />
+      <div
+        className={`flex items-center justify-between px-3 py-2 text-tertiary bg-smoke-eerie rounded shadow-sm mb-1 ${
+          searchQuery.trim() ? "opacity-100" : "opacity-50 pointer-events-none"
+        }`}
+      >
+        <div className="flex items-center gap-2 text-xs">
+          <SearchIcon className="stroke-tertiary w-4 h-4" />
+          <span className="line-clamp-1">
+            Results for: <strong>{searchQuery.trim()}</strong>
+          </span>
         </div>
-      )}
-
+        <CloseIcon
+          className="stroke-tertiary w-4 h-4 cursor-pointer hover:stroke-primary transition"
+          onClick={() => setSearchQuery("")}
+        />
+      </div>
       {/* Result Container */}
-      <div className="flex-1 max-h-[350px] w-full h-full overflow-y-auto rounded-lg bg-smoke-eerie shadow-inner">
-        {productsQuery.isPending ? (
-          <SearchModalSkeleton count={6} />
+      <div className="flex flex-col flex-1 min-h-[235px] max-h-[350px] w-full overflow-y-auto rounded-lg bg-smoke-eerie shadow-inner">
+        {productsQuery.isPending && debouncedQuery ? (
+          <SearchModalSkeleton count={5} />
         ) : productsQuery.isError ? (
           <ShowError
             headingText="Something went wrong"
             descriptionText="Please try again later."
             className="gap-1"
           />
-        ) : productsData?.length ? (
+        ) : products.length ? (
           <ul className="flex flex-col gap-1 p-1">
-            {productsData?.map((product: FetchedProductType, index) => (
+            {products.map((p: FetchedProductType) => (
               <li
-                key={product._id}
-                className="border border-primary-30 flex items-center gap-2 transition cursor-pointer p-1 rounded hover:bg-primary-inverted-30"
-                ref={index === productsData.length - 1 ? sanityRef : null}
+                key={p._id}
+                className="border border-primary-30 flex items-center gap-2 p-1 rounded hover:bg-primary-inverted-30 cursor-pointer transition"
               >
                 <img
-                  src={product.commonImages[0]}
-                  alt={product.brand}
+                  src={p.commonImages[0]}
+                  alt={p.brand}
                   className="w-8 h-8 object-cover rounded aspect-square"
                 />
                 <div className="flex flex-col">
                   <h3 className="text-xs font-medium text-secondary line-clamp-1">
-                    {product.title}
+                    {p.title}
                   </h3>
                   <p className="text-[10px] text-tertiary line-clamp-1">
-                    {product.brand} - {product.category.name}
+                    {p.brand} - {p.category.name}
                   </p>
                 </div>
               </li>
             ))}
-            {productsQuery.isFetchingNextPage && (
-              <SearchModalSkeleton count={1} />
-            )}
           </ul>
+        ) : debouncedQuery ? (
+          <EmptyData
+            content={
+              <>
+                No results found for <strong>{debouncedQuery}</strong>
+              </>
+            }
+          />
         ) : (
-          searchQuery && (
-            <EmptyData
-              content={
-                <>
-                  No results found for <strong>{searchQuery}</strong>
-                </>
-              }
-            />
-          )
+          <div className="w-full flex-1 flex items-center justify-center text-center text-sm md:text-base">
+            Search for products to view them here
+          </div>
         )}
       </div>
     </div>
