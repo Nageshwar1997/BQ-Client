@@ -29,7 +29,7 @@ export interface TGetProductsParams extends TUseGetProduct {
   pageParams?: TPageParams;
 }
 
-export interface TUseGetAllProducts extends TUseGetProduct {
+export interface TUseGetAllProducts extends TUseGetProduct, TGetProductsParams {
   enabled?: boolean;
 }
 
