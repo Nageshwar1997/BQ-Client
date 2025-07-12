@@ -13,6 +13,8 @@ import LoadingScreen from "../components/loaders/LoadingScreen";
 import CategoryProducts from "../pages/product/categoryProducts/CategoryProducts";
 import Offers from "../pages/offers/Offers";
 import Blogs from "../pages/blogs/Blogs";
+import SearchProducts from "../pages/product/searchProducts/SearchProducts";
+import ProductDetails from "../pages/product/productDetails/ProductDetails";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +36,14 @@ const router = createBrowserRouter([
       {
         path: "blogs",
         element: <Blogs />,
+      },
+      {
+        path: "search",
+        element: <SearchProducts />,
+      },
+      {
+        path: "products/:productId",
+        element: <ProductDetails />,
       },
       {
         path: "products/:levelOneCategory",

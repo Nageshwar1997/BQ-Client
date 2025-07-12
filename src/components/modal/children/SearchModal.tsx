@@ -8,10 +8,12 @@ import EmptyData from "../../empty-data/EmptyData";
 import { FetchedProductType } from "../../../types";
 import { TUseGetAllProducts } from "../../../api/types";
 import { debounce } from "../../../utils";
+import { useNavigate } from "react-router-dom";
 
-const SearchModal = () => {
+const SearchModal = ({ onClose }: { onClose: () => void }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
+  const navigate = useNavigate();
 
   const debouncedSetQuery = useMemo(
     () =>
@@ -38,6 +40,15 @@ const SearchModal = () => {
     [debouncedQuery]
   );
 
+  const handleSubmit = (id?: string) => {
+    if (id) {
+      navigate(`/products/${id}`);
+    } else {
+      navigate(`/search?search=${searchQuery.trim()}`);
+    }
+    onClose();
+  };
+
   const productsQuery = useGetAllProducts(queryParams);
   const products = productsQuery.data?.products ?? [];
 
@@ -49,6 +60,11 @@ const SearchModal = () => {
         icon={<SearchIcon className="stroke-tertiary w-4 h-4 md:w-5 md:h-5" />}
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && searchQuery.trim()) {
+            handleSubmit();
+          }
+        }}
         name="searchQuery"
         className="w-full"
       />
@@ -58,7 +74,10 @@ const SearchModal = () => {
           searchQuery.trim() ? "opacity-100" : "opacity-50 pointer-events-none"
         }`}
       >
-        <div className="flex items-center gap-2 text-xs">
+        <div
+          className="flex items-center gap-2 text-xs cursor-pointer"
+          onClick={() => handleSubmit()}
+        >
           <SearchIcon className="stroke-tertiary w-4 h-4" />
           <span className="line-clamp-1">
             Results for: <strong>{searchQuery.trim()}</strong>
@@ -85,6 +104,7 @@ const SearchModal = () => {
               <li
                 key={p._id}
                 className="border border-primary-30 flex items-center gap-2 p-1 rounded hover:bg-primary-inverted-30 cursor-pointer transition"
+                onClick={() => handleSubmit(p._id)}
               >
                 <img
                   src={p.commonImages[0]}
