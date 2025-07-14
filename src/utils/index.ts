@@ -24,8 +24,7 @@ export const decryptData = (
   if (decrypted) {
     try {
       return JSON.parse(decrypted);
-    } catch (err) {
-      console.error("JSON parse failed", err);
+    } catch {
       return decrypted;
     }
   }
