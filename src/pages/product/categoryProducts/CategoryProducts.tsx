@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom";
 import { CATEGORY_IMAGE_DATA } from "./data";
 // import { useGetAllProductsInfinite } from "../../../api/product/product.service";
 import { useEffect, useState, useMemo } from "react";
-import { FilterIcon, UpDownArrowIcon } from "../../../icons";
+import { FilterIcon, LeftArrowIcon } from "../../../icons";
 import Filters from "./Filters";
 import SortBy from "./SortBy";
 
@@ -70,9 +70,10 @@ const CategoryProducts = () => {
               FILTER
             </span>
             <FilterIcon
-              className={`stroke-primary w-5 h-5 [&>path]:stroke-[1.5] transform transition-all duration-500 ${
+              className={`stroke-primary w-5 h-5 transform transition-all duration-500 ${
                 showFilter ? "scale-100 scale-x-[-1]" : ""
               }`}
+              strokeWidth={1.6}
             />
           </button>
           <button
@@ -85,10 +86,11 @@ const CategoryProducts = () => {
             <span className="uppercase text-sm text-nowrap sm:text-base text-primary">
               SORT BY
             </span>
-            <UpDownArrowIcon
-              className={`w-5 h-5 [&>path]:stroke-[1.6] transform transition-all duration-500 ${
+            <LeftArrowIcon
+              className={`w-5 h-5 transform transition-all duration-500 ${
                 showSortBy ? "scale-100 scale-x-[-1]" : ""
               }`}
+              strokeWidth={1.6}
             />
           </button>
         </div>

@@ -111,9 +111,15 @@ const VideoCarousel = () => {
               } transform -translate-y-1/2 bg-primary-50 hover:bg-primary p-3 rounded-full hidden group-hover:lg:block`}
             >
               {type === "prev" ? (
-                <LeftArrowIcon className="fill-primary-inverted w-4 h-4" />
+                <LeftArrowIcon
+                  className="stroke-tertiary w-5 h-5"
+                  strokeWidth={2.5}
+                />
               ) : (
-                <RightArrowIcon className="fill-primary-inverted w-4 h-4" />
+                <RightArrowIcon
+                  className="stroke-tertiary w-5 h-5"
+                  strokeWidth={2.5}
+                />
               )}
             </button>
           ))}

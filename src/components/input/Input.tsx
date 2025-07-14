@@ -3,14 +3,16 @@ import { CheckedCircleIcon, InfoIcon } from "../../icons";
 import { InputProps } from "../../types";
 
 const Input = ({
-  icon,
   value,
   name = "",
   label = "",
   register,
+  leftIcon,
+  rightIcon,
   onChange,
   onKeyDown,
-  iconClick,
+  leftIconClick,
+  rightIconClick,
   type = "text",
   className = "",
   errorText = "",
@@ -29,8 +31,8 @@ const Input = ({
   const isSuccess = successText && !errorText;
 
   return (
-    <div className={`w-full space-y-1.5 ${containerClassName}`}>
-      <div className="relative min-h-10 max-h-10 lg:min-h-12 lg:max-h-12">
+    <div className={`w-full flex flex-col gap-1.5 ${containerClassName}`}>
+      <div className="relative h-10 lg:h-12">
         {label && (
           <label
             htmlFor={name}
@@ -39,34 +41,51 @@ const Input = ({
             {label}
           </label>
         )}
-        {/* Input */}
-        <input
-          aria-autocomplete="none"
-          id={name}
-          type={type}
-          name={name}
-          value={value}
-          {...register}
-          readOnly={readOnly}
-          disabled={readOnly}
-          onKeyDown={onKeyDown}
-          onChange={handleChange}
-          placeholder={placeholder}
-          autoComplete={autoComplete}
-          className={`w-full min-h-10 max-h-10 lg:min-h-12 lg:max-h-12 outline-none focus:outline-none font-normal text-sm overflow-hidden bg-smoke-eerie rounded-lg border border-primary-10 p-3 2xl:py-4 text-primary placeholder:text-primary-50 placeholder:text-sm ${
-            icon && "pr-10"
-          } autofill-effect ${className}`}
-        />
+        <div
+          className={`w-full h-full flex items-center gap-1 border border-primary-10 bg-smoke-eerie rounded-lg overflow-hidden ${className}`}
+        >
+          {/* Left Icon */}
+          {leftIcon && !rightIcon && (
+            <span
+              onClick={leftIconClick && leftIconClick}
+              className="h-full flex justify-center items-center cursor-pointer p-2"
+            >
+              {leftIcon}
+            </span>
+          )}
+          {/* Input */}
+          <input
+            aria-autocomplete="none"
+            id={name}
+            type={type}
+            name={name}
+            value={value}
+            {...register}
+            readOnly={readOnly}
+            disabled={readOnly}
+            onKeyDown={onKeyDown}
+            onChange={handleChange}
+            placeholder={placeholder}
+            autoComplete={autoComplete}
+            className={`w-full h-full outline-none border-none focus:outline-none focus:border-none bg-transparent font-normal text-sm py-3 2xl:py-4 text-primary placeholder:text-primary-50 placeholder:text-sm autofill-effect ${
+              leftIcon && !rightIcon
+                ? "pl-1 pr-3"
+                : !leftIcon && rightIcon
+                ? "pl-2 pr-1"
+                : "px-3"
+            }`}
+          />
 
-        {/* Icon */}
-        {icon && (
-          <span
-            onClick={iconClick && iconClick}
-            className="h-full absolute top-0 right-0 pr-2 flex justify-center items-center cursor-pointer"
-          >
-            {icon}
-          </span>
-        )}
+          {/* Right Icon */}
+          {!leftIcon && rightIcon && (
+            <span
+              onClick={rightIconClick && rightIconClick}
+              className="h-full flex justify-center items-center cursor-pointer p-2"
+            >
+              {rightIcon}
+            </span>
+          )}
+        </div>
       </div>
 
       {!readOnly && (isError || isSuccess) && (

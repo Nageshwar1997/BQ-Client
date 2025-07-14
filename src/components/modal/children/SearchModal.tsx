@@ -57,7 +57,7 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
       {/* Search Input */}
       <Input
         placeholder="Search products here..."
-        icon={<SearchIcon className="stroke-tertiary w-4 h-4 md:w-5 md:h-5" />}
+        leftIcon={<SearchIcon className="stroke-tertiary w-4 h-4 md:w-5 md:h-5" />}
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         onKeyDown={(e) => {
@@ -78,7 +78,6 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
           className="flex items-center gap-2 text-xs cursor-pointer"
           onClick={() => handleSubmit()}
         >
-          <SearchIcon className="stroke-tertiary w-4 h-4" />
           <span className="line-clamp-1">
             Results for: <strong>{searchQuery.trim()}</strong>
           </span>

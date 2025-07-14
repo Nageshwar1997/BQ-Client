@@ -2,10 +2,12 @@ const Checkbox = ({
   register,
   className = "",
   labelClassName = "",
+  checked = false,
 }: {
   register?: object;
   className?: string;
   labelClassName?: string;
+  checked?: boolean;
 }) => {
   return (
     <label
@@ -15,6 +17,7 @@ const Checkbox = ({
         name="remember"
         type="checkbox"
         className="sr-only peer outline-none"
+        checked={checked}
         {...register}
       />
       <div
