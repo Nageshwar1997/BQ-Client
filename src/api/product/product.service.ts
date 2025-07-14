@@ -23,10 +23,12 @@ export const useGetAllProductsInfinite = ({
   data,
   pageParams,
   queryParams,
+  enabled = true,
+  refetchOnWindowFocus = false,
 }: TUseGetAllProductInfinite) => {
   return useInfiniteQuery({
     queryKey: ["get_all_products_infinite", data, queryParams, pageParams],
-    initialPageParam: 1,
+    initialPageParam: 0,
     queryFn: async ({ pageParam = 1 }) => {
       return get_all_products({
         data,
@@ -34,6 +36,8 @@ export const useGetAllProductsInfinite = ({
         queryParams,
       });
     },
+    enabled,
+    refetchOnWindowFocus,
     getNextPageParam: (lastPage, allPages) => {
       const hasMore = lastPage.products.length === pageParams.limit;
       return hasMore ? allPages.length + 1 : undefined;

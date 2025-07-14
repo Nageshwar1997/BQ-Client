@@ -35,4 +35,6 @@ export interface TUseGetAllProducts extends TUseGetProduct, TGetProductsParams {
 
 export interface TUseGetAllProductInfinite extends TUseGetProduct {
   pageParams: Omit<TPageParams, "page">;
+  enabled?: boolean;
+  refetchOnWindowFocus?: boolean;
 }
