@@ -1,1 +1,1 @@
-export const DEFAULT_FILTER = { name: "All", category: "all", default: true };
+export const DEFAULT_FILTER = { name: "All", value: "all", default: true };

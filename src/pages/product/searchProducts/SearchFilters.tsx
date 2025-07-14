@@ -12,6 +12,7 @@ import {
 } from "../../../icons";
 import { CATEGORIES_DATA } from "../../../constants/categories";
 import { DEFAULT_FILTER } from "../../../constants";
+import Dropdown from "../../../components/dropdown/Dropdown";
 
 interface FiltersProps {
   className?: string;
@@ -183,7 +184,7 @@ function SearchFilters({ className = "" }: FiltersProps) {
   const handleFilterChange = useMemo(
     () => ({
       category_1: (val: string) => {
-        if (val === queryParams.category_1 || val === DEFAULT_FILTER.category) {
+        if (val === queryParams.category_1 || val === DEFAULT_FILTER.value) {
           removeParam("category_1");
         } else {
           setParams({ category_1: val });
@@ -192,7 +193,7 @@ function SearchFilters({ className = "" }: FiltersProps) {
         removeParam("category_3");
       },
       category_2: (val: string) => {
-        if (val === queryParams.category_2 || val === DEFAULT_FILTER.category) {
+        if (val === queryParams.category_2 || val === DEFAULT_FILTER.value) {
           removeParam("category_2");
         } else {
           setParams({ category_2: val });
@@ -200,23 +201,33 @@ function SearchFilters({ className = "" }: FiltersProps) {
         removeParam("category_3");
       },
       category_3: (val: string) => {
-        setParams({ category_3: val });
+        if (val === queryParams.category_3 || val === DEFAULT_FILTER.value) {
+          removeParam("category_3");
+        } else {
+          setParams({ category_3: val });
+        }
       },
     }),
-    [queryParams.category_1, queryParams.category_2, removeParam, setParams]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [queryParams.category_1, queryParams.category_2, queryParams.category_3]
   );
 
-  const level1Data = CATEGORIES_DATA.find(
-    (cat) => cat.category === selectedCategories.category_1
-  );
+  const { level1Options, level2Options, level3Options } = useMemo(() => {
+    const level1Options = CATEGORIES_DATA || [];
+    const level1Data = level1Options.find(
+      (cat) => cat.category === selectedCategories.category_1
+    );
 
-  const level2Options = level1Data?.subCategories || [];
+    const level2Options = level1Data?.subCategories || [];
 
-  const level2Data = level2Options.find(
-    (cat) => cat.category === selectedCategories.category_2
-  );
+    const level2Data = level1Data?.subCategories.find(
+      (cat) => cat.category === selectedCategories.category_2
+    );
 
-  const level3Options = level2Data?.subCategories || [];
+    const level3Options = level2Data?.subCategories || [];
+
+    return { level1Options, level2Options, level3Options };
+  }, [selectedCategories]);
 
   return (
     <section
@@ -256,21 +267,17 @@ function SearchFilters({ className = "" }: FiltersProps) {
                 : "max-h-0 opacity-0 scale-y-0"
             }`}
           >
-            <button
-              onClick={() => {
-                if (queryParams.inStock === "true") {
-                  removeParam("inStock");
-                } else {
+            <Checkbox
+              className="!w-10 !h-5 !bg-primary peer-checked:bg-primary after:!bg-primary-inverted after:!h-3 after:!w-3 peer-checked:after:bg-accent-duo after:border-tertiary-inverted"
+              checked={queryParams.inStock === "true"}
+              onChange={(e) => {
+                if (e.target.checked) {
                   setParams({ inStock: "true" });
+                } else {
+                  removeParam("inStock");
                 }
               }}
-              className="flex items-center"
-            >
-              <Checkbox
-                className="!w-10 !h-5 !bg-primary peer-checked:bg-primary after:!bg-primary-inverted after:!h-3 after:!w-3 peer-checked:after:bg-accent-duo after:border-tertiary-inverted"
-                checked={queryParams.inStock === "true"}
-              />
-            </button>
+            />
             <span className="whitespace-nowrap">In stock only</span>
           </div>
         </div>
@@ -486,220 +493,63 @@ function SearchFilters({ className = "" }: FiltersProps) {
             </div>
           </div>
         </div>
-        {/* Category Filter 1 */}
-        <div
-          className={`py-4 border-b border-b-primary-50 flex flex-col transition-all duration-500 ${
-            openedFilters.category_1 ? "gap-4" : "gap-0"
-          }`}
-        >
-          <button
-            onClick={() =>
-              setOpenedFilters((prev) => ({
-                ...prev,
-                category_1: !prev.category_1,
-              }))
-            }
-            className="flex items-center gap-2 justify-between"
-          >
-            <div className="flex items-center gap-1">
-              <span className="uppercase text-sm sm:text-base text-primary font-medium whitespace-nowrap">
-                Category One
-              </span>
-              (<SingleLayerIcon className="w-4 h-4 -m-[1.5px]" />)
-            </div>
-            <DropdownIcon
-              className={`w-6 h-6 transition-transform duration-500 ${
-                openedFilters.category_1 ? "rotate-180" : "rotate-0"
-              }`}
-            />
-          </button>
-
-          <div
-            className={`flex flex-col gap-0.5 overflow-hidden transition-all duration-500 ease-in-out ${
-              openedFilters.category_1
-                ? "max-h-60 opacity-100 scale-y-100"
-                : "max-h-0 opacity-0 scale-y-0"
-            }`}
-          >
-            {[
-              DEFAULT_FILTER,
-              ...CATEGORIES_DATA.map((data) => ({
-                name: data.name,
-                category: data.category,
-              })),
-            ].map((cat, index) => (
-              <button
-                key={index}
-                onClick={() => handleFilterChange.category_1(cat.category)}
-                className={`p-1 flex items-center w-full justify-between text-md rounded-lg font-light ${
-                  selectedCategories.category_1 ||
-                  DEFAULT_FILTER.category === cat.category
-                    ? "bg-off-black"
-                    : ""
-                }`}
-              >
-                <p
-                  className={`w-full text-start ${
-                    selectedCategories.category_1 === cat.category ||
-                    (DEFAULT_FILTER.category === cat.category &&
-                      !selectedCategories.category_1)
-                      ? "text-not-black font-medium"
-                      : "text-not-black opacity-50"
-                  }`}
-                >
-                  {cat.name}
-                </p>
-                {(selectedCategories.category_1 === cat.category ||
-                  (DEFAULT_FILTER.category === cat.category &&
-                    !selectedCategories.category_1)) && (
-                  <CheckedIcon className="fill-not-black w-5 h-5" />
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
-        {/* Category Filter 2 */}
-        <div
-          className={`py-4 border-b border-b-primary-50 flex flex-col transition-all duration-500 ${
-            openedFilters.category_2 ? "gap-4" : "gap-0"
-          }`}
-        >
-          <button
-            onClick={() =>
-              setOpenedFilters((prev) => ({
-                ...prev,
-                category_2: !prev.category_2,
-              }))
-            }
-            className="flex items-center gap-2 justify-between"
-          >
-            <div className="flex items-center gap-1">
-              <span className="uppercase text-sm sm:text-base text-primary font-medium whitespace-nowrap">
-                Category Two
-              </span>
-              (<DoubleLayerIcon className="w-4 h-4 -m-[1.5px]" />)
-            </div>
-            <DropdownIcon
-              className={`w-6 h-6 transition-transform duration-500 ${
-                openedFilters.category_2 ? "rotate-180" : "rotate-0"
-              }`}
-            />
-          </button>
-          <div
-            className={`flex flex-col gap-0.5 overflow-hidden transition-all duration-500 ease-in-out ${
-              openedFilters.category_2
-                ? "max-h-60 opacity-100 scale-y-100"
-                : "max-h-0 opacity-0 scale-y-0"
-            }`}
-          >
-            {[
-              DEFAULT_FILTER,
-              ...level2Options.map((data) => ({
-                name: data.name,
-                category: data.category,
-              })),
-            ].map((cat, index) => (
-              <button
-                key={index}
-                onClick={() => handleFilterChange.category_2(cat.category)}
-                className={`p-1 flex items-center w-full justify-between text-md rounded-lg font-light ${
-                  selectedCategories.category_2 ||
-                  DEFAULT_FILTER.category === cat.category
-                    ? "bg-off-black"
-                    : ""
-                }`}
-              >
-                <p
-                  className={`w-full text-start ${
-                    selectedCategories.category_2 === cat.category ||
-                    (DEFAULT_FILTER.category === cat.category &&
-                      !selectedCategories.category_2)
-                      ? "text-not-black font-medium"
-                      : "text-not-black opacity-50"
-                  }`}
-                >
-                  {cat.name}
-                </p>
-                {(selectedCategories.category_2 === cat.category ||
-                  (DEFAULT_FILTER.category === cat.category &&
-                    !selectedCategories.category_2)) && (
-                  <CheckedIcon className="fill-not-black w-5 h-5" />
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
-        {/* Category Filter 3 */}
-        <div
-          className={`py-4 border-b border-b-primary-50 flex flex-col transition-all duration-500 ${
-            openedFilters.category_3 ? "gap-4" : "gap-0"
-          }`}
-        >
-          <button
-            onClick={() =>
-              setOpenedFilters((prev) => ({
-                ...prev,
-                category_3: !prev.category_3,
-              }))
-            }
-            className="flex items-center gap-2 justify-between"
-          >
-            <div className="flex items-center gap-1">
-              <span className="uppercase text-sm sm:text-base text-primary font-medium whitespace-nowrap">
-                Category Three
-              </span>
-              (<TripleLayerIcon className="w-4 h-4 -m-[1.5px]" />)
-            </div>
-            <DropdownIcon
-              className={`w-6 h-6 transition-transform duration-500 ${
-                openedFilters.category_3 ? "rotate-180" : "rotate-0"
-              }`}
-            />
-          </button>
-          <div
-            className={`flex flex-col gap-0.5 overflow-hidden transition-all duration-500 ease-in-out ${
-              openedFilters.category_3
-                ? "max-h-60 opacity-100 scale-y-100"
-                : "max-h-0 opacity-0 scale-y-0"
-            }`}
-          >
-            {[
-              DEFAULT_FILTER,
-              ...level3Options.map((data) => ({
-                name: data.name,
-                category: data.category,
-              })),
-            ].map((cat, index) => (
-              <button
-                key={index}
-                onClick={() => handleFilterChange.category_3(cat.category)}
-                className={`p-1 flex items-center w-full justify-between text-md rounded-lg font-light ${
-                  selectedCategories.category_3 ||
-                  DEFAULT_FILTER.category === cat.category
-                    ? "bg-off-black"
-                    : ""
-                }`}
-              >
-                <p
-                  className={`w-full text-start ${
-                    selectedCategories.category_3 === cat.category ||
-                    (DEFAULT_FILTER.category === cat.category &&
-                      !selectedCategories.category_3)
-                      ? "text-not-black font-medium"
-                      : "text-not-black opacity-50"
-                  }`}
-                >
-                  {cat.name}
-                </p>
-                {(selectedCategories.category_3 === cat.category ||
-                  (DEFAULT_FILTER.category === cat.category &&
-                    !selectedCategories.category_3)) && (
-                  <CheckedIcon className="fill-not-black w-5 h-5" />
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
+        <Dropdown
+          onChange={(category) => handleFilterChange.category_1(category.value)}
+          selected={selectedCategories.category_1}
+          heading={{
+            title: "Category One",
+            icon: (
+              <>
+                (<SingleLayerIcon className="w-4 h-4 -m-[1.5px]" />)
+              </>
+            ),
+          }}
+          options={[
+            DEFAULT_FILTER,
+            ...level1Options.map((data) => ({
+              name: data.name,
+              value: data.category,
+            })),
+          ]}
+        />
+        <Dropdown
+          onChange={(category) => handleFilterChange.category_2(category.value)}
+          selected={selectedCategories.category_2}
+          heading={{
+            title: "Category Two",
+            icon: (
+              <>
+                (<DoubleLayerIcon className="w-4 h-4 -m-[1.5px]" />)
+              </>
+            ),
+          }}
+          options={[
+            DEFAULT_FILTER,
+            ...level2Options.map((data) => ({
+              name: data.name,
+              value: data.category,
+            })),
+          ]}
+        />
+        <Dropdown
+          onChange={(category) => handleFilterChange.category_3(category.value)}
+          selected={selectedCategories.category_3}
+          heading={{
+            title: "Category Three",
+            icon: (
+              <>
+                (<TripleLayerIcon className="w-4 h-4 -m-[1.5px]" />)
+              </>
+            ),
+          }}
+          options={[
+            DEFAULT_FILTER,
+            ...level3Options.map((data) => ({
+              name: data.name,
+              value: data.category,
+            })),
+          ]}
+        />
       </div>
     </section>
   );
