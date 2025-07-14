@@ -71,7 +71,7 @@ const Input = ({
               leftIcon && !rightIcon
                 ? "pl-1 pr-3"
                 : !leftIcon && rightIcon
-                ? "pl-2 pr-1"
+                ? "pl-3 pr-1"
                 : "px-3"
             }`}
           />
