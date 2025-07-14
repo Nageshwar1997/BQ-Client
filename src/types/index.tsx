@@ -28,13 +28,15 @@ export interface InputProps {
   name?: string;
   value?: string;
   label?: string;
-  icon?: ReactNode;
+  leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
   readOnly?: boolean;
   errorText?: string;
   className?: string;
   placeholder?: string;
   successText?: string;
-  iconClick?: () => void;
+  leftIconClick?: () => void;
+  rightIconClick?: () => void;
   containerClassName?: string;
   register?: UseFormRegisterReturn;
   onChange?: (
