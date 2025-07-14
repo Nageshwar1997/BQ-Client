@@ -12,7 +12,7 @@ function SortBy({ className = "" }: SortByProps) {
     <section
       className={`h-full flex gap-6 bg-primary-inverted select-none ${className}`}
     >
-      <ul className={`w-full flex flex-col gap-0.5 py-4 px-7`}>
+      <ul className={`w-full flex flex-col gap-0.5 py-2 px-7`}>
         {SORT_BY_OPTIONS.map((opt) => (
           <li
             key={opt.value}

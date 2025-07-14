@@ -160,7 +160,7 @@ function Filters({ className = "" }: FiltersProps) {
     <section
       className={`h-full gap-6 bg-primary-inverted select-none ${className}`}
     >
-      <div className={`w-full flex flex-col gap-4 py-4 px-6`}>
+      <div className={`w-full flex flex-col gap-4 py-2 px-6`}>
         {/* Availability Filter */}
         <div
           className={`py-4 border-b border-b-primary-50 flex flex-col transition-all duration-500 ${
