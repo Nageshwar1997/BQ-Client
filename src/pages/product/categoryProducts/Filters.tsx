@@ -194,21 +194,17 @@ function Filters({ className = "" }: FiltersProps) {
                 : "max-h-0 opacity-0 scale-y-0"
             }`}
           >
-            <button
-              onClick={() => {
-                if (queryParams.inStock === "true") {
-                  removeParam("inStock");
-                } else {
+            <Checkbox
+              className="!w-10 !h-5 !bg-primary peer-checked:bg-primary after:!bg-primary-inverted after:!h-3 after:!w-3 peer-checked:after:bg-accent-duo after:border-tertiary-inverted"
+              checked={queryParams.inStock === "true"}
+              onChange={(e) => {
+                if (e.target.checked) {
                   setParams({ inStock: "true" });
+                } else {
+                  removeParam("inStock");
                 }
               }}
-              className="flex items-center"
-            >
-              <Checkbox
-                className="!w-10 !h-5 !bg-primary peer-checked:bg-primary after:!bg-primary-inverted after:!h-3 after:!w-3 peer-checked:after:bg-accent-duo after:border-tertiary-inverted"
-                checked={queryParams.inStock === "true"}
-              />
-            </button>
+            />
             <span className="whitespace-nowrap">In stock only</span>
           </div>
         </div>
