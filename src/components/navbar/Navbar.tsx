@@ -208,12 +208,12 @@ const Navbar = () => {
                     <DropdownIcon
                       className={`${
                         hoveredIndex === index
-                          ? "rotate-180 [&>path]:stroke-blue-crayola-c"
+                          ? "rotate-180 stroke-blue-crayola-c"
                           : ""
                       } ${
                         isNavbarAtTop || isNavbarHovered
                           ? ""
-                          : "light:[&>path]:stroke-tertiary-inverted"
+                          : "light:stroke-tertiary-inverted"
                       } transition-transform duration-300`}
                     />
                   </div>
@@ -306,7 +306,7 @@ const Navbar = () => {
                     >
                       <p className="text-primary">{category.label}</p>
                       <DropdownIcon
-                        className={`[&>path]:stroke-2 ${
+                        className={`stroke-2 ${
                           isActive ? "rotate-180" : ""
                         }`}
                       />

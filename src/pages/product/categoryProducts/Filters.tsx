@@ -182,7 +182,7 @@ function Filters({ className = "" }: FiltersProps) {
               )
             </div>
             <DropdownIcon
-              className={`w-6 h-6 transition-transform duration-500 ${
+              className={`w-6 h-6 transition-transform duration-500 stroke-primary ${
                 openedFilters.inStock ? "rotate-180" : "rotate-0"
               }`}
             />
@@ -232,7 +232,7 @@ function Filters({ className = "" }: FiltersProps) {
               )
             </div>
             <DropdownIcon
-              className={`w-6 h-6 transition-transform duration-500 ${
+              className={`w-6 h-6 transition-transform duration-500 stroke-primary ${
                 openedFilters.priceRange ? "rotate-180" : "rotate-0"
               }`}
             />
@@ -358,7 +358,7 @@ function Filters({ className = "" }: FiltersProps) {
               )
             </div>
             <DropdownIcon
-              className={`w-6 h-6 transition-transform duration-500 ${
+              className={`w-6 h-6 transition-transform duration-500 stroke-primary ${
                 openedFilters.discountRange ? "rotate-180" : "rotate-0"
               }`}
             />
