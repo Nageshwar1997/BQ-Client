@@ -46,8 +46,8 @@ const UploadProfile = ({
           <div className="absolute inset-0 bg-gradient-to-br from-primary-inverted via-transparent to-gray-400 rounded-full blur-sm animate-pulse cursor-pointer" />
           <img
             src={
-              previewUrl ||
-              "https://ctruhcdn.azureedge.net/main-webiste/public/images/products/individuals/ctruh-platfrom/categories/character/image10.webp"
+              previewUrl || "/images/logo/BQ_white_logo.webp"
+              // "https://ctruhcdn.azureedge.net/main-webiste/public/images/products/individuals/ctruh-platfrom/categories/character/image10.webp"
             }
             alt="Profile Picture"
             className="object-cover bg-accent-duo rounded-full w-full h-full shadow-inner"
