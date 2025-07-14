@@ -5,7 +5,7 @@ interface SortByProps {
   className?: string;
 }
 
-function Filters({ className = "" }: SortByProps) {
+function SortBy({ className = "" }: SortByProps) {
   const { queryParams, setParams, removeParam } = useQueryParams();
   const current = queryParams.sortBy;
   return (
@@ -35,4 +35,4 @@ function Filters({ className = "" }: SortByProps) {
   );
 }
 
-export default Filters;
+export default SortBy;
