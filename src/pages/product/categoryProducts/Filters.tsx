@@ -158,7 +158,7 @@ function Filters({ className = "" }: FiltersProps) {
 
   return (
     <section
-      className={`h-full flex gap-6 bg-primary-inverted select-none ${className}`}
+      className={`h-full gap-6 bg-primary-inverted select-none ${className}`}
     >
       <div className={`w-full flex flex-col gap-4 py-4 px-6`}>
         {/* Availability Filter */}
@@ -269,7 +269,7 @@ function Filters({ className = "" }: FiltersProps) {
                   className="w-full px-2 py-1 text-sm text-primary bg-primary-10 h-full border border-none outline-none number-input-mouse-control-none"
                 />
               </div>
-              <div className="w-px h-9 bg-primary-50"></div>
+              <div className="w-px h-9 bg-primary-50" />
               {/* Max Input */}
               <div className="w-full flex items-center border border-primary-50 rounded overflow-hidden">
                 <label
@@ -373,29 +373,31 @@ function Filters({ className = "" }: FiltersProps) {
             }`}
           >
             {/* Discount Input */}
-            <div className="w-full flex items-center border border-primary-50 rounded overflow-hidden">
-              <label
-                htmlFor="min-discount"
-                className="text-xs text-primary px-2 py-2 border-r border-r-primary-50 bg-primary-30 h-full text-center flex items-center justify-center"
-              >
-                0 - 100
-              </label>
-              <input
-                id="min-discount"
-                type="number"
-                min={0}
-                max={100}
-                value={ranges.discount}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value === "" || Number(value) <= 100) {
-                    setRanges((prev) => ({ ...prev, discount: value }));
-                  } else if (Number(value) > 100) {
-                    setRanges((prev) => ({ ...prev, discount: "100" }));
-                  }
-                }}
-                className="flex-1 px-2 py-1 text-sm text-primary bg-primary-10 h-full border-none outline-none number-input-mouse-control-none"
-              />
+            <div className="flex justify-between gap-2">
+              <div className="w-full flex items-center border border-primary-50 rounded overflow-hidden">
+                <label
+                  htmlFor="min-discount"
+                  className="text-xs text-primary px-2 py-2 border-r border-r-primary-50 bg-primary-30 h-full text-center flex items-center justify-center"
+                >
+                  0 - 100
+                </label>
+                <input
+                  id="min-discount"
+                  type="number"
+                  min={0}
+                  max={100}
+                  value={ranges.discount}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value === "" || Number(value) <= 100) {
+                      setRanges((prev) => ({ ...prev, discount: value }));
+                    } else if (Number(value) > 100) {
+                      setRanges((prev) => ({ ...prev, discount: "100" }));
+                    }
+                  }}
+                  className="flex-1 px-2 py-1 text-sm text-primary bg-primary-10 h-full border-none outline-none number-input-mouse-control-none"
+                />
+              </div>
             </div>
 
             {/* Range Slider for minDiscount only */}
