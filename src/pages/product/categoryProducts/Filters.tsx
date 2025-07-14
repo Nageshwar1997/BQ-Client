@@ -204,7 +204,10 @@ function Filters({ className = "" }: FiltersProps) {
               }}
               className="flex items-center"
             >
-              <Checkbox className="!w-10 !h-5 !bg-primary peer-checked:bg-primary after:!bg-primary-inverted after:!h-3 after:!w-3 peer-checked:after:bg-accent-duo after:border-tertiary-inverted" />
+              <Checkbox
+                className="!w-10 !h-5 !bg-primary peer-checked:bg-primary after:!bg-primary-inverted after:!h-3 after:!w-3 peer-checked:after:bg-accent-duo after:border-tertiary-inverted"
+                checked={queryParams.inStock === "true"}
+              />
             </button>
             <span className="whitespace-nowrap">In stock only</span>
           </div>
