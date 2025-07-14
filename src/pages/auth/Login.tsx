@@ -173,7 +173,7 @@ const Login = () => {
                                 : item.type
                               : item.type
                           }
-                          icon={
+                          rightIcon={
                             item.name === "password" &&
                             (showPassword ? (
                               <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
@@ -181,7 +181,7 @@ const Login = () => {
                               <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
                             ))
                           }
-                          iconClick={
+                          rightIconClick={
                             item.name === "password"
                               ? () => setShowPassword((prev) => !prev)
                               : undefined

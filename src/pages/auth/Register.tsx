@@ -169,7 +169,7 @@ const Register = () => {
                           name={name}
                           register={{ ...register(name) }}
                           errorText={errors[name]?.message}
-                          icon={
+                          rightIcon={
                             ["password", "confirmPassword"].includes(name) &&
                             (showPasswords[
                               name as keyof PasswordVisibilityType
@@ -179,7 +179,7 @@ const Register = () => {
                               <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
                             ))
                           }
-                          iconClick={() =>
+                          rightIconClick={() =>
                             togglePasswordVisibility(
                               name as keyof PasswordVisibilityType
                             )
