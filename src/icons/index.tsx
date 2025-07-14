@@ -292,14 +292,12 @@ export const SearchIcon = (props: IconProps) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="black"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
     {...props}
   >
-    <path
-      d="M21 21L16.65 16.65M11 6C13.7614 6 16 8.23858 16 11M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
+    <path d="M21 21L16.65 16.65M11 6C13.7614 6 16 8.23858 16 11M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" />
   </svg>
 );
 
@@ -477,27 +475,37 @@ export const YellowStarIcon = ({ className }: IconProps) => (
   </svg>
 );
 
-export const LeftArrowIcon = ({ className }: IconProps) => (
+export const LeftArrowIcon = (props: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
     height="24"
-    viewBox="0 0 492 492"
-    className={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="black"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
   >
-    <path d="M464.344,207.418l0.768,0.168H135.888l103.496-103.724c5.068-5.064,7.848-11.924,7.848-19.124 c0-7.2-2.78-14.012-7.848-19.088L223.28,49.538c-5.064-5.064-11.812-7.864-19.008-7.864c-7.2,0-13.952,2.78-19.016,7.844 L7.844,226.914C2.76,231.998-0.02,238.77,0,245.974c-0.02,7.244,2.76,14.02,7.844,19.096l177.412,177.412 c5.064,5.06,11.812,7.844,19.016,7.844c7.196,0,13.944-2.788,19.008-7.844l16.104-16.112c5.068-5.056,7.848-11.808,7.848-19.008 c0-7.196-2.78-13.592-7.848-18.652L134.72,284.406h329.992c14.828,0,27.288-12.78,27.288-27.6v-22.788 C492,219.198,479.172,207.418,464.344,207.418z" />
+    <path d="M20 12H4M4 12L10 18M4 12L10 6" />
   </svg>
 );
 
-export const RightArrowIcon = ({ className }: IconProps) => (
+export const RightArrowIcon = (props: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
     height="24"
-    viewBox="0 0 492.004 492.004"
-    className={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="black"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
   >
-    <path d="M484.14,226.886L306.46,49.202c-5.072-5.072-11.832-7.856-19.04-7.856c-7.216,0-13.972,2.788-19.044,7.856l-16.132,16.136 c-5.068,5.064-7.86,11.828-7.86,19.04c0,7.208,2.792,14.2,7.86,19.264L355.9,207.526H26.58C11.732,207.526,0,219.15,0,234.002 v22.812c0,14.852,11.732,27.648,26.58,27.648h330.496L252.248,388.926c-5.068,5.072-7.86,11.652-7.86,18.864 c0,7.204,2.792,13.88,7.86,18.948l16.132,16.084c5.072,5.072,11.828,7.836,19.044,7.836c7.208,0,13.968-2.8,19.04-7.872 l177.68-177.68c5.084-5.088,7.88-11.88,7.86-19.1C492.02,238.762,489.228,231.966,484.14,226.886z" />
+    <path d="M4 12H20M20 12L14 6M20 12L14 18" />
   </svg>
 );
 
@@ -683,8 +691,8 @@ export const UpDownArrowIcon = ({ className }: IconProps) => (
     fill="none"
     strokeWidth="2"
     viewBox="0 0 24 24"
-    stroke-linecap="round"
-    stroke-linejoin="round"
+    strokeLinecap="round"
+    strokeLinejoin="round"
     className={className}
   >
     <path d="m3 16 4 4 4-4" />
@@ -725,6 +733,63 @@ export const RupeesIcon = ({ className }: IconProps) => (
   >
     <path
       d="M6 3H18M6 8H18M14.5 21L6 13H9C15.667 13 15.667 3 9 3"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+export const SingleLayerIcon = (props: IconProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="black"
+    {...props}
+  >
+    <path
+      d="M12.3578 7.17889C12.2266 7.1133 12.161 7.0805 12.0922 7.0676C12.0313 7.05616 11.9687 7.05616 11.9078 7.0676C11.839 7.0805 11.7734 7.1133 11.6422 7.17889L2 12L11.6422 16.8211C11.7734 16.8867 11.839 16.9195 11.9078 16.9324C11.9687 16.9438 12.0313 16.9438 12.0922 16.9324C12.161 16.9195 12.2266 16.8867 12.3578 16.8211L22 12L12.3578 7.17889Z"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+export const DoubleLayerIcon = (props: IconProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="black"
+    {...props}
+  >
+    <path
+      d="M7 12L2 14.5L11.6422 19.3211C11.7734 19.3867 11.839 19.4195 11.9078 19.4324C11.9687 19.4438 12.0313 19.4438 12.0922 19.4324C12.161 19.4195 12.2266 19.3867 12.3578 19.3211L22 14.5L17 12M2 9.5L11.6422 4.67889C11.7734 4.6133 11.839 4.5805 11.9078 4.5676C11.9687 4.55616 12.0313 4.55616 12.0922 4.5676C12.161 4.5805 12.2266 4.6133 12.3578 4.67889L22 9.5L12.3578 14.3211C12.2266 14.3867 12.161 14.4195 12.0922 14.4324C12.0313 14.4438 11.9687 14.4438 11.9078 14.4324C11.839 14.4195 11.7734 14.3867 11.6422 14.3211L2 9.5Z"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+export const TripleLayerIcon = (props: IconProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="black"
+    {...props}
+  >
+    <path
+      d="M7 9.5L2 12L11.6422 16.8211C11.7734 16.8867 11.839 16.9195 11.9078 16.9324C11.9687 16.9438 12.0313 16.9438 12.0922 16.9324C12.161 16.9195 12.2266 16.8867 12.3578 16.8211L22 12L17 9.5M7 14.5L2 17L11.6422 21.8211C11.7734 21.8867 11.839 21.9195 11.9078 21.9324C11.9687 21.9438 12.0313 21.9438 12.0922 21.9324C12.161 21.9195 12.2266 21.8867 12.3578 21.8211L22 17L17 14.5M2 7L11.6422 2.17889C11.7734 2.1133 11.839 2.0805 11.9078 2.0676C11.9687 2.05616 12.0313 2.05616 12.0922 2.0676C12.161 2.0805 12.2266 2.1133 12.3578 2.17889L22 7L12.3578 11.8211C12.2266 11.8867 12.161 11.9195 12.0922 11.9324C12.0313 11.9438 11.9687 11.9438 11.9078 11.9324C11.839 11.9195 11.7734 11.8867 11.6422 11.8211L2 7Z"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
