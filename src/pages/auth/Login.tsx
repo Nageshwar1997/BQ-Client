@@ -198,7 +198,9 @@ const Login = () => {
                     <Controller
                       name="remember"
                       control={control}
-                      render={({ field }) => <Checkbox register={field} />}
+                      render={({ field }) => (
+                        <Checkbox register={field} checked={field.value} />
+                      )}
                     />
                     <span className="text-[13px] md:text-sm text-primary-50 font-medium whitespace-nowrap">
                       Remember

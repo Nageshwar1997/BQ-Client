@@ -1,5 +1,5 @@
 import { RefObject, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { RegisterTextContent, registerInputMapData } from "./data";
@@ -36,6 +36,7 @@ const Register = () => {
   const userRegisterMutation = useRegisterUser();
 
   const {
+    control,
     watch,
     register,
     setValue,
@@ -150,7 +151,7 @@ const Register = () => {
                           type={type}
                           placeholder={placeholder}
                           name={name}
-                          register={{ ...register(name) }}
+                          register={register(name)}
                           errorText={errors[name]?.message}
                         />
                       ) : (
@@ -167,7 +168,7 @@ const Register = () => {
                           label={label}
                           placeholder={placeholder}
                           name={name}
-                          register={{ ...register(name) }}
+                          register={register(name)}
                           errorText={errors[name]?.message}
                           rightIcon={
                             ["password", "confirmPassword"].includes(name) &&
@@ -192,7 +193,13 @@ const Register = () => {
               </div>
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">
-                  <Checkbox register={{ ...register("remember") }} />
+                  <Controller
+                    name="remember"
+                    control={control}
+                    render={({ field }) => (
+                      <Checkbox register={field} checked={field.value} />
+                    )}
+                  />
                   <span className="text-sm text-primary-50 font-medium">
                     Remember me
                   </span>
