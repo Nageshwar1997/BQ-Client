@@ -10,7 +10,7 @@ import LoginRedirect from "./LoginRedirect";
 import NotFound from "../pages/error/NotFound";
 import SomethingWentWrong from "../pages/error/SomethingWentWrong";
 import LoadingScreen from "../components/loaders/LoadingScreen";
-import CategoryProducts from "../pages/product/categoryProducts/CategoryProducts";
+import CategoryProducts from "../pages/product/categoryProducts";
 import Offers from "../pages/offers/Offers";
 import Blogs from "../pages/blogs/Blogs";
 import SearchProducts from "../pages/product/searchProducts/SearchProducts";

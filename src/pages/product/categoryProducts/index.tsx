@@ -4,7 +4,7 @@ import { CATEGORY_IMAGE_DATA } from "./data";
 import { useEffect, useState, useMemo } from "react";
 import { FilterIcon, LeftArrowIcon } from "../../../icons";
 import Filters from "../../../components/filters/Filters";
-import SortBy from "./SortBy";
+import SortBy from "../../../components/sortBy";
 
 type TCategoryImage = { img: string; category: string };
 

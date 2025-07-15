@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { FilterIcon, LeftArrowIcon, SearchIcon } from "../../../icons";
-import SortBy from "../categoryProducts/SortBy";
+import SortBy from "../../../components/sortBy";
 import Filters from "../../../components/filters/Filters";
 import Input from "../../../components/input/Input";
 import { useGetAllProductsInfinite } from "../../../api/product/product.service";

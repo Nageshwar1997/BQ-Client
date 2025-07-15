@@ -1,5 +1,5 @@
-import useQueryParams from "../../../hooks/useQueryParams";
-import { SORT_BY_OPTIONS } from "./data";
+import useQueryParams from "../../hooks/useQueryParams";
+import { SORT_BY_OPTIONS } from "../../constants";
 
 interface SortByProps {
   className?: string;
