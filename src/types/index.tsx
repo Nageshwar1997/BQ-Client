@@ -29,13 +29,14 @@ export interface InputProps {
   name?: string;
   value?: string;
   label?: string;
-  leftIcon?: ReactNode;
-  rightIcon?: ReactNode;
   readOnly?: boolean;
   errorText?: string;
   className?: string;
   placeholder?: string;
   successText?: string;
+  leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
+  leftText?: { required?: boolean; text: string | ReactNode };
   leftIconClick?: () => void;
   rightIconClick?: () => void;
   containerClassName?: string;
