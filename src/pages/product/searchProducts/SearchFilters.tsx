@@ -13,7 +13,7 @@ import {
 import { CATEGORIES_DATA } from "../../../constants/categories";
 import { DEFAULT_FILTER } from "../../../constants";
 import Dropdown from "../../../components/dropdown/Dropdown";
-import { DropdownOption } from "../../../types";
+import { TDropdownOption } from "../../../types";
 import DropdownOptions from "./components/DropdownOptions";
 
 interface FiltersProps {
@@ -235,7 +235,7 @@ function SearchFilters({ className = "" }: FiltersProps) {
   const CATEGORY_OPTIONS = useMemo(
     () => [
       {
-        onChange: (category: DropdownOption) =>
+        onChange: (category: TDropdownOption) =>
           handleFilterChange.category_1(category.value),
         heading: {
           title: "Category One",
@@ -248,7 +248,7 @@ function SearchFilters({ className = "" }: FiltersProps) {
         })),
       },
       {
-        onChange: (category: DropdownOption) =>
+        onChange: (category: TDropdownOption) =>
           handleFilterChange.category_2(category.value),
         heading: {
           title: "Category Two",
@@ -261,7 +261,7 @@ function SearchFilters({ className = "" }: FiltersProps) {
         })),
       },
       {
-        onChange: (category: DropdownOption) =>
+        onChange: (category: TDropdownOption) =>
           handleFilterChange.category_3(category.value),
         heading: {
           title: "Category Three",
