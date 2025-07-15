@@ -10,7 +10,6 @@ import {
 } from "../../icons";
 import UserMenuIcons from "./components/UserMenuIcons";
 import { navbarCategoriesData } from "./data";
-// import SearchInput from "./components/SearchInput";
 import { Link, useLocation } from "react-router-dom";
 import HoveredComponent from "./components/HoveredComponent";
 import Button from "../button/Button";
@@ -226,15 +225,6 @@ const Navbar = () => {
                 </Link>
               ))}
             </div>
-            {/* <SearchInput
-              name="desktopSearch"
-              className={`${
-                isNavbarAtTop || isNavbarHovered
-                  ? ""
-                  : "border dark:border-tertiary light:border-tertiary-inverted bg-transparent light:[&>input]:placeholder:text-tertiary-inverted dark:[&>input]:placeholder:text-tertiary light:[&_svg>path]:stroke-tertiary-inverted dark:[&_svg>path]:stroke-tertiary"
-              }`}
-              onChange={(e) => console.log(e.target.value)}
-            /> */}
             <UserMenuIcons
               className={`${
                 isNavbarAtTop || isNavbarHovered
@@ -267,10 +257,6 @@ const Navbar = () => {
             className="object-cover w-fit h-full"
           />
         </Link>
-        {/* <SearchInput
-          name="mobileSearch"
-          className="sm:!flex lg:!hidden h-7 md:h-8"
-        /> */}
         <div className="lg:hidden flex items-center gap-3 base:gap-5">
           {!isMobileNavbarOpened && <UserMenuIcons />}
           <span
@@ -306,9 +292,7 @@ const Navbar = () => {
                     >
                       <p className="text-primary">{category.label}</p>
                       <DropdownIcon
-                        className={`stroke-2 ${
-                          isActive ? "rotate-180" : ""
-                        }`}
+                        className={`stroke-2 ${isActive ? "rotate-180" : ""}`}
                       />
                     </div>
                     {isActive && AccordionContentComponent && (
