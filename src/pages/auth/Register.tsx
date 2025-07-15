@@ -11,7 +11,6 @@ import SocialAuth from "./components/SocialAuth";
 import Input from "../../components/input/Input";
 import Button from "../../components/button/Button";
 import { EyeIcon, EyeOffIcon } from "../../icons";
-import PhoneInput from "../../components/input/PhoneInput";
 import Checkbox from "../../components/input/Checkbox";
 import useVerticalScrollable from "../../hooks/useVerticalScrollable";
 import { BottomGradient, TopGradient } from "../../components/Gradients";
@@ -145,48 +144,41 @@ const Register = () => {
                         ].includes(name) && "lg:col-span-2"
                       }`}
                     >
-                      {name === "phoneNumber" ? (
-                        <PhoneInput
-                          label={label}
-                          type={type}
-                          placeholder={placeholder}
-                          name={name}
-                          register={register(name)}
-                          errorText={errors[name]?.message}
-                        />
-                      ) : (
-                        <Input
-                          type={
-                            ["password", "confirmPassword"].includes(name)
-                              ? showPasswords[
-                                  name as keyof PasswordVisibilityType
-                                ]
-                                ? "text"
-                                : type
+                      <Input
+                        type={
+                          ["password", "confirmPassword"].includes(name)
+                            ? showPasswords[
+                                name as keyof PasswordVisibilityType
+                              ]
+                              ? "text"
                               : type
-                          }
-                          label={label}
-                          placeholder={placeholder}
-                          name={name}
-                          register={register(name)}
-                          errorText={errors[name]?.message}
-                          rightIcon={
-                            ["password", "confirmPassword"].includes(name) &&
-                            (showPasswords[
-                              name as keyof PasswordVisibilityType
-                            ] ? (
-                              <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-                            ) : (
-                              <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-                            ))
-                          }
-                          rightIconClick={() =>
-                            togglePasswordVisibility(
-                              name as keyof PasswordVisibilityType
-                            )
-                          }
-                        />
-                      )}
+                            : type
+                        }
+                        label={label}
+                        placeholder={placeholder}
+                        name={name}
+                        register={register(name)}
+                        errorText={errors[name]?.message}
+                        rightIcon={
+                          ["password", "confirmPassword"].includes(name) &&
+                          (showPasswords[
+                            name as keyof PasswordVisibilityType
+                          ] ? (
+                            <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                          ) : (
+                            <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                          ))
+                        }
+                        rightIconClick={() =>
+                          togglePasswordVisibility(
+                            name as keyof PasswordVisibilityType
+                          )
+                        }
+                        leftText={{
+                          required: name === "phoneNumber",
+                          text: "+91",
+                        }}
+                      />
                     </div>
                   );
                 })}

@@ -21,6 +21,7 @@ const Input = ({
   placeholder = "",
   autoComplete = "off",
   containerClassName = "",
+  leftText = { required: false, text: "" },
 }: InputProps) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     onChange?.(event);
@@ -36,7 +37,7 @@ const Input = ({
         {label && (
           <label
             htmlFor={name}
-            className={`text-[10px] lg:text-xs text-primary-50 absolute top-0 left-3 transform -translate-y-1/2 border border-primary-10 leading-none px-1 md:px-2 py-0.5 2xl:py-1 bg-smoke-eerie rounded cursor-pointer`}
+            className={`text-[10px] lg:text-xs text-primary-50 absolute top-0 left-3 transform -translate-y-1/2 border border-primary-10 leading-none px-1 md:px-2 py-0.5 bg-smoke-eerie rounded cursor-pointer`}
           >
             {label}
           </label>
@@ -45,14 +46,20 @@ const Input = ({
           className={`w-full h-full flex items-center gap-1 border border-primary-10 bg-smoke-eerie rounded-lg overflow-hidden ${className}`}
         >
           {/* Left Icon */}
-          {leftIcon && !rightIcon && (
+          {leftIcon && !rightIcon ? (
             <span
               onClick={leftIconClick && leftIconClick}
-              className="h-full flex justify-center items-center cursor-pointer p-2"
+              className="h-full flex justify-center items-center cursor-pointer p-2 overflow-hidden"
             >
               {leftIcon}
             </span>
-          )}
+          ) : !leftIcon && leftText.required ? (
+            <div className="h-full overflow-hidden">
+              <p className="h-full flex items-center justify-center text-sm text-primary-50 border-r border-r-primary-10 p-3">
+                {leftText.text}
+              </p>
+            </div>
+          ) : null}
           {/* Input */}
           <input
             aria-autocomplete="none"
@@ -67,20 +74,22 @@ const Input = ({
             onChange={handleChange}
             placeholder={placeholder}
             autoComplete={autoComplete}
-            className={`w-full h-full outline-none border-none focus:outline-none focus:border-none bg-transparent font-normal text-sm py-3 2xl:py-4 text-primary placeholder:text-primary-50 placeholder:text-sm autofill-effect ${
+            onWheel={(event) => type === "number" && event.currentTarget.blur()}
+            className={`w-full h-full outline-none border-none focus:outline-none focus:border-none bg-transparent font-normal text-sm p-3 text-primary placeholder:text-primary-50 placeholder:text-sm autofill-effect line-clamp-1 ${
               leftIcon && !rightIcon
-                ? "pl-1 pr-3"
+                ? "pl-0"
                 : !leftIcon && rightIcon
-                ? "pl-3 pr-1"
-                : "px-3"
-            }`}
+                ? "pr-0"
+                : leftText.required
+                ? "pl-2"
+                : ""
+            } ${type === "number" ? "number-input-mouse-control-none" : ""}`}
           />
-
           {/* Right Icon */}
           {!leftIcon && rightIcon && (
             <span
               onClick={rightIconClick && rightIconClick}
-              className="h-full flex justify-center items-center cursor-pointer p-2"
+              className="h-full flex justify-center items-center cursor-pointer p-2 overflow-hidden"
             >
               {rightIcon}
             </span>

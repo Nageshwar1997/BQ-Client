@@ -14,7 +14,6 @@ import { BottomGradient, TopGradient } from "../../components/Gradients";
 import AuthRobot from "./components/AuthRobot";
 import TextDisplay from "../../components/TextDisplay";
 import SocialAuth from "./components/SocialAuth";
-import PhoneInput from "../../components/input/PhoneInput";
 import Input from "../../components/input/Input";
 import { EyeIcon, EyeOffIcon } from "../../icons";
 import Radio from "../../components/input/Radio";
@@ -27,7 +26,7 @@ import DarkMode from "../../components/DarkMode";
 
 const Login = () => {
   const [showGradient, containerRef] = useVerticalScrollable();
-  const [loginMethod, setLoginMethod] = useState<LoginTypes>("email");
+  const [loginMethod, setLoginMethod] = useState<LoginTypes>("phoneNumber");
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const userLoginMutation = useLoginUser();
@@ -150,44 +149,37 @@ const Login = () => {
                   }
                   return (
                     <div key={index}>
-                      {item.name === "phoneNumber" ? (
-                        <PhoneInput
-                          label={item.label}
-                          register={register(item.name)}
-                          name={item.name}
-                          type={item.type}
-                          placeholder={item.placeholder}
-                          errorText={errors?.[item.name]?.message}
-                        />
-                      ) : (
-                        <Input
-                          label={item.label}
-                          register={register(item.name)}
-                          name={item.name}
-                          placeholder={item.placeholder}
-                          errorText={errors?.[item.name]?.message}
-                          type={
-                            item.name === "password"
-                              ? showPassword
-                                ? "text"
-                                : item.type
+                      <Input
+                        label={item.label}
+                        register={register(item.name)}
+                        name={item.name}
+                        placeholder={item.placeholder}
+                        errorText={errors?.[item.name]?.message}
+                        type={
+                          item.name === "password"
+                            ? showPassword
+                              ? "text"
                               : item.type
-                          }
-                          rightIcon={
-                            item.name === "password" &&
-                            (showPassword ? (
-                              <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-                            ) : (
-                              <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-                            ))
-                          }
-                          rightIconClick={
-                            item.name === "password"
-                              ? () => setShowPassword((prev) => !prev)
-                              : undefined
-                          }
-                        />
-                      )}
+                            : item.type
+                        }
+                        rightIcon={
+                          item.name === "password" &&
+                          (showPassword ? (
+                            <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                          ) : (
+                            <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                          ))
+                        }
+                        rightIconClick={
+                          item.name === "password"
+                            ? () => setShowPassword((prev) => !prev)
+                            : undefined
+                        }
+                        leftText={{
+                          required: item.name === "phoneNumber",
+                          text: "+91",
+                        }}
+                      />
                     </div>
                   );
                 })}
