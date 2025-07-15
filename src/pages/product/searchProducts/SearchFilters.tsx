@@ -14,6 +14,7 @@ import { DEFAULT_FILTER } from "../../../constants";
 import Dropdown from "../../../components/dropdown/Dropdown";
 import { TDropdownOption } from "../../../types";
 import DropdownOptions from "./components/DropdownOptions";
+import Input from "../../../components/input/Input";
 
 interface FiltersProps {
   className?: string;
@@ -304,52 +305,40 @@ function SearchFilters({ className = "" }: FiltersProps) {
           <>
             <div className="flex justify-between gap-2">
               {/* Min Input */}
-              <div className="w-full flex items-center border border-primary-50 rounded overflow-hidden">
-                <label
-                  htmlFor="min-price"
-                  className="text-xs text-primary px-2 py-2 border-r border-r-primary-50 bg-primary-30 h-full text-center flex items-center justify-center"
-                >
-                  Min
-                </label>
-                <input
-                  id="min-price"
-                  type="number"
-                  min={0}
-                  max={Number(ranges.max) - 1}
-                  value={ranges.min}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (value === "" || Number(value) < Number(ranges.max)) {
-                      setRanges((prev) => ({ ...prev, min: value }));
-                    }
-                  }}
-                  className="w-full px-2 py-1 text-sm text-primary bg-primary-10 h-full border border-none outline-none number-input-mouse-control-none"
-                />
-              </div>
+              <Input
+                name="min-price"
+                type="number"
+                min={0}
+                max={Number(ranges.max) - 1}
+                value={ranges.min}
+                containerClassName="h-9 [&>div]:h-full"
+                className="[&_p]:w-10 [&_p]:text-xs !rounded border border-primary-30 [&_p]:border-r [&_p]:border-r-primary-30 [&_p]:bg-primary-10 [&_p]:text-primary"
+                leftText={{ required: true, text: "Min" }}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === "" || Number(value) < Number(ranges.max)) {
+                    setRanges((prev) => ({ ...prev, min: value }));
+                  }
+                }}
+              />
               <div className="w-px h-9 bg-primary-50" />
               {/* Max Input */}
-              <div className="w-full flex items-center border border-primary-50 rounded overflow-hidden">
-                <label
-                  htmlFor="max-price"
-                  className="text-xs text-primary px-2 py-2 border-r border-r-primary-50 bg-primary-30 h-full text-center flex items-center justify-center"
-                >
-                  Max:
-                </label>
-                <input
-                  id="max-price"
-                  type="number"
-                  min={Number(ranges.min) + 1}
-                  max={MAX_PRICE}
-                  value={ranges.max}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (value === "" || Number(value) > Number(ranges.min)) {
-                      setRanges((prev) => ({ ...prev, max: value }));
-                    }
-                  }}
-                  className="w-full px-2 py-1 text-sm text-primary bg-primary-10 h-full border border-none outline-none number-input-mouse-control-none"
-                />
-              </div>
+              <Input
+                name="max-price"
+                type="number"
+                min={Number(ranges.min) + 1}
+                max={MAX_PRICE}
+                value={ranges.max}
+                containerClassName="h-9 [&>div]:h-full"
+                className="[&_p]:w-10 [&_p]:text-xs !rounded border border-primary-30 [&_p]:border-r [&_p]:border-r-primary-30 [&_p]:bg-primary-10 [&_p]:text-primary"
+                leftText={{ required: true, text: "Max" }}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === "" || Number(value) > Number(ranges.min)) {
+                    setRanges((prev) => ({ ...prev, max: value }));
+                  }
+                }}
+              />
             </div>
             {/* Range Slider */}
             <div className="relative w-full h-5 mt-2 select-none">
@@ -402,30 +391,24 @@ function SearchFilters({ className = "" }: FiltersProps) {
           }}
         >
           <>
-            <div className="w-full flex items-center justify-between gap-2 border border-primary-50 rounded overflow-hidden">
-              <label
-                htmlFor="min-discount"
-                className="text-xs text-primary px-2 py-2 border-r border-r-primary-50 bg-primary-30 h-full text-center flex items-center justify-center"
-              >
-                0 - 100
-              </label>
-              <input
-                id="min-discount"
-                type="number"
-                min={0}
-                max={100}
-                value={ranges.discount}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value === "" || Number(value) <= 100) {
-                    setRanges((prev) => ({ ...prev, discount: value }));
-                  } else if (Number(value) > 100) {
-                    setRanges((prev) => ({ ...prev, discount: "100" }));
-                  }
-                }}
-                className="flex-1 px-2 py-1 text-sm text-primary bg-primary-10 h-full border-none outline-none number-input-mouse-control-none"
-              />
-            </div>
+            <Input
+              name="discount"
+              type="number"
+              min={0}
+              max={100}
+              value={ranges.discount}
+              containerClassName="h-9 [&>div]:h-full"
+              className="[&_p]:w-14 [&_p]:text-xs !rounded border border-primary-30 [&_p]:border-r [&_p]:border-r-primary-30 [&_p]:bg-primary-10 [&_p]:text-primary [&_p]:text-nowrap"
+              leftText={{ required: true, text: "0 - 100" }}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value === "" || Number(value) <= 100) {
+                  setRanges((prev) => ({ ...prev, discount: value }));
+                } else if (Number(value) > 100) {
+                  setRanges((prev) => ({ ...prev, discount: "100" }));
+                }
+              }}
+            />
             {/* Range Slider for minDiscount only */}
             <div className="relative w-full h-5 mt-2 select-none">
               <input
