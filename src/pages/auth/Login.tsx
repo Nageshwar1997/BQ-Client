@@ -175,10 +175,7 @@ const Login = () => {
                             ? () => setShowPassword((prev) => !prev)
                             : undefined
                         }
-                        leftText={{
-                          required: item.name === "phoneNumber",
-                          text: "+91",
-                        }}
+                        leftText={item.name === "phoneNumber" ? "+91" : ""}
                       />
                     </div>
                   );

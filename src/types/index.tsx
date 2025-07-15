@@ -31,6 +31,7 @@ export interface InputProps {
   name?: string;
   value?: string;
   label?: string;
+  leftText?: string;
   readOnly?: boolean;
   errorText?: string;
   className?: string;
@@ -38,7 +39,6 @@ export interface InputProps {
   successText?: string;
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
-  leftText?: { required?: boolean; text: string | ReactNode };
   leftIconClick?: () => void;
   rightIconClick?: () => void;
   containerClassName?: string;

@@ -174,10 +174,7 @@ const Register = () => {
                             name as keyof PasswordVisibilityType
                           )
                         }
-                        leftText={{
-                          required: name === "phoneNumber",
-                          text: "+91",
-                        }}
+                        leftText={name === "phoneNumber" ? "+91" : ""}
                       />
                     </div>
                   );

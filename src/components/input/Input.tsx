@@ -23,7 +23,7 @@ const Input = ({
   placeholder = "",
   autoComplete = "off",
   containerClassName = "",
-  leftText = { required: false, text: "" },
+  leftText = "",
 }: InputProps) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     onChange?.(event);
@@ -55,10 +55,10 @@ const Input = ({
             >
               {leftIcon}
             </span>
-          ) : !leftIcon && leftText.required ? (
+          ) : !leftIcon && leftText ? (
             <div className="h-full overflow-hidden">
-              <p className="h-full flex items-center justify-center text-sm text-primary-50 border-r border-r-primary-10 p-3">
-                {leftText.text}
+              <p className="h-full flex items-center justify-center text-sm text-primary-50 border-r border-r-primary-10 p-3 capitalize">
+                {leftText}
               </p>
             </div>
           ) : null}
@@ -84,7 +84,7 @@ const Input = ({
                 ? "pl-0"
                 : !leftIcon && rightIcon
                 ? "pr-0"
-                : leftText.required
+                : leftText
                 ? "pl-2"
                 : ""
             } ${type === "number" ? "number-input-mouse-control-none" : ""}`}
