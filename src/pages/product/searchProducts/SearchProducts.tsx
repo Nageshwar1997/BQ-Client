@@ -83,9 +83,10 @@ const SearchProducts = () => {
               />
             </button>
             <Input
+              name="search"
               placeholder="Search products here..."
-              className="rounded-none h-full lg:h-full bg-transparent border-none gap-1 sm:gap-2"
-              containerClassName="h-full [&>div]:h-full lg:px-3"
+              className="rounded-none h-full lg:h-full bg-transparent border-none"
+              containerClassName="h-full [&>div]:h-full"
               value={searchQuery?.trimStart()}
               rightIcon={
                 <SearchIcon
