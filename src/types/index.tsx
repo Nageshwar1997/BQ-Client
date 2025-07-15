@@ -227,4 +227,5 @@ export interface DropdownProps {
   selected: string;
   onChange: (opt: DropdownOption) => void;
   className?: string;
+  children?: JSX.Element;
 }

@@ -14,6 +14,7 @@ import { CATEGORIES_DATA } from "../../../constants/categories";
 import { DEFAULT_FILTER } from "../../../constants";
 import Dropdown from "../../../components/dropdown/Dropdown";
 import { DropdownOption } from "../../../types";
+import DropdownOptions from "./components/DropdownOptions";
 
 interface FiltersProps {
   className?: string;
@@ -545,8 +546,6 @@ function SearchFilters({ className = "" }: FiltersProps) {
           return (
             <Dropdown
               key={index}
-              onChange={(test) => cat.onChange(test)}
-              selected={cat.selected}
               heading={{
                 title: cat.heading.title,
                 icon: (
@@ -557,8 +556,13 @@ function SearchFilters({ className = "" }: FiltersProps) {
                   </>
                 ),
               }}
-              options={[DEFAULT_FILTER, ...cat.options]}
-            />
+            >
+              <DropdownOptions
+                onChange={(data) => cat.onChange(data)}
+                selected={cat.selected}
+                options={[DEFAULT_FILTER, ...cat.options]}
+              />
+            </Dropdown>
           );
         })}
       </div>

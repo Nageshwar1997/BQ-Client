@@ -1,14 +1,12 @@
 import { useState } from "react";
-import { CheckedIcon, DropdownIcon } from "../../icons";
+import { DropdownIcon } from "../../icons";
 import { DropdownProps } from "../../types";
 
 const Dropdown = ({
-  onChange,
-  selected,
   heading,
-  options,
   className = "",
-}: DropdownProps) => {
+  children,
+}: Omit<DropdownProps, "options" | "selected" | "onChange">) => {
   const [open, setOpen] = useState(false);
   return (
     <div
@@ -40,28 +38,7 @@ const Dropdown = ({
             : "max-h-0 opacity-0 scale-y-0"
         }`}
       >
-        {options.map((opt) => {
-          const isSelected =
-            selected === opt.value ||
-            ((!selected || selected === "") && opt.value === "all");
-          return (
-            <button
-              key={opt.value}
-              type="button"
-              onClick={() => onChange(opt)}
-              className={`p-1 flex items-center w-full justify-between rounded-md`}
-            >
-              <p
-                className={`w-full text-start text-primary ${
-                  isSelected ? "font-medium" : "text-primary-50"
-                }`}
-              >
-                {opt.name}
-              </p>
-              {isSelected && <CheckedIcon className="stroke-primary w-5 h-5" />}
-            </button>
-          );
-        })}
+        {children}
       </div>
     </div>
   );
