@@ -84,7 +84,7 @@ const VideoCarousel = () => {
       {isLoading && !isError ? (
         <div className="w-full h-full bg-silver animate-pulse" />
       ) : !isLoading && isError ? (
-        <div className="w-full h-full text-center content-center border">
+        <div className="w-full h-full text-center content-center">
           <ShowError
             headingText="Unable to load videos"
             descriptionText="Please try again or refresh page"
