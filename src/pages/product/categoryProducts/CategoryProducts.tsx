@@ -3,7 +3,7 @@ import { CATEGORY_IMAGE_DATA } from "./data";
 // import { useGetAllProductsInfinite } from "../../../api/product/product.service";
 import { useEffect, useState, useMemo } from "react";
 import { FilterIcon, LeftArrowIcon } from "../../../icons";
-import Filters from "./Filters";
+import Filters from "../../../components/filters/Filters";
 import SortBy from "./SortBy";
 
 type TCategoryImage = { img: string; category: string };
@@ -96,14 +96,14 @@ const CategoryProducts = () => {
         </div>
         <div className="grow bg-primary-inverted flex">
           <Filters
-            className={`sticky top-[118px] transform transition-all duration-500 ease-in-out overflow-hidden ${
+            className={`sticky top-[100px] lg:top-[118px] transform transition-all duration-500 ease-in-out overflow-hidden ${
               showFilter ? "w-[270px]" : "w-0"
             }`}
           />
 
           <div className="flex-1 bg-pink-300 p-4 min-h-[1000px]">Body</div>
           <SortBy
-            className={`sticky top-[118px] transform transition-all duration-500 ease-in-out overflow-hidden ${
+            className={`sticky top-[100px] lg:top-[118px] transform transition-all duration-500 ease-in-out overflow-hidden ${
               showSortBy ? "w-[200px]" : "w-0"
             }`}
           />

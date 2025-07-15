@@ -1,5 +1,5 @@
-import { TDropdownOptions } from "../../../../types";
-import { CheckedIcon } from "../../../../icons";
+import { CheckedIcon } from "../../../icons";
+import { TDropdownOptions } from "../../../types";
 
 const DropdownOptions = ({
   options,

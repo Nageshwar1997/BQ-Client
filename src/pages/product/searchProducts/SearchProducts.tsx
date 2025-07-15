@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { FilterIcon, LeftArrowIcon, SearchIcon } from "../../../icons";
 import SortBy from "../categoryProducts/SortBy";
-import SearchFilters from "./SearchFilters";
+import Filters from "../../../components/filters/Filters";
 import Input from "../../../components/input/Input";
 import { useGetAllProductsInfinite } from "../../../api/product/product.service";
 import { debounce } from "../../../utils";
@@ -116,10 +116,11 @@ const SearchProducts = () => {
         </div>
 
         <div className="grow bg-primary-inverted flex">
-          <SearchFilters
+          <Filters
             className={`sticky top-[100px] lg:top-[118px] transform transition-all duration-500 ease-in-out overflow-hidden ${
               show.filter ? "w-[270px]" : "w-0"
             }`}
+            needCategoriesFilters={true}
           />
 
           <div className="flex-1 p-4 grid grid-cols-3 gap-5 overflow-y-scroll min-h-[1000px]">

@@ -1,17 +1,16 @@
 import { useMemo } from "react";
-import useQueryParams from "../../../../hooks/useQueryParams";
-import { DEFAULT_FILTER } from "../../../../constants";
+import useQueryParams from "../../../hooks/useQueryParams";
+import { CATEGORIES_DATA, DEFAULT_FILTER } from "../../../constants";
+import { TDropdownOption } from "../../../types";
 import {
   DoubleLayerIcon,
   SingleLayerIcon,
   TripleLayerIcon,
-} from "../../../../icons";
-import { TDropdownOption } from "../../../../types";
-import { CATEGORIES_DATA } from "../../../../constants/categories";
-import Dropdown from "../../../../components/dropdown/Dropdown";
-import DropdownOptions from "./DropdownOptions";
+} from "../../../icons";
+import Dropdown from "../../dropdown/Dropdown";
+import DropdownOptions from "../../dropdown/children/DropdownOptions";
 
-const DropdownCategories = ({ className = "" }: { className?: string }) => {
+const CategoriesFilter = ({ className = "" }: { className?: string }) => {
   const { queryParams, removeParam, setParams } = useQueryParams();
 
   const selectedCategories = useMemo(
@@ -145,4 +144,4 @@ const DropdownCategories = ({ className = "" }: { className?: string }) => {
   );
 };
 
-export default DropdownCategories;
+export default CategoriesFilter;

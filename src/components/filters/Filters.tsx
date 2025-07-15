@@ -1,14 +1,15 @@
 import { Fragment, useEffect, useRef, useState } from "react";
-import Checkbox from "../../../components/input/Checkbox";
-import useQueryParams from "../../../hooks/useQueryParams";
-import { CheckedIcon, PercentIcon, RupeesIcon } from "../../../icons";
-import Dropdown from "../../../components/dropdown/Dropdown";
-import Input from "../../../components/input/Input";
-import DropdownCategories from "./components/DropdownCategories";
-import Range from "../../../components/input/Range";
+import useQueryParams from "../../hooks/useQueryParams";
+import Dropdown from "../dropdown/Dropdown";
+import { CheckedIcon, PercentIcon, RupeesIcon } from "../../icons";
+import Checkbox from "../input/Checkbox";
+import Input from "../input/Input";
+import Range from "../input/Range";
+import CategoriesFilter from "./children/CategoriesFilter";
 
 interface FiltersProps {
   className?: string;
+  needCategoriesFilters?: boolean;
 }
 type TPriceRangeKeys = "min" | "max";
 type TRange = Record<TPriceRangeKeys | "discount", string>;
@@ -16,7 +17,10 @@ type TRange = Record<TPriceRangeKeys | "discount", string>;
 const MAX_PRICE = 1500;
 const INITIAL_RANGES: TRange = { min: "0", max: `${MAX_PRICE}`, discount: "0" };
 
-function SearchFilters({ className = "" }: FiltersProps) {
+function Filters({
+  className = "",
+  needCategoriesFilters = false,
+}: FiltersProps) {
   const { queryParams, setParams, removeParam } = useQueryParams();
   const [ranges, setRanges] = useState<TRange>(INITIAL_RANGES);
 
@@ -109,6 +113,8 @@ function SearchFilters({ className = "" }: FiltersProps) {
   return (
     <section className={`h-full bg-primary-inverted select-none ${className}`}>
       <div className={`w-full flex flex-col gap-1 py-2 px-6`}>
+        {/* Categories Filter */}
+        {needCategoriesFilters && <CategoriesFilter />}
         {/* Availability Filter */}
         <Dropdown
           heading={{
@@ -256,10 +262,9 @@ function SearchFilters({ className = "" }: FiltersProps) {
             />
           </>
         </Dropdown>
-        <DropdownCategories />
       </div>
     </section>
   );
 }
 
-export default SearchFilters;
+export default Filters;
