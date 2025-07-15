@@ -227,5 +227,13 @@ export interface DropdownProps {
   selected: string;
   onChange: (opt: TDropdownOption) => void;
   className?: string;
+  containerClassName?: string;
+  children?: JSX.Element;
+}
+
+export interface TDropdown {
+  heading: { title: string; icon?: JSX.Element };
+  className?: { open?: string; closed?: string; common?: string };
+  containerClassName?: { open?: string; closed?: string; common?: string };
   children?: JSX.Element;
 }

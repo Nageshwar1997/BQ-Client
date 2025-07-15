@@ -1,18 +1,21 @@
 import { useState } from "react";
 import { DropdownIcon } from "../../icons";
-import { DropdownProps } from "../../types";
+import { TDropdown } from "../../types";
 
 const Dropdown = ({
   heading,
-  className = "",
   children,
-}: Omit<DropdownProps, "options" | "selected" | "onChange">) => {
+  className = { open: "", closed: "", common: "" },
+  containerClassName = { open: "", closed: "", common: "" },
+}: TDropdown) => {
   const [open, setOpen] = useState(false);
   return (
     <div
       className={`py-4 border-b border-b-primary-50 flex flex-col transition-all duration-500 ${
-        open ? "gap-4" : "gap-0"
-      } ${className}`}
+        open
+          ? `gap-4 ${containerClassName.open}`
+          : `gap-0 ${containerClassName.closed}`
+      } ${containerClassName.common}`}
     >
       <button
         type="button"
@@ -20,7 +23,7 @@ const Dropdown = ({
         className="flex items-center gap-2 justify-between"
       >
         <div className="flex items-center gap-1">
-          <span className="uppercase text-sm sm:text-base text-primary font-medium whitespace-nowrap">
+          <span className="text-sm sm:text-base text-primary font-medium whitespace-nowrap">
             {heading.title}
           </span>
           {heading.icon && heading.icon}
@@ -34,9 +37,9 @@ const Dropdown = ({
       <div
         className={`flex flex-col gap-0.5 transition-all duration-500 ease-in-out ${
           open
-            ? "max-h-80 opacity-100 scale-y-100"
-            : "max-h-0 opacity-0 scale-y-0"
-        }`}
+            ? `max-h-80 opacity-100 scale-y-100 ${className.open}`
+            : `max-h-0 opacity-0 scale-y-0 ${className.closed}`
+        } ${className.common}`}
       >
         {children}
       </div>
