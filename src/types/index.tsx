@@ -25,6 +25,8 @@ export interface ProfilePicInputProps {
 }
 
 export interface InputProps {
+  min?: number;
+  max?: number;
   type?: string;
   name?: string;
   value?: string;

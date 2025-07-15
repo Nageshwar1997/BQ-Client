@@ -3,6 +3,8 @@ import { CheckedCircleIcon, InfoIcon } from "../../icons";
 import { InputProps } from "../../types";
 
 const Input = ({
+  min,
+  max,
   value,
   name = "",
   label = "",
@@ -63,6 +65,8 @@ const Input = ({
           {/* Input */}
           <input
             aria-autocomplete="none"
+            min={min}
+            max={max}
             id={name}
             type={type}
             name={name}
@@ -75,7 +79,7 @@ const Input = ({
             placeholder={placeholder}
             autoComplete={autoComplete}
             onWheel={(event) => type === "number" && event.currentTarget.blur()}
-            className={`w-full h-full outline-none border-none focus:outline-none focus:border-none bg-transparent font-normal text-sm p-3 text-primary placeholder:text-primary-50 placeholder:text-sm autofill-effect line-clamp-1 ${
+            className={`flex-1 w-full h-full outline-none border-none focus:outline-none focus:border-none bg-transparent font-normal text-sm p-3 text-primary placeholder:text-primary-50 placeholder:text-sm autofill-effect line-clamp-1 ${
               leftIcon && !rightIcon
                 ? "pl-0"
                 : !leftIcon && rightIcon
