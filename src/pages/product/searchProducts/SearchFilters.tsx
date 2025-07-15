@@ -5,6 +5,7 @@ import { CheckedIcon, PercentIcon, RupeesIcon } from "../../../icons";
 import Dropdown from "../../../components/dropdown/Dropdown";
 import Input from "../../../components/input/Input";
 import DropdownCategories from "./components/DropdownCategories";
+import Range from "../../../components/input/Range";
 
 interface FiltersProps {
   className?: string;
@@ -12,63 +13,20 @@ interface FiltersProps {
 type TRange = Record<"min" | "max" | "discount", string>;
 
 const MAX_PRICE = 1500;
-const MAX_DISCOUNT = 100;
 const INITIAL_RANGES: TRange = { min: "0", max: `${MAX_PRICE}`, discount: "0" };
-
-const calcPercent = (value: number, min: number, max: number) =>
-  ((value - min) / (max - min)) * 100;
 
 function SearchFilters({ className = "" }: FiltersProps) {
   const { queryParams, setParams, removeParam } = useQueryParams();
   const [ranges, setRanges] = useState<TRange>(INITIAL_RANGES);
 
-  const priceTrackRef = useRef<HTMLDivElement>(null);
-  const discountTrackRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     setRanges((prev) => ({
-      ...prev,
       min: queryParams.min ?? prev.min,
       max: queryParams.max ?? prev.max,
       discount: queryParams.discount ?? prev.discount,
     }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // PRICE track
-  useEffect(() => {
-    if (priceTrackRef.current) {
-      const parsedMin = Number(ranges.min);
-      const parsedMax = Number(ranges.max);
-      if (!isNaN(parsedMin) && !isNaN(parsedMax)) {
-        const minPercent = calcPercent(parsedMin, 0, MAX_PRICE);
-        const maxPercent = calcPercent(parsedMax, 0, MAX_PRICE);
-        priceTrackRef.current.style.backgroundImage = `linear-gradient(
-          to right,
-          transparent ${minPercent}%,
-          var(--primary) ${minPercent}%,
-          var(--primary) ${maxPercent}%,
-          transparent ${maxPercent}%
-        )`;
-      }
-    }
-  }, [ranges.min, ranges.max]);
-
-  // DISCOUNT track (min only)
-  useEffect(() => {
-    if (discountTrackRef.current) {
-      const parsedMin = Number(ranges.discount);
-      if (!isNaN(parsedMin)) {
-        const minPercent = calcPercent(parsedMin, 0, MAX_DISCOUNT);
-        discountTrackRef.current.style.backgroundImage = `linear-gradient(
-          to right,
-          var(--primary) ${minPercent}%,
-          transparent ${minPercent}%,
-          transparent 100%
-        )`;
-      }
-    }
-  }, [ranges.discount]);
 
   // Debounce price filter
   const debouncePriceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -148,9 +106,7 @@ function SearchFilters({ className = "" }: FiltersProps) {
   }, [ranges.discount]);
 
   return (
-    <section
-      className={`h-full bg-primary-inverted select-none ${className}`}
-    >
+    <section className={`h-full bg-primary-inverted select-none ${className}`}>
       <div className={`w-full flex flex-col gap-1 py-2 px-6`}>
         {/* Availability Filter */}
         <Dropdown
@@ -190,7 +146,7 @@ function SearchFilters({ className = "" }: FiltersProps) {
           }}
         >
           <>
-            <div className="flex justify-between gap-2">
+            <div className="h-9 flex justify-between gap-2">
               {/* Min Input */}
               <Input
                 name="min-price"
@@ -198,7 +154,7 @@ function SearchFilters({ className = "" }: FiltersProps) {
                 min={0}
                 max={Number(ranges.max) - 1}
                 value={ranges.min}
-                containerClassName="h-9 [&>div]:h-full"
+                containerClassName="h-full [&>div]:h-full"
                 className="[&_p]:w-10 [&_p]:text-xs !rounded border border-primary-30 [&_p]:border-r [&_p]:border-r-primary-30 [&_p]:bg-primary-10 [&_p]:text-primary"
                 leftText={{ required: true, text: "Min" }}
                 onChange={(e) => {
@@ -208,7 +164,7 @@ function SearchFilters({ className = "" }: FiltersProps) {
                   }
                 }}
               />
-              <div className="w-px h-9 bg-primary-50" />
+              <div className="w-px h-full bg-primary-50" />
               {/* Max Input */}
               <Input
                 name="max-price"
@@ -216,7 +172,7 @@ function SearchFilters({ className = "" }: FiltersProps) {
                 min={Number(ranges.min) + 1}
                 max={MAX_PRICE}
                 value={ranges.max}
-                containerClassName="h-9 [&>div]:h-full"
+                containerClassName="[&>div]:h-full"
                 className="[&_p]:w-10 [&_p]:text-xs !rounded border border-primary-30 [&_p]:border-r [&_p]:border-r-primary-30 [&_p]:bg-primary-10 [&_p]:text-primary"
                 leftText={{ required: true, text: "Max" }}
                 onChange={(e) => {
@@ -227,43 +183,31 @@ function SearchFilters({ className = "" }: FiltersProps) {
                 }}
               />
             </div>
-            {/* Range Slider */}
-            <div className="relative w-full h-5 mt-2 select-none">
-              <input
-                type="range"
-                min={0}
-                max={MAX_PRICE}
-                step={10}
-                value={Number(ranges.min) || 0}
-                onChange={(e) => {
-                  const value = Math.min(
-                    Number(e.target.value),
-                    Number(ranges.max) - 1
-                  );
-                  setRanges((prev) => ({ ...prev, min: `${value}` }));
-                }}
-                className="range-slider-thumb absolute w-full h-full bg-transparent pointer-events-none appearance-none z-20"
-              />
-              <input
-                type="range"
-                min={0}
-                max={MAX_PRICE}
-                step={10}
-                value={Number(ranges.max) || 0}
-                onChange={(e) => {
-                  const value = Math.max(
-                    Number(e.target.value),
-                    Number(ranges.min) + 1
-                  );
-                  setRanges((prev) => ({ ...prev, max: `${value}` }));
-                }}
-                className="range-slider-thumb absolute w-full h-full bg-transparent pointer-events-none appearance-none z-20"
-              />
-              <div
-                ref={priceTrackRef}
-                className="absolute top-1/2 h-[3px] w-full -translate-y-1/2 bg-primary-30 rounded"
-              />
-            </div>
+            {/* Dual Range Slider */}
+            <Range
+              mode="dual"
+              className="mt-2"
+              min={0}
+              max={MAX_PRICE}
+              step={10}
+              value={{
+                dual: {
+                  min: Number(ranges.min) || 0,
+                  max: Number(ranges.max) || MAX_PRICE,
+                },
+              }}
+              onChange={{
+                dual: ({ min, max }) => {
+                  const minValue = Math.min(min, Number(ranges.max) - 1);
+                  const maxValue = Math.max(max, Number(ranges.min) + 1);
+                  setRanges({
+                    ...ranges,
+                    min: `${minValue}`,
+                    max: `${maxValue}`,
+                  });
+                },
+              }}
+            />
           </>
         </Dropdown>
         {/* Discount Filter */}
@@ -296,25 +240,21 @@ function SearchFilters({ className = "" }: FiltersProps) {
                 }
               }}
             />
-            {/* Range Slider for minDiscount only */}
-            <div className="relative w-full h-5 mt-2 select-none">
-              <input
-                type="range"
-                min={0}
-                max={100}
-                step={5}
-                value={Number(ranges.discount) || 0}
-                onChange={(e) => {
-                  const value = Math.min(Number(e.target.value), 100);
-                  setRanges((prev) => ({ ...prev, discount: `${value}` }));
-                }}
-                className="range-slider-thumb absolute w-full h-full bg-transparent pointer-events-none appearance-none z-20"
-              />
-              <div
-                ref={discountTrackRef}
-                className="absolute top-1/2 h-[3px] w-full -translate-y-1/2 bg-primary-30 rounded"
-              />
-            </div>
+            {/* Single Range Slider for minDiscount only */}
+            <Range
+              mode="single"
+              className="mt-2"
+              min={0}
+              max={100}
+              step={5}
+              value={{ single: Number(ranges.discount || 0) }}
+              onChange={{
+                single: (v) => {
+                  const value = Math.min(Number(v), 100);
+                  setRanges({ ...ranges, discount: `${value}` });
+                },
+              }}
+            />
           </>
         </Dropdown>
         <DropdownCategories />
