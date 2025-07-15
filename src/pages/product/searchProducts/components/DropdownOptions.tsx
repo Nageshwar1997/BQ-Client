@@ -1,4 +1,4 @@
-import { DropdownProps } from "../../../../types";
+import { TDropdownOptions } from "../../../../types";
 import { CheckedIcon } from "../../../../icons";
 
 const DropdownOptions = ({
@@ -6,7 +6,7 @@ const DropdownOptions = ({
   selected,
   onChange,
   className = "",
-}: Omit<DropdownProps, "heading" | "children">) => {
+}: TDropdownOptions) => {
   return (
     <div className={`${className}`}>
       {options.map((opt) => {

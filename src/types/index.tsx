@@ -221,14 +221,11 @@ export interface ReviewType {
 }
 
 export type TDropdownOption = { name: string; value: string };
-export interface DropdownProps {
-  heading: { title: string; icon?: JSX.Element };
+export interface TDropdownOptions {
   options: TDropdownOption[];
   selected: string;
   onChange: (opt: TDropdownOption) => void;
   className?: string;
-  containerClassName?: string;
-  children?: JSX.Element;
 }
 
 export interface TDropdown {
