@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import Checkbox from "../../../components/input/Checkbox";
 import useQueryParams from "../../../hooks/useQueryParams";
 import { CheckedIcon, PercentIcon, RupeesIcon } from "../../../icons";
@@ -10,7 +10,8 @@ import Range from "../../../components/input/Range";
 interface FiltersProps {
   className?: string;
 }
-type TRange = Record<"min" | "max" | "discount", string>;
+type TPriceRangeKeys = "min" | "max";
+type TRange = Record<TPriceRangeKeys | "discount", string>;
 
 const MAX_PRICE = 1500;
 const INITIAL_RANGES: TRange = { min: "0", max: `${MAX_PRICE}`, discount: "0" };
@@ -147,41 +148,39 @@ function SearchFilters({ className = "" }: FiltersProps) {
         >
           <>
             <div className="h-9 flex justify-between gap-2">
-              {/* Min Input */}
-              <Input
-                name="min-price"
-                type="number"
-                min={0}
-                max={Number(ranges.max) - 1}
-                value={ranges.min}
-                containerClassName="h-full [&>div]:h-full"
-                className="[&_p]:w-10 [&_p]:text-xs !rounded border border-primary-30 [&_p]:border-r [&_p]:border-r-primary-30 [&_p]:bg-primary-10 [&_p]:text-primary"
-                leftText={{ required: true, text: "Min" }}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value === "" || Number(value) < Number(ranges.max)) {
-                    setRanges((prev) => ({ ...prev, min: value }));
-                  }
-                }}
-              />
-              <div className="w-px h-full bg-primary-50" />
-              {/* Max Input */}
-              <Input
-                name="max-price"
-                type="number"
-                min={Number(ranges.min) + 1}
-                max={MAX_PRICE}
-                value={ranges.max}
-                containerClassName="[&>div]:h-full"
-                className="[&_p]:w-10 [&_p]:text-xs !rounded border border-primary-30 [&_p]:border-r [&_p]:border-r-primary-30 [&_p]:bg-primary-10 [&_p]:text-primary"
-                leftText={{ required: true, text: "Max" }}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value === "" || Number(value) > Number(ranges.min)) {
-                    setRanges((prev) => ({ ...prev, max: value }));
-                  }
-                }}
-              />
+              {(["min", "max"] as TPriceRangeKeys[]).map((key, index) => {
+                const isMin = key === "min";
+                const minRange = Number(ranges.min);
+                const maxRange = Number(ranges.max);
+                return (
+                  <Fragment key={index}>
+                    <Input
+                      name={key}
+                      type="number"
+                      min={isMin ? 0 : minRange + 1}
+                      max={isMin ? maxRange - 1 : MAX_PRICE}
+                      value={ranges[key]}
+                      containerClassName="h-full [&>div]:h-full"
+                      className="[&_p]:w-10 [&_p]:text-xs !rounded border border-primary-30 [&_p]:border-r [&_p]:border-r-primary-30 [&_p]:bg-primary-10 [&_p]:text-primary"
+                      leftText={key}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (value === "") return;
+                        const numVal = Number(value);
+                        if (
+                          (isMin && numVal < maxRange) ||
+                          (!isMin && numVal > minRange)
+                        ) {
+                          setRanges((prev) => ({ ...prev, [key]: value }));
+                        }
+                      }}
+                    />
+                    {key === "min" && (
+                      <div className="w-px h-full bg-primary-50" />
+                    )}
+                  </Fragment>
+                );
+              })}
             </div>
             {/* Dual Range Slider */}
             <Range
@@ -230,7 +229,7 @@ function SearchFilters({ className = "" }: FiltersProps) {
               value={ranges.discount}
               containerClassName="h-9 [&>div]:h-full"
               className="[&_p]:w-14 [&_p]:text-xs !rounded border border-primary-30 [&_p]:border-r [&_p]:border-r-primary-30 [&_p]:bg-primary-10 [&_p]:text-primary [&_p]:text-nowrap"
-              leftText={{ required: true, text: "0 - 100" }}
+              leftText="0 - 100"
               onChange={(e) => {
                 const value = e.target.value;
                 if (value === "" || Number(value) <= 100) {
