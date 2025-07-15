@@ -13,6 +13,7 @@ import {
 import { CATEGORIES_DATA } from "../../../constants/categories";
 import { DEFAULT_FILTER } from "../../../constants";
 import Dropdown from "../../../components/dropdown/Dropdown";
+import { DropdownOption } from "../../../types";
 
 interface FiltersProps {
   className?: string;
@@ -172,6 +173,7 @@ function SearchFilters({ className = "" }: FiltersProps) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ranges.discount]);
+
   const selectedCategories = useMemo(
     () => ({
       category_1: queryParams.category_1,
@@ -229,6 +231,52 @@ function SearchFilters({ className = "" }: FiltersProps) {
     return { level1Options, level2Options, level3Options };
   }, [selectedCategories]);
 
+  const CATEGORY_OPTIONS = useMemo(
+    () => [
+      {
+        onChange: (category: DropdownOption) =>
+          handleFilterChange.category_1(category.value),
+        heading: {
+          title: "Category One",
+          icon: SingleLayerIcon,
+        },
+        selected: selectedCategories.category_1,
+        options: level1Options.map((opt) => ({
+          name: opt.name,
+          value: opt.category,
+        })),
+      },
+      {
+        onChange: (category: DropdownOption) =>
+          handleFilterChange.category_2(category.value),
+        heading: {
+          title: "Category Two",
+          icon: DoubleLayerIcon,
+        },
+        selected: selectedCategories.category_2,
+        options: level2Options.map((opt) => ({
+          name: opt.name,
+          value: opt.category,
+        })),
+      },
+      {
+        onChange: (category: DropdownOption) =>
+          handleFilterChange.category_3(category.value),
+        heading: {
+          title: "Category Three",
+          icon: TripleLayerIcon,
+        },
+        selected: selectedCategories.category_3,
+        options: level3Options.map((opt) => ({
+          name: opt.name,
+          value: opt.category,
+        })),
+      },
+    ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [handleFilterChange]
+  );
+
   return (
     <section
       className={`h-full gap-6 bg-primary-inverted select-none ${className}`}
@@ -255,7 +303,7 @@ function SearchFilters({ className = "" }: FiltersProps) {
               )
             </div>
             <DropdownIcon
-              className={`w-6 h-6 transition-transform duration-500 ${
+              className={`w-6 h-6 transition-transform duration-500 stroke-primary ${
                 openedFilters.inStock ? "rotate-180" : "rotate-0"
               }`}
             />
@@ -305,7 +353,7 @@ function SearchFilters({ className = "" }: FiltersProps) {
               )
             </div>
             <DropdownIcon
-              className={`w-6 h-6 transition-transform duration-500 ${
+              className={`w-6 h-6 transition-transform duration-500 stroke-primary ${
                 openedFilters.priceRange ? "rotate-180" : "rotate-0"
               }`}
             />
@@ -431,7 +479,7 @@ function SearchFilters({ className = "" }: FiltersProps) {
               )
             </div>
             <DropdownIcon
-              className={`w-6 h-6 transition-transform duration-500 ${
+              className={`w-5 h-5 transition-transform duration-500 stroke-primary ${
                 openedFilters.discountRange ? "rotate-180" : "rotate-0"
               }`}
             />
@@ -471,7 +519,6 @@ function SearchFilters({ className = "" }: FiltersProps) {
                 />
               </div>
             </div>
-
             {/* Range Slider for minDiscount only */}
             <div className="relative w-full h-10 select-none">
               <input
@@ -493,63 +540,27 @@ function SearchFilters({ className = "" }: FiltersProps) {
             </div>
           </div>
         </div>
-        <Dropdown
-          onChange={(category) => handleFilterChange.category_1(category.value)}
-          selected={selectedCategories.category_1}
-          heading={{
-            title: "Category One",
-            icon: (
-              <>
-                (<SingleLayerIcon className="w-4 h-4 -m-[1.5px]" />)
-              </>
-            ),
-          }}
-          options={[
-            DEFAULT_FILTER,
-            ...level1Options.map((data) => ({
-              name: data.name,
-              value: data.category,
-            })),
-          ]}
-        />
-        <Dropdown
-          onChange={(category) => handleFilterChange.category_2(category.value)}
-          selected={selectedCategories.category_2}
-          heading={{
-            title: "Category Two",
-            icon: (
-              <>
-                (<DoubleLayerIcon className="w-4 h-4 -m-[1.5px]" />)
-              </>
-            ),
-          }}
-          options={[
-            DEFAULT_FILTER,
-            ...level2Options.map((data) => ({
-              name: data.name,
-              value: data.category,
-            })),
-          ]}
-        />
-        <Dropdown
-          onChange={(category) => handleFilterChange.category_3(category.value)}
-          selected={selectedCategories.category_3}
-          heading={{
-            title: "Category Three",
-            icon: (
-              <>
-                (<TripleLayerIcon className="w-4 h-4 -m-[1.5px]" />)
-              </>
-            ),
-          }}
-          options={[
-            DEFAULT_FILTER,
-            ...level3Options.map((data) => ({
-              name: data.name,
-              value: data.category,
-            })),
-          ]}
-        />
+        {CATEGORY_OPTIONS.map((cat, index) => {
+          const HeadingIcon = cat.heading.icon;
+          return (
+            <Dropdown
+              key={index}
+              onChange={(test) => cat.onChange(test)}
+              selected={cat.selected}
+              heading={{
+                title: cat.heading.title,
+                icon: (
+                  <>
+                    (
+                    <HeadingIcon className="w-4 h-4 -m-[1.5px] stroke-primary" />
+                    )
+                  </>
+                ),
+              }}
+              options={[DEFAULT_FILTER, ...cat.options]}
+            />
+          );
+        })}
       </div>
     </section>
   );

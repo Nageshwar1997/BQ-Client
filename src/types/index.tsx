@@ -1,6 +1,7 @@
 import {
   ChangeEvent,
   HTMLInputAutoCompleteAttribute,
+  JSX,
   KeyboardEvent,
   ReactNode,
   SVGProps,
@@ -217,4 +218,13 @@ export interface ReviewType {
   images: (string | File)[];
   videos: (string | File)[];
   user: string;
+}
+
+export type DropdownOption = { name: string; value: string };
+export interface DropdownProps {
+  heading: { title: string; icon?: JSX.Element };
+  options: DropdownOption[];
+  selected: string;
+  onChange: (opt: DropdownOption) => void;
+  className?: string;
 }
