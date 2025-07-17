@@ -75,10 +75,8 @@ const CategoriesFilter = ({ className = "" }: { className?: string }) => {
       {
         onChange: (category: TDropdownOption) =>
           handleFilterChange.category_1(category.value),
-        heading: {
-          title: "Category One",
-          icon: SingleLayerIcon,
-        },
+        title: "Category One",
+        rightIcon: SingleLayerIcon,
         selected: selectedCategories.category_1,
         options: level1Options.map((opt) => ({
           name: opt.name,
@@ -88,10 +86,8 @@ const CategoriesFilter = ({ className = "" }: { className?: string }) => {
       {
         onChange: (category: TDropdownOption) =>
           handleFilterChange.category_2(category.value),
-        heading: {
-          title: "Category Two",
-          icon: DoubleLayerIcon,
-        },
+        title: "Category Two",
+        rightIcon: DoubleLayerIcon,
         selected: selectedCategories.category_2,
         options: level2Options.map((opt) => ({
           name: opt.name,
@@ -101,10 +97,8 @@ const CategoriesFilter = ({ className = "" }: { className?: string }) => {
       {
         onChange: (category: TDropdownOption) =>
           handleFilterChange.category_3(category.value),
-        heading: {
-          title: "Category Three",
-          icon: TripleLayerIcon,
-        },
+        title: "Category Three",
+        rightIcon: TripleLayerIcon,
         selected: selectedCategories.category_3,
         options: level3Options.map((opt) => ({
           name: opt.name,
@@ -118,24 +112,25 @@ const CategoriesFilter = ({ className = "" }: { className?: string }) => {
   return (
     <div className={`w-full flex flex-col gap-1 ${className}`}>
       {CATEGORY_OPTIONS.map((cat, index) => {
-        const HeadingIcon = cat.heading.icon;
+        const HeadingIcon = cat.rightIcon;
+        const options = [DEFAULT_FILTER, ...cat.options];
         return (
           <Dropdown
             key={index}
-            heading={{
-              title: cat.heading.title,
-              icon: (
-                <>
-                  (
-                  <HeadingIcon className="w-4 h-4 -m-[1.5px] stroke-primary" />)
-                </>
+            title={cat.title}
+            icons={{
+              right: (
+                <div className="flex items-center">
+                  (<HeadingIcon className="w-4 h-4 stroke-primary" />)
+                </div>
               ),
             }}
+            options={options}
           >
             <DropdownOptions
               onChange={(data) => cat.onChange(data)}
               selected={cat.selected}
-              options={[DEFAULT_FILTER, ...cat.options]}
+              options={options}
             />
           </Dropdown>
         );

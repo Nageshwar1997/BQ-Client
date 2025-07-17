@@ -8,25 +8,20 @@ const DropdownOptions = ({
   className = "",
 }: TDropdownOptions) => {
   return (
-    <div className={`${className}`}>
-      {options.map((opt) => {
+    <div className={`flex flex-col gap-0.5 ${className}`}>
+      {options.map((opt, index) => {
         const isSelected =
           selected === opt.value ||
           ((!selected || selected === "") && opt.value === "all");
         return (
           <button
-            key={opt.value}
-            type="button"
+            key={index}
+            className={`flex items-center justify-between gap-3 px-2 py-1 text-sm text-tertiary ${
+              isSelected ? "text-secondary font-medium" : "font-light"
+            }`}
             onClick={() => onChange(opt)}
-            className={`p-1 flex items-center w-full justify-between rounded-md`}
           >
-            <p
-              className={`w-full text-start text-primary ${
-                isSelected ? "font-medium" : "text-primary-50"
-              }`}
-            >
-              {opt.name}
-            </p>
+            {opt.name}
             {isSelected && <CheckedIcon className="stroke-primary w-5 h-5" />}
           </button>
         );

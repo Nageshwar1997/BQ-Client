@@ -232,8 +232,9 @@ export interface TDropdownOptions {
 }
 
 export interface TDropdown {
-  heading: { title: string; icon?: JSX.Element };
-  className?: { open?: string; closed?: string; common?: string };
-  containerClassName?: { open?: string; closed?: string; common?: string };
-  children?: JSX.Element;
+  title: string;
+  icons?: { left?: JSX.Element; right?: JSX.Element };
+  className?: string;
+  options?: TDropdownOption[];
+  children?: ReactNode;
 }

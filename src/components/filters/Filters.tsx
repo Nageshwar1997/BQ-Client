@@ -112,17 +112,17 @@ function Filters({
 
   return (
     <section className={`h-full bg-primary-inverted select-none ${className}`}>
-      <div className={`w-full flex flex-col gap-1 py-2 px-6`}>
+      <div className={`w-full flex flex-col gap-1 p-2`}>
         {/* Categories Filter */}
         {needCategoriesFilters && <CategoriesFilter />}
         {/* Availability Filter */}
         <Dropdown
-          heading={{
-            title: "Availability",
-            icon: (
-              <>
-                (<CheckedIcon className="w-4 h-4 -m-[3px] stroke-primary" />)
-              </>
+          title="Availability"
+          icons={{
+            right: (
+              <div className="flex items-center">
+                (<CheckedIcon className="w-4 h-4 stroke-primary" />)
+              </div>
             ),
           }}
         >
@@ -143,12 +143,12 @@ function Filters({
         </Dropdown>
         {/* Price Filter */}
         <Dropdown
-          heading={{
-            title: "Price Range",
-            icon: (
-              <>
-                (<RupeesIcon className="w-4 h-4 -m-[3px] stroke-primary" />)
-              </>
+          title="Price Range"
+          icons={{
+            right: (
+              <div className="flex items-center">
+                (<RupeesIcon className="w-4 h-4 stroke-primary" />)
+              </div>
             ),
           }}
         >
@@ -217,12 +217,12 @@ function Filters({
         </Dropdown>
         {/* Discount Filter */}
         <Dropdown
-          heading={{
-            title: "Discount Range",
-            icon: (
-              <>
-                (<PercentIcon className="w-4 h-4 -m-[3px] stroke-primary" />)
-              </>
+          title="Discount Range"
+          icons={{
+            right: (
+              <div className="flex items-center">
+                (<PercentIcon className="w-4 h-4 stroke-primary" />)
+              </div>
             ),
           }}
         >

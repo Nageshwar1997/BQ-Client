@@ -1,47 +1,62 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DropdownIcon } from "../../icons";
 import { TDropdown } from "../../types";
 
 const Dropdown = ({
-  heading,
+  title,
+  icons,
   children,
-  className = { open: "", closed: "", common: "" },
-  containerClassName = { open: "", closed: "", common: "" },
+  className = "",
+  options = [],
 }: TDropdown) => {
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState<number>(0);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      setHeight(isOpen ? contentRef.current.scrollHeight : 0);
+    }
+  }, [isOpen, options]);
   return (
-    <div
-      className={`py-4 border-b border-b-primary-50 flex flex-col transition-all duration-500 ${
-        open
-          ? `gap-4 ${containerClassName.open}`
-          : `gap-0 ${containerClassName.closed}`
-      } ${containerClassName.common}`}
-    >
-      <button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-2 justify-between"
-      >
-        <div className="flex items-center gap-1">
-          <span className="text-sm sm:text-base text-primary font-medium whitespace-nowrap">
-            {heading.title}
-          </span>
-          {heading.icon && heading.icon}
-        </div>
-        <DropdownIcon
-          className={`w-5 h-5 transition-transform duration-500 stroke-primary ${
-            open ? "rotate-180" : "rotate-0"
+    <div className={`px-4 ${className}`}>
+      <div className="border-b border-b-primary-50">
+        <button
+          onClick={() => setIsOpen((prev) => !prev)}
+          className="flex items-center justify-between gap-2 w-full px-1 py-3 text-left transition-colors duration-300 group"
+          aria-expanded={isOpen}
+        >
+          <div className="flex items-center gap-2">
+            {icons?.left && (
+              <span className="transition-colors flex items-center justify-center">
+                {icons.left}
+              </span>
+            )}
+            <span className="text-sm sm:text-[15px] text-primary font-medium whitespace-nowrap">
+              {title}
+            </span>
+            {icons?.right && (
+              <span className="transition-colors flex items-center justify-center">
+                {icons.right}
+              </span>
+            )}
+          </div>
+          <DropdownIcon
+            className={`w-5 h-5 transition-transform duration-300 ease-in-out stroke-primary ${
+              isOpen ? "rotate-180" : "rotate-0"
+            }`}
+          />
+        </button>
+        <div
+          style={{ height: `${height}px` }}
+          className={`overflow-hidden transition-all duration-300 ease-in-out ${
+            isOpen ? "mb-2" : ""
           }`}
-        />
-      </button>
-      <div
-        className={`flex flex-col gap-0.5 transition-all duration-500 ease-in-out ${
-          open
-            ? `max-h-80 opacity-100 scale-y-100 ${className.open}`
-            : `max-h-0 opacity-0 scale-y-0 ${className.closed}`
-        } ${className.common}`}
-      >
-        {children}
+        >
+          <div ref={contentRef} className="w-full h-fit">
+            {children}
+          </div>
+        </div>
       </div>
     </div>
   );
