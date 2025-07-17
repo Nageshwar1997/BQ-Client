@@ -131,6 +131,7 @@ const CategoriesFilter = ({ className = "" }: { className?: string }) => {
               onChange={(data) => cat.onChange(data)}
               selected={cat.selected}
               options={options}
+              className="[&>button]:whitespace-nowrap"
             />
           </Dropdown>
         );
