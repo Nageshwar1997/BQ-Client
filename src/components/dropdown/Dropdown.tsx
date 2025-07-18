@@ -23,7 +23,7 @@ const Dropdown = ({
       <div className="border-b border-b-primary-50">
         <button
           onClick={() => setIsOpen((prev) => !prev)}
-          className="flex items-center justify-between gap-2 w-full px-1 py-3 text-left transition-colors duration-300 group"
+          className="flex items-center justify-between gap-2 w-full px-1 pt-3 pb-5 text-left transition-colors duration-300 group"
           aria-expanded={isOpen}
         >
           <div className="flex items-center gap-2">

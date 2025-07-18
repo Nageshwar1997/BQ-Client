@@ -110,7 +110,7 @@ const CategoriesFilter = ({ className = "" }: { className?: string }) => {
     [handleFilterChange]
   );
   return (
-    <div className={`w-full flex flex-col gap-1 ${className}`}>
+    <div className={`w-full flex flex-col gap-4 ${className}`}>
       {CATEGORY_OPTIONS.map((cat, index) => {
         const HeadingIcon = cat.rightIcon;
         const options = [DEFAULT_FILTER, ...cat.options];

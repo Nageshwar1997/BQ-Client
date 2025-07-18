@@ -112,7 +112,7 @@ function Filters({
 
   return (
     <section className={`h-full bg-primary-inverted select-none ${className}`}>
-      <div className={`w-full flex flex-col gap-1 p-2`}>
+      <div className={`w-full flex flex-col gap-4 px-2 py-4`}>
         {/* Categories Filter */}
         {needCategoriesFilters && <CategoriesFilter />}
         {/* Availability Filter */}
