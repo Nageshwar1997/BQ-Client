@@ -28,7 +28,7 @@ export const useGetAllProductsInfinite = ({
 }: TUseGetAllProductInfinite) => {
   return useInfiniteQuery({
     queryKey: ["get_all_products_infinite", data, queryParams, pageParams],
-    initialPageParam: 0,
+    initialPageParam: 1,
     queryFn: async ({ pageParam = 1 }) => {
       return get_all_products({
         data,

@@ -472,6 +472,69 @@ export const YellowStarIcon = ({ className }: IconProps) => (
   </svg>
 );
 
+export const StarFillIcon = (props: IconProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="black"
+    stroke="black"
+    {...props}
+  >
+    <path d="M12 2L14.94 8.64L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L9.06 8.64L12 2Z" />
+  </svg>
+);
+export const StarHalfFillIcon = (props: IconProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="black"
+    {...props}
+  >
+    <defs>
+      <linearGradient
+        id="half"
+        x1="0"
+        x2="24"
+        y1="0"
+        y2="0"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop offset="50%" stopColor="var(--primary)" stopOpacity="1" />
+        <stop
+          offset="50%"
+          stopColor="var(--primary-inverted)"
+          stopOpacity="0"
+        />
+      </linearGradient>
+    </defs>
+    <path
+      d="M12 2L14.94 8.64L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L9.06 8.64L12 2Z"
+      fill="url(#half)"
+    />
+  </svg>
+);
+export const StarEmptyIcon = (props: IconProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="black"
+    {...props}
+  >
+    <path
+      d="M12 2L14.94 8.64L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L9.06 8.64L12 2Z"
+      stroke-width="1.5"
+    />
+  </svg>
+);
+
 export const LeftArrowIcon = (props: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"

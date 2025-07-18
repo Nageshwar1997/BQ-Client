@@ -212,15 +212,20 @@ export interface FetchedProductType extends ProductType {
   originalPrice: number;
   category: PopulatedCategory;
   shades: ShadeType[];
+  reviews: ReviewType[];
 }
 
 export interface ReviewType {
+  _id?: string;
   rating: number;
   title: string;
   comment: string;
   images: (string | File)[];
   videos: (string | File)[];
   user: string;
+  product: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export type TDropdownOption = { name: string; value: string };

@@ -61,6 +61,7 @@ select:-webkit-autofill:focus  */
     linear-gradient(var(--primary-50) 10%, var(--primary-10));
   background-origin: border-box;
   background-clip: padding-box, border-box;
+  box-shadow: var(--primary-10) -4px 9px 25px -6px;
 }
 
 /* Min Max Slider Style */

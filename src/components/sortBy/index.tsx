@@ -27,7 +27,7 @@ function SortBy({ className = "" }: SortByProps) {
               }
               className={`w-fit text-sm sm:text-base text-primary font-medium py-2 transform transition-all hover:duration-300 whitespace-nowrap ${
                 disabled
-                  ? "cursor-not-allowed text-primary-30"
+                  ? "cursor-not-allowed text-primary-30 opacity-60"
                   : "cursor-pointer hover:-translate-x-2"
               } ${
                 selected ? "-translate-x-2 text-primary" : "text-primary-50"
