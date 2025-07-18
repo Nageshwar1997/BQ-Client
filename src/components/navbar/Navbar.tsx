@@ -192,7 +192,7 @@ const Navbar = () => {
                     onMouseEnter={() => handleMouseEnter(index)}
                   >
                     <p
-                      className={`${
+                      className={`text-tertiary ${
                         hoveredIndex === index
                           ? "bg-clip-text text-transparent bg-accent-duo"
                           : ""
@@ -205,9 +205,9 @@ const Navbar = () => {
                       {item.label}
                     </p>
                     <DropdownIcon
-                      className={`${
+                      className={`stroke-tertiary ${
                         hoveredIndex === index
-                          ? "rotate-180 stroke-blue-crayola-c"
+                          ? "rotate-180 !stroke-blue-crayola-c"
                           : ""
                       } ${
                         isNavbarAtTop || isNavbarHovered
@@ -292,7 +292,9 @@ const Navbar = () => {
                     >
                       <p className="text-primary">{category.label}</p>
                       <DropdownIcon
-                        className={`stroke-2 ${isActive ? "rotate-180" : ""}`}
+                        className={`stroke-2 stroke-primary ${
+                          isActive ? "rotate-180" : ""
+                        }`}
                       />
                     </div>
                     {isActive && AccordionContentComponent && (
