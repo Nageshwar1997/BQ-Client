@@ -90,7 +90,7 @@ const SearchProducts = () => {
               value={searchQuery?.trimStart()}
               rightIcon={
                 <SearchIcon
-                  className="w-4 h-4 md:w-5 md:h-5"
+                  className="w-4 h-4 md:w-5 md:h-5 stroke-primary-50"
                   strokeWidth={1.5}
                 />
               }
