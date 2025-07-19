@@ -1,23 +1,30 @@
 import { useEffect, useMemo, useState } from "react";
+import { useInView } from "react-intersection-observer";
 import { FilterIcon, LeftArrowIcon, SearchIcon } from "../../../icons";
 import SortBy from "../../../components/sortBy";
 import Filters from "../../../components/filters/Filters";
 import Input from "../../../components/input/Input";
 import { useGetAllProductsInfinite } from "../../../api/product/product.service";
-import { debounce, toINRCurrency } from "../../../utils";
+import { debounce } from "../../../utils";
 import { TUseGetAllProductInfinite } from "../../../api/types";
 import useQueryParams from "../../../hooks/useQueryParams";
-import RatingStars from "../../../components/navbar/components/rating/RatingStars";
+import ProductCard from "./ProductCard";
+import ProductCardSkeleton from "../../../components/skeletons/children/ProductCardSkeleton";
+import ShowError from "../../../components/errors/ShowError";
+import EmptyData from "../../../components/empty-data/EmptyData";
+import { useNavigate } from "react-router-dom";
+import { FetchedProductType } from "../../../types";
 
 const SearchProducts = () => {
   const { queryParams, setParams, removeParam } = useQueryParams();
+  const { ref, inView } = useInView();
+  const navigate = useNavigate();
   const [show, setShow] = useState<Record<"filter" | "sortBy", boolean>>({
     filter: false,
     sortBy: false,
   });
   const [searchQuery, setSearchQuery] = useState(queryParams?.search || "");
   const [debouncedQuery, setDebouncedQuery] = useState("");
-
   const debouncedSetQuery = useMemo(
     () =>
       debounce((value: string) => {
@@ -59,10 +66,23 @@ const SearchProducts = () => {
     [debouncedQuery, queryParams]
   );
 
-  const productsQuery = useGetAllProductsInfinite(memoizedQueryParams);
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+  } = useGetAllProductsInfinite(memoizedQueryParams);
 
-  const products =
-    productsQuery.data?.pages.flatMap((page) => page.products) || [];
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
+
+  const products: FetchedProductType[] =
+    data?.pages.flatMap((page) => page.products) || [];
 
   return (
     <div className="lg:-mt-16 flex flex-col">
@@ -131,59 +151,49 @@ const SearchProducts = () => {
             }`}
             needCategoriesFilters={true}
           />
-
-          <div className="flex-1 p-4 grid gap-4 grid-cols-[repeat(auto-fit,minmax(13rem,1fr))] base:grid-cols-[repeat(auto-fill,minmax(14rem,1fr))] xl:grid-cols-[repeat(auto-fill,minmax(16rem,1fr))]">
-            {products.map((product) => {
-              return (
-                <div
-                  key={product?._id}
-                  className="p-4 rounded-lg shadow-sm bg-primary-inverted flex flex-col gap-4 border-rounded-corners-gradient cursor-pointer"
-                >
-                  <div className="aspect-square overflow-hidden rounded-md relative group">
-                    <img
-                      src={product?.commonImages[0]}
-                      alt="Product"
-                      className="w-full h-full object-contain aspect-square hover:scale-105 transition-transform duration-500"
+          {isError ? (
+            <ShowError
+              headingText="Something went wrong!"
+              descriptionText="Please try again or refresh page"
+              showHrLine={true}
+              className="mx-auto mb-auto [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase [&>p]:text-xs [&>p]:base:text-sm [&>p]:sm:text-base [&>p]:md:text-lg pt-[150px]"
+            />
+          ) : products.length === 0 &&
+            !isError &&
+            !isLoading &&
+            !isFetchingNextPage ? (
+            <EmptyData
+              content={"No products found"}
+              className="mx-auto mb-auto [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase pt-[150px] gap-5"
+            />
+          ) : (
+            <div className="flex-1 p-4 grid gap-4 grid-cols-[repeat(auto-fit,minmax(13rem,1fr))] base:grid-cols-[repeat(auto-fill,minmax(14rem,1fr))] xl:grid-cols-[repeat(auto-fill,minmax(16rem,1fr))]">
+              {isLoading &&
+                Array.from({ length: 5 }).map((_, index) => (
+                  <ProductCardSkeleton key={index} />
+                ))}
+              {products?.map((product, index) => {
+                const isLastItem = index === products.length - 1;
+                return (
+                  <div
+                    key={product._id}
+                    className="h-full"
+                    ref={isLastItem ? ref : null}
+                  >
+                    <ProductCard
+                      product={product}
+                      onClick={() => navigate(`/products/${product._id}`)}
                     />
-                    <span className="w-6 h-6 absolute top-1 right-1 text-[8px] flex flex-col items-center justify-center rounded-full font-semibold dark:bg-green-700 light:bg-green-600 leading-none">
-                      {`-${product?.discount.toFixed(0)}%`}
-                    </span>
                   </div>
-                  <hr className="h-px block border-none bg-gradient-line" />
-                  <div className="flex flex-col justify-between gap-1 grow">
-                    <p className="text-base/normal font-semibold line-clamp-2 text-secondary">
-                      {product?.title}
-                    </p>
-                    <div className="text-sm font-medium line-clamp-1 text-secondary opacity-70">
-                      {product?.brand}
-                    </div>
-                    <div className="text-sm text-tertiary line-clamp-1">
-                      {product?.category?.name}
-                    </div>
-                    <div className="text-sm font-medium text-tertiary flex items-center gap-3">
-                      <span className="text-secondary">
-                        {toINRCurrency(product?.sellingPrice)}
-                      </span>
-                      <span className="text-tertiary line-through opacity-50">
-                        {toINRCurrency(product?.originalPrice)}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <RatingStars rating={product?.rating ?? 4.5} />
-                      <div className="flex items-center gap-0.5">
-                        <span className="text-base/none">(</span>
-                        <span className="text-base/none">
-                          {product?.reviews?.length}
-                        </span>
-                        <span className="text-base/none">)</span>
-                      </div>
-                    </div>
-                  </div>
+                );
+              })}
+              {isFetchingNextPage && (
+                <div className="h-full">
+                  <ProductCardSkeleton />
                 </div>
-              );
-            })}
-          </div>
-
+              )}
+            </div>
+          )}
           <SortBy
             className={`sticky top-[100px] lg:top-[118px] transform transition-all duration-500 ease-in-out overflow-hidden ${
               show.sortBy ? "w-[270px]" : "w-0"
