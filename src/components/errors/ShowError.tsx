@@ -24,7 +24,7 @@ const ShowError = ({
       <p className="text-silver-jet text-center font-normal text-sm leading-6 font-metropolis">
         {descriptionText}
       </p>
-      {showHrLine && <hr className="h-px block border-none bg-gradient-line" />}
+      {showHrLine && <hr className="w-full h-px block border-none bg-gradient-line mt-1" />}
     </div>
   );
 };
