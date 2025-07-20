@@ -182,7 +182,7 @@ const SearchProducts = () => {
                   >
                     <ProductCard
                       product={product}
-                      onClick={() => navigate(`/products/${product._id}`)}
+                      onClick={() => navigate(`/product/${product._id}`)}
                     />
                   </div>
                 );
