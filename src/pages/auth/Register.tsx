@@ -1,9 +1,9 @@
-import { RefObject, useState } from "react";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { RegisterTextContent, registerInputMapData } from "./data";
-import { VerticalScrollType, RegisterFormInputProps } from "../../types";
+import { RegisterFormInputProps } from "../../types";
 import AuthRobot from "./components/AuthRobot";
 import UploadProfile from "./components/UploadProfile";
 import TextDisplay from "../../components/TextDisplay";
@@ -89,15 +89,14 @@ const Register = () => {
       <AuthRobot />
       <DarkMode className="border absolute top-5 right-5 h-fit p-2 md:p-3 rounded-full bg-secondary-inverted [&_path]:!stroke-secondary z-10" />
       <div
-        ref={containerRef as RefObject<HTMLDivElement>}
+        ref={containerRef}
         className={`w-full lg:w-1/2 flex flex-col items-center gap-4 overflow-hidden overflow-y-scroll ${
-          !(showGradient as VerticalScrollType).bottom &&
-          !(showGradient as VerticalScrollType).top
+          !showGradient.bottom && !showGradient.top
             ? "justify-center"
             : "justify-start"
         }`}
       >
-        {(showGradient as VerticalScrollType).top && <TopGradient />}
+        {showGradient.top && <TopGradient />}
         <form
           onSubmit={handleSubmit(onSubmit)}
           autoComplete="off"
@@ -214,7 +213,7 @@ const Register = () => {
             </div>
           </div>
         </form>
-        {(showGradient as VerticalScrollType).bottom && <BottomGradient />}
+        {showGradient.bottom && <BottomGradient />}
       </div>
     </div>
   );

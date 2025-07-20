@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from "react";
 import { VerticalScrollType } from "../types";
 
@@ -11,41 +10,35 @@ const useVerticalScrollable = () => {
   });
 
   useEffect(() => {
-    const handleScroll = () => {
-      const container = containerRef.current;
-      if (container) {
-        const hasVerticalScroll =
-          container.scrollHeight > container.clientHeight;
-        const isAtBeginning = container.scrollTop === 0;
-        const isAtEnd =
-          container.scrollTop + container.clientHeight >=
-          container.scrollHeight - 1;
+    const container = containerRef.current;
+    if (!container) return;
 
-        if (hasVerticalScroll) {
-          setShowGradient({
-            top: !isAtBeginning,
-            bottom: !isAtEnd,
-          });
-        } else {
-          setShowGradient({ ...showGradient, top: false, bottom: false });
-        }
+    const handleScroll = () => {
+      const hasVerticalScroll = container.scrollHeight > container.clientHeight;
+      const isAtBeginning = container.scrollTop === 0;
+      const isAtEnd =
+        container.scrollTop + container.clientHeight >=
+        container.scrollHeight - 1;
+
+      if (hasVerticalScroll) {
+        setShowGradient({
+          top: !isAtBeginning,
+          bottom: !isAtEnd,
+        });
+      } else {
+        setShowGradient({ top: false, bottom: false });
       }
     };
 
-    const container = containerRef.current;
-    if (container) {
-      container.addEventListener("scroll", handleScroll);
-      handleScroll();
-    }
+    container.addEventListener("scroll", handleScroll);
+    handleScroll();
 
     return () => {
-      if (container) {
-        container.removeEventListener("scroll", handleScroll);
-      }
+      container.removeEventListener("scroll", handleScroll);
     };
-  }, [containerRef]);
+  }, []);
 
-  return [showGradient, containerRef];
+  return [showGradient, containerRef] as const;
 };
 
 export default useVerticalScrollable;
