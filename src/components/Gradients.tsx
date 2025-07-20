@@ -13,3 +13,19 @@ export const BottomGradient = ({ className }: { className?: string }) => {
     />
   );
 };
+
+export const LeftGradient = ({ className }: { className?: string }) => {
+  return (
+    <div
+      className={`w-full md:w-1/2 absolute left-0 top-0 pointer-events-none h-24 z-[1] bg-gradient-to-r from-primary-inverted to-transparent ${className}`}
+    />
+  );
+};
+
+export const RightGradient = ({ className }: { className?: string }) => {
+  return (
+    <div
+      className={`w-full md:w-1/2 absolute right-0 top-0 pointer-events-none h-24 z-[1] bg-gradient-to-l from-primary-inverted to-transparent ${className}`}
+    />
+  );
+};
