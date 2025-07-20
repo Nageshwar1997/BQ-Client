@@ -119,10 +119,14 @@ const Navbar = () => {
     };
   }, [isMobileNavbarOpened]);
 
+  const nonTransparent = ["/product/"].some((path) =>
+    pathname.startsWith(path)
+  );
+
   return (
     <div
       className={`h-16 lg:h-[100px] w-full flex justify-between items-center gap-3 lg:gap-0 xl:gap-5 sticky top-0 left-0 lg:-top-9 text-tertiary z-50 ${
-        isNavbarAtTop || isNavbarHovered
+        isNavbarAtTop || isNavbarHovered || nonTransparent
           ? "bg-tertiary-inverted shadow-lg shadow-primary-inverted-50"
           : "bg-transparent"
       }`}
@@ -197,7 +201,7 @@ const Navbar = () => {
                           ? "bg-clip-text text-transparent bg-accent-duo"
                           : ""
                       } ${
-                        isNavbarAtTop || isNavbarHovered
+                        isNavbarAtTop || isNavbarHovered || nonTransparent
                           ? ""
                           : "light:text-tertiary-inverted"
                       }`}
@@ -210,7 +214,7 @@ const Navbar = () => {
                           ? "rotate-180 !stroke-blue-crayola-c"
                           : ""
                       } ${
-                        isNavbarAtTop || isNavbarHovered
+                        isNavbarAtTop || isNavbarHovered || nonTransparent
                           ? ""
                           : "light:stroke-tertiary-inverted"
                       } transition-transform duration-300`}
@@ -227,7 +231,7 @@ const Navbar = () => {
             </div>
             <UserMenuIcons
               className={`${
-                isNavbarAtTop || isNavbarHovered
+                isNavbarAtTop || isNavbarHovered || nonTransparent
                   ? ""
                   : "light:[&_svg>path]:stroke-tertiary-inverted"
               }`}
