@@ -3,7 +3,6 @@ import { HorizontalScrollType } from "../types";
 
 const useHorizontalScrollable = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
-
   const [showGradient, setShowGradient] = useState<HorizontalScrollType>({
     left: false,
     right: false,
@@ -13,28 +12,30 @@ const useHorizontalScrollable = () => {
     const container = containerRef.current;
     if (!container) return;
 
-    const handleScroll = () => {
-      const hasHorizontalScroll = container.scrollWidth > container.clientWidth;
-      const isAtBeginning = container.scrollLeft === 0;
-      const isAtEnd =
-        container.scrollLeft + container.clientWidth >=
-        container.scrollWidth - 1;
+    const checkScroll = () => {
+      const hasScroll = container.scrollWidth > container.clientWidth;
+      const isAtLeft = container.scrollLeft <= 0;
+      const isAtRight =
+        Math.ceil(container.scrollLeft + container.clientWidth) >=
+        container.scrollWidth;
 
-      if (hasHorizontalScroll) {
+      if (hasScroll) {
         setShowGradient({
-          left: !isAtBeginning,
-          right: !isAtEnd,
+          left: !isAtLeft,
+          right: !isAtRight,
         });
       } else {
         setShowGradient({ left: false, right: false });
       }
     };
 
-    container.addEventListener("scroll", handleScroll);
-    handleScroll();
+    container.addEventListener("scroll", checkScroll);
+    window.addEventListener("resize", checkScroll); // to detect layout shifts
+    checkScroll();
 
     return () => {
-      container.removeEventListener("scroll", handleScroll);
+      container.removeEventListener("scroll", checkScroll);
+      window.removeEventListener("resize", checkScroll);
     };
   }, []);
 

@@ -3,7 +3,6 @@ import { VerticalScrollType } from "../types";
 
 const useVerticalScrollable = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
-
   const [showGradient, setShowGradient] = useState<VerticalScrollType>({
     top: false,
     bottom: false,
@@ -13,28 +12,30 @@ const useVerticalScrollable = () => {
     const container = containerRef.current;
     if (!container) return;
 
-    const handleScroll = () => {
-      const hasVerticalScroll = container.scrollHeight > container.clientHeight;
-      const isAtBeginning = container.scrollTop === 0;
-      const isAtEnd =
-        container.scrollTop + container.clientHeight >=
-        container.scrollHeight - 1;
+    const checkScroll = () => {
+      const hasScroll = container.scrollHeight > container.clientHeight;
+      const isAtTop = container.scrollTop <= 0;
+      const isAtBottom =
+        Math.ceil(container.scrollTop + container.clientHeight) >=
+        container.scrollHeight;
 
-      if (hasVerticalScroll) {
+      if (hasScroll) {
         setShowGradient({
-          top: !isAtBeginning,
-          bottom: !isAtEnd,
+          top: !isAtTop,
+          bottom: !isAtBottom,
         });
       } else {
         setShowGradient({ top: false, bottom: false });
       }
     };
 
-    container.addEventListener("scroll", handleScroll);
-    handleScroll();
+    container.addEventListener("scroll", checkScroll);
+    window.addEventListener("resize", checkScroll); // for dynamic content resize
+    checkScroll();
 
     return () => {
-      container.removeEventListener("scroll", handleScroll);
+      container.removeEventListener("scroll", checkScroll);
+      window.removeEventListener("resize", checkScroll);
     };
   }, []);
 
