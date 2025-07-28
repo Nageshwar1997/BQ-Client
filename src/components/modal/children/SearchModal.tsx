@@ -42,7 +42,7 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
 
   const handleSubmit = (id?: string) => {
     if (id) {
-      navigate(`/products/${id}`);
+      navigate(`/product/${id}`);
     } else {
       navigate(`/search?search=${searchQuery.trim()}`);
     }
