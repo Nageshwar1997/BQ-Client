@@ -1,4 +1,8 @@
-import { StarFillIcon, StarHalfFillIcon, StarEmptyIcon } from "../../../../icons";
+import {
+  StarFillIcon,
+  StarHalfFillIcon,
+  StarEmptyIcon,
+} from "../../../../icons";
 
 interface RatingStarsProps {
   rating: number;
@@ -7,7 +11,7 @@ interface RatingStarsProps {
 }
 
 const RatingStars = ({
-  rating,
+  rating = 0,
   maxStars = 5,
   className = "",
 }: RatingStarsProps) => {
