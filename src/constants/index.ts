@@ -11,3 +11,18 @@ export const SORT_BY_OPTIONS = [
   { label: "Date, new to old", value: "new", disabled: false },
   { label: "Top rated", value: "top-rated", disabled: true }, // Backend Logic has to be changed
 ];
+
+export const CATEGORY_VIDEOS = [
+  {
+    src: "/videos/product/offers.mp4",
+    title: "Product Offers 1",
+  },
+  {
+    src: "/videos/product/offers.mp4",
+    title: "Product Offers 2",
+  },
+  {
+    src: "/videos/product/offers.mp4",
+    title: "Product Offers 3",
+  },
+];
