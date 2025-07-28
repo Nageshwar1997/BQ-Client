@@ -1,20 +1,36 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LeftGradient, RightGradient } from "../Gradients";
 import useHorizontalScrollable from "../../hooks/useHorizontalScrollable";
 
 const ImageCarousel = ({
   className,
   images,
+  selected = 0,
 }: {
   className?: string;
   images: string[];
+  selected?: number;
 }) => {
   const [showGradient, containerRef] = useHorizontalScrollable();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const thumbnailRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    setCurrentIndex(selected); // Set the current index to the selected thumbnail
+    // Scroll the selected thumbnail into view
+    const el = thumbnailRefs.current[selected];
+    if (el) {
+      el.scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest",
+      });
+    }
+  }, [selected]);
 
   return (
     <div
-      className={`bg-primary-inverted rounded-lg p-4 max-w-3xl w-full ${className}`}
+      className={`bg-primary-inverted rounded-lg max-w-3xl w-full ${className}`}
     >
       {/* Main Image */}
       <div className="mb-4 h-[400px] lg:h-[420px] xl:h-[500px] flex items-center justify-center relative">
@@ -36,7 +52,10 @@ const ImageCarousel = ({
           {images.map((url, i) => (
             <div
               key={i}
-              className={`w-20 h-20 group rounded overflow-hidden border border-primary-30 shadow-sm shrink-0 ${
+              ref={(el) => {
+                thumbnailRefs.current[i] = el;
+              }}
+              className={`w-20 h-20 group rounded overflow-hidden border shadow-sm shrink-0 ${
                 i === currentIndex ? "border-tertiary" : "border-primary-30"
               }`}
             >
