@@ -116,3 +116,15 @@ export const toINRCurrency = (amount: number): string =>
     currency: "INR",
     maximumFractionDigits: 2,
   }).format(amount);
+
+export const getCurrentViewers = () => {
+  const today = new Date();
+
+  const day = today.getDate();
+  const month = today.getMonth() + 1;
+  const year = today.getFullYear();
+
+  const total = day + month + year;
+
+  return total;
+};
