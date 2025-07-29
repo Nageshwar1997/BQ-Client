@@ -9,7 +9,7 @@ import {
 import { useGetHomeVideos } from "../../../api/media/media.service";
 import ShowError from "../../../components/errors/ShowError";
 
-const VideoCarousel = () => {
+const HomeVideoCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [progress, setProgress] = useState(0);
@@ -165,4 +165,4 @@ const VideoCarousel = () => {
   );
 };
 
-export default VideoCarousel;
+export default HomeVideoCarousel;
