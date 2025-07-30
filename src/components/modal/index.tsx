@@ -34,11 +34,11 @@ const Modal = ({
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-primary-50 p-8 ${containerClassName}`}
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-primary-10 p-8 backdrop-blur-sm ${containerClassName}`}
       onClick={onClose}
     >
       <div
-        className={`bg-tertiary-inverted rounded-xl shadow-lg px-6 py-8 w-full max-w-md max-h-[90vh] overflow-hidden relative ${className}`}
+        className={`bg-primary-inverted rounded-xl shadow-lg px-6 py-8 w-full max-w-md max-h-[90vh] overflow-hidden relative ${className}`}
         onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
       >
         <CloseIcon
