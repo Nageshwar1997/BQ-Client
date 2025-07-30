@@ -128,3 +128,23 @@ export const getCurrentViewers = () => {
 
   return total;
 };
+
+export const convertVideoToPoster = (videoUrl: string) => {
+  const defaultPoster = "/images/logo/BQ_gradient_logo.webp";
+  if (!videoUrl) return defaultPoster;
+  try {
+    // Remove `/sp_auto/` or any transformation between `/upload/` and `/v...`
+    const [base, versionAndPath] = videoUrl.split("/upload/");
+    const cleanedPath = versionAndPath.replace(/^.*?(\/v\d+)/, "$1"); // Keep version and path
+
+    // Replace .m3u8 or any extension with .jpg
+    const posterPath = cleanedPath.replace(/\.(m3u8|mp4|webm)$/, ".webp");
+
+    // Inject transformation `so_0` (seek to second 0)
+    const finalUrl = `${base}/upload/so_0${posterPath}`;
+    return finalUrl;
+  } catch (error) {
+    console.error("Failed to create poster URL", error);
+    return defaultPoster;
+  }
+};
