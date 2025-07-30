@@ -352,11 +352,15 @@ const ProductDetails = () => {
         <Modal
           children={
             <MediaCarouselWithParentMedia
-              className=""
               data={reviewMedia}
               needButtonControls={true}
               selected={currentIndex}
-              videoProps={{ autoPlay: true, muted: true, loop: true }}
+              videoProps={{
+                autoPlay: true,
+                muted: true,
+                loop: true,
+                className: "!object-contain",
+              }}
             />
           }
           className="max-w-xl"

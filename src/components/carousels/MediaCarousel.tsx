@@ -31,11 +31,7 @@ const MediaCarousel = ({
           <div
             key={i}
             ref={(el) => {
-              if (
-                thumbnailRefs?.current &&
-                !showGradient.left &&
-                !showGradient.right
-              ) {
+              if (thumbnailRefs?.current) {
                 thumbnailRefs.current[i] = el;
               }
             }}

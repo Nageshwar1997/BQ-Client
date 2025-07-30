@@ -49,14 +49,13 @@ const MediaCarouselWithParentMedia = ({
     >
       {/* Main Image */}
       <div className="mb-4 h-[400px] lg:h-[420px] xl:h-[500px] flex items-center justify-center relative">
-        <div className="w-full h-full transform transition-opacity duration-500">
+        <div className="w-full h-full transform transition-opacity duration-500 flex items-center justify-center">
           {mediaType === "video" ? (
             <VideoPlayer
               videoProps={{
                 ...videoProps,
                 src,
                 poster: convertVideoToPoster(src),
-                className: "object-contain",
               }}
               className="max-h-full mx-auto rounded-lg flex items-center justify-center"
             />
@@ -64,7 +63,7 @@ const MediaCarouselWithParentMedia = ({
             <img
               src={src}
               alt={`preview-${currentIndex}`}
-              className="max-h-full mx-auto object-contain rounded-lg"
+              className="max-h-full mx-auto object-contain rounded-lg border w-full h-full"
               loading="lazy"
             />
           )}
