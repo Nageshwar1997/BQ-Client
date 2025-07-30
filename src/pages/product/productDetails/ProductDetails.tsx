@@ -1,24 +1,41 @@
-import { useMemo, useState } from "react";
-import { useGetProductById } from "../../../api/product/product.service";
+import { useEffect, useMemo, useState } from "react";
+import {
+  useGetAllProductsInfinite,
+  useGetProductById,
+} from "../../../api/product/product.service";
 import useQueryParams from "../../../hooks/useQueryParams";
-import { FetchedProductType } from "../../../types";
-import ImageCarousel from "../../../components/carousels/ImageCarousel";
+import { FetchedProductType, TCarouselOption } from "../../../types";
+import MediaCarousel from "../../../components/carousels/MediaCarousel";
+import MediaCarouselWithParentMedia from "../../../components/carousels/MediaCarouselWithParentMedia";
 import RatingStars from "../../../components/navbar/components/rating/RatingStars";
 import { getCurrentViewers, toINRCurrency } from "../../../utils";
-import { DropdownIcon, UpiIcon } from "../../../icons";
+import { UpiIcon } from "../../../icons";
 import Button from "../../../components/button/Button";
 import { CATEGORY_VIDEOS } from "../../../constants";
+import TextDisplay from "../../../components/TextDisplay";
+import { TUseGetAllProductInfinite } from "../../../api/types";
+import { useInView } from "react-intersection-observer";
+import ProductCard from "../searchProducts/ProductCard";
+import useHorizontalScrollable from "../../../hooks/useHorizontalScrollable";
+import { LeftGradient, RightGradient } from "../../../components/Gradients";
+import CustomerReviews from "./CustomerReviews";
+import ProductDescriptionAndInfo from "./children/ProductDescriptionAndInfo";
+import ProductVariants from "./children/ProductVariants";
+import Modal from "../../../components/modal";
 
 const ProductDetails = () => {
   const { params } = useQueryParams();
-  const [selectedShadeIdx, setSelectedShadeIdx] = useState(0);
-  const [activeTab, setActiveTab] = useState<number[]>([]);
+  const { ref, inView } = useInView();
+  const [selectedShadeIdx, setSelectedShadeIdx] = useState<null | number>(null);
+  const [showReviewMedia, setShowReviewMedia] = useState(false);
+  const [showGradient, containerRef] = useHorizontalScrollable();
+  const [currentIndex, setCurrentIndex] = useState<null | number>(0);
 
   const productQuery = useGetProductById({
-    queryParams: { productId: params.productId as string },
+    queryParams: { productId: params.productId ?? "" },
     data: {
       populateFields: {
-        category: ["name"],
+        category: ["name", "category", "parentCategory"],
         reviews: [
           "rating",
           "comment",
@@ -34,63 +51,103 @@ const ProductDetails = () => {
   });
 
   const product: FetchedProductType = productQuery.data?.product || {};
-  const images = useMemo(() => {
+  const images: TCarouselOption[] = useMemo(() => {
     const commonImages = product?.commonImages ?? [];
-    const shadeImages = product?.shades?.map((shade) => shade?.images) ?? [];
-    return [...commonImages, ...shadeImages];
+    const shadeImages =
+      product?.shades?.flatMap((shade) => shade?.images ?? []) ?? [];
+    const allImages = [...commonImages, ...shadeImages];
+    return allImages.map((url) => ({ url, type: "image" }));
   }, [product?.commonImages, product?.shades]);
 
+  // const reviewImages = useMemo(() => {
+  //   return product?.reviews?.flatMap((review) => review?.images) ?? [];
+  // }, [product?.reviews]);
+
+  const reviewMedia: TCarouselOption[] = useMemo(() => {
+    return (
+      product?.reviews?.flatMap((review) => {
+        const images =
+          review?.images?.map((url) => ({ url, type: "image" as const })) ?? [];
+        const videos =
+          review?.videos?.map((url) => ({ url, type: "video" as const })) ?? [];
+
+        return [...images, ...videos];
+      }) ?? []
+    );
+  }, [product?.reviews]);
+
+  // const reviewVideos = useMemo(() => {
+  //   return product?.reviews?.flatMap((review) => review?.videos) ?? [];
+  // }, [product?.reviews]);
+
+  const memoizedQueryParams: TUseGetAllProductInfinite = useMemo(
+    () => ({
+      data: {
+        requiredFields: [
+          "title",
+          "brand",
+          "commonImages",
+          "discount",
+          "sellingPrice",
+          "originalPrice",
+        ],
+        populateFields: { category: ["name"], reviews: ["rating"] },
+      },
+      pageParams: { page: 1, limit: 5 },
+      queryParams: {
+        category_3: product.category?.category,
+        category_2: product.category?.parentCategory.category,
+        category_1: product.category?.parentCategory.parentCategory.category,
+      },
+      enabled: !!product?.category,
+    }),
+    [product?.category]
+  );
+
+  const {
+    data: productsData,
+    fetchNextPage,
+    hasNextPage,
+    // isFetchingNextPage,
+    // isLoading: isLoadingProducts,
+    // isError: isErrorProducts,
+  } = useGetAllProductsInfinite(memoizedQueryParams);
+  const products: FetchedProductType[] =
+    productsData?.pages?.flatMap((page) => page.products) || [];
+
   const currentShade = useMemo(() => {
-    return product?.shades?.[selectedShadeIdx];
+    return product?.shades?.[selectedShadeIdx || 0];
   }, [product?.shades, selectedShadeIdx]);
 
-  console.log("activeTab", activeTab);
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
 
   return (
-    <div className="w-full h-auto p-8">
+    <div className="w-full h-auto flex flex-col gap-8 p-8">
       <div className="w-full flex flex-col lg:flex-row items-start gap-5">
-        {/* Left - Images */}
-        <div className="w-full lg:w-1/2 sticky top-24">
+        <div className="w-full lg:w-1/2 lg:sticky top-24">
           <div className="flex flex-col gap-4">
             {images.length > 0 && (
-              <ImageCarousel
-                images={images as string[]}
-                className=""
-                selected={product.commonImages.length + selectedShadeIdx}
+              <MediaCarouselWithParentMedia
+                data={images}
+                needButtonControls={false}
+                selected={
+                  selectedShadeIdx !== null
+                    ? product.commonImages.length + selectedShadeIdx
+                    : undefined
+                }
               />
             )}
-            <div className="w-full">
-              <hr className="w-full h-px block border-none bg-gradient-line my-4" />
-              {[
-                "Description",
-                "How To Use",
-                "Ingredients",
-                "Additional Details",
-              ].map((item, index) => (
-                <div className="w-full" key={index}>
-                  <button
-                    onClick={() =>
-                      setActiveTab(
-                        (prev) =>
-                          prev.includes(index)
-                            ? prev.filter((i) => i !== index) // remove if exists
-                            : [...prev, index] // add if not exists
-                      )
-                    }
-                    className="w-full flex items-center justify-between gap-5 border py-4 pr-4"
-                  >
-                    <span>{item}</span>
-                    <DropdownIcon
-                      className={activeTab.includes(index) ? "" : "rotate-180"}
-                    />
-                  </button>
-                  <hr className="w-full h-px block border-none bg-gradient-line my-4" />
-                </div>
-              ))}
+            <div className="w-full hidden lg:block">
+              <hr className="w-full h-px block border-none bg-gradient-line mb-4" />
+              <ProductDescriptionAndInfo product={product} />
             </div>
           </div>
         </div>
-        <div className="w-full lg:w-1/2 sticky top-24">
+        <div className="w-full lg:w-1/2 lg:sticky top-24">
           <div className="flex flex-col gap-4">
             <h3 className="text-3xl/[32px] font-medium">
               {product?.title}
@@ -99,10 +156,14 @@ const ProductDetails = () => {
             <div className="flex items-center gap-2">
               <RatingStars
                 className="[&>svg]:w-5 [&>svg]:h-5"
-                rating={product?.reviews?.reduce(
-                  (acc, review) => acc + review?.rating,
-                  0
-                )}
+                rating={
+                  product?.reviews && product.reviews.length > 0
+                    ? product.reviews.reduce(
+                        (acc, review) => acc + (review?.rating || 0),
+                        0
+                      ) / product.reviews.length
+                    : 0
+                }
               />
               <div className="flex items-center gap-0.5">
                 <span className="text-base/none">(</span>
@@ -161,45 +222,11 @@ const ProductDetails = () => {
               </div>
             </div>
             {product.shades?.length > 0 && (
-              <>
-                <div className="text-sm text-secondary">
-                  {currentShade.colorCode ? "Color: " : "Variant: "}
-                  {currentShade.shadeName}
-                </div>
-                <div className="flex flex-wrap gap-2.5">
-                  {product.shades.map((shade, index) => (
-                    <div
-                      key={shade._id}
-                      className="cursor-pointer relative"
-                      onClick={() => setSelectedShadeIdx(index)}
-                    >
-                      <div
-                        className={`w-14 h-14 rounded-full overflow-hidden border p-0.5 ${
-                          currentShade._id === shade._id
-                            ? "border-tertiary"
-                            : "border-primary-30"
-                        }`}
-                      >
-                        {shade.colorCode ? (
-                          <div
-                            className="w-full h-full rounded-full"
-                            style={{ backgroundColor: shade.colorCode }}
-                          ></div>
-                        ) : (
-                          <img
-                            src={shade.images[0] as string}
-                            alt={shade.shadeName}
-                            className="w-full h-full aspect-square object-cover object-center rounded-full"
-                          />
-                        )}
-                        {shade.stock === 0 && (
-                          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-px bg-tertiary -rotate-45" />
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </>
+              <ProductVariants
+                currentShade={currentShade}
+                shades={product.shades}
+                onChange={(idx) => setSelectedShadeIdx(idx)}
+              />
             )}
             <div className="flex items-center gap-4 py-4">
               <Button content="Add to Cart" pattern="primary" />
@@ -224,10 +251,122 @@ const ProductDetails = () => {
                 </div>
               ))}
             </div>
-            <hr className="w-full h-px block border-none bg-gradient-line" />
+          </div>
+          <div className="w-full lg:hidden">
+            <hr className="w-full h-px block border-none bg-gradient-line my-4 lg:mb-4" />
+            <ProductDescriptionAndInfo product={product} className="" />
           </div>
         </div>
       </div>
+      <div className="w-full py-8 border-y border-y-primary-50">
+        <TextDisplay
+          content={[{ isHighlighted: true, text: "Similar Products" }]}
+          className="text-xl md:text-3xl lg:text-4xl"
+        />
+        <hr className="max-w-xl mx-auto h-px block border-none bg-gradient-line my-4" />
+        <div className="relative">
+          {showGradient.left && (
+            <LeftGradient className="h-full !w-5 !sm:w-20" />
+          )}
+          <div
+            className={`flex gap-4 overflow-x-auto scroll-smooth px-4 ${
+              !showGradient.left && !showGradient.right
+                ? "justify-center"
+                : "justify-start"
+            }`}
+            ref={containerRef}
+          >
+            {products
+              .filter((p) => p?._id !== product?._id)
+              .map((product, index) => (
+                <div
+                  key={index}
+                  className="shrink-0 w-[260px]"
+                  ref={index === products.length - 2 ? ref : null}
+                >
+                  <ProductCard product={product} />
+                </div>
+              ))}
+          </div>
+          {showGradient.right && (
+            <RightGradient className="h-full !w-5 !sm:w-20" />
+          )}
+        </div>
+      </div>
+      <div className="w-full pb-8 border-b border-b-primary-50 space-y-4">
+        <TextDisplay
+          content={[{ isHighlighted: true, text: "Customer Reviews" }]}
+          className="text-xl md:text-3xl lg:text-4xl"
+        />
+        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row gap-8">
+          <div className="w-full">
+            <CustomerReviews reviews={product?.reviews?.map((r) => r.rating)} />
+          </div>
+          <div className="w-full flex flex-col gap-4 items-center justify-center">
+            <Button
+              pattern="secondary"
+              content="Write a Review"
+              className="max-w-44 py-2! lg:py-3 !rounded-md"
+            />
+            <div className="flex flex-col gap-0.5 items-center justify-center text-secondary">
+              <div className="flex items-center gap-2 text-sm">
+                <RatingStars
+                  rating={
+                    product?.reviews && product.reviews.length > 0
+                      ? product.reviews.reduce(
+                          (acc, review) => acc + (review?.rating || 0),
+                          0
+                        ) / product.reviews.length
+                      : 0
+                  }
+                />
+                <span>
+                  {product?.reviews && product.reviews.length > 0
+                    ? product.reviews.reduce(
+                        (acc, review) => acc + (review?.rating || 0),
+                        0
+                      ) / product.reviews.length
+                    : (0).toFixed(1)}{" "}
+                  out of 5
+                </span>
+              </div>
+              <p>Based on {product?.reviews?.length} reviews</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="w-full pb-8 border-b border-b-primary-50 space-y-4">
+        <p className="text-center text-lg/normal font-medium">
+          Customer review's photos & videos
+        </p>
+        <MediaCarousel
+          data={reviewMedia}
+          currentIndex={currentIndex}
+          setCurrentIndex={setCurrentIndex}
+          onImageClick={() => {
+            setShowReviewMedia(true);
+          }}
+        />
+      </div>
+      {showReviewMedia && (
+        <Modal
+          children={
+            <MediaCarouselWithParentMedia
+              className=""
+              data={reviewMedia}
+              needButtonControls={true}
+              selected={currentIndex}
+              videoProps={{ autoPlay: true, muted: true, loop: true }}
+            />
+          }
+          className="max-w-xl"
+          isOpen={showReviewMedia}
+          onClose={() => {
+            setShowReviewMedia(false);
+            setCurrentIndex(null);
+          }}
+        />
+      )}
     </div>
   );
 };
