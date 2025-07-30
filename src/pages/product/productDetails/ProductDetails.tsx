@@ -359,7 +359,8 @@ const ProductDetails = () => {
                 autoPlay: true,
                 muted: true,
                 loop: true,
-                className: "!object-contain",
+                className:
+                  "!object-contain bg-primary-10 backdrop-blur-[2px] rounded-lg",
               }}
             />
           }
