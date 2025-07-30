@@ -4,9 +4,15 @@ import {
   JSX,
   KeyboardEvent,
   ReactNode,
+  RefObject,
   SVGProps,
+  VideoHTMLAttributes,
 } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
+
+export interface ClassName {
+  className?: string;
+}
 
 export type ThemeType = "light" | "dark";
 
@@ -15,16 +21,15 @@ export type ThemeStoreType = {
   toggleTheme: () => void;
 };
 
-export interface ProfilePicInputProps {
+export interface ProfilePicInputProps extends ClassName {
   previewUrl?: string;
   previewImage?: string;
   name?: string;
-  className?: string;
   errorText?: string;
   onChange: (file: File | null) => void;
 }
 
-export interface InputProps {
+export interface InputProps extends ClassName {
   min?: number;
   max?: number;
   type?: string;
@@ -34,7 +39,6 @@ export interface InputProps {
   leftText?: string;
   readOnly?: boolean;
   errorText?: string;
-  className?: string;
   placeholder?: string;
   successText?: string;
   leftIcon?: ReactNode;
@@ -58,9 +62,8 @@ export interface TextItem {
   break?: boolean;
 }
 
-export interface TextDisplayProps {
+export interface TextDisplayProps extends ClassName {
   content: TextItem[];
-  className?: string;
   contentClassName?: string;
 }
 
@@ -101,11 +104,10 @@ export interface LoginInputMapDataProps {
   autoComplete?: string;
 }
 
-export interface RadioProps {
+export interface RadioProps extends ClassName {
   value: string;
   onChange: (value: string) => void;
   options: { label: string; value: string }[];
-  className?: string;
 }
 
 export interface VerticalScrollType {
@@ -159,11 +161,17 @@ export interface LevelOneCategoryType extends CategoryType {
 }
 
 export interface ShadeType {
-  _id?: string;
   shadeName: string;
   colorCode: string;
   stock: number | undefined;
   images: (File | string)[];
+}
+
+export interface FetchedShadeType extends ShadeType {
+  _id: string;
+  images: string[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ProductType {
@@ -202,19 +210,6 @@ export interface PopulatedCategory {
   };
 }
 
-export interface FetchedProductType extends ProductType {
-  _id: string;
-  createdAt: string;
-  updatedAt: string;
-  commonImages: string[];
-  discount: number;
-  sellingPrice: number;
-  originalPrice: number;
-  category: PopulatedCategory;
-  shades: ShadeType[];
-  reviews: ReviewType[];
-}
-
 export interface ReviewType {
   _id?: string;
   rating: number;
@@ -228,18 +223,63 @@ export interface ReviewType {
   updatedAt?: string;
 }
 
+export interface FetchedReviewType extends ReviewType {
+  images: string[];
+  videos: string[];
+}
+
+export interface FetchedProductType extends ProductType {
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+  commonImages: string[];
+  discount: number;
+  sellingPrice: number;
+  originalPrice: number;
+  category: PopulatedCategory;
+  shades: FetchedShadeType[];
+  reviews: FetchedReviewType[];
+}
+
 export type TDropdownOption = { name: string; value: string };
-export interface TDropdownOptions {
+export interface TDropdownOptions extends ClassName {
   options: TDropdownOption[];
   selected: string;
   onChange: (opt: TDropdownOption) => void;
-  className?: string;
 }
 
-export interface TDropdown {
+export interface TDropdown extends ClassName {
   title: string;
   icons?: { left?: JSX.Element; right?: JSX.Element };
-  className?: string;
   options?: TDropdownOption[];
   children?: ReactNode;
+}
+
+export type TMediaType = "image" | "video";
+
+export type TCarouselOption = { type: TMediaType; url: string };
+
+export interface ICarouselOptions {
+  data: TCarouselOption[];
+}
+
+export interface TMediaCarousel extends ClassName, ICarouselOptions {
+  currentIndex?: number | null;
+  setCurrentIndex: (index: number) => void;
+  thumbnailRefs?: RefObject<(HTMLDivElement | null)[]>;
+  onImageClick?: () => void;
+}
+
+export interface IVideo {
+  videoProps?: VideoHTMLAttributes<HTMLVideoElement>;
+}
+
+export interface IVideoPlayer extends ClassName, IVideo {}
+
+export interface IMediaCarouselWithParentMedia
+  extends ClassName,
+    IVideo,
+    ICarouselOptions {
+  selected?: number | null;
+  needButtonControls?: boolean;
 }

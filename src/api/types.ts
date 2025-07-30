@@ -1,18 +1,18 @@
 import {
   CategoryType,
   FetchedProductType,
-  ReviewType,
-  ShadeType,
+  FetchedReviewType,
+  FetchedShadeType,
   UserTypes,
 } from "../types";
 
 interface IProductPossibleBodyFields {
   requiredFields?: (keyof FetchedProductType)[];
   populateFields?: {
-    shades?: (keyof ShadeType | "images")[];
+    shades?: (keyof FetchedShadeType | "images")[];
     seller?: Exclude<keyof UserTypes, "password">[];
     category?: (keyof CategoryType | "parentCategory")[];
-    reviews?: (keyof ReviewType | "images" | "videos")[];
+    reviews?: (keyof FetchedReviewType)[];
   };
 }
 
