@@ -530,7 +530,7 @@ export const StarEmptyIcon = (props: IconProps) => (
   >
     <path
       d="M12 2L14.94 8.64L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L9.06 8.64L12 2Z"
-      stroke-width="1.5"
+      strokeWidth="1.5"
     />
   </svg>
 );
@@ -860,7 +860,7 @@ export const UpiIcon = (props: IconProps) => (
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
-    <g clip-path="url(#clip0_2087_436)">
+    <g clipPath="url(#clip0_2087_436)">
       <path
         d="M380.654 129.156H354.943L390.701 0.0162532H416.413L380.654 129.156Z"
         fill="#66686C"
