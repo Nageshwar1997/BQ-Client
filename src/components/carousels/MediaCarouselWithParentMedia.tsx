@@ -75,13 +75,9 @@ const MediaCarouselWithParentMedia = ({
             <button
               type="button"
               onClick={() => {
-                setCurrentIndex((prev) => {
-                  if (currentIndex > 0) {
-                    return prev - 1;
-                  } else {
-                    return data?.length - 1;
-                  }
-                });
+                setCurrentIndex((prev) =>
+                  currentIndex > 0 ? prev - 1 : data?.length - 1
+                );
               }}
               className="p-[5px] rounded border border-primary-50 bg-primary-inverted-50 cursor-pointer"
             >
@@ -94,13 +90,9 @@ const MediaCarouselWithParentMedia = ({
             <button
               type="button"
               onClick={() => {
-                setCurrentIndex((prev) => {
-                  if (currentIndex < data.length - 1) {
-                    return prev + 1;
-                  } else {
-                    return 0;
-                  }
-                });
+                setCurrentIndex((prev) =>
+                  currentIndex < data.length - 1 ? prev + 1 : 0
+                );
               }}
               className="p-[5px] rounded border border-primary-50 bg-primary-inverted-50 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
@@ -109,7 +101,6 @@ const MediaCarouselWithParentMedia = ({
           </div>
         )}
       </div>
-
       <hr className="h-px mb-4 block border-none bg-gradient-line" />
       {/* Thumbnails */}
       <MediaCarousel
