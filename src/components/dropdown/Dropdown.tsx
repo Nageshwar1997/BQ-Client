@@ -50,7 +50,7 @@ const Dropdown = ({
       >
         <div className="flex items-center gap-2 [&>span]:transition-all [&>span]:duration-300 [&>span]:flex [&>span]:items-center [&>span]:justify-center [&>span]:text-sm [&>span]:sm:text-base [&>span]:text-primary">
           {icons?.left && <span>{icons.left}</span>}
-          <span>{title}</span>
+          <span className="font-medium whitespace-nowrap">{title}</span>
           {icons?.right && <span>{icons.right}</span>}
         </div>
         <DropdownIcon
@@ -61,7 +61,7 @@ const Dropdown = ({
       </button>
       <div
         ref={containerRef}
-        className={`transition-all duration-500 ease-in-out overflow-hidden opacity-0 w-full max-h-0 bg-primary-inverted ${
+        className={`transition-all duration-500 ease-in-out overflow-hidden opacity-0 w-full max-h-0 bg-primary-inverted [&>*]:py-2 [&>*]:px-3 ${
           isAbsolute ? "absolute top-full inset-x-0 mt-2 z-10" : ""
         } ${
           showShadow
