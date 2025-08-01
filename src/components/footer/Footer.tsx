@@ -14,9 +14,11 @@ const Footer = () => {
             <div className="flex items-center justify-center">
               <Link to="/">
                 <img
-                  src="/images/logo/BQ_white_logo.webp"
+                  src={`/images/logo/BQ_${
+                    theme === "dark" ? "white" : "black"
+                  }_logo.webp`}
                   alt="Logo"
-                  className="object-contain max-w-20 lg:max-w-24 w-full h-10 sm:h-12 lg:h-16 mix-blend-difference"
+                  className="object-contain max-w-20 lg:max-w-24 w-full h-10 sm:h-12 lg:h-16"
                 />
               </Link>
               <span className="mr-1 min-w-3">
