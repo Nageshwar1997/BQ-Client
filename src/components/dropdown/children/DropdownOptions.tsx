@@ -6,6 +6,7 @@ const DropdownOptions = ({
   selected,
   onChange,
   className = "",
+  onSelect,
 }: TDropdownOptions) => {
   return (
     <div className={`flex flex-col gap-0.5 ${className}`}>
@@ -17,9 +18,12 @@ const DropdownOptions = ({
           <button
             key={index}
             className={`flex items-center justify-between gap-3 px-2 py-1 text-sm text-tertiary ${
-              isSelected ? "text-secondary font-medium" : "font-light"
+              isSelected ? "text-secondary font-medium" : "font-normal"
             }`}
-            onClick={() => onChange(opt)}
+            onClick={() => {
+              onChange(opt);
+              onSelect?.();
+            }}
           >
             {opt.name}
             {isSelected && <CheckedIcon className="stroke-primary w-5 h-5" />}
