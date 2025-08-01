@@ -112,7 +112,7 @@ function Filters({
 
   return (
     <section className={`h-full bg-primary-inverted select-none ${className}`}>
-      <div className={`w-full flex flex-col gap-4 px-2 py-4`}>
+      <div className={`w-full flex flex-col gap-2 px-5 py-4`}>
         {/* Categories Filter */}
         {needCategoriesFilters && <CategoriesFilter />}
         {/* Availability Filter */}
@@ -125,8 +125,9 @@ function Filters({
               </div>
             ),
           }}
+          className="border-b border-b-primary-50 [&>button]:px-0 [&>button]:py-3"
         >
-          <div className="w-full flex items-center gap-2">
+          <div className="w-full flex items-center gap-2 -mt-2 !px-1">
             <Checkbox
               className="!w-10 !h-5 !bg-primary peer-checked:bg-primary after:!bg-primary-inverted after:!h-3 after:!w-3 peer-checked:after:bg-accent-duo after:border-tertiary-inverted"
               checked={queryParams.inStock === "true"}
@@ -151,8 +152,9 @@ function Filters({
               </div>
             ),
           }}
+          className="border-b border-b-primary-50 [&>button]:px-0 [&>button]:py-3"
         >
-          <>
+          <div className="flex flex-col gap-2 -mt-2 !px-1">
             <div className="h-9 flex justify-between gap-2">
               {(["min", "max"] as TPriceRangeKeys[]).map((key, index) => {
                 const isMin = key === "min";
@@ -191,7 +193,6 @@ function Filters({
             {/* Dual Range Slider */}
             <Range
               mode="dual"
-              className="mt-2"
               min={0}
               max={MAX_PRICE}
               step={10}
@@ -213,7 +214,7 @@ function Filters({
                 },
               }}
             />
-          </>
+          </div>
         </Dropdown>
         {/* Discount Filter */}
         <Dropdown
@@ -225,8 +226,9 @@ function Filters({
               </div>
             ),
           }}
+          className="border-b border-b-primary-50 [&>button]:px-0 [&>button]:py-3"
         >
-          <>
+          <div className="flex flex-col gap-2 -mt-2 !px-1">
             <Input
               name="discount"
               type="number"
@@ -260,7 +262,7 @@ function Filters({
                 },
               }}
             />
-          </>
+          </div>
         </Dropdown>
       </div>
     </section>

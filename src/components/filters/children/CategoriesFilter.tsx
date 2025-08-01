@@ -110,7 +110,7 @@ const CategoriesFilter = ({ className = "" }: { className?: string }) => {
     [handleFilterChange]
   );
   return (
-    <div className={`w-full flex flex-col gap-4 ${className}`}>
+    <div className={`w-full flex flex-col gap-2 ${className}`}>
       {CATEGORY_OPTIONS.map((cat, index) => {
         const HeadingIcon = cat.rightIcon;
         const options = [DEFAULT_FILTER, ...cat.options];
@@ -125,13 +125,13 @@ const CategoriesFilter = ({ className = "" }: { className?: string }) => {
                 </div>
               ),
             }}
-            options={options}
+            className="border-b border-b-primary-50 [&>button]:px-0 [&>button]:py-3"
           >
             <DropdownOptions
               onChange={(data) => cat.onChange(data)}
               selected={cat.selected}
               options={options}
-              className="[&>button]:whitespace-nowrap"
+              className="[&>button]:whitespace-nowrap -mt-2 !px-1"
             />
           </Dropdown>
         );

@@ -38,7 +38,9 @@ const ProductDescriptionAndInfo = ({
           key={index}
           title={content.title}
           className={`[&>div>button]:py-5 ${
-            index === 0 ? "[&>div]:border-y [&>div]:border-y-primary-50" : ""
+            index === 0
+              ? "border-y border-y-primary-50"
+              : "border-b border-b-primary-50"
           }`}
           children={<QuillContent content={content.content || ""} />}
         />
