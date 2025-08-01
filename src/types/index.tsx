@@ -253,6 +253,7 @@ export interface TDropdown extends ClassName {
   icons?: { left?: JSX.Element; right?: JSX.Element };
   options?: TDropdownOption[];
   children?: ReactNode;
+  closeOnOutsideClick?: boolean;
 }
 
 export type TMediaType = "image" | "video";

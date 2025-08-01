@@ -22,6 +22,7 @@ import CustomerReviews from "./CustomerReviews";
 import ProductDescriptionAndInfo from "./children/ProductDescriptionAndInfo";
 import ProductVariants from "./children/ProductVariants";
 import Modal from "../../../components/modal";
+// import Dropdown from "../../../components/dropdown/Dropdown";
 
 const ProductDetails = () => {
   const { params } = useQueryParams();
@@ -347,6 +348,9 @@ const ProductDetails = () => {
             setShowReviewMedia(true);
           }}
         />
+      </div>
+      <div className="w-full pb-8 border-b border-b-primary-50 space-y-4">
+        {/* <Dropdown className="max-w-[200px]" /> */}
       </div>
       {showReviewMedia && (
         <Modal
