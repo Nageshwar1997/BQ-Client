@@ -1,8 +1,8 @@
 import {
   ChangeEvent,
   HTMLInputAutoCompleteAttribute,
-  JSX,
   KeyboardEvent,
+  ReactElement,
   ReactNode,
   RefObject,
   SVGProps,
@@ -246,14 +246,17 @@ export interface TDropdownOptions extends ClassName {
   options: TDropdownOption[];
   selected: string;
   onChange: (opt: TDropdownOption) => void;
+  onSelect?: () => void;
 }
 
 export interface TDropdown extends ClassName {
-  title: string;
-  icons?: { left?: JSX.Element; right?: JSX.Element };
-  options?: TDropdownOption[];
-  children?: ReactNode;
+  title: string | ReactElement;
+  icons?: Record<"left" | "right", ReactElement>;
+  children: ReactElement<{ onSelect?: () => void }>;
   closeOnOutsideClick?: boolean;
+  isAbsolute?: boolean;
+  showShadow?: boolean;
+  closeOnOptionClick?: boolean;
 }
 
 export type TMediaType = "image" | "video";
