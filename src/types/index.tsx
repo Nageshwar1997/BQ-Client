@@ -251,7 +251,7 @@ export interface TDropdownOptions extends ClassName {
 
 export interface TDropdown extends ClassName {
   title: string | ReactElement;
-  icons?: Record<"left" | "right", ReactElement>;
+  icons?: Partial<Record<"left" | "right", ReactElement>>;
   children: ReactElement<{ onSelect?: () => void }>;
   closeOnOutsideClick?: boolean;
   isAbsolute?: boolean;
