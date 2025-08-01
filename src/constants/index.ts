@@ -12,6 +12,18 @@ export const SORT_BY_OPTIONS = [
   { label: "Top rated", value: "top-rated", disabled: true }, // Backend Logic has to be changed
 ];
 
+export const REVIEWS_OPTIONS = [
+  { name: "Most Recent", value: "most-recent", disabled: false },
+  { name: "Highest Rating", value: "highest-rating", disabled: false },
+  { name: "Lowest Rating", value: "lowest-rating", disabled: false },
+  { name: "With Videos", value: "with-videos", disabled: false },
+  { name: "With Images", value: "with-images", disabled: false },
+  { name: "Images & Videos", value: "images-and-videos", disabled: true }, // Backend Logic has to be changed
+  { name: "Most Helpful", value: "most-helpful", disabled: false },
+  { name: "Most Liked", value: "most-liked", disabled: false },
+  { name: "Most Disliked", value: "most-disliked", disabled: false },
+];
+
 export const CATEGORY_VIDEOS = [
   {
     src: "/videos/product/offers.mp4",
