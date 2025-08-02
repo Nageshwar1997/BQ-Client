@@ -18,6 +18,7 @@ const Dropdown = ({
   closeOnOutsideClick = false,
   isAbsolute = false,
   showShadow = false,
+  options = [],
 }: TDropdown) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -35,7 +36,7 @@ const Dropdown = ({
       containerRef.current.style.maxHeight = "0px";
       containerRef.current.style.opacity = "0";
     }
-  }, [isOpen]);
+  }, [isOpen, options]);
   return (
     <div
       className={`w-full flex flex-col items-start cursor-pointer ${
