@@ -13,8 +13,8 @@ const ProductReviews = ({ reviews }: { reviews: FetchedReviewType[] }) => {
       {reviews?.map((review, index) => (
         <div
           key={index}
-          className={`flex flex-col gap-2 border-b border-b-primary-10 pb-4 ${
-            index === 0 ? "pt-4" : ""
+          className={`flex flex-col gap-2 pb-4 ${index === 0 ? "pt-4" : ""} ${
+            index !== reviews.length - 1 ? "border-b border-b-primary-10" : ""
           }`}
         >
           <div className="flex justify-between items-center">
