@@ -219,13 +219,26 @@ export interface ReviewType {
   videos: (string | File)[];
   user: string;
   product: string;
-  createdAt?: string;
-  updatedAt?: string;
 }
 
-export interface FetchedReviewType extends ReviewType {
+export interface ReviewType {
+  _id?: string;
+  rating: number;
+  title: string;
+  comment: string;
+  images: (string | File)[];
+  videos: (string | File)[];
+  user: string;
+  product: string;
+}
+
+export interface FetchedReviewType
+  extends Omit<ReviewType, "images" | "videos" | "user"> {
   images: string[];
   videos: string[];
+  user: UserTypes;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface FetchedProductType extends ProductType {
@@ -258,6 +271,7 @@ export interface TDropdown extends ClassName {
   showShadow?: boolean;
   closeOnOptionClick?: boolean;
   options?: TDropdownOption[];
+  isRounded?: boolean;
 }
 
 export type TMediaType = "image" | "video";
@@ -288,3 +302,17 @@ export interface IMediaCarouselWithParentMedia
   selected?: number | null;
   needButtonControls?: boolean;
 }
+
+export type TPossibleTimeFormats =
+  | "DD-MM-YYYY"
+  | "DD/MM/YYYY"
+  | "LT"
+  | "LTS"
+  | "L"
+  | "LL"
+  | "LLL"
+  | "LLLL"
+  | "l"
+  | "ll"
+  | "lll"
+  | "llll";

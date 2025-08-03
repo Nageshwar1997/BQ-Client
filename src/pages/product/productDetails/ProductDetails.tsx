@@ -5,7 +5,7 @@ import {
 } from "../../../api/product/product.service";
 import useQueryParams from "../../../hooks/useQueryParams";
 import { FetchedProductType, TCarouselOption } from "../../../types";
-import MediaCarousel from "../../../components/carousels/MediaCarousel";
+import ReviewsSection from "./children/ReviewsSection";
 import MediaCarouselWithParentMedia from "../../../components/carousels/MediaCarouselWithParentMedia";
 import RatingStars from "../../../components/navbar/components/rating/RatingStars";
 import { getCurrentViewers, toINRCurrency } from "../../../utils";
@@ -18,18 +18,14 @@ import { useInView } from "react-intersection-observer";
 import ProductCard from "../searchProducts/ProductCard";
 import useHorizontalScrollable from "../../../hooks/useHorizontalScrollable";
 import { LeftGradient, RightGradient } from "../../../components/Gradients";
-import CustomerReviews from "./CustomerReviews";
 import ProductDescriptionAndInfo from "./children/ProductDescriptionAndInfo";
 import ProductVariants from "./children/ProductVariants";
-import Modal from "../../../components/modal";
 
 const ProductDetails = () => {
   const { params } = useQueryParams();
   const { ref, inView } = useInView();
   const [selectedShadeIdx, setSelectedShadeIdx] = useState<null | number>(null);
-  const [showReviewMedia, setShowReviewMedia] = useState(false);
   const [showGradient, containerRef] = useHorizontalScrollable();
-  const [currentIndex, setCurrentIndex] = useState<null | number>(0);
 
   const productQuery = useGetProductById({
     queryParams: { productId: params.productId ?? "" },
@@ -58,27 +54,6 @@ const ProductDetails = () => {
     const allImages = [...commonImages, ...shadeImages];
     return allImages.map((url) => ({ url, type: "image" }));
   }, [product?.commonImages, product?.shades]);
-
-  // const reviewImages = useMemo(() => {
-  //   return product?.reviews?.flatMap((review) => review?.images) ?? [];
-  // }, [product?.reviews]);
-
-  const reviewMedia: TCarouselOption[] = useMemo(() => {
-    return (
-      product?.reviews?.flatMap((review) => {
-        const images =
-          review?.images?.map((url) => ({ url, type: "image" as const })) ?? [];
-        const videos =
-          review?.videos?.map((url) => ({ url, type: "video" as const })) ?? [];
-
-        return [...images, ...videos];
-      }) ?? []
-    );
-  }, [product?.reviews]);
-
-  // const reviewVideos = useMemo(() => {
-  //   return product?.reviews?.flatMap((review) => review?.videos) ?? [];
-  // }, [product?.reviews]);
 
   const memoizedQueryParams: TUseGetAllProductInfinite = useMemo(
     () => ({
@@ -293,88 +268,7 @@ const ProductDetails = () => {
           )}
         </div>
       </div>
-      <div className="w-full pb-8 border-b border-b-primary-50 space-y-4">
-        <TextDisplay
-          content={[{ isHighlighted: true, text: "Customer Reviews" }]}
-          className="text-xl md:text-3xl lg:text-4xl"
-        />
-        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row gap-8">
-          <div className="w-full">
-            <CustomerReviews reviews={product?.reviews?.map((r) => r.rating)} />
-          </div>
-          <div className="w-full flex flex-col gap-4 items-center justify-center">
-            <Button
-              pattern="secondary"
-              content="Write a Review"
-              className="max-w-44 py-2! lg:py-3 !rounded-md"
-            />
-            <div className="flex flex-col gap-0.5 items-center justify-center text-secondary">
-              <div className="flex items-center gap-2 text-sm">
-                <RatingStars
-                  rating={
-                    product?.reviews && product.reviews.length > 0
-                      ? product.reviews.reduce(
-                          (acc, review) => acc + (review?.rating || 0),
-                          0
-                        ) / product.reviews.length
-                      : 0
-                  }
-                />
-                <span>
-                  {product?.reviews && product.reviews.length > 0
-                    ? product.reviews.reduce(
-                        (acc, review) => acc + (review?.rating || 0),
-                        0
-                      ) / product.reviews.length
-                    : (0).toFixed(1)}{" "}
-                  out of 5
-                </span>
-              </div>
-              <p>Based on {product?.reviews?.length} reviews</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="w-full pb-8 border-b border-b-primary-50 space-y-4">
-        <p className="text-center text-lg/normal font-medium">
-          Customer review's photos & videos
-        </p>
-        <MediaCarousel
-          data={reviewMedia}
-          currentIndex={currentIndex}
-          setCurrentIndex={setCurrentIndex}
-          onImageClick={() => {
-            setShowReviewMedia(true);
-          }}
-        />
-      </div>
-      <div className="w-full pb-8 border-b border-b-primary-50 space-y-4">
-        Reviews section
-      </div>
-      {showReviewMedia && (
-        <Modal
-          children={
-            <MediaCarouselWithParentMedia
-              data={reviewMedia}
-              needButtonControls={true}
-              selected={currentIndex}
-              videoProps={{
-                autoPlay: true,
-                muted: true,
-                loop: true,
-                className:
-                  "!object-contain bg-primary-10 backdrop-blur-[2px] rounded-lg",
-              }}
-            />
-          }
-          className="max-w-xl"
-          isOpen={showReviewMedia}
-          onClose={() => {
-            setShowReviewMedia(false);
-            setCurrentIndex(null);
-          }}
-        />
-      )}
+      <ReviewsSection reviews={product.reviews} />
     </div>
   );
 };

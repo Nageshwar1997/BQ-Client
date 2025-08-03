@@ -139,7 +139,7 @@ export const DropdownIcon = (props: IconProps) => (
   </svg>
 );
 
-export const UserCircleIcon = ({ className }: IconProps) => (
+export const UserCircleIcon = (props: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
@@ -147,14 +147,12 @@ export const UserCircleIcon = ({ className }: IconProps) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="black"
-    className={className}
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
   >
-    <path
-      d="M5.3163 19.4384C5.92462 18.0052 7.34492 17 9 17H15C16.6551 17 18.0754 18.0052 18.6837 19.4384M16 9.5C16 11.7091 14.2091 13.5 12 13.5C9.79086 13.5 8 11.7091 8 9.5C8 7.29086 9.79086 5.5 12 5.5C14.2091 5.5 16 7.29086 16 9.5ZM22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
+    <path d="M5.3163 19.4384C5.92462 18.0052 7.34492 17 9 17H15C16.6551 17 18.0754 18.0052 18.6837 19.4384M16 9.5C16 11.7091 14.2091 13.5 12 13.5C9.79086 13.5 8 11.7091 8 9.5C8 7.29086 9.79086 5.5 12 5.5C14.2091 5.5 16 7.29086 16 9.5ZM22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" />
   </svg>
 );
 
@@ -887,5 +885,56 @@ export const UpiIcon = (props: IconProps) => (
         <rect width="493.379" height="174.304" fill="white" />
       </clipPath>
     </defs>
+  </svg>
+);
+
+export const CheckedUserIcon = (props: IconProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="black"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <path d="M12 15.5H7.5C6.10444 15.5 5.40665 15.5 4.83886 15.6722C3.56045 16.06 2.56004 17.0605 2.17224 18.3389C2 18.9067 2 19.6044 2 21M16 18L18 20L22 16M14.5 7.5C14.5 9.98528 12.4853 12 10 12C7.51472 12 5.5 9.98528 5.5 7.5C5.5 5.01472 7.51472 3 10 3C12.4853 3 14.5 5.01472 14.5 7.5Z" />
+  </svg>
+);
+
+export const ThumbsUpIcon = (props: IconProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="black"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    {...props}
+  >
+    <path d="M7 22V11M2 13V20C2 21.1046 2.89543 22 4 22H17.4262C18.907 22 20.1662 20.9197 20.3914 19.4562L21.4683 12.4562C21.7479 10.6389 20.3418 9 18.5032 9H15C14.4477 9 14 8.55228 14 8V4.46584C14 3.10399 12.896 2 11.5342 2C11.2093 2 10.915 2.1913 10.7831 2.48812L7.26394 10.4061C7.10344 10.7673 6.74532 11 6.35013 11H4C2.89543 11 2 11.8954 2 13Z" />
+  </svg>
+);
+
+export const ThumbsDownIcon = (props: IconProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="black"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    {...props}
+  >
+    <path d="M17 2V13M22 9.8V5.2C22 4.07989 22 3.51984 21.782 3.09202C21.5903 2.71569 21.2843 2.40973 20.908 2.21799C20.4801 2 19.9201 2 18.8 2H8.118C6.65652 2 5.92578 2 5.33557 2.26743C4.81539 2.50314 4.37329 2.88242 4.06123 3.36072C3.70716 3.90339 3.59605 4.62564 3.37382 6.07012L2.85074 9.47012C2.55764 11.3753 2.41108 12.3279 2.6938 13.0691C2.94193 13.7197 3.40864 14.2637 4.01391 14.6079C4.70352 15 5.66732 15 7.59493 15H8.39999C8.96004 15 9.24007 15 9.45398 15.109C9.64214 15.2049 9.79512 15.3578 9.891 15.546C9.99999 15.7599 9.99999 16.0399 9.99999 16.6V19.5342C9.99999 20.896 11.104 22 12.4658 22C12.7907 22 13.085 21.8087 13.2169 21.5119L16.5777 13.9502C16.7305 13.6062 16.807 13.4343 16.9278 13.3082C17.0346 13.1967 17.1657 13.1115 17.3109 13.0592C17.4752 13 17.6634 13 18.0398 13H18.8C19.9201 13 20.4801 13 20.908 12.782C21.2843 12.5903 21.5903 12.2843 21.782 11.908C22 11.4802 22 10.9201 22 9.8Z" />
   </svg>
 );

@@ -1,9 +1,13 @@
 import CryptoJS from "crypto-js";
+import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+dayjs.extend(localizedFormat);
 import {
   dummyFeedbacks,
   highlightedCategoryOptions,
 } from "../components/navbar/data";
 import { envs } from "../envs/index.env";
+import { TPossibleTimeFormats } from "../types";
 const TOKEN_KEY = "user_token";
 const SECRET_KEY = envs.ENCRYPTION_SECRET_KEY;
 
@@ -147,4 +151,11 @@ export const convertVideoToPoster = (videoUrl: string) => {
     console.error("Failed to create poster URL", error);
     return defaultPoster;
   }
+};
+
+export const formatDate = (
+  date: Date | string | number,
+  format: TPossibleTimeFormats = "DD-MM-YYYY"
+) => {
+  return dayjs(date).format(format);
 };
