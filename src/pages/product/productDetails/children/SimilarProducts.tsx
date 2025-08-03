@@ -10,15 +10,11 @@ import ProductCard from "../../searchProducts/ProductCard";
 import ProductCardSkeleton from "../../../../components/skeletons/children/ProductCardSkeleton";
 import ShowError from "../../../../components/errors/ShowError";
 import EmptyData from "../../../../components/empty-data/EmptyData";
+import useQueryParams from "../../../../hooks/useQueryParams";
 
-const SimilarProducts = ({
-  category,
-  productId,
-}: {
-  category: PopulatedCategory;
-  productId: string;
-}) => {
+const SimilarProducts = ({ category }: { category: PopulatedCategory }) => {
   const { ref, inView } = useInView();
+  const { params } = useQueryParams();
   const [showGradient, containerRef] = useHorizontalScrollable();
 
   const memoizedQueryParams: TUseGetAllProductInfinite = useMemo(
@@ -98,7 +94,7 @@ const SimilarProducts = ({
           ) : (
             <>
               {products
-                .filter((p) => p?._id !== productId)
+                .filter((p) => p?._id !== params.productId)
                 .map((product, index) => (
                   <div
                     key={index}

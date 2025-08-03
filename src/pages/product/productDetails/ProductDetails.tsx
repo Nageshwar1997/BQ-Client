@@ -164,7 +164,7 @@ const ProductDetails = () => {
           </Fragment>
         )}
       </div>
-      <SimilarProducts category={product.category} productId={product._id} />
+      <SimilarProducts category={product.category} />
       <ReviewsSection reviews={product.reviews} />
     </div>
   );
