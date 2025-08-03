@@ -1,9 +1,12 @@
 import Skeleton from "..";
 import { StarFillIcon } from "../../../icons";
+import { ClassName } from "../../../types";
 
-const ProductCardSkeleton = () => {
+const ProductCardSkeleton = ({ className = "" }: ClassName) => {
   return (
-    <div className="p-4 rounded-lg shadow-sm bg-primary-inverted flex flex-col gap-4 border-rounded-corners-gradient cursor-pointer h-full">
+    <div
+      className={`p-4 rounded-lg shadow-sm bg-primary-inverted flex flex-col gap-4 border-rounded-corners-gradient cursor-pointer h-full ${className}`}
+    >
       <Skeleton className="w-full h-full aspect-square rounded-lg overflow-hidden" />
       <hr className="h-px block border-none bg-gradient-line animate-pulse" />
       <div className="flex flex-col justify-between gap-2 grow">
