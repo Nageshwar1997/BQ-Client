@@ -20,8 +20,9 @@ const Dropdown = ({
   showShadow = false,
   isRounded = false,
   options = [],
+  defaultOpen = false,
 }: TDropdown) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(defaultOpen);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const ref = useOutsideClick<HTMLDivElement>(
     () => (isOpen ? setIsOpen(false) : null),
@@ -46,7 +47,7 @@ const Dropdown = ({
       ref={ref}
     >
       <button
-        className="flex items-center justify-between gap-2 w-full p-3 text-left transition-colors duration-300 group"
+        className="flex items-center justify-between gap-2 w-full p-3 text-left transition-colors duration-300 bg-primary-inverted group"
         onClick={() => setIsOpen((prev) => !prev)}
         aria-expanded={isOpen}
       >

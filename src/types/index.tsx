@@ -272,6 +272,7 @@ export interface TDropdown extends ClassName {
   closeOnOptionClick?: boolean;
   options?: TDropdownOption[];
   isRounded?: boolean;
+  defaultOpen?: boolean;
 }
 
 export type TMediaType = "image" | "video";
