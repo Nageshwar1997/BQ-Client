@@ -15,7 +15,7 @@ const ProductVariants = ({
         {currentShade.colorCode ? "Color: " : "Variant: "}
         {currentShade.shadeName}
       </div>
-      <div className="flex flex-wrap gap-2.5">
+      <div className="flex flex-wrap gap-2 md:gap-2.5">
         {shades.map((shade, index) => (
           <div
             key={shade._id}
@@ -23,7 +23,7 @@ const ProductVariants = ({
             onClick={() => onChange(index)}
           >
             <div
-              className={`w-14 h-14 rounded-full overflow-hidden border p-0.5 ${
+              className={`w-10 h-10 md:w-14 md:h-14 rounded-full overflow-hidden border p-px md:p-0.5 ${
                 currentShade._id === shade._id
                   ? "border-tertiary"
                   : "border-primary-30"
