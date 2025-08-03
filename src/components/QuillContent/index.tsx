@@ -12,7 +12,7 @@ const QuillContent = ({ content }: { content: string }) => {
     <div className="w-full">
       <div
         ref={contentRef}
-        className="prose lg:prose-xl max-w-none custom-prose"
+        className="prose lg:prose-xl max-w-none cursor-default custom-prose"
       />
     </div>
   );
