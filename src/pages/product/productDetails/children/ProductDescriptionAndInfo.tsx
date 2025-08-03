@@ -32,15 +32,16 @@ const ProductDescriptionAndInfo = ({
     ];
   }, [additionalDetails, description, howToUse, ingredients]);
   return (
-    <div className={`${className}`}>
+    <div className={`relative ${className}`}>
       {quillData.map((content, index) => (
         <Dropdown
+          defaultOpen={index === 0}
           key={index}
           title={content.title}
-          className={`[&>div>button]:py-5 ${
+          className={`[&>div>button]:py-5 [&>button]:sticky [&>button]:top-16 ${
             index === 0
-              ? "border-y border-y-primary-50"
-              : "border-b border-b-primary-50"
+              ? "border-y border-y-primary-30"
+              : "border-b border-b-primary-30"
           }`}
           children={<QuillContent content={content.content || ""} />}
         />
