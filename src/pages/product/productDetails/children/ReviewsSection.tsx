@@ -29,7 +29,7 @@ const ReviewsSection = ({ reviews = [] }: { reviews: FetchedReviewType[] }) => {
     );
   }, [reviews]);
   return (
-    <div>
+    <div className="flex flex-col">
       <div className="w-full pb-8 border-b border-b-primary-50 space-y-4">
         <TextDisplay
           content={[{ isHighlighted: true, text: "Customer Reviews" }]}
@@ -85,7 +85,7 @@ const ReviewsSection = ({ reviews = [] }: { reviews: FetchedReviewType[] }) => {
           />
         </div>
       )}
-      <div className="w-full py-2 border-y border-y-primary-50 space-y-4">
+      <div className="w-full py-2 border-y border-y-primary-50 space-y-4 relative">
         <Dropdown
           title={
             REVIEWS_OPTIONS.find((o) => o.value === queryParams?.sort)?.name ??
@@ -95,7 +95,7 @@ const ReviewsSection = ({ reviews = [] }: { reviews: FetchedReviewType[] }) => {
           closeOnOptionClick={true}
           closeOnOutsideClick={true}
           showShadow={true}
-          className="w-[180px] ml-auto border border-primary-30 rounded-md [&>div]:rounded-md"
+          className="w-[180px] ml-auto [&>button]:border [&>button]:border-primary-30 [&>button]:rounded-md [&>div]:rounded-md sticky top-[72px]"
         >
           <DropdownOptions
             options={REVIEWS_OPTIONS}
