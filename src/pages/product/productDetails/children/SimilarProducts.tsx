@@ -7,6 +7,9 @@ import { useInView } from "react-intersection-observer";
 import useHorizontalScrollable from "../../../../hooks/useHorizontalScrollable";
 import { LeftGradient, RightGradient } from "../../../../components/Gradients";
 import ProductCard from "../../searchProducts/ProductCard";
+import ProductCardSkeleton from "../../../../components/skeletons/children/ProductCardSkeleton";
+import ShowError from "../../../../components/errors/ShowError";
+import EmptyData from "../../../../components/empty-data/EmptyData";
 
 const SimilarProducts = ({
   category,
@@ -59,7 +62,6 @@ const SimilarProducts = ({
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
-  if (!products.length) return null;
   return (
     <div className="w-full py-8 border-y border-y-primary-50">
       <TextDisplay
@@ -70,24 +72,47 @@ const SimilarProducts = ({
       <div className="relative">
         {showGradient.left && <LeftGradient className="h-full !w-5 !sm:w-20" />}
         <div
-          className={`flex gap-4 overflow-x-auto scroll-smooth px-4 ${
+          className={`h-[445px] flex gap-4 overflow-x-auto scroll-smooth px-4 ${
             !showGradient.left && !showGradient.right
               ? "justify-center"
               : "justify-start"
           }`}
           ref={containerRef}
         >
-          {products
-            .filter((p) => p?._id !== productId)
-            .map((product, index) => (
-              <div
-                key={index}
-                className="shrink-0 w-[260px]"
-                ref={index === products.length - 2 ? ref : null}
-              >
-                <ProductCard product={product} />
-              </div>
-            ))}
+          {isError ? (
+            <ShowError
+              headingText="Something went wrong!"
+              descriptionText="Failed to find similar products. Please reload the page"
+              showHrLine={true}
+              className="mx-auto mb-auto [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase [&>p]:text-xs [&>p]:base:text-sm [&>p]:sm:text-base [&>p]:md:text-lg"
+            />
+          ) : isLoading ? (
+            Array.from({ length: 5 }).map((_, index) => (
+              <ProductCardSkeleton key={index} className="shrink-0 w-[260px]" />
+            ))
+          ) : products.length === 0 ? (
+            <EmptyData
+              content={"No similar products found"}
+              className="mx-auto mb-auto [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase gap-5"
+            />
+          ) : (
+            <>
+              {products
+                .filter((p) => p?._id !== productId)
+                .map((product, index) => (
+                  <div
+                    key={index}
+                    className="shrink-0 w-[260px] h-full"
+                    ref={index === products.length - 2 ? ref : null}
+                  >
+                    <ProductCard product={product} />
+                  </div>
+                ))}
+              {isFetchingNextPage && (
+                <ProductCardSkeleton className="w-[260px]" />
+              )}
+            </>
+          )}
         </div>
         {showGradient.right && (
           <RightGradient className="h-full !w-5 !sm:w-20" />
