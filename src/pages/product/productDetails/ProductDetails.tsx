@@ -1,31 +1,21 @@
-import { useEffect, useMemo, useState } from "react";
-import {
-  useGetAllProductsInfinite,
-  useGetProductById,
-} from "../../../api/product/product.service";
+import { useMemo, useState } from "react";
+import { useGetProductById } from "../../../api/product/product.service";
 import useQueryParams from "../../../hooks/useQueryParams";
 import { FetchedProductType, TCarouselOption } from "../../../types";
 import ReviewsSection from "./children/ReviewsSection";
 import MediaCarouselWithParentMedia from "../../../components/carousels/MediaCarouselWithParentMedia";
 import RatingStars from "../../../components/navbar/components/rating/RatingStars";
-import { getCurrentViewers, toINRCurrency } from "../../../utils";
-import { UpiIcon } from "../../../icons";
+import { toINRCurrency } from "../../../utils";
 import Button from "../../../components/button/Button";
 import { CATEGORY_VIDEOS } from "../../../constants";
-import TextDisplay from "../../../components/TextDisplay";
-import { TUseGetAllProductInfinite } from "../../../api/types";
-import { useInView } from "react-intersection-observer";
-import ProductCard from "../searchProducts/ProductCard";
-import useHorizontalScrollable from "../../../hooks/useHorizontalScrollable";
-import { LeftGradient, RightGradient } from "../../../components/Gradients";
+import SimilarProducts from "./children/SimilarProducts";
+import BuyOnEMIAndCurrentViewers from "./children/BuyOnEMIAndCurrentViewers";
 import ProductDescriptionAndInfo from "./children/ProductDescriptionAndInfo";
 import ProductVariants from "./children/ProductVariants";
 
 const ProductDetails = () => {
   const { params } = useQueryParams();
-  const { ref, inView } = useInView();
   const [selectedShadeIdx, setSelectedShadeIdx] = useState<null | number>(null);
-  const [showGradient, containerRef] = useHorizontalScrollable();
 
   const productQuery = useGetProductById({
     queryParams: { productId: params.productId ?? "" },
@@ -55,50 +45,9 @@ const ProductDetails = () => {
     return allImages.map((url) => ({ url, type: "image" }));
   }, [product?.commonImages, product?.shades]);
 
-  const memoizedQueryParams: TUseGetAllProductInfinite = useMemo(
-    () => ({
-      data: {
-        requiredFields: [
-          "title",
-          "brand",
-          "commonImages",
-          "discount",
-          "sellingPrice",
-          "originalPrice",
-        ],
-        populateFields: { category: ["name"], reviews: ["rating"] },
-      },
-      pageParams: { page: 1, limit: 5 },
-      queryParams: {
-        category_3: product.category?.category,
-        category_2: product.category?.parentCategory.category,
-        category_1: product.category?.parentCategory.parentCategory.category,
-      },
-      enabled: !!product?.category,
-    }),
-    [product?.category]
-  );
-
-  const {
-    data: productsData,
-    fetchNextPage,
-    hasNextPage,
-    // isFetchingNextPage,
-    // isLoading: isLoadingProducts,
-    // isError: isErrorProducts,
-  } = useGetAllProductsInfinite(memoizedQueryParams);
-  const products: FetchedProductType[] =
-    productsData?.pages?.flatMap((page) => page.products) || [];
-
   const currentShade = useMemo(() => {
     return product?.shades?.[selectedShadeIdx || 0];
   }, [product?.shades, selectedShadeIdx]);
-
-  useEffect(() => {
-    if (inView && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage, fetchNextPage]);
 
   return (
     <div className="w-full h-auto flex flex-col gap-8 p-8">
@@ -124,7 +73,7 @@ const ProductDetails = () => {
         </div>
         <div className="w-full lg:w-1/2 lg:sticky top-24">
           <div className="flex flex-col gap-4">
-            <h3 className="text-3xl/[32px] font-medium">
+            <h3 className="text-lg/[24px] md:text-3xl/[32px] font-medium">
               {product?.title}
               {product?.shades?.length ? ` - ${currentShade?.shadeName}` : ""}
             </h3>
@@ -148,7 +97,7 @@ const ProductDetails = () => {
                 <span className="text-base/none">)</span>
               </div>
             </div>
-            <div className="font-medium text-xl/normal text-secondary flex items-center gap-5">
+            <div className="font-medium text-lg/normal text-secondary flex items-center gap-5">
               <p>{toINRCurrency(product.sellingPrice)}</p>
               <p className="line-through opacity-60">
                 {toINRCurrency(product.originalPrice)}
@@ -157,45 +106,7 @@ const ProductDetails = () => {
                 {product.discount?.toFixed(0)}% off
               </p>
             </div>
-            <div className="flex flex-col gap-4">
-              <p>Tax included</p>
-              <div className="relative border border-primary-50 rounded">
-                <div className="absolute -top-2.5 left-3 bg-primary text-primary-inverted px-2 py-px text-[10px] rounded">
-                  Flat ₹100 cashback
-                </div>
-                <div className="flex justify-between items-center relative text-sm">
-                  <div className="flex items-center gap-2 font-medium leading-none mt-px -mb-1 px-4 py-2">
-                    <p>
-                      Pay{" "}
-                      <span className="text-green-600 font-semibold">
-                        {
-                          toINRCurrency(product.sellingPrice * 0.1).split(
-                            "."
-                          )[0]
-                        }{" "}
-                        now,
-                      </span>{" "}
-                      rest via BQ pay later
-                    </p>
-                    <div className="bg-primary-50 w-px h-3"></div>
-                    <p className="">0% EMI on</p>
-                    <UpiIcon width={45} height={16} />
-                  </div>
-                  <p className="h-full absolute right-0 top-0 bg-red-600 rounded-r-[3px] text-sm/none flex items-center px-3 font-medium text-white">
-                    {/* Buy on EMI */}
-                    Coming Soon
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 border border-primary-50 p-2 rounded">
-              <div className="w-3 h-3 rounded-full bg-gradient-to-t from-green-500/50 to-green-500/50 flex items-center justify-center">
-                <div className="w-1.5 h-1.5 rounded-full animate-blink bg-green-600"></div>
-              </div>
-              <div>
-                {getCurrentViewers()} People are viewing this product right now.
-              </div>
-            </div>
+            <BuyOnEMIAndCurrentViewers price={product.sellingPrice} />
             {product.shades?.length > 0 && (
               <ProductVariants
                 currentShade={currentShade}
@@ -233,41 +144,7 @@ const ProductDetails = () => {
           </div>
         </div>
       </div>
-      <div className="w-full py-8 border-y border-y-primary-50">
-        <TextDisplay
-          content={[{ isHighlighted: true, text: "Similar Products" }]}
-          className="text-xl md:text-3xl lg:text-4xl"
-        />
-        <hr className="max-w-xl mx-auto h-px block border-none bg-gradient-line my-4" />
-        <div className="relative">
-          {showGradient.left && (
-            <LeftGradient className="h-full !w-5 !sm:w-20" />
-          )}
-          <div
-            className={`flex gap-4 overflow-x-auto scroll-smooth px-4 ${
-              !showGradient.left && !showGradient.right
-                ? "justify-center"
-                : "justify-start"
-            }`}
-            ref={containerRef}
-          >
-            {products
-              .filter((p) => p?._id !== product?._id)
-              .map((product, index) => (
-                <div
-                  key={index}
-                  className="shrink-0 w-[260px]"
-                  ref={index === products.length - 2 ? ref : null}
-                >
-                  <ProductCard product={product} />
-                </div>
-              ))}
-          </div>
-          {showGradient.right && (
-            <RightGradient className="h-full !w-5 !sm:w-20" />
-          )}
-        </div>
-      </div>
+      <SimilarProducts category={product.category} productId={product._id} />
       <ReviewsSection reviews={product.reviews} />
     </div>
   );
