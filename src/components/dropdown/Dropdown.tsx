@@ -18,6 +18,7 @@ const Dropdown = ({
   closeOnOutsideClick = false,
   isAbsolute = false,
   showShadow = false,
+  isRounded = false,
   options = [],
 }: TDropdown) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -68,7 +69,7 @@ const Dropdown = ({
           showShadow
             ? "shadow-[var(--primary-8)_0px_4px_16px,_var(--primary-10)_0px_8px_32px]"
             : ""
-        }`}
+        } ${isRounded ? "rounded-lg" : ""}`}
       >
         {isValidElement(children)
           ? cloneElement(children, {
