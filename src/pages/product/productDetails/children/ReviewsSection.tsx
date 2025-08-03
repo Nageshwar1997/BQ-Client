@@ -35,6 +35,7 @@ const ReviewsSection = ({ reviews = [] }: { reviews: FetchedReviewType[] }) => {
           content={[{ isHighlighted: true, text: "Customer Reviews" }]}
           className="text-xl md:text-3xl lg:text-4xl"
         />
+        <hr className="max-w-xl mx-auto h-px block border-none bg-gradient-line my-4" />
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row gap-8">
           <div className="w-full">
             <CustomerReviews reviews={reviews?.map((r) => r.rating)} />
