@@ -68,7 +68,7 @@ const SimilarProducts = ({ category }: { category: PopulatedCategory }) => {
       <div className="relative">
         {showGradient.left && <LeftGradient className="h-full !w-5 !sm:w-20" />}
         <div
-          className={`h-[445px] flex gap-4 overflow-x-auto scroll-smooth px-4 ${
+          className={`max-h-[445px] flex gap-4 overflow-x-auto scroll-smooth px-4 ${
             !showGradient.left && !showGradient.right
               ? "justify-center"
               : "justify-start"
@@ -86,7 +86,7 @@ const SimilarProducts = ({ category }: { category: PopulatedCategory }) => {
             Array.from({ length: 5 }).map((_, index) => (
               <ProductCardSkeleton key={index} className="shrink-0 w-[260px]" />
             ))
-          ) : products.length === 0 ? (
+          ) : products.length <= 1 ? (
             <EmptyData
               content={"No similar products found"}
               className="mx-auto mb-auto [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase gap-5"

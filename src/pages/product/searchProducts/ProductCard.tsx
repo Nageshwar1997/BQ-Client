@@ -9,7 +9,7 @@ const ProductCard = ({
   product: FetchedProductType;
   onClick?: () => void;
 }) => {
-  const rating = product?.reviews.reduce(
+  const rating = product?.reviews?.reduce(
     (acc, review) => acc + review?.rating,
     0
   );

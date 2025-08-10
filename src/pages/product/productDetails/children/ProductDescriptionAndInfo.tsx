@@ -33,10 +33,9 @@ const ProductDescriptionAndInfo = ({
   return (
     <div className={`relative ${className}`}>
       {quillData
-        .filter(({ content }) => content && content.length > 0)
+        .filter(({ content }) => content && content?.trim() !== "")
         .map(({ content, title }, index) => (
           <Dropdown
-            defaultOpen={index === 0}
             key={index}
             title={title}
             className={`[&>div>button]:py-5 [&>button]:sticky [&>button]:top-16 ${

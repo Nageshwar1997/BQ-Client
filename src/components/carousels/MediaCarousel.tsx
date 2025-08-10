@@ -7,10 +7,9 @@ import { convertVideoToPoster } from "../../utils";
 const MediaCarousel = ({
   className = "",
   data,
-  currentIndex,
-  setCurrentIndex,
+  selected,
+  onClick,
   thumbnailRefs,
-  onImageClick,
 }: TMediaCarousel) => {
   const [showGradient, containerRef] = useHorizontalScrollable();
 
@@ -35,17 +34,14 @@ const MediaCarousel = ({
                 thumbnailRefs.current[i] = el;
               }
             }}
-            onClick={() => {
-              setCurrentIndex(i);
-              onImageClick?.();
-            }}
+            onClick={() => onClick(i)}
             className={`w-20 h-20 group rounded overflow-hidden border shadow-sm shrink-0 hover:opacity-100 transition-colors duration-300 ${
-              i === currentIndex
+              i === selected
                 ? "border-tertiary opacity-100"
                 : "border-primary-30 opacity-90"
             } ${item.type === "video" ? "relative" : ""}`}
           >
-            {item.type === "video" && i !== currentIndex && (
+            {item.type === "video" && i !== selected && (
               <div className="absolute inset-0 w-full h-full aspect-square bg-black/50 flex items-center justify-center group pointer-events-none">
                 <PlayIcon className="fill-white opacity-90 group-hover:opacity-100" />
               </div>
