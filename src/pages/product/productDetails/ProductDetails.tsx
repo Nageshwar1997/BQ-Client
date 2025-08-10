@@ -188,7 +188,7 @@ const ProductDetails = () => {
                       : 0
                   }
                 />
-                <span>
+                <span className="leading-none mt-px">
                   {product?.reviews && product?.reviews?.length > 0
                     ? product?.reviews.reduce(
                         (acc, review) => acc + (review?.rating || 0),

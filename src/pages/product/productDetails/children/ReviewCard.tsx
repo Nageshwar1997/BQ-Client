@@ -22,7 +22,7 @@ const ReviewCard = ({
     ...(review?.videos?.map((url) => ({ url, type: "video" as const })) ?? []),
   ];
   return (
-    <div className={`flex flex-col gap-2 pb-4 ${className}`}>
+    <div className={`flex flex-col gap-2 ${className}`}>
       <div className="flex justify-between items-center">
         <RatingStars rating={review.rating || 0} />
         <div className="text-sm">{formatDate(review.createdAt, "LLL")}</div>
