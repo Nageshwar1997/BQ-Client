@@ -20,6 +20,22 @@ export type TPageParams = { page: number; limit: number };
 export type TQueryParams = Record<string, string>;
 export type TBodyParams = IProductPossibleBodyFields;
 
+export interface IReviewsApiParams {
+  pageParams?: TPageParams;
+  queryParams?: TQueryParams;
+  enabled?: boolean;
+  data?: {
+    populateFields?: {
+      user: Exclude<keyof UserTypes, "password">[];
+    };
+  };
+}
+export interface IReviewsInfiniteApiParams
+  extends Omit<IReviewsApiParams, "pageParams"> {
+  pageParams: Omit<TPageParams, "page">;
+  refetchOnWindowFocus?: boolean;
+}
+
 export type TUseGetProduct = {
   data?: TBodyParams;
   queryParams?: TQueryParams;
