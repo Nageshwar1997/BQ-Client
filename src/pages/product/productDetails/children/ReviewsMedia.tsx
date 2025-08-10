@@ -5,7 +5,7 @@ import { FetchedReviewType, TCarouselOption } from "../../../../types";
 import Skeleton from "../../../../components/skeletons";
 import ShowError from "../../../../components/errors/ShowError";
 import EmptyData from "../../../../components/empty-data/EmptyData";
-import { MediaCarouselSkeleton } from "../../../../components/skeletons/children/ProductDetailsSkeleton";
+import MediaCarouselSkeleton from "../../../../components/skeletons/children/MediaCarouselSkeleton";
 
 const ReviewsMedia = ({
   reviews,
