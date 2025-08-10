@@ -3,46 +3,66 @@ import useHorizontalScrollable from "../../../hooks/useHorizontalScrollable";
 import { StarFillIcon } from "../../../icons";
 import { LeftGradient, RightGradient } from "../../Gradients";
 
-const ProductDetailsSkeleton = () => {
+export const MediaCarouselSkeleton = ({
+  mainImage = true,
+  hrLine = true,
+  thumbnails = true,
+}: {
+  mainImage?: boolean;
+  hrLine?: boolean;
+  thumbnails: boolean;
+}) => {
   const [showGradient, containerRef] = useHorizontalScrollable();
+  return (
+    <div className={`rounded-lg max-w-3xl w-full overflow-hidden`}>
+      {/* Main Image */}
+      {mainImage && (
+        <div className="mb-4 h-[400px] lg:h-[420px] xl:h-[500px] flex items-center justify-center">
+          <Skeleton className="h-full !rounded-lg" />
+        </div>
+      )}
+      {hrLine && (
+        <hr className="h-px mb-4 block border-none bg-gradient-line" />
+      )}
+      {/* Thumbnails */}
+      {thumbnails && (
+        <div className={`p-1 relative`}>
+          {showGradient.left && (
+            <LeftGradient className="!w-10 sm:!w-20 h-full" />
+          )}
+          <div
+            className={`flex items-center gap-2 ${
+              !showGradient.left && !showGradient.right
+                ? "justify-center"
+                : "overflow-x-scroll scroll-smooth overflow-hidden"
+            }`}
+            ref={containerRef}
+          >
+            {Array.from({ length: 8 })?.map((_, i) => (
+              <div
+                key={i}
+                className={`w-20 h-20 group rounded overflow-hidden shadow-sm shrink-0`}
+              >
+                <Skeleton className="w-full h-full object-cover cursor-pointer aspect-square" />
+              </div>
+            ))}
+          </div>
+          {showGradient.right && (
+            <RightGradient className="!w-10 sm:!w-20 h-full" />
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+const ProductDetailsSkeleton = () => {
   return (
     <div className="w-full flex flex-col lg:flex-row items-start gap-5">
       <div className="w-full lg:w-1/2 lg:sticky top-24">
         <div className="flex flex-col gap-4">
           {/* Image Section */}
-          <div className={`rounded-lg max-w-3xl w-full overflow-hidden`}>
-            {/* Main Image */}
-            <div className="mb-4 h-[400px] lg:h-[420px] xl:h-[500px] flex items-center justify-center">
-              <Skeleton className="h-full !rounded-lg" />
-            </div>
-            <hr className="h-px mb-4 block border-none bg-gradient-line" />
-            {/* Thumbnails */}
-            <div className={`p-1 relative`}>
-              {showGradient.left && (
-                <LeftGradient className="!w-10 sm:!w-20 h-full" />
-              )}
-              <div
-                className={`flex items-center gap-2 ${
-                  !showGradient.left && !showGradient.right
-                    ? "justify-center"
-                    : "overflow-x-scroll scroll-smooth overflow-hidden"
-                }`}
-                ref={containerRef}
-              >
-                {Array.from({ length: 8 })?.map((_, i) => (
-                  <div
-                    key={i}
-                    className={`w-20 h-20 group rounded overflow-hidden shadow-sm shrink-0`}
-                  >
-                    <Skeleton className="w-full h-full object-cover cursor-pointer aspect-square" />
-                  </div>
-                ))}
-              </div>
-              {showGradient.right && (
-                <RightGradient className="!w-10 sm:!w-20 h-full" />
-              )}
-            </div>
-          </div>
+          <MediaCarouselSkeleton thumbnails={true} />
           <div className="w-full hidden lg:block">
             <hr className="w-full h-px block border-none bg-gradient-line mb-4" />
             <div className="flex flex-col gap-2">
@@ -72,7 +92,10 @@ const ProductDetailsSkeleton = () => {
           {/* Price Section */}
           <div className="flex items-center gap-5">
             {Array.from({ length: 3 }).map((_, index) => (
-              <Skeleton key={index} className="!w-20 !h-5" />
+              <Skeleton
+                key={index}
+                className={`!h-[22px] ${index !== 2 ? "!w-[70px]" : "!w-16"}`}
+              />
             ))}
           </div>
           {/* EMI and Viewers */}
