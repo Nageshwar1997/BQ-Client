@@ -1,4 +1,5 @@
 import { LevelTwoCategoryType } from "../../types";
+import { HelpfulIcon } from "../../../../icons";
 import {
   AboutUsIcon,
   AwardsIcon,
@@ -11,7 +12,6 @@ import {
   RetailECommerceIcon,
   TeamIcon,
   TermsAndConditionsIcon,
-  ValuesAndCultureIcon,
 } from "../icons";
 
 const basePath = "/about";
@@ -109,7 +109,7 @@ export const careers: LevelTwoCategoryType = {
       label: "Values/Culture",
       category: "values_culture",
       path: `${basePath}/careers/values_culture`,
-      icon: ValuesAndCultureIcon,
+      icon: HelpfulIcon,
       description:
         "Experience our vibrant culture driven by values of growth and innovation.",
     },
