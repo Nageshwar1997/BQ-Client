@@ -40,7 +40,7 @@ const ReviewCard = ({
         <div className="space-y-0.5">
           <div className="flex items-center gap-2">
             <p className="bg-primary text-primary-inverted text-xs/normal px-2 w-fit font-medium">
-              Verified
+              Helpful
             </p>
             <div className="flex items-center gap-2">
               <ThumbsUpIcon className="w-4 h-4 cursor-pointer stroke-primary hover:rotate-12 transition-transform duration-300" />
