@@ -1,0 +1,46 @@
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { get_reviews_by_product_id } from "./reviews.api";
+import { IReviewsInfiniteApiParams, IReviewsApiParams } from "../types";
+
+export const useGetAllReviewsByProductId = ({
+  queryParams,
+  pageParams,
+  data,
+  enabled = true,
+}: IReviewsApiParams) => {
+  return useQuery({
+    queryKey: [
+      "get_reviews_by_product_id_non_infinite",
+      queryParams,
+      pageParams,
+    ],
+    queryFn: () => get_reviews_by_product_id({ data, queryParams, pageParams }),
+    enabled,
+  });
+};
+
+export const useGetAllReviewsByProductIdInfinite = ({
+  pageParams,
+  queryParams,
+  enabled = true,
+  data = {},
+  refetchOnWindowFocus = false,
+}: IReviewsInfiniteApiParams) => {
+  return useInfiniteQuery({
+    queryKey: ["get_reviews_by_product_id_infinite", queryParams, pageParams],
+    initialPageParam: 1,
+    queryFn: async ({ pageParam = 1 }) => {
+      return get_reviews_by_product_id({
+        pageParams: { page: pageParam, limit: pageParams.limit },
+        queryParams,
+        data,
+      });
+    },
+    enabled,
+    refetchOnWindowFocus,
+    getNextPageParam: (lastPage, allPages) => {
+      const hasMore = lastPage.reviews.length === pageParams.limit;
+      return hasMore ? allPages.length + 1 : undefined;
+    },
+  });
+};

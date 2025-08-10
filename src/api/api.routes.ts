@@ -24,3 +24,7 @@ export const mediaRoutes = {
   // For Videos
   getHomeVideos: { method: "GET", url: "/media/videos/home" },
 };
+
+export const reviewRoutes = {
+  getReviewsByProductId: { method: "GET", url: "/reviews" },
+};
