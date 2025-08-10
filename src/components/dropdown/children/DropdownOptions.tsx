@@ -24,6 +24,7 @@ const DropdownOptions = ({
               onChange(opt);
               onSelect?.();
             }}
+            disabled={opt.disabled}
           >
             {opt.name}
             {isSelected && <CheckedIcon className="stroke-primary w-5 h-5" />}

@@ -246,7 +246,11 @@ export interface FetchedProductType extends ProductType {
   reviews: FetchedReviewType[];
 }
 
-export type TDropdownOption = { name: string; value: string };
+export type TDropdownOption = {
+  name: string;
+  value: string;
+  disabled?: boolean;
+};
 export interface TDropdownOptions extends ClassName {
   options: TDropdownOption[];
   selected: string;

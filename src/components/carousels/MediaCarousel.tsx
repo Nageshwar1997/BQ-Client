@@ -17,13 +17,11 @@ const MediaCarousel = ({
     <div className={`p-1 relative ${className}`}>
       {showGradient.left && <LeftGradient className="!w-20 h-full" />}
       <div
-        className={`flex items-center gap-2
-           ${
-             !showGradient.left && !showGradient.right
-               ? "justify-center"
-               : "overflow-x-scroll scroll-smooth overflow-hidden"
-           }
-        `}
+        className={`flex items-center gap-2 ${
+          !showGradient.left && !showGradient.right
+            ? "justify-center"
+            : "overflow-x-scroll scroll-smooth overflow-hidden"
+        }`}
         ref={containerRef}
       >
         {data?.map((item, i) => (
