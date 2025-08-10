@@ -15,6 +15,9 @@ import ProductVariants from "./children/ProductVariants";
 import ProductDetailsSkeleton from "../../../components/skeletons/children/ProductDetailsSkeleton";
 import ShowError from "../../../components/errors/ShowError";
 import EmptyData from "../../../components/empty-data/EmptyData";
+import CustomerReviews from "./CustomerReviews";
+import TextDisplay from "../../../components/TextDisplay";
+import ReviewsMedia from "./children/ReviewsMedia";
 
 const ProductDetails = () => {
   const { params } = useQueryParams();
@@ -25,15 +28,7 @@ const ProductDetails = () => {
     data: {
       populateFields: {
         category: ["name", "category", "parentCategory"],
-        reviews: [
-          "rating",
-          "comment",
-          "images",
-          "videos",
-          "user",
-          "title",
-          "createdAt",
-        ],
+        reviews: ["rating", "images", "videos"],
         shades: ["images", "colorCode", "stock", "shadeName"],
       },
     },
@@ -99,11 +94,11 @@ const ProductDetails = () => {
                   <RatingStars
                     className="[&>svg]:w-5 [&>svg]:h-5"
                     rating={
-                      product?.reviews && product.reviews.length > 0
-                        ? product.reviews.reduce(
+                      product?.reviews?.length > 0
+                        ? product?.reviews?.reduce(
                             (acc, review) => acc + (review?.rating || 0),
                             0
-                          ) / product.reviews.length
+                          ) / product?.reviews?.length
                         : 0
                     }
                   />
@@ -165,7 +160,55 @@ const ProductDetails = () => {
         )}
       </div>
       <SimilarProducts category={product.category} />
-      <ReviewsSection reviews={product.reviews} />
+      <div className="w-full pb-8 border-b border-b-primary-50 space-y-4">
+        <TextDisplay
+          content={[{ isHighlighted: true, text: "Customer Reviews" }]}
+          className="text-xl md:text-3xl lg:text-4xl"
+        />
+        <hr className="max-w-xl mx-auto h-px block border-none bg-gradient-line my-4" />
+        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row gap-8">
+          <div className="w-full">
+            <CustomerReviews reviews={product?.reviews?.map((r) => r.rating)} />
+          </div>
+          <div className="w-full flex flex-col gap-4 items-center justify-center">
+            <Button
+              pattern="secondary"
+              content="Write a Review"
+              className="max-w-44 py-2! lg:py-3 !rounded-md"
+            />
+            <div className="flex flex-col gap-0.5 items-center justify-center text-secondary">
+              <div className="flex items-center gap-2 text-sm">
+                <RatingStars
+                  rating={
+                    product?.reviews?.length > 0
+                      ? product?.reviews.reduce(
+                          (acc, review) => acc + (review?.rating || 0),
+                          0
+                        ) / product?.reviews.length
+                      : 0
+                  }
+                />
+                <span>
+                  {product?.reviews && product?.reviews?.length > 0
+                    ? product?.reviews.reduce(
+                        (acc, review) => acc + (review?.rating || 0),
+                        0
+                      ) / product?.reviews.length
+                    : (0).toFixed(1)}{" "}
+                  out of 5
+                </span>
+              </div>
+              <p>Based on {product?.reviews?.length} reviews</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ReviewsMedia
+        reviews={product?.reviews}
+        isError={isError}
+        isLoading={isLoading}
+      />
+      <ReviewsSection />
     </div>
   );
 };

@@ -219,17 +219,9 @@ export interface ReviewType {
   videos: (string | File)[];
   user: string;
   product: string;
-}
-
-export interface ReviewType {
-  _id?: string;
-  rating: number;
-  title: string;
-  comment: string;
-  images: (string | File)[];
-  videos: (string | File)[];
-  user: string;
-  product: string;
+  likes: string[];
+  dislikes: string[];
+  helpful: string[];
 }
 
 export interface FetchedReviewType
@@ -284,10 +276,9 @@ export interface ICarouselOptions {
 }
 
 export interface TMediaCarousel extends ClassName, ICarouselOptions {
-  currentIndex?: number | null;
-  setCurrentIndex: (index: number) => void;
+  selected?: number | null;
+  onClick: (index: number) => void;
   thumbnailRefs?: RefObject<(HTMLDivElement | null)[]>;
-  onImageClick?: () => void;
 }
 
 export interface IVideo {
