@@ -103,7 +103,7 @@ const Input = ({
 
       {!readOnly && (isError || isSuccess) && (
         <p
-          className={`w-full text-start flex gap-1 items-center text-[11px] leading-tight mt-2 text-red-500`}
+          className={`w-full text-start flex gap-1 items-center text-[11px] leading-tight text-red-500`}
         >
           {isError ? (
             <InfoIcon className="w-3 h-3 md:w-4 md:h-4 fill-red-500" />
