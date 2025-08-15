@@ -283,6 +283,7 @@ export interface TMediaCarousel extends ClassName, ICarouselOptions {
   selected?: number | null;
   onClick: (index: number) => void;
   thumbnailRefs?: RefObject<(HTMLDivElement | null)[]>;
+  handleRemove?: (index: number) => void;
 }
 
 export interface IVideo {
@@ -297,6 +298,7 @@ export interface IMediaCarouselWithParentMedia
     ICarouselOptions {
   selected?: number | null;
   needButtonControls?: boolean;
+  handleRemove?: (index: number) => void;
 }
 
 export type TPossibleTimeFormats =
@@ -312,3 +314,25 @@ export type TPossibleTimeFormats =
   | "ll"
   | "lll"
   | "llll";
+
+export type TRegexes =
+  | "noSpace"
+  | "singleSpace"
+  | "hexCode"
+  | "date"
+  | "name"
+  | "password"
+  | "email"
+  | "phone"
+  | "phoneStart"
+  | "phoneExactLength"
+  | "onlyDigits"
+  | "onlyLetters"
+  | "onlyUppercase"
+  | "onlyLowercase"
+  | "atLeastOneDigit"
+  | "onlyLettersAndSpaces"
+  | "atLeastOneLowercaseLetter"
+  | "atLeastOneSpecialCharacter"
+  | "atLeastOneUppercaseLetter"
+  | "onlyLettersAndSpacesAndDots";
