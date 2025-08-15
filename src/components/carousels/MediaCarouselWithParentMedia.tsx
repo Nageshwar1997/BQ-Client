@@ -11,6 +11,7 @@ const MediaCarouselWithParentMedia = ({
   selected = 0,
   needButtonControls = true,
   videoProps,
+  handleRemove,
 }: IMediaCarouselWithParentMedia) => {
   const [currentIndex, setCurrentIndex] = useState(selected ?? 0);
   const [mediaType, setMediaType] = useState<"image" | "video">("image");
@@ -42,6 +43,8 @@ const MediaCarouselWithParentMedia = ({
       setMediaType(data[currentIndex].type);
     }
   }, [currentIndex, data]);
+
+  if (data.length === 0) return null;
 
   return (
     <div
@@ -106,6 +109,7 @@ const MediaCarouselWithParentMedia = ({
         data={data}
         selected={currentIndex}
         onClick={setCurrentIndex}
+        handleRemove={handleRemove}
         thumbnailRefs={thumbnailRefs}
       />
     </div>
