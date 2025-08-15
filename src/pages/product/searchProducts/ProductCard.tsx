@@ -1,5 +1,5 @@
 import { FetchedProductType } from "../../../types";
-import { toINRCurrency } from "../../../utils";
+import { getAvgRating, toINRCurrency } from "../../../utils";
 import RatingStars from "../../../components/navbar/components/rating/RatingStars";
 
 const ProductCard = ({
@@ -9,10 +9,6 @@ const ProductCard = ({
   product: FetchedProductType;
   onClick?: () => void;
 }) => {
-  const rating = product?.reviews?.reduce(
-    (acc, review) => acc + review?.rating,
-    0
-  );
   return (
     <div
       className="p-4 rounded-lg shadow-sm bg-primary-inverted flex flex-col gap-4 border-rounded-corners-gradient cursor-pointer h-full"
@@ -48,7 +44,7 @@ const ProductCard = ({
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <RatingStars rating={rating ?? 0} />
+          <RatingStars rating={getAvgRating(product?.reviews)} />
           <div className="flex items-center gap-0.5">
             <span className="text-base/none">(</span>
             <span className="text-base/none">{product?.reviews?.length}</span>

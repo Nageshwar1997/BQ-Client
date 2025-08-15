@@ -7,7 +7,7 @@ import {
   highlightedCategoryOptions,
 } from "../components/navbar/data";
 import { envs } from "../envs/index.env";
-import { TPossibleTimeFormats } from "../types";
+import { FetchedReviewType, TPossibleTimeFormats } from "../types";
 const TOKEN_KEY = "user_token";
 const SECRET_KEY = envs.ENCRYPTION_SECRET_KEY;
 
@@ -158,4 +158,14 @@ export const formatDate = (
   format: TPossibleTimeFormats = "DD-MM-YYYY"
 ) => {
   return dayjs(date).format(format);
+};
+
+export const getAvgRating = (reviews: FetchedReviewType[] = []) => {
+  if (reviews.length === 0 || !reviews) return 0; // Return 0 if no reviews
+  const totalRating = reviews.reduce(
+    (acc, review) => acc + review?.rating || 0,
+    0
+  );
+  const avgRating = totalRating / reviews.length;
+  return avgRating;
 };

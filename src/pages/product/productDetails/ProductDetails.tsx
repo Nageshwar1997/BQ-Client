@@ -5,7 +5,7 @@ import { FetchedProductType, TCarouselOption } from "../../../types";
 import ReviewsSection from "./children/ReviewsSection";
 import MediaCarouselWithParentMedia from "../../../components/carousels/MediaCarouselWithParentMedia";
 import RatingStars from "../../../components/navbar/components/rating/RatingStars";
-import { toINRCurrency } from "../../../utils";
+import { getAvgRating, toINRCurrency } from "../../../utils";
 import Button from "../../../components/button/Button";
 import { CATEGORY_VIDEOS } from "../../../constants";
 import SimilarProducts from "./children/SimilarProducts";
@@ -93,14 +93,7 @@ const ProductDetails = () => {
                 <div className="flex items-center gap-2">
                   <RatingStars
                     className="[&>svg]:w-5 [&>svg]:h-5"
-                    rating={
-                      product?.reviews?.length > 0
-                        ? product?.reviews?.reduce(
-                            (acc, review) => acc + (review?.rating || 0),
-                            0
-                          ) / product?.reviews?.length
-                        : 0
-                    }
+                    rating={getAvgRating(product.reviews)}
                   />
                   <div className="flex items-center gap-0.5">
                     <span className="text-base/none">(</span>
@@ -179,23 +172,11 @@ const ProductDetails = () => {
             <div className="flex flex-col gap-0.5 items-center justify-center text-secondary">
               <div className="flex items-center gap-2 text-sm">
                 <RatingStars
-                  rating={
-                    product?.reviews?.length > 0
-                      ? product?.reviews.reduce(
-                          (acc, review) => acc + (review?.rating || 0),
-                          0
-                        ) / product?.reviews.length
-                      : 0
-                  }
+                  rating={getAvgRating(product.reviews)}
+                  className="[&>svg]:w-4 [&>svg]:h-4"
                 />
                 <span className="leading-none mt-px">
-                  {product?.reviews && product?.reviews?.length > 0
-                    ? product?.reviews.reduce(
-                        (acc, review) => acc + (review?.rating || 0),
-                        0
-                      ) / product?.reviews.length
-                    : (0).toFixed(1)}{" "}
-                  out of 5
+                  {getAvgRating(product.reviews)} out of 5
                 </span>
               </div>
               <p>Based on {product?.reviews?.length} reviews</p>
