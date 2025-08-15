@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FetchedReviewType, TCarouselOption } from "../../../../types";
-import ReviewMediaModal from "./ReviewMediaModal";
 import ReviewCard from "./ReviewCard";
+import MediaModal from "./MediaModal";
 
 const ProductReviews = ({
   reviews,
@@ -37,7 +37,7 @@ const ProductReviews = ({
         </div>
       ))}
       {selectedReviewMedia.length > 0 && (
-        <ReviewMediaModal
+        <MediaModal
           currentIndex={mediaIndex}
           setCurrentIndex={setMediaIndex}
           reviewMedia={selectedReviewMedia}

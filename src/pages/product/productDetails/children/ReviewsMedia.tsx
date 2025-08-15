@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import MediaCarousel from "../../../../components/carousels/MediaCarousel";
-import ReviewMediaModal from "./ReviewMediaModal";
+import MediaModal from "./MediaModal";
 import { FetchedReviewType, TCarouselOption } from "../../../../types";
 import Skeleton from "../../../../components/skeletons";
 import ShowError from "../../../../components/errors/ShowError";
@@ -71,7 +71,7 @@ const ReviewsMedia = ({
         />
       )}
       {showMediaModal && (
-        <ReviewMediaModal
+        <MediaModal
           currentIndex={mediaIndex}
           setCurrentIndex={setMediaIndex}
           reviewMedia={reviewMedia}
