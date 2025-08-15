@@ -2,19 +2,22 @@ import Modal from "../../../../components/modal";
 import MediaCarouselWithParentMedia from "../../../../components/carousels/MediaCarouselWithParentMedia";
 import { TCarouselOption } from "../../../../types";
 
-const ReviewMediaModal = ({
+const MediaModal = ({
   reviewMedia,
   currentIndex,
   setCurrentIndex,
   opened,
   onClose,
+  handleRemove,
 }: {
   currentIndex: number | null;
   setCurrentIndex: (index: number | null) => void;
   reviewMedia: TCarouselOption[];
   opened: boolean;
   onClose: (isOpen: boolean) => void;
+  handleRemove?: (index: number) => void;
 }) => {
+  if (reviewMedia.length === 0) return null;
   return (
     <Modal
       className="max-w-xl"
@@ -25,6 +28,7 @@ const ReviewMediaModal = ({
       }}
     >
       <MediaCarouselWithParentMedia
+        handleRemove={handleRemove}
         data={reviewMedia}
         needButtonControls={true}
         selected={currentIndex}
@@ -40,4 +44,4 @@ const ReviewMediaModal = ({
   );
 };
 
-export default ReviewMediaModal;
+export default MediaModal;
