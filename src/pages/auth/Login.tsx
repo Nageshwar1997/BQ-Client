@@ -132,45 +132,41 @@ const Login = () => {
               />
               <div className="flex flex-col gap-5 lg:gap-6">
                 {loginInputMapData?.map((item, index) => {
-                  if (
-                    item.name === "phoneNumber" &&
-                    selectedMethod !== "phoneNumber"
-                  ) {
-                    return null;
-                  }
-
-                  if (item.name === "email" && selectedMethod !== "email") {
-                    return null;
-                  }
+                  const isPassword = item.name === "password";
+                  const isPhone = item.name === "phoneNumber";
+                  const isEmail = item.name === "email";
+                  const isEmailSelected = selectedMethod === "email";
+                  if (isPhone && isEmailSelected) return null;
+                  if (isEmail && !isEmailSelected) return null;
                   return (
                     <div key={index}>
                       <Input
                         label={item.label}
                         register={register(item.name)}
-                        name={item.name}
-                        placeholder={item.placeholder}
-                        errorText={errors?.[item.name]?.message}
-                        type={
-                          item.name === "password"
+                        inputProps={{
+                          name: item.name,
+                          placeholder: item.placeholder,
+                          type: isPassword
                             ? showPassword
                               ? "text"
                               : item.type
-                            : item.type
-                        }
-                        rightIcon={
-                          item.name === "password" &&
-                          (showPassword ? (
-                            <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-                          ) : (
-                            <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-                          ))
-                        }
-                        rightIconClick={
-                          item.name === "password"
-                            ? () => setShowPassword((prev) => !prev)
-                            : undefined
-                        }
-                        leftText={item.name === "phoneNumber" ? "+91" : ""}
+                            : item.type,
+                        }}
+                        icons={{
+                          ...(isPassword && {
+                            right: {
+                              icon: showPassword ? (
+                                <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                              ) : (
+                                <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                              ),
+                              onClick: () => setShowPassword((prev) => !prev),
+                            },
+                          }),
+
+                          ...(isPhone && { left: { text: "+91" } }),
+                        }}
+                        error={errors?.[item.name]?.message}
                       />
                     </div>
                   );
