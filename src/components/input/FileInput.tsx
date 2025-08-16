@@ -5,7 +5,7 @@ import MediaCarousel from "../carousels/MediaCarousel";
 import { InputProps } from "../../types";
 import { ALLOWED_IMAGE_TYPES } from "../../constants";
 
-const MediaInput = ({
+const FileInput = ({
   name = "",
   label = "",
   leftIcon,
@@ -160,4 +160,4 @@ const MediaInput = ({
   );
 };
 
-export default MediaInput;
+export default FileInput;

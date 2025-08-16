@@ -16,7 +16,7 @@ import {
   MAX_VIDEO_FILE_SIZE,
   MB,
 } from "../../../constants";
-import MediaInput from "../../input/MediaInput";
+import FileInput from "../../input/FileInput";
 import { TFile } from "../../../types";
 import { DevTool } from "@hookform/devtools";
 const reviewInitialValues = {
@@ -153,7 +153,7 @@ const AddReviewModal = ({
           name="media"
           defaultValue={[]}
           render={({ field }) => (
-            <MediaInput
+            <FileInput
               name="media"
               label="Images / Videos"
               placeholder="Select media files"
