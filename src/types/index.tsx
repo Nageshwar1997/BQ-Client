@@ -41,7 +41,7 @@ type TInputIcon = { text?: string; icon?: ReactNode; onClick?: () => void };
 export interface IInput extends TBaseInput {
   inputProps: InputHTMLAttributes<HTMLInputElement>;
 }
-export interface ITextArea extends TBaseInput {
+export interface ITextArea extends Omit<TBaseInput, "icons"> {
   textAreaProps: TextareaHTMLAttributes<HTMLTextAreaElement>;
 }
 
