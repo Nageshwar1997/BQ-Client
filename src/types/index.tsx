@@ -50,7 +50,7 @@ export interface ITextArea extends Omit<TBaseInput, "icons"> {
 }
 
 export interface IFileInput extends Omit<TBaseInput, "error"> {
-  fileInputProps: InputHTMLAttributes<HTMLInputElement>;
+  fileInputProps: Omit<InputHTMLAttributes<HTMLInputElement>, "type">;
   errors?: string[];
   handleRemoveImage?: (index: number) => void;
   previews?: TMediaOption[];

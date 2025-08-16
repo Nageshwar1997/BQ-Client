@@ -13,11 +13,7 @@ const FileInput = ({
   previews = [],
   register,
   handleRemoveImage,
-  fileInputProps = {
-    type: "file" as const,
-    accept: ALLOWED_IMAGE_TYPES.join(", "),
-    multiple: false,
-  },
+  fileInputProps = {},
 }: IFileInput) => {
   const [showImageModal, setShowImageModal] = useState(false);
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
@@ -78,6 +74,9 @@ const FileInput = ({
               {...fileInputProps}
               id={fileInputProps.name}
               disabled={fileInputProps?.readOnly}
+              multiple={fileInputProps?.multiple ?? false}
+              accept={fileInputProps?.accept ?? ALLOWED_IMAGE_TYPES.join(", ")}
+              type="file"
               onChange={handleChange}
               className="sr-only"
             />
