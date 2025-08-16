@@ -163,24 +163,26 @@ function Filters({
                 return (
                   <Fragment key={index}>
                     <Input
-                      name={key}
-                      type="number"
-                      min={isMin ? 0 : minRange + 1}
-                      max={isMin ? maxRange - 1 : MAX_PRICE}
-                      value={ranges[key]}
                       containerClassName="h-full [&>div]:h-full"
                       className="[&_p]:w-10 [&_p]:text-xs !rounded border border-primary-30 [&_p]:border-r [&_p]:border-r-primary-30 [&_p]:bg-primary-10 [&_p]:text-primary"
-                      leftText={key}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        if (value === "") return;
-                        const numVal = Number(value);
-                        if (
-                          (isMin && numVal < maxRange) ||
-                          (!isMin && numVal > minRange)
-                        ) {
-                          setRanges((prev) => ({ ...prev, [key]: value }));
-                        }
+                      icons={{ left: { text: key } }}
+                      inputProps={{
+                        name: key,
+                        type: "number",
+                        min: isMin ? 0 : minRange + 1, // Ensure min value is not less than minRange
+                        max: isMin ? maxRange - 1 : MAX_PRICE, // Ensure max value is not greater than maxRange
+                        value: ranges[key],
+                        onChange: (e) => {
+                          const value = e.target.value;
+                          if (value === "") return;
+                          const numVal = Number(value);
+                          if (
+                            (isMin && numVal < maxRange) ||
+                            (!isMin && numVal > minRange)
+                          ) {
+                            setRanges((prev) => ({ ...prev, [key]: value }));
+                          }
+                        },
                       }}
                     />
                     {key === "min" && (
@@ -230,21 +232,29 @@ function Filters({
         >
           <div className="flex flex-col gap-2 -mt-2 !px-1">
             <Input
-              name="discount"
-              type="number"
-              min={0}
-              max={100}
-              value={ranges.discount}
               containerClassName="h-9 [&>div]:h-full"
               className="[&_p]:w-14 [&_p]:text-xs !rounded border border-primary-30 [&_p]:border-r [&_p]:border-r-primary-30 [&_p]:bg-primary-10 [&_p]:text-primary [&_p]:text-nowrap"
-              leftText="0 - 100"
-              onChange={(e) => {
-                const value = e.target.value;
-                if (value === "" || Number(value) <= 100) {
-                  setRanges((prev) => ({ ...prev, discount: value }));
-                } else if (Number(value) > 100) {
-                  setRanges((prev) => ({ ...prev, discount: "100" }));
-                }
+              icons={{ left: { text: "0 - 100" } }}
+              inputProps={{
+                name: "discount",
+                type: "number",
+                min: 0,
+                max: 100,
+                value: ranges.discount,
+                onChange: (e) => {
+                  const value = e.target.value;
+                  if (value === "" || Number(value) <= 100) {
+                    setRanges((prev) => ({
+                      ...prev,
+                      discount: value,
+                    }));
+                  } else if (Number(value) > 100) {
+                    setRanges((prev) => ({
+                      ...prev,
+                      discount: "100",
+                    }));
+                  }
+                },
               }}
             />
             {/* Single Range Slider for minDiscount only */}
