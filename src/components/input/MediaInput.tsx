@@ -1,7 +1,7 @@
 import { ChangeEvent, ReactNode, useState } from "react";
-import { CloseIcon, InfoIcon } from "../../icons";
+import { InfoIcon } from "../../icons";
 import MediaModal from "../../pages/product/productDetails/children/MediaModal";
-import VideoPlayer from "../videoPlayers/VideoPlayer";
+import MediaCarousel from "../carousels/MediaCarousel";
 import { InputProps } from "../../types";
 import { ALLOWED_IMAGE_TYPES } from "../../constants";
 
@@ -135,45 +135,16 @@ const MediaInput = ({
         </div>
       )}
       {previews.length > 0 && (
-        <div className="border border-primary-10 bg-smoke-eerie rounded-lg p-2 !mt-4 grid gap-4 grid-cols-[repeat(auto-fill,minmax(4rem,1fr))] lg:grid-cols-[repeat(auto-fill,minmax(5rem,1fr))]">
-          {previews.map((item, index) => (
-            <div
-              key={index}
-              className="w-full aspect-square relative group rounded overflow-hidden border border-primary-30 shadow-sm"
-            >
-              <div
-                className="w-full h-full"
-                onClick={() => {
-                  setCurrentIndex(index);
-                  setShowImageModal(true);
-                }}
-              >
-                {item.type === "video" ? (
-                  <VideoPlayer
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 cursor-pointer"
-                    videoProps={{ src: item.url }}
-                  />
-                ) : (
-                  <img
-                    src={item.url}
-                    alt={`preview-${index}`}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 cursor-pointer"
-                  />
-                )}
-              </div>
-
-              {handleRemoveImage && (
-                <button
-                  onClick={() => handleRemoveImage(index)}
-                  type="button"
-                  className="absolute top-0.5 right-0.5 bg-tertiary rounded-full p-0.5 flex items-center justify-center text-xs"
-                >
-                  <CloseIcon className="w-3 h-3 [&>path]:stroke-primary-inverted" />
-                </button>
-              )}
-            </div>
-          ))}
-        </div>
+        <MediaCarousel
+          className="border border-primary-10 bg-smoke-eerie rounded-lg p-2 [&>div]:justify-start [&>div>div]:w-14 [&>div>div]:h-14 [&>div>div]:md:w-16 [&>div>div]:md:h-16 [&>div>div]:lg:w-20 [&>div>div]:lg:h-20"
+          gradientClassName="!w-9 lg:!w-20"
+          data={previews}
+          onClick={(i) => {
+            setCurrentIndex(i);
+            setShowImageModal(true);
+          }}
+          handleRemove={handleRemoveImage}
+        />
       )}
       {showImageModal && currentIndex !== null && (
         <MediaModal
