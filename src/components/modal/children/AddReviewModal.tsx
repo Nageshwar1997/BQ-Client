@@ -135,10 +135,9 @@ const AddReviewModal = ({
       >
         <TextDisplay content={[{ text: "Add Review" }]} className="!text-2xl" />
         <Input
-          placeholder="Enter your name"
+          inputProps={{ placeholder: "Enter your name", name: "name" }}
           register={register("title")}
-          errorText={errors.title?.message}
-          name="title"
+          error={errors.title?.message}
           label="Title"
         />
         <Textarea
