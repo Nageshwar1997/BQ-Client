@@ -3,7 +3,11 @@ import { Controller, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { RegisterTextContent, registerInputMapData } from "./data";
-import { RegisterFormInputProps } from "../../types";
+import {
+  RegisterFormInputProps,
+  TPasswordField,
+  TPasswordVisibility,
+} from "../../types";
 import AuthRobot from "./components/AuthRobot";
 import UploadProfile from "./components/UploadProfile";
 import TextDisplay from "../../components/TextDisplay";
@@ -19,14 +23,11 @@ import { useRegisterUser } from "../../api/auth/auth.service";
 import LoadingPage from "../../components/loaders/LoadingPage";
 import DarkMode from "../../components/DarkMode";
 import { saveLocalToken, saveSessionToken } from "../../utils";
+import { PASSWORD_FIELDS } from "../../constants";
 
-interface PasswordVisibilityType {
-  password: boolean;
-  confirmPassword: boolean;
-}
 const Register = () => {
   const [showGradient, containerRef] = useVerticalScrollable();
-  const [showPasswords, setShowPasswords] = useState<PasswordVisibilityType>({
+  const [showPasswords, setShowPasswords] = useState<TPasswordVisibility>({
     password: false,
     confirmPassword: false,
   });
@@ -45,7 +46,7 @@ const Register = () => {
     resolver: yupResolver(registerSchema), // Use yup resolver for validation
   });
 
-  const togglePasswordVisibility = (field: keyof PasswordVisibilityType) => {
+  const togglePasswordVisibility = (field: TPasswordField) => {
     setShowPasswords((prevState) => ({
       ...prevState,
       [field]: !prevState[field],
@@ -129,55 +130,58 @@ const Register = () => {
                 />
               </div>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-5 lg:gap-y-6">
-                {registerInputMapData?.map((field, index) => {
-                  const { label, name, type, placeholder } = field;
-                  return (
-                    <div
-                      key={index}
-                      className={`${
-                        ![
-                          "firstName",
-                          "lastName",
-                          "password",
-                          "confirmPassword",
-                        ].includes(name) && "lg:col-span-2"
-                      }`}
-                    >
-                      <Input
-                        type={
-                          ["password", "confirmPassword"].includes(name)
-                            ? showPasswords[
-                                name as keyof PasswordVisibilityType
-                              ]
-                              ? "text"
-                              : type
-                            : type
-                        }
-                        label={label}
-                        placeholder={placeholder}
-                        name={name}
-                        register={register(name)}
-                        errorText={errors[name]?.message}
-                        rightIcon={
-                          ["password", "confirmPassword"].includes(name) &&
-                          (showPasswords[
-                            name as keyof PasswordVisibilityType
-                          ] ? (
-                            <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-                          ) : (
-                            <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-                          ))
-                        }
-                        rightIconClick={() =>
-                          togglePasswordVisibility(
-                            name as keyof PasswordVisibilityType
-                          )
-                        }
-                        leftText={name === "phoneNumber" ? "+91" : ""}
-                      />
-                    </div>
-                  );
-                })}
+                {registerInputMapData?.map((input, index) => (
+                  <div
+                    key={index}
+                    className={`${
+                      !["firstName", "lastName", ...PASSWORD_FIELDS].includes(
+                        input.name
+                      ) && "lg:col-span-2"
+                    }`}
+                  >
+                    <Input
+                      inputProps={{
+                        name: input.name,
+                        placeholder: input.placeholder,
+                        autoComplete: input.autoComplete,
+                        type: PASSWORD_FIELDS.includes(
+                          input.name as TPasswordField
+                        )
+                          ? showPasswords[input.name as TPasswordField]
+                            ? "text"
+                            : input.type
+                          : input.type,
+                      }}
+                      label={input.label}
+                      register={register(input.name)}
+                      error={errors[input.name]?.message}
+                      icons={{
+                        ...(input.name === "phoneNumber" && {
+                          left: { text: "+91" },
+                        }),
+                        ...(PASSWORD_FIELDS.includes(
+                          input.name as TPasswordField
+                        ) && {
+                          right: {
+                            icon:
+                              PASSWORD_FIELDS.includes(
+                                input.name as TPasswordField
+                              ) &&
+                              (showPasswords[input.name as TPasswordField] ? (
+                                <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                              ) : (
+                                <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                              )),
+                            onClick: () =>
+                              togglePasswordVisibility(
+                                input.name as TPasswordField
+                              ),
+                          },
+                        }),
+                      }}
+                    />
+                  </div>
+                ))}
               </div>
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">
