@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { DropdownIcon } from "../../icons";
 import MediaCarousel from "./MediaCarousel";
 import VideoPlayer from "../videoPlayers/VideoPlayer";
-import { convertVideoToPoster } from "../../utils";
 import { IMediaCarouselWithParentMedia } from "../../types";
 
 const MediaCarouselWithParentMedia = ({
@@ -18,7 +17,9 @@ const MediaCarouselWithParentMedia = ({
   const thumbnailRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const src = useMemo(() => {
-    if (data[currentIndex]) {
+    if (currentIndex >= data.length) {
+      return data[data.length - 1].url;
+    } else if (data[currentIndex]) {
       return data[currentIndex].url;
     }
     return "";
@@ -39,9 +40,11 @@ const MediaCarouselWithParentMedia = ({
   }, [selected]);
 
   useEffect(() => {
-    if (data[currentIndex]) {
-      setMediaType(data[currentIndex].type);
+    const nextType = data[currentIndex]?.type;
+    if (nextType && nextType !== mediaType) {
+      setMediaType(nextType);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex, data]);
 
   if (data.length === 0) return null;
@@ -55,11 +58,7 @@ const MediaCarouselWithParentMedia = ({
         <div className="w-full h-full transform transition-opacity duration-500 flex items-center justify-center rounded-lg">
           {mediaType === "video" ? (
             <VideoPlayer
-              videoProps={{
-                ...videoProps,
-                src,
-                poster: convertVideoToPoster(src),
-              }}
+              videoProps={{ ...videoProps, src }}
               className="max-h-full mx-auto flex items-center justify-center"
             />
           ) : (

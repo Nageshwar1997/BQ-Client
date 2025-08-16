@@ -1,6 +1,7 @@
 import Modal from "../../../../components/modal";
 import MediaCarouselWithParentMedia from "../../../../components/carousels/MediaCarouselWithParentMedia";
 import { TCarouselOption } from "../../../../types";
+import { useEffect } from "react";
 
 const MediaModal = ({
   reviewMedia,
@@ -17,16 +18,19 @@ const MediaModal = ({
   onClose: (isOpen: boolean) => void;
   handleRemove?: (index: number) => void;
 }) => {
+  const handleClose = () => {
+    onClose(false);
+    setCurrentIndex(null);
+  };
+
+  useEffect(() => {
+    if (reviewMedia.length === 0) handleClose();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reviewMedia.length]);
+
   if (reviewMedia.length === 0) return null;
   return (
-    <Modal
-      className="max-w-xl"
-      isOpen={opened}
-      onClose={() => {
-        onClose(false);
-        setCurrentIndex(null);
-      }}
-    >
+    <Modal className="max-w-xl" isOpen={opened} onClose={handleClose}>
       <MediaCarouselWithParentMedia
         handleRemove={handleRemove}
         data={reviewMedia}

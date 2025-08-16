@@ -2,7 +2,7 @@ import { LeftGradient, RightGradient } from "../Gradients";
 import useHorizontalScrollable from "../../hooks/useHorizontalScrollable";
 import { TMediaCarousel } from "../../types";
 import { CloseIcon, PlayIcon } from "../../icons";
-import { convertVideoToPoster } from "../../utils";
+import VideoPlayer from "../videoPlayers/VideoPlayer";
 
 const MediaCarousel = ({
   className = "",
@@ -42,20 +42,26 @@ const MediaCarousel = ({
                 : "border-primary-30 opacity-90"
             } ${item.type === "video" ? "relative" : ""}`}
           >
-            {item.type === "video" && i !== selected && (
-              <div className="absolute inset-0 w-full h-full aspect-square bg-black/50 flex items-center justify-center group pointer-events-none">
-                <PlayIcon className="fill-white opacity-90 group-hover:opacity-100" />
-              </div>
+            {item.type === "video" ? (
+              <>
+                {i !== selected && (
+                  <div className="absolute inset-0 w-full h-full aspect-square bg-black/50 flex items-center justify-center group pointer-events-none">
+                    <PlayIcon className="fill-white opacity-90 group-hover:opacity-100" />
+                  </div>
+                )}
+                <VideoPlayer
+                  videoProps={{ src: item.url, autoPlay: false }}
+                  className="w-full h-full object-cover cursor-pointer aspect-square"
+                />
+              </>
+            ) : (
+              <img
+                src={item.url}
+                alt={`image-${i}`}
+                className="w-full h-full object-cover cursor-pointer aspect-square"
+              />
             )}
-            <img
-              src={
-                item.type === "video"
-                  ? convertVideoToPoster(item.url)
-                  : item.url
-              }
-              alt={`image-${i}`}
-              className="w-full h-full object-cover cursor-pointer aspect-square"
-            />
+
             {handleRemove && (
               <button
                 type="button"

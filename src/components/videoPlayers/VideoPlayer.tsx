@@ -1,14 +1,32 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Hls from "hls.js";
 import { IVideoPlayer } from "../../types";
+import { convertVideoToPoster } from "../../utils";
 
 const VideoPlayer = ({ className = "", videoProps = {} }: IVideoPlayer) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [poster, setPoster] = useState<string | undefined>(videoProps.poster);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadPoster = async () => {
+      if (videoProps.src && !videoProps.poster) {
+        const p = await convertVideoToPoster(videoProps.src);
+        if (isMounted) setPoster(p);
+      }
+    };
+
+    loadPoster();
+    return () => {
+      isMounted = false;
+    };
+  }, [videoProps.src, videoProps.poster]);
 
   useEffect(() => {
     const video = videoRef.current;
+    if (!video || !videoProps.src || !videoProps.src.endsWith(".m3u8")) return;
     let hls: Hls | null = null;
-    if (!video || !videoProps.src) return;
 
     if (Hls.isSupported()) {
       hls = new Hls();
@@ -51,6 +69,7 @@ const VideoPlayer = ({ className = "", videoProps = {} }: IVideoPlayer) => {
         className={`object-cover aspect-auto w-full h-full ${
           videoProps.className ?? ""
         }`}
+        poster={poster}
       />
     </div>
   );

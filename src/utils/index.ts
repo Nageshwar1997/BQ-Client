@@ -133,25 +133,86 @@ export const getCurrentViewers = () => {
   return total;
 };
 
-export const convertVideoToPoster = (videoUrl: string) => {
-  const defaultPoster = "/images/logo/BQ_gradient_logo.webp";
-  if (!videoUrl) return defaultPoster;
-  try {
-    // Remove `/sp_auto/` or any transformation between `/upload/` and `/v...`
-    const [base, versionAndPath] = videoUrl.split("/upload/");
-    const cleanedPath = versionAndPath.replace(/^.*?(\/v\d+)/, "$1"); // Keep version and path
+const defaultPoster = "/images/logo/BQ_gradient_logo.webp";
 
-    // Replace .m3u8 or any extension with .jpg
-    const posterPath = cleanedPath.replace(/\.(m3u8|mp4|webm)$/, ".webp");
+export function convertVideoToPoster(videoUrl: string): Promise<string> {
+  return new Promise((resolve) => {
+    if (!videoUrl) {
+      resolve(defaultPoster);
+      return;
+    }
 
-    // Inject transformation `so_0` (seek to second 0)
-    const finalUrl = `${base}/upload/so_0${posterPath}`;
-    return finalUrl;
-  } catch (error) {
-    console.error("Failed to create poster URL", error);
-    return defaultPoster;
-  }
-};
+    try {
+      // Case 1: Cloudinary URL → instant
+      if (videoUrl.includes("/upload/")) {
+        const [base, versionAndPath] = videoUrl.split("/upload/");
+        const cleanedPath = versionAndPath.replace(/^.*?(\/v\d+)/, "$1");
+        const posterPath = cleanedPath.replace(/\.(m3u8|mp4|webm)$/, ".webp");
+        resolve(`${base}/upload/so_0${posterPath}`);
+        return;
+      }
+
+      // Case 2: Blob URL or direct video file → async extract
+      if (videoUrl.startsWith("blob:") || /\.(mp4|webm|ogg)$/i.test(videoUrl)) {
+        getPosterFromBlobVideo(videoUrl)
+          .then((poster) => resolve(poster || defaultPoster))
+          .catch(() => resolve(defaultPoster));
+        return;
+      }
+
+      // Fallback
+      resolve(defaultPoster);
+    } catch (error) {
+      console.error("Failed to create poster URL", error);
+      resolve(defaultPoster);
+    }
+  });
+}
+
+function getPosterFromBlobVideo(
+  blobVideoUrl: string,
+  timeInSeconds = 0
+): Promise<string> {
+  return new Promise((resolve) => {
+    let posterCreated = false; // track success
+
+    const video = document.createElement("video");
+    video.src = blobVideoUrl;
+    video.crossOrigin = "anonymous";
+    video.muted = true;
+    video.playsInline = true;
+
+    video.addEventListener("loadeddata", () => {
+      video.currentTime = timeInSeconds;
+    });
+
+    video.addEventListener("seeked", () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+
+      const ctx = canvas.getContext("2d");
+      if (!ctx) {
+        resolve(defaultPoster);
+        return;
+      }
+
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      posterCreated = true;
+      resolve(canvas.toDataURL("image/png"));
+
+      // cleanup
+      video.src = "";
+    });
+
+    video.addEventListener("error", () => {
+      if (!posterCreated) {
+        console.error("Error loading video");
+        resolve(defaultPoster);
+      }
+    });
+  });
+}
 
 export const formatDate = (
   date: Date | string | number,
