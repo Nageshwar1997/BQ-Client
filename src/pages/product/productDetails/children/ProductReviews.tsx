@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FetchedReviewType, TCarouselOption } from "../../../../types";
+import { FetchedReviewType, TMediaOption } from "../../../../types";
 import ReviewCard from "./ReviewCard";
 import MediaModal from "./MediaModal";
 
@@ -12,7 +12,7 @@ const ProductReviews = ({
 }) => {
   const [mediaIndex, setMediaIndex] = useState<null | number>(null);
   const [selectedReviewMedia, setSelectedReviewMedia] = useState<
-    TCarouselOption[]
+    TMediaOption[]
   >([]);
 
   return (

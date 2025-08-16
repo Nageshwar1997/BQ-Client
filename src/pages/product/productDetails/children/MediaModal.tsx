@@ -1,6 +1,6 @@
 import Modal from "../../../../components/modal";
 import MediaCarouselWithParentMedia from "../../../../components/carousels/MediaCarouselWithParentMedia";
-import { TCarouselOption } from "../../../../types";
+import { TMediaOption } from "../../../../types";
 import { useEffect } from "react";
 
 const MediaModal = ({
@@ -13,7 +13,7 @@ const MediaModal = ({
 }: {
   currentIndex: number | null;
   setCurrentIndex: (index: number | null) => void;
-  reviewMedia: TCarouselOption[];
+  reviewMedia: TMediaOption[];
   opened: boolean;
   onClose: (isOpen: boolean) => void;
   handleRemove?: (index: number) => void;

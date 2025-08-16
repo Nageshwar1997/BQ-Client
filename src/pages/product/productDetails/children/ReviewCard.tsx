@@ -5,7 +5,7 @@ import {
   ThumbsUpIcon,
   UserCircleIcon,
 } from "../../../../icons";
-import { FetchedReviewType, TCarouselOption } from "../../../../types";
+import { FetchedReviewType, TMediaOption } from "../../../../types";
 import { formatDate } from "../../../../utils";
 
 const ReviewCard = ({
@@ -15,9 +15,9 @@ const ReviewCard = ({
 }: {
   className?: string;
   review: FetchedReviewType;
-  onMediaClick: (reviewMedia: TCarouselOption[], index: number) => void;
+  onMediaClick: (reviewMedia: TMediaOption[], index: number) => void;
 }) => {
-  const reviewMedia: TCarouselOption[] = [
+  const reviewMedia: TMediaOption[] = [
     ...(review?.images?.map((url) => ({ url, type: "image" as const })) ?? []),
     ...(review?.videos?.map((url) => ({ url, type: "video" as const })) ?? []),
   ];

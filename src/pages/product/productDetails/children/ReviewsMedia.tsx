@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import MediaCarousel from "../../../../components/carousels/MediaCarousel";
 import MediaModal from "./MediaModal";
-import { FetchedReviewType, TCarouselOption } from "../../../../types";
+import { FetchedReviewType, TMediaOption } from "../../../../types";
 import Skeleton from "../../../../components/skeletons";
 import ShowError from "../../../../components/errors/ShowError";
 import EmptyData from "../../../../components/empty-data/EmptyData";
@@ -19,7 +19,7 @@ const ReviewsMedia = ({
   const [mediaIndex, setMediaIndex] = useState<null | number>(null);
   const [showMediaModal, setShowMediaModal] = useState(false);
 
-  const reviewMedia: TCarouselOption[] = useMemo(() => {
+  const reviewMedia: TMediaOption[] = useMemo(() => {
     return (
       reviews?.flatMap((review) => {
         const images =

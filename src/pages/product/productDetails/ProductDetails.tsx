@@ -1,7 +1,7 @@
 import { Fragment, useMemo, useState } from "react";
 import { useGetProductById } from "../../../api/product/product.service";
 import useQueryParams from "../../../hooks/useQueryParams";
-import { FetchedProductType, TCarouselOption } from "../../../types";
+import { FetchedProductType, TMediaOption } from "../../../types";
 import ReviewsSection from "./children/ReviewsSection";
 import MediaCarouselWithParentMedia from "../../../components/carousels/MediaCarouselWithParentMedia";
 import RatingStars from "../../../components/navbar/components/rating/RatingStars";
@@ -34,7 +34,7 @@ const ProductDetails = () => {
   });
 
   const product: FetchedProductType = data?.product || {};
-  const images: TCarouselOption[] = useMemo(() => {
+  const images: TMediaOption[] = useMemo(() => {
     const commonImages = product?.commonImages ?? [];
     const shadeImages =
       product?.shades?.flatMap((shade) => shade?.images ?? []) ?? [];
