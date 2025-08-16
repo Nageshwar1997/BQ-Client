@@ -1,12 +1,10 @@
 import {
-  ChangeEvent,
-  HTMLInputAutoCompleteAttribute,
   InputHTMLAttributes,
-  KeyboardEvent,
   ReactElement,
   ReactNode,
   RefObject,
   SVGProps,
+  TextareaHTMLAttributes,
   VideoHTMLAttributes,
 } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
@@ -30,45 +28,21 @@ export interface ProfilePicInputProps extends ClassName {
   onChange: (file: File | null) => void;
 }
 
-type TBaseInput = {
-  inputProps: InputHTMLAttributes<HTMLInputElement>;
+interface TBaseInput extends ClassName {
   containerClassName?: string;
-};
-
-type TInputIcon = { text?: string; icon?: ReactNode; onClick?: () => void };
-
-export interface IInput extends TBaseInput, ClassName {
   icons?: { left?: TInputIcon; right?: TInputIcon };
   register?: UseFormRegisterReturn;
   label?: string;
   error?: string;
 }
 
-export interface InputProps extends ClassName {
-  min?: number;
-  max?: number;
-  type?: string;
-  name?: string;
-  value?: string;
-  label?: string;
-  leftText?: string;
-  readOnly?: boolean;
-  errorText?: string;
-  placeholder?: string;
-  successText?: string;
-  leftIcon?: ReactNode;
-  rightIcon?: ReactNode;
-  leftIconClick?: () => void;
-  rightIconClick?: () => void;
-  containerClassName?: string;
-  register?: UseFormRegisterReturn;
-  onChange?: (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
-  onKeyDown?: (
-    e: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
-  autoComplete?: HTMLInputAutoCompleteAttribute | undefined;
+type TInputIcon = { text?: string; icon?: ReactNode; onClick?: () => void };
+
+export interface IInput extends TBaseInput {
+  inputProps: InputHTMLAttributes<HTMLInputElement>;
+}
+export interface ITextArea extends TBaseInput {
+  textAreaProps: TextareaHTMLAttributes<HTMLTextAreaElement>;
 }
 
 export interface TextItem {

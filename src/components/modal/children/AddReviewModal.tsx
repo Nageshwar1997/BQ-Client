@@ -141,10 +141,13 @@ const AddReviewModal = ({
           label="Title"
         />
         <Textarea
-          placeholder="Enter your review"
+          textAreaProps={{
+            name: "comment",
+            rows: 4,
+            placeholder: "Write your review here...",
+          }}
           register={register("comment")}
-          errorText={errors.comment?.message}
-          name="comment"
+          error={errors.comment?.message}
           label="Comment"
         />
         <Controller
