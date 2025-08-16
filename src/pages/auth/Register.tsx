@@ -136,7 +136,9 @@ const Register = () => {
                     className={`${
                       !["firstName", "lastName", ...PASSWORD_FIELDS].includes(
                         input.name
-                      ) && "lg:col-span-2"
+                      )
+                        ? "lg:col-span-2"
+                        : ""
                     }`}
                   >
                     <Input
