@@ -2,8 +2,9 @@ import { ChangeEvent, ReactNode, useState } from "react";
 import { InfoIcon } from "../../icons";
 import MediaModal from "../../pages/product/productDetails/children/MediaModal";
 import MediaCarousel from "../carousels/MediaCarousel";
-import { InputProps } from "../../types";
+import { TFile } from "../../types";
 import { ALLOWED_IMAGE_TYPES } from "../../constants";
+import { UseFormRegisterReturn } from "react-hook-form";
 
 const FileInput = ({
   name = "",
@@ -24,8 +25,8 @@ const FileInput = ({
   onChange,
   acceptableFiles = ALLOWED_IMAGE_TYPES,
   handleRemoveImage,
-}: Omit<InputProps, "onChange"> & {
-  name: string;
+}: {
+  name?: string;
   label?: string;
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
@@ -38,9 +39,10 @@ const FileInput = ({
   leftText?: string;
   errors?: string[];
   handleRemoveImage?: (index: number) => void;
-  previews?: { url: string; type: "image" | "video" }[];
+  previews?: { url: string; type: TFile }[];
+  register?: UseFormRegisterReturn;
   isSingleFile?: boolean;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   acceptableFiles?: string[];
 }) => {
   const [showImageModal, setShowImageModal] = useState(false);
