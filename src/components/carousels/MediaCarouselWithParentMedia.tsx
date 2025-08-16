@@ -58,6 +58,7 @@ const MediaCarouselWithParentMedia = ({
         <div className="w-full h-full transform transition-opacity duration-500 flex items-center justify-center rounded-lg">
           {mediaType === "video" ? (
             <VideoPlayer
+              key={src}
               videoProps={{ ...videoProps, src }}
               className="max-h-full mx-auto flex items-center justify-center"
             />

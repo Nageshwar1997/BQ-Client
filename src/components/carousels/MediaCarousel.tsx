@@ -11,6 +11,7 @@ const MediaCarousel = ({
   onClick,
   thumbnailRefs,
   handleRemove,
+  gradientClassName = "",
 }: TMediaCarousel) => {
   const [showGradient, containerRef] = useHorizontalScrollable();
 
@@ -18,12 +19,12 @@ const MediaCarousel = ({
 
   return (
     <div className={`p-1 relative ${className}`}>
-      {showGradient.left && <LeftGradient className="!w-20 h-full" />}
+      {showGradient.left && (
+        <LeftGradient className={`!w-20 h-full ${gradientClassName}`} />
+      )}
       <div
-        className={`flex items-center gap-2 ${
-          !showGradient.left && !showGradient.right
-            ? "justify-center"
-            : "overflow-x-scroll scroll-smooth overflow-hidden"
+        className={`flex items-center gap-2 overflow-x-scroll scroll-smooth overflow-hidden ${
+          !showGradient.left && !showGradient.right ? "justify-center" : ""
         }`}
         ref={containerRef}
       >
@@ -50,6 +51,7 @@ const MediaCarousel = ({
                   </div>
                 )}
                 <VideoPlayer
+                  key={item.url}
                   videoProps={{ src: item.url, autoPlay: false }}
                   className="w-full h-full object-cover cursor-pointer aspect-square"
                 />
@@ -66,7 +68,10 @@ const MediaCarousel = ({
               <button
                 type="button"
                 className="absolute top-0.5 right-0.5 z-[1] bg-tertiary rounded-full p-0.5 flex items-center justify-center text-xs"
-                onClick={() => handleRemove(i)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleRemove(i);
+                }}
               >
                 <CloseIcon className="w-3 h-3 [&>path]:stroke-primary-inverted" />
               </button>
@@ -74,7 +79,9 @@ const MediaCarousel = ({
           </div>
         ))}
       </div>
-      {showGradient.right && <RightGradient className="!w-20 h-full" />}
+      {showGradient.right && (
+        <RightGradient className={`!w-20 h-full ${gradientClassName}`} />
+      )}
     </div>
   );
 };
