@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import MediaCarousel from "../../../../components/carousels/MediaCarousel";
 import RatingStars from "../../../../components/navbar/components/rating/RatingStars";
 import {
@@ -17,10 +18,14 @@ const ReviewCard = ({
   review: FetchedReviewType;
   onMediaClick: (reviewMedia: TMediaOption[], index: number) => void;
 }) => {
-  const reviewMedia: TMediaOption[] = [
-    ...(review?.images?.map((url) => ({ url, type: "image" as const })) ?? []),
-    ...(review?.videos?.map((url) => ({ url, type: "video" as const })) ?? []),
-  ];
+  const reviewMedia = useMemo(() => {
+    const images: TMediaOption[] =
+      review?.images?.map((url) => ({ url, type: "image" })) ?? [];
+    const videos: TMediaOption[] =
+      review?.videos?.map((url) => ({ url, type: "video" })) ?? [];
+    return [...images, ...videos];
+  }, [review]);
+
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
       <div className="flex justify-between items-center">

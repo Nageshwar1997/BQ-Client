@@ -19,13 +19,13 @@ const ReviewsMedia = ({
   const [mediaIndex, setMediaIndex] = useState<null | number>(null);
   const [showMediaModal, setShowMediaModal] = useState(false);
 
-  const reviewMedia: TMediaOption[] = useMemo(() => {
+  const reviewMedia = useMemo(() => {
     return (
       reviews?.flatMap((review) => {
-        const images =
-          review?.images?.map((url) => ({ url, type: "image" as const })) ?? [];
-        const videos =
-          review?.videos?.map((url) => ({ url, type: "video" as const })) ?? [];
+        const images: TMediaOption[] =
+          review?.images?.map((url) => ({ url, type: "image" })) ?? [];
+        const videos: TMediaOption[] =
+          review?.videos?.map((url) => ({ url, type: "video" })) ?? [];
 
         return [...images, ...videos];
       }) ?? []
