@@ -112,18 +112,24 @@ const SearchProducts = () => {
               />
             </button>
             <Input
-              name="search"
-              placeholder="Search products here..."
+              inputProps={{
+                name: "search",
+                placeholder: "Search products here...",
+                value: searchQuery?.trimStart(),
+                onChange: (e) => setSearchQuery(e.target.value),
+              }}
               className="rounded-none h-full lg:h-full bg-transparent border-none [&>span]:cursor-default"
               containerClassName="h-full [&>div]:h-full px-2"
-              value={searchQuery?.trimStart()}
-              rightIcon={
-                <SearchIcon
-                  className="w-4 h-4 md:w-5 md:h-5 stroke-primary-50"
-                  strokeWidth={1.5}
-                />
-              }
-              onChange={(e) => setSearchQuery(e.target.value)}
+              icons={{
+                right: {
+                  icon: (
+                    <SearchIcon
+                      className="w-4 h-4 md:w-5 md:h-5 stroke-primary-50"
+                      strokeWidth={1.5}
+                    />
+                  ),
+                },
+              }}
             />
             <button
               className="h-full flex items-center gap-2 px-5 py-2 lg:px-11 lg:py-[14px] border-l border-l-primary-50 base:tracking-widest group"
