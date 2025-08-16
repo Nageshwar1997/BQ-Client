@@ -56,16 +56,25 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
     <div className="w-full h-full flex flex-col gap-2 pt-2">
       {/* Search Input */}
       <Input
-        placeholder="Search products here..."
-        leftIcon={<SearchIcon className="stroke-tertiary w-4 h-4 md:w-5 md:h-5" />}
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" && searchQuery.trim()) {
-            handleSubmit();
-          }
+        icons={{
+          left: {
+            icon: (
+              <SearchIcon className="stroke-tertiary w-4 h-4 md:w-5 md:h-5" />
+            ),
+          },
         }}
-        name="searchQuery"
+        inputProps={{
+          placeholder: "Search products here...",
+          value: searchQuery,
+          type: "search",
+          name: "searchQuery",
+          onChange: (e) => setSearchQuery(e.target.value),
+          onKeyDown: (e) => {
+            if (e.key === "Enter" && searchQuery.trim()) {
+              handleSubmit();
+            }
+          },
+        }}
         className="w-full"
       />
       {/* Query Info */}
