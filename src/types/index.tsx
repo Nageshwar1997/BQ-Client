@@ -28,9 +28,13 @@ export interface ProfilePicInputProps extends ClassName {
   onChange: (file: File | null) => void;
 }
 
+export type TFile = "image" | "video";
+
+export type TMediaOption = { type: TFile; url: string };
+
 interface TBaseInput extends ClassName {
   containerClassName?: string;
-  icons?: { left?: TInputIcon; right?: TInputIcon };
+  icons?: { left?: TInputIcon; right?: Omit<TInputIcon, "text"> };
   register?: UseFormRegisterReturn;
   label?: string;
   error?: string;
@@ -43,6 +47,13 @@ export interface IInput extends TBaseInput {
 }
 export interface ITextArea extends Omit<TBaseInput, "icons"> {
   textAreaProps: TextareaHTMLAttributes<HTMLTextAreaElement>;
+}
+
+export interface IFileInput extends Omit<TBaseInput, "error"> {
+  fileInputProps: InputHTMLAttributes<HTMLInputElement>;
+  errors?: string[];
+  handleRemoveImage?: (index: number) => void;
+  previews?: TMediaOption[];
 }
 
 export interface TextItem {
@@ -266,12 +277,8 @@ export interface TDropdown extends ClassName {
   defaultOpen?: boolean;
 }
 
-export type TFile = "image" | "video";
-
-export type TCarouselOption = { type: TFile; url: string };
-
 export interface ICarouselOptions {
-  data: TCarouselOption[];
+  data: TMediaOption[];
 }
 
 export interface TMediaCarousel extends ClassName, ICarouselOptions {

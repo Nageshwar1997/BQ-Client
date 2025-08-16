@@ -17,7 +17,7 @@ import {
   MB,
 } from "../../../constants";
 import FileInput from "../../input/FileInput";
-import { TFile } from "../../../types";
+import { TMediaOption } from "../../../types";
 import { DevTool } from "@hookform/devtools";
 const reviewInitialValues = {
   title: "",
@@ -111,7 +111,7 @@ const AddReviewModal = ({
 }) => {
   const [media, setMedia] = useState<{
     files: File[];
-    previews: { url: string; type: TFile }[];
+    previews: TMediaOption[];
   }>({ files: [], previews: [] });
 
   const {
@@ -156,10 +156,7 @@ const AddReviewModal = ({
           defaultValue={[]}
           render={({ field }) => (
             <FileInput
-              name="media"
               label="Images / Videos"
-              placeholder="Select media files"
-              acceptableFiles={[...ALLOWED_IMAGE_TYPES, ...ALLOWED_VIDEO_TYPES]}
               previews={media.previews}
               errors={
                 Array.isArray(errors.media)
@@ -168,20 +165,26 @@ const AddReviewModal = ({
                   ? [errors.media.message]
                   : []
               }
-              onChange={(e) => {
-                const files = Array.from(e.target.files || []);
-                const previews = files.map((file) => ({
-                  url: URL.createObjectURL(file),
-                  type: (file.type.startsWith("video")
-                    ? "video"
-                    : "image") as TFile,
-                }));
+              fileInputProps={{
+                name: "media",
+                placeholder: "Add images or videos",
+                accept: [...ALLOWED_IMAGE_TYPES, ...ALLOWED_VIDEO_TYPES].join(
+                  ", "
+                ),
+                multiple: true,
+                onChange: (e) => {
+                  const files = Array.from(e.target.files || []);
+                  const previews: TMediaOption[] = files.map((file) => ({
+                    url: URL.createObjectURL(file),
+                    type: file.type.startsWith("video") ? "video" : "image",
+                  }));
 
-                const newFiles = [...media.files, ...files];
-                const newPreviews = [...media.previews, ...previews];
+                  const newFiles = [...media.files, ...files];
+                  const newPreviews = [...media.previews, ...previews];
 
-                setMedia({ files: newFiles, previews: newPreviews });
-                field.onChange(newFiles);
+                  setMedia({ files: newFiles, previews: newPreviews });
+                  field.onChange(newFiles);
+                },
               }}
               handleRemoveImage={(idx) => {
                 const updatedFiles = media.files.filter((_, i) => i !== idx);
@@ -195,9 +198,13 @@ const AddReviewModal = ({
                 });
                 field.onChange(updatedFiles);
               }}
-              rightIcon={
-                <UploadCloudIcon className="stroke-primary opacity-50 group-hover:opacity-100" />
-              }
+              icons={{
+                right: {
+                  icon: (
+                    <UploadCloudIcon className="stroke-primary opacity-50 group-hover:opacity-100" />
+                  ),
+                },
+              }}
             />
           )}
         />

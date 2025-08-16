@@ -1,55 +1,29 @@
-import { ChangeEvent, ReactNode, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { InfoIcon } from "../../icons";
 import MediaModal from "../../pages/product/productDetails/children/MediaModal";
 import MediaCarousel from "../carousels/MediaCarousel";
-import { TFile } from "../../types";
+import { IFileInput } from "../../types";
 import { ALLOWED_IMAGE_TYPES } from "../../constants";
-import { UseFormRegisterReturn } from "react-hook-form";
-
 const FileInput = ({
-  name = "",
   label = "",
-  leftIcon,
-  rightIcon,
-  leftIconClick,
-  rightIconClick,
+  icons,
   className = "",
-  readOnly = false,
-  placeholder = "",
   containerClassName = "",
-  leftText = "",
   errors = [],
   previews = [],
   register,
-  isSingleFile = true,
-  onChange,
-  acceptableFiles = ALLOWED_IMAGE_TYPES,
   handleRemoveImage,
-}: {
-  name?: string;
-  label?: string;
-  leftIcon?: ReactNode;
-  rightIcon?: ReactNode;
-  leftIconClick?: () => void;
-  rightIconClick?: () => void;
-  className?: string;
-  readOnly?: boolean;
-  placeholder?: string;
-  containerClassName?: string;
-  leftText?: string;
-  errors?: string[];
-  handleRemoveImage?: (index: number) => void;
-  previews?: { url: string; type: TFile }[];
-  register?: UseFormRegisterReturn;
-  isSingleFile?: boolean;
-  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
-  acceptableFiles?: string[];
-}) => {
+  fileInputProps = {
+    type: "file" as const,
+    accept: ALLOWED_IMAGE_TYPES.join(", "),
+    multiple: false,
+  },
+}: IFileInput) => {
   const [showImageModal, setShowImageModal] = useState(false);
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onChange?.(event);
+    fileInputProps.onChange?.(event);
     register?.onChange?.(event);
   };
 
@@ -58,72 +32,68 @@ const FileInput = ({
       <div className="relative h-10 lg:h-12">
         {label && (
           <label
-            htmlFor={name}
+            htmlFor={fileInputProps.name}
             className={`text-[10px] lg:text-xs text-primary-50 absolute top-0 left-3 transform -translate-y-1/2 border border-primary-10 leading-none px-1 md:px-2 py-0.5 bg-smoke-eerie rounded cursor-pointer`}
           >
             {label}
           </label>
         )}
         <label
-          htmlFor={name}
+          htmlFor={fileInputProps.name}
           className={`w-full h-full flex items-center gap-1 border border-primary-10 bg-smoke-eerie rounded-lg overflow-hidden group ${className}`}
         >
           {/* Left Icon */}
-          {leftIcon && !rightIcon ? (
+          {icons?.left?.icon && !icons.right?.icon ? (
             <span
-              onClick={leftIconClick && leftIconClick}
+              onClick={icons.left.onClick}
               className="h-full flex justify-center items-center cursor-pointer p-2 overflow-hidden"
             >
-              {leftIcon}
+              {icons.left.icon}
             </span>
-          ) : !leftIcon && leftText ? (
+          ) : !icons?.left?.icon && icons?.left?.text ? (
             <div className="h-full overflow-hidden">
               <p className="h-full flex items-center justify-center text-sm text-primary-50 border-r border-r-primary-10 p-3 capitalize">
-                {leftText}
+                {icons?.left?.text}
               </p>
             </div>
           ) : null}
           <div
             className={`flex-1 w-full h-full outline-none border-none focus:outline-none focus:border-none bg-transparent font-normal text-sm p-3 flex items-center justify-start cursor-pointer ${
-              leftIcon && !rightIcon
+              icons?.left?.icon && !icons?.right?.icon
                 ? "pl-0"
-                : !leftIcon && rightIcon
+                : !icons?.left?.icon && icons?.right?.icon
                 ? "pr-0"
-                : leftText
+                : icons?.left?.text
                 ? "pl-2"
                 : ""
             }`}
           >
             <p className="text-primary-50 text-sm line-clamp-1">
-              {placeholder}
+              {fileInputProps?.placeholder}
             </p>
             {/* Input */}
             <input
               aria-autocomplete="none"
-              multiple={isSingleFile}
-              accept={acceptableFiles?.join(", ")}
-              id={name}
-              type="file"
-              name={name}
               {...register}
-              readOnly={readOnly}
-              disabled={readOnly}
+              {...fileInputProps}
+              id={fileInputProps.name}
+              disabled={fileInputProps?.readOnly}
               onChange={handleChange}
               className="sr-only"
             />
           </div>
           {/* Right Icon */}
-          {!leftIcon && rightIcon && (
+          {!icons?.left && icons?.right && (
             <span
-              onClick={rightIconClick}
+              onClick={icons.right.onClick}
               className="h-full flex justify-center items-center cursor-pointer p-2 overflow-hidden"
             >
-              {rightIcon}
+              {icons.right.icon}
             </span>
           )}
         </label>
       </div>
-      {!readOnly && errors && errors.length > 0 && (
+      {!fileInputProps.readOnly && errors && errors.length > 0 && (
         <div className="flex flex-col gap-1">
           {errors?.map((error, index) => (
             <p
