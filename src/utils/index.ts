@@ -174,7 +174,8 @@ function getPosterFromBlobVideo(
   timeInSeconds = 0
 ): Promise<string> {
   return new Promise((resolve) => {
-    let posterCreated = false; // track success
+    let posterCreated = false;
+    let isCancelled = false;
 
     const video = document.createElement("video");
     video.src = blobVideoUrl;
@@ -183,10 +184,11 @@ function getPosterFromBlobVideo(
     video.playsInline = true;
 
     video.addEventListener("loadeddata", () => {
-      video.currentTime = timeInSeconds;
+      if (!isCancelled) video.currentTime = timeInSeconds;
     });
 
     video.addEventListener("seeked", () => {
+      if (isCancelled) return;
       const canvas = document.createElement("canvas");
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
@@ -200,17 +202,20 @@ function getPosterFromBlobVideo(
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
       posterCreated = true;
       resolve(canvas.toDataURL("image/png"));
-
-      // cleanup
       video.src = "";
     });
 
     video.addEventListener("error", () => {
-      if (!posterCreated) {
-        console.error("Error loading video");
-        resolve(defaultPoster);
+      if (!posterCreated && !isCancelled) {
+        resolve(defaultPoster); // no console.error to avoid noise
       }
     });
+
+    // Cancel function for cleanup
+    return () => {
+      isCancelled = true;
+      video.src = "";
+    };
   });
 }
 
