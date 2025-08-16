@@ -1,6 +1,7 @@
 import {
   ChangeEvent,
   HTMLInputAutoCompleteAttribute,
+  InputHTMLAttributes,
   KeyboardEvent,
   ReactElement,
   ReactNode,
@@ -27,6 +28,20 @@ export interface ProfilePicInputProps extends ClassName {
   name?: string;
   errorText?: string;
   onChange: (file: File | null) => void;
+}
+
+type TBaseInput = {
+  inputProps: InputHTMLAttributes<HTMLInputElement>;
+  containerClassName?: string;
+};
+
+type TInputIcon = { text?: string; icon?: ReactNode; onClick?: () => void };
+
+export interface IInput extends TBaseInput, ClassName {
+  icons?: { left?: TInputIcon; right?: TInputIcon };
+  register?: UseFormRegisterReturn;
+  label?: string;
+  error?: string;
 }
 
 export interface InputProps extends ClassName {
@@ -77,6 +92,12 @@ export interface RegisterFormInputProps {
   profilePic?: File; // Correctly type the file input
   remember?: boolean;
 }
+
+export type TPasswordField = keyof Pick<
+  RegisterFormInputProps,
+  "password" | "confirmPassword"
+>;
+export type TPasswordVisibility = Record<TPasswordField, boolean>;
 
 export interface RegisterInputMapDataProps {
   name: keyof RegisterFormInputProps;
