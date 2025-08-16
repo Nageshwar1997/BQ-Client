@@ -43,8 +43,8 @@ export const CATEGORY_VIDEOS = [
 ];
 
 export const MB = 1024 ** 2;
-export const MAX_IMAGE_FILE_SIZE = 1 * MB; // 2MB
-export const MAX_VIDEO_FILE_SIZE = 1 * MB; // 50MB
+export const MAX_IMAGE_FILE_SIZE = 2 * MB; // 2MB
+export const MAX_VIDEO_FILE_SIZE = 50 * MB; // 50MB
 
 export const ALLOWED_IMAGE_TYPES = [
   "image/jpeg",
@@ -57,7 +57,7 @@ export const ALLOWED_VIDEO_TYPES = ["video/mp4", "video/webm"];
 
 export const regexes: Record<TRegexes, RegExp> = {
   noSpace: /^\S+$/, // No spaces allowed
-  singleSpace: /^(?!.*\s{2,}).*$/, // Single space allowed
+  singleSpace: /^(?!.* {2,}).*$/s, // Single space allowed
   hexCode: /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/, // Hex color code
   date: /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(?:\.\d+)?(Z|([+-]\d{2}:\d{2}))?)?$/, // Date e.g. 2022-01-01T12:00:00Z
   name: /^(?!.*\d)(?!.* {2})([A-Za-z]+( [A-Za-z]+)*)$/, // Only letters & single space
