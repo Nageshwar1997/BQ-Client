@@ -271,9 +271,9 @@ export interface TDropdown extends ClassName {
   defaultOpen?: boolean;
 }
 
-export type TMediaType = "image" | "video";
+export type TFile = "image" | "video";
 
-export type TCarouselOption = { type: TMediaType; url: string };
+export type TCarouselOption = { type: TFile; url: string };
 
 export interface ICarouselOptions {
   data: TCarouselOption[];
@@ -284,6 +284,7 @@ export interface TMediaCarousel extends ClassName, ICarouselOptions {
   onClick: (index: number) => void;
   thumbnailRefs?: RefObject<(HTMLDivElement | null)[]>;
   handleRemove?: (index: number) => void;
+  gradientClassName?: string;
 }
 
 export interface IVideo {
