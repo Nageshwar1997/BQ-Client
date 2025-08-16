@@ -1,4 +1,4 @@
-import { TRegexes } from "../types";
+import { TPasswordField, TRegexes } from "../types";
 
 export * from "./categories";
 export const DEFAULT_FILTER = { name: "All", value: "all", default: true };
@@ -52,6 +52,11 @@ export const ALLOWED_IMAGE_TYPES = [
   "image/webp",
   "image/jpg",
 ];
+
+export const PASSWORD_FIELDS: TPasswordField[] = [
+  "password",
+  "confirmPassword",
+] as const;
 
 export const ALLOWED_VIDEO_TYPES = ["video/mp4", "video/webm"];
 
