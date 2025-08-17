@@ -1,9 +1,19 @@
 import z from "zod";
-import { zodFileOrUrl, zodStringRequired } from "../utils/zod";
+import {
+  zodFileOrUrl,
+  zodNumberRequired,
+  zodStringRequired,
+} from "../utils/zod";
 import { ALLOWED_IMAGE_TYPES, ALLOWED_VIDEO_TYPES } from "../constants";
 
 export const addReviewSchema = z.object({
-  rating: z.coerce.number().min(1).max(5),
+  rating: zodNumberRequired({
+    field: "rating",
+    showingFieldName: "Rating",
+    max: 5,
+    min: 1,
+    nonNegative: true,
+  }),
   title: zodStringRequired({
     field: "title",
     showingFieldName: "Title",

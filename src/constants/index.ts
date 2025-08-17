@@ -87,6 +87,6 @@ export const regexes: Record<TRegexes, RegExp> = {
 export const reviewInitialValues = {
   title: "",
   comment: "",
-  rating: undefined,
+  rating: 1,
   media: [],
 };
