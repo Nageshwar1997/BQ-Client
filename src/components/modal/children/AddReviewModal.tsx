@@ -17,11 +17,14 @@ import FileInput from "../../input/FileInput";
 import { TMediaOption } from "../../../types";
 import { DevTool } from "@hookform/devtools";
 import { addReviewSchema } from "../../../schemas/review";
+import { add_review } from "../../../api/reviews/reviews.api";
+import useQueryParams from "../../../hooks/useQueryParams";
 
 type TMediaState = { files: File[]; previews: TMediaOption[] };
 type TAddReviewModal = { isOpen: boolean; onClose: () => void };
 
 const AddReviewModal = ({ onClose, isOpen }: TAddReviewModal) => {
+  const { params } = useQueryParams();
   const [media, setMedia] = useState<TMediaState>({ files: [], previews: [] });
 
   const {
@@ -33,20 +36,23 @@ const AddReviewModal = ({ onClose, isOpen }: TAddReviewModal) => {
     resolver: zodResolver(addReviewSchema),
     defaultValues: reviewInitialValues,
   });
-  console.log("errors", errors);
+  console.log("errors", errors.media);
   const handleAddReview = (data: z.infer<typeof addReviewSchema>) => {
-    const images = data.media.filter((file) =>
-      ALLOWED_IMAGE_TYPES.includes(file.type)
-    );
-    const videos = data.media.filter((file) =>
-      ALLOWED_VIDEO_TYPES.includes(file.type)
-    );
-
     const formData = new FormData();
     formData.append("title", data.title);
+    formData.append("rating", data.rating.toString());
     formData.append("comment", data.comment);
-    formData.append("images", JSON.stringify(images));
-    formData.append("videos", JSON.stringify(videos));
+    data.media?.forEach((file) => {
+      if (file instanceof File) {
+        if (ALLOWED_IMAGE_TYPES.includes(file.type)) {
+          formData.append("images", file);
+        } else if (ALLOWED_VIDEO_TYPES.includes(file.type)) {
+          formData.append("videos", file);
+        }
+      }
+    });
+
+    add_review(formData, params.productId ?? "");
   };
   return (
     <Modal onClose={onClose} isOpen={isOpen}>
@@ -60,6 +66,17 @@ const AddReviewModal = ({ onClose, isOpen }: TAddReviewModal) => {
           register={register("title")}
           error={errors.title?.message}
           label="Title"
+        />
+        <Input
+          inputProps={{
+            placeholder: "Enter your Rating",
+            name: "rating",
+            type: "number",
+            autoComplete: "tel",
+          }}
+          register={register("rating")}
+          error={errors.rating?.message}
+          label="Rating"
         />
         <Textarea
           textAreaProps={{
