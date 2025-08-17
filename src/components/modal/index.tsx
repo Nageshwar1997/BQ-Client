@@ -38,7 +38,7 @@ const Modal = ({
       onClick={onClose}
     >
       <div
-        className={`bg-primary-inverted rounded-xl shadow-lg px-6 py-8 w-full max-w-md max-h-[90vh] overflow-hidden relative ${className}`}
+        className={`bg-primary-inverted rounded-xl shadow-lg px-6 py-8 w-full max-w-md max-h-[90vh] overflow-y-scroll overflow-hidden relative ${className}`}
         onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
       >
         <CloseIcon
