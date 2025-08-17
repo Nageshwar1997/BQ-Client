@@ -84,4 +84,9 @@ export const regexes: Record<TRegexes, RegExp> = {
   onlyLettersAndSpacesAndDots: /^[a-zA-Z\s.]+$/, // Only letters, spaces, and dots
 };
 
-export const reviewInitialValues = { title: "", comment: "", media: [] };
+export const reviewInitialValues = {
+  title: "",
+  comment: "",
+  rating: undefined,
+  media: [],
+};
