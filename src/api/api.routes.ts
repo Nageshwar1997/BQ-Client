@@ -26,5 +26,6 @@ export const mediaRoutes = {
 };
 
 export const reviewRoutes = {
+  addReview: { method: "POST", url: "/reviews" },
   getReviewsByProductId: { method: "GET", url: "/reviews" },
 };
