@@ -19,6 +19,7 @@ import { DevTool } from "@hookform/devtools";
 import { addReviewSchema } from "../../../schemas/review";
 import { add_review } from "../../../api/reviews/reviews.api";
 import useQueryParams from "../../../hooks/useQueryParams";
+import SelectRating from "../../input/SelectRating";
 
 type TMediaState = { files: File[]; previews: TMediaOption[] };
 type TAddReviewModal = { isOpen: boolean; onClose: () => void };
@@ -31,6 +32,7 @@ const AddReviewModal = ({ onClose, isOpen }: TAddReviewModal) => {
     control,
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<z.infer<typeof addReviewSchema>>({
     resolver: zodResolver(addReviewSchema),
@@ -58,25 +60,26 @@ const AddReviewModal = ({ onClose, isOpen }: TAddReviewModal) => {
     <Modal onClose={onClose} isOpen={isOpen}>
       <form
         onSubmit={handleSubmit(handleAddReview)}
-        className="flex flex-col gap-4"
+        className="flex flex-col items-center gap-5"
       >
         <TextDisplay content={[{ text: "Add Review" }]} className="!text-2xl" />
+        <Controller
+          name="rating"
+          control={control}
+          defaultValue={1}
+          render={({ field: { onChange } }) => (
+            <SelectRating
+              initialValue={Number(watch("rating"))}
+              onChange={(val) => onChange(val)}
+              error={errors.rating?.message}
+            />
+          )}
+        />
         <Input
-          inputProps={{ placeholder: "Enter your name", name: "title" }}
+          inputProps={{ placeholder: "Enter title", name: "title" }}
           register={register("title")}
           error={errors.title?.message}
           label="Title"
-        />
-        <Input
-          inputProps={{
-            placeholder: "Enter your Rating",
-            name: "rating",
-            type: "number",
-            autoComplete: "tel",
-          }}
-          register={register("rating")}
-          error={errors.rating?.message}
-          label="Rating"
         />
         <Textarea
           textAreaProps={{
