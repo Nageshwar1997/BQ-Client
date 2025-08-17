@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { UserStoreType, UserTypes } from "../types";
 import { decryptData, encryptData, removeStorageToken } from "../utils";
 
-const SESSION_KEY = "admin";
+const SESSION_KEY = "user";
 
 export const useUserStore = create<UserStoreType>((set) => {
   const encrypted = sessionStorage.getItem(SESSION_KEY);
