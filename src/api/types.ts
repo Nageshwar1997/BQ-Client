@@ -31,12 +31,15 @@ export interface IReviewsApiParams {
   };
 }
 
-export type TLikeDislikeHelpfulReview = {
-  reviewId: string;
+export type TBaseLikeDislikeHelpfulReview = {
   liked?: boolean;
   disliked?: boolean;
   isHelpful?: boolean;
 };
+export interface TLikeDislikeHelpfulReview
+  extends TBaseLikeDislikeHelpfulReview {
+  reviewId: string;
+}
 
 export interface IReviewsInfiniteApiParams
   extends Omit<IReviewsApiParams, "pageParams"> {

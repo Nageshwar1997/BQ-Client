@@ -12,6 +12,7 @@ import { formatDate } from "../../../../utils";
 import Button from "../../../../components/button/Button";
 import { useUserStore } from "../../../../store/user.store";
 import { useLikeDislikeHelpfulReview } from "../../../../api/reviews/reviews.service";
+import { TBaseLikeDislikeHelpfulReview } from "../../../../api/types";
 
 const ReviewCard = ({
   className = "",
@@ -22,11 +23,12 @@ const ReviewCard = ({
   review: FetchedReviewType;
   onMediaClick: (reviewMedia: TMediaOption[], index: number) => void;
 }) => {
-  const [updateStatus, setUpdateStatus] = useState({
-    liked: false,
-    disliked: false,
-    isHelpful: false,
-  });
+  const [updateStatus, setUpdateStatus] =
+    useState<TBaseLikeDislikeHelpfulReview>({
+      liked: false,
+      disliked: false,
+      isHelpful: false,
+    });
 
   const likeDislikeHelpfulQuery = useLikeDislikeHelpfulReview();
 
@@ -41,7 +43,7 @@ const ReviewCard = ({
   }, [review]);
 
   const handleSubmit = (
-    type: "liked" | "disliked" | "isHelpful",
+    type: keyof TBaseLikeDislikeHelpfulReview,
     value: boolean
   ) => {
     likeDislikeHelpfulQuery.mutate(
