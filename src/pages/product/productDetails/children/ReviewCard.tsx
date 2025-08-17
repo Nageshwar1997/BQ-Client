@@ -13,6 +13,8 @@ import Button from "../../../../components/button/Button";
 import { useUserStore } from "../../../../store/user.store";
 import { useLikeDislikeHelpfulReview } from "../../../../api/reviews/reviews.service";
 import { TBaseLikeDislikeHelpfulReview } from "../../../../api/types";
+import useQueryParams from "../../../../hooks/useQueryParams";
+import AuthModal from "../../../../components/modal/children/AuthModal";
 
 const ReviewCard = ({
   className = "",
@@ -23,6 +25,7 @@ const ReviewCard = ({
   review: FetchedReviewType;
   onMediaClick: (reviewMedia: TMediaOption[], index: number) => void;
 }) => {
+  const { queryParams, setParams } = useQueryParams();
   const [updateStatus, setUpdateStatus] =
     useState<TBaseLikeDislikeHelpfulReview>({
       liked: false,
@@ -32,7 +35,7 @@ const ReviewCard = ({
 
   const likeDislikeHelpfulQuery = useLikeDislikeHelpfulReview();
 
-  const { user } = useUserStore();
+  const { user, isAuthenticated } = useUserStore();
 
   const reviewMedia = useMemo(() => {
     const images: TMediaOption[] =
@@ -75,6 +78,7 @@ const ReviewCard = ({
 
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
+      {queryParams.login === "true" && <AuthModal />}
       <div className="flex justify-between items-center">
         <RatingStars rating={review.rating || 0} />
         <div className="text-sm">{formatDate(review.createdAt, "LLL")}</div>
@@ -95,14 +99,18 @@ const ReviewCard = ({
               content="Helpful"
               pattern="outline"
               onClick={() => {
-                setUpdateStatus((prev) => {
-                  const newStatus = {
-                    ...prev,
-                    isHelpful: !prev.isHelpful,
-                  };
-                  handleSubmit("isHelpful", newStatus.isHelpful);
-                  return newStatus;
-                });
+                if (!isAuthenticated) {
+                  setParams({ login: "true" });
+                } else {
+                  setUpdateStatus((prev) => {
+                    const newStatus = {
+                      ...prev,
+                      isHelpful: !prev.isHelpful,
+                    };
+                    handleSubmit("isHelpful", newStatus.isHelpful);
+                    return newStatus;
+                  });
+                }
               }}
               className={`!w-fit !py-0.5 !px-2 !rounded-sm !text-xs/normal !border-none !duration-0 ${
                 updateStatus.isHelpful
@@ -114,15 +122,19 @@ const ReviewCard = ({
               <ThumbsUpIcon
                 role="button"
                 onClick={() => {
-                  setUpdateStatus((prev) => {
-                    const newStatus = {
-                      ...prev,
-                      liked: !prev.liked,
-                      disliked: false,
-                    };
-                    handleSubmit("liked", newStatus.liked);
-                    return newStatus;
-                  });
+                  if (!isAuthenticated) {
+                    setParams({ login: "true" });
+                  } else {
+                    setUpdateStatus((prev) => {
+                      const newStatus = {
+                        ...prev,
+                        liked: !prev.liked,
+                        disliked: false,
+                      };
+                      handleSubmit("liked", newStatus.liked);
+                      return newStatus;
+                    });
+                  }
                 }}
                 className={`w-4 h-4 cursor-pointer stroke-primary hover:rotate-12 transition-all duration-300 ${
                   updateStatus.liked
@@ -132,15 +144,19 @@ const ReviewCard = ({
               />
               <ThumbsDownIcon
                 onClick={() => {
-                  setUpdateStatus((prev) => {
-                    const newStatus = {
-                      ...prev,
-                      disliked: !prev.disliked,
-                      liked: false,
-                    };
-                    handleSubmit("disliked", newStatus.disliked);
-                    return newStatus;
-                  });
+                  if (!isAuthenticated) {
+                    setParams({ login: "true" });
+                  } else {
+                    setUpdateStatus((prev) => {
+                      const newStatus = {
+                        ...prev,
+                        disliked: !prev.disliked,
+                        liked: false,
+                      };
+                      handleSubmit("disliked", newStatus.disliked);
+                      return newStatus;
+                    });
+                  }
                 }}
                 role="button"
                 className={`w-4 h-4 cursor-pointer stroke-primary hover:rotate-12 transition-all duration-300 ${
