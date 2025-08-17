@@ -8,124 +8,45 @@ import TextDisplay from "../../TextDisplay";
 import { Controller, useForm } from "react-hook-form";
 import { UploadCloudIcon } from "../../../icons";
 import Button from "../../button/Button";
-import { zodStringRequired } from "../../../utils/zod";
 import {
   ALLOWED_IMAGE_TYPES,
   ALLOWED_VIDEO_TYPES,
-  MAX_IMAGE_FILE_SIZE,
-  MAX_VIDEO_FILE_SIZE,
-  MB,
+  reviewInitialValues,
 } from "../../../constants";
 import FileInput from "../../input/FileInput";
 import { TMediaOption } from "../../../types";
 import { DevTool } from "@hookform/devtools";
-const reviewInitialValues = {
-  title: "",
-  comment: "",
-  media: [],
-};
+import { addReviewSchema } from "../../../schemas/review";
 
-const reviewSchema = z.object({
-  title: zodStringRequired({
-    field: "title",
-    showingFieldName: "Title",
-    min: 2,
-    blockMultipleSpaces: true,
-  }),
-  comment: zodStringRequired({
-    field: "comment",
-    showingFieldName: "Comment",
-    min: 10,
-    blockMultipleSpaces: true,
-  }),
-  media: z.array(z.any()).superRefine((files, ctx) => {
-    files.forEach((file, index) => {
-      let isVideo = false;
+type TMediaState = { files: File[]; previews: TMediaOption[] };
+type TAddReviewModal = { isOpen: boolean; onClose: () => void };
 
-      if (typeof File !== "undefined" && file instanceof File) {
-        // detect type
-        isVideo = ALLOWED_VIDEO_TYPES.includes(file.type);
-
-        // type check
-        const allowedTypes = isVideo
-          ? ALLOWED_VIDEO_TYPES
-          : ALLOWED_IMAGE_TYPES;
-        if (!allowedTypes.includes(file.type)) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: `${isVideo ? "Video" : "Image"} ${
-              index + 1
-            } invalid format. Allowed formats: ${allowedTypes
-              .map((t) => t.split("/")[1])
-              .join(", ")}`,
-            path: [index],
-          });
-        }
-
-        // size check
-        const maxSize = isVideo ? MAX_VIDEO_FILE_SIZE : MAX_IMAGE_FILE_SIZE;
-        if (file.size > maxSize) {
-          const sizeInMB = (file.size / MB).toFixed(1);
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: `${isVideo ? "Video" : "Image"} ${
-              index + 1
-            } is too large (${sizeInMB} MB). Max allowed is ${
-              maxSize / MB
-            } MB.`,
-            path: [index],
-          });
-        }
-      } else if (typeof file === "string") {
-        try {
-          const url = new URL(file);
-          if (!["http:", "https:"].includes(url.protocol)) {
-            throw new Error();
-          }
-        } catch {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: `${isVideo ? "Video" : "Image"} ${
-              index + 1
-            } is not a valid URL`,
-            path: [index],
-          });
-        }
-      } else {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: `Item ${index + 1} must be a File or a valid media URL`,
-          path: [index],
-        });
-      }
-    });
-  }),
-});
-
-const AddReviewModal = ({
-  onClose,
-  isOpen,
-}: {
-  onClose: () => void;
-  isOpen: boolean;
-}) => {
-  const [media, setMedia] = useState<{
-    files: File[];
-    previews: TMediaOption[];
-  }>({ files: [], previews: [] });
+const AddReviewModal = ({ onClose, isOpen }: TAddReviewModal) => {
+  const [media, setMedia] = useState<TMediaState>({ files: [], previews: [] });
 
   const {
     control,
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<z.infer<typeof reviewSchema>>({
-    resolver: zodResolver(reviewSchema),
+  } = useForm<z.infer<typeof addReviewSchema>>({
+    resolver: zodResolver(addReviewSchema),
     defaultValues: reviewInitialValues,
   });
+  console.log("errors", errors);
+  const handleAddReview = (data: z.infer<typeof addReviewSchema>) => {
+    const images = data.media.filter((file) =>
+      ALLOWED_IMAGE_TYPES.includes(file.type)
+    );
+    const videos = data.media.filter((file) =>
+      ALLOWED_VIDEO_TYPES.includes(file.type)
+    );
 
-  const handleAddReview = (data: z.infer<typeof reviewSchema>) => {
-    console.log("Submitted", data);
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("comment", data.comment);
+    formData.append("images", JSON.stringify(images));
+    formData.append("videos", JSON.stringify(videos));
   };
   return (
     <Modal onClose={onClose} isOpen={isOpen}>
@@ -135,7 +56,7 @@ const AddReviewModal = ({
       >
         <TextDisplay content={[{ text: "Add Review" }]} className="!text-2xl" />
         <Input
-          inputProps={{ placeholder: "Enter your name", name: "name" }}
+          inputProps={{ placeholder: "Enter your name", name: "title" }}
           register={register("title")}
           error={errors.title?.message}
           label="Title"

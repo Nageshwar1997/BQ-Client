@@ -1,5 +1,12 @@
 import z from "zod";
-import { regexes } from "../constants";
+import {
+  ALLOWED_IMAGE_TYPES,
+  ALLOWED_VIDEO_TYPES,
+  MAX_IMAGE_FILE_SIZE,
+  MAX_VIDEO_FILE_SIZE,
+  MB,
+  regexes,
+} from "../constants";
 import { ZodCompareConfigs, ZodRequiredStringConfigs } from "../types/zod";
 
 export const getZodStringMessages = (
@@ -77,3 +84,91 @@ export const zodStringRequired = ({
 
   return schema;
 };
+
+export function zodFileOrUrl({
+  fileOrUrl,
+  field,
+  index,
+  ctx,
+  required = true,
+}: {
+  fileOrUrl: unknown;
+  field: string;
+  index?: number;
+  ctx: z.RefinementCtx;
+  required?: boolean;
+}) {
+  let isVideo = false;
+  const path = index ?? field;
+  const name = index !== undefined && index !== null ? index + 1 : field;
+  const isFileOrUrl =
+    typeof fileOrUrl === "string"
+      ? "url"
+      : fileOrUrl instanceof File
+      ? "file"
+      : "unknown";
+
+  if (!fileOrUrl) {
+    if (required) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `Media ${isFileOrUrl} ${name} is required.`,
+        path: [path],
+      });
+    }
+    return;
+  }
+
+  if (typeof File !== "undefined" && fileOrUrl instanceof File) {
+    // detect type
+    isVideo = ALLOWED_VIDEO_TYPES.includes(fileOrUrl.type);
+
+    // type check
+    const allowedTypes = isVideo ? ALLOWED_VIDEO_TYPES : ALLOWED_IMAGE_TYPES;
+    if (!allowedTypes.includes(fileOrUrl.type)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `${
+          isVideo ? "Video" : "Image"
+        } ${name} invalid format. Allowed formats: ${allowedTypes
+          .map((t) => t.split("/")[1])
+          .join(", ")}`,
+        path: [path],
+      });
+    }
+
+    // size check
+    const maxSize = isVideo ? MAX_VIDEO_FILE_SIZE : MAX_IMAGE_FILE_SIZE;
+    if (fileOrUrl.size > maxSize) {
+      const sizeInMB = (fileOrUrl.size / MB).toFixed(1);
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `${
+          isVideo ? "Video" : "Image"
+        } ${name} is too large (${sizeInMB} MB). Max allowed is ${
+          maxSize / MB
+        } MB.`,
+        path: [path],
+      });
+    }
+  } else if (typeof fileOrUrl === "string") {
+    try {
+      const url = new URL(fileOrUrl);
+      if (!["http:", "https:"].includes(url.protocol)) {
+        throw new Error();
+      }
+    } catch {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `Media ${name} is not a valid URL`,
+        path: [path],
+      });
+    }
+  } else {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: `Item ${name} must be a File or a valid media URL`,
+      path: [path],
+    });
+  }
+}
