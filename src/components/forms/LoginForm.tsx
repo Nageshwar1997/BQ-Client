@@ -17,7 +17,7 @@ import Button from "../button/Button";
 import useQueryParams from "../../hooks/useQueryParams";
 import LoadingPage from "../loaders/LoadingPage";
 
-const LoginForm = () => {
+const LoginForm = ({ navigationPath }: { navigationPath?: string }) => {
   const [loginMethod, setLoginMethod] = useState<LoginTypes>("phoneNumber");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { removeParam, queryParams } = useQueryParams();
@@ -75,12 +75,12 @@ const LoginForm = () => {
           } else {
             saveSessionToken(data?.token);
           }
-          setTimeout(() => {
-            if (queryParams.login === "true") {
-              removeParam("login");
-            }
-            navigate("/");
-          }, 500);
+          if (queryParams.login === "true" || navigationPath) {
+            setTimeout(() => {
+              if (queryParams.login === "true") removeParam("login");
+              if (navigationPath) navigate(navigationPath);
+            }, 500);
+          }
         }
         if (error) {
           console.error("Error from mutation:", error);

@@ -20,7 +20,7 @@ const Login = () => {
         }`}
       >
         {showGradient.top && <TopGradient />}
-        <LoginForm />
+        <LoginForm navigationPath="/" />
         {showGradient.bottom && <BottomGradient />}
       </div>
     </div>
