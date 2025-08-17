@@ -1,6 +1,14 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { get_reviews_by_product_id } from "./reviews.api";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
+import { add_review, get_reviews_by_product_id } from "./reviews.api";
 import { IReviewsInfiniteApiParams, IReviewsApiParams } from "../types";
+import useQueryParams from "../../hooks/useQueryParams";
+
+export const useAddReview = () => {
+  const { params } = useQueryParams();
+  return useMutation({
+    mutationFn: (data: FormData) => add_review(data, params.productId || ""),
+  });
+};
 
 export const useGetAllReviewsByProductId = ({
   queryParams,

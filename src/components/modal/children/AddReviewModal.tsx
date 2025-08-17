@@ -17,15 +17,15 @@ import FileInput from "../../input/FileInput";
 import { TMediaOption } from "../../../types";
 import { DevTool } from "@hookform/devtools";
 import { addReviewSchema } from "../../../schemas/review";
-import { add_review } from "../../../api/reviews/reviews.api";
-import useQueryParams from "../../../hooks/useQueryParams";
 import SelectRating from "../../input/SelectRating";
+import { useAddReview } from "../../../api/reviews/reviews.service";
+import { toastErrorMessage, toastSuccessMessage } from "../../../utils/toasts";
 
 type TMediaState = { files: File[]; previews: TMediaOption[] };
 type TAddReviewModal = { isOpen: boolean; onClose: () => void };
 
 const AddReviewModal = ({ onClose, isOpen }: TAddReviewModal) => {
-  const { params } = useQueryParams();
+  const addReviewQuery = useAddReview();
   const [media, setMedia] = useState<TMediaState>({ files: [], previews: [] });
 
   const {
@@ -54,7 +54,15 @@ const AddReviewModal = ({ onClose, isOpen }: TAddReviewModal) => {
       }
     });
 
-    add_review(formData, params.productId ?? "");
+    addReviewQuery.mutate(formData, {
+      onSuccess: (data) => {
+        onClose();
+        toastSuccessMessage(data.message || "Review added successfully");
+      },
+      onError: (error) => {
+        toastErrorMessage(typeof error === "string" ? error : error.message);
+      },
+    });
   };
   return (
     <Modal onClose={onClose} isOpen={isOpen}>
@@ -149,7 +157,7 @@ const AddReviewModal = ({ onClose, isOpen }: TAddReviewModal) => {
             />
           )}
         />
-        <Button content="Submit" pattern="primary" type="submit" />
+        <Button content="Submit" pattern="primary" type="submit" className="!rounded-lg" />
         <DevTool control={control} />
       </form>
     </Modal>

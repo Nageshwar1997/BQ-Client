@@ -41,7 +41,7 @@ const SelectRating = ({ initialValue = 0, onChange, error }: RatingProps) => {
 
   return (
     <div className="flex flex-col items-center gap-2 w-full">
-      <div className="flex items-center gap-2 w-full my-2 mt-3">
+      <div className="flex items-center gap-2 w-full">
         <div className="flex-1 h-px bg-primary-50 rounded-full" />
         <span className="font-bold text-xl w-10 text-center">
           {Number.isInteger(displayRating)
@@ -99,7 +99,7 @@ const SelectRating = ({ initialValue = 0, onChange, error }: RatingProps) => {
           </p>
         )}
       </div>
-      <div className="flex items-center gap-2 w-full my-2 mt-3">
+      <div className="flex items-center gap-2 w-full py-2">
         <div className="flex-1 h-px bg-primary-50 rounded-full" />
         <span className="text-xs font-medium">OR Select Below Rating</span>
         <div className="flex-1 h-px bg-primary-50 rounded-full" />
