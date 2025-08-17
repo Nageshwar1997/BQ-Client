@@ -7,7 +7,11 @@ import {
   MB,
   regexes,
 } from "../constants";
-import { ZodCompareConfigs, ZodRequiredStringConfigs } from "../types/zod";
+import {
+  ZodCompareConfigs,
+  ZodRequiredNumberConfigs,
+  ZodRequiredStringConfigs,
+} from "../types/zod";
 
 export const getZodStringMessages = (
   props: ZodCompareConfigs & { field: string }
@@ -22,6 +26,20 @@ export const getZodStringMessages = (
     multiple_spaces: `${field} must not contain multiple consecutive spaces.`,
     single_space: `${field} must not contain any spaces.`,
     custom: `${field} `,
+  };
+};
+
+export const getZodNumberMessages = (
+  props: ZodCompareConfigs & { field: string }
+) => {
+  const { field, min, max } = props;
+  return {
+    required: `${field} is required.`,
+    invalid_type: `${field} must be a number.`,
+    nonNegative: `${field} must be a non-negative number.`,
+    mustBeInt: `${field} must be an integer.`,
+    min: `${field} must be at least ${min}.`,
+    max: `${field} must not exceed ${max}.`,
   };
 };
 
@@ -81,6 +99,80 @@ export const zodStringRequired = ({
       schema = schema.regex(regex, `${messages.custom} ${message}.`);
     });
   }
+
+  return schema;
+};
+
+export const zodNumberRequired = ({
+  field,
+  parentField,
+  showingFieldName,
+  showingParentFieldName,
+  min,
+  max,
+  mustBeInt = false,
+  nonNegative = true,
+}: ZodRequiredNumberConfigs) => {
+  const readableField = showingFieldName ?? field;
+  const readableParent = showingParentFieldName ?? parentField;
+
+  const nestedField = readableParent
+    ? `${readableParent}${
+        readableParent.includes("[") ? " " : ": "
+      }${readableField}`
+    : readableField;
+
+  const messages = getZodNumberMessages({ field: nestedField, min, max });
+
+  const schema = z
+    .union([z.string(), z.number()])
+    .transform((val) => {
+      if (val === "" || val === null || val === undefined)
+        return { value: NaN, reason: "required" };
+      const num = Number(val);
+      return isNaN(num)
+        ? { value: NaN, reason: "invalid" }
+        : { value: num, reason: null };
+    })
+    .superRefine(({ value, reason }, ctx) => {
+      if (isNaN(value)) {
+        ctx.addIssue({
+          code: "custom",
+          message:
+            reason === "required" ? messages.required : messages.invalid_type,
+        });
+        return;
+      }
+
+      if (nonNegative && value < 0) {
+        ctx.addIssue({
+          code: "custom",
+          message: messages.nonNegative,
+        });
+      }
+
+      if (mustBeInt && !Number.isInteger(value)) {
+        ctx.addIssue({
+          code: "custom",
+          message: messages.mustBeInt,
+        });
+      }
+
+      if (min !== undefined && value < min) {
+        ctx.addIssue({
+          code: "custom",
+          message: messages.min,
+        });
+      }
+
+      if (max !== undefined && value > max) {
+        ctx.addIssue({
+          code: "custom",
+          message: messages.max,
+        });
+      }
+    })
+    .transform(({ value }) => value);
 
   return schema;
 };
