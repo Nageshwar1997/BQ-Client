@@ -1,12 +1,34 @@
 import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
-import { add_review, get_reviews_by_product_id } from "./reviews.api";
-import { IReviewsInfiniteApiParams, IReviewsApiParams } from "../types";
+import {
+  add_review,
+  get_reviews_by_product_id,
+  update_like_dislike_helpful,
+} from "./reviews.api";
+import {
+  IReviewsInfiniteApiParams,
+  IReviewsApiParams,
+  TLikeDislikeHelpfulReview,
+} from "../types";
 import useQueryParams from "../../hooks/useQueryParams";
 
 export const useAddReview = () => {
   const { params } = useQueryParams();
   return useMutation({
+    mutationKey: ["add_review"],
     mutationFn: (data: FormData) => add_review(data, params.productId || ""),
+  });
+};
+
+export const useLikeDislikeHelpfulReview = () => {
+  return useMutation({
+    mutationKey: ["update_like_dislike_helpful"],
+    mutationFn: (data: TLikeDislikeHelpfulReview) =>
+      update_like_dislike_helpful({
+        reviewId: data.reviewId,
+        liked: data.liked,
+        disliked: data.disliked,
+        isHelpful: data.isHelpful,
+      }),
   });
 };
 

@@ -27,5 +27,6 @@ export const mediaRoutes = {
 
 export const reviewRoutes = {
   addReview: { method: "POST", url: "/reviews" },
+  updateLikeDislikeHelpful: { method: "PATCH", url: "/reviews" },
   getReviewsByProductId: { method: "GET", url: "/reviews" },
 };

@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import api from "../../configs/axios.instance.config";
-import { IReviewsApiParams } from "../types";
+import { IReviewsApiParams, TLikeDislikeHelpfulReview } from "../types";
 import { reviewRoutes } from "../api.routes";
 import { getUserToken } from "../../utils";
 
@@ -29,6 +29,30 @@ export const add_review = async (data: FormData, productId: string) => {
   }
 };
 
+export const update_like_dislike_helpful = async ({
+  reviewId,
+  liked,
+  disliked,
+  isHelpful,
+}: TLikeDislikeHelpfulReview) => {
+  const user_token = getUserToken();
+
+  try {
+    const { method, url } = reviewRoutes.updateLikeDislikeHelpful;
+    const response = await api.request({
+      method,
+      url: `${url}/${reviewId}`,
+      data: { liked, disliked, isHelpful },
+      headers: { Authorization: user_token },
+    });
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error?.response?.data?.message || "API Error occurred";
+    }
+    throw "Something went wrong!";
+  }
+};
 export const get_reviews_by_product_id = async ({
   pageParams,
   queryParams,

@@ -30,6 +30,14 @@ export interface IReviewsApiParams {
     };
   };
 }
+
+export type TLikeDislikeHelpfulReview = {
+  reviewId: string;
+  liked?: boolean;
+  disliked?: boolean;
+  isHelpful?: boolean;
+};
+
 export interface IReviewsInfiniteApiParams
   extends Omit<IReviewsApiParams, "pageParams"> {
   pageParams: Omit<TPageParams, "page">;

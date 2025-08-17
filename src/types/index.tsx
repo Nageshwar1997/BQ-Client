@@ -217,7 +217,6 @@ export interface PopulatedCategory {
 }
 
 export interface ReviewType {
-  _id?: string;
   rating: number;
   title: string;
   comment: string;
@@ -232,6 +231,7 @@ export interface ReviewType {
 
 export interface FetchedReviewType
   extends Omit<ReviewType, "images" | "videos" | "user"> {
+  _id: string;
   images: string[];
   videos: string[];
   user: UserTypes;
