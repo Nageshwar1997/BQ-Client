@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import MediaCarousel from "../../../../components/carousels/MediaCarousel";
 import RatingStars from "../../../../components/navbar/components/rating/RatingStars";
 import {
@@ -8,6 +8,7 @@ import {
 } from "../../../../icons";
 import { FetchedReviewType, TMediaOption } from "../../../../types";
 import { formatDate } from "../../../../utils";
+import Button from "../../../../components/button/Button";
 
 const ReviewCard = ({
   className = "",
@@ -18,6 +19,12 @@ const ReviewCard = ({
   review: FetchedReviewType;
   onMediaClick: (reviewMedia: TMediaOption[], index: number) => void;
 }) => {
+  const [updateStatus, setUpdateStatus] = useState({
+    liked: false,
+    disliked: false,
+    helpful: false,
+  });
+
   const reviewMedia = useMemo(() => {
     const images: TMediaOption[] =
       review?.images?.map((url) => ({ url, type: "image" })) ?? [];
@@ -44,12 +51,49 @@ const ReviewCard = ({
         )}
         <div className="space-y-0.5">
           <div className="flex items-center gap-2">
-            <p className="bg-primary text-primary-inverted text-xs/normal px-2 w-fit font-medium">
-              Helpful
-            </p>
+            <Button
+              content="Helpful"
+              pattern="outline"
+              onClick={() =>
+                setUpdateStatus((prev) => ({ ...prev, helpful: !prev.helpful }))
+              }
+              className={`!w-fit !py-0.5 !px-2 !rounded-sm !text-xs/normal !border-none !duration-0 ${
+                updateStatus.helpful
+                  ? "bg-accent-duo !text-primary-inverted"
+                  : "bg-silver-duo !text-primary-inverted"
+              }`}
+            />
             <div className="flex items-center gap-2">
-              <ThumbsUpIcon className="w-4 h-4 cursor-pointer stroke-primary hover:rotate-12 transition-transform duration-300" />
-              <ThumbsDownIcon className="w-4 h-4 cursor-pointer stroke-primary hover:rotate-12 transition-transform duration-300" />
+              <ThumbsUpIcon
+                role="button"
+                onClick={() =>
+                  setUpdateStatus((prev) => ({
+                    ...prev,
+                    liked: !prev.liked,
+                    disliked: false,
+                  }))
+                }
+                className={`w-4 h-4 cursor-pointer stroke-primary hover:rotate-12 transition-all duration-300 ${
+                  updateStatus.liked
+                    ? "dark:fill-blue-crayola-c light:fill-picton-blue-c"
+                    : ""
+                }`}
+              />
+              <ThumbsDownIcon
+                onClick={() =>
+                  setUpdateStatus((prev) => ({
+                    ...prev,
+                    disliked: !prev.disliked,
+                    liked: false,
+                  }))
+                }
+                role="button"
+                className={`w-4 h-4 cursor-pointer stroke-primary hover:rotate-12 transition-all duration-300 ${
+                  updateStatus.disliked
+                    ? "dark:fill-blue-crayola-c light:fill-picton-blue-c"
+                    : ""
+                }`}
+              />
             </div>
           </div>
           <p className="font-semibold text-sm capitalize">
