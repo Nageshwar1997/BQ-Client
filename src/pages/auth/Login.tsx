@@ -1,95 +1,14 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Controller, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { loginSchema } from "./helpers/auth.schema";
-import { loginInputMapData, LoginTextContent } from "./data";
 import useVerticalScrollable from "../../hooks/useVerticalScrollable";
-import { LoginFormInputProps, LoginTypes } from "../../types";
 import { BottomGradient, TopGradient } from "../../components/Gradients";
 import AuthRobot from "./components/AuthRobot";
-import TextDisplay from "../../components/TextDisplay";
-import SocialAuth from "./components/SocialAuth";
-import Input from "../../components/input/Input";
-import { EyeIcon, EyeOffIcon } from "../../icons";
-import Radio from "../../components/input/Radio";
-import Button from "../../components/button/Button";
-import Checkbox from "../../components/input/Checkbox";
-import { saveLocalToken, saveSessionToken } from "../../utils";
-import { useLoginUser } from "../../api/auth/auth.service";
-import LoadingPage from "../../components/loaders/LoadingPage";
+import LoginForm from "../../components/forms/LoginForm";
 import DarkMode from "../../components/DarkMode";
 
 const Login = () => {
   const [showGradient, containerRef] = useVerticalScrollable();
-  const [loginMethod, setLoginMethod] = useState<LoginTypes>("phoneNumber");
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-
-  const userLoginMutation = useLoginUser();
-  const navigate = useNavigate();
-
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    register,
-    watch,
-  } = useForm({
-    resolver: yupResolver(loginSchema),
-    defaultValues: {
-      loginMethod: loginMethod,
-      email: "",
-      phoneNumber: "",
-      password: "",
-      remember: false, // ✅ Default value set to false
-    },
-  });
-
-  const selectedMethod = watch("loginMethod");
-
-  const handleLoginMethodChange = (method: "email" | "phoneNumber") => {
-    setLoginMethod(method);
-    reset({
-      loginMethod: method,
-      email: method === "email" ? "" : undefined,
-      phoneNumber: method === "phoneNumber" ? "" : undefined,
-      password: "",
-      remember: false,
-    });
-  };
-
-  const onSubmit = (bodyData: LoginFormInputProps) => {
-    const finalData: Partial<LoginFormInputProps> = {
-      password: bodyData.password,
-    };
-
-    if (bodyData.loginMethod === "email" && bodyData.email) {
-      finalData.email = bodyData.email;
-    } else if (bodyData.loginMethod === "phoneNumber" && bodyData.phoneNumber) {
-      finalData.phoneNumber = bodyData.phoneNumber;
-    }
-
-    userLoginMutation.mutate(finalData, {
-      onSettled(data, error) {
-        if (data && !error) {
-          if (bodyData.remember) {
-            saveLocalToken(data?.token);
-          } else {
-            saveSessionToken(data?.token);
-          }
-          setTimeout(() => navigate("/"), 500);
-        }
-        if (error) {
-          console.error("Error from mutation:", error);
-        }
-      },
-    });
-  };
 
   return (
     <div className="w-full min-h-dvh max-h-dvh h-full p-4 flex gap-4 overflow-hidden relative">
-      {userLoginMutation.isPending && <LoadingPage text="Please wait" />}
       <AuthRobot />
       <DarkMode className="border absolute top-5 right-5 h-fit p-2 md:p-3 rounded-full bg-secondary-inverted [&_path]:!stroke-secondary z-10" />
       <div
@@ -101,119 +20,7 @@ const Login = () => {
         }`}
       >
         {showGradient.top && <TopGradient />}
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          autoComplete="off"
-          className="w-full flex flex-col gap-4"
-        >
-          <TextDisplay
-            content={LoginTextContent}
-            contentClassName="mb-3 font-semibold"
-          />
-          <SocialAuth />
-          <div className="w-full max-w-[400px] lg:max-w-[500px] sm:w-[90%] lg:w-[500px] border-gradient p-px rounded-3xl overflow-hidden mx-auto">
-            <div className="shadow-light-dark-soft bg-platinum-black p-6 md:px-8 rounded-3xl space-y-6">
-              <Controller
-                name="loginMethod"
-                control={control}
-                render={({ field }) => (
-                  <Radio
-                    value={field.value}
-                    onChange={(value) => {
-                      handleLoginMethodChange(value as LoginTypes);
-                      field.onChange(value);
-                    }}
-                    options={[
-                      { label: "Email", value: "email" },
-                      { label: "Phone", value: "phoneNumber" },
-                    ]}
-                  />
-                )}
-              />
-              <div className="flex flex-col gap-5 lg:gap-6">
-                {loginInputMapData?.map((item, index) => {
-                  const isPassword = item.name === "password";
-                  const isPhone = item.name === "phoneNumber";
-                  const isEmail = item.name === "email";
-                  const isEmailSelected = selectedMethod === "email";
-                  if (isPhone && isEmailSelected) return null;
-                  if (isEmail && !isEmailSelected) return null;
-                  return (
-                    <div key={index}>
-                      <Input
-                        label={item.label}
-                        register={register(item.name)}
-                        inputProps={{
-                          name: item.name,
-                          placeholder: item.placeholder,
-                          type: isPassword
-                            ? showPassword
-                              ? "text"
-                              : item.type
-                            : item.type,
-                        }}
-                        icons={{
-                          ...(isPassword && {
-                            right: {
-                              icon: showPassword ? (
-                                <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-                              ) : (
-                                <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-                              ),
-                              onClick: () => setShowPassword((prev) => !prev),
-                            },
-                          }),
-
-                          ...(isPhone && { left: { text: "+91" } }),
-                        }}
-                        error={errors?.[item.name]?.message}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="space-y-3">
-                <div className="flex justify-between gap-2 items-center">
-                  <div className="flex items-center space-x-3">
-                    <Controller
-                      name="remember"
-                      control={control}
-                      render={({ field }) => (
-                        <Checkbox register={field} checked={field.value} />
-                      )}
-                    />
-                    <span className="text-[13px] md:text-sm text-primary-50 font-medium whitespace-nowrap">
-                      Remember
-                    </span>
-                  </div>
-                  <Link
-                    to={"/forgot-password"}
-                    className={`bg-clip-text text-transparent bg-accent-duo text-[13px] md:text-sm mr-2 hover:underline whitespace-nowrap`}
-                  >
-                    Forgot Password?
-                  </Link>
-                </div>
-                <Button
-                  pattern="primary"
-                  type="submit"
-                  content="Login"
-                  className="!text-base"
-                />
-              </div>
-              <div className="flex items-center justify-center gap-2">
-                <p className="bg-clip-text text-transparent bg-silver-duo text-xs md:text-sm">
-                  Don't have an account?
-                </p>
-                <Link
-                  to={"/register"}
-                  className={`bg-clip-text text-transparent bg-accent-duo hover:font-extrabold text-sm md:text-base`}
-                >
-                  Register
-                </Link>
-              </div>
-            </div>
-          </div>
-        </form>
+        <LoginForm />
         {showGradient.bottom && <BottomGradient />}
       </div>
     </div>
