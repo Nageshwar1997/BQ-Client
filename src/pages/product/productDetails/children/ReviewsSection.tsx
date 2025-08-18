@@ -44,7 +44,7 @@ const ReviewsSection = () => {
   }, [inView, hasNextPage, fetchNextPage]);
 
   return (
-    <div className="w-full py-4 border-y border-y-primary-50 space-y-4 relative">
+    <div className="w-full py-4 border-t border-t-primary-50 space-y-4 relative">
       <Dropdown
         title={
           REVIEWS_OPTIONS.find((o) => o.value === queryParams?.sortBy)?.name ??
