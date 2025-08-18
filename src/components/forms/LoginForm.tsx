@@ -16,11 +16,13 @@ import Checkbox from "../input/Checkbox";
 import Button from "../button/Button";
 import useQueryParams from "../../hooks/useQueryParams";
 import LoadingPage from "../loaders/LoadingPage";
+import { useUserStore } from "../../store/user.store";
 
 const LoginForm = ({ navigationPath }: { navigationPath?: string }) => {
-  const [loginMethod, setLoginMethod] = useState<LoginTypes>("phoneNumber");
+  const [loginMethod, setLoginMethod] = useState<LoginTypes>("email");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { removeParam, queryParams } = useQueryParams();
+  const { setUser } = useUserStore();
 
   const userLoginMutation = useLoginUser();
   const navigate = useNavigate();
@@ -70,6 +72,9 @@ const LoginForm = ({ navigationPath }: { navigationPath?: string }) => {
     userLoginMutation.mutate(finalData, {
       onSettled(data, error) {
         if (data && !error) {
+          if (data.user) {
+            setUser(data.user);
+          }
           if (bodyData.remember) {
             saveLocalToken(data?.token);
           } else {

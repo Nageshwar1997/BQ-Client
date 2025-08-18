@@ -24,6 +24,7 @@ import LoadingPage from "../../components/loaders/LoadingPage";
 import DarkMode from "../../components/DarkMode";
 import { saveLocalToken, saveSessionToken } from "../../utils";
 import { PASSWORD_FIELDS } from "../../constants";
+import { useUserStore } from "../../store/user.store";
 
 const Register = () => {
   const [showGradient, containerRef] = useVerticalScrollable();
@@ -32,6 +33,7 @@ const Register = () => {
     confirmPassword: false,
   });
   const navigate = useNavigate();
+  const { setUser } = useUserStore();
 
   const userRegisterMutation = useRegisterUser();
 
@@ -70,6 +72,9 @@ const Register = () => {
     userRegisterMutation.mutate(formData, {
       onSettled(data, error) {
         if (data && !error) {
+          if (data.user) {
+            setUser(data.user);
+          }
           if (bodyData.remember) {
             saveLocalToken(data?.token);
           } else {
