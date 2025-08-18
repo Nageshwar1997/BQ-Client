@@ -1,4 +1,8 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useInfiniteQuery,
+  useQuery,
+} from "@tanstack/react-query";
 import { get_all_products, get_product_by_id } from "./product.api";
 import {
   TUseGetAllProductInfinite,
@@ -15,6 +19,9 @@ export const useGetAllProducts = ({
   return useQuery({
     queryKey: ["get_all_products_non_infinite", data, queryParams, pageParams],
     queryFn: () => get_all_products({ data, queryParams, pageParams }),
+    placeholderData: keepPreviousData,
+    staleTime: 0.5 * 60 * 1000, // 30 seconds
+    gcTime: 5 * 60 * 1000, // 5 minutes
     enabled,
   });
 };
@@ -49,6 +56,9 @@ export const useGetProductById = ({ data, queryParams }: TUseGetProduct) => {
   return useQuery({
     queryKey: ["get_product_by_id", data, queryParams],
     queryFn: () => get_product_by_id({ data, queryParams }),
+    placeholderData: keepPreviousData,
+    staleTime: 0.5 * 60 * 1000, // 30 seconds
+    gcTime: 5 * 60 * 1000, // 5 minutes
     enabled: !!queryParams?.productId,
   });
 };
