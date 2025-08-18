@@ -19,7 +19,7 @@ import RatingBars from "./children/RatingBars";
 import ReviewsMedia from "./children/ReviewsMedia";
 
 const ProductDetails = () => {
-  const { params } = useQueryParams();
+  const { params, navigate } = useQueryParams();
   const [selectedShadeIdx, setSelectedShadeIdx] = useState<null | number>(null);
 
   const { data, isLoading, isError } = useGetProductById({
@@ -121,7 +121,11 @@ const ProductDetails = () => {
                 )}
                 <div className="flex items-center gap-4 py-4">
                   <Button content="Add to Cart" pattern="primary" />
-                  <Button content="Go to Cart" pattern="secondary" />
+                  <Button
+                    content="Go to Cart"
+                    pattern="secondary"
+                    onClick={() => navigate("/cart")}
+                  />
                 </div>
                 <hr className="w-full h-px block border-none bg-gradient-line" />
                 <div className="flex flex-shrink-0 gap-4 overflow-x-scroll">
