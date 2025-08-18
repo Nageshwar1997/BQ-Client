@@ -32,7 +32,7 @@ const ReviewsMedia = ({
     );
   }, [reviews]);
   return (
-    <div className="w-full py-8 space-y-4">
+    <div className="w-full">
       {isLoading ? (
         <div className="flex flex-col items-center mx-auto gap-4 max-w-3xl">
           <Skeleton className="!w-2/3" />
@@ -49,7 +49,7 @@ const ReviewsMedia = ({
           className="w-full mx-auto mb-auto [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase [&>p]:text-xs [&>p]:base:text-sm [&>p]:sm:text-base [&>p]:md:text-lg"
         />
       ) : reviewMedia.length ? (
-        <>
+        <div className="flex flex-col gap-4">
           <p className="text-center text-lg/normal font-medium w-fit mx-auto">
             Customer review's photos & videos
           </p>
@@ -63,7 +63,7 @@ const ReviewsMedia = ({
               setMediaIndex(i);
             }}
           />
-        </>
+        </div>
       ) : (
         <EmptyData
           content={"Reviews media not available"}
