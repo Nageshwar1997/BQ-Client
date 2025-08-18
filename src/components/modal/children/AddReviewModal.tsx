@@ -38,7 +38,7 @@ const AddReviewModal = ({ onClose, isOpen }: TAddReviewModal) => {
     resolver: zodResolver(addReviewSchema),
     defaultValues: reviewInitialValues,
   });
-  console.log("errors", errors.media);
+
   const handleAddReview = (data: z.infer<typeof addReviewSchema>) => {
     const formData = new FormData();
     formData.append("title", data.title);
@@ -157,7 +157,12 @@ const AddReviewModal = ({ onClose, isOpen }: TAddReviewModal) => {
             />
           )}
         />
-        <Button content="Submit" pattern="primary" type="submit" className="!rounded-lg" />
+        <Button
+          content="Submit"
+          pattern="primary"
+          type="submit"
+          className="!rounded-lg"
+        />
         <DevTool control={control} />
       </form>
     </Modal>

@@ -23,12 +23,7 @@ export const useLikeDislikeHelpfulReview = () => {
   return useMutation({
     mutationKey: ["update_like_dislike_helpful"],
     mutationFn: (data: TLikeDislikeHelpfulReview) =>
-      update_like_dislike_helpful({
-        reviewId: data.reviewId,
-        liked: data.liked,
-        disliked: data.disliked,
-        isHelpful: data.isHelpful,
-      }),
+      update_like_dislike_helpful(data),
   });
 };
 
