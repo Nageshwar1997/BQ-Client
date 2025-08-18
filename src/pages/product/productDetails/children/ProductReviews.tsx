@@ -21,7 +21,7 @@ const ProductReviews = ({
         <div
           key={index}
           ref={index === reviews.length - 1 ? ref : null}
-          className={`py-4 ${index === 0 ? "" : ""} ${
+          className={`py-4 ${
             index === reviews.length - 1
               ? "pb-0"
               : "border-b border-b-primary-10"
