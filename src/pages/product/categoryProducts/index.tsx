@@ -1,7 +1,7 @@
-import { useLocation } from "react-router-dom";
+import useQueryParams from "../../../hooks/useQueryParams";
 import { CATEGORY_IMAGE_DATA } from "./data";
-// import { useGetAllProductsInfinite } from "../../../api/product/product.service";
-import { useEffect, useState, useMemo } from "react";
+import { useGetAllProductsInfinite } from "../../../api/product/product.service";
+import { useEffect, useState } from "react";
 import { FilterIcon, LeftArrowIcon } from "../../../icons";
 import Filters from "../../../components/filters/Filters";
 import SortBy from "../../../components/sortBy";
@@ -9,44 +9,39 @@ import SortBy from "../../../components/sortBy";
 type TCategoryImage = { img: string; category: string };
 
 const CategoryProducts = () => {
-  const { pathname } = useLocation();
+  const { params } = useQueryParams();
   const [categoryImage, setCategoryImage] = useState<TCategoryImage | null>(
     null
   );
   const [showFilter, setShowFilter] = useState<boolean>(false);
   const [showSortBy, setShowSortBy] = useState<boolean>(false);
 
-  const paths = useMemo(
-    () =>
-      pathname
-        .split("/")
-        .filter((path) => path !== "")
-        .slice(1, 4),
-    [pathname]
-  );
+  const { levelOneCategory, levelTwoCategory, levelThreeCategory } = params;
 
   useEffect(() => {
-    const levelOneCat = CATEGORY_IMAGE_DATA[paths[0]];
+    const levelOneCat = CATEGORY_IMAGE_DATA[String(levelOneCategory)];
     const levelTwoCat = levelOneCat?.subCategories?.find(
-      (c) => c?.category === paths[1]
+      (c) => c?.category === levelTwoCategory
     );
     const levelThreeCat = levelTwoCat?.subCategories?.find(
-      (c) => c?.category === paths[2]
+      (c) => c?.category === levelThreeCategory
     );
     const finalCategoryImgData = levelThreeCat || levelTwoCat || levelOneCat;
 
     setCategoryImage(finalCategoryImgData || null);
-  }, [paths]);
+  }, [levelOneCategory, levelThreeCategory, levelTwoCategory]);
 
-  // const allProductsQuery = useGetAllProductsInfinite({
-  //   pageParams: { limit: 1 },
-  //   data: { requiredFields: ["title"] },
-  //   queryParams: {
-  //     category_1: paths[0],
-  //     category_2: paths[1],
-  //     category_3: paths[2],
-  //   },
-  // });
+  const allProductsQuery = useGetAllProductsInfinite({
+    pageParams: { limit: 5 },
+    data: { requiredFields: ["title"] },
+    queryParams: {
+      ...(levelOneCategory && { category_1: levelOneCategory }),
+      ...(levelTwoCategory && { category_2: levelTwoCategory }),
+      ...(levelThreeCategory && { category_3: levelThreeCategory }),
+    },
+  });
+
+  console.log("allProductsQuery", allProductsQuery.data?.pages);
 
   return (
     <div className="lg:-mt-16 flex flex-col">

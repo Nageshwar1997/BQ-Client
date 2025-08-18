@@ -1,8 +1,8 @@
-import { useLocation } from "react-router-dom";
+import { ChangeEvent, useCallback, useState } from "react";
 import { CameraIcon, InfoIcon } from "../../../icons";
 import { ProfilePicInputProps } from "../../../types";
 import { toastErrorMessage } from "../../../utils/toasts";
-import { ChangeEvent, useCallback, useState } from "react";
+import useQueryParams from "../../../hooks/useQueryParams";
 
 const UploadProfile = ({
   name = "image",
@@ -36,7 +36,7 @@ const UploadProfile = ({
     },
     [onChange]
   );
-  const { pathname } = useLocation();
+  const { pathname } = useQueryParams();
   return (
     <div className="w-full space-y-1.5">
       <div

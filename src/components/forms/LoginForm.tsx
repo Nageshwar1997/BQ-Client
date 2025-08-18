@@ -1,10 +1,11 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+
 import { loginInputMapData, LoginTextContent } from "../../pages/auth/data";
 import { LoginFormInputProps, LoginTypes } from "../../types";
 import { loginSchema } from "../../pages/auth/helpers/auth.schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
 import { useLoginUser } from "../../api/auth/auth.service";
 import { saveLocalToken, saveSessionToken } from "../../utils";
 import TextDisplay from "../TextDisplay";
@@ -21,11 +22,10 @@ import { useUserStore } from "../../store/user.store";
 const LoginForm = ({ navigationPath }: { navigationPath?: string }) => {
   const [loginMethod, setLoginMethod] = useState<LoginTypes>("email");
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const { removeParam, queryParams } = useQueryParams();
+  const { removeParam, queryParams, navigate } = useQueryParams();
   const { setUser } = useUserStore();
 
   const userLoginMutation = useLoginUser();
-  const navigate = useNavigate();
 
   const {
     control,

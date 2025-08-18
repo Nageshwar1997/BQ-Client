@@ -9,11 +9,11 @@ import {
 import { useState } from "react";
 import Modal from "../../modal";
 import SearchModal from "../../modal/children/SearchModal";
-import { useLocation } from "react-router-dom";
+import useQueryParams from "../../../hooks/useQueryParams";
 
 const UserMenuIcons = ({ className }: { className?: string }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { pathname } = useLocation();
+  const { paths } = useQueryParams();
 
   return (
     <>
@@ -21,7 +21,7 @@ const UserMenuIcons = ({ className }: { className?: string }) => {
         <SearchModal onClose={() => setIsOpen(false)} />
       </Modal>
       <div className={`flex gap-2 md:gap-3 xl:gap-5 ${className}`}>
-        {pathname !== "/search" && (
+        {!paths.includes("search") && (
           <SearchIcon
             onClick={() => setIsOpen(true)}
             className="stroke-tertiary w-5 h-5 md:w-6 md:h-6"

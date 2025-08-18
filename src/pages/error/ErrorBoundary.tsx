@@ -1,27 +1,25 @@
-import React, { ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
+import { ErrorInfo, FC, ReactNode, useEffect, useState } from "react";
+import useQueryParams from "../../hooks/useQueryParams";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
 }
 
-const ErrorBoundary: React.FC<ErrorBoundaryProps> = ({ children }) => {
-  const navigate = useNavigate();
-  const [hasError, setHasError] = React.useState(false);
-  const [error, setError] = React.useState<Error | null>(null);
-  const [errorInfo, setErrorInfo] = React.useState<React.ErrorInfo | null>(
-    null
-  );
+const ErrorBoundary: FC<ErrorBoundaryProps> = ({ children }) => {
+  const { navigate } = useQueryParams();
+  const [hasError, setHasError] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+  const [errorInfo, setErrorInfo] = useState<ErrorInfo | null>(null);
 
   // The error boundary will catch errors when one occurs in any of its children
-  const handleError = (error: Error, errorInfo: React.ErrorInfo) => {
+  const handleError = (error: Error, errorInfo: ErrorInfo) => {
     setHasError(true);
     setError(error);
     setErrorInfo(errorInfo);
   };
 
   // Simulate an error boundary's "componentDidCatch" behavior
-  React.useEffect(() => {
+  useEffect(() => {
     if (hasError) {
       // Navigate to the error page when an error occurs
       navigate("/error");

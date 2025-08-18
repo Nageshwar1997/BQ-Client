@@ -10,16 +10,17 @@ import {
 } from "../../icons";
 import UserMenuIcons from "./components/UserMenuIcons";
 import { navbarCategoriesData } from "./data";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import HoveredComponent from "./components/HoveredComponent";
 import Button from "../button/Button";
 import { BottomGradient } from "../Gradients";
+import useQueryParams from "../../hooks/useQueryParams";
 
 const Navbar = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navbarRef = useRef<HTMLDivElement>(null);
 
-  const { pathname } = useLocation();
+  const { paths, pathname } = useQueryParams();
 
   const [isMobileNavbarOpened, setIsMobileNavbarOpened] =
     useState<boolean>(false);
@@ -119,8 +120,8 @@ const Navbar = () => {
     };
   }, [isMobileNavbarOpened]);
 
-  const nonTransparent = ["/product/"].some((path) =>
-    pathname.startsWith(path)
+  const nonTransparent = ["product", "cart", "offers", "blogs"].some((val) =>
+    paths.includes(val)
   );
 
   return (

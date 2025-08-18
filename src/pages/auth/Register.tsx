@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { RegisterTextContent, registerInputMapData } from "./data";
 import {
@@ -25,6 +25,7 @@ import DarkMode from "../../components/DarkMode";
 import { saveLocalToken, saveSessionToken } from "../../utils";
 import { PASSWORD_FIELDS } from "../../constants";
 import { useUserStore } from "../../store/user.store";
+import useQueryParams from "../../hooks/useQueryParams";
 
 const Register = () => {
   const [showGradient, containerRef] = useVerticalScrollable();
@@ -32,7 +33,7 @@ const Register = () => {
     password: false,
     confirmPassword: false,
   });
-  const navigate = useNavigate();
+  const { navigate } = useQueryParams();
   const { setUser } = useUserStore();
 
   const userRegisterMutation = useRegisterUser();

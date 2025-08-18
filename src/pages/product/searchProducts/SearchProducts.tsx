@@ -12,13 +12,11 @@ import ProductCard from "./ProductCard";
 import ProductCardSkeleton from "../../../components/skeletons/children/ProductCardSkeleton";
 import ShowError from "../../../components/errors/ShowError";
 import EmptyData from "../../../components/empty-data/EmptyData";
-import { useNavigate } from "react-router-dom";
 import { FetchedProductType } from "../../../types";
 
 const SearchProducts = () => {
-  const { queryParams, setParams, removeParam } = useQueryParams();
+  const { queryParams, setParams, removeParam, navigate } = useQueryParams();
   const { ref, inView } = useInView();
-  const navigate = useNavigate();
   const [show, setShow] = useState<Record<"filter" | "sortBy", boolean>>({
     filter: false,
     sortBy: false,
