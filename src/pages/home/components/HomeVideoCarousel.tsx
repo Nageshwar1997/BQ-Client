@@ -112,12 +112,12 @@ const HomeVideoCarousel = () => {
             >
               {type === "prev" ? (
                 <LeftArrowIcon
-                  className="stroke-tertiary w-5 h-5"
+                  className="stroke-tertiary-inverted w-5 h-5"
                   strokeWidth={2.5}
                 />
               ) : (
                 <RightArrowIcon
-                  className="stroke-tertiary w-5 h-5"
+                  className="stroke-tertiary-inverted w-5 h-5"
                   strokeWidth={2.5}
                 />
               )}

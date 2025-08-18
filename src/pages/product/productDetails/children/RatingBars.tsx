@@ -35,7 +35,7 @@ const RatingBars = ({ reviews = [] }: { reviews: FetchedReviewType[] }) => {
                   className="[&>svg]:w-4 [&>svg]:h-4"
                 />
                 <span className="leading-none mt-px">
-                  {getAvgRating(reviews)} out of 5
+                  {getAvgRating(reviews).toFixed(1)} out of 5
                 </span>
               </div>
               <p>Based on {reviews?.length} reviews</p>
