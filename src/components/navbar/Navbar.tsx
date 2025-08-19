@@ -146,7 +146,7 @@ const Navbar = () => {
           </p>
           <div className="flex items-center gap-3 text-xs">
             <p className="flex items-center gap-0.5 cursor-pointer lg:opacity-90 hover:opacity-100 transition-all duration-300">
-              <CashIcon className="w-3.5 h-3.5 pb-px [&>path]:stroke-secondary" />
+              <CashIcon className="w-3.5 h-3.5 pb-px stroke-secondary" />
               <span className="text-nowrap">BQ Cash</span>
             </p>
             <p className="flex items-center gap-0.5 cursor-pointer lg:opacity-90 hover:opacity-100 transition-all duration-300">
@@ -158,7 +158,7 @@ const Navbar = () => {
               <span className="text-nowrap">BQ Care</span>
             </p>
             <p className="flex items-center gap-0.5 cursor-pointer lg:opacity-90 hover:opacity-100 transition-all duration-300">
-              <TrackIcon className="w-3.5 h-3.5 pb-px [&>path]:stroke-secondary" />
+              <TrackIcon className="w-3.5 h-3.5 pb-px stroke-secondary" />
               <span className="text-nowrap">Track Orders</span>
             </p>
           </div>
