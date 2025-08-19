@@ -73,7 +73,7 @@ const MediaCarousel = ({
                   handleRemove(i);
                 }}
               >
-                <CloseIcon className="w-3 h-3 [&>path]:stroke-primary-inverted" />
+                <CloseIcon className="w-3 h-3 stroke-primary-inverted" />
               </button>
             )}
           </div>
