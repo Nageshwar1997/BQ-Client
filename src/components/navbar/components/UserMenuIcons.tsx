@@ -145,7 +145,7 @@ const UserMenuIcons = ({
           <UserCircleIcon
             onClick={() => setOpenUserPopup((prev) => !prev)}
             className={`w-5 h-5 md:w-6 md:h-6 cursor-pointer ${
-              openUserPopup ? "!stroke-blue-crayola-c" : "!stroke-tertiary"
+              openUserPopup ? "!stroke-blue-crayola-c" : "stroke-tertiary"
             } hover:stroke-secondary`}
           />
           <UserPopup
