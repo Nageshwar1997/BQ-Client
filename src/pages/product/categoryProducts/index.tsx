@@ -1,59 +1,47 @@
-import { useLocation } from "react-router-dom";
+import useQueryParams from "../../../hooks/useQueryParams";
 import { CATEGORY_IMAGE_DATA } from "./data";
-// import { useGetAllProducts } from "../../../api/product/product.service";
-import { useEffect, useState, useMemo } from "react";
-import { FilterIcon, UpDownArrowIcon } from "../../../icons";
-import Filters from "./Filters";
-import SortBy from "./SortBy";
+import { useGetAllProductsInfinite } from "../../../api/product/product.service";
+import { useEffect, useState } from "react";
+import { FilterIcon, LeftArrowIcon } from "../../../icons";
+import Filters from "../../../components/filters/Filters";
+import SortBy from "../../../components/sortBy";
 
 type TCategoryImage = { img: string; category: string };
 
 const CategoryProducts = () => {
-  const { pathname } = useLocation();
+  const { params } = useQueryParams();
   const [categoryImage, setCategoryImage] = useState<TCategoryImage | null>(
     null
   );
   const [showFilter, setShowFilter] = useState<boolean>(false);
   const [showSortBy, setShowSortBy] = useState<boolean>(false);
 
-  const paths = useMemo(
-    () =>
-      pathname
-        .split("/")
-        .filter((path) => path !== "")
-        .slice(1, 4),
-    [pathname]
-  );
+  const { levelOneCategory, levelTwoCategory, levelThreeCategory } = params;
 
   useEffect(() => {
-    const levelOneCat = CATEGORY_IMAGE_DATA[paths[0]];
+    const levelOneCat = CATEGORY_IMAGE_DATA[String(levelOneCategory)];
     const levelTwoCat = levelOneCat?.subCategories?.find(
-      (c) => c?.category === paths[1]
+      (c) => c?.category === levelTwoCategory
     );
     const levelThreeCat = levelTwoCat?.subCategories?.find(
-      (c) => c?.category === paths[2]
+      (c) => c?.category === levelThreeCategory
     );
     const finalCategoryImgData = levelThreeCat || levelTwoCat || levelOneCat;
 
     setCategoryImage(finalCategoryImgData || null);
-  }, [paths]);
+  }, [levelOneCategory, levelThreeCategory, levelTwoCategory]);
 
-  // const allProducts = useGetAllProducts();
+  const allProductsQuery = useGetAllProductsInfinite({
+    pageParams: { limit: 5 },
+    data: { requiredFields: ["title"] },
+    queryParams: {
+      ...(levelOneCategory && { category_1: levelOneCategory }),
+      ...(levelTwoCategory && { category_2: levelTwoCategory }),
+      ...(levelThreeCategory && { category_3: levelThreeCategory }),
+    },
+  });
 
-  // useEffect(() => {
-  //   allProducts.mutate({
-  //     data: {
-  //       requiredFields: ["title"],
-  //     },
-  //     params: { page: 1, limit: 10 },
-  //     queryParams: {
-  //       category_1: paths[0],
-  //       category_2: paths[1],
-  //       category_3: paths[2],
-  //     },
-  //   });
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [paths]);
+  console.log("allProductsQuery", allProductsQuery.data?.pages);
 
   return (
     <div className="lg:-mt-16 flex flex-col">
@@ -77,9 +65,10 @@ const CategoryProducts = () => {
               FILTER
             </span>
             <FilterIcon
-              className={`stroke-primary w-5 h-5 [&>path]:stroke-[1.5] transform transition-all duration-500 ${
+              className={`stroke-primary w-5 h-5 transform transition-all duration-500 ${
                 showFilter ? "scale-100 scale-x-[-1]" : ""
               }`}
+              strokeWidth={1.6}
             />
           </button>
           <button
@@ -92,23 +81,24 @@ const CategoryProducts = () => {
             <span className="uppercase text-sm text-nowrap sm:text-base text-primary">
               SORT BY
             </span>
-            <UpDownArrowIcon
-              className={`w-5 h-5 [&>path]:stroke-[1.6] transform transition-all duration-500 ${
+            <LeftArrowIcon
+              className={`w-5 h-5 transform transition-all duration-500 ${
                 showSortBy ? "scale-100 scale-x-[-1]" : ""
               }`}
+              strokeWidth={1.6}
             />
           </button>
         </div>
         <div className="grow bg-primary-inverted flex">
           <Filters
-            className={`sticky top-[118px] transform transition-all duration-500 ease-in-out overflow-hidden ${
+            className={`sticky top-[100px] lg:top-[118px] transform transition-all duration-500 ease-in-out overflow-hidden ${
               showFilter ? "w-[270px]" : "w-0"
             }`}
           />
 
           <div className="flex-1 bg-pink-300 p-4 min-h-[1000px]">Body</div>
           <SortBy
-            className={`sticky top-[118px] transform transition-all duration-500 ease-in-out overflow-hidden ${
+            className={`sticky top-[100px] lg:top-[118px] transform transition-all duration-500 ease-in-out overflow-hidden ${
               showSortBy ? "w-[200px]" : "w-0"
             }`}
           />

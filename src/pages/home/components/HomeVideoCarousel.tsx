@@ -9,7 +9,7 @@ import {
 import { useGetHomeVideos } from "../../../api/media/media.service";
 import ShowError from "../../../components/errors/ShowError";
 
-const VideoCarousel = () => {
+const HomeVideoCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [progress, setProgress] = useState(0);
@@ -84,11 +84,12 @@ const VideoCarousel = () => {
       {isLoading && !isError ? (
         <div className="w-full h-full bg-silver animate-pulse" />
       ) : !isLoading && isError ? (
-        <div className="w-full h-full text-center content-center border">
+        <div className="w-full h-full text-center content-center">
           <ShowError
             headingText="Unable to load videos"
             descriptionText="Please try again or refresh page"
-            showHrLine
+            showHrLine={true}
+            className="[&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase [&>p]:text-xs [&>p]:base:text-sm [&>p]:sm:text-base [&>p]:md:text-lg"
           />
         </div>
       ) : (
@@ -110,9 +111,15 @@ const VideoCarousel = () => {
               } transform -translate-y-1/2 bg-primary-50 hover:bg-primary p-3 rounded-full hidden group-hover:lg:block`}
             >
               {type === "prev" ? (
-                <LeftArrowIcon className="fill-primary-inverted w-4 h-4" />
+                <LeftArrowIcon
+                  className="stroke-tertiary-inverted w-5 h-5"
+                  strokeWidth={2.5}
+                />
               ) : (
-                <RightArrowIcon className="fill-primary-inverted w-4 h-4" />
+                <RightArrowIcon
+                  className="stroke-tertiary-inverted w-5 h-5"
+                  strokeWidth={2.5}
+                />
               )}
             </button>
           ))}
@@ -158,4 +165,4 @@ const VideoCarousel = () => {
   );
 };
 
-export default VideoCarousel;
+export default HomeVideoCarousel;

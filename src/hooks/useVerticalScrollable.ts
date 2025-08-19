@@ -1,51 +1,45 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from "react";
 import { VerticalScrollType } from "../types";
 
 const useVerticalScrollable = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
-
   const [showGradient, setShowGradient] = useState<VerticalScrollType>({
     top: false,
     bottom: false,
   });
 
   useEffect(() => {
-    const handleScroll = () => {
-      const container = containerRef.current;
-      if (container) {
-        const hasVerticalScroll =
-          container.scrollHeight > container.clientHeight;
-        const isAtBeginning = container.scrollTop === 0;
-        const isAtEnd =
-          container.scrollTop + container.clientHeight >=
-          container.scrollHeight - 1;
+    const container = containerRef.current;
+    if (!container) return;
 
-        if (hasVerticalScroll) {
-          setShowGradient({
-            top: !isAtBeginning,
-            bottom: !isAtEnd,
-          });
-        } else {
-          setShowGradient({ ...showGradient, top: false, bottom: false });
-        }
+    const checkScroll = () => {
+      const hasScroll = container.scrollHeight > container.clientHeight;
+      const isAtTop = container.scrollTop <= 0;
+      const isAtBottom =
+        Math.ceil(container.scrollTop + container.clientHeight) >=
+        container.scrollHeight;
+
+      if (hasScroll) {
+        setShowGradient({
+          top: !isAtTop,
+          bottom: !isAtBottom,
+        });
+      } else {
+        setShowGradient({ top: false, bottom: false });
       }
     };
 
-    const container = containerRef.current;
-    if (container) {
-      container.addEventListener("scroll", handleScroll);
-      handleScroll();
-    }
+    container.addEventListener("scroll", checkScroll);
+    window.addEventListener("resize", checkScroll); // for dynamic content resize
+    checkScroll();
 
     return () => {
-      if (container) {
-        container.removeEventListener("scroll", handleScroll);
-      }
+      container.removeEventListener("scroll", checkScroll);
+      window.removeEventListener("resize", checkScroll);
     };
-  }, [containerRef]);
+  }, []);
 
-  return [showGradient, containerRef];
+  return [showGradient, containerRef] as const;
 };
 
 export default useVerticalScrollable;

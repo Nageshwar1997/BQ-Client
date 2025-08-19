@@ -1,8 +1,8 @@
-import { useLocation } from "react-router-dom";
+import { ChangeEvent, useCallback, useState } from "react";
 import { CameraIcon, InfoIcon } from "../../../icons";
 import { ProfilePicInputProps } from "../../../types";
 import { toastErrorMessage } from "../../../utils/toasts";
-import { ChangeEvent, useCallback, useState } from "react";
+import useQueryParams from "../../../hooks/useQueryParams";
 
 const UploadProfile = ({
   name = "image",
@@ -36,7 +36,7 @@ const UploadProfile = ({
     },
     [onChange]
   );
-  const { pathname } = useLocation();
+  const { pathname } = useQueryParams();
   return (
     <div className="w-full space-y-1.5">
       <div
@@ -46,8 +46,8 @@ const UploadProfile = ({
           <div className="absolute inset-0 bg-gradient-to-br from-primary-inverted via-transparent to-gray-400 rounded-full blur-sm animate-pulse cursor-pointer" />
           <img
             src={
-              previewUrl ||
-              "https://ctruhcdn.azureedge.net/main-webiste/public/images/products/individuals/ctruh-platfrom/categories/character/image10.webp"
+              previewUrl || "/images/logo/BQ_white_logo.webp"
+              // "https://ctruhcdn.azureedge.net/main-webiste/public/images/products/individuals/ctruh-platfrom/categories/character/image10.webp"
             }
             alt="Profile Picture"
             className="object-cover bg-accent-duo rounded-full w-full h-full shadow-inner"
@@ -69,10 +69,10 @@ const UploadProfile = ({
         </label>
       </div>
       {errorText && (
-        <span className="w-full flex gap-1 justify-center items-center text-[11px] leading-tight mt-2 text-red-500 border">
+        <div className="w-full flex gap-1 justify-center items-center text-[11px] leading-tight mt-2 text-red-500 border">
           <InfoIcon className="w-3 h-3 md:w-4 md:h-4 fill-red-500" />
-          {errorText}
-        </span>
+          <span className="leading-none">{errorText}</span>
+        </div>
       )}
     </div>
   );

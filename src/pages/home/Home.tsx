@@ -2,12 +2,12 @@ import CategoriesGrid from "./components/categoriesGrid/CategoriesGrid";
 import DealForYou from "./components/DealForYou";
 import HomeHero from "./components/HomeHero";
 import SugarIconic from "./components/SugarIconic";
-import VideoCarousel from "./components/VideoCarousel";
+import HomeVideoCarousel from "./components/HomeVideoCarousel";
 
 const Home = () => {
   return (
     <div className="w-full h-full space-y-5 lg:space-y-10 lg:-mt-16">
-      <VideoCarousel />
+      <HomeVideoCarousel />
       <HomeHero />
       <CategoriesGrid />
       <DealForYou />

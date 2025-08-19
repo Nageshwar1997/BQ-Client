@@ -1,9 +1,15 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { QueryParams } from "../types";
 
 function useQueryParams() {
   const navigate = useNavigate();
   const params = useParams();
+  const { pathname } = useLocation();
+
+  const getPaths = () => {
+    const paths = pathname.split("/").filter((path) => path !== "");
+    return paths;
+  };
 
   const getParams = (): QueryParams => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -35,6 +41,9 @@ function useQueryParams() {
     setParams,
     removeParam,
     params,
+    paths: getPaths(),
+    pathname,
+    navigate,
   };
 }
 

@@ -1,27 +1,24 @@
 import { AxiosError } from "axios";
 import api from "../../configs/axios.instance.config";
 import { productRoutes } from "../api.routes";
-import { IProductPossibleBodyFields } from "../../types";
+import { TGetProductsParams } from "../types";
 
 export const get_all_products = async ({
   data,
-  params,
+  pageParams,
   queryParams,
-}: {
-  data?: IProductPossibleBodyFields;
-  params?: { page: number; limit: number };
-  queryParams?: Record<string, string>;
-}) => {
+}: TGetProductsParams) => {
   try {
     const { method, url } = productRoutes.getAllProducts;
     const response = await api.request({
       method,
       url,
-      data: {
-        populateFields: data?.populateFields, // shades, category, seller, reviews
-        requiredFields: data?.requiredFields, // requiredFields
+      params: {
+        ...pageParams,
+        ...queryParams,
+        populateFields: data?.populateFields,
+        requiredFields: data?.requiredFields,
       },
-      params: { ...params, ...queryParams }, // ✅ page & limit as query params
     });
 
     return response.data;
@@ -35,19 +32,17 @@ export const get_all_products = async ({
 
 export const get_product_by_id = async ({
   data,
-  params,
-}: {
-  data: IProductPossibleBodyFields;
-  params: { productId: string };
-}) => {
+  queryParams,
+}: TGetProductsParams) => {
   try {
     const { method, url } = productRoutes.getProductById;
     const response = await api.request({
       method,
-      url: `${url}/${params.productId}`,
-      data: {
-        populateFields: data?.populateFields, // shades, category, seller, reviews
-        requiredFields: data?.requiredFields, // requiredFields
+      url: `${url}/${queryParams?.productId}`,
+      params: {
+        ...queryParams,
+        populateFields: data?.populateFields,
+        requiredFields: data?.requiredFields,
       },
     });
     return response.data;

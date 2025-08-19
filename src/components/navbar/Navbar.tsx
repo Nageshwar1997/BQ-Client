@@ -10,17 +10,17 @@ import {
 } from "../../icons";
 import UserMenuIcons from "./components/UserMenuIcons";
 import { navbarCategoriesData } from "./data";
-import SearchInput from "./components/SearchInput";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import HoveredComponent from "./components/HoveredComponent";
 import Button from "../button/Button";
 import { BottomGradient } from "../Gradients";
+import useQueryParams from "../../hooks/useQueryParams";
 
 const Navbar = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navbarRef = useRef<HTMLDivElement>(null);
 
-  const { pathname } = useLocation();
+  const { paths, pathname } = useQueryParams();
 
   const [isMobileNavbarOpened, setIsMobileNavbarOpened] =
     useState<boolean>(false);
@@ -120,10 +120,14 @@ const Navbar = () => {
     };
   }, [isMobileNavbarOpened]);
 
+  const nonTransparent = ["product", "cart", "offers", "blogs"].some((val) =>
+    paths.includes(val)
+  );
+
   return (
     <div
       className={`h-16 lg:h-[100px] w-full flex justify-between items-center gap-3 lg:gap-0 xl:gap-5 sticky top-0 left-0 lg:-top-9 text-tertiary z-50 ${
-        isNavbarAtTop || isNavbarHovered
+        isNavbarAtTop || isNavbarHovered || nonTransparent
           ? "bg-tertiary-inverted shadow-lg shadow-primary-inverted-50"
           : "bg-transparent"
       }`}
@@ -142,7 +146,7 @@ const Navbar = () => {
           </p>
           <div className="flex items-center gap-3 text-xs">
             <p className="flex items-center gap-0.5 cursor-pointer lg:opacity-90 hover:opacity-100 transition-all duration-300">
-              <CashIcon className="w-3.5 h-3.5 pb-px [&>path]:stroke-secondary" />
+              <CashIcon className="w-3.5 h-3.5 pb-px stroke-secondary" />
               <span className="text-nowrap">BQ Cash</span>
             </p>
             <p className="flex items-center gap-0.5 cursor-pointer lg:opacity-90 hover:opacity-100 transition-all duration-300">
@@ -154,7 +158,7 @@ const Navbar = () => {
               <span className="text-nowrap">BQ Care</span>
             </p>
             <p className="flex items-center gap-0.5 cursor-pointer lg:opacity-90 hover:opacity-100 transition-all duration-300">
-              <TrackIcon className="w-3.5 h-3.5 pb-px [&>path]:stroke-secondary" />
+              <TrackIcon className="w-3.5 h-3.5 pb-px stroke-secondary" />
               <span className="text-nowrap">Track Orders</span>
             </p>
           </div>
@@ -170,11 +174,8 @@ const Navbar = () => {
               className="object-contain w-fit max-h-16 h-full sticky top-0 left-0"
             />
           </Link>
-          <div
-            className="h-full w-full flex items-center gap-7 justify-between pl-4 xl:pl-6 relative"
-            ref={navbarRef}
-          >
-            <div className="flex items-center gap-2 h-full">
+          <div className="h-full w-full flex items-center gap-7 justify-between pl-4 xl:pl-6 relative">
+            <div className="flex items-center gap-2 h-full" ref={navbarRef}>
               {levelOneCategories.map((item, index) => (
                 <Link
                   to={`/products${item.path}`}
@@ -196,12 +197,12 @@ const Navbar = () => {
                     onMouseEnter={() => handleMouseEnter(index)}
                   >
                     <p
-                      className={`${
+                      className={`text-tertiary ${
                         hoveredIndex === index
                           ? "bg-clip-text text-transparent bg-accent-duo"
                           : ""
                       } ${
-                        isNavbarAtTop || isNavbarHovered
+                        isNavbarAtTop || isNavbarHovered || nonTransparent
                           ? ""
                           : "light:text-tertiary-inverted"
                       }`}
@@ -209,14 +210,14 @@ const Navbar = () => {
                       {item.label}
                     </p>
                     <DropdownIcon
-                      className={`${
+                      className={`stroke-tertiary ${
                         hoveredIndex === index
-                          ? "rotate-180 [&>path]:stroke-blue-crayola-c"
+                          ? "rotate-180 !stroke-blue-crayola-c"
                           : ""
                       } ${
-                        isNavbarAtTop || isNavbarHovered
+                        isNavbarAtTop || isNavbarHovered || nonTransparent
                           ? ""
-                          : "light:[&>path]:stroke-tertiary-inverted"
+                          : "light:stroke-tertiary-inverted"
                       } transition-transform duration-300`}
                     />
                   </div>
@@ -229,20 +230,12 @@ const Navbar = () => {
                 </Link>
               ))}
             </div>
-            <SearchInput
-              name="desktopSearch"
-              className={`${
-                isNavbarAtTop || isNavbarHovered
-                  ? ""
-                  : "border dark:border-tertiary light:border-tertiary-inverted bg-transparent light:[&>input]:placeholder:text-tertiary-inverted dark:[&>input]:placeholder:text-tertiary light:[&_svg>path]:stroke-tertiary-inverted dark:[&_svg>path]:stroke-tertiary"
-              }`}
-              onChange={(e) => console.log(e.target.value)}
-            />
             <UserMenuIcons
+              closeOnNavbarLeave={!isNavbarHovered}
               className={`${
-                isNavbarAtTop || isNavbarHovered
+                isNavbarAtTop || isNavbarHovered || nonTransparent
                   ? ""
-                  : "light:[&_svg>path]:stroke-tertiary-inverted"
+                  : "light:[&_svg]:stroke-tertiary-inverted"
               }`}
             />
             {(hoveredIndex !== null || isContainerHovered) && (
@@ -265,15 +258,11 @@ const Navbar = () => {
           className="h-12 md:h-14 max-h-14 flex items-center justify-center lg:hidden"
         >
           <img
-            src="/images/logo/BQ.webp"
+            src="/images/logo/BQ_gradient_logo.webp"
             alt="Logo"
             className="object-cover w-fit h-full"
           />
         </Link>
-        <SearchInput
-          name="mobileSearch"
-          className="sm:!flex lg:!hidden h-7 md:h-8"
-        />
         <div className="lg:hidden flex items-center gap-3 base:gap-5">
           {!isMobileNavbarOpened && <UserMenuIcons />}
           <span
@@ -284,9 +273,9 @@ const Navbar = () => {
             }}
           >
             {isMobileNavbarOpened ? (
-              <CloseIcon className="[&>path]:stroke-tertiary w-6 h-6 md:w-8 md:h-8" />
+              <CloseIcon className="stroke-tertiary w-6 h-6 md:w-8 md:h-8" />
             ) : (
-              <MenuIcon className="[&>path]:stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
+              <MenuIcon className="stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
             )}
           </span>
         </div>
@@ -309,7 +298,7 @@ const Navbar = () => {
                     >
                       <p className="text-primary">{category.label}</p>
                       <DropdownIcon
-                        className={`[&>path]:stroke-2 ${
+                        className={`stroke-2 stroke-primary ${
                           isActive ? "rotate-180" : ""
                         }`}
                       />

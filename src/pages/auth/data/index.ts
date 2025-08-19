@@ -88,14 +88,14 @@ export const loginInputMapData: LoginInputMapDataProps[] = [
     label: "Email",
     type: "text",
     autoComplete: "email",
-    placeholder: "Enter your email address",
+    placeholder: "Enter your email",
   },
   {
     name: "phoneNumber",
     label: "Phone Number",
     type: "number",
     autoComplete: "tel",
-    placeholder: "Enter your phone number",
+    placeholder: "Enter your number",
   },
   {
     name: "password",

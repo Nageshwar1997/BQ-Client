@@ -8,15 +8,17 @@ const Footer = () => {
   const { theme } = useThemeStore();
   return (
     <div className="w-full">
-      <div className="w-full text-center space-y-6 py-6 md:px-4 lg:px-10 xl:px-20 lg:py-10">
+      <div className="w-full border-y border-y-primary-30 text-center space-y-6 py-6 md:px-4 lg:px-10 xl:px-20 lg:py-10">
         <div className="w-full flex flex-col md:flex-row gap-2 lg:gap-4 items-center justify-between">
           <div className="flex flex-col items-center md:items-start">
             <div className="flex items-center justify-center">
               <Link to="/">
                 <img
-                  src="/images/logo/BQ_white_logo.webp"
+                  src={`/images/logo/BQ_${
+                    theme === "dark" ? "white" : "black"
+                  }_logo.webp`}
                   alt="Logo"
-                  className="object-contain max-w-20 lg:max-w-24 w-full h-10 sm:h-12 lg:h-16 mix-blend-difference"
+                  className="object-contain max-w-20 lg:max-w-24 w-full h-10 sm:h-12 lg:h-16"
                 />
               </Link>
               <span className="mr-1 min-w-3">
@@ -63,7 +65,6 @@ const Footer = () => {
           ))}
         </div>
       </div>
-      <div className="border-b w-full border-silver opacity-30" />
       <div className="w-full flex flex-col lg:flex-row-reverse items-center justify-center gap-5 my-6">
         <div className="flex gap-5 items-center">
           {socialMediaLinks.map((item) => (

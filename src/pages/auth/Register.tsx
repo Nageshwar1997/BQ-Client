@@ -1,9 +1,13 @@
-import { RefObject, useState } from "react";
-import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { RegisterTextContent, registerInputMapData } from "./data";
-import { VerticalScrollType, RegisterFormInputProps } from "../../types";
+import {
+  RegisterFormInputProps,
+  TPasswordField,
+  TPasswordVisibility,
+} from "../../types";
 import AuthRobot from "./components/AuthRobot";
 import UploadProfile from "./components/UploadProfile";
 import TextDisplay from "../../components/TextDisplay";
@@ -11,7 +15,6 @@ import SocialAuth from "./components/SocialAuth";
 import Input from "../../components/input/Input";
 import Button from "../../components/button/Button";
 import { EyeIcon, EyeOffIcon } from "../../icons";
-import PhoneInput from "../../components/input/PhoneInput";
 import Checkbox from "../../components/input/Checkbox";
 import useVerticalScrollable from "../../hooks/useVerticalScrollable";
 import { BottomGradient, TopGradient } from "../../components/Gradients";
@@ -20,22 +23,23 @@ import { useRegisterUser } from "../../api/auth/auth.service";
 import LoadingPage from "../../components/loaders/LoadingPage";
 import DarkMode from "../../components/DarkMode";
 import { saveLocalToken, saveSessionToken } from "../../utils";
+import { PASSWORD_FIELDS } from "../../constants";
+import { useUserStore } from "../../store/user.store";
+import useQueryParams from "../../hooks/useQueryParams";
 
-interface PasswordVisibilityType {
-  password: boolean;
-  confirmPassword: boolean;
-}
 const Register = () => {
   const [showGradient, containerRef] = useVerticalScrollable();
-  const [showPasswords, setShowPasswords] = useState<PasswordVisibilityType>({
+  const [showPasswords, setShowPasswords] = useState<TPasswordVisibility>({
     password: false,
     confirmPassword: false,
   });
-  const navigate = useNavigate();
+  const { navigate } = useQueryParams();
+  const { setUser } = useUserStore();
 
   const userRegisterMutation = useRegisterUser();
 
   const {
+    control,
     watch,
     register,
     setValue,
@@ -45,7 +49,7 @@ const Register = () => {
     resolver: yupResolver(registerSchema), // Use yup resolver for validation
   });
 
-  const togglePasswordVisibility = (field: keyof PasswordVisibilityType) => {
+  const togglePasswordVisibility = (field: TPasswordField) => {
     setShowPasswords((prevState) => ({
       ...prevState,
       [field]: !prevState[field],
@@ -69,6 +73,9 @@ const Register = () => {
     userRegisterMutation.mutate(formData, {
       onSettled(data, error) {
         if (data && !error) {
+          if (data.user) {
+            setUser(data.user);
+          }
           if (bodyData.remember) {
             saveLocalToken(data?.token);
           } else {
@@ -89,15 +96,14 @@ const Register = () => {
       <AuthRobot />
       <DarkMode className="border absolute top-5 right-5 h-fit p-2 md:p-3 rounded-full bg-secondary-inverted [&_path]:!stroke-secondary z-10" />
       <div
-        ref={containerRef as RefObject<HTMLDivElement>}
+        ref={containerRef}
         className={`w-full lg:w-1/2 flex flex-col items-center gap-4 overflow-hidden overflow-y-scroll ${
-          !(showGradient as VerticalScrollType).bottom &&
-          !(showGradient as VerticalScrollType).top
+          !showGradient.bottom && !showGradient.top
             ? "justify-center"
             : "justify-start"
         }`}
       >
-        {(showGradient as VerticalScrollType).top && <TopGradient />}
+        {showGradient.top && <TopGradient />}
         <form
           onSubmit={handleSubmit(onSubmit)}
           autoComplete="off"
@@ -110,89 +116,88 @@ const Register = () => {
           <SocialAuth />
           <div className="w-full max-w-[400px] lg:max-w-[500px] sm:w-[90%] lg:w-[500px] border-gradient p-px rounded-3xl overflow-hidden mx-auto">
             <div className="shadow-light-dark-soft bg-platinum-black p-6 md:px-8 rounded-3xl space-y-6">
-              <div className="">
-                <UploadProfile
-                  name="profilePic"
-                  className="!h-56"
-                  errorText={errors?.profilePic?.message}
-                  previewImage={
-                    watch("profilePic") instanceof File
-                      ? URL.createObjectURL(watch("profilePic") as File)
-                      : ""
+              <UploadProfile
+                name="profilePic"
+                className="!h-56"
+                errorText={errors?.profilePic?.message}
+                previewImage={
+                  watch("profilePic") instanceof File
+                    ? URL.createObjectURL(watch("profilePic") as File)
+                    : ""
+                }
+                onChange={(file) => {
+                  if (file) {
+                    setValue("profilePic", file, {
+                      shouldValidate: true,
+                    });
                   }
-                  onChange={(file) => {
-                    if (file) {
-                      setValue("profilePic", file, {
-                        shouldValidate: true,
-                      });
-                    }
-                  }}
-                />
-              </div>
+                }}
+              />
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-5 lg:gap-y-6">
-                {registerInputMapData?.map((field, index) => {
-                  const { label, name, type, placeholder } = field;
-                  return (
-                    <div
-                      key={index}
-                      className={`${
-                        ![
-                          "firstName",
-                          "lastName",
-                          "password",
-                          "confirmPassword",
-                        ].includes(name) && "lg:col-span-2"
-                      }`}
-                    >
-                      {name === "phoneNumber" ? (
-                        <PhoneInput
-                          label={label}
-                          type={type}
-                          placeholder={placeholder}
-                          name={name}
-                          register={{ ...register(name) }}
-                          errorText={errors[name]?.message}
-                        />
-                      ) : (
-                        <Input
-                          type={
-                            ["password", "confirmPassword"].includes(name)
-                              ? showPasswords[
-                                  name as keyof PasswordVisibilityType
-                                ]
-                                ? "text"
-                                : type
-                              : type
-                          }
-                          label={label}
-                          placeholder={placeholder}
-                          name={name}
-                          register={{ ...register(name) }}
-                          errorText={errors[name]?.message}
-                          icon={
-                            ["password", "confirmPassword"].includes(name) &&
-                            (showPasswords[
-                              name as keyof PasswordVisibilityType
-                            ] ? (
-                              <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-                            ) : (
-                              <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-                            ))
-                          }
-                          iconClick={() =>
-                            togglePasswordVisibility(
-                              name as keyof PasswordVisibilityType
-                            )
-                          }
-                        />
-                      )}
-                    </div>
-                  );
-                })}
+                {registerInputMapData?.map((input, index) => (
+                  <div
+                    key={index}
+                    className={`${
+                      !["firstName", "lastName", ...PASSWORD_FIELDS].includes(
+                        input.name
+                      )
+                        ? "lg:col-span-2"
+                        : ""
+                    }`}
+                  >
+                    <Input
+                      inputProps={{
+                        name: input.name,
+                        placeholder: input.placeholder,
+                        autoComplete: input.autoComplete,
+                        type: PASSWORD_FIELDS.includes(
+                          input.name as TPasswordField
+                        )
+                          ? showPasswords[input.name as TPasswordField]
+                            ? "text"
+                            : input.type
+                          : input.type,
+                      }}
+                      label={input.label}
+                      register={register(input.name)}
+                      error={errors[input.name]?.message}
+                      icons={{
+                        ...(input.name === "phoneNumber" && {
+                          left: { text: "+91" },
+                        }),
+                        ...(PASSWORD_FIELDS.includes(
+                          input.name as TPasswordField
+                        ) && {
+                          right: {
+                            icon:
+                              PASSWORD_FIELDS.includes(
+                                input.name as TPasswordField
+                              ) &&
+                              (showPasswords[input.name as TPasswordField] ? (
+                                <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                              ) : (
+                                <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                              )),
+                            onClick: () =>
+                              togglePasswordVisibility(
+                                input.name as TPasswordField
+                              ),
+                          },
+                        }),
+                      }}
+                    />
+                  </div>
+                ))}
               </div>
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">
-                  <Checkbox register={{ ...register("remember") }} />
+                  <Controller
+                    name="remember"
+                    control={control}
+                    render={({ field }) => (
+                      <Checkbox register={field} checked={field.value} />
+                    )}
+                  />
                   <span className="text-sm text-primary-50 font-medium">
                     Remember me
                   </span>
@@ -218,7 +223,7 @@ const Register = () => {
             </div>
           </div>
         </form>
-        {(showGradient as VerticalScrollType).bottom && <BottomGradient />}
+        {showGradient.bottom && <BottomGradient />}
       </div>
     </div>
   );

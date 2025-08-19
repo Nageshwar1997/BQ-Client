@@ -1,11 +1,17 @@
+import { ChangeEvent } from "react";
+
 const Checkbox = ({
   register,
   className = "",
   labelClassName = "",
+  checked = false,
+  onChange,
 }: {
   register?: object;
   className?: string;
   labelClassName?: string;
+  checked?: boolean;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }) => {
   return (
     <label
@@ -15,6 +21,8 @@ const Checkbox = ({
         name="remember"
         type="checkbox"
         className="sr-only peer outline-none"
+        checked={checked}
+        onChange={onChange}
         {...register}
       />
       <div

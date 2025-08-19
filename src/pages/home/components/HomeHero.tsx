@@ -34,7 +34,7 @@ const HomeHero = () => {
               pattern="secondary"
               content={"Register Now"}
               rightIcon={
-                <RightArrowIcon className="w-5 h-5 fill-secondary-inverted" />
+                <RightArrowIcon className="w-5 h-5 stroke-secondary-inverted" />
               }
               className="py-4 !px-6 !gap-3"
             />

@@ -1,11 +1,17 @@
 import {
-  ChangeEvent,
-  HTMLInputAutoCompleteAttribute,
-  KeyboardEvent,
+  InputHTMLAttributes,
+  ReactElement,
   ReactNode,
+  RefObject,
   SVGProps,
+  TextareaHTMLAttributes,
+  VideoHTMLAttributes,
 } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
+
+export interface ClassName {
+  className?: string;
+}
 
 export type ThemeType = "light" | "dark";
 
@@ -14,36 +20,40 @@ export type ThemeStoreType = {
   toggleTheme: () => void;
 };
 
-export interface ProfilePicInputProps {
+export interface ProfilePicInputProps extends ClassName {
   previewUrl?: string;
   previewImage?: string;
   name?: string;
-  className?: string;
   errorText?: string;
   onChange: (file: File | null) => void;
 }
 
-export interface InputProps {
-  type?: string;
-  name?: string;
-  value?: string;
-  label?: string;
-  icon?: ReactNode;
-  readOnly?: boolean;
-  errorText?: string;
-  className?: string;
-  placeholder?: string;
-  successText?: string;
-  iconClick?: () => void;
+export type TFile = "image" | "video";
+
+export type TMediaOption = { type: TFile; url: string };
+
+interface TBaseInput extends ClassName {
   containerClassName?: string;
+  icons?: { left?: TInputIcon; right?: Omit<TInputIcon, "text"> };
   register?: UseFormRegisterReturn;
-  onChange?: (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
-  onKeyDown?: (
-    e: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
-  autoComplete?: HTMLInputAutoCompleteAttribute | undefined;
+  label?: string;
+  error?: string;
+}
+
+type TInputIcon = { text?: string; icon?: ReactNode; onClick?: () => void };
+
+export interface IInput extends TBaseInput {
+  inputProps: InputHTMLAttributes<HTMLInputElement>;
+}
+export interface ITextArea extends Omit<TBaseInput, "icons"> {
+  textAreaProps: TextareaHTMLAttributes<HTMLTextAreaElement>;
+}
+
+export interface IFileInput extends Omit<TBaseInput, "error"> {
+  fileInputProps: Omit<InputHTMLAttributes<HTMLInputElement>, "type">;
+  errors?: string[];
+  handleRemoveImage?: (index: number) => void;
+  previews?: TMediaOption[];
 }
 
 export interface TextItem {
@@ -52,9 +62,8 @@ export interface TextItem {
   break?: boolean;
 }
 
-export interface TextDisplayProps {
+export interface TextDisplayProps extends ClassName {
   content: TextItem[];
-  className?: string;
   contentClassName?: string;
 }
 
@@ -68,6 +77,12 @@ export interface RegisterFormInputProps {
   profilePic?: File; // Correctly type the file input
   remember?: boolean;
 }
+
+export type TPasswordField = keyof Pick<
+  RegisterFormInputProps,
+  "password" | "confirmPassword"
+>;
+export type TPasswordVisibility = Record<TPasswordField, boolean>;
 
 export interface RegisterInputMapDataProps {
   name: keyof RegisterFormInputProps;
@@ -95,11 +110,10 @@ export interface LoginInputMapDataProps {
   autoComplete?: string;
 }
 
-export interface RadioProps {
+export interface RadioProps extends ClassName {
   value: string;
   onChange: (value: string) => void;
   options: { label: string; value: string }[];
-  className?: string;
 }
 
 export interface VerticalScrollType {
@@ -153,11 +167,17 @@ export interface LevelOneCategoryType extends CategoryType {
 }
 
 export interface ShadeType {
-  _id?: string;
   shadeName: string;
   colorCode: string;
   stock: number | undefined;
   images: (File | string)[];
+}
+
+export interface FetchedShadeType extends ShadeType {
+  _id: string;
+  images: string[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ProductType {
@@ -196,6 +216,29 @@ export interface PopulatedCategory {
   };
 }
 
+export interface ReviewType {
+  rating: number;
+  title: string;
+  comment: string;
+  images: (string | File)[];
+  videos: (string | File)[];
+  user: string;
+  product: string;
+  likes: string[];
+  dislikes: string[];
+  helpful: string[];
+}
+
+export interface FetchedReviewType
+  extends Omit<ReviewType, "images" | "videos" | "user"> {
+  _id: string;
+  images: string[];
+  videos: string[];
+  user: UserTypes;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface FetchedProductType extends ProductType {
   _id: string;
   createdAt: string;
@@ -205,24 +248,94 @@ export interface FetchedProductType extends ProductType {
   sellingPrice: number;
   originalPrice: number;
   category: PopulatedCategory;
-  shades: ShadeType[];
+  shades: FetchedShadeType[];
+  reviews: FetchedReviewType[];
 }
 
-export interface ReviewType {
-  rating: number;
-  title: string;
-  comment: string;
-  images: (string | File)[];
-  videos: (string | File)[];
-  user: string;
+export type TDropdownOption = {
+  name: string;
+  value: string;
+  disabled?: boolean;
+};
+export interface TDropdownOptions extends ClassName {
+  options: TDropdownOption[];
+  selected: string;
+  onChange: (opt: TDropdownOption) => void;
+  onSelect?: () => void;
 }
 
-export interface IProductPossibleBodyFields {
-  requiredFields?: (keyof FetchedProductType)[];
-  populateFields?: {
-    shades?: (keyof ShadeType | "images")[];
-    seller?: Exclude<keyof UserTypes, "password">[];
-    category?: (keyof CategoryType | "parentCategory")[];
-    reviews?: (keyof ReviewType | "images" | "videos")[];
-  };
+export interface TDropdown extends ClassName {
+  title: string | ReactElement;
+  icons?: Partial<Record<"left" | "right", ReactElement>>;
+  children: ReactElement<{ onSelect?: () => void }>;
+  closeOnOutsideClick?: boolean;
+  isAbsolute?: boolean;
+  showShadow?: boolean;
+  closeOnOptionClick?: boolean;
+  options?: TDropdownOption[];
+  isRounded?: boolean;
+  defaultOpen?: boolean;
 }
+
+export interface ICarouselOptions {
+  data: TMediaOption[];
+}
+
+export interface TMediaCarousel extends ClassName, ICarouselOptions {
+  selected?: number | null;
+  onClick: (index: number) => void;
+  thumbnailRefs?: RefObject<(HTMLDivElement | null)[]>;
+  handleRemove?: (index: number) => void;
+  gradientClassName?: string;
+}
+
+export interface IVideo {
+  videoProps?: VideoHTMLAttributes<HTMLVideoElement>;
+}
+
+export interface IVideoPlayer extends ClassName, IVideo {}
+
+export interface IMediaCarouselWithParentMedia
+  extends ClassName,
+    IVideo,
+    ICarouselOptions {
+  selected?: number | null;
+  needButtonControls?: boolean;
+  handleRemove?: (index: number) => void;
+}
+
+export type TPossibleTimeFormats =
+  | "DD-MM-YYYY"
+  | "DD/MM/YYYY"
+  | "LT"
+  | "LTS"
+  | "L"
+  | "LL"
+  | "LLL"
+  | "LLLL"
+  | "l"
+  | "ll"
+  | "lll"
+  | "llll";
+
+export type TRegexes =
+  | "noSpace"
+  | "singleSpace"
+  | "hexCode"
+  | "date"
+  | "name"
+  | "password"
+  | "email"
+  | "phone"
+  | "phoneStart"
+  | "phoneExactLength"
+  | "onlyDigits"
+  | "onlyLetters"
+  | "onlyUppercase"
+  | "onlyLowercase"
+  | "atLeastOneDigit"
+  | "onlyLettersAndSpaces"
+  | "atLeastOneLowercaseLetter"
+  | "atLeastOneSpecialCharacter"
+  | "atLeastOneUppercaseLetter"
+  | "onlyLettersAndSpacesAndDots";

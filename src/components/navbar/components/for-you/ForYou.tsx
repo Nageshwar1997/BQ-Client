@@ -31,7 +31,9 @@ const ForYou = () => {
                     ["offers", "blogs"].includes(category.category)
                       ? category.path
                       : `/products${category.path}${
-                          category.category === "new" ? "/new_arrivals" : "/sugar_play"
+                          category.category === "new"
+                            ? "/new_arrivals"
+                            : "/sugar_play"
                         }`
                   }
                   className="flex flex-col gap-2 p-3 hover:bg-platinum-black rounded-xl cursor-pointer group relative"
@@ -47,11 +49,12 @@ const ForYou = () => {
                   <div className="relative max-w-[250px] h-[150px] overflow-hidden rounded-lg group-hover:shadow-sm group-hover:shadow-primary-inverted">
                     {playingVideoIndex === index ? (
                       <VideoPlayer
-                        className="w-full h-full object-cover"
-                        videoUrl={category.videoUrl as string}
-                        posterUrl={category.thumbnail}
-                        autoPlay={true}
-                        isMuted={true}
+                        videoProps={{
+                          src: category.videoUrl,
+                          poster: category.thumbnail,
+                          muted: true,
+                          loop: true,
+                        }}
                       />
                     ) : (
                       <img
@@ -89,11 +92,12 @@ const ForYou = () => {
                 <div className="relative max-w-[200px] h-[120px] border border-primary-10 w-1/2 sm:w-1/3 overflow-hidden rounded-lg bg-platinum-black group-hover:bg-smoke-eerie flex items-center justify-center">
                   {playingVideoIndex === index ? (
                     <VideoPlayer
-                      videoUrl={category.videoUrl as string}
-                      posterUrl={category.thumbnail}
-                      className="w-full h-full object-cover rounded-md"
-                      autoPlay={true}
-                      isMuted={true}
+                      videoProps={{
+                        src: category.videoUrl,
+                        poster: category.thumbnail,
+                        muted: true,
+                        loop: true,
+                      }}
                     />
                   ) : (
                     <>

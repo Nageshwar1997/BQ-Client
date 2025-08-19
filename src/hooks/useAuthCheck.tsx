@@ -1,4 +1,3 @@
-// src/hooks/useAuthCheck.ts
 import { useEffect } from "react";
 import { useGetUserDetails } from "../api/user/user.service";
 import { useUserStore } from "../store/user.store";
