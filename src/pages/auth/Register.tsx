@@ -116,25 +116,23 @@ const Register = () => {
           <SocialAuth />
           <div className="w-full max-w-[400px] lg:max-w-[500px] sm:w-[90%] lg:w-[500px] border-gradient p-px rounded-3xl overflow-hidden mx-auto">
             <div className="shadow-light-dark-soft bg-platinum-black p-6 md:px-8 rounded-3xl space-y-6">
-              <div className="">
-                <UploadProfile
-                  name="profilePic"
-                  className="!h-56"
-                  errorText={errors?.profilePic?.message}
-                  previewImage={
-                    watch("profilePic") instanceof File
-                      ? URL.createObjectURL(watch("profilePic") as File)
-                      : ""
+              <UploadProfile
+                name="profilePic"
+                className="!h-56"
+                errorText={errors?.profilePic?.message}
+                previewImage={
+                  watch("profilePic") instanceof File
+                    ? URL.createObjectURL(watch("profilePic") as File)
+                    : ""
+                }
+                onChange={(file) => {
+                  if (file) {
+                    setValue("profilePic", file, {
+                      shouldValidate: true,
+                    });
                   }
-                  onChange={(file) => {
-                    if (file) {
-                      setValue("profilePic", file, {
-                        shouldValidate: true,
-                      });
-                    }
-                  }}
-                />
-              </div>
+                }}
+              />
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-5 lg:gap-y-6">
                 {registerInputMapData?.map((input, index) => (
                   <div
