@@ -138,7 +138,7 @@ const UserMenuIcons = ({
         {!paths.includes("search") && (
           <SearchIcon
             onClick={() => setIsOpen(true)}
-            className="stroke-tertiary w-5 h-5 md:w-6 md:h-6"
+            className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6"
           />
         )}
         <div className="relative" ref={userPopupRef}>
@@ -153,9 +153,9 @@ const UserMenuIcons = ({
             onClose={() => setOpenUserPopup(false)}
           />
         </div>
-        <BuildingIcon className="stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
-        <ShoppingBag className="stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
-        <HeartIcon className="stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
+        <BuildingIcon className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
+        <ShoppingBag className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
+        <HeartIcon className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
         <DarkMode />
       </div>
     </>
