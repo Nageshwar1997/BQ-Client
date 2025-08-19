@@ -231,10 +231,11 @@ const Navbar = () => {
               ))}
             </div>
             <UserMenuIcons
+              closeOnNavbarLeave={!isNavbarHovered}
               className={`${
                 isNavbarAtTop || isNavbarHovered || nonTransparent
                   ? ""
-                  : "light:[&_svg>path]:stroke-tertiary-inverted"
+                  : "light:[&_svg]:stroke-tertiary-inverted"
               }`}
             />
             {(hoveredIndex !== null || isContainerHovered) && (
