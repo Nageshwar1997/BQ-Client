@@ -19,10 +19,10 @@ import useQueryParams from "../../hooks/useQueryParams";
 import LoadingPage from "../loaders/LoadingPage";
 import { useUserStore } from "../../store/user.store";
 
-const LoginForm = ({ navigationPath }: { navigationPath?: string }) => {
+const LoginForm = () => {
   const [loginMethod, setLoginMethod] = useState<LoginTypes>("email");
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const { removeParam, queryParams, navigate, paths } = useQueryParams();
+  const { removeParam, queryParams, paths } = useQueryParams();
   const { setUser } = useUserStore();
 
   const userLoginMutation = useLoginUser();
@@ -80,11 +80,8 @@ const LoginForm = ({ navigationPath }: { navigationPath?: string }) => {
           } else {
             saveSessionToken(data?.token);
           }
-          if (queryParams.login === "true" || navigationPath) {
-            setTimeout(() => {
-              if (queryParams.login === "true") removeParam("login");
-              if (navigationPath) navigate(navigationPath);
-            }, 500);
+          if (queryParams.login === "true") {
+            removeParam("login");
           }
         }
         if (error) {
