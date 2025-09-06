@@ -34,6 +34,7 @@ export type TMediaOption = { type: TFile; url: string };
 
 interface TBaseInput extends ClassName {
   containerClassName?: string;
+  needRef?: boolean;
   icons?: { left?: TInputIcon; right?: Omit<TInputIcon, "text"> };
   register?: UseFormRegisterReturn;
   label?: string;
