@@ -1,4 +1,5 @@
 import { memo, useEffect, useRef } from "react";
+import useQueryParams from "../../../../../hooks/useQueryParams";
 
 const CategoryCard = memo(
   ({
@@ -6,14 +7,17 @@ const CategoryCard = memo(
     description,
     className = "",
     images,
+    category,
     intervalDuration = 10000,
   }: {
     title: string;
     description: string;
     className?: string;
+    category: string;
     images: { img: string }[];
     intervalDuration: number;
   }) => {
+    const { navigate } = useQueryParams();
     const imageRef = useRef<HTMLImageElement>(null);
     const intervalRef = useRef<number | null>(null);
 
@@ -45,6 +49,7 @@ const CategoryCard = memo(
     return (
       <div
         className={`relative border-rounded-corners-gradient shadow-light-dark-soft cursor-pointer rounded-3xl overflow-hidden group hover:shadow-xl ${className}`}
+        onClick={() => navigate(`/products/${category}`)}
         onMouseEnter={stopImageRotation}
         onMouseLeave={startImageRotation}
       >
