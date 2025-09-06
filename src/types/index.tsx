@@ -198,6 +198,31 @@ export interface ProductType {
   shades?: ShadeType[];
 }
 
+export type TCartProduct = {
+  _id: string;
+  cart: string;
+  product: Pick<
+    FetchedProductType,
+    | "_id"
+    | "title"
+    | "brand"
+    | "originalPrice"
+    | "sellingPrice"
+    | "discount"
+    | "commonImages"
+  >;
+  shade?: Pick<FetchedShadeType, "_id" | "shadeName" | "images">;
+  quantity: number;
+};
+
+export interface ICart {
+  _id: string;
+  charges: number;
+  createdAt: string;
+  updatedAt: string;
+  products: TCartProduct[];
+}
+
 export interface PopulatedCategory {
   _id: string;
   name: string;

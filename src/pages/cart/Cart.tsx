@@ -1,50 +1,48 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useGetUserCart } from "../../api/cart/cart.service";
 import Button from "../../components/button/Button";
-import { MinusIcon, PlusIcon, RightArrowIcon, TrashIcon } from "../../icons";
-import { FetchedProductType } from "../../types";
-import { toINRCurrency } from "../../utils";
+import { RightArrowIcon } from "../../icons";
+import CartItem from "./children/CartItem";
+import { ICart, TCartProduct } from "../../types";
 
 const Cart = () => {
-  const cartItems = [
-    {
-      id: 1,
-      name: "SUGAR POP Cool Essence Roll on Deodorant",
-      shade: "50ml",
-      price: 599,
-      qty: 1,
-      image:
-        "https://www.sugarcosmetics.com/cdn/shop/files/SUGAR-POP-Cool-Essence-Roll-on-Deodorant-50ml.jpg?v=1754482944&width=360",
-    },
-    {
-      id: 2,
-      name: "Matte Foundation",
-      shade: "Warm Beige",
-      price: 899,
-      qty: 5,
-      image:
-        "https://www.sugarcosmetics.com/cdn/shop/files/Kohl-Of-Honour-Intense-Kajal-3_d0e96d7c.jpg?v=1750675085&width=360",
-    },
-  ];
-
   const { data, isLoading, isError } = useGetUserCart();
 
-  const subtotal = cartItems.reduce(
-    (acc, item) => acc + item.price * item.qty,
-    0
-  );
+  const [products, setProducts] = useState<TCartProduct[]>([]);
+
+  const cart: ICart = data?.cart || {};
+
+  useEffect(() => {
+    if (cart.products) {
+      setProducts(cart.products.map((p) => ({ ...p })));
+    }
+  }, [cart.products]);
+
+  // subtotal calculation
+  const subtotal = useMemo(() => {
+    return products.reduce(
+      (acc, item) => acc + item?.product?.sellingPrice * item?.quantity,
+      0
+    );
+  }, [products]);
+
   const shipping = subtotal > 1500 ? 0 : 99;
   const total = subtotal + shipping;
 
-  const cart = useMemo(() => data?.cart || {}, [data?.cart]);
+  // quantity change handler
+  const handleQuantityChange = (id: string, newQty: number) => {
+    setProducts((prev) =>
+      prev.map((item) =>
+        item._id === id ? { ...item, quantity: newQty } : item
+      )
+    );
+  };
 
-  console.log("cart", cart);
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Something went wrong</p>;
 
-  const products = useMemo(() => cart?.products || [], [cart?.products]);
-  console.log("products", products);
   return (
     <div className="min-h-[50dvh] bg-primary-inverted p-4 lg:p-8">
-      {isLoading ? <></> : isError ? <></> : null}
       <div className="flex flex-col lg:flex-row gap-4">
         {/* Left - Cart Items */}
         <div className="flex-1 p-6">
@@ -53,67 +51,11 @@ const Cart = () => {
           </h2>
           <div className="h-full space-y-6">
             {products.map((item) => (
-              <div
-                key={item?._id}
-                className="p-2 flex items-center gap-4 border shadow-md shadow-primary-10 border-primary-30 rounded-xl relative"
-              >
-                <div className="space-y-2.5">
-                  <img
-                    src={
-                      item?.shade?.images?.[0] ||
-                      item?.product?.commonImages?.[0]
-                    }
-                    alt={item?.shade?.shadeName || item?.product?.title}
-                    className="w-24 h-24 object-cover rounded-sm shadow"
-                  />
-                  <div className="grow w-24 flex items-center justify-center gap-3">
-                    <button className="w-6 h-6 flex items-center justify-center rounded-full border border-primary-30 hover:bg-primary-30 transition">
-                      <MinusIcon
-                        className="w-4 h-4 stroke-tertiary hover:stroke-secondary"
-                        strokeWidth={2.5}
-                      />
-                    </button>
-                    <span className="text-secondary font-medium">
-                      {item.quantity}
-                    </span>
-                    <button className="w-6 h-6 flex items-center justify-center rounded-full border border-primary-30 hover:bg-primary-30 transition">
-                      <PlusIcon
-                        className="w-4 h-4 stroke-tertiary hover:stroke-secondary"
-                        strokeWidth={2.5}
-                      />
-                    </button>
-                  </div>
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-base font-medium text-primary line-clamp-1">
-                    {item?.product?.title}
-                  </h3>
-                  {item?.shade && (
-                    <p className="text-[13px] text-tertiary">
-                      {item?.shade?.shadeName}
-                    </p>
-                  )}
-                  <p className="text-[13px] text-tertiary">
-                    {item?.product?.brand}
-                  </p>
-                  <p className="text-sm font-medium text-primary">
-                    Price: {toINRCurrency(item?.product?.sellingPrice)}
-                  </p>
-                  <p className="text-sm font-semibold text-primary">
-                    Total:{" "}
-                    {toINRCurrency(item?.product?.sellingPrice * item.quantity)}
-                  </p>
-
-                  <Button
-                    content="Remove"
-                    pattern="primary"
-                    className="!w-fit !rounded !px-3 !py-1 mt-1 !text-sm gap-2"
-                    rightIcon={
-                      <TrashIcon className="w-[14px] h-[14px] stroke-white" />
-                    }
-                  />
-                </div>
-              </div>
+              <CartItem
+                key={item._id}
+                item={item}
+                onQuantityChange={handleQuantityChange}
+              />
             ))}
           </div>
         </div>
