@@ -1,5 +1,9 @@
+import { useMemo } from "react";
+import { useGetUserCart } from "../../api/cart/cart.service";
 import Button from "../../components/button/Button";
 import { MinusIcon, PlusIcon, RightArrowIcon, TrashIcon } from "../../icons";
+import { FetchedProductType } from "../../types";
+import { toINRCurrency } from "../../utils";
 
 const Cart = () => {
   const cartItems = [
@@ -23,6 +27,8 @@ const Cart = () => {
     },
   ];
 
+  const { data, isLoading, isError } = useGetUserCart();
+
   const subtotal = cartItems.reduce(
     (acc, item) => acc + item.price * item.qty,
     0
@@ -30,8 +36,15 @@ const Cart = () => {
   const shipping = subtotal > 1500 ? 0 : 99;
   const total = subtotal + shipping;
 
+  const cart = useMemo(() => data?.cart || {}, [data?.cart]);
+
+  console.log("cart", cart);
+
+  const products = useMemo(() => cart?.products || [], [cart?.products]);
+  console.log("products", products);
   return (
     <div className="min-h-[50dvh] bg-primary-inverted p-4 lg:p-8">
+      {isLoading ? <></> : isError ? <></> : null}
       <div className="flex flex-col lg:flex-row gap-4">
         {/* Left - Cart Items */}
         <div className="flex-1 p-6">
@@ -39,15 +52,18 @@ const Cart = () => {
             Your Cart
           </h2>
           <div className="h-full space-y-6">
-            {cartItems.map((item) => (
+            {products.map((item) => (
               <div
-                key={item.id}
+                key={item?._id}
                 className="p-2 flex items-center gap-4 border shadow-md shadow-primary-10 border-primary-30 rounded-xl relative"
               >
                 <div className="space-y-2.5">
                   <img
-                    src={item.image}
-                    alt={item.name}
+                    src={
+                      item?.shade?.images?.[0] ||
+                      item?.product?.commonImages?.[0]
+                    }
+                    alt={item?.shade?.shadeName || item?.product?.title}
                     className="w-24 h-24 object-cover rounded-sm shadow"
                   />
                   <div className="grow w-24 flex items-center justify-center gap-3">
@@ -58,7 +74,7 @@ const Cart = () => {
                       />
                     </button>
                     <span className="text-secondary font-medium">
-                      {item.qty}
+                      {item.quantity}
                     </span>
                     <button className="w-6 h-6 flex items-center justify-center rounded-full border border-primary-30 hover:bg-primary-30 transition">
                       <PlusIcon
@@ -70,15 +86,22 @@ const Cart = () => {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-base font-medium text-primary line-clamp-1">
-                    {item.name}
+                    {item?.product?.title}
                   </h3>
-                  <p className="text-[13px] text-tertiary">{item.shade}</p>
-                  <p className="text-[13px] text-tertiary">SUGAR</p>
+                  {item?.shade && (
+                    <p className="text-[13px] text-tertiary">
+                      {item?.shade?.shadeName}
+                    </p>
+                  )}
+                  <p className="text-[13px] text-tertiary">
+                    {item?.product?.brand}
+                  </p>
                   <p className="text-sm font-medium text-primary">
-                    Price: ₹{item.price}
+                    Price: {toINRCurrency(item?.product?.sellingPrice)}
                   </p>
                   <p className="text-sm font-semibold text-primary">
-                    Total: ₹{item.price * 5}
+                    Total:{" "}
+                    {toINRCurrency(item?.product?.sellingPrice * item.quantity)}
                   </p>
 
                   <Button
