@@ -30,3 +30,7 @@ export const reviewRoutes = {
   updateLikeDislikeHelpful: { method: "PATCH", url: "/reviews" },
   getReviewsByProductId: { method: "GET", url: "/reviews" },
 };
+
+export const cartRoutes = {
+  addProductToCart: { method: "POST", url: "cart-products/add" },
+};

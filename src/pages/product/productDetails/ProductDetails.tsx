@@ -17,10 +17,18 @@ import ShowError from "../../../components/errors/ShowError";
 import EmptyData from "../../../components/empty-data/EmptyData";
 import RatingBars from "./children/RatingBars";
 import ReviewsMedia from "./children/ReviewsMedia";
+import { useAddProductToCart } from "../../../api/cart/cart.service";
+import { useUserStore } from "../../../store/user.store";
 
 const ProductDetails = () => {
-  const { params, navigate } = useQueryParams();
+  const { params, setParams, navigate } = useQueryParams();
   const [selectedShadeIdx, setSelectedShadeIdx] = useState<null | number>(null);
+  const { isAuthenticated } = useUserStore();
+  const {
+    mutateAsync,
+    isPending,
+    isError: addToCartError,
+  } = useAddProductToCart();
 
   const { data, isLoading, isError } = useGetProductById({
     queryParams: { productId: params.productId ?? "" },
@@ -45,6 +53,15 @@ const ProductDetails = () => {
   const currentShade = useMemo(() => {
     return product?.shades?.[selectedShadeIdx || 0];
   }, [product?.shades, selectedShadeIdx]);
+
+  const handleAddToCart = () => {
+    if (!isAuthenticated) {
+      setParams({ login: "true" });
+      return;
+    }
+
+    mutateAsync(params.productId ?? "");
+  };
 
   return (
     <div className="w-full h-auto flex flex-col gap-8 p-8">
@@ -120,7 +137,11 @@ const ProductDetails = () => {
                   />
                 )}
                 <div className="flex items-center gap-4 py-4">
-                  <Button content="Add to Cart" pattern="primary" />
+                  <Button
+                    content={isPending ? "Adding..." : "Add to Cart"}
+                    pattern="primary"
+                    onClick={handleAddToCart}
+                  />
                   <Button
                     content="Go to Cart"
                     pattern="secondary"
