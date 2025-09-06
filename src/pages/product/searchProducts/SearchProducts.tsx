@@ -54,7 +54,7 @@ const SearchProducts = () => {
         ],
         populateFields: { category: ["name"], reviews: ["rating"] },
       },
-      pageParams: { page: 1, limit: 5 },
+      pageParams: { limit: 5 },
       queryParams: {
         ...(queryParams && queryParams),
         ...(debouncedQuery && { search: debouncedQuery }),
