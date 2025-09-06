@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect, useRef } from "react";
 import { InfoIcon } from "../../icons";
 import { ITextArea } from "../../types";
 
@@ -9,11 +9,20 @@ const Textarea = ({
   error,
   containerClassName = "",
   textAreaProps = { rows: 4 },
+  needRef = false,
 }: ITextArea) => {
+  const inputRef = useRef<HTMLTextAreaElement | null>(null);
+
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     textAreaProps.onChange?.(event);
     register?.onChange?.(event);
   };
+
+  useEffect(() => {
+    if (needRef) {
+      inputRef.current?.focus();
+    }
+  }, [needRef]);
 
   return (
     <div className={`w-full flex flex-col gap-1.5 ${containerClassName}`}>
@@ -34,6 +43,7 @@ const Textarea = ({
             aria-autocomplete="none"
             {...register}
             {...textAreaProps}
+            ref={inputRef}
             id={textAreaProps.name}
             disabled={textAreaProps.readOnly}
             onChange={handleChange}
