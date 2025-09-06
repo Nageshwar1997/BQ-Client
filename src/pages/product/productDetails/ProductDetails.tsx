@@ -17,18 +17,18 @@ import ShowError from "../../../components/errors/ShowError";
 import EmptyData from "../../../components/empty-data/EmptyData";
 import RatingBars from "./children/RatingBars";
 import ReviewsMedia from "./children/ReviewsMedia";
-import { useAddProductToCart } from "../../../api/cart/cart.service";
+import {
+  useAddProductToCart,
+  useGetUserCart,
+} from "../../../api/cart/cart.service";
 import { useUserStore } from "../../../store/user.store";
 
 const ProductDetails = () => {
   const { params, setParams, navigate } = useQueryParams();
   const [selectedShadeIdx, setSelectedShadeIdx] = useState<null | number>(null);
   const { isAuthenticated } = useUserStore();
-  const {
-    mutateAsync,
-    isPending,
-    isError: addToCartError,
-  } = useAddProductToCart();
+  const { mutateAsync, isPending } = useAddProductToCart();
+  const getUserCartQuery = useGetUserCart();
 
   const { data, isLoading, isError } = useGetProductById({
     queryParams: { productId: params.productId ?? "" },
@@ -54,13 +54,25 @@ const ProductDetails = () => {
     return product?.shades?.[selectedShadeIdx || 0];
   }, [product?.shades, selectedShadeIdx]);
 
+  const isProductExistInCart = useMemo(() => {
+    return (
+      getUserCartQuery.data?.cart?.products?.some(
+        (item: { product: { _id: string } }) =>
+          item?.product?._id === params?.productId
+      ) ?? false
+    );
+  }, [getUserCartQuery.data?.cart?.products, params?.productId]);
+
   const handleAddToCart = () => {
+    if (isProductExistInCart) return;
     if (!isAuthenticated) {
       setParams({ login: "true" });
       return;
     }
-
-    mutateAsync(params.productId ?? "");
+    mutateAsync({
+      productId: params?.productId ?? "",
+      shadeId: currentShade?._id,
+    });
   };
 
   return (
@@ -138,7 +150,16 @@ const ProductDetails = () => {
                 )}
                 <div className="flex items-center gap-4 py-4">
                   <Button
-                    content={isPending ? "Adding..." : "Add to Cart"}
+                    className={`[&>span]:line-clamp-1 ${
+                      isProductExistInCart ? "!cursor-not-allowed" : ""
+                    }`}
+                    content={
+                      isPending
+                        ? "Adding..."
+                        : isProductExistInCart
+                        ? "Already in Cart"
+                        : "Add to Cart"
+                    }
                     pattern="primary"
                     onClick={handleAddToCart}
                   />
