@@ -1,4 +1,5 @@
 import Button from "../../../components/button/Button";
+import useQueryParams from "../../../hooks/useQueryParams";
 import { MinusIcon, PlusIcon, TrashIcon } from "../../../icons";
 import { TCartProduct } from "../../../types";
 import { toINRCurrency } from "../../../utils";
@@ -12,6 +13,7 @@ const CartItem = ({
   onQuantityChange: (id: string, newQty: number) => void;
   onRemoveItem: (id: string) => void;
 }) => {
+  const { navigate } = useQueryParams();
   const stock =
     (item.shade && item.shade?.stock) || item.product?.totalStock || 0;
   const isOutOfStock = stock <= 0;
@@ -21,10 +23,13 @@ const CartItem = ({
   return (
     <div className="p-2 flex gap-4 border shadow-md shadow-primary-10 border-primary-30 rounded-xl relative opacity-90">
       <div className="space-y-2.5">
-        <div className="w-24 h-24 relative overflow-hidden rounded-sm shadow">
+        <div
+          className="w-24 h-24 relative overflow-hidden rounded-sm shadow cursor-pointer"
+          onClick={() => navigate(`/product/${item?.product?._id}`)}
+        >
           {(stock < 5 || isOutOfStock) && (
             <p
-              className={`absolute bottom-0 right-0 text-[8px]  text-primary-inverted px-1 font-medium rounded-sm ${
+              className={`absolute bottom-0 right-0 text-[8px] text-primary-inverted px-1 font-medium rounded-sm ${
                 isOutOfStock ? "bg-red-600" : "bg-primary-50"
               }`}
             >
@@ -34,7 +39,7 @@ const CartItem = ({
           <img
             src={item?.shade?.images?.[0] || item?.product?.commonImages?.[0]}
             alt={item?.shade?.shadeName || item?.product?.title}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-in-out"
           />
         </div>
         <div className="grow w-24 flex items-center justify-center gap-3">
@@ -69,7 +74,10 @@ const CartItem = ({
       </div>
       <div className="flex-1 grow flex flex-col justify-between">
         <div>
-          <h3 className="text-base font-medium text-primary line-clamp-1">
+          <h3
+            className="text-base font-medium text-primary opacity-90 hover:opacity-100 line-clamp-1 cursor-pointer"
+            onClick={() => navigate(`/product/${item?.product?._id}`)}
+          >
             {item?.product?.title}
           </h3>
           {item?.shade && (
