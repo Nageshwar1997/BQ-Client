@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect, useRef } from "react";
 import { InfoIcon } from "../../icons";
 import { IInput } from "../../types";
 
@@ -10,11 +10,20 @@ const Input = ({
   containerClassName = "",
   icons,
   inputProps,
+  needRef = false,
 }: IInput) => {
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     inputProps?.onChange?.(event);
     register?.onChange?.(event);
   };
+
+  useEffect(() => {
+    if (needRef) {
+      inputRef.current?.focus();
+    }
+  }, [needRef]);
 
   return (
     <div className={`w-full flex flex-col gap-1.5 ${containerClassName}`}>
@@ -50,6 +59,7 @@ const Input = ({
             aria-autocomplete="none"
             {...register}
             {...inputProps}
+            {...(needRef && { ref: inputRef })}
             id={inputProps.name}
             disabled={inputProps?.readOnly}
             onChange={handleChange}

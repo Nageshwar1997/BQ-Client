@@ -34,6 +34,7 @@ export type TMediaOption = { type: TFile; url: string };
 
 interface TBaseInput extends ClassName {
   containerClassName?: string;
+  needRef?: boolean;
   icons?: { left?: TInputIcon; right?: Omit<TInputIcon, "text"> };
   register?: UseFormRegisterReturn;
   label?: string;
@@ -176,6 +177,7 @@ export interface ShadeType {
 export interface FetchedShadeType extends ShadeType {
   _id: string;
   images: string[];
+  stock: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -195,6 +197,32 @@ export interface ProductType {
   totalStock: number | undefined;
   commonImages: (File | string)[];
   shades?: ShadeType[];
+}
+
+export type TCartProduct = {
+  _id: string;
+  cart: string;
+  product: Pick<
+    FetchedProductType,
+    | "_id"
+    | "title"
+    | "brand"
+    | "originalPrice"
+    | "sellingPrice"
+    | "discount"
+    | "commonImages"
+    | "totalStock"
+  >;
+  shade?: Pick<FetchedShadeType, "_id" | "shadeName" | "images" | "stock">;
+  quantity: number;
+};
+
+export interface ICart {
+  _id: string;
+  charges: number;
+  createdAt: string;
+  updatedAt: string;
+  products: TCartProduct[];
 }
 
 export interface PopulatedCategory {
@@ -247,6 +275,7 @@ export interface FetchedProductType extends ProductType {
   discount: number;
   sellingPrice: number;
   originalPrice: number;
+  totalStock: number;
   category: PopulatedCategory;
   shades: FetchedShadeType[];
   reviews: FetchedReviewType[];
@@ -339,3 +368,15 @@ export type TRegexes =
   | "atLeastOneSpecialCharacter"
   | "atLeastOneUppercaseLetter"
   | "onlyLettersAndSpacesAndDots";
+
+type TFooterOption = {
+  title: string;
+  disable?: boolean;
+  path?: string;
+};
+
+export interface IFooterOptionList {
+  options: TFooterOption[];
+  title?: string;
+  isFirst?: boolean;
+}

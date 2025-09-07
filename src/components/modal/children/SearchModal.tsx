@@ -56,6 +56,7 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
     <div className="w-full h-full flex flex-col gap-2 pt-2">
       {/* Search Input */}
       <Input
+        needRef
         icons={{
           left: {
             icon: (

@@ -17,10 +17,18 @@ import ShowError from "../../../components/errors/ShowError";
 import EmptyData from "../../../components/empty-data/EmptyData";
 import RatingBars from "./children/RatingBars";
 import ReviewsMedia from "./children/ReviewsMedia";
+import {
+  useAddProductToCart,
+  useGetUserCart,
+} from "../../../api/cart/cart.service";
+import { useUserStore } from "../../../store/user.store";
 
 const ProductDetails = () => {
-  const { params, navigate } = useQueryParams();
+  const { params, setParams, navigate } = useQueryParams();
   const [selectedShadeIdx, setSelectedShadeIdx] = useState<null | number>(null);
+  const { isAuthenticated } = useUserStore();
+  const { mutateAsync, isPending } = useAddProductToCart();
+  const getUserCartQuery = useGetUserCart();
 
   const { data, isLoading, isError } = useGetProductById({
     queryParams: { productId: params.productId ?? "" },
@@ -45,6 +53,45 @@ const ProductDetails = () => {
   const currentShade = useMemo(() => {
     return product?.shades?.[selectedShadeIdx || 0];
   }, [product?.shades, selectedShadeIdx]);
+
+  const cartProducts = useMemo(() => {
+    return getUserCartQuery.data?.cart?.products ?? [];
+  }, [getUserCartQuery.data?.cart?.products]);
+
+  const isCartFull = cartProducts?.length >= 10;
+
+  const isOutOfStock = useMemo(() => {
+    return (
+      ((product?.shades?.length > 0 && currentShade.stock === 0) ||
+        (product?.shades?.length === 0 && product.totalStock === 0)) ??
+      false
+    );
+  }, [currentShade?.stock, product?.shades?.length, product?.totalStock]);
+
+  const isProductExistInCart = useMemo(() => {
+    return (
+      cartProducts.some(
+        (item: { product: { _id: string } }) =>
+          item?.product?._id === params?.productId
+      ) ?? false
+    );
+  }, [cartProducts, params?.productId]);
+
+  const handleAddToCart = () => {
+    if (!isAuthenticated) {
+      setParams({ login: "true" });
+      return;
+    }
+    mutateAsync(
+      {
+        productId: params?.productId ?? "",
+        shadeId: currentShade?._id,
+      },
+      {
+        onSuccess: getUserCartQuery.refetch,
+      }
+    );
+  };
 
   return (
     <div className="w-full h-auto flex flex-col gap-8 p-8">
@@ -120,7 +167,31 @@ const ProductDetails = () => {
                   />
                 )}
                 <div className="flex items-center gap-4 py-4">
-                  <Button content="Add to Cart" pattern="primary" />
+                  <Button
+                    className="[&>span]:line-clamp-1"
+                    content={
+                      getUserCartQuery?.isRefetching
+                        ? "Checking..."
+                        : isPending
+                        ? "Adding..."
+                        : isOutOfStock
+                        ? "Out of stock"
+                        : isCartFull
+                        ? "Cart is full"
+                        : isProductExistInCart
+                        ? "Already in Cart"
+                        : "Add to Cart"
+                    }
+                    pattern="primary"
+                    onClick={handleAddToCart}
+                    disable={
+                      isPending ||
+                      getUserCartQuery?.isRefetching ||
+                      isOutOfStock ||
+                      isCartFull ||
+                      isProductExistInCart
+                    }
+                  />
                   <Button
                     content="Go to Cart"
                     pattern="secondary"

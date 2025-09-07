@@ -98,26 +98,31 @@ const skin = [
 
 export const HOME_CATEGORIES_DATA = [
   {
+    category: "lips",
     title: "Lips Care",
     description: "Soothe Lip Skin",
     images: lips,
   },
   {
+    category: "eyes",
     title: "Eyes Care",
     description: "Beautiful Eye Care",
     images: eyes,
   },
   {
+    category: "face",
     title: "Face Care",
     description: "Enhance facial aesthetics",
     images: face,
   },
   {
+    category: "skin",
     title: "Skin Care",
     description: "Healthy Glowing Skin",
     images: skin,
   },
   {
+    category: "collections",
     title: "BQ Collection",
     description: "Exclusive Special Collections",
     images: collections,

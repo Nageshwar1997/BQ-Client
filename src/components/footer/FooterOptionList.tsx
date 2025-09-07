@@ -1,16 +1,11 @@
-interface FooterOption {
-  title: string;
-}
-interface FooterOptionListProps {
-  options: FooterOption[];
-  title?: string;
-  isFirst?: boolean;
-}
+import { Link } from "react-router-dom";
+import { IFooterOptionList } from "../../types";
+
 const FooterOptionList = ({
   isFirst = false,
   title,
   options,
-}: FooterOptionListProps) => {
+}: IFooterOptionList) => {
   return (
     <div
       className={`space-y-2 text-sm lg:text-base ${
@@ -31,9 +26,17 @@ const FooterOptionList = ({
       >
         {options.map((link, i: number) => {
           return (
-            <p key={i} className="text-nowrap cursor-pointer">
-              {link.title}
-            </p>
+            <button
+              key={i}
+              className="text-nowrap cursor-pointer disabled:cursor-not-allowed disabled:text-primary-30"
+              disabled={link?.disable}
+            >
+              {link.path ? (
+                <Link to={link.path}>{link.title}</Link>
+              ) : (
+                link.title
+              )}
+            </button>
           );
         })}
       </div>
