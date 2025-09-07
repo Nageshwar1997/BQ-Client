@@ -170,7 +170,9 @@ const ProductDetails = () => {
                   <Button
                     className="[&>span]:line-clamp-1"
                     content={
-                      isPending || getUserCartQuery?.isRefetching
+                      getUserCartQuery?.isRefetching
+                        ? "Checking..."
+                        : isPending
                         ? "Adding..."
                         : isOutOfStock
                         ? "Out of stock"
