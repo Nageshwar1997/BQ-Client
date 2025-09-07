@@ -12,25 +12,19 @@ const CartItem = ({
   onQuantityChange: (id: string, newQty: number) => void;
   onRemoveItem: (id: string) => void;
 }) => {
-  const stock = (item.shade && item.shade?.stock) || item.product?.totalStock;
+  const stock =
+    (item.shade && item.shade?.stock) || item.product?.totalStock || 0;
+  const isOutOfStock = stock <= 0;
   const allowDec = item.quantity > 1;
   const allowInc = item.quantity < 5 && stock > item.quantity;
 
-  const handleDecrease = () => {
-    onQuantityChange(item._id, item.quantity - 1);
-  };
-
-  const handleIncrease = () => {
-    onQuantityChange(item._id, item.quantity + 1);
-  };
-
   return (
-    <div className="p-2 flex gap-4 border shadow-md shadow-primary-10 border-primary-30 rounded-xl relative">
+    <div className="p-2 flex gap-4 border shadow-md shadow-primary-10 border-primary-30 rounded-xl relative opacity-90">
       <div className="space-y-2.5">
         <div className="w-24 h-24 relative overflow-hidden rounded-sm shadow">
-          {stock < 5 && (
+          {(stock < 5 || isOutOfStock) && (
             <p className="absolute bottom-0 right-0 text-[8px] bg-primary-50 text-primary-inverted px-1 font-medium">
-              Only {stock} left
+              {isOutOfStock ? "Out of Stock" : `Only ${stock} left`}
             </p>
           )}
           <img
@@ -42,8 +36,8 @@ const CartItem = ({
         <div className="grow w-24 flex items-center justify-center gap-3">
           <button
             className="w-6 h-6 flex items-center justify-center rounded-full border border-primary-30 hover:bg-primary-30 transition disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent"
-            disabled={!allowDec}
-            onClick={handleDecrease}
+            disabled={!allowDec || isOutOfStock}
+            onClick={() => onQuantityChange(item._id, item.quantity - 1)}
           >
             <MinusIcon
               className="w-4 h-4 stroke-tertiary hover:stroke-secondary"
@@ -55,8 +49,8 @@ const CartItem = ({
           </span>
           <button
             className="w-6 h-6 flex items-center justify-center rounded-full border border-primary-30 hover:bg-primary-30 transition disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent"
-            disabled={!allowInc}
-            onClick={handleIncrease}
+            disabled={!allowInc || isOutOfStock}
+            onClick={() => onQuantityChange(item._id, item.quantity + 1)}
           >
             <PlusIcon
               className="w-4 h-4 stroke-tertiary hover:stroke-secondary"
@@ -66,7 +60,7 @@ const CartItem = ({
         </div>
       </div>
       <div className="flex-1 grow flex flex-col justify-between">
-        <div className="w-full">
+        <div>
           <h3 className="text-base font-medium text-primary line-clamp-1">
             {item?.product?.title}
           </h3>

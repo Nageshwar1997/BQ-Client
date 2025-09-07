@@ -39,6 +39,16 @@ const Cart = () => {
   const shipping = subtotal > 499 ? 0 : 40;
   const total = subtotal + shipping;
 
+  const isAnyProductOutOfStock = useMemo(() => {
+    return products.some(
+      (item) =>
+        ((item.shade && item.shade?.stock) || item.product?.totalStock || 0) <=
+        0
+    );
+  }, [products]);
+
+  console.log("isAnyProductOutOfStock", isAnyProductOutOfStock);
+
   const handleQuantityChange = (id: string, newQty: number) => {
     setProducts((prev) =>
       prev.map((item) =>
@@ -116,6 +126,7 @@ const Cart = () => {
               content="Proceed to Checkout"
               className="!rounded-lg mt-4 !p-3 gap-2"
               rightIcon={<RightArrowIcon className="stroke-white" />}
+              disable={isAnyProductOutOfStock}
             />
             <p className="mt-3 text-sm text-silver-jet text-center">
               Secure checkout • 100% satisfaction guaranteed
