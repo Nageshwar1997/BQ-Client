@@ -59,7 +59,7 @@ const Input = ({
             aria-autocomplete="none"
             {...register}
             {...inputProps}
-            ref={needRef ? inputRef : null}
+            {...(needRef && { ref: inputRef })}
             id={inputProps.name}
             disabled={inputProps?.readOnly}
             onChange={handleChange}

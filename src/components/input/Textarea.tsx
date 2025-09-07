@@ -43,7 +43,7 @@ const Textarea = ({
             aria-autocomplete="none"
             {...register}
             {...textAreaProps}
-            ref={inputRef}
+            {...(needRef && { ref: inputRef })}
             id={textAreaProps.name}
             disabled={textAreaProps.readOnly}
             onChange={handleChange}
