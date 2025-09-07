@@ -23,7 +23,11 @@ const CartItem = ({
       <div className="space-y-2.5">
         <div className="w-24 h-24 relative overflow-hidden rounded-sm shadow">
           {(stock < 5 || isOutOfStock) && (
-            <p className="absolute bottom-0 right-0 text-[8px] bg-primary-50 text-primary-inverted px-1 font-medium">
+            <p
+              className={`absolute bottom-0 right-0 text-[8px]  text-primary-inverted px-1 font-medium rounded-sm ${
+                isOutOfStock ? "bg-red-600" : "bg-primary-50"
+              }`}
+            >
               {isOutOfStock ? "Out of Stock" : `Only ${stock} left`}
             </p>
           )}
@@ -34,29 +38,33 @@ const CartItem = ({
           />
         </div>
         <div className="grow w-24 flex items-center justify-center gap-3">
-          <button
-            className="w-6 h-6 flex items-center justify-center rounded-full border border-primary-30 hover:bg-primary-30 transition disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent"
-            disabled={!allowDec || isOutOfStock}
+          <Button
+            pattern="secondary"
+            className="!rounded-full !p-0 !w-6 h-6 !shadow-none disabled:!opacity-50"
+            disable={!allowDec || isOutOfStock}
             onClick={() => onQuantityChange(item._id, item.quantity - 1)}
-          >
-            <MinusIcon
-              className="w-4 h-4 stroke-tertiary hover:stroke-secondary"
-              strokeWidth={2.5}
-            />
-          </button>
+            content={
+              <MinusIcon
+                className="w-4 h-4 stroke-primary-inverted"
+                strokeWidth={2.5}
+              />
+            }
+          />
           <span className="text-secondary font-medium w-4 text-center">
             {item.quantity}
           </span>
-          <button
-            className="w-6 h-6 flex items-center justify-center rounded-full border border-primary-30 hover:bg-primary-30 transition disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent"
-            disabled={!allowInc || isOutOfStock}
+          <Button
+            pattern="secondary"
+            className="!w-6 h-6 !rounded-full !p-0 !shadow-none disabled:!opacity-50"
+            disable={!allowInc || isOutOfStock}
             onClick={() => onQuantityChange(item._id, item.quantity + 1)}
-          >
-            <PlusIcon
-              className="w-4 h-4 stroke-tertiary hover:stroke-secondary"
-              strokeWidth={2.5}
-            />
-          </button>
+            content={
+              <PlusIcon
+                className="w-4 h-4 stroke-primary-inverted"
+                strokeWidth={2.5}
+              />
+            }
+          />
         </div>
       </div>
       <div className="flex-1 grow flex flex-col justify-between">
@@ -82,7 +90,12 @@ const CartItem = ({
           content="Remove"
           pattern="primary"
           className="!w-fit !rounded !px-3 !py-1 mt-1 !text-sm gap-2"
-          rightIcon={<TrashIcon className="w-[14px] h-[14px] stroke-white" />}
+          rightIcon={
+            <TrashIcon
+              className="w-[14px] h-[14px] stroke-white"
+              strokeWidth={2.5}
+            />
+          }
           onClick={() => onRemoveItem(item._id)}
         />
       </div>
