@@ -1,12 +1,19 @@
 import { useEffect, useMemo, useState } from "react";
-import { useGetUserCart } from "../../api/cart/cart.service";
+import {
+  useGetUserCart,
+  useRemoveProductFromCart,
+  useUpdateProductQuantityInCart,
+} from "../../api/cart/cart.service";
 import Button from "../../components/button/Button";
 import { RightArrowIcon } from "../../icons";
 import CartItem from "./children/CartItem";
 import { ICart, TCartProduct } from "../../types";
 
 const Cart = () => {
-  const { data, isLoading, isError } = useGetUserCart();
+  const { data, isLoading, isError, refetch } = useGetUserCart();
+
+  const { mutateAsync: updateQuantity } = useUpdateProductQuantityInCart();
+  const { mutateAsync: removeProduct } = useRemoveProductFromCart();
 
   const [products, setProducts] = useState<TCartProduct[]>([]);
 
@@ -14,7 +21,7 @@ const Cart = () => {
 
   useEffect(() => {
     if (cart.products) {
-      setProducts(cart.products.map((p) => ({ ...p })));
+      setProducts(cart.products);
     }
   }, [cart.products]);
 
@@ -26,15 +33,31 @@ const Cart = () => {
     );
   }, [products]);
 
-  const shipping = subtotal > 1500 ? 0 : 99;
+  const shipping = subtotal > 499 ? 0 : 99;
   const total = subtotal + shipping;
 
-  // quantity change handler
   const handleQuantityChange = (id: string, newQty: number) => {
     setProducts((prev) =>
       prev.map((item) =>
         item._id === id ? { ...item, quantity: newQty } : item
       )
+    );
+    updateQuantity(
+      { cartItemId: id, quantity: String(newQty) },
+      { onError: () => setProducts(cart.products) }
+    );
+  };
+
+  const handleRemoveItemFromCart = (id: string) => {
+    removeProduct(
+      { cartItemId: id },
+      {
+        onSuccess: () => {
+          setProducts((prev) => prev.filter((item) => item._id !== id));
+          refetch();
+        },
+        onError: () => setProducts(cart.products),
+      }
     );
   };
 
@@ -55,11 +78,11 @@ const Cart = () => {
                 key={item._id}
                 item={item}
                 onQuantityChange={handleQuantityChange}
+                onRemoveItem={handleRemoveItemFromCart}
               />
             ))}
           </div>
         </div>
-
         {/* Right - Order Summary */}
         <div className="p-6 h-fit lg:sticky top-16">
           <h2 className="text-2xl font-semibold text-secondary mb-6">

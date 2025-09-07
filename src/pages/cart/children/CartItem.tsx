@@ -6,9 +6,11 @@ import { toINRCurrency } from "../../../utils";
 const CartItem = ({
   item,
   onQuantityChange,
+  onRemoveItem,
 }: {
   item: TCartProduct;
   onQuantityChange: (id: string, newQty: number) => void;
+  onRemoveItem: (id: string) => void;
 }) => {
   const handleDecrease = () => {
     if (item.quantity > 1) {
@@ -78,6 +80,7 @@ const CartItem = ({
           pattern="primary"
           className="!w-fit !rounded !px-3 !py-1 mt-1 !text-sm gap-2"
           rightIcon={<TrashIcon className="w-[14px] h-[14px] stroke-white" />}
+          onClick={() => onRemoveItem(item._id)}
         />
       </div>
     </div>

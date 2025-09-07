@@ -33,5 +33,7 @@ export const reviewRoutes = {
 
 export const cartRoutes = {
   addProductToCart: { method: "POST", url: "cart-products/add" },
+  updateProductQuantityInCart: { method: "PATCH", url: "cart-products/update" },
+  removeProductFromCart: { method: "DELETE", url: "cart-products/remove" },
   getUserCart: { method: "GET", url: "carts/cart" },
 };

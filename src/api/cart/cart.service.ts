@@ -1,5 +1,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { add_product_to_cart, get_user_cart } from "./cart.api";
+import {
+  add_product_to_cart,
+  get_user_cart,
+  remove_product_from_cart,
+  update_product_quantity_in_cart,
+} from "./cart.api";
 import { toastErrorMessage, toastSuccessMessage } from "../../utils/toasts";
 import { QueryParams } from "../../types";
 
@@ -15,6 +20,25 @@ export const useAddProductToCart = () => {
         typeof error === "string" ? error : "Something went wrong!"
       );
     },
+  });
+};
+
+export const useUpdateProductQuantityInCart = () => {
+  return useMutation({
+    mutationKey: ["update_product_quantity_in_cart"],
+    mutationFn: (data: QueryParams) => update_product_quantity_in_cart(data),
+    onError: (error: unknown) => {
+      toastErrorMessage(
+        typeof error === "string" ? error : "Something went wrong!"
+      );
+    },
+  });
+};
+
+export const useRemoveProductFromCart = () => {
+  return useMutation({
+    mutationKey: ["remove_product_from_cart"],
+    mutationFn: (data: QueryParams) => remove_product_from_cart(data),
   });
 };
 
