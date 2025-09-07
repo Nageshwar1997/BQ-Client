@@ -110,6 +110,7 @@ const SearchProducts = () => {
               />
             </button>
             <Input
+              needRef
               inputProps={{
                 name: "search",
                 placeholder: "Search products here...",
