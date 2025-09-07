@@ -21,7 +21,7 @@ export const login_user = async (data: Partial<LoginFormInputProps>) => {
 // Manually Register
 export const register_user = async (data: FormData) => {
   try {
-    const { method, url } = authRoutes.login;
+    const { method, url } = authRoutes.register;
     const response = await api.request({ method, url, data });
     return response.data;
   } catch (error) {
