@@ -54,25 +54,44 @@ const ProductDetails = () => {
     return product?.shades?.[selectedShadeIdx || 0];
   }, [product?.shades, selectedShadeIdx]);
 
+  const cartProducts = useMemo(() => {
+    return getUserCartQuery.data?.cart?.products ?? [];
+  }, [getUserCartQuery.data?.cart?.products]);
+
+  const isCartFull = cartProducts?.length >= 10;
+
+  const isOutOfStock = useMemo(() => {
+    return (
+      ((product?.shades?.length > 0 && currentShade.stock === 0) ||
+        (product?.shades?.length === 0 && product.totalStock === 0)) ??
+      false
+    );
+  }, [currentShade?.stock, product?.shades?.length, product?.totalStock]);
+
   const isProductExistInCart = useMemo(() => {
     return (
-      getUserCartQuery.data?.cart?.products?.some(
+      cartProducts.some(
         (item: { product: { _id: string } }) =>
           item?.product?._id === params?.productId
       ) ?? false
     );
-  }, [getUserCartQuery.data?.cart?.products, params?.productId]);
+  }, [cartProducts, params?.productId]);
 
   const handleAddToCart = () => {
-    if (isProductExistInCart) return;
+    if (isProductExistInCart || isCartFull || isOutOfStock) return;
     if (!isAuthenticated) {
       setParams({ login: "true" });
       return;
     }
-    mutateAsync({
-      productId: params?.productId ?? "",
-      shadeId: currentShade?._id,
-    });
+    mutateAsync(
+      {
+        productId: params?.productId ?? "",
+        shadeId: currentShade?._id,
+      },
+      {
+        onSuccess: getUserCartQuery.refetch,
+      }
+    );
   };
 
   return (
@@ -154,8 +173,12 @@ const ProductDetails = () => {
                       isProductExistInCart ? "!cursor-not-allowed" : ""
                     }`}
                     content={
-                      isPending
+                      isPending || getUserCartQuery?.isRefetching
                         ? "Adding..."
+                        : isOutOfStock
+                        ? "Out of stock"
+                        : isCartFull
+                        ? "Cart is full"
                         : isProductExistInCart
                         ? "Already in Cart"
                         : "Add to Cart"
