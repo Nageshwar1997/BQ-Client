@@ -36,7 +36,7 @@ const Cart = () => {
     );
   }, [products]);
 
-  const shipping = subtotal > 499 ? 0 : 99;
+  const shipping = subtotal > 499 ? 0 : 40;
   const total = subtotal + shipping;
 
   const handleQuantityChange = (id: string, newQty: number) => {
@@ -72,7 +72,7 @@ const Cart = () => {
         <ShowError
           headingText="Something went wrong!"
           descriptionText="Failed to get the product. Please reload the page"
-          className="w-full h-full border border-[red] mx-auto [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase [&>p]:text-xs [&>p]:base:text-sm [&>p]:sm:text-base [&>p]:md:text-lg"
+          className="w-full h-full mx-auto [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase [&>p]:text-xs [&>p]:base:text-sm [&>p]:sm:text-base [&>p]:md:text-lg"
         />
       ) : Object.keys(cart).length > 0 && cart?.products?.length > 0 ? (
         <div className="flex flex-col lg:flex-row gap-4">
@@ -106,7 +106,7 @@ const Cart = () => {
                 <span>Shipping</span>
                 <span>{shipping === 0 ? "Free" : `₹${shipping}`}</span>
               </div>
-              <div className="border-t pt-4 flex justify-between text-lg font-semibold text-primary">
+              <div className="border-t border-t-primary-30 pt-4 flex justify-between text-lg font-semibold text-primary">
                 <span>Total</span>
                 <span>₹{total}</span>
               </div>

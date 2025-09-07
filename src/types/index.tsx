@@ -177,6 +177,7 @@ export interface ShadeType {
 export interface FetchedShadeType extends ShadeType {
   _id: string;
   images: string[];
+  stock: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -210,8 +211,9 @@ export type TCartProduct = {
     | "sellingPrice"
     | "discount"
     | "commonImages"
+    | "totalStock"
   >;
-  shade?: Pick<FetchedShadeType, "_id" | "shadeName" | "images">;
+  shade?: Pick<FetchedShadeType, "_id" | "shadeName" | "images" | "stock">;
   quantity: number;
 };
 
@@ -273,6 +275,7 @@ export interface FetchedProductType extends ProductType {
   discount: number;
   sellingPrice: number;
   originalPrice: number;
+  totalStock: number;
   category: PopulatedCategory;
   shades: FetchedShadeType[];
   reviews: FetchedReviewType[];

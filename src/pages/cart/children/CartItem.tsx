@@ -12,29 +12,37 @@ const CartItem = ({
   onQuantityChange: (id: string, newQty: number) => void;
   onRemoveItem: (id: string) => void;
 }) => {
+  const stock = (item.shade && item.shade?.stock) || item.product?.totalStock;
+  const allowDec = item.quantity > 1;
+  const allowInc = item.quantity < 5 && stock > item.quantity;
+
   const handleDecrease = () => {
-    if (item.quantity > 1) {
-      onQuantityChange(item._id, item.quantity - 1);
-    }
+    onQuantityChange(item._id, item.quantity - 1);
   };
 
   const handleIncrease = () => {
-    if (item.quantity < 5) {
-      onQuantityChange(item._id, item.quantity + 1);
-    }
+    onQuantityChange(item._id, item.quantity + 1);
   };
 
   return (
     <div className="p-2 flex gap-4 border shadow-md shadow-primary-10 border-primary-30 rounded-xl relative">
       <div className="space-y-2.5">
-        <img
-          src={item?.shade?.images?.[0] || item?.product?.commonImages?.[0]}
-          alt={item?.shade?.shadeName || item?.product?.title}
-          className="w-24 h-24 object-cover rounded-sm shadow"
-        />
+        <div className="w-24 h-24 relative overflow-hidden rounded-sm shadow">
+          {stock < 5 && (
+            <p className="absolute bottom-0 right-0 text-[8px] bg-primary-50 text-primary-inverted px-1 font-medium">
+              Only {stock} left
+            </p>
+          )}
+          <img
+            src={item?.shade?.images?.[0] || item?.product?.commonImages?.[0]}
+            alt={item?.shade?.shadeName || item?.product?.title}
+            className="w-full h-full object-cover"
+          />
+        </div>
         <div className="grow w-24 flex items-center justify-center gap-3">
           <button
-            className="w-6 h-6 flex items-center justify-center rounded-full border border-primary-30 hover:bg-primary-30 transition"
+            className="w-6 h-6 flex items-center justify-center rounded-full border border-primary-30 hover:bg-primary-30 transition disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent"
+            disabled={!allowDec}
             onClick={handleDecrease}
           >
             <MinusIcon
@@ -46,7 +54,8 @@ const CartItem = ({
             {item.quantity}
           </span>
           <button
-            className="w-6 h-6 flex items-center justify-center rounded-full border border-primary-30 hover:bg-primary-30 transition"
+            className="w-6 h-6 flex items-center justify-center rounded-full border border-primary-30 hover:bg-primary-30 transition disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent"
+            disabled={!allowInc}
             onClick={handleIncrease}
           >
             <PlusIcon
