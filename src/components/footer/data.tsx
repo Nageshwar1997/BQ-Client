@@ -24,110 +24,54 @@ export const footerCategories = [
   {
     title: "Company",
     options: [
-      {
-        title: "About Us",
-      },
-      {
-        title: "Partner With Us",
-      },
-      {
-        title: "Careers",
-      },
-      {
-        title: "Sustainability",
-      },
-      {
-        title: "Ethics",
-      },
-      {
-        title: "Press/Media",
-      },
+      { title: "About Us", disable: true },
+      { title: "Partner With Us", disable: true },
+      { title: "Careers", disable: true },
+      { title: "Sustainability", disable: true },
+      { title: "Ethics", disable: true },
+      { title: "Press/Media", disable: true },
     ],
   },
   {
     title: "Quick Links",
     options: [
-      {
-        title: "My Account",
-      },
-      {
-        title: "Order History",
-      },
-      {
-        title: "Wishlist",
-      },
-      {
-        title: "Refer a Friend",
-      },
-      {
-        title: "Store Locator",
-      },
-      {
-        title: "Become a Seller",
-      },
+      { title: "My Account", disable: true },
+      { title: "Order History", disable: true },
+      { title: "Wishlist", disable: true },
+      { title: "Refer a Friend", disable: true },
+      { title: "Store Locator", disable: true },
+      { title: "Become a Seller", disable: true },
     ],
   },
   {
     title: "Products",
     options: [
-      {
-        title: "For You",
-      },
-      {
-        title: "Lip Care",
-      },
-      {
-        title: "Special Collection",
-      },
-      {
-        title: "Face Care",
-      },
-      {
-        title: "Skin Care",
-      },
-      {
-        title: "Eye Care",
-      },
+      { title: "For You", disable: false, path: "products/for_you" },
+      { title: "Lip Care", disable: false, path: "products/lips" },
+      { title: "Special Collection", disable: false, path: "products/eyes" },
+      { title: "Face Care", disable: false, path: "products/face" },
+      { title: "Skin Care", disable: false, path: "products/skin" },
+      { title: "Eye Care", disable: false, path: "products/collections" },
     ],
   },
   {
     title: "Services",
     options: [
-      {
-        title: "Contact Us",
-      },
-      {
-        title: "Help Center/FAQ",
-      },
-      {
-        title: "Shipping Info",
-      },
-      {
-        title: "Returns & Refunds",
-      },
-      {
-        title: "Track My Order",
-      },
+      { title: "Contact Us", disable: true },
+      { title: "Help Center/FAQ", disable: true },
+      { title: "Shipping Info", disable: true },
+      { title: "Returns & Refunds", disable: true },
+      { title: "Track My Order", disable: true },
     ],
   },
   {
     title: "Legal & Policies",
     options: [
-      {
-        title: "Privacy Policy",
-      },
-      {
-        title: "Cookie Policy",
-      },
-      {
-        title: "Terms & Conditions",
-      },
-      {
-        title: "Disclaimer",
-      },
-      {
-        title: "Accessibility",
-      },
+      { title: "Privacy Policy", disable: true },
+      { title: "Cookie Policy", disable: true },
+      { title: "Terms & Conditions", disable: true },
+      { title: "Disclaimer", disable: true },
+      { title: "Accessibility", disable: true },
     ],
   },
 ];

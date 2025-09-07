@@ -368,3 +368,15 @@ export type TRegexes =
   | "atLeastOneSpecialCharacter"
   | "atLeastOneUppercaseLetter"
   | "onlyLettersAndSpacesAndDots";
+
+type TFooterOption = {
+  title: string;
+  disable?: boolean;
+  path?: string;
+};
+
+export interface IFooterOptionList {
+  options: TFooterOption[];
+  title?: string;
+  isFirst?: boolean;
+}
