@@ -78,7 +78,6 @@ const ProductDetails = () => {
   }, [cartProducts, params?.productId]);
 
   const handleAddToCart = () => {
-    if (isProductExistInCart || isCartFull || isOutOfStock) return;
     if (!isAuthenticated) {
       setParams({ login: "true" });
       return;
@@ -169,9 +168,7 @@ const ProductDetails = () => {
                 )}
                 <div className="flex items-center gap-4 py-4">
                   <Button
-                    className={`[&>span]:line-clamp-1 ${
-                      isProductExistInCart ? "!cursor-not-allowed" : ""
-                    }`}
+                    className="[&>span]:line-clamp-1"
                     content={
                       isPending || getUserCartQuery?.isRefetching
                         ? "Adding..."
@@ -185,6 +182,13 @@ const ProductDetails = () => {
                     }
                     pattern="primary"
                     onClick={handleAddToCart}
+                    disable={
+                      isPending ||
+                      getUserCartQuery?.isRefetching ||
+                      isOutOfStock ||
+                      isCartFull ||
+                      isProductExistInCart
+                    }
                   />
                   <Button
                     content="Go to Cart"
