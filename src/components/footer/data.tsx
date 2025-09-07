@@ -46,12 +46,12 @@ export const footerCategories = [
   {
     title: "Products",
     options: [
-      { title: "For You", disable: false, path: "products/for_you" },
-      { title: "Lip Care", disable: false, path: "products/lips" },
-      { title: "Special Collection", disable: false, path: "products/eyes" },
-      { title: "Face Care", disable: false, path: "products/face" },
-      { title: "Skin Care", disable: false, path: "products/skin" },
-      { title: "Eye Care", disable: false, path: "products/collections" },
+      { title: "For You", path: "products/for_you" },
+      { title: "Lip Care", path: "products/lips" },
+      { title: "Special Collection", path: "products/collections" },
+      { title: "Face Care", path: "products/face" },
+      { title: "Skin Care", path: "products/skin" },
+      { title: "Eye Care", path: "products/eyes" },
     ],
   },
   {
