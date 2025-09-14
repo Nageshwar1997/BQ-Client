@@ -70,7 +70,7 @@ const Register = () => {
     if (file) {
       formData.append("profilePic", file);
     }
-    userRegisterMutation.mutate(formData, {
+    userRegisterMutation.mutateAsync(formData, {
       onSettled(data, error) {
         if (data && !error) {
           if (data.user) {

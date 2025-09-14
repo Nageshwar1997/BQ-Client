@@ -54,7 +54,7 @@ const AddReviewModal = ({ onClose, isOpen }: TAddReviewModal) => {
       }
     });
 
-    addReviewQuery.mutate(formData, {
+    addReviewQuery.mutateAsync(formData, {
       onSuccess: (data) => {
         onClose();
         toastSuccessMessage(data.message || "Review added successfully");
