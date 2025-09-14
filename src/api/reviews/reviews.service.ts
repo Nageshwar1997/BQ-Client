@@ -16,6 +16,7 @@ import {
   TLikeDislikeHelpfulReview,
 } from "../types";
 import usePathParams from "../../hooks/usePathParams";
+import { useUserStore } from "../../store/user.store";
 
 // Add Review
 export const useAddReview = () => {
@@ -37,8 +38,9 @@ export const useAddReview = () => {
 
 // Like / Dislike / Helpful Review
 export const useLikeDislikeHelpfulReview = () => {
+  const { isAuthenticated } = useUserStore();
   return useMutation({
-    mutationKey: ["update_like_dislike_helpful"],
+    mutationKey: ["update_like_dislike_helpful", isAuthenticated],
     mutationFn: (data: TLikeDislikeHelpfulReview) =>
       update_like_dislike_helpful(data),
   });
@@ -50,9 +52,11 @@ export const useGetAllReviewsByProductId = ({
   data,
   enabled = true,
 }: IReviewsApiParams) => {
+  const { isAuthenticated } = useUserStore();
   return useQuery({
     queryKey: [
       "get_reviews_by_product_id_non_infinite",
+      isAuthenticated,
       queryParams,
       pageParams,
     ],
@@ -72,8 +76,15 @@ export const useGetAllReviewsByProductIdInfinite = ({
   data = {},
   refetchOnWindowFocus = false,
 }: IReviewsInfiniteApiParams) => {
+  const { isAuthenticated } = useUserStore();
+
   return useInfiniteQuery({
-    queryKey: ["get_reviews_by_product_id_infinite", queryParams, pageParams],
+    queryKey: [
+      "get_reviews_by_product_id_infinite",
+      queryParams,
+      pageParams,
+      isAuthenticated,
+    ],
     initialPageParam: 1,
     queryFn: async ({ pageParam = 1 }) => {
       return get_reviews_by_product_id({
@@ -84,6 +95,7 @@ export const useGetAllReviewsByProductIdInfinite = ({
     },
     enabled,
     refetchOnWindowFocus,
+    placeholderData: keepPreviousData,
     staleTime: 0.5 * 60 * 1000, // 30 seconds
     gcTime: 5 * 60 * 1000, // 5 minutes
     getNextPageParam: (lastPage, allPages) => {
