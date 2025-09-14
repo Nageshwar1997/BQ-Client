@@ -106,7 +106,6 @@ const Register = () => {
         {showGradient.top && <TopGradient />}
         <form
           onSubmit={handleSubmit(onSubmit)}
-          autoComplete="off"
           className="w-full flex flex-col gap-4"
         >
           <TextDisplay

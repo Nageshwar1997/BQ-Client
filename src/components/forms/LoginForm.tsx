@@ -100,7 +100,6 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
       {userLoginMutation.isPending && <LoadingPage text="Please wait" />}
       <form
         onSubmit={handleSubmit(onSubmit)}
-        autoComplete="off"
         className="w-full flex flex-col gap-4"
       >
         <TextDisplay
@@ -149,6 +148,7 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
                       inputProps={{
                         name: item.name,
                         placeholder: item.placeholder,
+                        autoComplete: item.autoComplete,
                         type: isPassword
                           ? showPassword
                             ? "text"
