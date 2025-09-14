@@ -5,18 +5,15 @@ import { getUserToken } from "../utils";
 
 export const useAuthCheck = () => {
   const { setUser, isAuthenticated, user } = useUserStore();
-  const { data, isLoading, isError } = useGetUserDetails();
+  const { data, isLoading, isError } = useGetUserDetails(
+    !!getUserToken() && !user && !isAuthenticated
+  );
 
   useEffect(() => {
-    try {
-      if (getUserToken() && !isAuthenticated && !user && data?.user) {
-        setUser(data.user);
-      }
-    } catch (error) {
-      console.log("Error in auth check:", error);
+    if (data?.user && !user) {
+      setUser(data.user);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data?.user]);
+  }, [data?.user, user, setUser]);
 
   return { isLoading, isError, data };
 };

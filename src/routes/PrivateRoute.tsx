@@ -9,11 +9,9 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
   const { isAuthenticated } = useUserStore();
   const location = useLocation();
 
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
+  if (isLoading) return <LoadingScreen />;
 
-  if (!isLoading && !isAuthenticated) {
+  if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
