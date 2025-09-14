@@ -16,6 +16,8 @@ import usePathParams from "../../../hooks/usePathParams";
 import { useUserStore } from "../../../store/user.store";
 import useOutsideClick from "../../../hooks/useOutsideClick";
 import Button from "../../button/Button";
+import useQueryParams from "../../../hooks/useQueryParams";
+import useAuthActionStore from "../../../store/authAction";
 
 const UserPopup = ({
   isOpen,
@@ -25,6 +27,7 @@ const UserPopup = ({
   onClose: () => void;
 }) => {
   const { navigate } = usePathParams();
+  const { setParams } = useQueryParams();
   const { user, isAuthenticated, logout } = useUserStore();
 
   if (!isOpen) return null;
@@ -87,10 +90,9 @@ const UserPopup = ({
               className="!p-1.5 !rounded !text-xs"
               onClick={() => {
                 if (!isAuthenticated) {
-                  navigate("/login");
+                  setParams({ login: "true" });
                 } else {
                   logout();
-                  navigate("/");
                 }
               }}
             />
@@ -116,46 +118,64 @@ const UserMenuIcons = ({
   className?: string;
   closeOnNavbarLeave?: boolean;
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [openUserPopup, setOpenUserPopup] = useState(false);
+  const [isOpen, setIsOpen] = useState({
+    search: false,
+    user: false,
+  });
   const userPopupRef = useOutsideClick<HTMLDivElement>(() => {
-    setOpenUserPopup(false);
+    setIsOpen((prev) => ({ ...prev, user: false }));
   });
   const { paths, navigate } = usePathParams();
+  const { setParams } = useQueryParams();
+  const { isAuthenticated } = useUserStore();
+  const { setAction } = useAuthActionStore();
 
   useEffect(() => {
     if (closeOnNavbarLeave) {
-      setOpenUserPopup(false);
+      setIsOpen({ search: false, user: false });
     }
   }, [closeOnNavbarLeave]);
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <SearchModal onClose={() => setIsOpen(false)} />
+      <Modal
+        key={"search-modal"}
+        isOpen={isOpen.search}
+        onClose={() => setIsOpen((prev) => ({ ...prev, search: false }))}
+      >
+        <SearchModal
+          onClose={() => setIsOpen((prev) => ({ ...prev, search: false }))}
+        />
       </Modal>
       <div className={`flex gap-2 md:gap-3 xl:gap-5 ${className}`}>
         {!paths.includes("search") && (
           <SearchIcon
-            onClick={() => setIsOpen(true)}
+            onClick={() => setIsOpen((prev) => ({ ...prev, search: true }))}
             className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6"
           />
         )}
         <div className="relative" ref={userPopupRef}>
           <UserCircleIcon
-            onClick={() => setOpenUserPopup((prev) => !prev)}
+            onClick={() => setIsOpen((prev) => ({ ...prev, user: true }))}
             className={`w-5 h-5 md:w-6 md:h-6 cursor-pointer ${
-              openUserPopup ? "!stroke-blue-crayola-c" : "stroke-tertiary"
+              isOpen.user ? "!stroke-blue-crayola-c" : "stroke-tertiary"
             } hover:stroke-secondary`}
           />
           <UserPopup
-            isOpen={openUserPopup}
-            onClose={() => setOpenUserPopup(false)}
+            isOpen={isOpen.user}
+            onClose={() => setIsOpen((prev) => ({ ...prev, user: false }))}
           />
         </div>
         <BuildingIcon className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
         <ShoppingBag
-          onClick={() => navigate("/cart")}
+          onClick={() => {
+            if (!isAuthenticated) {
+              setParams({ login: "true" });
+              setAction(() => navigate("/cart"));
+              return;
+            }
+            navigate("/cart");
+          }}
           className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6"
         />
         <HeartIcon className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6" />

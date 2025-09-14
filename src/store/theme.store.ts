@@ -1,8 +1,8 @@
 import { create } from "zustand";
-import { ThemeStoreType, ThemeType } from "../types";
+import { TThemeStore, TTheme } from "../types";
 
-const useThemeStore = create<ThemeStoreType>((set) => ({
-  theme: (localStorage.getItem("theme") as ThemeType) || "dark",
+const useThemeStore = create<TThemeStore>((set) => ({
+  theme: (localStorage.getItem("theme") as TTheme) || "dark",
   toggleTheme: () =>
     set((state) => {
       const newTheme = state.theme === "dark" ? "light" : "dark";

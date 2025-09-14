@@ -34,7 +34,7 @@ const Modal = ({
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-primary-10 p-8 backdrop-blur-sm ${containerClassName}`}
+      className={`fixed inset-0 z-[100] flex items-center justify-center bg-primary-10 p-8 backdrop-blur-sm ${containerClassName}`}
       onClick={onClose}
     >
       <div

@@ -13,11 +13,18 @@ export interface ClassName {
   className?: string;
 }
 
-export type ThemeType = "light" | "dark";
+export type TTheme = "light" | "dark";
 
-export type ThemeStoreType = {
-  theme: ThemeType;
+export type TThemeStore = {
+  theme: TTheme;
   toggleTheme: () => void;
+};
+
+export type TAuthAction = {
+  action: (() => void) | null;
+  setAction: (action: () => void) => void;
+  runAction: () => void;
+  clearAction: () => void;
 };
 
 export interface ProfilePicInputProps extends ClassName {

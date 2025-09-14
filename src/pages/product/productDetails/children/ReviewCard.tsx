@@ -14,7 +14,7 @@ import { useUserStore } from "../../../../store/user.store";
 import { useLikeDislikeHelpfulReview } from "../../../../api/reviews/reviews.service";
 import { TBaseLikeDislikeHelpfulReview } from "../../../../api/types";
 import useQueryParams from "../../../../hooks/useQueryParams";
-import AuthModal from "../../../../components/modal/children/AuthModal";
+import useAuthActionStore from "../../../../store/authAction";
 
 const ReviewCard = ({
   className = "",
@@ -25,7 +25,7 @@ const ReviewCard = ({
   review: FetchedReviewType;
   onMediaClick: (reviewMedia: TMediaOption[], index: number) => void;
 }) => {
-  const { queryParams, setParams } = useQueryParams();
+  const { setParams } = useQueryParams();
   const [updateStatus, setUpdateStatus] =
     useState<TBaseLikeDislikeHelpfulReview>({
       liked: false,
@@ -34,7 +34,7 @@ const ReviewCard = ({
     });
 
   const likeDislikeHelpfulQuery = useLikeDislikeHelpfulReview();
-
+  const { setAction } = useAuthActionStore();
   const { user, isAuthenticated } = useUserStore();
 
   const reviewMedia = useMemo(() => {
@@ -49,7 +49,7 @@ const ReviewCard = ({
     type: keyof TBaseLikeDislikeHelpfulReview,
     value: boolean
   ) => {
-    likeDislikeHelpfulQuery.mutate(
+    likeDislikeHelpfulQuery.mutateAsync(
       {
         reviewId: review._id,
         ...(type === "liked" && { liked: value, disliked: false }),
@@ -67,6 +67,52 @@ const ReviewCard = ({
     );
   };
 
+  // wrapper to ensure authentication
+  const requireAuth = (action: () => void) => {
+    if (!isAuthenticated) {
+      setParams({ login: "true" });
+      setAction(action);
+      return false;
+    }
+    return true;
+  };
+
+  const handleHelpful = () => {
+    const action = () => {
+      setUpdateStatus((prev) => {
+        const newStatus = { ...prev, isHelpful: !prev.isHelpful };
+        handleSubmit("isHelpful", newStatus.isHelpful);
+        return newStatus;
+      });
+    };
+    if (!requireAuth(action)) return;
+    action();
+  };
+
+  const handleLike = () => {
+    const action = () => {
+      setUpdateStatus((prev) => {
+        const newStatus = { ...prev, liked: !prev.liked, disliked: false };
+        handleSubmit("liked", newStatus.liked);
+        return newStatus;
+      });
+    };
+    if (!requireAuth(action)) return;
+    action();
+  };
+
+  const handleDislike = () => {
+    const action = () => {
+      setUpdateStatus((prev) => {
+        const newStatus = { ...prev, disliked: !prev.disliked, liked: false };
+        handleSubmit("disliked", newStatus.disliked);
+        return newStatus;
+      });
+    };
+    if (!requireAuth(action)) return;
+    action();
+  };
+
   useEffect(() => {
     if (!user) return;
     setUpdateStatus({
@@ -78,7 +124,6 @@ const ReviewCard = ({
 
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
-      {queryParams.login === "true" && <AuthModal />}
       <div className="flex justify-between items-center">
         <RatingStars rating={review.rating || 0} />
         <div className="text-sm">{formatDate(review.createdAt, "LLL")}</div>
@@ -98,20 +143,7 @@ const ReviewCard = ({
             <Button
               content="Helpful"
               pattern="outline"
-              onClick={() => {
-                if (!isAuthenticated) {
-                  setParams({ login: "true" });
-                } else {
-                  setUpdateStatus((prev) => {
-                    const newStatus = {
-                      ...prev,
-                      isHelpful: !prev.isHelpful,
-                    };
-                    handleSubmit("isHelpful", newStatus.isHelpful);
-                    return newStatus;
-                  });
-                }
-              }}
+              onClick={handleHelpful}
               className={`!w-fit !py-0.5 !px-2 !rounded-sm !text-xs/normal !border-none !duration-0 ${
                 updateStatus.isHelpful
                   ? "bg-accent-duo !text-primary-inverted"
@@ -121,21 +153,7 @@ const ReviewCard = ({
             <div className="flex items-center gap-2">
               <ThumbsUpIcon
                 role="button"
-                onClick={() => {
-                  if (!isAuthenticated) {
-                    setParams({ login: "true" });
-                  } else {
-                    setUpdateStatus((prev) => {
-                      const newStatus = {
-                        ...prev,
-                        liked: !prev.liked,
-                        disliked: false,
-                      };
-                      handleSubmit("liked", newStatus.liked);
-                      return newStatus;
-                    });
-                  }
-                }}
+                onClick={handleLike}
                 className={`w-4 h-4 cursor-pointer stroke-primary hover:rotate-12 transition-all duration-300 ${
                   updateStatus.liked
                     ? "dark:fill-blue-crayola-c light:fill-picton-blue-c"
@@ -143,21 +161,7 @@ const ReviewCard = ({
                 }`}
               />
               <ThumbsDownIcon
-                onClick={() => {
-                  if (!isAuthenticated) {
-                    setParams({ login: "true" });
-                  } else {
-                    setUpdateStatus((prev) => {
-                      const newStatus = {
-                        ...prev,
-                        disliked: !prev.disliked,
-                        liked: false,
-                      };
-                      handleSubmit("disliked", newStatus.disliked);
-                      return newStatus;
-                    });
-                  }
-                }}
+                onClick={handleDislike}
                 role="button"
                 className={`w-4 h-4 cursor-pointer stroke-primary hover:rotate-12 transition-all duration-300 ${
                   updateStatus.disliked
