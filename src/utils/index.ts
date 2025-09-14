@@ -71,17 +71,19 @@ export const removeStorageToken = (): void => {
   removeSessionToken();
 };
 
-export const getUserToken = () => {
-  const raw_token = getStorageToken();
-  if (!raw_token) {
-    throw new Error("No Token found");
-  }
+export const getUserToken = (): string | null => {
+  try {
+    const raw_token = getStorageToken();
+    if (!raw_token) return null;
 
-  const token = decryptData(raw_token) as string | null;
-  if (!token) {
-    throw new Error("No Token found");
+    const token = decryptData(raw_token) as string | null;
+    if (!token) return null;
+
+    return token;
+  } catch (err) {
+    console.error("Error fetching token:", err);
+    return null;
   }
-  return token;
 };
 
 export const getTodaysFeedback = (

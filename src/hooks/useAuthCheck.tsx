@@ -4,16 +4,20 @@ import { useUserStore } from "../store/user.store";
 import { getUserToken } from "../utils";
 
 export const useAuthCheck = () => {
-  const { setUser, isAuthenticated, user } = useUserStore();
-  const { data, isLoading, isError } = useGetUserDetails(
-    !!getUserToken() && !user && !isAuthenticated
-  );
+  const { setUser, user } = useUserStore();
+  const token = getUserToken();
+
+  const { data, isLoading, isError } = useGetUserDetails(!!token && !user);
 
   useEffect(() => {
-    if (data?.user && !user) {
+    if (data?.user) {
       setUser(data.user);
     }
-  }, [data?.user, user, setUser]);
+  }, [data?.user, setUser]);
 
-  return { isLoading, isError, data };
+  return {
+    isLoading,
+    isError,
+    isAuthenticated: !!data?.user,
+  };
 };
