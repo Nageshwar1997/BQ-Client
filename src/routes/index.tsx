@@ -5,8 +5,6 @@ import { lazy, Suspense } from "react";
 const Main = lazy(() => import("../pages/main/Main"));
 
 import Home from "../pages/home/Home";
-import RegisterRedirect from "./RegisterRedirect";
-import LoginRedirect from "./LoginRedirect";
 import NotFound from "../pages/error/NotFound";
 import SomethingWentWrong from "../pages/error/SomethingWentWrong";
 import LoadingScreen from "../components/loaders/LoadingScreen";
@@ -17,6 +15,9 @@ import SearchProducts from "../pages/product/searchProducts/SearchProducts";
 import ProductDetails from "../pages/product/productDetails/ProductDetails";
 import PrivateRoute from "./PrivateRoute";
 import Cart from "../pages/cart/Cart";
+import Login from "../pages/auth/Login";
+import AuthRedirect from "./AuthRedirect";
+import Register from "../pages/auth/Register";
 
 const router = createBrowserRouter([
   {
@@ -71,11 +72,19 @@ const router = createBrowserRouter([
   },
   {
     path: "register",
-    element: <RegisterRedirect />,
+    element: (
+      <AuthRedirect>
+        <Register />
+      </AuthRedirect>
+    ),
   },
   {
     path: "login",
-    element: <LoginRedirect />,
+    element: (
+      <AuthRedirect>
+        <Login />
+      </AuthRedirect>
+    ),
   },
   {
     path: "error",

@@ -1,10 +1,10 @@
 import { Navigate, useLocation } from "react-router-dom";
-import Login from "../pages/auth/Login";
 import { useUserStore } from "../store/user.store";
 import { useAuthCheck } from "../hooks/useAuthCheck";
 import LoadingScreen from "../components/loaders/LoadingScreen";
+import { JSX } from "react";
 
-const LoginRedirect = () => {
+const AuthRedirect = ({ children }: { children: JSX.Element }) => {
   const { isAuthenticated } = useUserStore();
   const { isLoading } = useAuthCheck();
   const location = useLocation();
@@ -17,7 +17,7 @@ const LoginRedirect = () => {
     return <Navigate to={from} replace />;
   }
 
-  return <Login />;
+  return children;
 };
 
-export default LoginRedirect;
+export default AuthRedirect;

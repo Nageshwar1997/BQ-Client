@@ -15,10 +15,13 @@ import HoveredComponent from "./components/HoveredComponent";
 import Button from "../button/Button";
 import { BottomGradient } from "../Gradients";
 import usePathParams from "../../hooks/usePathParams";
+import { useUserStore } from "../../store/user.store";
 
 const Navbar = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navbarRef = useRef<HTMLDivElement>(null);
+
+  const { isAuthenticated } = useUserStore();
 
   const { paths, pathname } = usePathParams();
 
@@ -312,24 +315,28 @@ const Navbar = () => {
                 );
               })}
             </div>
-
-            <div className="fixed bottom-0 left-0 w-full flex gap-5 md:gap-10 justify-center items-center px-6 py-2 pt-8 z-[51]">
-              <BottomGradient className="!w-full" />
-              <Link to={"/login"} className="w-1/2 sm:w-1/3 md:w-1/4 z-[51]">
-                <Button
-                  content="Login"
-                  pattern="primary"
-                  className="!rounded-lg !px-6 !py-3"
-                />
-              </Link>
-              <Link to={"/register"} className="w-1/2 sm:w-1/3 md:w-1/4 z-[51]">
-                <Button
-                  content="Register"
-                  pattern="secondary"
-                  className="!rounded-lg !px-6 !py-3"
-                />
-              </Link>
-            </div>
+            {!isAuthenticated && (
+              <div className="fixed bottom-0 left-0 w-full flex gap-5 md:gap-10 justify-center items-center px-6 py-2 pt-8 z-[51]">
+                <BottomGradient className="!w-full" />
+                <Link to={"/login"} className="w-1/2 sm:w-1/3 md:w-1/4 z-[51]">
+                  <Button
+                    content="Login"
+                    pattern="primary"
+                    className="!rounded-lg !px-6 !py-3"
+                  />
+                </Link>
+                <Link
+                  to={"/register"}
+                  className="w-1/2 sm:w-1/3 md:w-1/4 z-[51]"
+                >
+                  <Button
+                    content="Register"
+                    pattern="secondary"
+                    className="!rounded-lg !px-6 !py-3"
+                  />
+                </Link>
+              </div>
+            )}
           </div>
         )}
       </div>
