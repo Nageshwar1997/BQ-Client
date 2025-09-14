@@ -20,7 +20,7 @@ import LoadingPage from "../loaders/LoadingPage";
 import { useUserStore } from "../../store/user.store";
 import usePathParams from "../../hooks/usePathParams";
 
-const LoginForm = () => {
+const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
   const [loginMethod, setLoginMethod] = useState<LoginTypes>("email");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { removeParam, queryParams } = useQueryParams();
@@ -71,9 +71,12 @@ const LoginForm = () => {
       finalData.phoneNumber = bodyData.phoneNumber;
     }
 
-    userLoginMutation.mutate(finalData, {
+    userLoginMutation.mutateAsync(finalData, {
       onSettled(data, error) {
         if (data && !error) {
+          if (onLoginSuccess) {
+            onLoginSuccess();
+          }
           if (data.user) {
             setUser(data.user);
           }
