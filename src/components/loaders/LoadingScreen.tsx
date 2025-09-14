@@ -87,7 +87,7 @@ const LoadingScreen = () => {
     >
       <div className="relative flex flex-col justify-center items-center w-[90%] sm:w-[80%] md:w-[80%] lg:w-[60%]">
         <video
-          src="https://ctruhcdn.azureedge.net/main-webiste/public/video/home/loading-video-optimize.mp4"
+          src="https://ctruh-data.s3.ap-south-1.amazonaws.com/main-webiste/public/video/home/loading-video-optimize.mp4"
           autoPlay
           loop
           muted

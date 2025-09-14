@@ -21,19 +21,19 @@ export const LoginTextContent: TextItem[] = [
 export const socialMediaAccounts = [
   {
     name: "Google",
-    url: "https://ctruhcdn.azureedge.net/public/images/login/google.webp",
+    url: "https://ctruh-data.s3.ap-south-1.amazonaws.com/public/images/login/google.webp",
   },
   {
     name: "Facebook",
-    url: "https://ctruhcdn.azureedge.net/public/images/login/facebook.webp",
+    url: "https://ctruh-data.s3.ap-south-1.amazonaws.com/public/images/login/facebook.webp",
   },
   {
     name: "Github",
-    url: "https://ctruhcdn.azureedge.net/public/images/login/github_logo.webp",
+    url: "https://ctruh-data.s3.ap-south-1.amazonaws.com/public/images/login/github_logo.webp",
   },
   {
     name: "Linkedin",
-    url: "https://ctruhcdn.azureedge.net/public/images/login/linkedin.webp",
+    url: "https://ctruh-data.s3.ap-south-1.amazonaws.com/public/images/login/linkedin.webp",
   },
 ];
 
@@ -70,14 +70,14 @@ export const registerInputMapData: RegisterInputMapDataProps[] = [
     label: "Password",
     name: "password",
     type: "password",
-    autoComplete: "new-password",
+    autoComplete: "current-password",
     placeholder: "Enter password",
   },
   {
     name: "confirmPassword",
     label: "Confirm Password",
     type: "password",
-    autoComplete: "new-password",
+    autoComplete: "current-password",
     placeholder: "Reenter password",
   },
 ];
@@ -101,7 +101,7 @@ export const loginInputMapData: LoginInputMapDataProps[] = [
     name: "password",
     label: "Password",
     type: "password",
-    autoComplete: "new-password",
+    autoComplete: "current-password",
     placeholder: "Enter your password",
   },
 ];

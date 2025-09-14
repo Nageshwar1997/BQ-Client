@@ -1,36 +1,3 @@
-export const useCaseMasonryGridData = [
-  {
-    img: "https://ctruhcdn.azureedge.net/main-webiste/public/images/solutions/usecases/3d-renders-real-estate.webp",
-  },
-  {
-    img: "https://ctruhcdn.azureedge.net/main-webiste/public/images/solutions/usecases/mg-usecase-2.webp",
-  },
-  {
-    img: "https://ctruhcdn.azureedge.net/main-webiste/public/images/solutions/usecases/mg-usecase-3.webp",
-  },
-  {
-    img: "https://ctruhcdn.azureedge.net/main-webiste/public/images/solutions/usecases/mg-usecase-4.webp",
-  },
-  {
-    img: "https://ctruhcdn.azureedge.net/main-webiste/public/images/solutions/usecases/mg-usecase-5.webp",
-  },
-  {
-    img: "https://ctruhcdn.azureedge.net/main-webiste/public/images/solutions/usecases/mg-usecase-6.webp",
-  },
-  {
-    img: "https://ctruhcdn.azureedge.net/main-webiste/public/images/solutions/usecases/mg-usecase-7.webp",
-  },
-  {
-    img: "https://ctruhcdn.azureedge.net/main-webiste/public/images/solutions/usecases/mg-usecase-8.webp",
-  },
-  {
-    img: "https://ctruhcdn.azureedge.net/main-webiste/public/images/solutions/usecases/mg-usecase-9.webp",
-  },
-  {
-    img: "https://ctruhcdn.azureedge.net/main-webiste/public/images/solutions/usecases/mg-usecase-10.webp",
-  },
-];
-
 const collections = [
   { img: "/images/home/Categories/Collections/1.webp" },
   { img: "/images/home/Categories/Collections/2.webp" },

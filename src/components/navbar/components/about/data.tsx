@@ -189,7 +189,7 @@ export const testimonials = [
     name: "Nageshwar Pawar",
     role: "Founder",
     image:
-      "https://ctruhcdn.azureedge.net/main-webiste/public/images/navbar/krishna-gupta.webp",
+      "https://ctruh-data.s3.ap-south-1.amazonaws.com/main-webiste/public/images/navbar/krishna-gupta.webp",
   },
   {
     id: 2,
@@ -197,7 +197,7 @@ export const testimonials = [
     name: "Manjusha Magar",
     role: "CEO",
     image:
-      "https://ctruhcdn.azureedge.net/main-webiste/public/images/navbar/aarav-joshi.webp",
+      "https://ctruh-data.s3.ap-south-1.amazonaws.com/main-webiste/public/images/navbar/aarav-joshi.webp",
   },
   {
     id: 3,
@@ -205,6 +205,6 @@ export const testimonials = [
     name: "Sanket Pawar",
     role: "Manager",
     image:
-      "https://ctruhcdn.azureedge.net/main-webiste/public/images/navbar/lucas-smith.webp",
+      "https://ctruh-data.s3.ap-south-1.amazonaws.com/main-webiste/public/images/navbar/lucas-smith.webp",
   },
 ];
