@@ -10,9 +10,11 @@ import ShowError from "../../../../components/errors/ShowError";
 import { useInView } from "react-intersection-observer";
 import ReviewCardSkeleton from "../../../../components/skeletons/children/ReviewCardSkeleton";
 import EmptyData from "../../../../components/empty-data/EmptyData";
+import usePathParams from "../../../../hooks/usePathParams";
 
 const ReviewsSection = () => {
-  const { params, queryParams, setParams, removeParam } = useQueryParams();
+  const { queryParams, setParams, removeParam } = useQueryParams();
+  const { pathParams } = usePathParams();
   const { ref, inView } = useInView();
 
   const {
@@ -25,7 +27,7 @@ const ReviewsSection = () => {
   } = useGetAllReviewsByProductIdInfinite({
     pageParams: { limit: 2 },
     queryParams: {
-      productId: params.productId || "",
+      productId: pathParams.productId || "",
       sortBy: queryParams.sortBy,
     },
     data: {

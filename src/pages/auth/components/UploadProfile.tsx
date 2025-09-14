@@ -2,7 +2,7 @@ import { ChangeEvent, useCallback, useState } from "react";
 import { CameraIcon, InfoIcon } from "../../../icons";
 import { ProfilePicInputProps } from "../../../types";
 import { toastErrorMessage } from "../../../utils/toasts";
-import useQueryParams from "../../../hooks/useQueryParams";
+import usePathParams from "../../../hooks/usePathParams";
 
 const UploadProfile = ({
   name = "image",
@@ -36,7 +36,7 @@ const UploadProfile = ({
     },
     [onChange]
   );
-  const { pathname } = useQueryParams();
+  const { pathname } = usePathParams();
   return (
     <div className="w-full space-y-1.5">
       <div

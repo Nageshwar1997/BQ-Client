@@ -8,12 +8,12 @@ import EmptyData from "../../empty-data/EmptyData";
 import { FetchedProductType } from "../../../types";
 import { TUseGetAllProducts } from "../../../api/types";
 import { debounce } from "../../../utils";
-import useQueryParams from "../../../hooks/useQueryParams";
+import usePathParams from "../../../hooks/usePathParams";
 
 const SearchModal = ({ onClose }: { onClose: () => void }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
-  const { navigate } = useQueryParams();
+  const { navigate } = usePathParams();
 
   const debouncedSetQuery = useMemo(
     () =>

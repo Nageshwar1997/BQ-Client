@@ -1,12 +1,12 @@
 import { ErrorInfo, FC, ReactNode, useEffect, useState } from "react";
-import useQueryParams from "../../hooks/useQueryParams";
+import usePathParams from "../../hooks/usePathParams";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
 }
 
 const ErrorBoundary: FC<ErrorBoundaryProps> = ({ children }) => {
-  const { navigate } = useQueryParams();
+  const { navigate } = usePathParams();
   const [hasError, setHasError] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [errorInfo, setErrorInfo] = useState<ErrorInfo | null>(null);

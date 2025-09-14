@@ -18,11 +18,13 @@ import Button from "../button/Button";
 import useQueryParams from "../../hooks/useQueryParams";
 import LoadingPage from "../loaders/LoadingPage";
 import { useUserStore } from "../../store/user.store";
+import usePathParams from "../../hooks/usePathParams";
 
 const LoginForm = () => {
   const [loginMethod, setLoginMethod] = useState<LoginTypes>("email");
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const { removeParam, queryParams, paths } = useQueryParams();
+  const { removeParam, queryParams } = useQueryParams();
+  const { paths } = usePathParams();
   const { setUser } = useUserStore();
 
   const userLoginMutation = useLoginUser();

@@ -15,16 +15,17 @@ import {
   IReviewsApiParams,
   TLikeDislikeHelpfulReview,
 } from "../types";
-import useQueryParams from "../../hooks/useQueryParams";
+import usePathParams from "../../hooks/usePathParams";
 
 // Add Review
 export const useAddReview = () => {
-  const { params } = useQueryParams();
+  const { pathParams } = usePathParams();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationKey: ["add_review"],
-    mutationFn: (data: FormData) => add_review(data, params.productId || ""),
+    mutationFn: (data: FormData) =>
+      add_review(data, pathParams.productId || ""),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["get_reviews_by_product_id_infinite"],

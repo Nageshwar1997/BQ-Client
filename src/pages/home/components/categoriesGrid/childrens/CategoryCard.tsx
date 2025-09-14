@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef } from "react";
-import useQueryParams from "../../../../../hooks/useQueryParams";
+import usePathParams from "../../../../../hooks/usePathParams";
 
 const CategoryCard = memo(
   ({
@@ -17,7 +17,7 @@ const CategoryCard = memo(
     images: { img: string }[];
     intervalDuration: number;
   }) => {
-    const { navigate } = useQueryParams();
+    const { navigate } = usePathParams();
     const imageRef = useRef<HTMLImageElement>(null);
     const intervalRef = useRef<number | null>(null);
 

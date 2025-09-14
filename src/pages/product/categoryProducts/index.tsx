@@ -1,4 +1,5 @@
-import useQueryParams from "../../../hooks/useQueryParams";
+import { useInView } from "react-intersection-observer";
+
 import { CATEGORY_IMAGE_DATA } from "./data";
 import { useGetAllProductsInfinite } from "../../../api/product/product.service";
 import { useEffect, useMemo, useState } from "react";
@@ -11,12 +12,14 @@ import { FetchedProductType } from "../../../types";
 import EmptyData from "../../../components/empty-data/EmptyData";
 import ProductCardSkeleton from "../../../components/skeletons/children/ProductCardSkeleton";
 import ProductCard from "../searchProducts/ProductCard";
-import { useInView } from "react-intersection-observer";
+import useQueryParams from "../../../hooks/useQueryParams";
+import usePathParams from "../../../hooks/usePathParams";
 
 type TCategoryImage = { img: string; category: string };
 
 const CategoryProducts = () => {
-  const { params, queryParams, navigate } = useQueryParams();
+  const { queryParams } = useQueryParams();
+  const { pathParams, navigate } = usePathParams();
   const { ref, inView } = useInView();
   const [categoryImage, setCategoryImage] = useState<TCategoryImage | null>(
     null
@@ -26,7 +29,7 @@ const CategoryProducts = () => {
     sortBy: false,
   });
 
-  const { levelOneCategory, levelTwoCategory, levelThreeCategory } = params;
+  const { levelOneCategory, levelTwoCategory, levelThreeCategory } = pathParams;
 
   useEffect(() => {
     const levelOneCat = CATEGORY_IMAGE_DATA[String(levelOneCategory)];

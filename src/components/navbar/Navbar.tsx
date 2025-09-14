@@ -14,13 +14,13 @@ import { Link } from "react-router-dom";
 import HoveredComponent from "./components/HoveredComponent";
 import Button from "../button/Button";
 import { BottomGradient } from "../Gradients";
-import useQueryParams from "../../hooks/useQueryParams";
+import usePathParams from "../../hooks/usePathParams";
 
 const Navbar = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navbarRef = useRef<HTMLDivElement>(null);
 
-  const { paths, pathname } = useQueryParams();
+  const { paths, pathname } = usePathParams();
 
   const [isMobileNavbarOpened, setIsMobileNavbarOpened] =
     useState<boolean>(false);

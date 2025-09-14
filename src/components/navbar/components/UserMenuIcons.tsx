@@ -12,7 +12,7 @@ import {
 import DarkMode from "../../DarkMode";
 import Modal from "../../modal";
 import SearchModal from "../../modal/children/SearchModal";
-import useQueryParams from "../../../hooks/useQueryParams";
+import usePathParams from "../../../hooks/usePathParams";
 import { useUserStore } from "../../../store/user.store";
 import useOutsideClick from "../../../hooks/useOutsideClick";
 import Button from "../../button/Button";
@@ -24,7 +24,7 @@ const UserPopup = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
-  const { navigate } = useQueryParams();
+  const { navigate } = usePathParams();
   const { user, isAuthenticated, logout } = useUserStore();
 
   if (!isOpen) return null;
@@ -121,7 +121,7 @@ const UserMenuIcons = ({
   const userPopupRef = useOutsideClick<HTMLDivElement>(() => {
     setOpenUserPopup(false);
   });
-  const { paths } = useQueryParams();
+  const { paths, navigate } = usePathParams();
 
   useEffect(() => {
     if (closeOnNavbarLeave) {
@@ -154,7 +154,10 @@ const UserMenuIcons = ({
           />
         </div>
         <BuildingIcon className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
-        <ShoppingBag className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
+        <ShoppingBag
+          onClick={() => navigate("/cart")}
+          className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6"
+        />
         <HeartIcon className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
         <DarkMode />
       </div>

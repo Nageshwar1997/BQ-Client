@@ -13,9 +13,11 @@ import ProductCardSkeleton from "../../../components/skeletons/children/ProductC
 import ShowError from "../../../components/errors/ShowError";
 import EmptyData from "../../../components/empty-data/EmptyData";
 import { FetchedProductType } from "../../../types";
+import usePathParams from "../../../hooks/usePathParams";
 
 const SearchProducts = () => {
-  const { queryParams, setParams, removeParam, navigate } = useQueryParams();
+  const { queryParams, setParams, removeParam } = useQueryParams();
+  const { navigate } = usePathParams();
   const { ref, inView } = useInView();
   const [show, setShow] = useState<Record<"filter" | "sortBy", boolean>>({
     filter: false,

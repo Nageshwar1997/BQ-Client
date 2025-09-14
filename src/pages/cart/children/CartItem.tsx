@@ -1,5 +1,5 @@
 import Button from "../../../components/button/Button";
-import useQueryParams from "../../../hooks/useQueryParams";
+import usePathParams from "../../../hooks/usePathParams";
 import { MinusIcon, PlusIcon, TrashIcon } from "../../../icons";
 import { TCartProduct } from "../../../types";
 import { toINRCurrency } from "../../../utils";
@@ -13,7 +13,7 @@ const CartItem = ({
   onQuantityChange: (id: string, newQty: number) => void;
   onRemoveItem: (id: string) => void;
 }) => {
-  const { navigate } = useQueryParams();
+  const { navigate } = usePathParams();
   const stock =
     (item.shade && item.shade?.stock) || item.product?.totalStock || 0;
   const isOutOfStock = stock <= 0;

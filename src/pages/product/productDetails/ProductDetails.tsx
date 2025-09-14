@@ -22,16 +22,18 @@ import {
   useGetUserCart,
 } from "../../../api/cart/cart.service";
 import { useUserStore } from "../../../store/user.store";
+import usePathParams from "../../../hooks/usePathParams";
 
 const ProductDetails = () => {
-  const { params, setParams, navigate } = useQueryParams();
+  const { setParams } = useQueryParams();
+  const { pathParams, navigate } = usePathParams();
   const [selectedShadeIdx, setSelectedShadeIdx] = useState<null | number>(null);
   const { isAuthenticated } = useUserStore();
   const { mutateAsync, isPending } = useAddProductToCart();
   const getUserCartQuery = useGetUserCart();
 
   const { data, isLoading, isError } = useGetProductById({
-    queryParams: { productId: params.productId ?? "" },
+    queryParams: { productId: pathParams.productId ?? "" },
     data: {
       populateFields: {
         category: ["name", "category", "parentCategory"],
@@ -72,10 +74,10 @@ const ProductDetails = () => {
     return (
       cartProducts.some(
         (item: { product: { _id: string } }) =>
-          item?.product?._id === params?.productId
+          item?.product?._id === pathParams?.productId
       ) ?? false
     );
-  }, [cartProducts, params?.productId]);
+  }, [cartProducts, pathParams?.productId]);
 
   const handleAddToCart = () => {
     if (!isAuthenticated) {
@@ -84,12 +86,10 @@ const ProductDetails = () => {
     }
     mutateAsync(
       {
-        productId: params?.productId ?? "",
+        productId: pathParams?.productId ?? "",
         shadeId: currentShade?._id,
       },
-      {
-        onSuccess: getUserCartQuery.refetch,
-      }
+      { onSuccess: getUserCartQuery.refetch }
     );
   };
 

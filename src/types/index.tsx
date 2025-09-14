@@ -147,7 +147,7 @@ export interface UserStoreType {
   logout: () => void;
 }
 
-export interface QueryParams {
+export interface IQueryParams {
   [key: string]: string;
 }
 
