@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Button from "../../../../components/button/Button";
-import RatingStars from "../../../../components/navbar/components/rating/RatingStars";
+import RatingStars from "../../../../components/ui/RatingStars";
 import TextDisplay from "../../../../components/TextDisplay";
 import { FetchedReviewType } from "../../../../types";
 import { getAvgRating } from "../../../../utils";

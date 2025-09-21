@@ -6,7 +6,7 @@ import { useGetAllProductsInfinite } from "../../../../api/product/product.servi
 import { useInView } from "react-intersection-observer";
 import useHorizontalScrollable from "../../../../hooks/useHorizontalScrollable";
 import { LeftGradient, RightGradient } from "../../../../components/Gradients";
-import ProductCard from "../../searchProducts/ProductCard";
+import ProductCard from "../../../../components/ui/ProductCard";
 import ProductCardSkeleton from "../../../../components/skeletons/children/ProductCardSkeleton";
 import ShowError from "../../../../components/errors/ShowError";
 import EmptyData from "../../../../components/empty-data/EmptyData";

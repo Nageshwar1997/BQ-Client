@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type React from "react";
 import { InfoIcon, StarEmptyIcon, StarFillIcon } from "../../icons";
-import RatingStars from "../navbar/components/rating/RatingStars";
+import RatingStars from "../ui/RatingStars";
 import Button from "../button/Button";
 
 interface RatingProps {

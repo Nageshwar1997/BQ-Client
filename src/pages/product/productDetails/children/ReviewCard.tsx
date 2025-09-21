@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 import MediaCarousel from "../../../../components/carousels/MediaCarousel";
-import RatingStars from "../../../../components/navbar/components/rating/RatingStars";
+import RatingStars from "../../../../components/ui/RatingStars";
 import {
   ThumbsDownIcon,
   ThumbsUpIcon,

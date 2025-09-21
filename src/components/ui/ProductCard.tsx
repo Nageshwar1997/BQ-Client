@@ -1,6 +1,6 @@
-import { FetchedProductType } from "../../../types";
-import { getAvgRating, toINRCurrency } from "../../../utils";
-import RatingStars from "../../../components/navbar/components/rating/RatingStars";
+import { FetchedProductType } from "../../types";
+import { getAvgRating, toINRCurrency } from "../../utils";
+import RatingStars from "./RatingStars";
 
 const ProductCard = ({
   product,

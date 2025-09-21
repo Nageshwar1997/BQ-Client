@@ -4,7 +4,7 @@ import useQueryParams from "../../../hooks/useQueryParams";
 import { FetchedProductType, TMediaOption } from "../../../types";
 import ReviewsSection from "./children/ReviewsSection";
 import MediaCarouselWithParentMedia from "../../../components/carousels/MediaCarouselWithParentMedia";
-import RatingStars from "../../../components/navbar/components/rating/RatingStars";
+import RatingStars from "../../../components/ui/RatingStars";
 import { getAvgRating, toINRCurrency } from "../../../utils";
 import Button from "../../../components/button/Button";
 import { CATEGORY_VIDEOS } from "../../../constants";
