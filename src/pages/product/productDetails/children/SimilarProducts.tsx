@@ -68,11 +68,7 @@ const SimilarProducts = ({ category }: { category: PopulatedCategory }) => {
       <div className="relative">
         {showGradient.left && <LeftGradient className="h-full !w-5 !sm:w-20" />}
         <div
-          className={`max-h-[445px] flex gap-4 overflow-x-auto scroll-smooth px-4 ${
-            !showGradient.left && !showGradient.right
-              ? "justify-center"
-              : "justify-start"
-          }`}
+          className="max-h-[445px] flex gap-4 overflow-x-auto scroll-smooth px-4"
           ref={containerRef}
         >
           {isError ? (
