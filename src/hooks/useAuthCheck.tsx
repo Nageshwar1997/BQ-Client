@@ -4,20 +4,20 @@ import { useUserStore } from "../store/user.store";
 import { getUserToken } from "../utils";
 
 export const useAuthCheck = () => {
-  const { setUser, user } = useUserStore();
-  const token = getUserToken();
-
-  const { data, isLoading, isError } = useGetUserDetails(!!token && !user);
+  const { setUser, user, logout } = useUserStore();
+  const { data, isLoading, isError } = useGetUserDetails();
 
   useEffect(() => {
-    if (data?.user) {
-      setUser(data.user);
+    try {
+      if (getUserToken() && !user && data?.user) {
+        setUser(data.user);
+      }
+    } catch (error) {
+      console.log("Error in auth check:", error);
+      logout();
     }
-  }, [data?.user, setUser]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data?.user]);
 
-  return {
-    isLoading,
-    isError,
-    isAuthenticated: !!data?.user,
-  };
+  return { isLoading, isError, data };
 };

@@ -1,8 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { get_user_details } from "./user.api";
 import { getUserToken } from "../../utils";
 
-export const useGetUserDetails = (enabled: boolean) => {
+export const useGetUserDetails = () => {
   const token = getUserToken();
 
   return useQuery({
@@ -11,6 +11,7 @@ export const useGetUserDetails = (enabled: boolean) => {
     retry: false,
     staleTime: Infinity,
     gcTime: Infinity,
-    enabled: enabled && !!token,
+    enabled: !!token,
+    placeholderData: keepPreviousData,
   });
 };
