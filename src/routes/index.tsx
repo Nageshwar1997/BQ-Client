@@ -18,6 +18,7 @@ import Cart from "../pages/cart/Cart";
 import Login from "../pages/auth/Login";
 import AuthRedirect from "./AuthRedirect";
 import Register from "../pages/auth/Register";
+import Address from "../pages/address";
 
 const router = createBrowserRouter([
   {
@@ -65,6 +66,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <Cart />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "address",
+        element: (
+          <PrivateRoute>
+            <Address />
           </PrivateRoute>
         ),
       },

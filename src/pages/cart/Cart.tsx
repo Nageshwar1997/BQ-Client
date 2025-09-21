@@ -129,7 +129,7 @@ const Cart = () => {
               className="!rounded-lg mt-4 !p-3 gap-2"
               rightIcon={<RightArrowIcon className="stroke-white" />}
               disable={isAnyProductOutOfStock}
-              onClick={() => navigate("/checkout")}
+              onClick={() => navigate("/address")}
             />
             <p className="mt-3 text-sm text-silver-jet text-center">
               Secure checkout • 100% satisfaction guaranteed
