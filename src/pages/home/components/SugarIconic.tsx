@@ -3,14 +3,14 @@ import { SUGAR_ICONICS_DATA } from "../data";
 
 const SugarIconic = () => {
   return (
-    <div className="relative w-full mx-auto shadow-lg px-[5%]">
+    <div className="relative w-full mx-auto shadow-lg px-[5%] pb-8">
       <HeadingWithDescription
         titleTexts={["Sugar Iconics In-Focus"]}
         className="py-2 text-center [&>h1]:leading-none"
         wrapperClassName="lg:[&>hr]:w-2/3 py-4"
         horizontalLine="bottom"
       />
-      <div className="grid sm:grid-cols-3 gap-5 place-items-center">
+      <div className="grid sm:grid-cols-3 gap-5 place-items-center mt-5">
         {SUGAR_ICONICS_DATA.map((item, index) => (
           <div key={index} className="overflow-hidden rounded max-w-[400px]">
             <img

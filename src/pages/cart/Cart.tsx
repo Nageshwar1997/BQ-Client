@@ -11,9 +11,11 @@ import { ICart, TCartProduct } from "../../types";
 import ShowError from "../../components/errors/ShowError";
 import CartSkeleton from "../../components/skeletons/children/CartSkeleton";
 import EmptyData from "../../components/empty-data/EmptyData";
+import usePathParams from "../../hooks/usePathParams";
 
 const Cart = () => {
   const { data, isLoading, isError, refetch } = useGetUserCart();
+  const { navigate } = usePathParams();
 
   const { mutateAsync: updateQuantity } = useUpdateProductQuantityInCart();
   const { mutateAsync: removeProduct } = useRemoveProductFromCart();
@@ -127,6 +129,7 @@ const Cart = () => {
               className="!rounded-lg mt-4 !p-3 gap-2"
               rightIcon={<RightArrowIcon className="stroke-white" />}
               disable={isAnyProductOutOfStock}
+              onClick={() => navigate("/checkout")}
             />
             <p className="mt-3 text-sm text-silver-jet text-center">
               Secure checkout • 100% satisfaction guaranteed
