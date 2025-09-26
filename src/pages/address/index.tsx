@@ -3,7 +3,7 @@ import { IAddress, IUserAddresses } from "../../types";
 import { useGetUserAddresses } from "../../api/address/address.service";
 import { ADDRESS_TYPES } from "../../constants";
 import Button from "../../components/button/Button";
-import { UploadCloudIcon } from "../../icons";
+import { InfoIcon, RightArrowIcon, UploadCloudIcon } from "../../icons";
 import AddressCard from "./children/AddressCard";
 import AddressInfo from "./children/AddressInfo";
 
@@ -74,10 +74,6 @@ const Address = () => {
     return returnAddresses || [];
   }, [addresses, selectedAddress]);
 
-  useEffect(() => {
-    console.log("finalAddresses", finalAddresses);
-  }, [finalAddresses]);
-
   if (isPending) return <div>Loading...</div>;
   if (isError) return <div>Error loading addresses</div>;
 
@@ -100,7 +96,7 @@ const Address = () => {
         />
       </div>
       <div className="flex flex-col lg:flex-row gap-6">
-        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="columns-1 sm:columns-2 xl:columns-3 gap-4">
           {addresses.map((address) => {
             const isBilling = selectedAddress.billing === address._id;
             const isShipping = selectedAddress.shipping === address._id;
@@ -114,22 +110,50 @@ const Address = () => {
                 isShipping={isShipping}
                 isBoth={isBoth}
                 handleAddressSelect={handleSelect}
+                className="mb-4 break-inside-avoid"
               />
             );
           })}
         </div>
         <div className="border border-primary-50 rounded-full" />
-        <div className="lg:max-w-xs w-full h-fit border border-primary-50 shadow-light-dark-soft rounded-lg p-5 grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4">
-          {finalAddresses?.map(({ address, type }) => (
-            <div key={address._id}>
-              <hr className="h-px mb-2 border-none block bg-silver-jet-2" />
-              <h3 className="text-lg text-center font-bold capitalize bg-clip-text text-transparent bg-accent-duo">
-                {type === "both" ? "Shipping & Billing" : type} Address
-              </h3>
-              <hr className="h-px my-2 border-none block bg-silver-jet-2" />
-              <AddressInfo address={address} />
-            </div>
-          ))}
+        <div className="lg:max-w-xs w-full h-fit border border-primary-50 shadow-light-dark-soft rounded-lg p-5">
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4">
+            {finalAddresses?.map(({ address, type }) => (
+              <div key={address._id}>
+                <hr className="h-px mb-2 border-none block bg-silver-jet-2" />
+                <h3 className="text-lg text-center font-bold capitalize bg-clip-text text-transparent bg-accent-duo">
+                  {type === "both" ? "Shipping & Billing" : type} Address
+                </h3>
+                <hr className="h-px my-2 border-none block bg-silver-jet-2" />
+                <AddressInfo address={address} />
+              </div>
+            ))}
+          </div>
+          <hr className="h-px my-3 border-none block bg-silver-jet-2" />
+          <div className="space-y-2 mt-4">
+            {((!selectedAddress.billing || !selectedAddress.shipping) && !selectedAddress.both) && (
+              <div className="text-xs/4 text-red-600 flex items-center gap-1">
+                <InfoIcon className="w-5 h-5 fill-red-600" />
+                <span>
+                  {selectedAddress.billing && !selectedAddress.shipping
+                    ? "If you select a billing address, you must select a shipping address"
+                    : !selectedAddress.billing && selectedAddress.shipping
+                    ? "If you select a shipping address, you must select a billing address"
+                    : ""}
+                </span>
+              </div>
+            )}
+            <Button
+              pattern="primary"
+              content="Proceed to Payment"
+              className="!rounded-lg!p-3 gap-2 max-w-xs mx-auto"
+              rightIcon={<RightArrowIcon className="stroke-white" />}
+              disable={
+                (!selectedAddress.billing || !selectedAddress.shipping) &&
+                !selectedAddress.both
+              }
+            />
+          </div>
         </div>
       </div>
     </div>
