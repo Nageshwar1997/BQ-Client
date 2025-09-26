@@ -8,6 +8,7 @@ import {
   VideoHTMLAttributes,
 } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
+import { ADDRESS_TYPES } from "../constants";
 
 export interface ClassName {
   className?: string;
@@ -386,4 +387,38 @@ export interface IFooterOptionList {
   options: TFooterOption[];
   title?: string;
   isFirst?: boolean;
+}
+
+export interface IAddress
+  extends Pick<UserTypes, "firstName" | "lastName" | "email" | "phoneNumber"> {
+  _id: string;
+  user: string;
+  altPhoneNumber?: string;
+  address: string;
+  landmark?: string;
+  city: string;
+  state: string;
+  pinCode: string;
+  country: string;
+  gst?: string;
+  type: (typeof ADDRESS_TYPES)[number];
+}
+
+export interface IUserAddresses {
+  _id: string;
+  user: string;
+  addresses: IAddress[];
+  defaultAddress: string | null;
+}
+
+export interface IAddressCard {
+  address: IAddress;
+  handleAddressSelect: (
+    type: (typeof ADDRESS_TYPES)[number],
+    id: string
+  ) => void;
+  isBilling?: boolean;
+  isShipping?: boolean;
+  isBoth?: boolean;
+  className?: string;
 }

@@ -103,7 +103,11 @@ export default {
   },
   plugins: [
     // Utilities
-    function ({ addUtilities }) {
+    function ({
+      addUtilities,
+    }: {
+      addUtilities: (utilities: Record<string, Record<string, string>>) => void;
+    }) {
       addUtilities({
         ".text-fill-transparent": {
           "-webkit-text-fill-color": "transparent",

@@ -90,3 +90,5 @@ export const reviewInitialValues = {
   rating: 1,
   media: [],
 };
+
+export const ADDRESS_TYPES = ["shipping", "billing", "both"] as const;
