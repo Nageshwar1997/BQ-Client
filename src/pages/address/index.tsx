@@ -5,7 +5,7 @@ import { ADDRESS_TYPES } from "../../constants";
 import Button from "../../components/button/Button";
 import { UploadCloudIcon } from "../../icons";
 import AddressCard from "./children/AddressCard";
-import { formatPhoneNumber } from "../../utils";
+import AddressInfo from "./children/AddressInfo";
 
 const Address = () => {
   const [selectedAddress, setSelectedAddress] = useState<
@@ -127,30 +127,7 @@ const Address = () => {
                 {type === "both" ? "Shipping & Billing" : type} Address
               </h3>
               <hr className="h-px my-2 border-none block bg-silver-jet-2" />
-              <div>
-                <h3 className="text-lg font-semibold text-secondary">
-                  {address.firstName} {address.lastName}
-                </h3>
-                <p className="text-tertiary text-sm">
-                  {formatPhoneNumber(address.phoneNumber)}
-                  {address.altPhoneNumber &&
-                    `, ${formatPhoneNumber(address.altPhoneNumber)}`}
-                </p>
-                {address.email && (
-                  <p className="text-tertiary text-sm">{address.email}</p>
-                )}
-                <p className="text-silver-jet-2 mt-1 text-sm">
-                  {address.address}
-                  {address.landmark ? `, ${address.landmark}` : ""},{" "}
-                  {address.city}, {address.state} - {address.pinCode},{" "}
-                  {address.country}
-                </p>
-                {address.gst && (
-                  <p className="text-silver-jet text-sm mt-1">
-                    GST: {address.gst}
-                  </p>
-                )}
-              </div>
+              <AddressInfo address={address} />
             </div>
           ))}
         </div>
