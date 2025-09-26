@@ -28,6 +28,9 @@ const AddressCard = ({
         {address.altPhoneNumber &&
           `, ${formatPhoneNumber(address.altPhoneNumber)}`}
       </p>
+      {address.email && (
+        <p className="text-tertiary text-sm">Email: {address.email}</p>
+      )}
       <p className="text-silver-jet-2 mt-1 text-sm">
         {address.address}
         {address.landmark ? `, ${address.landmark}` : ""}, {address.city},{" "}
