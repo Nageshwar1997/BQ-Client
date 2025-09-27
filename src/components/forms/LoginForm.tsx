@@ -21,7 +21,6 @@ import { useUserStore } from "../../store/user.store";
 import usePathParams from "../../hooks/usePathParams";
 
 const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
-  const [loginMethod, setLoginMethod] = useState<LoginTypes>("email");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { removeParam, queryParams } = useQueryParams();
   const { paths } = usePathParams();
@@ -39,7 +38,7 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
   } = useForm({
     resolver: yupResolver(loginSchema),
     defaultValues: {
-      loginMethod: loginMethod,
+      loginMethod: "email",
       email: "",
       phoneNumber: "",
       password: "",
@@ -49,8 +48,7 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
 
   const selectedMethod = watch("loginMethod");
 
-  const handleLoginMethodChange = (method: "email" | "phoneNumber") => {
-    setLoginMethod(method);
+  const handleLoginMethodChange = (method: LoginTypes) => {
     reset({
       loginMethod: method,
       email: method === "email" ? "" : undefined,
