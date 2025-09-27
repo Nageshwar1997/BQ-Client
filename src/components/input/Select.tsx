@@ -1,0 +1,133 @@
+import { useEffect, useRef, useState } from "react";
+import { CheckedIcon, DropdownIcon, InfoIcon } from "../../icons";
+import { ISelect } from "../../types";
+
+const Select = ({
+  label = "",
+  className = "",
+  error = "",
+  containerClassName = "",
+  icons,
+  selectProps,
+  needRef = false,
+  options = [],
+}: ISelect) => {
+  const inputRef = useRef<HTMLSelectElement | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const selected = options.find((opt) => opt.value === selectProps.value);
+
+  useEffect(() => {
+    if (needRef) {
+      inputRef.current?.focus();
+    }
+  }, [needRef]);
+
+  return (
+    <div className={`w-full flex flex-col gap-1.5 ${containerClassName}`}>
+      <div className="relative h-10 lg:h-12">
+        {label && (
+          <button className="text-[10px] lg:text-xs text-primary-50 absolute top-0 left-3 transform -translate-y-1/2 border border-primary-10 leading-none px-1 md:px-2 py-0.5 bg-smoke-eerie rounded cursor-pointer z-[2]">
+            {label}
+          </button>
+        )}
+        <div
+          className={`w-full h-full flex items-center gap-1 border border-primary-10 bg-smoke-eerie rounded-lg ${className}`}
+        >
+          {/* Left Icon */}
+          {icons?.left?.icon ? (
+            <span
+              onClick={icons.left.onClick}
+              className="h-full flex justify-center items-center cursor-pointer p-2 overflow-hidden"
+            >
+              {icons.left.icon}
+            </span>
+          ) : !icons?.left?.icon && icons?.left?.text ? (
+            <div className="h-full overflow-hidden">
+              <p className="h-full flex items-center justify-center text-sm text-primary-50 border-r border-r-primary-10 p-3 capitalize">
+                {icons?.left?.text}
+              </p>
+            </div>
+          ) : null}
+          {/* Select */}
+          <div
+            className={`flex-1 flex items-center justify-between w-full h-full border-none bg-transparent font-normal text-sm p-3 text-primary placeholder:text-primary-50 placeholder:text-sm autofill-effect line-clamp-1 ${
+              icons?.left?.icon
+                ? "pl-0"
+                : !icons?.left?.icon
+                ? "pr-2"
+                : icons?.left?.text
+                ? "pl-2"
+                : ""
+            }`}
+            onClick={() => !selectProps?.disabled && setIsOpen((prev) => !prev)}
+          >
+            <span
+              className={`line-clamp-1 ${
+                selected?.value ? "" : "text-primary-50"
+              }`}
+            >
+              {selected?.name || selectProps?.placeholder}
+            </span>
+            <DropdownIcon
+              className={`w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 transition-transform ${
+                isOpen ? "rotate-180" : ""
+              } ${selected?.value ? "stroke-primary" : "stroke-primary-50"}`}
+            />
+            {isOpen && (
+              <div className="absolute left-0 top-full w-full z-[2] mt-2 rounded-lg border border-primary-10 bg-smoke-eerie shadow-md overflow-hidden py-2">
+                <ul className="max-h-60 overflow-auto px-1 space-y-0.5">
+                  {options.map((option) => {
+                    const active = selected?.value === option.value;
+                    return (
+                      <li
+                        key={option.value}
+                        className={`flex justify-between items-center gap-2 p-2 hover:bg-primary-10 text-primary cursor-pointer text-sm rounded-[4px] ${
+                          active ? "bg-primary-8" : ""
+                        }`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          selectProps.onChange?.(option);
+                          setIsOpen(false);
+                        }}
+                      >
+                        <span>{option.name}</span>
+                        {active && (
+                          <CheckedIcon className="w-4 h-4 md:w-5 md:h-5 stroke-primary" />
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {!selectProps?.disabled && error && (
+        <p
+          className={`w-full text-start flex gap-1 items-center text-[11px] leading-tight text-red-500`}
+        >
+          <InfoIcon className="w-3 h-3 md:w-4 md:h-4 fill-red-500" />
+          <span className="leading-none">{error}</span>
+        </p>
+      )}
+    </div>
+  );
+};
+
+export default Select;
+
+/**!SECTION
+ * 
+ *             className={`flex-1 w-full h-full outline-none border-none focus:outline-none focus:border-none bg-transparent font-normal text-sm p-3 text-primary placeholder:text-primary-50 placeholder:text-sm autofill-effect line-clamp-1 ${
+              icons?.left?.icon
+                ? "pl-0"
+                : !icons?.left?.icon
+                ? "pr-0"
+                : icons?.left?.text
+                ? "pl-2"
+                : ""
+            }`}
+ */
