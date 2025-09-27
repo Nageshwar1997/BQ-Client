@@ -14,7 +14,11 @@ const AddressFormModal = ({ onClose }: { onClose: () => void }) => {
   //     // eslint-disable-next-line react-hooks/exhaustive-deps
   //   }, []);
   return (
-    <Modal onClose={onClose} isOpen={queryParams.add === "true"}>
+    <Modal
+      onClose={onClose}
+      isOpen={queryParams.add === "true"}
+      heading="Add Address"
+    >
       <AddressForm />
     </Modal>
   );

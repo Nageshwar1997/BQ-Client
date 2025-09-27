@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Modal from "..";
 import Input from "../../input/Input";
 import Textarea from "../../input/Textarea";
-import TextDisplay from "../../TextDisplay";
 import { Controller, useForm } from "react-hook-form";
 import { UploadCloudIcon } from "../../../icons";
 import Button from "../../button/Button";
@@ -65,12 +64,11 @@ const AddReviewModal = ({ onClose, isOpen }: TAddReviewModal) => {
     });
   };
   return (
-    <Modal onClose={onClose} isOpen={isOpen}>
+    <Modal onClose={onClose} isOpen={isOpen} heading="Add Review">
       <form
         onSubmit={handleSubmit(handleAddReview)}
         className="flex flex-col items-center gap-5"
       >
-        <TextDisplay content={[{ text: "Add Review" }]} className="!text-2xl" />
         <Controller
           name="rating"
           control={control}

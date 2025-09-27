@@ -41,7 +41,7 @@ const UserPopup = ({
         isOpen={isOpen}
         onClose={onClose}
         containerClassName="relative !p-0 !rounded-lg"
-        className="!bg-platinum-jet !rounded-lg [&>svg]:hidden !p-4"
+        className="!bg-platinum-jet !rounded-lg [&>div>div>svg]:hidden [&>div]:!p-4"
       >
         <div className="flex flex-col gap-2">
           <div className="flex flex-col items-center gap-2">
