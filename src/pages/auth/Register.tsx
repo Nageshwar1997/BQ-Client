@@ -97,17 +97,17 @@ const Register = () => {
       <DarkMode className="border absolute top-5 right-5 h-fit p-2 md:p-3 rounded-full bg-secondary-inverted [&_path]:!stroke-secondary z-10" />
       <div
         ref={containerRef}
-        className={`w-full lg:w-1/2 flex flex-col items-center gap-4 overflow-hidden overflow-y-scroll ${
+        className={`flex-1 flex flex-col items-center gap-4 overflow-hidden overflow-y-scroll scroll-smooth ${
           !showGradient.bottom && !showGradient.top
             ? "justify-center"
             : "justify-start"
         }`}
       >
-        {showGradient.top && <TopGradient />}
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="w-full flex flex-col gap-4"
         >
+          {showGradient.top && <TopGradient />}
           <TextDisplay
             content={RegisterTextContent}
             contentClassName="mb-3 font-semibold"
@@ -221,8 +221,8 @@ const Register = () => {
               </div>
             </div>
           </div>
+          {showGradient.bottom && <BottomGradient />}
         </form>
-        {showGradient.bottom && <BottomGradient />}
       </div>
     </div>
   );
