@@ -75,7 +75,7 @@ const Select = ({
               } ${selected?.value ? "stroke-primary" : "stroke-primary-50"}`}
             />
             {isOpen && (
-              <div className="absolute left-0 top-full w-full z-[2] mt-2 rounded-lg border border-primary-10 bg-smoke-eerie shadow-md overflow-hidden py-2">
+              <div className="absolute left-0 top-full w-full z-[3] mt-2 rounded-lg border border-primary-10 bg-smoke-eerie shadow-md overflow-hidden py-2">
                 <ul className="max-h-60 overflow-auto px-1 space-y-0.5">
                   {options.map((option) => {
                     const active = selected?.value === option.value;
