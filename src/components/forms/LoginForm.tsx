@@ -109,7 +109,7 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
         <SocialAuth />
         <div className="w-full border-gradient p-px rounded-3xl overflow-hidden mx-auto">
           <div
-            className={`shadow-light-dark-soft bg-platinum-black p-6 md:px-8 rounded-3xl space-y-6 mx-auto ${
+            className={`shadow-light-dark-soft bg-platinum-black p-4 base:p-6 md:px-8 rounded-3xl space-y-6 mx-auto ${
               paths.includes("login")
                 ? "max-w-[400px] lg:max-w-[500px] sm:w-[90%] lg:w-[500px]"
                 : ""
@@ -192,7 +192,7 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
                 </div>
                 <Link
                   to={"/forgot-password"}
-                  className={`bg-clip-text text-transparent bg-accent-duo text-xs sm:text-[13px] md:text-sm mr-2 hover:underline whitespace-nowrap`}
+                  className={`bg-clip-text text-transparent bg-accent-duo text-[10px] sm:text-[13px] md:text-sm mr-2 hover:underline whitespace-nowrap`}
                 >
                   Forgot Password?
                 </Link>
