@@ -129,6 +129,7 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
                     { label: "Email", value: "email" },
                     { label: "Phone", value: "phoneNumber" },
                   ]}
+                  className="!w-40"
                 />
               )}
             />
