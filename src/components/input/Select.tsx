@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { CheckedIcon, DropdownIcon, InfoIcon } from "../../icons";
 import { ISelect } from "../../types";
 
@@ -7,21 +7,14 @@ const Select = ({
   className = "",
   error = "",
   containerClassName = "",
+  optionsClassName = "",
   icons,
   selectProps,
-  needRef = false,
   options = [],
 }: ISelect) => {
-  const inputRef = useRef<HTMLSelectElement | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
   const selected = options.find((opt) => opt.value === selectProps.value);
-
-  useEffect(() => {
-    if (needRef) {
-      inputRef.current?.focus();
-    }
-  }, [needRef]);
 
   return (
     <div className={`w-full flex flex-col gap-1.5 ${containerClassName}`}>
@@ -75,7 +68,9 @@ const Select = ({
               } ${selected?.value ? "stroke-primary" : "stroke-primary-50"}`}
             />
             {isOpen && (
-              <div className="absolute left-0 top-full w-full z-[3] mt-2 rounded-lg border border-primary-10 bg-smoke-eerie shadow-md overflow-hidden py-2">
+              <div
+                className={`absolute left-0 top-full w-full z-[3] mt-2 rounded-lg border border-primary-10 bg-smoke-eerie shadow-md overflow-hidden py-2 ${optionsClassName}`}
+              >
                 <ul className="max-h-60 overflow-auto px-1 space-y-0.5">
                   {options.map((option) => {
                     const active = selected?.value === option.value;
