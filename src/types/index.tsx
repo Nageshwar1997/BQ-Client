@@ -55,7 +55,7 @@ export interface IInput extends TBaseInput {
   inputProps: InputHTMLAttributes<HTMLInputElement>;
 }
 
-export interface ISelect extends Omit<TBaseInput, "icons"> {
+export interface ISelect extends Omit<TBaseInput, "icons" & "needRef"> {
   selectProps: Partial<
     Pick<
       InputHTMLAttributes<HTMLInputElement>,
@@ -64,6 +64,7 @@ export interface ISelect extends Omit<TBaseInput, "icons"> {
   > & { onChange?: (data: TDropdownOption) => void };
   icons?: { left?: TInputIcon };
   options: TDropdownOption[];
+  optionsClassName?: string;
 }
 
 export interface ITextArea extends Omit<TBaseInput, "icons"> {

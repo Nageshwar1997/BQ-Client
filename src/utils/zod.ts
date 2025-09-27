@@ -8,6 +8,7 @@ import {
   regexes,
 } from "../constants";
 import {
+  ZodEnumsConfigs,
   ZodCompareConfigs,
   ZodRequiredNumberConfigs,
   ZodRequiredStringConfigs,
@@ -264,3 +265,13 @@ export function zodFileOrUrl({
     });
   }
 }
+
+export const validateZodEnums = (
+  props: ZodEnumsConfigs & { enums: string[] }
+) => {
+  return z.enum([props.enums[0], ...props.enums.slice(1)], {
+    errorMap: () => ({
+      message: `Invalid option. Must be '${props.enums.join("'/'")}'.`,
+    }),
+  });
+};

@@ -91,7 +91,7 @@ export const reviewInitialValues = {
   media: [],
 };
 
-export const ADDRESS_TYPES = ["shipping", "billing", "both"] as const;
+export const ADDRESS_TYPES = ["shipping", "billing", "both"];
 export const STATES_AND_UNION_TERRITORIES = [
   "Andhra Pradesh",
   "Arunachal Pradesh",
