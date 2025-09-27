@@ -54,6 +54,18 @@ type TInputIcon = { text?: string; icon?: ReactNode; onClick?: () => void };
 export interface IInput extends TBaseInput {
   inputProps: InputHTMLAttributes<HTMLInputElement>;
 }
+
+export interface ISelect extends Omit<TBaseInput, "icons"> {
+  selectProps: Partial<
+    Pick<
+      InputHTMLAttributes<HTMLInputElement>,
+      "placeholder" | "value" | "disabled"
+    >
+  > & { onChange?: (data: TDropdownOption) => void };
+  icons?: { left?: TInputIcon };
+  options: TDropdownOption[];
+}
+
 export interface ITextArea extends Omit<TBaseInput, "icons"> {
   textAreaProps: TextareaHTMLAttributes<HTMLTextAreaElement>;
 }
