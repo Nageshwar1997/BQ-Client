@@ -33,22 +33,20 @@ const SelectRating = ({ initialValue = 0, onChange, error }: RatingProps) => {
     setHoverRating(Number.parseFloat(value.toFixed(1)));
   };
 
-  const handleLeave = () => {
-    setHoverRating(null);
-  };
+  const handleLeave = () => setHoverRating(null);
 
   const displayRating = hoverRating ?? rating;
 
   return (
     <div className="flex flex-col items-center gap-2 w-full">
       <div className="flex items-center gap-2 w-full">
-        <div className="flex-1 h-px bg-primary-50 rounded-full" />
+        <div className="flex-1 h-px border-b border-dashed border-b-primary-50" />
         <span className="font-bold text-xl w-10 text-center">
           {Number.isInteger(displayRating)
             ? displayRating
             : displayRating.toFixed(1)}
         </span>
-        <div className="flex-1 h-px bg-primary-50 rounded-full" />
+        <div className="flex-1 h-px border-b border-dashed border-b-primary-50" />
       </div>
 
       <div className="flex flex-col gap-1.5">
