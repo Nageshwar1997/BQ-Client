@@ -6,8 +6,11 @@ import Button from "../../components/button/Button";
 import { InfoIcon, RightArrowIcon, UploadCloudIcon } from "../../icons";
 import AddressCard from "./children/AddressCard";
 import AddressInfo from "./children/AddressInfo";
+import AddressFormModal from "../../components/modal/children/AddressFormModal";
+import useQueryParams from "../../hooks/useQueryParams";
 
 const Address = () => {
+  const { removeParam, setParams } = useQueryParams();
   const [selectedAddress, setSelectedAddress] = useState<
     Record<(typeof ADDRESS_TYPES)[number], string | null>
   >({
@@ -79,6 +82,7 @@ const Address = () => {
 
   return (
     <div className="p-6 mx-auto">
+      <AddressFormModal onClose={() => removeParam("add")} />
       <div className="pb-2 flex items-center justify-between gap-4 mb-6">
         <h2 className="text-lg base:text-xl md:text-2xl leading-5 font-semibold">
           Select Addresses
@@ -93,6 +97,7 @@ const Address = () => {
               strokeWidth={2.5}
             />
           }
+          onClick={() => setParams({ add: "true" })}
         />
       </div>
       <div className="flex flex-col lg:flex-row gap-6">
@@ -131,18 +136,19 @@ const Address = () => {
           </div>
           <hr className="h-px my-3 border-none block bg-silver-jet-2" />
           <div className="space-y-2 mt-4">
-            {((!selectedAddress.billing || !selectedAddress.shipping) && !selectedAddress.both) && (
-              <div className="text-xs/4 text-red-600 flex items-center gap-1">
-                <InfoIcon className="w-5 h-5 fill-red-600" />
-                <span>
-                  {selectedAddress.billing && !selectedAddress.shipping
-                    ? "If you select a billing address, you must select a shipping address"
-                    : !selectedAddress.billing && selectedAddress.shipping
-                    ? "If you select a shipping address, you must select a billing address"
-                    : ""}
-                </span>
-              </div>
-            )}
+            {(!selectedAddress.billing || !selectedAddress.shipping) &&
+              !selectedAddress.both && (
+                <div className="text-xs/4 text-red-600 flex items-center gap-1">
+                  <InfoIcon className="w-5 h-5 fill-red-600" />
+                  <span>
+                    {selectedAddress.billing && !selectedAddress.shipping
+                      ? "If you select a billing address, you must select a shipping address"
+                      : !selectedAddress.billing && selectedAddress.shipping
+                      ? "If you select a shipping address, you must select a billing address"
+                      : ""}
+                  </span>
+                </div>
+              )}
             <Button
               pattern="primary"
               content="Proceed to Payment"
