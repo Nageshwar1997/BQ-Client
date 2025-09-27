@@ -28,7 +28,7 @@ import { useUserStore } from "../../store/user.store";
 import usePathParams from "../../hooks/usePathParams";
 
 const Register = () => {
-  const [showGradient, containerRef] = useVerticalScrollable();
+  const { showGradient, containerRef } = useVerticalScrollable();
   const [showPasswords, setShowPasswords] = useState<TPasswordVisibility>({
     password: false,
     confirmPassword: false,

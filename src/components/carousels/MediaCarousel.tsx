@@ -13,7 +13,7 @@ const MediaCarousel = ({
   handleRemove,
   gradientClassName = "",
 }: TMediaCarousel) => {
-  const [showGradient, containerRef] = useHorizontalScrollable();
+  const { showGradient, containerRef } = useHorizontalScrollable();
 
   if (data?.length === 0) return null;
 

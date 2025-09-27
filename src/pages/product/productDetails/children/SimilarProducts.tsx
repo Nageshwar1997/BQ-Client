@@ -15,7 +15,7 @@ import usePathParams from "../../../../hooks/usePathParams";
 const SimilarProducts = ({ category }: { category: PopulatedCategory }) => {
   const { ref, inView } = useInView();
   const { pathParams } = usePathParams();
-  const [showGradient, containerRef] = useHorizontalScrollable();
+  const { showGradient, containerRef } = useHorizontalScrollable();
 
   const memoizedQueryParams: TUseGetAllProductInfinite = useMemo(
     () => ({

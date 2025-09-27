@@ -5,7 +5,7 @@ import LoginForm from "../../components/forms/LoginForm";
 import DarkMode from "../../components/DarkMode";
 
 const Login = () => {
-  const [showGradient, containerRef] = useVerticalScrollable();
+  const { showGradient, containerRef } = useVerticalScrollable();
 
   return (
     <div className="w-full min-h-dvh max-h-dvh h-full p-4 flex gap-4 overflow-hidden relative">
