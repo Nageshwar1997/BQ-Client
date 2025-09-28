@@ -8,6 +8,7 @@ import AddressCard from "./children/AddressCard";
 import AddressInfo from "./children/AddressInfo";
 import AddressFormModal from "../../components/modal/children/AddressFormModal";
 import useQueryParams from "../../hooks/useQueryParams";
+import { toastErrorMessage } from "../../utils/toasts";
 
 const Address = () => {
   const { removeParam, setParams, queryParams } = useQueryParams();
@@ -100,7 +101,14 @@ const Address = () => {
               strokeWidth={2.5}
             />
           }
-          onClick={() => setParams({ add: "true" })}
+          onClick={() => {
+            if (addresses.length >= 5) {
+              return toastErrorMessage(
+                "You can not add more than 5 addresses, remove any one of existing addresses to add new address"
+              );
+            }
+            setParams({ add: "true" });
+          }}
         />
       </div>
       <div className="flex flex-col lg:flex-row gap-6">
