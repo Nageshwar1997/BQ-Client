@@ -10,7 +10,7 @@ import AddressFormModal from "../../components/modal/children/AddressFormModal";
 import useQueryParams from "../../hooks/useQueryParams";
 
 const Address = () => {
-  const { removeParam, setParams } = useQueryParams();
+  const { removeParam, setParams, queryParams } = useQueryParams();
   const [selectedAddress, setSelectedAddress] = useState<
     Record<(typeof ADDRESS_TYPES)[number], string | null>
   >({
@@ -82,7 +82,10 @@ const Address = () => {
 
   return (
     <div className="p-6 mx-auto">
-      <AddressFormModal onClose={() => removeParam("add")} />
+      <AddressFormModal
+        onClose={() => (removeParam("add"), removeParam("edit"))}
+        addresses={queryParams.edit ? addresses : undefined}
+      />
       <div className="pb-2 flex items-center justify-between gap-4 mb-6">
         <h2 className="text-lg base:text-xl md:text-2xl leading-5 font-semibold">
           Select Addresses

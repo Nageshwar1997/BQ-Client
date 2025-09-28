@@ -1,5 +1,6 @@
 import Button from "../../../components/button/Button";
 import { ADDRESS_TYPES } from "../../../constants";
+import useQueryParams from "../../../hooks/useQueryParams";
 import { DeleteIcon, EditIcon } from "../../../icons";
 import { IAddressCard } from "../../../types";
 import AddressInfo from "./AddressInfo";
@@ -12,6 +13,8 @@ const AddressCard = ({
   handleAddressSelect,
   className = "",
 }: IAddressCard) => {
+  const { setParams } = useQueryParams();
+
   return (
     <div
       className={`relative rounded-xl border hover:border-primary p-5 transition duration-300 ${
@@ -46,6 +49,7 @@ const AddressCard = ({
       </div>
       <div className="flex items-center gap-1 absolute top-1.5 right-1.5">
         <Button
+          onClick={() => setParams({ edit: address._id })}
           pattern="secondary"
           content={
             <EditIcon

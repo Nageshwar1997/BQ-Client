@@ -7,7 +7,7 @@ import {
   STATES_AND_UNION_TERRITORIES,
 } from "../constants";
 
-export const addAddressSchema = z.object({
+export const addressSchema = z.object({
   type: zodEnums({
     field: "type",
     showingFieldName: "Address Type",

@@ -5,15 +5,25 @@ import Input from "../../../components/input/Input";
 import Radio from "../../../components/input/Radio";
 import Select from "../../../components/input/Select";
 import { addAddressFormMapData, addressInitialValues } from "../data";
-import { addAddressSchema } from "../../../schemas/address";
+import { addressSchema } from "../../../schemas/address";
 import z from "zod";
 import Button from "../../../components/button/Button";
-import { useAddAddress } from "../../../api/address/address.service";
+import {
+  useAddAddress,
+  useUpdateAddress,
+} from "../../../api/address/address.service";
 import useQueryParams from "../../../hooks/useQueryParams";
+import { IAddress, IBaseAddress } from "../../../types";
+import { deepEqual } from "../../../utils";
+import { toastErrorMessage } from "../../../utils/toasts";
 
-const AddressForm = () => {
-  const { mutateAsync } = useAddAddress();
-  const { removeParam } = useQueryParams();
+const AddressForm = ({ addresses }: { addresses?: IAddress[] }) => {
+  const { mutateAsync: addAddress } = useAddAddress();
+  const { mutateAsync: updateAddress } = useUpdateAddress();
+  const { removeParam, queryParams } = useQueryParams();
+
+  const address =
+    addresses?.find((a) => a._id === queryParams.edit) || addressInitialValues;
 
   const {
     control,
@@ -21,22 +31,49 @@ const AddressForm = () => {
     register,
     reset,
     formState: { errors },
-  } = useForm<z.infer<typeof addAddressSchema>>({
-    resolver: zodResolver(addAddressSchema),
-    defaultValues: addressInitialValues,
+  } = useForm<z.infer<typeof addressSchema>>({
+    resolver: zodResolver(addressSchema),
+    defaultValues: address,
   });
 
-  const handleReset = () => {
-    reset(addressInitialValues);
+  const handleReset = (defaultValues?: z.infer<typeof addressSchema>) => {
+    reset(
+      defaultValues
+        ? defaultValues
+        : queryParams.edit
+        ? address
+        : addressInitialValues
+    );
   };
 
-  const handleAddAddress = (data: z.infer<typeof addAddressSchema>) => {
-    mutateAsync(data, {
-      onSuccess: () => {
-        removeParam("add");
-        handleReset();
-      },
-    });
+  const handleAddAddress = (data: z.infer<typeof addressSchema>) => {
+    if ("_id" in address && address?._id) {
+      const changedFields: Partial<IBaseAddress> = {};
+      Object.keys(data).forEach((key) => {
+        const typedKey = key as keyof IBaseAddress;
+        if (!deepEqual(data[typedKey], address[typedKey])) {
+          (changedFields[typedKey] as unknown) = data[typedKey];
+        }
+      });
+
+      if (!Object.keys(changedFields).length) {
+        toastErrorMessage("No changes made to update address!");
+        return;
+      }
+
+      updateAddress(
+        { _id: address._id, ...changedFields },
+        {
+          onSuccess: () => (
+            removeParam("edit"), handleReset(addressInitialValues)
+          ),
+        }
+      );
+    } else {
+      addAddress(data, {
+        onSuccess: () => (removeParam("add"), handleReset()),
+      });
+    }
   };
 
   return (
@@ -106,7 +143,11 @@ const AddressForm = () => {
           type="button"
           onClick={handleReset}
         />
-        <Button content="Add Address" pattern="primary" type="submit" />
+        <Button
+          content={queryParams.edit ? "Update" : "Add Address"}
+          pattern="primary"
+          type="submit"
+        />
       </div>
     </form>
   );

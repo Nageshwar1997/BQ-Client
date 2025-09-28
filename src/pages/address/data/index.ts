@@ -25,7 +25,7 @@ export const addAddressFormMapData: TAddressForm[] = [
   },
   {
     name: "altPhoneNumber",
-    label: "Alternate Phone Number",
+    label: "Alternate Phone Number (Optional)",
     placeholder: "Enter alternate phone number",
     autoComplete: "tel",
     type: "number",
@@ -104,4 +104,5 @@ export const addressInitialValues = {
   landmark: "",
   pinCode: "",
   state: "",
+  email: "",
 };
