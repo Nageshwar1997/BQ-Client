@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CheckedIcon, DropdownIcon, InfoIcon } from "../../icons";
 import { ISelect } from "../../types";
+import useOutsideClick from "../../hooks/useOutsideClick";
 
 const Select = ({
   label = "",
@@ -13,14 +14,26 @@ const Select = ({
   options = [],
 }: ISelect) => {
   const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useOutsideClick<HTMLDivElement>(
+    () => {
+      setIsOpen(false);
+    },
+    { enabled: isOpen }
+  );
 
   const selected = options.find((opt) => opt.value === selectProps.value);
 
   return (
-    <div className={`w-full flex flex-col gap-1.5 ${containerClassName}`}>
+    <div
+      ref={containerRef}
+      className={`w-full flex flex-col gap-1.5 ${containerClassName}`}
+    >
       <div className="relative h-10 lg:h-12">
         {label && (
-          <button className="text-[10px] lg:text-xs text-primary-50 absolute top-0 left-3 transform -translate-y-1/2 border border-primary-10 leading-none px-1 md:px-2 py-0.5 bg-smoke-eerie rounded cursor-pointer z-[2]">
+          <button
+            onClick={() => setIsOpen((prev) => !prev)}
+            className="text-[10px] lg:text-xs text-primary-50 absolute top-0 left-3 transform -translate-y-1/2 border border-primary-10 leading-none px-1 md:px-2 py-0.5 bg-smoke-eerie rounded cursor-pointer z-[2]"
+          >
             {label}
           </button>
         )}
@@ -44,7 +57,7 @@ const Select = ({
           ) : null}
           {/* Select */}
           <div
-            className={`flex-1 flex items-center justify-between w-full h-full border-none bg-transparent font-normal text-sm p-3 text-primary placeholder:text-primary-50 placeholder:text-sm autofill-effect line-clamp-1 ${
+            className={`flex-1 flex items-center justify-between w-full h-full border-none bg-transparent font-normal text-sm p-3 text-primary line-clamp-1 ${
               icons?.left?.icon
                 ? "pl-0"
                 : !icons?.left?.icon
@@ -52,7 +65,7 @@ const Select = ({
                 : icons?.left?.text
                 ? "pl-2"
                 : ""
-            }`}
+            } ${selectProps.disabled ? "cursor-no-drop" : "cursor-pointer"}`}
             onClick={() => !selectProps?.disabled && setIsOpen((prev) => !prev)}
           >
             <span
@@ -77,7 +90,7 @@ const Select = ({
                     return (
                       <li
                         key={option.value}
-                        className={`flex justify-between items-center gap-2 p-2 hover:bg-primary-10 text-primary cursor-pointer text-sm rounded-[4px] ${
+                        className={`flex justify-between items-center gap-2 p-2 hover:bg-primary-10 text-primary cursor-grab text-sm rounded-[4px] ${
                           active ? "bg-primary-8" : ""
                         }`}
                         onClick={(e) => {
@@ -101,9 +114,7 @@ const Select = ({
       </div>
 
       {!selectProps?.disabled && error && (
-        <p
-          className={`w-full text-start flex gap-1 items-center text-[11px] leading-tight text-red-500`}
-        >
+        <p className="w-full text-start flex gap-1 items-center text-[11px] leading-tight text-red-500">
           <InfoIcon className="min-w-3 min-h-3 w-3 h-3 md:min-w-4 md:min-h-4 md:w-4 md:h-4 fill-red-500" />
           <span className="leading-none line-clamp-2">{error}</span>
         </p>
@@ -113,16 +124,3 @@ const Select = ({
 };
 
 export default Select;
-
-/**!SECTION
- * 
- *             className={`flex-1 w-full h-full outline-none border-none focus:outline-none focus:border-none bg-transparent font-normal text-sm p-3 text-primary placeholder:text-primary-50 placeholder:text-sm autofill-effect line-clamp-1 ${
-              icons?.left?.icon
-                ? "pl-0"
-                : !icons?.left?.icon
-                ? "pr-0"
-                : icons?.left?.text
-                ? "pl-2"
-                : ""
-            }`}
- */
