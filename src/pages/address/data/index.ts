@@ -70,7 +70,7 @@ export const addAddressFormMapData: TAddressForm[] = [
     label: "GST Number (Optional)",
     placeholder: "Enter GST number",
     autoComplete: "postal-code",
-    type: "number",
+    type: "string",
   },
   {
     name: "state",

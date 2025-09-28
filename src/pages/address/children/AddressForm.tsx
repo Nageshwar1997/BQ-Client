@@ -59,7 +59,13 @@ const AddressForm = () => {
                 <Select
                   label={label}
                   options={options}
-                  selectProps={{ value, onChange, placeholder, autoComplete }}
+                  selectProps={{
+                    value,
+                    onChange,
+                    placeholder,
+                    autoComplete,
+                    disabled: name === "country",
+                  }}
                   optionsClassName="!max-h-60"
                   optionsPosition="top"
                   error={errors?.[name]?.message}
