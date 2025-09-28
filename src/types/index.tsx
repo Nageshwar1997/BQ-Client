@@ -402,10 +402,15 @@ export interface IFooterOptionList {
   isFirst?: boolean;
 }
 
-export interface IAddress
-  extends Pick<UserTypes, "firstName" | "lastName" | "email" | "phoneNumber"> {
+export interface IAddress extends IBaseAddress {
   _id: string;
   user: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IBaseAddress
+  extends Pick<UserTypes, "firstName" | "lastName" | "email" | "phoneNumber"> {
   altPhoneNumber?: string;
   address: string;
   landmark?: string;
@@ -437,7 +442,7 @@ export interface IAddressCard {
 }
 
 export interface TAddressForm {
-  name: keyof Omit<IAddress, "_id" | "user">;
+  name: keyof IBaseAddress;
   label: string;
   placeholder: string;
   autoComplete: string;

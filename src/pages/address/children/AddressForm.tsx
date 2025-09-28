@@ -8,21 +8,35 @@ import { addAddressFormMapData, addressInitialValues } from "../data";
 import { addAddressSchema } from "../../../schemas/address";
 import z from "zod";
 import Button from "../../../components/button/Button";
+import { useAddAddress } from "../../../api/address/address.service";
+import useQueryParams from "../../../hooks/useQueryParams";
 
 const AddressForm = () => {
+  const { mutateAsync } = useAddAddress();
+  const { removeParam } = useQueryParams();
+
   const {
     control,
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = useForm<z.infer<typeof addAddressSchema>>({
     resolver: zodResolver(addAddressSchema),
     defaultValues: addressInitialValues,
   });
 
-  // Change it later with IAddress
+  const handleReset = () => {
+    reset(addressInitialValues);
+  };
+
   const handleAddAddress = (data: z.infer<typeof addAddressSchema>) => {
-    console.log(data);
+    mutateAsync(data, {
+      onSuccess: () => {
+        removeParam("add");
+        handleReset();
+      },
+    });
   };
 
   return (
@@ -46,6 +60,7 @@ const AddressForm = () => {
           />
         )}
       />
+      <hr className="h-px block border-none bg-gradient-line" />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-6">
         {addAddressFormMapData?.map((input, index) => {
           const { name, placeholder, autoComplete, options, label, type } =
@@ -83,8 +98,16 @@ const AddressForm = () => {
           );
         })}
       </div>
-
-      <Button content="Add Address" pattern="primary" type="submit" />
+      <hr className="h-px block border-none bg-gradient-line" />
+      <div className="flex items-center justify-between gap-4">
+        <Button
+          content="Reset"
+          pattern="secondary"
+          type="button"
+          onClick={handleReset}
+        />
+        <Button content="Add Address" pattern="primary" type="submit" />
+      </div>
     </form>
   );
 };
