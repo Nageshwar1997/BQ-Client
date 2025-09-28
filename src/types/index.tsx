@@ -65,6 +65,7 @@ export interface ISelect extends Omit<TBaseInput, "icons" & "needRef"> {
   icons?: { left?: TInputIcon };
   options: TDropdownOption[];
   optionsClassName?: string;
+  optionsPosition?: "top" | "bottom";
 }
 
 export interface ITextArea extends Omit<TBaseInput, "icons"> {

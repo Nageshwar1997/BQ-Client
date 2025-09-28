@@ -18,6 +18,7 @@ const AddressFormModal = ({ onClose }: { onClose: () => void }) => {
       onClose={onClose}
       isOpen={queryParams.add === "true"}
       heading="Add Address"
+      className="!max-w-3xl"
     >
       <AddressForm />
     </Modal>
