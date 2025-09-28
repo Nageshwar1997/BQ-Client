@@ -136,7 +136,7 @@ const AddressForm = () => {
           control={control}
           render={({ field }) => (
             <Select
-              label="State/Union Territory"
+              label="State/Province"
               options={STATES_AND_UNION_TERRITORIES.map((state) => ({
                 name: state,
                 value: state,
@@ -144,7 +144,7 @@ const AddressForm = () => {
               selectProps={{
                 value: field.value,
                 onChange: (data) => field.onChange(data.value),
-                placeholder: "Select State/Union Territory",
+                placeholder: "Select State/Province",
               }}
               optionsClassName="!max-h-60"
               optionsPosition="top"
