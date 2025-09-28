@@ -19,7 +19,6 @@ export const add_review = async (data: FormData, productId: string) => {
       },
     });
 
-    console.log("response", response.data);
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {

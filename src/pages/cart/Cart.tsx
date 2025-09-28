@@ -49,8 +49,6 @@ const Cart = () => {
     );
   }, [products]);
 
-  console.log("isAnyProductOutOfStock", isAnyProductOutOfStock);
-
   const handleQuantityChange = (id: string, newQty: number) => {
     setProducts((prev) =>
       prev.map((item) =>
