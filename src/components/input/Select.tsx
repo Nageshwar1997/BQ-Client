@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { CheckedIcon, DropdownIcon, InfoIcon } from "../../icons";
 import { ISelect } from "../../types";
 import useOutsideClick from "../../hooks/useOutsideClick";
@@ -12,6 +12,7 @@ const Select = ({
   icons,
   selectProps,
   options = [],
+  optionsPosition = "bottom",
 }: ISelect) => {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useOutsideClick<HTMLDivElement>(
@@ -22,6 +23,18 @@ const Select = ({
   );
 
   const selected = options.find((opt) => opt.value === selectProps.value);
+
+  const selectedOptionRef = useRef<HTMLLIElement | null>(null);
+
+  useEffect(() => {
+    if (isOpen && selectedOptionRef.current) {
+      selectedOptionRef.current.scrollIntoView({
+        block: "center",
+        inline: "nearest",
+        behavior: "smooth",
+      });
+    }
+  }, [isOpen]);
 
   return (
     <div
@@ -82,7 +95,11 @@ const Select = ({
             />
             {isOpen && (
               <div
-                className={`absolute left-0 top-full w-full z-[3] mt-2 rounded-lg border border-primary-10 bg-smoke-eerie shadow-md overflow-hidden py-2 ${optionsClassName}`}
+                className={`absolute left-0 w-full z-[3] rounded-lg border border-primary-10 bg-smoke-eerie shadow-md overflow-hidden py-2 ${
+                  optionsPosition === "top"
+                    ? "bottom-full mb-2"
+                    : "top-full mt-2"
+                } ${optionsClassName}`}
               >
                 <ul className="max-h-60 overflow-auto px-1 space-y-0.5">
                   {options.map((option) => {
@@ -90,12 +107,17 @@ const Select = ({
                     return (
                       <li
                         key={option.value}
+                        ref={active ? selectedOptionRef : null}
                         className={`flex justify-between items-center gap-2 p-2 hover:bg-primary-10 text-primary cursor-grab text-sm rounded-[4px] ${
                           active ? "bg-primary-8" : ""
                         }`}
                         onClick={(e) => {
                           e.stopPropagation();
-                          selectProps.onChange?.(option);
+                          if (active) {
+                            selectProps.onChange?.({ name: "", value: "" });
+                          } else {
+                            selectProps.onChange?.(option);
+                          }
                           setIsOpen(false);
                         }}
                       >
