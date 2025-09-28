@@ -66,3 +66,23 @@ export const update_address = async (data: Partial<IAddress>) => {
     throw "Something went wrong!"; // For non-Axios errors
   }
 };
+
+export const delete_address = async (id: string) => {
+  try {
+    const user_token = getUserToken();
+
+    const { method, url } = addressRoutes.deleteAddress;
+    const response = await api.request({
+      method,
+      url: `${url}/${id}`,
+      headers: { Authorization: user_token },
+    });
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      // If it's an Axios error
+      throw error?.response?.data?.message || "API Error occurred";
+    }
+    throw "Something went wrong!"; // For non-Axios errors
+  }
+};

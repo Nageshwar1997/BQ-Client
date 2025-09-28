@@ -4,7 +4,12 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { add_address, get_user_addresses, update_address } from "./address.api";
+import {
+  add_address,
+  delete_address,
+  get_user_addresses,
+  update_address,
+} from "./address.api";
 import { toastErrorMessage, toastSuccessMessage } from "../../utils/toasts";
 
 export const useGetUserAddresses = () => {
@@ -40,6 +45,19 @@ export const useUpdateAddress = () => {
     onError: (error) => toastErrorMessage(error),
     onSuccess: (data) => {
       toastSuccessMessage(data.message || "Address updated successfully");
+      queryClient.invalidateQueries({ queryKey: ["get_user_addresses"] });
+    },
+  });
+};
+
+export const useDeleteAddress = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["delete_address"],
+    mutationFn: delete_address,
+    onError: (error) => toastErrorMessage(error),
+    onSuccess: (data) => {
+      toastSuccessMessage(data.message || "Address removed successfully");
       queryClient.invalidateQueries({ queryKey: ["get_user_addresses"] });
     },
   });

@@ -1,3 +1,4 @@
+import { useDeleteAddress } from "../../../api/address/address.service";
 import Button from "../../../components/button/Button";
 import { ADDRESS_TYPES } from "../../../constants";
 import useQueryParams from "../../../hooks/useQueryParams";
@@ -14,6 +15,7 @@ const AddressCard = ({
   className = "",
 }: IAddressCard) => {
   const { setParams } = useQueryParams();
+  const { mutateAsync } = useDeleteAddress();
 
   return (
     <div
@@ -68,6 +70,7 @@ const AddressCard = ({
             />
           }
           className="!rounded-full !shadow-neumorphic-layered !w-fit !h-fit !p-1.5"
+          onClick={() => mutateAsync(address._id)}
         />
       </div>
     </div>
