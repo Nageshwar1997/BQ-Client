@@ -15,21 +15,18 @@ const Select = ({
   optionsPosition = "bottom",
 }: ISelect) => {
   const [isOpen, setIsOpen] = useState(false);
-  const containerRef = useOutsideClick<HTMLDivElement>(
-    () => {
-      setIsOpen(false);
-    },
-    { enabled: isOpen }
-  );
+  const containerRef = useOutsideClick<HTMLDivElement>(() => setIsOpen(false), {
+    enabled: isOpen,
+  });
+  const selectRef = useRef<HTMLSelectElement | null>(null);
+  const selectedOptionRef = useRef<HTMLLIElement | null>(null);
 
   const selected = options.find((opt) => opt.value === selectProps.value);
-
-  const selectedOptionRef = useRef<HTMLLIElement | null>(null);
 
   useEffect(() => {
     if (isOpen && selectedOptionRef.current) {
       selectedOptionRef.current.scrollIntoView({
-        block: "center",
+        block: "start",
         inline: "nearest",
         behavior: "smooth",
       });
@@ -44,6 +41,7 @@ const Select = ({
       <div className="relative h-10 lg:h-12">
         {label && (
           <button
+            type="button"
             onClick={() => setIsOpen((prev) => !prev)}
             className="text-[10px] lg:text-xs text-primary-50 absolute top-0 left-3 transform -translate-y-1/2 border border-primary-10 leading-none px-1 md:px-2 py-0.5 bg-smoke-eerie rounded cursor-pointer z-[2]"
           >
@@ -61,14 +59,21 @@ const Select = ({
             >
               {icons.left.icon}
             </span>
-          ) : !icons?.left?.icon && icons?.left?.text ? (
+          ) : icons?.left?.text ? (
             <div className="h-full overflow-hidden">
               <p className="h-full flex items-center justify-center text-sm text-primary-50 border-r border-r-primary-10 p-3 capitalize">
                 {icons?.left?.text}
               </p>
             </div>
           ) : null}
-          {/* Select */}
+          {/* Hidden */}
+          <select ref={selectRef} {...selectProps} className="sr-only">
+            {options.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.name}
+              </option>
+            ))}
+          </select>
           <div
             className={`flex-1 flex items-center justify-between w-full h-full border-none bg-transparent font-normal text-sm p-3 text-primary line-clamp-1 ${
               icons?.left?.icon
@@ -108,17 +113,20 @@ const Select = ({
                       <li
                         key={option.value}
                         ref={active ? selectedOptionRef : null}
-                        className={`flex justify-between items-center gap-2 p-2 hover:bg-primary-10 text-primary cursor-grab text-sm rounded-[4px] ${
+                        className={`flex justify-between items-center gap-2 p-2 hover:bg-primary-10 text-tertiary cursor-grab text-sm rounded-[4px] ${
                           active ? "bg-primary-8" : ""
                         }`}
                         onClick={(e) => {
                           e.stopPropagation();
-                          if (active) {
-                            selectProps.onChange?.({ name: "", value: "" });
-                          } else {
-                            selectProps.onChange?.(option);
+                          if (!selectProps.disabled && selectRef.current) {
+                            selectRef.current.value = active
+                              ? ""
+                              : option.value || "";
+                            selectRef.current.dispatchEvent(
+                              new Event("change", { bubbles: true })
+                            );
+                            setIsOpen(false);
                           }
-                          setIsOpen(false);
                         }}
                       >
                         <span>{option.name}</span>

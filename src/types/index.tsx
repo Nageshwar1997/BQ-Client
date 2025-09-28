@@ -3,6 +3,7 @@ import {
   ReactElement,
   ReactNode,
   RefObject,
+  SelectHTMLAttributes,
   SVGProps,
   TextareaHTMLAttributes,
   VideoHTMLAttributes,
@@ -56,12 +57,8 @@ export interface IInput extends TBaseInput {
 }
 
 export interface ISelect extends Omit<TBaseInput, "icons" & "needRef"> {
-  selectProps: Partial<
-    Pick<
-      InputHTMLAttributes<HTMLInputElement>,
-      "placeholder" | "value" | "disabled"
-    >
-  > & { onChange?: (data: TDropdownOption) => void };
+  selectProps: SelectHTMLAttributes<HTMLSelectElement> &
+    Partial<Pick<InputHTMLAttributes<HTMLInputElement>, "placeholder">>;
   icons?: { left?: TInputIcon };
   options: TDropdownOption[];
   optionsClassName?: string;
@@ -437,4 +434,13 @@ export interface IAddressCard {
   isShipping?: boolean;
   isBoth?: boolean;
   className?: string;
+}
+
+export interface TAddressForm {
+  name: keyof Omit<IAddress, "_id" | "user">;
+  label: string;
+  placeholder: string;
+  autoComplete: string;
+  type?: string;
+  options?: TDropdownOption[];
 }
