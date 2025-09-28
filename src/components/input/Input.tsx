@@ -20,9 +20,7 @@ const Input = ({
   };
 
   useEffect(() => {
-    if (needRef) {
-      inputRef.current?.focus();
-    }
+    if (needRef) inputRef.current?.focus();
   }, [needRef]);
 
   return (

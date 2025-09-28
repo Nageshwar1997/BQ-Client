@@ -95,7 +95,7 @@ export const addAddressSchema = z.object({
   }),
   state: zodEnums({
     field: "state",
-    showingFieldName: "State/Union Territory",
+    showingFieldName: "State/Province",
     enums: STATES_AND_UNION_TERRITORIES,
   }),
   pinCode: zodStringRequired({

@@ -1,9 +1,10 @@
 import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import Input from "../../../components/input/Input";
 import Radio from "../../../components/input/Radio";
 import Select from "../../../components/input/Select";
-import { STATES_AND_UNION_TERRITORIES } from "../../../constants";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { addAddressFormMapData, addressInitialValues } from "../data";
 import { addAddressSchema } from "../../../schemas/address";
 import z from "zod";
 import Button from "../../../components/button/Button";
@@ -14,23 +15,9 @@ const AddressForm = () => {
     handleSubmit,
     register,
     formState: { errors },
-    // Change it later with IAddress
   } = useForm<z.infer<typeof addAddressSchema>>({
     resolver: zodResolver(addAddressSchema),
-    defaultValues: {
-      type: "both",
-      firstName: "",
-      lastName: "",
-      phoneNumber: "",
-      address: "",
-      altPhoneNumber: "",
-      city: "",
-      country: "India",
-      gst: "",
-      landmark: "",
-      pinCode: "",
-      state: "",
-    },
+    defaultValues: addressInitialValues,
   });
 
   // Change it later with IAddress
@@ -38,7 +25,6 @@ const AddressForm = () => {
     console.log(data);
   };
 
-  console.log("errors", errors);
   return (
     <form
       onSubmit={handleSubmit(handleAddAddress)}
@@ -60,118 +46,38 @@ const AddressForm = () => {
           />
         )}
       />
-      <div className="flex flex-col sm:flex-row gap-4">
-        <Input
-          label="First Name"
-          register={register("firstName")}
-          inputProps={{ name: "firstName", type: "text" }}
-          error={errors.firstName?.message}
-        />
-        <Input
-          label="Last Name"
-          register={register("lastName")}
-          inputProps={{ name: "lastName", type: "text" }}
-          error={errors.lastName?.message}
-        />
-      </div>
-      <div className="flex flex-col sm:flex-row gap-4">
-        <Input
-          label="Phone Number"
-          register={register("phoneNumber")}
-          inputProps={{ name: "phoneNumber", type: "number" }}
-          error={errors.phoneNumber?.message}
-        />
-        <Input
-          label="Alternate Phone Number (Optional)"
-          register={register("altPhoneNumber")}
-          inputProps={{ name: "altPhoneNumber", type: "number" }}
-          error={errors.altPhoneNumber?.message}
-        />
-      </div>
-      <div className="flex flex-col sm:flex-row gap-4">
-        <Input
-          label="Address"
-          register={register("address")}
-          inputProps={{ name: "address", type: "text" }}
-          error={errors.address?.message}
-        />
-        <Input
-          label="Landmark"
-          register={register("landmark")}
-          inputProps={{ name: "landmark", type: "text" }}
-          error={errors.landmark?.message}
-        />
-      </div>
-      <div className="flex flex-col sm:flex-row gap-4">
-        <Input
-          label="City"
-          register={register("city")}
-          inputProps={{ name: "city", type: "text" }}
-          error={errors.city?.message}
-        />
-        <Input
-          label="Email"
-          register={register("email")}
-          inputProps={{ name: "email", type: "text" }}
-          error={errors.email?.message}
-        />
-      </div>
-      <div className="flex flex-col sm:flex-row gap-4">
-        <Input
-          label="Pin Code"
-          register={register("pinCode")}
-          inputProps={{ name: "pinCode", type: "number" }}
-          error={errors.pinCode?.message}
-        />
-        <Input
-          label="GST Number (Optional)"
-          register={register("gst")}
-          inputProps={{ name: "gst", type: "text" }}
-          error={errors.gst?.message}
-        />
-      </div>
-      <div className="flex flex-col sm:flex-row gap-4">
-        <Controller
-          name="state"
-          control={control}
-          render={({ field }) => (
-            <Select
-              label="State/Province"
-              options={STATES_AND_UNION_TERRITORIES.map((state) => ({
-                name: state,
-                value: state,
-              }))}
-              selectProps={{
-                value: field.value,
-                onChange: (data) => field.onChange(data.value),
-                placeholder: "Select State/Province",
-              }}
-              optionsClassName="!max-h-60"
-              optionsPosition="top"
-              error={errors.state?.message}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-6">
+        {addAddressFormMapData?.map((input, index) => {
+          const { name, placeholder, autoComplete, options, label, type } =
+            input;
+          return options ? (
+            <Controller
+              key={index}
+              name={name}
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <Select
+                  label={label}
+                  options={options}
+                  selectProps={{ value, onChange, placeholder, autoComplete }}
+                  optionsClassName="!max-h-60"
+                  optionsPosition="top"
+                  error={errors?.[name]?.message}
+                />
+              )}
             />
-          )}
-        />
-        <Controller
-          name="country"
-          control={control}
-          render={({ field }) => (
-            <Select
-              label="Country"
-              options={[{ name: "India", value: "India" }]}
-              selectProps={{
-                value: field.value,
-                onChange: (data) => field.onChange(data.value),
-                placeholder: "Select Country",
-                disabled: true,
-              }}
-              optionsClassName="max-h-60"
-              optionsPosition="top"
-              error={errors.country?.message}
+          ) : (
+            <Input
+              key={index}
+              label={label}
+              register={register(name)}
+              inputProps={{ name, type, autoComplete, placeholder }}
+              error={errors?.[name]?.message}
             />
-          )}
-        />
+          );
+        })}
       </div>
+
       <Button content="Add Address" pattern="primary" type="submit" />
     </form>
   );

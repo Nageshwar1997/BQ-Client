@@ -56,7 +56,7 @@ export interface IInput extends TBaseInput {
   inputProps: InputHTMLAttributes<HTMLInputElement>;
 }
 
-export interface ISelect extends Omit<TBaseInput, "icons" & "needRef"> {
+export interface ISelect extends Omit<TBaseInput, "icons" | "needRef"> {
   selectProps: SelectHTMLAttributes<HTMLSelectElement> &
     Partial<Pick<InputHTMLAttributes<HTMLInputElement>, "placeholder">>;
   icons?: { left?: TInputIcon };
