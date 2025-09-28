@@ -31,6 +31,7 @@ const AddressCard = ({
 
           return (
             <Button
+              key={type}
               content={type}
               pattern="tertiary"
               onClick={() => handleAddressSelect(type, address._id)}
