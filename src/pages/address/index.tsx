@@ -9,6 +9,9 @@ import AddressInfo from "./children/AddressInfo";
 import AddressFormModal from "../../components/modal/children/AddressFormModal";
 import useQueryParams from "../../hooks/useQueryParams";
 import { toastErrorMessage } from "../../utils/toasts";
+import AddressForm from "./children/AddressForm";
+import ShowError from "../../components/errors/ShowError";
+import LoadingPage from "../../components/loaders/LoadingPage";
 
 const Address = () => {
   const { removeParam, setParams, queryParams } = useQueryParams();
@@ -20,9 +23,12 @@ const Address = () => {
     both: null,
   });
 
-  const { data, isError, isPending } = useGetUserAddresses();
+  const { data, isError, isLoading } = useGetUserAddresses();
   const userAddresses: IUserAddresses = data?.userAddresses || {};
-  const addresses: IAddress[] = userAddresses.addresses;
+  const addresses: IAddress[] = useMemo(
+    () => userAddresses?.addresses || [],
+    [userAddresses?.addresses]
+  );
 
   useEffect(() => {
     if (!userAddresses?.defaultAddress) return;
@@ -78,7 +84,6 @@ const Address = () => {
     return returnAddresses || [];
   }, [addresses, selectedAddress]);
 
-  if (isPending) return <div>Loading...</div>;
   if (isError) return <div>Error loading addresses</div>;
 
   return (
@@ -89,8 +94,15 @@ const Address = () => {
       />
       <div className="pb-2 flex items-center justify-between gap-4 mb-6">
         <h2 className="text-lg base:text-xl md:text-2xl leading-5 font-semibold">
-          Select Addresses
+          {isLoading
+            ? "Please wait..."
+            : isError
+            ? ""
+            : addresses.length > 0
+            ? "Your Addresses"
+            : "Add Address to get started"}
         </h2>
+
         <Button
           pattern="secondary"
           content="Add Address"
@@ -111,68 +123,82 @@ const Address = () => {
           }}
         />
       </div>
-      <div className="flex flex-col lg:flex-row gap-6">
-        <div className="columns-1 sm:columns-2 xl:columns-3 gap-4">
-          {addresses.map((address) => {
-            const isBilling = selectedAddress.billing === address._id;
-            const isShipping = selectedAddress.shipping === address._id;
-            const isBoth = selectedAddress.both === address._id;
+      {isLoading ? (
+        <LoadingPage
+          text="Loading addresses"
+          className="!static min-h-[300px]"
+        />
+      ) : isError ? (
+        <ShowError
+          headingText="Error loading addresses"
+          descriptionText="Please try again"
+        />
+      ) : addresses?.length > 0 ? (
+        <div className="flex flex-col lg:flex-row gap-6">
+          <div className="columns-1 sm:columns-2 xl:columns-3 gap-4">
+            {addresses.map((address) => {
+              const isBilling = selectedAddress.billing === address._id;
+              const isShipping = selectedAddress.shipping === address._id;
+              const isBoth = selectedAddress.both === address._id;
 
-            return (
-              <AddressCard
-                key={address._id}
-                address={address}
-                isBilling={isBilling}
-                isShipping={isShipping}
-                isBoth={isBoth}
-                handleAddressSelect={handleSelect}
-                className="mb-4 break-inside-avoid"
-              />
-            );
-          })}
-        </div>
-        <div className="border border-primary-50 rounded-full" />
-        <div className="lg:max-w-xs w-full h-fit border border-primary-50 shadow-light-dark-soft rounded-lg p-5">
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4">
-            {finalAddresses?.map(({ address, type }) => (
-              <div key={address._id}>
-                <hr className="h-px mb-2 border-none block bg-silver-jet-2" />
-                <h3 className="text-lg text-center font-bold capitalize bg-clip-text text-transparent bg-accent-duo">
-                  {type === "both" ? "Shipping & Billing" : type} Address
-                </h3>
-                <hr className="h-px my-2 border-none block bg-silver-jet-2" />
-                <AddressInfo address={address} />
-              </div>
-            ))}
+              return (
+                <AddressCard
+                  key={address._id}
+                  address={address}
+                  isBilling={isBilling}
+                  isShipping={isShipping}
+                  isBoth={isBoth}
+                  handleAddressSelect={handleSelect}
+                  className="mb-4 break-inside-avoid"
+                />
+              );
+            })}
           </div>
-          <hr className="h-px my-3 border-none block bg-silver-jet-2" />
-          <div className="space-y-2 mt-4">
-            {(!selectedAddress.billing || !selectedAddress.shipping) &&
-              !selectedAddress.both && (
-                <div className="text-xs/4 text-red-600 flex items-center gap-1">
-                  <InfoIcon className="w-5 h-5 fill-red-600" />
-                  <span>
-                    {selectedAddress.billing && !selectedAddress.shipping
-                      ? "If you select a billing address, you must select a shipping address"
-                      : !selectedAddress.billing && selectedAddress.shipping
-                      ? "If you select a shipping address, you must select a billing address"
-                      : ""}
-                  </span>
+          <div className="border border-primary-50 rounded-full" />
+          <div className="lg:max-w-xs w-full h-fit border border-primary-50 shadow-light-dark-soft rounded-lg p-5">
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4">
+              {finalAddresses?.map(({ address, type }) => (
+                <div key={address._id}>
+                  <hr className="h-px mb-2 border-none block bg-silver-jet-2" />
+                  <h3 className="text-lg text-center font-bold capitalize bg-clip-text text-transparent bg-accent-duo">
+                    {type === "both" ? "Shipping & Billing" : type} Address
+                  </h3>
+                  <hr className="h-px my-2 border-none block bg-silver-jet-2" />
+                  <AddressInfo address={address} />
                 </div>
-              )}
-            <Button
-              pattern="primary"
-              content="Proceed to Payment"
-              className="!rounded-lg!p-3 gap-2 max-w-xs mx-auto"
-              rightIcon={<RightArrowIcon className="stroke-white" />}
-              disable={
-                (!selectedAddress.billing || !selectedAddress.shipping) &&
-                !selectedAddress.both
-              }
-            />
+              ))}
+            </div>
+            <hr className="h-px my-3 border-none block bg-silver-jet-2" />
+            <div className="space-y-2 mt-4">
+              {(!selectedAddress.billing || !selectedAddress.shipping) &&
+                !selectedAddress.both && (
+                  <div className="text-xs/4 text-red-600 flex items-center gap-1">
+                    <InfoIcon className="w-5 h-5 fill-red-600" />
+                    <span>
+                      {selectedAddress.billing && !selectedAddress.shipping
+                        ? "If you select a billing address, you must select a shipping address"
+                        : !selectedAddress.billing && selectedAddress.shipping
+                        ? "If you select a shipping address, you must select a billing address"
+                        : ""}
+                    </span>
+                  </div>
+                )}
+              <Button
+                pattern="primary"
+                content="Proceed to Payment"
+                className="!rounded-lg!p-3 gap-2 max-w-xs mx-auto"
+                rightIcon={<RightArrowIcon className="stroke-white" />}
+                disable={
+                  (!selectedAddress.billing || !selectedAddress.shipping) &&
+                  !selectedAddress.both
+                }
+              />
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <AddressForm />
+      )}
     </div>
   );
 };
