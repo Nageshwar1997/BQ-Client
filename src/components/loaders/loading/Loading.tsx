@@ -2,7 +2,7 @@ import "./Loading.css";
 
 const Loading = ({
   className,
-  content = "Loading....", // make sure the content length is not bigger than 11
+  content = "Loading....",
 }: {
   className?: string;
   content: string;
@@ -12,15 +12,12 @@ const Loading = ({
       {Array.from({ length: 4 }).map((_, index) => (
         <div key={index} className="rings" />
       ))}
-      <div className="absolute loading-text">
-        {content
-          .split("")
-          .splice(0, 11)
-          .map((char, index) => (
-            <span key={index} style={{ animationDelay: `${index * 0.1}s` }}>
-              {char}
-            </span>
-          ))}
+      <div className="loading-text">
+        {content.split("").map((char, index) => (
+          <span key={index} style={{ animationDelay: `${index * 0.1}s` }}>
+            {char}
+          </span>
+        ))}
       </div>
     </div>
   );
