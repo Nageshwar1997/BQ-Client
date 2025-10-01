@@ -7,7 +7,7 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children: JSX.Element;
-  containerClassName?: string;
+  containerProps?: JSX.IntrinsicElements["div"];
   heading?: string;
   className?: string;
 }
@@ -16,7 +16,7 @@ const Modal = ({
   isOpen,
   onClose,
   children,
-  containerClassName = "",
+  containerProps,
   className = "",
   heading = "",
 }: ModalProps) => {
@@ -39,8 +39,11 @@ const Modal = ({
 
   return (
     <div
-      className={`fixed inset-0 z-[100] flex items-center justify-center bg-primary-inverted-50 p-8 backdrop-blur-sm ${containerClassName}`}
       onClick={onClose}
+      {...containerProps}
+      className={`fixed inset-0 z-[100] flex items-center justify-center bg-primary-inverted-50 p-8 backdrop-blur-sm ${
+        containerProps?.className || ""
+      }`}
     >
       <div
         className={`bg-primary-inverted rounded-xl shadow-[var(--primary-8)_0px_4px_16px,_var(--primary-10)_0px_8px_32px] w-full max-w-md max-h-[90vh] relative ${className}`}

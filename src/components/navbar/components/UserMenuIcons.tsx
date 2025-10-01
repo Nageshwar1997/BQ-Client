@@ -40,7 +40,7 @@ const UserPopup = ({
       <Modal
         isOpen={isOpen}
         onClose={onClose}
-        containerClassName="relative !p-0 !rounded-lg"
+        containerProps={{ className: "relative !p-0 !rounded-lg" }}
         className="!bg-platinum-jet !rounded-lg [&>div>div>svg]:hidden [&>div]:!p-4"
       >
         <div className="flex flex-col gap-2">
