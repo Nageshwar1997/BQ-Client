@@ -70,11 +70,11 @@ const AddressForm = ({ addresses }: { addresses?: IAddress[] }) => {
         }
       );
     } else {
-      const finalizedData: IBaseAddress = data;
+      const finalizedData = data;
       Object.keys(data).forEach((key) => {
         const typedKey = key as keyof IBaseAddress;
         if (data[typedKey]) {
-          (finalizedData[typedKey] as unknown) = data[typedKey];
+          finalizedData[typedKey] = data[typedKey];
         } else {
           delete finalizedData[typedKey];
         }
