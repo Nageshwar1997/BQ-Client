@@ -70,7 +70,16 @@ const AddressForm = ({ addresses }: { addresses?: IAddress[] }) => {
         }
       );
     } else {
-      addAddress(data, {
+      const finalizedData: IBaseAddress = data;
+      Object.keys(data).forEach((key) => {
+        const typedKey = key as keyof IBaseAddress;
+        if (data[typedKey]) {
+          (finalizedData[typedKey] as unknown) = data[typedKey];
+        } else {
+          delete finalizedData[typedKey];
+        }
+      });
+      addAddress(finalizedData, {
         onSuccess: () => (removeParam("add"), handleReset()),
       });
     }
