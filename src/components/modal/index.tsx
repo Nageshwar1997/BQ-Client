@@ -1,16 +1,8 @@
-import { JSX, useEffect } from "react";
+import { useEffect } from "react";
 import { CloseIcon } from "../../icons";
 import useVerticalScrollable from "../../hooks/useVerticalScrollable";
 import { BottomGradient, TopGradient } from "../Gradients";
-
-interface ModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  children: JSX.Element;
-  containerProps?: JSX.IntrinsicElements["div"];
-  heading?: string;
-  className?: string;
-}
+import { ModalProps } from "../../types";
 
 const Modal = ({
   isOpen,

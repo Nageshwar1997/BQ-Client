@@ -12,6 +12,7 @@ import { toastErrorMessage } from "../../utils/toasts";
 import AddressForm from "./children/AddressForm";
 import ShowError from "../../components/errors/ShowError";
 import LoadingPage from "../../components/loaders/LoadingPage";
+import ConfirmModal from "../../components/modal/children/ConfirmModal";
 
 const Address = () => {
   const { removeParam, setParams, queryParams } = useQueryParams();
@@ -199,6 +200,11 @@ const Address = () => {
       ) : (
         <AddressForm />
       )}
+      <ConfirmModal
+        type="success"
+        title="Are you sure you want to delete?"
+        description="Are you sure you want to delete this address"
+      />
     </div>
   );
 };
