@@ -1,34 +1,48 @@
-import { JSX, ReactNode } from "react";
 import Modal from "..";
 import useQueryParams from "../../../hooks/useQueryParams";
 import { InfoIcon } from "../../../icons";
-import { ModalProps } from "../../../types";
+import { IConfirmModal } from "../../../types";
 import Button from "../../button/Button";
 
-const ConfirmCard = ({
-  icon,
-  iconContainerProps,
-}: {
-  icon: ReactNode;
-  iconContainerProps?: JSX.IntrinsicElements["div"];
-}) => {
-  return (
-    <div className="flex flex-col items-center justify-center gap-4">
+const TopIconLayer = ({ type }: { type: IConfirmModal["type"] }) => (
+  <div
+    className={`w-8 sm:w-10 md:w-12 lg:w-14 h-8 sm:h-10 md:h-12 lg:h-14 p-0.5 sm:p-1 md:p-1.5 lg:p-2 rounded-full ${
+      type === "success"
+        ? "bg-green-300"
+        : type === "error"
+        ? "bg-red-300"
+        : type === "warning"
+        ? "bg-yellow-300"
+        : ""
+    }`}
+  >
+    <div
+      className={`w-full h-full p-0.5 sm:p-1 md:p-1.5 lg:p-2 rounded-full ${
+        type === "success"
+          ? "bg-green-400"
+          : type === "error"
+          ? "bg-red-400"
+          : type === "warning"
+          ? "bg-yellow-400"
+          : ""
+      }`}
+    >
       <div
-        {...iconContainerProps}
-        className={`border border-[blue] w-10 h-10 p-1 rounded-full ${
-          iconContainerProps?.className || ""
+        className={`w-full h-full p-0.5 sm:p-1 md:p-1.5 lg:p-2 rounded-full flex items-center justify-center ${
+          type === "success"
+            ? "bg-green-500"
+            : type === "error"
+            ? "bg-red-500"
+            : type === "warning"
+            ? "bg-yellow-500"
+            : ""
         }`}
       >
-        <div className="w-full h-full p-0.5 rounded-full border border-[red] flex items-center justify-center">
-          {icon}
-        </div>
+        <InfoIcon className="min-w-4 min-h-4 max-w-4 max-h-4 sm:min-w-5 sm:min-h-5 sm:max-w-5 sm:max-h-5 md:min-w-6 md:min-h-6 md:max-w-6 md:max-h-6 lg:min-w-7 lg:min-h-7 lg:max-w-7 lg:max-h-7" />
       </div>
-      <div className="">Text and Description</div>
-      <div className="">Buttons</div>
     </div>
-  );
-};
+  </div>
+);
 
 const ConfirmModal = ({
   type,
@@ -36,13 +50,8 @@ const ConfirmModal = ({
   children,
   description,
   modalProps,
-}: {
-  type: "success" | "error" | "warning" | "custom";
-  title?: string;
-  description?: string;
-  children?: ReactNode;
-  modalProps?: ModalProps;
-}) => {
+  buttons,
+}: IConfirmModal) => {
   const { queryParams, removeParam } = useQueryParams();
 
   return (
@@ -54,79 +63,54 @@ const ConfirmModal = ({
         ...modalProps?.containerProps,
         onClick: (e) =>
           modalProps?.containerProps?.onClick ?? e.stopPropagation(),
-        className: modalProps?.containerProps?.className ?? "!p-6",
+        className: `!p-6 ${modalProps?.containerProps?.className || ""}`,
       }}
-      className="[&>div>div>svg]:hidden !bg-transparent [&>div]:!p-4 [&>div>div]:!p-0 max-w-sm"
+      className={`[&>div>div>svg]:hidden !bg-primary-inverted-50 [&>div]:!p-4 [&>div>div]:!p-0 max-w-md border-2 ${
+        type !== "custom"
+          ? type === "success"
+            ? "border-green-500"
+            : type === "error"
+            ? "border-red-500"
+            : type === "warning"
+            ? "border-yellow-500"
+            : ""
+          : ""
+      } ${modalProps?.className || ""}`}
     >
-      <div className="!rounded-xl border border-[red] bg-primary-inverted-50 p-1.5">
+      <div className="!rounded-xl bg-primary-inverted-50 p-1.5">
         {type !== "custom" ? (
-          <div className="flex flex-col items-center justify-center gap-4">
-            <div
-              className={`w-10 h-10 p-1 rounded-full ${
-                type === "success"
-                  ? "bg-green-300"
-                  : type === "error"
-                  ? "bg-red-300"
-                  : ""
-              }`}
-            >
-              <div
-                className={`w-full h-full p-1 rounded-full ${
-                  type === "success"
-                    ? "bg-green-400"
-                    : type === "error"
-                    ? "bg-red-400"
-                    : ""
-                }`}
-              >
-                <div
-                  className={`w-full h-full p-0.5 rounded-full flex items-center justify-center ${
-                    type === "success"
-                      ? "bg-green-500"
-                      : type === "error"
-                      ? "bg-red-500"
-                      : ""
-                  }`}
-                >
-                  <InfoIcon />
-                </div>
+          <div className="flex flex-col items-center justify-center gap-6">
+            <TopIconLayer type={type} />
+            <div className="flex flex-col gap-2 text-center">
+              <h4 className="text-lg/5 md:text-xl/6 lg:text-2xl/6 font-semibold bg-clip-text text-transparent bg-silver-duo">
+                {title}
+              </h4>
+              <p className="text-xs/4 md:text-sm/5 lg:text-base/5 font-light text-tertiary">
+                {description}
+              </p>
+            </div>
+            {buttons && (
+              <div className="w-full flex items-center justify-center gap-4">
+                {buttons.left && (
+                  <Button
+                    {...buttons.left}
+                    pattern="secondary"
+                    className={`max-h-10 !rounded-md ${
+                      buttons.left.className || ""
+                    }`}
+                  />
+                )}
+                {buttons.right && (
+                  <Button
+                    {...buttons.right}
+                    pattern="primary"
+                    className={`max-h-10 !rounded-md ${
+                      buttons.right.className || ""
+                    }`}
+                  />
+                )}
               </div>
-            </div>
-            <div className="flex flex-col gap-1 text-center">
-              <h4 className="text-lg font-semibold leading-5">{title}</h4>
-              <p className="text-sm font-light leading-4">{description}</p>
-            </div>
-            <div className="w-full flex items-center justify-center gap-4">
-              <Button
-                pattern="primary"
-                content="Cancel"
-                className="max-h-10 !rounded-md"
-              />
-              <Button
-                pattern="secondary"
-                content="Confirm"
-                className="max-h-10 !rounded-md"
-              />
-            </div>
-            <div className="w-full flex items-center justify-center gap-4">
-              <Button
-                pattern="tertiary"
-                content="Cancel"
-                className="max-h-10 !rounded-md"
-              />
-              <Button
-                pattern="outline"
-                content="Confirm"
-                className="max-h-10 !rounded-md"
-              />
-            </div>
-            <div className="w-full flex items-center justify-center gap-4">
-              <Button
-                pattern="transparent"
-                content="Cancel"
-                className="max-h-10 !rounded-md"
-              />
-            </div>
+            )}
           </div>
         ) : (
           children

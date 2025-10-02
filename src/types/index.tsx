@@ -479,6 +479,7 @@ export interface IConfirmModal {
   children?: ReactNode;
   modalProps?: ModalProps;
   buttons?: {
-    left?: ButtonProps;
+    left?: Omit<ButtonProps, "pattern">;
+    right?: Omit<ButtonProps, "pattern">;
   };
 }

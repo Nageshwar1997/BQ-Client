@@ -204,9 +204,13 @@ const Address = () => {
         <AddressForm />
       )}
       <ConfirmModal
-        type="error"
+        type="success"
         title="Are you sure you want to delete?"
-        description="Are you sure you want to delete this address"
+        description="Are you sure you want to delete this address Are you sure you want to delete this address"
+        buttons={{
+          left: { content: "No" },
+          right: { content: "Yes" },
+        }}
       />
     </div>
   );
