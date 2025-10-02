@@ -15,8 +15,14 @@ const AddressCard = ({
   handleAddressSelect,
   className = "",
 }: IAddressCard) => {
-  const { setParams, removeParam } = useQueryParams();
+  const { setParams, removeParam, queryParams } = useQueryParams();
   const { mutateAsync, isPending } = useDeleteAddress();
+
+  const handleModalClose = () => removeParam("confirm");
+
+  const handleConfirmDelete = () => {
+    mutateAsync(address._id).finally(handleModalClose);
+  };
 
   return (
     <>
@@ -25,17 +31,17 @@ const AddressCard = ({
         title="Delete Address"
         description="Are you sure you want to delete this address? This action cannot be undone."
         buttons={{
-          left: {
-            content: "No",
-            buttonProps: { onClick: () => removeParam("confirm") },
-          },
+          left: { content: "No" },
           right: {
             content: isPending ? "Deleting..." : "Yes",
             buttonProps: {
-              onClick: () =>
-                mutateAsync(address._id).finally(() => removeParam("confirm")),
+              onClick: handleConfirmDelete,
             },
           },
+        }}
+        modalProps={{
+          isOpen: !!address._id && address._id === queryParams.confirm,
+          onClose: handleModalClose,
         }}
       />
       <div

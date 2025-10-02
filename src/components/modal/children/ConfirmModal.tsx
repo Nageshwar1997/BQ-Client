@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Modal from "..";
 import useQueryParams from "../../../hooks/useQueryParams";
 import { InfoIcon } from "../../../icons";
@@ -54,6 +55,11 @@ const ConfirmModal = ({
 }: IConfirmModal) => {
   const { queryParams, removeParam } = useQueryParams();
 
+  useEffect(() => {
+    removeParam("confirm");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Modal
       {...modalProps}
@@ -98,6 +104,13 @@ const ConfirmModal = ({
                     className={`max-h-10 !rounded-md ${
                       buttons.left.className || ""
                     }`}
+                    buttonProps={{
+                      ...buttons.left.buttonProps,
+                      onClick: (e) => {
+                        buttons.left?.buttonProps?.onClick?.(e);
+                        modalProps?.onClose();
+                      },
+                    }}
                   />
                 )}
                 {buttons.right && (
@@ -107,6 +120,16 @@ const ConfirmModal = ({
                     className={`max-h-10 !rounded-md ${
                       buttons.right.className || ""
                     }`}
+                    buttonProps={{
+                      ...buttons.right.buttonProps,
+                      onClick: (e) => {
+                        if (buttons.right?.buttonProps?.onClick) {
+                          buttons.right.buttonProps.onClick(e);
+                        } else {
+                          modalProps?.onClose();
+                        }
+                      },
+                    }}
                   />
                 )}
               </div>
