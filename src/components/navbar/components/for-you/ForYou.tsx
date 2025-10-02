@@ -152,7 +152,7 @@ const ForYou = () => {
               <Button
                 content="Register"
                 pattern="outline"
-                className="!rounded-lg lg:!py-2 shadow-md"
+                className="!rounded-lg lg:!py-2"
               />
             </Link>
           </div>
