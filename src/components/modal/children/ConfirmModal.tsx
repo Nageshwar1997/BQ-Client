@@ -71,7 +71,7 @@ const ConfirmModal = ({
           modalProps?.containerProps?.onClick ?? e.stopPropagation(),
         className: `!p-6 ${modalProps?.containerProps?.className || ""}`,
       }}
-      className={`[&>div>div>svg]:hidden !bg-primary-inverted-50 [&>div]:!p-4 [&>div>div]:!p-0 max-w-md border-2 ${
+      className={`[&>div>div>svg]:hidden !bg-primary-inverted [&>div]:!p-4 [&>div>div]:!p-0 max-w-md border-2 ${
         type !== "custom"
           ? type === "success"
             ? "border-green-500"
@@ -83,7 +83,7 @@ const ConfirmModal = ({
           : ""
       } ${modalProps?.className || ""}`}
     >
-      <div className="!rounded-xl bg-primary-inverted-50 p-1.5">
+      <div className="!rounded-xl p-1.5">
         {type !== "custom" ? (
           <div className="flex flex-col items-center justify-center gap-6">
             <TopIconLayer type={type} />
