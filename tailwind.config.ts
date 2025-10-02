@@ -80,12 +80,13 @@ export default {
         "neumorphic-layered": "var(--shadow-neumorphic-layered)",
         "light-dark-soft": "var(--shadow-light-dark-soft)",
         "primary-btn": "var(--shadow-primary-button)",
+        "secondary-btn": "var(--shadow-secondary-button)",
+        "tertiary-btn": "var(--shadow-tertiary-button)",
+        "outline-btn": "var(--shadow-outline-button)",
         "primary-btn-hover": "var(--shadow-primary-button-hover)",
-        "secondary-btn":
-          "0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 2px 16px 0px var(--primary-50)",
-        "secondary-btn-hover":
-          "0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 2px 32px 0px var(--primary-50), 0px 2px 16px 0px var(--primary-10)",
-        "navbar-card": "var(--primary-inverted-50) 0px 3px 8px",
+        "secondary-btn-hover": "var(--shadow-secondary-button-hover)",
+        "tertiary-btn-hover": "var(--shadow-tertiary-button-hover)",
+        "outline-btn-hover": "var(--shadow-outline-button-hover)",
       },
       fontFamily: {
         metropolis: ["metropolis", "sans-serif"],

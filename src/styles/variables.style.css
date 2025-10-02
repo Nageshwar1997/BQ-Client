@@ -100,10 +100,25 @@
   --shadow-light-dark-soft: 0px 0px 250px 0px rgba(255, 255, 255, 0.03),
     0px 0px 95px 0px rgba(255, 255, 255, 0.1) inset;
   --shadow-primary-button: 0px 4px 4px 0px rgba(0, 0, 0, 0.25),
-    0px 2px 16px 0px rgba(37, 166, 249, 0.3);
+    0px 2px 8px 0px rgba(37, 166, 249, 0.3);
+  --shadow-secondary-button: 0px 4px 4px 0px rgba(0, 0, 0, 0.25),
+    0px 2px 8px 0px rgba(245, 245, 245, 0.3);
+  --shadow-tertiary-button: 0px 4px 4px 0px rgba(0, 0, 0, 0.25),
+    0px 2px 8px 0px rgba(200, 200, 200, 0.3);
+  --shadow-outline-button: 0px 4px 4px 0px rgba(0, 0, 0, 0.25),
+    0px 2px 8px 0px rgba(255, 255, 255, 0.3);
   --shadow-primary-button-hover: 0px 4px 4px 0px rgba(0, 0, 0, 0.25),
-    0px 2px 32px 0px rgba(37, 166, 249, 0.1),
-    0px 2px 16px 0px rgba(37, 166, 249, 0.5);
+    0px 2px 4px 0px rgba(37, 166, 249, 0.1),
+    0px 2px 8px 0px rgba(37, 166, 249, 0.5);
+  --shadow-secondary-button-hover: 0px 4px 4px 0px rgba(0, 0, 0, 0.25),
+    0px 2px 4px 0px rgba(245, 245, 245, 0.1),
+    0px 2px 8px 0px rgba(245, 245, 245, 0.5);
+  --shadow-tertiary-button-hover: 0px 4px 4px 0px rgba(0, 0, 0, 0.25),
+    0px 2px 4px 0px rgba(200, 200, 200, 0.1),
+    0px 2px 8px 0px rgba(200, 200, 200, 0.5);
+  --shadow-outline-button-hover: 0px 4px 4px 0px rgba(0, 0, 0, 0.25),
+    0px 2px 4px 0px rgba(255, 255, 255, 0.1),
+    0px 2px 8px 0px rgba(255, 255, 255, 0.5);
 }
 
 /* Light Theme Variables */
@@ -174,4 +189,22 @@
     1px 1px 4px 0px rgba(1, 1, 1, 0.05), 2px 2px 6px 0px rgba(3, 3, 3, 0.33);
   --shadow-light-dark-soft: 0px 0px 250px 0px rgba(0, 0, 0, 0.03),
     0px 0px 95px 0px rgba(0, 0, 0, 0.1) inset;
+
+  --shadow-primary-button: 0px 4px 4px 0px rgba(255, 255, 255, 0.25),
+    0px 2px 8px 0px rgba(6, 153, 245, 0.3);
+  --shadow-secondary-button: 0px 4px 4px 0px rgba(255, 255, 255, 0.25),
+    0px 2px 8px 0px rgba(28, 28, 28, 0.3);
+  --shadow-tertiary-button: 0px 4px 4px 0px rgba(255, 255, 255, 0.25),
+    0px 2px 8px 0px rgba(55, 55, 55, 0.3);
+  --shadow-outline-button: 0px 4px 4px 0px rgba(255, 255, 255, 0.25),
+    0px 2px 8px 0px rgba(0, 0, 0, 0.3);
+  --shadow-primary-button-hover: 0px 4px 4px 0px rgba(255, 255, 255, 0.25),
+    0px 2px 4px 0px rgba(6, 153, 245, 0.1),
+    0px 2px 8px 0px rgba(6, 153, 245, 0.5);
+  --shadow-secondary-button-hover: 0px 4px 4px 0px rgba(255, 255, 255, 0.25),
+    0px 2px 4px 0px rgba(28, 28, 28, 0.1), 0px 2px 8px 0px rgba(28, 28, 28, 0.5);
+  --shadow-tertiary-button-hover: 0px 4px 4px 0px rgba(255, 255, 255, 0.25),
+    0px 2px 4px 0px rgba(55, 55, 55, 0.1), 0px 2px 8px 0px rgba(55, 55, 55, 0.5);
+  --shadow-outline-button-hover: 0px 4px 4px 0px rgba(255, 255, 255, 0.25),
+    0px 2px 4px 0px rgba(0, 0, 0, 0.1), 0px 2px 8px 0px rgba(0, 0, 0, 0.5);
 }
