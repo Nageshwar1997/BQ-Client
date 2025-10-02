@@ -1,5 +1,6 @@
 import {
   InputHTMLAttributes,
+  JSX,
   ReactElement,
   ReactNode,
   RefObject,
@@ -448,4 +449,13 @@ export interface TAddressForm {
   autoComplete: string;
   type?: string;
   options?: TDropdownOption[];
+}
+
+export interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: JSX.Element;
+  containerProps?: JSX.IntrinsicElements["div"];
+  heading?: string;
+  className?: string;
 }
