@@ -4,7 +4,7 @@ import useQueryParams from "../../../hooks/useQueryParams";
 import { FetchedProductType, TMediaOption } from "../../../types";
 import ReviewsSection from "./children/ReviewsSection";
 import MediaCarouselWithParentMedia from "../../../components/carousels/MediaCarouselWithParentMedia";
-import RatingStars from "../../../components/navbar/components/rating/RatingStars";
+import RatingStars from "../../../components/ui/RatingStars";
 import { getAvgRating, toINRCurrency } from "../../../utils";
 import Button from "../../../components/button/Button";
 import { CATEGORY_VIDEOS } from "../../../constants";
@@ -183,19 +183,20 @@ const ProductDetails = () => {
                         : "Add to Cart"
                     }
                     pattern="primary"
-                    onClick={handleAddToCart}
-                    disable={
-                      isPending ||
-                      getUserCartQuery?.isRefetching ||
-                      isOutOfStock ||
-                      isCartFull ||
-                      isProductExistInCart
-                    }
+                    buttonProps={{
+                      onClick: handleAddToCart,
+                      disabled:
+                        isPending ||
+                        getUserCartQuery?.isRefetching ||
+                        isOutOfStock ||
+                        isCartFull ||
+                        isProductExistInCart,
+                    }}
                   />
                   <Button
                     content="Go to Cart"
                     pattern="secondary"
-                    onClick={() => navigate("/cart")}
+                    buttonProps={{ onClick: () => navigate("/cart") }}
                   />
                 </div>
                 <hr className="w-full h-px block border-none bg-gradient-line" />

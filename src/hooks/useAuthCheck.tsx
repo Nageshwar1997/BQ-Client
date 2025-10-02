@@ -13,7 +13,7 @@ export const useAuthCheck = () => {
         setUser(data.user);
       }
     } catch (error) {
-      console.log("Error in auth check:", error);
+      console.error("Error in auth check:", error);
       logout();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

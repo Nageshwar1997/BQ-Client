@@ -8,7 +8,7 @@ import { useGetAllProductsInfinite } from "../../../api/product/product.service"
 import { debounce } from "../../../utils";
 import { TUseGetAllProductInfinite } from "../../../api/types";
 import useQueryParams from "../../../hooks/useQueryParams";
-import ProductCard from "./ProductCard";
+import ProductCard from "../../../components/ui/ProductCard";
 import ProductCardSkeleton from "../../../components/skeletons/children/ProductCardSkeleton";
 import ShowError from "../../../components/errors/ShowError";
 import EmptyData from "../../../components/empty-data/EmptyData";

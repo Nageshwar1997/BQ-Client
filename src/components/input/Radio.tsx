@@ -7,16 +7,21 @@ const Radio: FC<RadioProps> = ({
   options,
   className = "",
 }) => {
+  const index = options.findIndex((opt) => opt.value === value);
+  const translatePercent = `${index * 100}%`;
+
   return (
     <div
-      className={`flex items-center justify-center gap-4 border border-primary-battleship-davys-gray w-min mx-auto rounded-full ${className}`}
+      className={`w-full flex items-center justify-center gap-4 border border-primary-battleship-davys-gray mx-auto rounded-full overflow-hidden ${className}`}
     >
-      <div className="relative flex items-center justify-between w-36 h-9 bg-smoke-eerie rounded-full shadow-primary-btn">
+      <div className="relative flex items-center justify-between w-full h-9 bg-smoke-eerie rounded-full shadow-primary-btn">
         {/* Toggle Background */}
         <div
-          className={`absolute w-1/2 h-full bg-accent-duo rounded-full shadow-lg transform transition-transform duration-300 ease-in-out ${
-            value === options[0].value ? "translate-x-0" : "translate-x-full"
-          }`}
+          className="absolute h-full bg-accent-duo rounded-full shadow-lg transform transition-transform duration-300 ease-in-out"
+          style={{
+            width: `${100 / options.length}%`,
+            transform: `translateX(${translatePercent})`,
+          }}
         />
 
         {options.map((option) => (

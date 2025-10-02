@@ -1,8 +1,4 @@
-import {
-  StarFillIcon,
-  StarHalfFillIcon,
-  StarEmptyIcon,
-} from "../../../../icons";
+import { StarEmptyIcon, StarFillIcon, StarHalfFillIcon } from "../../icons";
 
 interface RatingStarsProps {
   rating: number;

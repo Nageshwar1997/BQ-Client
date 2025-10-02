@@ -8,9 +8,11 @@ import {
   regexes,
 } from "../constants";
 import {
+  ZodEnumsConfigs,
   ZodCompareConfigs,
   ZodRequiredNumberConfigs,
   ZodRequiredStringConfigs,
+  ZodOptionalStringConfigs,
 } from "../types/zod";
 
 export const getZodStringMessages = (
@@ -99,6 +101,79 @@ export const zodStringRequired = ({
       schema = schema.regex(regex, `${messages.custom} ${message}.`);
     });
   }
+
+  return schema;
+};
+
+export const zodStringOptional = ({
+  field,
+  showingFieldName,
+  showingParentFieldName,
+  nonEmpty = true,
+  min,
+  max,
+  blockSingleSpace,
+  blockMultipleSpaces,
+  parentField,
+  customRegexes,
+}: ZodOptionalStringConfigs) => {
+  const readableField = showingFieldName ?? field;
+  const readableParent = showingParentFieldName ?? parentField;
+
+  const nestedField = readableParent
+    ? `${readableParent}${
+        readableParent.includes("[") ? " " : ": "
+      }${readableField}`
+    : readableField;
+  const messages = getZodStringMessages({ field: nestedField, min, max });
+
+  const schema = z
+    .string()
+    .trim()
+    .optional()
+    .superRefine((val, ctx) => {
+      if (val === undefined || val === null || val === "") return;
+
+      if (typeof val !== "string") {
+        return ctx.addIssue({
+          code: "custom",
+          message: messages.invalid_type,
+        });
+      }
+
+      if (nonEmpty && val.trim().length === 0) {
+        ctx.addIssue({ code: "custom", message: messages.non_empty });
+      }
+
+      if (nonEmpty && min !== undefined && val.length < min) {
+        ctx.addIssue({ code: "custom", message: messages.min });
+      }
+
+      if (nonEmpty && max !== undefined && val.length > max) {
+        ctx.addIssue({ code: "custom", message: messages.max });
+      }
+
+      if (blockMultipleSpaces && !regexes.singleSpace.test(val)) {
+        ctx.addIssue({ code: "custom", message: messages.multiple_spaces });
+      }
+
+      if (blockSingleSpace && !regexes.noSpace.test(val)) {
+        ctx.addIssue({ code: "custom", message: messages.single_space });
+      }
+
+      if (customRegexes?.length) {
+        customRegexes.forEach(
+          ({ regex, message }: { regex: RegExp; message: string }) => {
+            if (!regex.test(val)) {
+              ctx.addIssue({
+                code: "custom",
+                message: `${messages.custom} ${message}.`,
+              });
+            }
+          }
+        );
+      }
+    });
 
   return schema;
 };
@@ -264,3 +339,11 @@ export function zodFileOrUrl({
     });
   }
 }
+
+export const zodEnums = (props: ZodEnumsConfigs & { enums: string[] }) => {
+  return z.enum([props.enums[0], ...props.enums.slice(1)], {
+    errorMap: () => ({
+      message: `Invalid option. Must be '${props.enums.join(", ")}'.`,
+    }),
+  });
+};

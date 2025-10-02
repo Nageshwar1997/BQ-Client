@@ -79,13 +79,22 @@ export default {
       boxShadow: {
         "neumorphic-layered": "var(--shadow-neumorphic-layered)",
         "light-dark-soft": "var(--shadow-light-dark-soft)",
-        "primary-btn": "var(--shadow-primary-button)",
-        "primary-btn-hover": "var(--shadow-primary-button-hover)",
+        "primary-btn":
+          "0px 4px 4px 0px var(--primary-inverted-30), 0px 2px 8px 0px var(--argentinian-celestial-blue-30)",
         "secondary-btn":
-          "0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 2px 16px 0px var(--primary-50)",
+          "0px 4px 4px 0px var(--primary-inverted-30), 0px 2px 8px 0px var(--secondary-30)",
+        "tertiary-btn":
+          "0px 4px 4px 0px var(--primary-inverted-30), 0px 2px 8px 0px var(--tertiary-30)",
+        "outline-btn":
+          "0px 4px 4px 0px var(--primary-inverted-30), 0px 2px 8px 0px var(--primary-30)",
+        "primary-btn-hover":
+          "0px 4px 4px 0px var(--primary-inverted-30), 0px 2px 4px 0px var(--argentinian-celestial-blue-10), 0px 2px 8px 0px var(--argentinian-celestial-blue-50)",
         "secondary-btn-hover":
-          "0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 2px 32px 0px var(--primary-50), 0px 2px 16px 0px var(--primary-10)",
-        "navbar-card": "var(--primary-inverted-50) 0px 3px 8px",
+          "0px 4px 4px 0px var(--primary-inverted-30), 0px 2px 4px 0px var(--secondary-10), 0px 2px 8px 0px var(--secondary-50)",
+        "tertiary-btn-hover":
+          "0px 4px 4px 0px var(--primary-inverted-30), 0px 2px 4px 0px var(--tertiary-10), 0px 2px 8px 0px var(--tertiary-50)",
+        "outline-btn-hover":
+          "0px 4px 4px 0px var(--primary-inverted-30), 0px 2px 4px 0px var(--primary-10), 0px 2px 8px 0px var(--primary-50)",
       },
       fontFamily: {
         metropolis: ["metropolis", "sans-serif"],
@@ -103,7 +112,11 @@ export default {
   },
   plugins: [
     // Utilities
-    function ({ addUtilities }) {
+    function ({
+      addUtilities,
+    }: {
+      addUtilities: (utilities: Record<string, Record<string, string>>) => void;
+    }) {
       addUtilities({
         ".text-fill-transparent": {
           "-webkit-text-fill-color": "transparent",

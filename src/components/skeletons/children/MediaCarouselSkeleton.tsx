@@ -15,7 +15,7 @@ const MediaCarouselSkeleton = ({
   className?: string;
   thumbnailsCount?: number;
 }) => {
-  const [showGradient, containerRef] = useHorizontalScrollable();
+  const { showGradient, containerRef } = useHorizontalScrollable();
   return (
     <div className={`rounded-lg max-w-3xl w-full overflow-hidden ${className}`}>
       {/* Main Image */}

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Modal from "..";
 import LoginForm from "../../forms/LoginForm";
 import useQueryParams from "../../../hooks/useQueryParams";
@@ -8,6 +9,11 @@ const AuthModal = () => {
   const { queryParams, removeParam } = useQueryParams();
   const { isAuthenticated } = useUserStore();
   const { runAction, clearAction } = useAuthActionStore();
+
+  useEffect(() => {
+    removeParam("login");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (isAuthenticated && !queryParams.login) return null;
 

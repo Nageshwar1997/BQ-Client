@@ -11,7 +11,7 @@ import ShowError from "../../../components/errors/ShowError";
 import { FetchedProductType } from "../../../types";
 import EmptyData from "../../../components/empty-data/EmptyData";
 import ProductCardSkeleton from "../../../components/skeletons/children/ProductCardSkeleton";
-import ProductCard from "../searchProducts/ProductCard";
+import ProductCard from "../../../components/ui/ProductCard";
 import useQueryParams from "../../../hooks/useQueryParams";
 import usePathParams from "../../../hooks/usePathParams";
 

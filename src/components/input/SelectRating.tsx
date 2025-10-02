@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type React from "react";
 import { InfoIcon, StarEmptyIcon, StarFillIcon } from "../../icons";
-import RatingStars from "../navbar/components/rating/RatingStars";
+import RatingStars from "../ui/RatingStars";
 import Button from "../button/Button";
 
 interface RatingProps {
@@ -33,22 +33,20 @@ const SelectRating = ({ initialValue = 0, onChange, error }: RatingProps) => {
     setHoverRating(Number.parseFloat(value.toFixed(1)));
   };
 
-  const handleLeave = () => {
-    setHoverRating(null);
-  };
+  const handleLeave = () => setHoverRating(null);
 
   const displayRating = hoverRating ?? rating;
 
   return (
     <div className="flex flex-col items-center gap-2 w-full">
       <div className="flex items-center gap-2 w-full">
-        <div className="flex-1 h-px bg-primary-50 rounded-full" />
+        <div className="flex-1 h-px border-b border-dashed border-b-primary-50" />
         <span className="font-bold text-xl w-10 text-center">
           {Number.isInteger(displayRating)
             ? displayRating
             : displayRating.toFixed(1)}
         </span>
-        <div className="flex-1 h-px bg-primary-50 rounded-full" />
+        <div className="flex-1 h-px border-b border-dashed border-b-primary-50" />
       </div>
 
       <div className="flex flex-col gap-1.5">
@@ -91,11 +89,9 @@ const SelectRating = ({ initialValue = 0, onChange, error }: RatingProps) => {
           })}
         </div>
         {error && (
-          <p
-            className={`w-full text-start flex gap-1 items-center text-[11px] leading-tight text-red-500`}
-          >
-            <InfoIcon className="w-3 h-3 md:w-4 md:h-4 fill-red-500" />
-            <span className="leading-none">{error}</span>
+          <p className="w-full text-start flex gap-1 items-center text-[11px] leading-tight text-red-500">
+            <InfoIcon className="min-w-3 min-h-3 w-3 h-3 md:min-w-4 md:min-h-4 md:w-4 md:h-4 fill-red-500" />
+            <span className="leading-none line-clamp-2">{error}</span>
           </p>
         )}
       </div>
@@ -115,7 +111,7 @@ const SelectRating = ({ initialValue = 0, onChange, error }: RatingProps) => {
               rightIcon={
                 <StarFillIcon className="w-4 h-4" fill="currentColor" />
               }
-              onClick={() => handleClick(val)}
+              buttonProps={{ onClick: () => handleClick(val) }}
             />
           </div>
         ))}

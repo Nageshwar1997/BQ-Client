@@ -27,7 +27,10 @@ const Collections = () => {
                     : "lg:pb-2"
                 }`}
               >
-                <CategoryLabel text={label} path={`/products${category.path}`} />
+                <CategoryLabel
+                  text={label}
+                  path={`/products${category.path}`}
+                />
                 <SubCategories subCategories={subCategories} />
               </div>
             );
@@ -46,7 +49,7 @@ const Collections = () => {
               Together, we're Unstoppable!
             </span>
             <Button
-              content={"Team Up"}
+              content="Team Up"
               pattern="outline"
               className="!w-fit !py-1 !rounded-full leading-3 !text-sm"
             />

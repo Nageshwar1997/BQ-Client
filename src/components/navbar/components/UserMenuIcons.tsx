@@ -40,8 +40,8 @@ const UserPopup = ({
       <Modal
         isOpen={isOpen}
         onClose={onClose}
-        containerClassName="relative !p-0 !rounded-lg"
-        className="!bg-platinum-jet !rounded-lg [&>svg]:hidden !p-4"
+        containerProps={{ className: "relative !p-0 !rounded-lg" }}
+        className="!bg-platinum-jet !rounded-lg [&>div>div>svg]:hidden [&>div]:!p-4"
       >
         <div className="flex flex-col gap-2">
           <div className="flex flex-col items-center gap-2">
@@ -88,12 +88,9 @@ const UserPopup = ({
               content={isAuthenticated ? "Logout" : "Login"}
               pattern="primary"
               className="!p-1.5 !rounded !text-xs"
-              onClick={() => {
-                if (!isAuthenticated) {
-                  setParams({ login: "true" });
-                } else {
-                  logout();
-                }
+              buttonProps={{
+                onClick: () =>
+                  !isAuthenticated ? setParams({ login: "true" }) : logout(),
               }}
             />
             {!isAuthenticated && (
@@ -101,7 +98,7 @@ const UserPopup = ({
                 content="Register"
                 pattern="secondary"
                 className="!p-1.5 !rounded !text-xs"
-                onClick={() => navigate("/register")}
+                buttonProps={{ onClick: () => navigate("/register") }}
               />
             )}
           </div>

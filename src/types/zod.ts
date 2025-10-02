@@ -1,4 +1,4 @@
-interface ZodCommonConfigs {
+export interface ZodCommonConfigs {
   field: string;
   parentField?: string;
   showingFieldName: string;
@@ -34,3 +34,6 @@ export type ZodOptionalStringConfigs = ZodStringConfigs; // Optional
 // Number
 export type ZodRequiredNumberConfigs = ZodNumberConfigs; // Required
 export type ZodOptionalNumberConfigs = ZodNumberConfigs; // Optional
+
+// Enums
+export type ZodEnumsConfigs = ZodCommonConfigs;

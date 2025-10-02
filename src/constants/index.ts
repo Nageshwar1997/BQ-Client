@@ -65,13 +65,13 @@ export const regexes: Record<TRegexes, RegExp> = {
   singleSpace: /^(?!.* {2,}).*$/s, // Single space allowed
   hexCode: /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/, // Hex color code
   date: /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(?:\.\d+)?(Z|([+-]\d{2}:\d{2}))?)?$/, // Date e.g. 2022-01-01T12:00:00Z
-  name: /^(?!.*\d)(?!.* {2})([A-Za-z]+( [A-Za-z]+)*)$/, // Only letters & single space
+  validName: /^(?!.*\d)(?!.* {2})([A-Za-z]+( [A-Za-z]+)*)$/, // Only letters & single space
   password: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&#])(?=\S.*$).{6,20}$/, // Password must contain at least one uppercase letter, one lowercase letter, one number, one special character, and be at least 6 characters long
-  email:
+  validEmail:
     /^[a-zA-Z0-9]+([._%+-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(-?[a-zA-Z0-9]+)*(\.[a-zA-Z]{2,})+$/, // Email e.g. 3oYQK@example.com
   phoneStart: /^[6-9]/, // Starts with 6, 7, 8, or 9
   phoneExactLength: /^\d{10}$/, // Exactly 10 digits
-  phone: /^[6-9][0-9]{9}$/, // Phone number e.g. 9876543210
+  validPhone: /^[6-9][0-9]{9}$/, // Phone number e.g. 9876543210
   atLeastOneUppercaseLetter: /[A-Z]/, // At least one uppercase letter
   atLeastOneLowercaseLetter: /[a-z]/, // At least one lowercase letter
   atLeastOneDigit: /\d/, // At least one digit
@@ -82,6 +82,8 @@ export const regexes: Record<TRegexes, RegExp> = {
   onlyLetters: /^[a-zA-Z]+$/, // All characters are letters
   onlyLettersAndSpaces: /^[a-zA-Z\s]+$/, // All characters are letters and spaces
   onlyLettersAndSpacesAndDots: /^[a-zA-Z\s.]+$/, // Only letters, spaces, and dots
+  validPinCode: /^[1-9][0-9]{5}$/, // Check valid pin code
+  validGST: /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/i, // Check valid GST number
 };
 
 export const reviewInitialValues = {
@@ -90,3 +92,46 @@ export const reviewInitialValues = {
   rating: 1,
   media: [],
 };
+
+export const ADDRESS_TYPES = ["shipping", "billing", "both"];
+export const STATES_AND_UNION_TERRITORIES = [
+  "Andhra Pradesh",
+  "Arunachal Pradesh",
+  "Assam",
+  "Bihar",
+  "Chhattisgarh",
+  "Goa",
+  "Gujarat",
+  "Haryana",
+  "Himachal Pradesh",
+  "Jharkhand",
+  "Karnataka",
+  "Kerala",
+  "Madhya Pradesh",
+  "Maharashtra",
+  "Manipur",
+  "Meghalaya",
+  "Mizoram",
+  "Nagaland",
+  "Odisha",
+  "Punjab",
+  "Rajasthan",
+  "Sikkim",
+  "Tamil Nadu",
+  "Telangana",
+  "Tripura",
+  "Uttar Pradesh",
+  "Uttarakhand",
+  "West Bengal",
+  // Union Territories
+  "Andaman and Nicobar Islands",
+  "Chandigarh",
+  "Dadra and Nagar Haveli and Daman and Diu",
+  "Delhi (National Capital Territory of Delhi)",
+  "Jammu and Kashmir",
+  "Ladakh",
+  "Lakshadweep",
+  "Puducherry",
+];
+
+export const ALLOWED_COUNTRIES = ["India"];

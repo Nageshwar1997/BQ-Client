@@ -39,7 +39,7 @@ const useVerticalScrollable = () => {
     };
   }, []);
 
-  return [showGradient, containerRef] as const;
+  return { showGradient, containerRef } as const;
 };
 
 export default useVerticalScrollable;

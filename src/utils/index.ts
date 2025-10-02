@@ -237,3 +237,40 @@ export const getAvgRating = (reviews: FetchedReviewType[] = []) => {
   const avgRating = totalRating / reviews.length;
   return avgRating;
 };
+
+export const formatPhoneNumber = (phone: string | number): string => {
+  // Convert to string
+  let num = String(phone).replace(/\D/g, ""); // remove non-digit chars
+
+  // Check if number has country code
+  if (num.length === 12 && num.startsWith("91")) {
+    num = num.slice(2); // remove country code
+  } else if (num.length === 13 && num.startsWith("+91")) {
+    num = num.slice(3); // remove leading 0
+  } else if (num.length === 11 && num.startsWith("0")) {
+    num = num.slice(1); // remove leading 0
+  }
+  if (num.length !== 10) return phone.toString();
+
+  return `+91 ${num.slice(0, 5)} ${num.slice(5)}`;
+};
+
+export const deepEqual = <T>(obj1: T, obj2: T): boolean => {
+  if (obj1 === obj2) return true;
+
+  if (
+    typeof obj1 !== "object" ||
+    typeof obj2 !== "object" ||
+    obj1 === null ||
+    obj2 === null
+  ) {
+    return false;
+  }
+
+  const keys1 = Object.keys(obj1) as (keyof T)[];
+  const keys2 = Object.keys(obj2) as (keyof T)[];
+
+  if (keys1.length !== keys2.length) return false;
+
+  return keys1.every((key) => deepEqual(obj1[key], obj2[key]));
+};

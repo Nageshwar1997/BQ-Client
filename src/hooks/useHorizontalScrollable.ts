@@ -39,7 +39,7 @@ const useHorizontalScrollable = () => {
     };
   }, []);
 
-  return [showGradient, containerRef] as const;
+  return { showGradient, containerRef } as const;
 };
 
 export default useHorizontalScrollable;

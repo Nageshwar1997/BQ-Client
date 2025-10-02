@@ -1,13 +1,17 @@
 import {
+  ButtonHTMLAttributes,
   InputHTMLAttributes,
+  JSX,
   ReactElement,
   ReactNode,
   RefObject,
+  SelectHTMLAttributes,
   SVGProps,
   TextareaHTMLAttributes,
   VideoHTMLAttributes,
 } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
+import { ADDRESS_TYPES } from "../constants";
 
 export interface ClassName {
   className?: string;
@@ -53,6 +57,16 @@ type TInputIcon = { text?: string; icon?: ReactNode; onClick?: () => void };
 export interface IInput extends TBaseInput {
   inputProps: InputHTMLAttributes<HTMLInputElement>;
 }
+
+export interface ISelect extends Omit<TBaseInput, "icons" | "needRef"> {
+  selectProps: SelectHTMLAttributes<HTMLSelectElement> &
+    Partial<Pick<InputHTMLAttributes<HTMLInputElement>, "placeholder">>;
+  icons?: { left?: TInputIcon };
+  options: TDropdownOption[];
+  optionsClassName?: string;
+  optionsPosition?: "top" | "bottom";
+}
+
 export interface ITextArea extends Omit<TBaseInput, "icons"> {
   textAreaProps: TextareaHTMLAttributes<HTMLTextAreaElement>;
 }
@@ -359,10 +373,12 @@ export type TRegexes =
   | "singleSpace"
   | "hexCode"
   | "date"
-  | "name"
+  | "validName"
   | "password"
-  | "email"
-  | "phone"
+  | "validEmail"
+  | "validPinCode"
+  | "validGST"
+  | "validPhone"
   | "phoneStart"
   | "phoneExactLength"
   | "onlyDigits"
@@ -386,4 +402,84 @@ export interface IFooterOptionList {
   options: TFooterOption[];
   title?: string;
   isFirst?: boolean;
+}
+
+export interface IAddress extends IBaseAddress {
+  _id: string;
+  user: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IBaseAddress
+  extends Pick<UserTypes, "firstName" | "lastName" | "email" | "phoneNumber"> {
+  altPhoneNumber?: string;
+  address: string;
+  landmark?: string;
+  city: string;
+  state: string;
+  pinCode: string;
+  country: string;
+  gst?: string;
+  type: (typeof ADDRESS_TYPES)[number];
+}
+
+export interface IUserAddresses {
+  _id: string;
+  user: string;
+  addresses: IAddress[];
+  defaultAddress: string | null;
+}
+
+export interface IAddressCard {
+  address: IAddress;
+  handleAddressSelect: (
+    type: (typeof ADDRESS_TYPES)[number],
+    id: string
+  ) => void;
+  isBilling?: boolean;
+  isShipping?: boolean;
+  isBoth?: boolean;
+  className?: string;
+}
+
+export interface TAddressForm {
+  name: keyof IBaseAddress;
+  label: string;
+  placeholder: string;
+  autoComplete: string;
+  type?: string;
+  options?: TDropdownOption[];
+}
+
+export interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: JSX.Element;
+  containerProps?: JSX.IntrinsicElements["div"];
+  heading?: string;
+  className?: string;
+}
+
+export interface ButtonProps extends ClassName {
+  buttonProps?: Omit<
+    ButtonHTMLAttributes<HTMLButtonElement>,
+    "children" | "content"
+  >;
+  content: ReactNode | string;
+  pattern: "primary" | "secondary" | "tertiary" | "outline" | "transparent";
+  leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
+}
+
+export interface IConfirmModal {
+  type: "success" | "error" | "warning" | "custom";
+  title?: string;
+  description?: string;
+  children?: ReactNode;
+  modalProps?: Omit<ModalProps, "children">;
+  buttons?: {
+    left?: Omit<ButtonProps, "pattern">;
+    right?: Omit<ButtonProps, "pattern">;
+  };
 }

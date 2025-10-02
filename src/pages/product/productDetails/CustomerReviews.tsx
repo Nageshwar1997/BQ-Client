@@ -1,4 +1,4 @@
-import RatingStars from "../../../components/navbar/components/rating/RatingStars";
+import RatingStars from "../../../components/ui/RatingStars";
 
 const CustomerReviews = ({ reviews }: { reviews: number[] }) => {
   const ratingCounts: Record<number, number> = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
