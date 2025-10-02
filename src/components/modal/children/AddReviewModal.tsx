@@ -158,7 +158,7 @@ const AddReviewModal = ({ onClose, isOpen }: TAddReviewModal) => {
         <Button
           content="Submit"
           pattern="primary"
-          type="submit"
+          buttonProps={{ type: "submit" }}
           className="!rounded-lg"
         />
         <DevTool control={control} />

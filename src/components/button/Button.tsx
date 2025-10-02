@@ -1,25 +1,12 @@
-import { ReactNode } from "react";
-
-interface ButtonProps {
-  type?: "submit" | "button";
-  pattern: "primary" | "secondary" | "tertiary" | "outline" | "transparent";
-  className?: string;
-  leftIcon?: ReactNode;
-  rightIcon?: ReactNode;
-  content: ReactNode | string;
-  onClick?: () => void;
-  disable?: boolean;
-}
+import { ButtonProps } from "../../types";
 
 const Button = ({
-  type = "button",
   pattern,
-  className = "",
   content,
+  className = "",
   leftIcon,
   rightIcon,
-  onClick,
-  disable = false,
+  buttonProps,
 }: ButtonProps) => {
   const buttonCss = () => {
     if (pattern === "primary") {
@@ -38,11 +25,16 @@ const Button = ({
   const getButtonCSS = buttonCss();
   return (
     <button
-      className={`w-full text-sm xl:text-base font-semibold font-metropolis leading-4 rounded-xl flex justify-center items-center gap-1 py-3 lg:py-4 px-4 lg:px-5 outline-none focus-within:outline-none cursor-pointer disabled:cursor-not-allowed disabled:opacity-80 transition-all duration-300 group ${getButtonCSS} ${className}`}
-      type={type}
-      onClick={!disable && onClick ? onClick : () => {}}
-      typeof="button"
-      disabled={disable}
+      {...buttonProps}
+      className={`w-full text-sm xl:text-base font-semibold font-metropolis leading-4 rounded-xl flex justify-center items-center gap-1 py-3 lg:py-4 px-4 lg:px-5 outline-none focus-within:outline-none cursor-pointer disabled:cursor-not-allowed disabled:opacity-80 transition-all duration-300 group ${getButtonCSS} ${className} ${
+        buttonProps?.className ?? ""
+      }`}
+      type={buttonProps?.type || "button"}
+      onClick={
+        !buttonProps?.disabled && buttonProps?.onClick
+          ? buttonProps.onClick
+          : undefined
+      }
     >
       {leftIcon && <span>{leftIcon}</span>}
       {content && <span>{content}</span>}

@@ -197,7 +197,7 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
               </div>
               <Button
                 pattern="primary"
-                type="submit"
+                buttonProps={{ type: "submit" }}
                 content="Login"
                 className="!text-base"
               />

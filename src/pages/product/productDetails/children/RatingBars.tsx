@@ -32,13 +32,15 @@ const RatingBars = ({ reviews = [] }: { reviews: FetchedReviewType[] }) => {
               pattern="secondary"
               content="Write a Review"
               className="max-w-44 py-2! lg:py-3 !rounded-md"
-              onClick={() => {
-                if (!isAuthenticated) {
-                  setParams({ login: "true" });
-                  setAction(() => setShowAddReviewModal(true));
-                  return;
-                }
-                setShowAddReviewModal(true);
+              buttonProps={{
+                onClick: () => {
+                  if (!isAuthenticated) {
+                    setParams({ login: "true" });
+                    setAction(() => setShowAddReviewModal(true));
+                    return;
+                  }
+                  setShowAddReviewModal(true);
+                },
               }}
             />
             <div className="flex flex-col gap-0.5 items-center justify-center text-secondary">

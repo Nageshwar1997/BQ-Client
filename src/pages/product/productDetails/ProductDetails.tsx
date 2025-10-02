@@ -183,19 +183,20 @@ const ProductDetails = () => {
                         : "Add to Cart"
                     }
                     pattern="primary"
-                    onClick={handleAddToCart}
-                    disable={
-                      isPending ||
-                      getUserCartQuery?.isRefetching ||
-                      isOutOfStock ||
-                      isCartFull ||
-                      isProductExistInCart
-                    }
+                    buttonProps={{
+                      onClick: handleAddToCart,
+                      disabled:
+                        isPending ||
+                        getUserCartQuery?.isRefetching ||
+                        isOutOfStock ||
+                        isCartFull ||
+                        isProductExistInCart,
+                    }}
                   />
                   <Button
                     content="Go to Cart"
                     pattern="secondary"
-                    onClick={() => navigate("/cart")}
+                    buttonProps={{ onClick: () => navigate("/cart") }}
                   />
                 </div>
                 <hr className="w-full h-px block border-none bg-gradient-line" />

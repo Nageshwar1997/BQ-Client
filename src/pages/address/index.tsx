@@ -114,13 +114,15 @@ const Address = () => {
               strokeWidth={2.5}
             />
           }
-          onClick={() => {
-            if (addresses.length >= 5) {
-              return toastErrorMessage(
-                "You can not add more than 5 addresses, remove any one of existing addresses to add new address"
-              );
-            }
-            setParams({ add: "true" });
+          buttonProps={{
+            onClick: () => {
+              if (addresses.length >= 5) {
+                return toastErrorMessage(
+                  "You can not add more than 5 addresses, remove any one of existing addresses to add new address"
+                );
+              }
+              setParams({ add: "true" });
+            },
           }}
         />
       </div>
@@ -189,10 +191,11 @@ const Address = () => {
                 content="Proceed to Payment"
                 className="!rounded-lg!p-3 gap-2 max-w-xs mx-auto"
                 rightIcon={<RightArrowIcon className="stroke-white" />}
-                disable={
-                  (!selectedAddress.billing || !selectedAddress.shipping) &&
-                  !selectedAddress.both
-                }
+                buttonProps={{
+                  disabled:
+                    (!selectedAddress.billing || !selectedAddress.shipping) &&
+                    !selectedAddress.both,
+                }}
               />
             </div>
           </div>
@@ -201,7 +204,7 @@ const Address = () => {
         <AddressForm />
       )}
       <ConfirmModal
-        type="success"
+        type="error"
         title="Are you sure you want to delete?"
         description="Are you sure you want to delete this address"
       />

@@ -88,12 +88,9 @@ const UserPopup = ({
               content={isAuthenticated ? "Logout" : "Login"}
               pattern="primary"
               className="!p-1.5 !rounded !text-xs"
-              onClick={() => {
-                if (!isAuthenticated) {
-                  setParams({ login: "true" });
-                } else {
-                  logout();
-                }
+              buttonProps={{
+                onClick: () =>
+                  !isAuthenticated ? setParams({ login: "true" }) : logout(),
               }}
             />
             {!isAuthenticated && (
@@ -101,7 +98,7 @@ const UserPopup = ({
                 content="Register"
                 pattern="secondary"
                 className="!p-1.5 !rounded !text-xs"
-                onClick={() => navigate("/register")}
+                buttonProps={{ onClick: () => navigate("/register") }}
               />
             )}
           </div>

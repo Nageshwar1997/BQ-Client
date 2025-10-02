@@ -203,7 +203,7 @@ const Register = () => {
                 </div>
                 <Button
                   pattern="primary"
-                  type="submit"
+                  buttonProps={{ type: "submit" }}
                   content="Register"
                   className="!text-base"
                 />

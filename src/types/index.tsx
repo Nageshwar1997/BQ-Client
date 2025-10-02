@@ -1,4 +1,5 @@
 import {
+  ButtonHTMLAttributes,
   InputHTMLAttributes,
   JSX,
   ReactElement,
@@ -458,4 +459,26 @@ export interface ModalProps {
   containerProps?: JSX.IntrinsicElements["div"];
   heading?: string;
   className?: string;
+}
+
+export interface ButtonProps extends ClassName {
+  buttonProps?: Omit<
+    ButtonHTMLAttributes<HTMLButtonElement>,
+    "children" | "content"
+  >;
+  content: ReactNode | string;
+  pattern: "primary" | "secondary" | "tertiary" | "outline" | "transparent";
+  leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
+}
+
+export interface IConfirmModal {
+  type: "success" | "error" | "warning" | "custom";
+  title?: string;
+  description?: string;
+  children?: ReactNode;
+  modalProps?: ModalProps;
+  buttons?: {
+    left?: ButtonProps;
+  };
 }

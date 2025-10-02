@@ -111,7 +111,7 @@ const SelectRating = ({ initialValue = 0, onChange, error }: RatingProps) => {
               rightIcon={
                 <StarFillIcon className="w-4 h-4" fill="currentColor" />
               }
-              onClick={() => handleClick(val)}
+              buttonProps={{ onClick: () => handleClick(val) }}
             />
           </div>
         ))}

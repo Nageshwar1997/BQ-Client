@@ -39,7 +39,9 @@ const AddressCard = ({
               key={type}
               content={type}
               pattern="tertiary"
-              onClick={() => handleAddressSelect(type, address._id)}
+              buttonProps={{
+                onClick: () => handleAddressSelect(type, address._id),
+              }}
               className={`!px-3 !py-1 !text-xs !rounded capitalize text-primary-inverted ${
                 isActive
                   ? "bg-accent-duo !text-primary"
@@ -51,7 +53,7 @@ const AddressCard = ({
       </div>
       <div className="flex items-center gap-1 absolute top-1.5 right-1.5">
         <Button
-          onClick={() => setParams({ edit: address._id })}
+          buttonProps={{ onClick: () => setParams({ edit: address._id }) }}
           pattern="secondary"
           content={
             <EditIcon
@@ -70,7 +72,7 @@ const AddressCard = ({
             />
           }
           className="!rounded-full !shadow-neumorphic-layered !w-fit !h-fit !p-1.5"
-          onClick={() => mutateAsync(address._id)}
+          buttonProps={{ onClick: () => mutateAsync(address._id) }}
         />
       </div>
     </div>

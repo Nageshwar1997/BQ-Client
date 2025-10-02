@@ -143,7 +143,7 @@ const ReviewCard = ({
             <Button
               content="Helpful"
               pattern="outline"
-              onClick={handleHelpful}
+              buttonProps={{ onClick: handleHelpful }}
               className={`!w-fit !py-0.5 !px-2 !rounded-sm !text-xs/normal !border-none !duration-0 ${
                 updateStatus.isHelpful
                   ? "bg-accent-duo !text-primary-inverted"

@@ -46,8 +46,10 @@ const CartItem = ({
           <Button
             pattern="secondary"
             className="!rounded-full !p-0 !w-6 h-6 !shadow-none disabled:!opacity-50"
-            disable={!allowDec || isOutOfStock}
-            onClick={() => onQuantityChange(item._id, item.quantity - 1)}
+            buttonProps={{
+              disabled: !allowDec || isOutOfStock,
+              onClick: () => onQuantityChange(item._id, item.quantity - 1),
+            }}
             content={
               <MinusIcon
                 className="w-4 h-4 stroke-primary-inverted"
@@ -61,8 +63,10 @@ const CartItem = ({
           <Button
             pattern="secondary"
             className="!w-6 h-6 !rounded-full !p-0 !shadow-none disabled:!opacity-50"
-            disable={!allowInc || isOutOfStock}
-            onClick={() => onQuantityChange(item._id, item.quantity + 1)}
+            buttonProps={{
+              disabled: !allowInc || isOutOfStock,
+              onClick: () => onQuantityChange(item._id, item.quantity + 1),
+            }}
             content={
               <PlusIcon
                 className="w-4 h-4 stroke-primary-inverted"
@@ -104,7 +108,7 @@ const CartItem = ({
               strokeWidth={2.5}
             />
           }
-          onClick={() => onRemoveItem(item._id)}
+          buttonProps={{ onClick: () => onRemoveItem(item._id) }}
         />
       </div>
     </div>

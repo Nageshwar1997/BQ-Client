@@ -149,13 +149,12 @@ const AddressForm = ({ addresses }: { addresses?: IAddress[] }) => {
         <Button
           content="Reset"
           pattern="secondary"
-          type="button"
-          onClick={handleReset}
+          buttonProps={{ type: "button", onClick: () => handleReset() }}
         />
         <Button
           content={queryParams.edit ? "Update" : "Add Address"}
           pattern="primary"
-          type="submit"
+          buttonProps={{ type: "submit" }}
         />
       </div>
     </form>
