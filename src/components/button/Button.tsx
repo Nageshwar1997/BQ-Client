@@ -31,7 +31,7 @@ const Button = ({
     } else if (pattern === "outline") {
       return "text-primary border border-primary shadow-outline-btn hover:shadow-outline-btn-hover";
     } else {
-      return "shadow-inner shadow-primary-10 hover:shadow-primary-30 bg-transparent border-none";
+      return "shadow-inner light:shadow-primary-10 dark:shadow-primary-30 hover:shadow-primary-30 bg-transparent border-none";
     }
   };
 

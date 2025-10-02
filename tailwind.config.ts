@@ -79,14 +79,22 @@ export default {
       boxShadow: {
         "neumorphic-layered": "var(--shadow-neumorphic-layered)",
         "light-dark-soft": "var(--shadow-light-dark-soft)",
-        "primary-btn": "var(--shadow-primary-button)",
-        "secondary-btn": "var(--shadow-secondary-button)",
-        "tertiary-btn": "var(--shadow-tertiary-button)",
-        "outline-btn": "var(--shadow-outline-button)",
-        "primary-btn-hover": "var(--shadow-primary-button-hover)",
-        "secondary-btn-hover": "var(--shadow-secondary-button-hover)",
-        "tertiary-btn-hover": "var(--shadow-tertiary-button-hover)",
-        "outline-btn-hover": "var(--shadow-outline-button-hover)",
+        "primary-btn":
+          "0px 4px 4px 0px var(--primary-inverted-30), 0px 2px 8px 0px var(--argentinian-celestial-blue-30)",
+        "secondary-btn":
+          "0px 4px 4px 0px var(--primary-inverted-30), 0px 2px 8px 0px var(--secondary-30)",
+        "tertiary-btn":
+          "0px 4px 4px 0px var(--primary-inverted-30), 0px 2px 8px 0px var(--tertiary-30)",
+        "outline-btn":
+          "0px 4px 4px 0px var(--primary-inverted-30), 0px 2px 8px 0px var(--primary-30)",
+        "primary-btn-hover":
+          "0px 4px 4px 0px var(--primary-inverted-30), 0px 2px 4px 0px var(--argentinian-celestial-blue-10), 0px 2px 8px 0px var(--argentinian-celestial-blue-50)",
+        "secondary-btn-hover":
+          "0px 4px 4px 0px var(--primary-inverted-30), 0px 2px 4px 0px var(--secondary-10), 0px 2px 8px 0px var(--secondary-50)",
+        "tertiary-btn-hover":
+          "0px 4px 4px 0px var(--primary-inverted-30), 0px 2px 4px 0px var(--tertiary-10), 0px 2px 8px 0px var(--tertiary-50)",
+        "outline-btn-hover":
+          "0px 4px 4px 0px var(--primary-inverted-30), 0px 2px 4px 0px var(--primary-10), 0px 2px 8px 0px var(--primary-50)",
       },
       fontFamily: {
         metropolis: ["metropolis", "sans-serif"],
