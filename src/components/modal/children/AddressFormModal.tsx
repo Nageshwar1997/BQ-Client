@@ -25,7 +25,7 @@ const AddressFormModal = ({
       heading="Add Address"
       className="!max-w-3xl"
     >
-      <AddressForm addresses={addresses} />
+      <AddressForm addresses={addresses} className="mt-2" />
     </Modal>
   );
 };

@@ -13,11 +13,14 @@ import {
   useUpdateAddress,
 } from "../../../api/address/address.service";
 import useQueryParams from "../../../hooks/useQueryParams";
-import { IAddress, IBaseAddress } from "../../../types";
+import { ClassName, IAddress, IBaseAddress } from "../../../types";
 import { deepEqual } from "../../../utils";
 import { toastErrorMessage } from "../../../utils/toasts";
 
-const AddressForm = ({ addresses }: { addresses?: IAddress[] }) => {
+const AddressForm = ({
+  addresses,
+  className = "",
+}: { addresses?: IAddress[] } & ClassName) => {
   const { mutateAsync: addAddress } = useAddAddress();
   const { mutateAsync: updateAddress } = useUpdateAddress();
   const { removeParam, queryParams } = useQueryParams();
@@ -88,7 +91,7 @@ const AddressForm = ({ addresses }: { addresses?: IAddress[] }) => {
   return (
     <form
       onSubmit={handleSubmit(handleAddAddress)}
-      className="flex flex-col gap-6 mt-2"
+      className={`flex flex-col gap-6 ${className}`}
     >
       <Controller
         name="type"
