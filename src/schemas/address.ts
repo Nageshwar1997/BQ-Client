@@ -127,4 +127,12 @@ export const addressSchema = z.object({
       { regex: regexes.validGST, message: "Please provide a valid GST number" },
     ],
   }),
+  isDefaultAddress: z.coerce
+    .boolean({
+      errorMap: () => ({
+        message: "isDefaultAddress must be a boolean",
+      }),
+    })
+    .default(false)
+    .optional(),
 });

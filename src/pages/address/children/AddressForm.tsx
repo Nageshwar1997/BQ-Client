@@ -17,6 +17,7 @@ import { ClassName, IAddress, TBaseAddress } from "../../../types";
 import { deepEqual } from "../../../utils";
 import { toastErrorMessage } from "../../../utils/toasts";
 import { useUserStore } from "../../../store/user.store";
+import Checkbox from "../../../components/input/Checkbox";
 
 const AddressForm = ({
   addresses,
@@ -69,7 +70,7 @@ const AddressForm = ({
       Object.keys(data).forEach((key) => {
         const typedKey = key as keyof TBaseAddress;
         if (!deepEqual(data[typedKey], address[typedKey])) {
-          changedFields[typedKey] = data[typedKey];
+          (changedFields[typedKey] as unknown) = data[typedKey];
         }
       });
 
@@ -113,7 +114,7 @@ const AddressForm = ({
       Object.keys(data).forEach((key) => {
         const typedKey = key as keyof TBaseAddress;
         if (data[typedKey]) {
-          finalizedData[typedKey] = data[typedKey];
+          (finalizedData[typedKey] as unknown) = data[typedKey];
         } else {
           delete finalizedData[typedKey];
         }
@@ -160,7 +161,7 @@ const AddressForm = ({
                   label={label}
                   options={options}
                   selectProps={{
-                    value,
+                    value: value?.toString(),
                     onChange,
                     placeholder,
                     autoComplete,
@@ -182,6 +183,18 @@ const AddressForm = ({
             />
           );
         })}
+      </div>
+      <div className="flex items-center justify-center space-x-2 sm:space-x-3">
+        <Controller
+          name="isDefaultAddress"
+          control={control}
+          render={({ field }) => (
+            <Checkbox register={field} checked={field.value} />
+          )}
+        />
+        <span className="text-xs sm:text-[13px] md:text-sm text-primary-50 font-medium whitespace-nowrap">
+          Make this my default address
+        </span>
       </div>
       <hr className="h-px block border-none bg-gradient-line" />
       <div className="flex items-center justify-between gap-4">
