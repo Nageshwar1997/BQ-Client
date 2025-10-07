@@ -1,121 +1,209 @@
-import * as yup from "yup";
+import z from "zod";
+import {
+  zodEnums,
+  zodFileOrUrl,
+  zodStringOptional,
+  zodStringRequired,
+} from "../../../utils/zod";
+import { regexes } from "../../../constants";
 
-export const registerSchema = yup
-  .object({
-    firstName: yup
-      .string()
-      .required("First name is required")
-      .min(2, "First name must be at least 2 characters")
-      .max(50, "First name cannot exceed 50 characters")
-      .test(
-        "no-multiple-spaces",
-        "Only one space is allowed between words",
-        (value) => !(value && (value.match(/\s{2,}/) || []).length > 0) // Check if there are two or more spaces in the string
-      )
-      .matches(
-        /^[a-zA-Z]+( [a-zA-Z]+)*$/,
-        "Contains only letters and 1 space between words"
-      ),
-    lastName: yup
-      .string()
-      .required("Last name is required")
-      .min(2, "Last name must be at least 2 characters")
-      .max(50, "Last name cannot exceed 50 characters")
-      .test(
-        "no-multiple-spaces",
-        "Only one space is allowed between words",
-        (value) => !(value && (value.match(/\s{2,}/) || []).length > 0) // Check if there are two or more spaces in the string
-      )
-      .matches(
-        /^[a-zA-Z]+( [a-zA-Z]+)*$/,
-        "Contains only letters and 1 space between words"
-      ),
-    email: yup
-      .string()
-      .required("Email is required")
-      .email("Invalid email address")
-      .matches(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, {
-        message: "Invalid email address",
-        excludeEmptyString: true,
-      })
-      .matches(/^\S*$/, "Email cannot contain spaces"),
-    phoneNumber: yup
-      .string()
-      .matches(/^[6-9]/, "Mobile number must start with 6, 7, 8, or 9")
-      .matches(/^\d{10}$/, "Mobile number must be exactly 10 digits")
-      .required("Mobile number is required"),
-    password: yup
-      .string()
-      .required("Password is required")
-      .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
-      .matches(/[a-z]/, "Password must contain at least one lowercase letter")
-      .matches(/\d/, "Password must contain at least one number")
-      .matches(
-        /[@$!%*?&#]/,
-        "Password must contain at least one special character"
-      )
-      .matches(/^\S*$/, "Password can't contain spaces")
-      .min(6, "Password must be at least 6 characters")
-      .max(20, "Password cannot exceed 20 characters"),
-    confirmPassword: yup
-      .string()
-      .required("Password is required")
-      .oneOf([yup.ref("password")], "Passwords must match"),
-
-    profilePic: yup
-      .mixed<File>()
-      .test("fileSize", "File too large", (value) => {
-        if (value && value) {
-          return value.size <= 5 * 1024 * 1024; // 5MB
-        }
-        return true;
-      })
-      .test("fileType", "Unsupported file type", (value) => {
-        if (value && value) {
-          return value.type.startsWith("image/");
-        }
-        return true;
-      }),
-    remember: yup.boolean(),
+const fileValidation = z
+  .union([z.instanceof(File), z.string()])
+  .superRefine((file, ctx) => {
+    zodFileOrUrl({ fileOrUrl: file, field: "profilePic", ctx });
   })
-  .required();
+  .optional();
 
-export const loginSchema = yup.object().shape({
-  loginMethod: yup.string().oneOf(["email", "phoneNumber"]).required(),
-  email: yup.string().when("loginMethod", {
-    is: "email",
-    then: (schema) =>
-      schema
-        .email("Invalid email format")
-        .required("Email is required")
-        .matches(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, {
-          message: "Invalid email address",
-          excludeEmptyString: true,
-        })
-        .matches(/^\S*$/, "Email cannot contain spaces"),
-    otherwise: (schema) => schema.notRequired(),
+export const registerSchema = z.object({
+  profilePic: fileValidation,
+  firstName: zodStringRequired({
+    field: "firstName",
+    showingFieldName: "First Name",
+    blockMultipleSpaces: true,
+    min: 2,
+    max: 50,
+    customRegexes: [
+      {
+        regex: regexes.validName,
+        message:
+          "can only contain letters and only one space is allowed between words",
+      },
+    ],
   }),
-  phoneNumber: yup.string().when("loginMethod", {
-    is: "phoneNumber",
-    then: (schema) =>
-      schema
-        .required("Phone number is required")
-        .matches(/^[6-9]/, "Mobile number must start with 6, 7, 8, or 9")
-        .matches(/^\d{10}$/, "Mobile number must be exactly 10 digits"),
-    otherwise: (schema) => schema.notRequired(),
+  lastName: zodStringRequired({
+    field: "lastName",
+    showingFieldName: "Last Name",
+    blockMultipleSpaces: true,
+    min: 2,
+    max: 50,
+    customRegexes: [
+      {
+        regex: regexes.validName,
+        message:
+          "can only contain letters and only one space is allowed between words",
+      },
+    ],
   }),
-  password: yup
-    .string()
-    .required("Password is required")
-    .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .matches(/[a-z]/, "Password must contain at least one lowercase letter")
-    .matches(/\d/, "Password must contain at least one number")
-    .matches(
-      /[@$!%*?&#]/,
-      "Password must contain at least one special character"
-    )
-    .matches(/^\S*$/, "Password can't contain spaces")
-    .min(6, "Password must be at least 6 characters")
-    .max(20, "Password cannot exceed 20 characters"),
-  remember: yup.boolean(),
+  email: zodStringRequired({
+    field: "email",
+    showingFieldName: "Email",
+    blockSingleSpace: true,
+    customRegexes: [{ regex: regexes.validEmail, message: "must be a valid" }],
+  }).toLowerCase(),
+  phoneNumber: zodStringRequired({
+    field: "phoneNumber",
+    showingFieldName: "Phone number",
+    blockSingleSpace: true,
+    customRegexes: [
+      { regex: regexes.phoneStart, message: "must start with 6, 7, 8, or 9" },
+      { regex: regexes.phoneExactLength, message: "must be exactly 10 digits" },
+      {
+        regex: regexes.validPhone,
+        message: "must be exactly 10 digits and must start with 6, 7, 8, or 9",
+      },
+    ],
+  }),
+  password: zodStringRequired({
+    field: "password",
+    showingFieldName: "Password",
+    blockSingleSpace: true,
+    min: 6,
+    max: 20,
+    customRegexes: [
+      {
+        regex: regexes.atLeastOneUppercaseLetter,
+        message: "must contain at least one uppercase letter",
+      },
+      {
+        regex: regexes.atLeastOneLowercaseLetter,
+        message: "must contain at least one lowercase letter",
+      },
+      {
+        regex: regexes.atLeastOneDigit,
+        message: "must contain at least one number",
+      },
+      {
+        regex: regexes.atLeastOneSpecialCharacter,
+        message: "must contain at least one special character e.g. @$!%*?&#",
+      },
+      {
+        regex: regexes.password,
+        message:
+          "must contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
+      },
+    ],
+  }),
+  confirmPassword: zodStringRequired({
+    field: "confirmPassword",
+    showingFieldName: "Confirm Password",
+    blockSingleSpace: true,
+    min: 6,
+    max: 20,
+    customRegexes: [
+      {
+        regex: regexes.atLeastOneUppercaseLetter,
+        message: "must contain at least one uppercase letter",
+      },
+      {
+        regex: regexes.atLeastOneLowercaseLetter,
+        message: "must contain at least one lowercase letter",
+      },
+      {
+        regex: regexes.atLeastOneDigit,
+        message: "must contain at least one number",
+      },
+      {
+        regex: regexes.atLeastOneSpecialCharacter,
+        message: "must contain at least one special character e.g. @$!%*?&#",
+      },
+      {
+        regex: regexes.password,
+        message:
+          "must contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
+      },
+    ],
+  }),
+  remember: z.boolean().optional().default(false),
 });
+
+export const loginSchema = z
+  .object({
+    loginMethod: zodEnums({
+      field: "loginMethod",
+      showingFieldName: "Login method",
+      enums: ["email", "phoneNumber"],
+    }),
+    email: zodStringOptional({
+      field: "email",
+      showingFieldName: "Email",
+      toLowerCase: true,
+      customRegexes: [
+        {
+          regex: regexes.validEmail,
+          message: "must be valid",
+        },
+      ],
+    }).transform((val) => val?.toLowerCase()),
+    phoneNumber: zodStringOptional({
+      field: "phoneNumber",
+      showingFieldName: "Phone number",
+      customRegexes: [
+        {
+          regex: regexes.validPhone,
+          message:
+            "must be a valid Indian number starting with 6, 7, 8, or 9 and be exactly 10 digits long.",
+        },
+      ],
+    }),
+    password: zodStringRequired({
+      field: "password",
+      showingFieldName: "Password",
+      blockSingleSpace: true,
+      min: 6,
+      max: 20,
+      customRegexes: [
+        {
+          regex: regexes.atLeastOneUppercaseLetter,
+          message: "must contain at least one uppercase letter",
+        },
+        {
+          regex: regexes.atLeastOneLowercaseLetter,
+          message: "must contain at least one lowercase letter",
+        },
+        {
+          regex: regexes.atLeastOneDigit,
+          message: "must contain at least one number",
+        },
+        {
+          regex: regexes.atLeastOneSpecialCharacter,
+          message: "must contain at least one special character e.g. @$!%*?&#",
+        },
+        {
+          regex: regexes.password,
+          message:
+            "must contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
+        },
+      ],
+    }),
+    remember: z.boolean().optional().default(false),
+  })
+  .superRefine((data, ctx) => {
+    if (data.loginMethod === "email") {
+      if (!data.email || data.email.trim() === "") {
+        ctx.addIssue({
+          path: ["email"],
+          code: z.ZodIssueCode.custom,
+          message: "Email is required",
+        });
+      }
+    }
+    if (data.loginMethod === "phoneNumber") {
+      if (!data.phoneNumber || data.phoneNumber.trim() === "") {
+        ctx.addIssue({
+          path: ["phoneNumber"],
+          code: z.ZodIssueCode.custom,
+          message: "Phone number is required",
+        });
+      }
+    }
+  });
