@@ -7,14 +7,13 @@ import Radio from "../../../components/input/Radio";
 import Select from "../../../components/input/Select";
 import { addAddressFormMapData, addressInitialValues } from "../data";
 import { addressSchema } from "../../../schemas/address";
-import z from "zod";
 import Button from "../../../components/button/Button";
 import {
   useAddAddress,
   useUpdateAddress,
 } from "../../../api/address/address.service";
 import useQueryParams from "../../../hooks/useQueryParams";
-import { ClassName, IAddress, IBaseAddress } from "../../../types";
+import { ClassName, IAddress, TBaseAddress } from "../../../types";
 import { deepEqual } from "../../../utils";
 import { toastErrorMessage } from "../../../utils/toasts";
 import { useUserStore } from "../../../store/user.store";
@@ -49,12 +48,12 @@ const AddressForm = ({
     register,
     reset,
     formState: { errors },
-  } = useForm<z.infer<typeof addressSchema>>({
+  } = useForm<TBaseAddress>({
     resolver: zodResolver(addressSchema),
     defaultValues: address,
   });
 
-  const handleReset = (defaultValues?: z.infer<typeof addressSchema>) => {
+  const handleReset = (defaultValues?: TBaseAddress) => {
     reset(
       defaultValues
         ? defaultValues
@@ -64,18 +63,18 @@ const AddressForm = ({
     );
   };
 
-  const handleSubmitAddress = (data: z.infer<typeof addressSchema>) => {
+  const handleSubmitAddress = (data: TBaseAddress) => {
     if ("_id" in address && address?._id) {
-      const changedFields: Partial<IBaseAddress> = {};
+      const changedFields: Partial<TBaseAddress> = {};
       Object.keys(data).forEach((key) => {
-        const typedKey = key as keyof IBaseAddress;
+        const typedKey = key as keyof TBaseAddress;
         if (!deepEqual(data[typedKey], address[typedKey])) {
           changedFields[typedKey] = data[typedKey];
         }
       });
 
       const removedOptionalFields: (keyof Pick<
-        IBaseAddress,
+        TBaseAddress,
         "altPhoneNumber" | "gst" | "landmark"
       >)[] = [];
       const changedOptionalFields = {
@@ -112,7 +111,7 @@ const AddressForm = ({
     } else {
       const finalizedData = data;
       Object.keys(data).forEach((key) => {
-        const typedKey = key as keyof IBaseAddress;
+        const typedKey = key as keyof TBaseAddress;
         if (data[typedKey]) {
           finalizedData[typedKey] = data[typedKey];
         } else {

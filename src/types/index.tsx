@@ -14,6 +14,7 @@ import { UseFormRegisterReturn } from "react-hook-form";
 import z from "zod";
 import { ADDRESS_TYPES } from "../constants";
 import { loginSchema, registerSchema } from "../pages/auth/helpers/auth.schema";
+import { addressSchema } from "../schemas/address";
 
 export interface ClassName {
   className?: string;
@@ -105,7 +106,6 @@ export type TPasswordField = keyof Pick<
   TRegister,
   "password" | "confirmPassword"
 >;
-export type TPasswordVisibility = Record<TPasswordField, boolean>;
 
 export interface RegisterInputMapDataProps {
   name: keyof TRegister;
@@ -385,21 +385,9 @@ export interface IFooterOptionList {
   isFirst?: boolean;
 }
 
-export interface IAddress extends IBaseAddress, ITimeStamp {
+export type TBaseAddress = z.infer<typeof addressSchema>;
+export interface IAddress extends TBaseAddress, ITimeStamp {
   user: string;
-}
-
-export interface IBaseAddress
-  extends Pick<UserTypes, "firstName" | "lastName" | "email" | "phoneNumber"> {
-  altPhoneNumber?: string;
-  address: string;
-  landmark?: string;
-  city: string;
-  state: string;
-  pinCode: string;
-  country: string;
-  gst?: string;
-  type: (typeof ADDRESS_TYPES)[number];
 }
 
 export interface IUserAddresses extends ITimeStamp {
@@ -420,7 +408,7 @@ export interface IAddressCard extends ClassName {
 }
 
 export interface TAddressForm {
-  name: keyof IBaseAddress;
+  name: keyof TBaseAddress;
   label: string;
   placeholder: string;
   autoComplete: string;

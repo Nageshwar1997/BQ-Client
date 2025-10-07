@@ -2,7 +2,7 @@ import { AxiosError } from "axios";
 import api from "../../configs/axios.instance.config";
 import { getUserToken } from "../../utils";
 import { addressRoutes } from "../api.routes";
-import { IAddress, IBaseAddress } from "../../types";
+import { IAddress, TBaseAddress } from "../../types";
 
 export const get_user_addresses = async () => {
   try {
@@ -24,7 +24,7 @@ export const get_user_addresses = async () => {
   }
 };
 
-export const add_address = async (data: IBaseAddress) => {
+export const add_address = async (data: TBaseAddress) => {
   try {
     const user_token = getUserToken();
 

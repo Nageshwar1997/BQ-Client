@@ -3,7 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterTextContent, registerInputMapData } from "./data";
-import { TPasswordField, TPasswordVisibility, TRegister } from "../../types";
+import { TPasswordField, TRegister } from "../../types";
 import AuthRobot from "./components/AuthRobot";
 import UploadProfile from "./components/UploadProfile";
 import TextDisplay from "../../components/TextDisplay";
@@ -25,7 +25,9 @@ import usePathParams from "../../hooks/usePathParams";
 
 const Register = () => {
   const { showGradient, containerRef } = useVerticalScrollable();
-  const [showPasswords, setShowPasswords] = useState<TPasswordVisibility>({
+  const [showPasswords, setShowPasswords] = useState<
+    Record<TPasswordField, boolean>
+  >({
     password: false,
     confirmPassword: false,
   });
@@ -51,6 +53,8 @@ const Register = () => {
       [field]: !prevState[field],
     }));
   };
+
+  const profilePic = watch("profilePic");
 
   const onSubmit = async (bodyData: TRegister) => {
     const formData = new FormData();
@@ -116,8 +120,8 @@ const Register = () => {
                 className="!h-56"
                 errorText={errors?.profilePic?.message}
                 previewImage={
-                  watch("profilePic") instanceof File
-                    ? URL.createObjectURL(watch("profilePic") as File)
+                  profilePic instanceof File
+                    ? URL.createObjectURL(profilePic)
                     : ""
                 }
                 onChange={(file) => {
