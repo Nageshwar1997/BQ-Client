@@ -11,7 +11,9 @@ import {
   VideoHTMLAttributes,
 } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
+import z from "zod";
 import { ADDRESS_TYPES } from "../constants";
+import { loginSchema, registerSchema } from "../pages/auth/helpers/auth.schema";
 
 export interface ClassName {
   className?: string;
@@ -42,6 +44,13 @@ export interface ProfilePicInputProps extends ClassName {
 export type TFile = "image" | "video";
 
 export type TMediaOption = { type: TFile; url: string };
+
+export type TId = { _id: string };
+
+export interface ITimeStamp extends TId {
+  createdAt: string;
+  updatedAt: string;
+}
 
 interface TBaseInput extends ClassName {
   containerClassName?: string;
@@ -89,25 +98,17 @@ export interface TextDisplayProps extends ClassName {
   contentClassName?: string;
 }
 
-export interface RegisterFormInputProps {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phoneNumber: string;
-  password: string;
-  confirmPassword: string;
-  profilePic?: File; // Correctly type the file input
-  remember?: boolean;
-}
+export type TRegister = z.infer<typeof registerSchema>;
+export type TLogin = z.infer<typeof loginSchema>;
 
 export type TPasswordField = keyof Pick<
-  RegisterFormInputProps,
+  TRegister,
   "password" | "confirmPassword"
 >;
 export type TPasswordVisibility = Record<TPasswordField, boolean>;
 
 export interface RegisterInputMapDataProps {
-  name: keyof RegisterFormInputProps;
+  name: keyof TRegister;
   label?: string;
   type?: string;
   placeholder?: string;
@@ -150,15 +151,10 @@ export interface HorizontalScrollType {
 
 export type IconProps = SVGProps<SVGSVGElement>;
 
-export interface UserTypes {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phoneNumber: string;
+export interface UserTypes
+  extends Pick<TRegister, "firstName" | "lastName" | "email" | "phoneNumber">,
+    ITimeStamp {
   profilePic: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface UserStoreType {
@@ -195,12 +191,9 @@ export interface ShadeType {
   images: (File | string)[];
 }
 
-export interface FetchedShadeType extends ShadeType {
-  _id: string;
+export interface FetchedShadeType extends ShadeType, ITimeStamp {
   images: string[];
   stock: number;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface ProductType {
@@ -220,44 +213,37 @@ export interface ProductType {
   shades?: ShadeType[];
 }
 
-export type TCartProduct = {
-  _id: string;
+export type TCartProduct = TId & {
   cart: string;
-  product: Pick<
-    FetchedProductType,
-    | "_id"
-    | "title"
-    | "brand"
-    | "originalPrice"
-    | "sellingPrice"
-    | "discount"
-    | "commonImages"
-    | "totalStock"
-  >;
-  shade?: Pick<FetchedShadeType, "_id" | "shadeName" | "images" | "stock">;
+  product: TId &
+    Pick<
+      FetchedProductType,
+      | "title"
+      | "brand"
+      | "originalPrice"
+      | "sellingPrice"
+      | "discount"
+      | "commonImages"
+      | "totalStock"
+    >;
+  shade?: TId & Pick<FetchedShadeType, "shadeName" | "images" | "stock">;
   quantity: number;
 };
 
-export interface ICart {
-  _id: string;
+export interface ICart extends ITimeStamp {
   charges: number;
-  createdAt: string;
-  updatedAt: string;
   products: TCartProduct[];
 }
 
-export interface PopulatedCategory {
-  _id: string;
+export interface PopulatedCategory extends TId {
   name: string;
   category: string;
   level: number;
-  parentCategory: {
-    _id: string;
+  parentCategory: TId & {
     name: string;
     category: string;
     level: number;
-    parentCategory: {
-      _id: string;
+    parentCategory: TId & {
       name: string;
       category: string;
       level: number;
@@ -279,19 +265,14 @@ export interface ReviewType {
 }
 
 export interface FetchedReviewType
-  extends Omit<ReviewType, "images" | "videos" | "user"> {
-  _id: string;
+  extends Omit<ReviewType, "images" | "videos" | "user">,
+    ITimeStamp {
   images: string[];
   videos: string[];
   user: UserTypes;
-  createdAt: string;
-  updatedAt: string;
 }
 
-export interface FetchedProductType extends ProductType {
-  _id: string;
-  createdAt: string;
-  updatedAt: string;
+export interface FetchedProductType extends ProductType, ITimeStamp {
   commonImages: string[];
   discount: number;
   sellingPrice: number;
@@ -404,11 +385,8 @@ export interface IFooterOptionList {
   isFirst?: boolean;
 }
 
-export interface IAddress extends IBaseAddress {
-  _id: string;
+export interface IAddress extends IBaseAddress, ITimeStamp {
   user: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface IBaseAddress
@@ -424,14 +402,13 @@ export interface IBaseAddress
   type: (typeof ADDRESS_TYPES)[number];
 }
 
-export interface IUserAddresses {
-  _id: string;
+export interface IUserAddresses extends ITimeStamp {
   user: string;
   addresses: IAddress[];
   defaultAddress: string | null;
 }
 
-export interface IAddressCard {
+export interface IAddressCard extends ClassName {
   address: IAddress;
   handleAddressSelect: (
     type: (typeof ADDRESS_TYPES)[number],
@@ -440,7 +417,6 @@ export interface IAddressCard {
   isBilling?: boolean;
   isShipping?: boolean;
   isBoth?: boolean;
-  className?: string;
 }
 
 export interface TAddressForm {
@@ -452,13 +428,12 @@ export interface TAddressForm {
   options?: TDropdownOption[];
 }
 
-export interface ModalProps {
+export interface ModalProps extends ClassName {
   isOpen: boolean;
   onClose: () => void;
   children: JSX.Element;
   containerProps?: JSX.IntrinsicElements["div"];
   heading?: string;
-  className?: string;
 }
 
 export interface ButtonProps extends ClassName {
