@@ -59,7 +59,7 @@ export const addressSchema = z.object({
     showingFieldName: "Email",
     blockSingleSpace: true,
     customRegexes: [{ regex: regexes.validEmail, message: "must be a valid" }],
-  }),
+  }).toLowerCase(),
   altPhoneNumber: zodStringOptional({
     field: "altPhoneNumber",
     showingFieldName: "Alternate phone number",
