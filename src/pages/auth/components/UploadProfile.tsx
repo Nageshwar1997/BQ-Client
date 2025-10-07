@@ -45,10 +45,7 @@ const UploadProfile = ({
         <label htmlFor={name} className="relative cursor-pointer">
           <div className="absolute inset-0 bg-gradient-to-br from-primary-inverted via-transparent to-gray-400 rounded-full blur-sm animate-pulse cursor-pointer" />
           <img
-            src={
-              previewUrl || "/images/logo/BQ_white_logo.webp"
-              // "https://ctruhcdn.azureedge.net/main-webiste/public/images/products/individuals/ctruh-platfrom/categories/character/image10.webp"
-            }
+            src={previewUrl || "/images/logo/BQ_white_logo.webp"}
             alt="Profile Picture"
             className="object-cover bg-accent-duo rounded-full w-full h-full shadow-inner"
             loading="lazy"
@@ -69,7 +66,7 @@ const UploadProfile = ({
         </label>
       </div>
       {errorText && (
-        <div className="w-full flex gap-1 justify-center items-center text-[11px] leading-tight mt-2 text-red-500 border">
+        <div className="w-full flex gap-1 justify-center items-center text-[11px] leading-tight mt-2 text-red-500">
           <InfoIcon className="min-w-3 min-h-3 w-3 h-3 md:min-w-4 md:min-h-4 md:w-4 md:h-4 fill-red-500" />
           <span className="leading-none">{errorText}</span>
         </div>
