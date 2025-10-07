@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -16,17 +17,31 @@ import useQueryParams from "../../../hooks/useQueryParams";
 import { ClassName, IAddress, IBaseAddress } from "../../../types";
 import { deepEqual } from "../../../utils";
 import { toastErrorMessage } from "../../../utils/toasts";
+import { useUserStore } from "../../../store/user.store";
 
 const AddressForm = ({
   addresses,
   className = "",
 }: { addresses?: IAddress[] } & ClassName) => {
+  const { user, isAuthenticated } = useUserStore();
   const { mutateAsync: addAddress } = useAddAddress();
   const { mutateAsync: updateAddress } = useUpdateAddress();
   const { removeParam, queryParams } = useQueryParams();
 
+  const defaultAddressValues = useMemo(() => {
+    return {
+      ...addressInitialValues,
+      ...(isAuthenticated && {
+        firstName: user?.firstName,
+        lastName: user?.lastName,
+        phoneNumber: user?.phoneNumber,
+        email: user?.email,
+      }),
+    };
+  }, [isAuthenticated, user]);
+
   const address =
-    addresses?.find((a) => a._id === queryParams.edit) || addressInitialValues;
+    addresses?.find((a) => a._id === queryParams.edit) || defaultAddressValues;
 
   const {
     control,
@@ -45,11 +60,11 @@ const AddressForm = ({
         ? defaultValues
         : queryParams.edit
         ? address
-        : addressInitialValues
+        : defaultAddressValues
     );
   };
 
-  const handleAddAddress = (data: z.infer<typeof addressSchema>) => {
+  const handleSubmitAddress = (data: z.infer<typeof addressSchema>) => {
     if ("_id" in address && address?._id) {
       const changedFields: Partial<IBaseAddress> = {};
       Object.keys(data).forEach((key) => {
@@ -90,7 +105,7 @@ const AddressForm = ({
         },
         {
           onSuccess: () => (
-            removeParam("edit"), handleReset(addressInitialValues)
+            removeParam("edit"), handleReset(defaultAddressValues)
           ),
         }
       );
@@ -112,7 +127,7 @@ const AddressForm = ({
 
   return (
     <form
-      onSubmit={handleSubmit(handleAddAddress)}
+      onSubmit={handleSubmit(handleSubmitAddress)}
       className={`flex flex-col gap-6 ${className}`}
     >
       <Controller
