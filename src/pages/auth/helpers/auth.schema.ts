@@ -136,7 +136,6 @@ export const loginSchema = z
     email: zodStringOptional({
       field: "email",
       showingFieldName: "Email",
-      toLowerCase: true,
       customRegexes: [
         {
           regex: regexes.validEmail,

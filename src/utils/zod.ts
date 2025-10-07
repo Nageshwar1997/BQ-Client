@@ -266,7 +266,7 @@ export function zodFileOrUrl({
   required?: boolean;
 }) {
   let isVideo = false;
-  const path = index ?? field;
+  const path: (string | number)[] = index !== undefined ? [index] : [];
   const name = index !== undefined && index !== null ? index + 1 : field;
   const isFileOrUrl =
     typeof fileOrUrl === "string"
@@ -280,7 +280,7 @@ export function zodFileOrUrl({
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: `Media ${isFileOrUrl} ${name} is required.`,
-        path: [path],
+        path,
       });
     }
     return;
@@ -300,7 +300,7 @@ export function zodFileOrUrl({
         } ${name} invalid format. Allowed formats: ${allowedTypes
           .map((t) => t.split("/")[1])
           .join(", ")}`,
-        path: [path],
+        path,
       });
     }
 
@@ -315,7 +315,7 @@ export function zodFileOrUrl({
         } ${name} is too large (${sizeInMB} MB). Max allowed is ${
           maxSize / MB
         } MB.`,
-        path: [path],
+        path,
       });
     }
   } else if (typeof fileOrUrl === "string") {
@@ -328,14 +328,14 @@ export function zodFileOrUrl({
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: `Media ${name} is not a valid URL`,
-        path: [path],
+        path,
       });
     }
   } else {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
       message: `Item ${name} must be a File or a valid media URL`,
-      path: [path],
+      path,
     });
   }
 }
