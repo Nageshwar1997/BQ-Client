@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { loginInputMapData, LoginTextContent } from "../../pages/auth/data";
-import { LoginFormInputProps, LoginTypes } from "../../types";
+import { LoginFormInputProps, LoginTypes, TLogin } from "../../types";
 import { loginSchema } from "../../pages/auth/helpers/auth.schema";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { useLoginUser } from "../../api/auth/auth.service";
 import { saveLocalToken, saveSessionToken } from "../../utils";
@@ -35,8 +35,8 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
     reset,
     register,
     watch,
-  } = useForm({
-    resolver: yupResolver(loginSchema),
+  } = useForm<TLogin>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       loginMethod: "email",
       email: "",
@@ -58,7 +58,7 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
     });
   };
 
-  const onSubmit = (bodyData: LoginFormInputProps) => {
+  const onSubmit = (bodyData: TLogin) => {
     const finalData: Partial<LoginFormInputProps> = {
       password: bodyData.password,
     };

@@ -1,13 +1,9 @@
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterTextContent, registerInputMapData } from "./data";
-import {
-  RegisterFormInputProps,
-  TPasswordField,
-  TPasswordVisibility,
-} from "../../types";
+import { TPasswordField, TPasswordVisibility, TRegister } from "../../types";
 import AuthRobot from "./components/AuthRobot";
 import UploadProfile from "./components/UploadProfile";
 import TextDisplay from "../../components/TextDisplay";
@@ -45,8 +41,8 @@ const Register = () => {
     setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterFormInputProps>({
-    resolver: yupResolver(registerSchema), // Use yup resolver for validation
+  } = useForm<TRegister>({
+    resolver: zodResolver(registerSchema),
   });
 
   const togglePasswordVisibility = (field: TPasswordField) => {
@@ -56,7 +52,7 @@ const Register = () => {
     }));
   };
 
-  const onSubmit = async (bodyData: RegisterFormInputProps) => {
+  const onSubmit = async (bodyData: TRegister) => {
     const formData = new FormData();
 
     formData.append("firstName", bodyData.firstName);
