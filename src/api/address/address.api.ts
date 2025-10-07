@@ -45,7 +45,9 @@ export const add_address = async (data: IBaseAddress) => {
   }
 };
 
-export const update_address = async (data: Partial<IAddress>) => {
+export const update_address = async (
+  data: Partial<IAddress> & { removedOptionalFields?: string[] }
+) => {
   const { _id, ...restBody } = data;
   try {
     const user_token = getUserToken();

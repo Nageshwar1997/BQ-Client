@@ -102,7 +102,6 @@ const Address = () => {
             ? "Your Addresses"
             : "Add Address to get started"}
         </h2>
-
         <Button
           pattern="secondary"
           content="Add Address"

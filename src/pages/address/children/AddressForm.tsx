@@ -55,17 +55,39 @@ const AddressForm = ({
       Object.keys(data).forEach((key) => {
         const typedKey = key as keyof IBaseAddress;
         if (!deepEqual(data[typedKey], address[typedKey])) {
-          (changedFields[typedKey] as unknown) = data[typedKey];
+          changedFields[typedKey] = data[typedKey];
         }
       });
 
-      if (!Object.keys(changedFields).length) {
+      const removedOptionalFields: (keyof Pick<
+        IBaseAddress,
+        "altPhoneNumber" | "gst" | "landmark"
+      >)[] = [];
+      const changedOptionalFields = {
+        altPhoneNumber: changedFields.altPhoneNumber,
+        landmark: changedFields.landmark,
+        gst: changedFields.gst,
+      };
+
+      Object.keys(changedOptionalFields).forEach((key) => {
+        const typedKey = key as keyof typeof changedOptionalFields;
+        if (!changedOptionalFields[typedKey] && address[typedKey]) {
+          delete changedFields[typedKey];
+          removedOptionalFields.push(typedKey);
+        }
+      });
+
+      if (!Object.keys(changedFields).length && !removedOptionalFields.length) {
         toastErrorMessage("No changes made to update address!");
         return;
       }
 
       updateAddress(
-        { _id: address._id, ...changedFields },
+        {
+          _id: address._id,
+          ...(removedOptionalFields.length > 0 && { removedOptionalFields }),
+          ...changedFields,
+        },
         {
           onSuccess: () => (
             removeParam("edit"), handleReset(addressInitialValues)
