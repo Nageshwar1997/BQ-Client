@@ -67,7 +67,7 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
         inputProps={{
           placeholder: "Search products here...",
           value: searchQuery,
-          type: "search",
+          type: "text",
           name: "searchQuery",
           onChange: (e) => setSearchQuery(e.target.value),
           onKeyDown: (e) => {
