@@ -12,9 +12,15 @@ import { toastErrorMessage } from "../../utils/toasts";
 import AddressForm from "./children/AddressForm";
 import ShowError from "../../components/errors/ShowError";
 import LoadingPage from "../../components/loaders/LoadingPage";
+import { getUserToken } from "../../utils";
+import axios from "axios";
+import { envs } from "../../envs/index.env";
+import { useUserStore } from "../../store/user.store";
+import toast from "react-hot-toast";
 
 const Address = () => {
   const { removeParam, setParams, queryParams } = useQueryParams();
+  const { user } = useUserStore();
   const [selectedAddress, setSelectedAddress] = useState<
     Record<(typeof ADDRESS_TYPES)[number], string | null>
   >({
@@ -46,31 +52,23 @@ const Address = () => {
 
   const handleSelect = (type: (typeof ADDRESS_TYPES)[number], id: string) => {
     setSelectedAddress((prev) => {
-      if (type === "both") {
-        return { billing: null, shipping: null, both: id };
-      }
-
+      if (type === "both") return { billing: null, shipping: null, both: id };
       if (type === "billing") {
-        if (prev.shipping === id) {
-          return { ...prev, shipping: null, billing: id, both: null };
-        }
-        return { ...prev, billing: id, both: null };
+        return prev.shipping === id
+          ? { ...prev, shipping: null, billing: id, both: null }
+          : { ...prev, billing: id, both: null };
       }
-
       if (type === "shipping") {
-        if (prev.billing === id) {
-          return { ...prev, billing: null, shipping: id, both: null };
-        }
-        return { ...prev, shipping: id, both: null };
+        return prev.billing === id
+          ? { ...prev, billing: null, shipping: id, both: null }
+          : { ...prev, shipping: id, both: null };
       }
-
       return prev;
     });
   };
 
   const finalAddresses = useMemo(() => {
     const returnAddresses: { address: IAddress; type: string }[] = [];
-
     const addIfNotExists = (id: string | null, type: string) => {
       if (!id) return;
       const addr = addresses.find((a) => a._id === id);
@@ -78,11 +76,102 @@ const Address = () => {
         returnAddresses.push({ address: addr, type });
       }
     };
-
     ADDRESS_TYPES.map((type) => addIfNotExists(selectedAddress[type], type));
-
-    return returnAddresses || [];
+    return returnAddresses;
   }, [addresses, selectedAddress]);
+
+  const prefillData = useMemo(() => {
+    const shipping = finalAddresses.find((a) => a.type === "shipping");
+    const billing = finalAddresses.find((a) => a.type === "billing");
+    const both = finalAddresses.find((a) => a.type === "both");
+    return { shipping, billing, both };
+  }, [finalAddresses]);
+
+  const BACKEND_URL = "http://localhost:8080/api";
+
+  const handlePayment = async () => {
+    if (
+      (!selectedAddress.billing || !selectedAddress.shipping) &&
+      !selectedAddress.both
+    )
+      return toastErrorMessage(
+        "Please select billing and shipping address or a 'both' address."
+      );
+
+    try {
+      // 1️⃣ Create order on backend
+      const { data: orderData } = await axios.post(
+        `${BACKEND_URL}/orders/create`,
+        {
+          addresses: {
+            ...(prefillData.billing?.address && {
+              billing: prefillData.billing.address,
+            }),
+            ...(prefillData.shipping?.address && {
+              shipping: prefillData.shipping.address,
+            }),
+            ...(prefillData.both?.address && {
+              both: prefillData.both.address,
+            }),
+          },
+        },
+        { headers: { Authorization: `Bearer ${getUserToken()}` } }
+      );
+
+      // 2️⃣ Razorpay options
+      const options = {
+        key: envs.RAZORPAY_KEY_ID,
+        amount: orderData.razorpayOrder.amount,
+        currency: "INR",
+        name: "Beautique",
+        description: "Order Payment",
+        order_id: orderData.razorpayOrder.id,
+        handler: async function (response: Record<string, string>) {
+          try {
+            const { data: verifyData } = await axios.patch(
+              `${BACKEND_URL}/orders/verify-payment`,
+              {
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                orderDBId: orderData.order._id,
+              },
+              { headers: { Authorization: `Bearer ${getUserToken()}` } }
+            );
+            toast.success("Payment Successful!");
+            console.log("Payment verified:", verifyData);
+          } catch (err) {
+            console.error("Payment verification failed:", err);
+            toast.error("Payment verification failed!");
+          }
+        },
+        prefill: {
+          name: prefillData.billing
+            ? `${prefillData.billing.address.firstName} ${prefillData.billing.address.lastName}`
+            : prefillData.both
+            ? `${prefillData.both.address.firstName} ${prefillData.both.address.lastName}`
+            : `${user?.firstName} ${user?.lastName}`,
+          email: prefillData.billing
+            ? prefillData.billing.address.email
+            : prefillData.both
+            ? prefillData.both.address.email
+            : user?.email,
+          contact: prefillData.billing
+            ? prefillData.billing.address.phoneNumber
+            : prefillData.both
+            ? prefillData.both.address.phoneNumber
+            : user?.phoneNumber,
+        },
+        theme: { color: "#339" },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (error) {
+      console.log("Error from mutation:", error);
+      toast.error("Failed to initiate payment.");
+    }
+  };
 
   if (isError) return <div>Error loading addresses</div>;
 
@@ -193,6 +282,7 @@ const Address = () => {
                   disabled:
                     (!selectedAddress.billing || !selectedAddress.shipping) &&
                     !selectedAddress.both,
+                  onClick: handlePayment,
                 }}
               />
             </div>
