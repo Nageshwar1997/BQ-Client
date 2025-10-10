@@ -117,14 +117,13 @@ const Address = () => {
         },
         { headers: { Authorization: `Bearer ${getUserToken()}` } }
       );
-
-      // 2️⃣ Razorpay options
       const options = {
         key: envs.RAZORPAY_KEY_ID,
         amount: orderData.razorpayOrder.amount,
         currency: "INR",
-        name: "Beautique",
-        description: "Order Payment",
+        name: "Beautinique (Beauty Unique)",
+        description: `Ordered by ${user?.firstName} ${user?.lastName}, with Razorpay secure payment gateway.`,
+        image: "/images/logo/BQ_gradient_logo.webp",
         order_id: orderData.razorpayOrder.id,
         handler: async function (response: Record<string, string>) {
           try {
@@ -162,7 +161,17 @@ const Address = () => {
             ? prefillData.both.address.phoneNumber
             : user?.phoneNumber,
         },
-        theme: { color: "#339" },
+        theme: { color: "#6700EE" },
+        modal: {
+          ondismiss: () => console.log("Checkout dismissed"),
+        },
+        method: {
+          card: true,
+          netbanking: true,
+          upi: true,
+          wallet: true,
+          emi: true,
+        },
       };
 
       const rzp = new window.Razorpay(options);

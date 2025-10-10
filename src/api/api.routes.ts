@@ -33,7 +33,10 @@ export const reviewRoutes = {
 
 export const cartRoutes = {
   addProductToCart: { method: "POST", url: "/cart-products/add" },
-  updateProductQuantityInCart: { method: "PATCH", url: "/cart-products/update" },
+  updateProductQuantityInCart: {
+    method: "PATCH",
+    url: "/cart-products/update",
+  },
   removeProductFromCart: { method: "DELETE", url: "/cart-products/remove" },
   getUserCart: { method: "GET", url: "/carts/cart" },
 };
@@ -43,4 +46,9 @@ export const addressRoutes = {
   updateAddress: { method: "PATCH", url: "/addresses/update" },
   deleteAddress: { method: "DELETE", url: "/addresses/remove" },
   getUserAddresses: { method: "GET", url: "/addresses" },
+};
+
+export const orderRoutes = {
+  createOrder: { method: "POST", url: "/orders/create" },
+  verifyPayment: { method: "PATCH", url: "/orders/verify-payment" },
 };
