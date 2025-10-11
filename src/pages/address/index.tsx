@@ -117,15 +117,17 @@ const Address = () => {
         },
         { headers: { Authorization: `Bearer ${getUserToken()}` } }
       );
+      console.log("orderData", orderData);
       const options = {
         key: envs.RAZORPAY_KEY_ID,
         amount: orderData.razorpayOrder.amount,
-        currency: "INR",
+        currency: orderData.razorpayOrder.currency,
         name: "Beautinique (Beauty Unique)",
         description: `Ordered by ${user?.firstName} ${user?.lastName}, with Razorpay secure payment gateway.`,
         image: "/images/logo/BQ_gradient_logo.webp",
         order_id: orderData.razorpayOrder.id,
         handler: async function (response: Record<string, string>) {
+          console.log("response", response);
           try {
             const { data: verifyData } = await axios.patch(
               `${BACKEND_URL}/orders/verify-payment`,
