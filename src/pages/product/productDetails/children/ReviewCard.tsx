@@ -14,7 +14,7 @@ import { useUserStore } from "../../../../store/user.store";
 import { useLikeDislikeHelpfulReview } from "../../../../api/reviews/reviews.service";
 import { TBaseLikeDislikeHelpfulReview } from "../../../../api/types";
 import useQueryParams from "../../../../hooks/useQueryParams";
-import useAuthActionStore from "../../../../store/authAction";
+import useActionStore from "../../../../store/action.store";
 
 const ReviewCard = ({
   className = "",
@@ -34,7 +34,7 @@ const ReviewCard = ({
     });
 
   const likeDislikeHelpfulQuery = useLikeDislikeHelpfulReview();
-  const { setAction } = useAuthActionStore();
+  const { setAction } = useActionStore();
   const { user, isAuthenticated } = useUserStore();
 
   const reviewMedia = useMemo(() => {

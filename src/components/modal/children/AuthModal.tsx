@@ -3,12 +3,12 @@ import Modal from "..";
 import LoginForm from "../../forms/LoginForm";
 import useQueryParams from "../../../hooks/useQueryParams";
 import { useUserStore } from "../../../store/user.store";
-import useAuthActionStore from "../../../store/authAction";
+import useActionStore from "../../../store/action.store";
 
 const AuthModal = () => {
   const { queryParams, removeParam } = useQueryParams();
   const { isAuthenticated } = useUserStore();
-  const { runAction, clearAction } = useAuthActionStore();
+  const { runAction, clearAction } = useActionStore();
 
   useEffect(() => {
     removeParam("login");

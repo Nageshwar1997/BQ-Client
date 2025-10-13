@@ -17,7 +17,7 @@ import { useUserStore } from "../../../store/user.store";
 import useOutsideClick from "../../../hooks/useOutsideClick";
 import Button from "../../button/Button";
 import useQueryParams from "../../../hooks/useQueryParams";
-import useAuthActionStore from "../../../store/authAction";
+import useActionStore from "../../../store/action.store";
 
 const UserPopup = ({
   isOpen,
@@ -125,7 +125,7 @@ const UserMenuIcons = ({
   const { paths, navigate } = usePathParams();
   const { setParams } = useQueryParams();
   const { isAuthenticated } = useUserStore();
-  const { setAction } = useAuthActionStore();
+  const { setAction } = useActionStore();
 
   useEffect(() => {
     if (closeOnNavbarLeave) {
