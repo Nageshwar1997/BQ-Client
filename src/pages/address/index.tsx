@@ -147,21 +147,9 @@ const Address = () => {
           }
         },
         prefill: {
-          name: prefillData.billing
-            ? `${prefillData.billing.address.firstName} ${prefillData.billing.address.lastName}`
-            : prefillData.both
-            ? `${prefillData.both.address.firstName} ${prefillData.both.address.lastName}`
-            : `${user?.firstName} ${user?.lastName}`,
-          email: prefillData.billing
-            ? prefillData.billing.address.email
-            : prefillData.both
-            ? prefillData.both.address.email
-            : user?.email,
-          contact: prefillData.billing
-            ? prefillData.billing.address.phoneNumber
-            : prefillData.both
-            ? prefillData.both.address.phoneNumber
-            : user?.phoneNumber,
+          name: `${user?.firstName} ${user?.lastName}`,
+          email: user?.email,
+          contact: user?.phoneNumber,
         },
         theme: { color: "#6700EE" },
         modal: {
