@@ -117,9 +117,9 @@ const Address = () => {
         },
         { headers: { Authorization: `Bearer ${getUserToken()}` } }
       );
-      console.log("orderData", orderData);
       const options = {
         key: envs.RAZORPAY_KEY_ID,
+        key_secret: envs.RAZORPAY_KEY_SECRET,
         amount: orderData.razorpayOrder.amount,
         currency: orderData.razorpayOrder.currency,
         name: "Beautinique (Beauty Unique)",
@@ -172,7 +172,8 @@ const Address = () => {
           netbanking: true,
           upi: true,
           wallet: true,
-          emi: true,
+          emi: false,
+          paylater: false,
         },
       };
 
