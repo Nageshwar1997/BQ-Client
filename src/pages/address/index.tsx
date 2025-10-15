@@ -17,9 +17,13 @@ import axios from "axios";
 import { envs } from "../../envs/index.env";
 import { useUserStore } from "../../store/user.store";
 import toast from "react-hot-toast";
+import useCartStore from "../../store/cart.store";
+import usePathParams from "../../hooks/usePathParams";
 
 const Address = () => {
   const { removeParam, setParams, queryParams } = useQueryParams();
+  const { navigate } = usePathParams();
+  const { cart } = useCartStore();
   const { user } = useUserStore();
   const [selectedAddress, setSelectedAddress] = useState<
     Record<(typeof ADDRESS_TYPES)[number], string | null>
@@ -35,6 +39,11 @@ const Address = () => {
     () => userAddresses?.addresses || [],
     [userAddresses?.addresses]
   );
+
+  useEffect(() => {
+    if (!cart || !cart?.products?.length) navigate("/cart");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!userAddresses?.defaultAddress) return;

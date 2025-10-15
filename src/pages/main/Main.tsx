@@ -1,10 +1,24 @@
+import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
+
 import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
 import ErrorBoundary from "../error/ErrorBoundary";
 import AuthModal from "../../components/modal/children/AuthModal";
+import useCartStore from "../../store/cart.store";
+import { useGetUserCart } from "../../api/cart/cart.service";
+import { useUserStore } from "../../store/user.store";
 
 const Main = () => {
+  const { isAuthenticated } = useUserStore();
+  const { setCart } = useCartStore();
+  const { data: cartData } = useGetUserCart();
+
+  useEffect(() => {
+    if (isAuthenticated && cartData?.cart) {
+      setCart(cartData.cart);
+    }
+  }, [cartData?.cart, isAuthenticated, setCart]);
   return (
     <ErrorBoundary>
       {/* If the user isn't logged in, show the auth modal. just add queryParams.login = "true" to the url */}

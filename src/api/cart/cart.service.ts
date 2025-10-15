@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
 import {
   add_product_to_cart,
   get_user_cart,
@@ -50,5 +50,10 @@ export const useGetUserCart = () => {
   return useQuery({
     queryKey: ["get_user_cart", queryParams.login, isAuthenticated],
     queryFn: () => get_user_cart(),
+    enabled: isAuthenticated,
+    placeholderData: keepPreviousData,
+    staleTime: 0.5 * 60 * 1000, // 30 seconds
+    gcTime: 5 * 60 * 1000, // 5 minutes
+    retry: false,
   });
 };
