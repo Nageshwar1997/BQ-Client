@@ -49,13 +49,13 @@ const Payment = () => {
         {
           addresses: {
             ...(baseAddresses?.billing?.address && {
-              billing: baseAddresses?.billing?.address?._id,
+              billing: baseAddresses?.billing?._id,
             }),
             ...(baseAddresses?.shipping?.address && {
-              shipping: baseAddresses?.shipping.address?._id,
+              shipping: baseAddresses?.shipping?._id,
             }),
             ...(baseAddresses?.both?.address && {
-              both: baseAddresses?.both.address?._id,
+              both: baseAddresses?.both?._id,
             }),
           },
         },
@@ -129,12 +129,10 @@ const Payment = () => {
             return (
               <div
                 key={item._id}
-                className="p-2 flex gap-4 border shadow-md shadow-primary-10 border-primary-30 rounded-xl opacity-90 items-stretch"
+                className="p-2 flex gap-4 border shadow-md shadow-primary-10 border-primary-30 rounded-xl opacity-90 items-stretch cursor-pointer"
+                onClick={() => navigate(`/product/${item?.product?._id}`)}
               >
-                <div
-                  className="w-24 rounded-sm shadow cursor-pointer overflow-hidden"
-                  onClick={() => navigate(`/product/${item?.product?._id}`)}
-                >
+                <div className="w-24 rounded-sm shadow">
                   <img
                     src={
                       item?.shade?.images?.[0] ||
@@ -145,10 +143,7 @@ const Payment = () => {
                   />
                 </div>
                 <div className="flex-1 grow flex flex-col justify-between">
-                  <h3
-                    className="text-base font-medium text-primary opacity-90 hover:opacity-100 line-clamp-1 cursor-pointer"
-                    onClick={() => navigate(`/product/${item?.product?._id}`)}
-                  >
+                  <h3 className="text-base font-medium text-primary opacity-90 hover:opacity-100 line-clamp-1">
                     {item?.product?.title}
                   </h3>
                   {item?.shade && (
@@ -176,7 +171,7 @@ const Payment = () => {
           <div className="w-full flex flex-col border shadow-md shadow-primary-10 border-primary-30 rounded-xl opacity-90">
             {addresses &&
               addresses?.map((address, index) => (
-                <div key={address._id} className="">
+                <div key={address._id}>
                   <h3
                     className={`text-lg text-center p-2 font-bold capitalize bg-clip-text text-transparent bg-accent-duo ${
                       index === 0
