@@ -1,6 +1,9 @@
 import toast from "react-hot-toast";
-import { getUserToken, toINRCurrency } from "../../utils";
-import axios from "axios";
+import { toINRCurrency } from "../../utils";
+import {
+  useCreateOrder,
+  useVerifyPayment,
+} from "../../api/order/order.service";
 import { toastErrorMessage } from "../../utils/toasts";
 import { envs } from "../../envs/index.env";
 import { useUserStore } from "../../store/user.store";
@@ -13,7 +16,9 @@ import useCartStore from "../../store/cart.store";
 import { useMemo } from "react";
 
 const Payment = () => {
-  const BACKEND_URL = "http://localhost:8080/api";
+  const { mutateAsync: createOrder, isPending: isOrderPending } =
+    useCreateOrder();
+  const { mutateAsync: verifyPayment } = useVerifyPayment();
   const { user } = useUserStore();
   const { cart } = useCartStore();
   const { state, navigate } = usePathParams();
@@ -37,54 +42,48 @@ const Payment = () => {
     if (
       (!baseAddresses?.billing || !baseAddresses?.shipping) &&
       !baseAddresses?.both
-    )
+    ) {
       return toastErrorMessage(
         "Please select billing and shipping address or a 'both' address."
       );
+    }
 
     try {
-      // 1️⃣ Create order on backend
-      const { data: orderData } = await axios.post(
-        `${BACKEND_URL}/orders/create`,
-        {
-          addresses: {
-            ...(baseAddresses?.billing?.address && {
-              billing: baseAddresses?.billing?._id,
-            }),
-            ...(baseAddresses?.shipping?.address && {
-              shipping: baseAddresses?.shipping?._id,
-            }),
-            ...(baseAddresses?.both?.address && {
-              both: baseAddresses?.both?._id,
-            }),
-          },
-        },
-        { headers: { Authorization: `Bearer ${getUserToken()}` } }
-      );
+      const createdOrder = await createOrder({
+        ...(baseAddresses?.billing && { billing: baseAddresses.billing._id }),
+        ...(baseAddresses?.shipping && {
+          shipping: baseAddresses.shipping._id,
+        }),
+        ...(baseAddresses?.both && { both: baseAddresses.both._id }),
+      });
+
+      if (!createdOrder?.razorpayOrder?.id) {
+        throw new Error("Invalid order response from server.");
+      }
+
+      // 🟣 Step 2: Configure Razorpay options
       const options = {
         key: envs.RAZORPAY_KEY_ID,
-        key_secret: envs.RAZORPAY_KEY_SECRET,
-        amount: orderData.razorpayOrder.amount,
-        currency: orderData.razorpayOrder.currency,
+        amount: createdOrder.razorpayOrder.amount,
+        currency: createdOrder.razorpayOrder.currency,
         name: "Beautinique (Beauty Unique)",
         description: `Ordered by ${user?.firstName} ${user?.lastName}, with Razorpay secure payment gateway.`,
         image: "/images/logo/BQ_gradient_logo.webp",
-        order_id: orderData.razorpayOrder.id,
-        handler: async function (response: Record<string, string>) {
-          console.log("response", response);
+        order_id: createdOrder.razorpayOrder.id,
+        handler: async function ({
+          razorpay_order_id,
+          razorpay_payment_id,
+          razorpay_signature,
+        }: Record<string, string>) {
           try {
-            const { data: verifyData } = await axios.patch(
-              `${BACKEND_URL}/orders/verify-payment`,
-              {
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-                orderDBId: orderData.order._id,
-              },
-              { headers: { Authorization: `Bearer ${getUserToken()}` } }
-            );
-            toast.success("Payment Successful!");
-            console.log("Payment verified:", verifyData);
+            await verifyPayment({
+              razorpay_order_id,
+              razorpay_payment_id,
+              razorpay_signature,
+              orderDBId: createdOrder.order._id,
+            });
+
+            toast.success("Payment successful!");
           } catch (err) {
             console.error("Payment verification failed:", err);
             toast.error("Payment verification failed!");
@@ -112,8 +111,8 @@ const Payment = () => {
       const rzp = new window.Razorpay(options);
       rzp.open();
     } catch (error) {
-      console.log("Error from mutation:", error);
-      toast.error("Failed to initiate payment.");
+      console.error("Error during payment initiation:", error);
+      toast.error("Failed to initiate payment. Please try again.");
     }
   };
 
@@ -125,68 +124,64 @@ const Payment = () => {
           Order Summary
         </h2>
         <div className="h-full space-y-6">
-          {products.map((item) => {
-            return (
-              <div
-                key={item._id}
-                className="p-2 flex gap-4 border shadow-md shadow-primary-10 border-primary-30 rounded-xl opacity-90 items-stretch cursor-pointer"
-                onClick={() => navigate(`/product/${item?.product?._id}`)}
-              >
-                <div className="w-24 rounded-sm shadow">
-                  <img
-                    src={
-                      item?.shade?.images?.[0] ||
-                      item?.product?.commonImages?.[0]
-                    }
-                    alt={item?.shade?.shadeName || item?.product?.title}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-in-out"
-                  />
-                </div>
-                <div className="flex-1 grow flex flex-col justify-between">
-                  <h3 className="text-base font-medium text-primary opacity-90 hover:opacity-100 line-clamp-1">
-                    {item?.product?.title}
-                  </h3>
-                  {item?.shade && (
-                    <p className="text-[13px] text-tertiary">
-                      {item?.shade?.shadeName}
-                    </p>
-                  )}
-                  <p className="text-[13px] text-tertiary">
-                    {item?.product?.brand}
-                  </p>
-                  <p className="text-[13px] text-secondary">
-                    Quantity: {item.quantity}
-                  </p>
-                  <p className="text-sm font-medium text-primary">
-                    Price: {toINRCurrency(item?.product?.sellingPrice)}
-                  </p>
-                  <p className="text-sm font-semibold text-primary">
-                    Total:{" "}
-                    {toINRCurrency(item?.product?.sellingPrice * item.quantity)}
-                  </p>
-                </div>
+          {products.map((item) => (
+            <div
+              key={item._id}
+              className="p-2 flex gap-4 border shadow-md border-primary-30 rounded-xl opacity-90 items-stretch cursor-pointer"
+              onClick={() => navigate(`/product/${item?.product?._id}`)}
+            >
+              <div className="w-24 rounded-sm shadow">
+                <img
+                  src={
+                    item?.shade?.images?.[0] || item?.product?.commonImages?.[0]
+                  }
+                  alt={item?.shade?.shadeName || item?.product?.title}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-in-out"
+                />
               </div>
-            );
-          })}
-          <div className="w-full flex flex-col border shadow-md shadow-primary-10 border-primary-30 rounded-xl opacity-90">
-            {addresses &&
-              addresses?.map((address, index) => (
-                <div key={address._id}>
-                  <h3
-                    className={`text-lg text-center p-2 font-bold capitalize bg-clip-text text-transparent bg-accent-duo ${
-                      index === 0
-                        ? "border-b border-b-primary-30"
-                        : "border-y border-y-primary-30"
-                    }`}
-                  >
-                    {address.type === "both"
-                      ? "Shipping & Billing"
-                      : address.type}{" "}
-                    Address
-                  </h3>
-                  <AddressInfo address={address} className="p-2" />
-                </div>
-              ))}
+              <div className="flex-1 grow flex flex-col justify-between">
+                <h3 className="text-base font-medium text-primary opacity-90 hover:opacity-100 line-clamp-1">
+                  {item?.product?.title}
+                </h3>
+                {item?.shade && (
+                  <p className="text-[13px] text-tertiary">
+                    {item?.shade?.shadeName}
+                  </p>
+                )}
+                <p className="text-[13px] text-tertiary">
+                  {item?.product?.brand}
+                </p>
+                <p className="text-[13px] text-secondary">
+                  Quantity: {item.quantity}
+                </p>
+                <p className="text-sm font-medium text-primary">
+                  Price: {toINRCurrency(item?.product?.sellingPrice)}
+                </p>
+                <p className="text-sm font-semibold text-primary">
+                  Total:{" "}
+                  {toINRCurrency(item?.product?.sellingPrice * item.quantity)}
+                </p>
+              </div>
+            </div>
+          ))}
+          <div className="w-full flex flex-col border shadow-md border-primary-30 rounded-xl opacity-90">
+            {addresses?.map((address, index) => (
+              <div key={address._id}>
+                <h3
+                  className={`text-lg text-center p-2 font-bold capitalize bg-clip-text text-transparent bg-accent-duo ${
+                    index === 0
+                      ? "border-b border-b-primary-30"
+                      : "border-y border-y-primary-30"
+                  }`}
+                >
+                  {address.type === "both"
+                    ? "Shipping & Billing"
+                    : address.type}{" "}
+                  Address
+                </h3>
+                <AddressInfo address={address} className="p-2" />
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -211,10 +206,10 @@ const Payment = () => {
         </div>
         <Button
           pattern="primary"
-          content="Pay Now"
+          content={isOrderPending ? "Processing..." : "Pay Now"}
           className="!rounded-lg mt-4 !p-3 gap-2"
           rightIcon={<RightArrowIcon className="stroke-white" />}
-          buttonProps={{ onClick: handlePayment }}
+          buttonProps={{ onClick: handlePayment, disabled: isOrderPending }}
         />
         <p className="mt-3 text-sm text-silver-jet text-center">
           Secure checkout • 100% satisfaction guaranteed

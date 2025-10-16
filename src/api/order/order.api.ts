@@ -12,7 +12,7 @@ export const create_order = async (addresses: TQueryParams) => {
     const response = await api.request({
       method,
       url,
-      data: { addresses },
+      params: addresses,
       headers: { Authorization: user_token },
     });
 
@@ -26,7 +26,7 @@ export const create_order = async (addresses: TQueryParams) => {
   }
 };
 
-export const verify_payment = async (data: any) => {
+export const verify_payment = async (data: TQueryParams) => {
   try {
     const user_token = getUserToken();
 
@@ -34,12 +34,7 @@ export const verify_payment = async (data: any) => {
     const response = await api.request({
       method,
       url,
-      data: {
-        razorpay_order_id: data.razorpay_order_id,
-        razorpay_payment_id: data.razorpay_payment_id,
-        razorpay_signature: data.razorpay_signature,
-        orderDBId: data.order._id,
-      },
+      data,
       headers: { Authorization: user_token },
     });
     return response.data;
