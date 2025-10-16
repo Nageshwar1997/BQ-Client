@@ -12,19 +12,11 @@ import { toastErrorMessage } from "../../utils/toasts";
 import AddressForm from "./children/AddressForm";
 import ShowError from "../../components/errors/ShowError";
 import LoadingPage from "../../components/loaders/LoadingPage";
-import { getUserToken } from "../../utils";
-import axios from "axios";
-import { envs } from "../../envs/index.env";
-import { useUserStore } from "../../store/user.store";
-import toast from "react-hot-toast";
-import useCartStore from "../../store/cart.store";
 import usePathParams from "../../hooks/usePathParams";
 
 const Address = () => {
   const { removeParam, setParams, queryParams } = useQueryParams();
   const { navigate } = usePathParams();
-  const { cart } = useCartStore();
-  const { user } = useUserStore();
   const [selectedAddress, setSelectedAddress] = useState<
     Record<(typeof ADDRESS_TYPES)[number], string | null>
   >({
@@ -39,11 +31,6 @@ const Address = () => {
     () => userAddresses?.addresses || [],
     [userAddresses?.addresses]
   );
-
-  useEffect(() => {
-    if (!cart || !cart?.products?.length) navigate("/cart");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     if (!userAddresses?.defaultAddress) return;
@@ -95,92 +82,6 @@ const Address = () => {
     const both = finalAddresses.find((a) => a.type === "both");
     return { shipping, billing, both };
   }, [finalAddresses]);
-
-  const BACKEND_URL = "http://localhost:8080/api";
-
-  const handlePayment = async () => {
-    if (
-      (!selectedAddress.billing || !selectedAddress.shipping) &&
-      !selectedAddress.both
-    )
-      return toastErrorMessage(
-        "Please select billing and shipping address or a 'both' address."
-      );
-
-    try {
-      // 1️⃣ Create order on backend
-      const { data: orderData } = await axios.post(
-        `${BACKEND_URL}/orders/create`,
-        {
-          addresses: {
-            ...(prefillData.billing?.address && {
-              billing: prefillData.billing.address,
-            }),
-            ...(prefillData.shipping?.address && {
-              shipping: prefillData.shipping.address,
-            }),
-            ...(prefillData.both?.address && {
-              both: prefillData.both.address,
-            }),
-          },
-        },
-        { headers: { Authorization: `Bearer ${getUserToken()}` } }
-      );
-      const options = {
-        key: envs.RAZORPAY_KEY_ID,
-        key_secret: envs.RAZORPAY_KEY_SECRET,
-        amount: orderData.razorpayOrder.amount,
-        currency: orderData.razorpayOrder.currency,
-        name: "Beautinique (Beauty Unique)",
-        description: `Ordered by ${user?.firstName} ${user?.lastName}, with Razorpay secure payment gateway.`,
-        image: "/images/logo/BQ_gradient_logo.webp",
-        order_id: orderData.razorpayOrder.id,
-        handler: async function (response: Record<string, string>) {
-          console.log("response", response);
-          try {
-            const { data: verifyData } = await axios.patch(
-              `${BACKEND_URL}/orders/verify-payment`,
-              {
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-                orderDBId: orderData.order._id,
-              },
-              { headers: { Authorization: `Bearer ${getUserToken()}` } }
-            );
-            toast.success("Payment Successful!");
-            console.log("Payment verified:", verifyData);
-          } catch (err) {
-            console.error("Payment verification failed:", err);
-            toast.error("Payment verification failed!");
-          }
-        },
-        prefill: {
-          name: `${user?.firstName} ${user?.lastName}`,
-          email: user?.email,
-          contact: user?.phoneNumber,
-        },
-        theme: { color: "#6700EE" },
-        modal: {
-          ondismiss: () => console.log("Checkout dismissed"),
-        },
-        method: {
-          card: true,
-          netbanking: true,
-          upi: true,
-          wallet: true,
-          emi: false,
-          paylater: false,
-        },
-      };
-
-      const rzp = new window.Razorpay(options);
-      rzp.open();
-    } catch (error) {
-      console.log("Error from mutation:", error);
-      toast.error("Failed to initiate payment.");
-    }
-  };
 
   if (isError) return <div>Error loading addresses</div>;
 
@@ -291,7 +192,23 @@ const Address = () => {
                   disabled:
                     (!selectedAddress.billing || !selectedAddress.shipping) &&
                     !selectedAddress.both,
-                  onClick: handlePayment,
+                  onClick: () => {
+                    navigate("/payment", {
+                      state: {
+                        addresses: {
+                          ...(prefillData.billing?.address && {
+                            billing: prefillData.billing.address,
+                          }),
+                          ...(prefillData.shipping?.address && {
+                            shipping: prefillData.shipping.address,
+                          }),
+                          ...(prefillData.both?.address && {
+                            both: prefillData.both.address,
+                          }),
+                        },
+                      },
+                    });
+                  },
                 }}
               />
             </div>

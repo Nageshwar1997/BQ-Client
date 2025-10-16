@@ -19,6 +19,7 @@ import Login from "../pages/auth/Login";
 import AuthRedirect from "./AuthRedirect";
 import Register from "../pages/auth/Register";
 import Address from "../pages/address";
+import Payment from "../pages/orders/Payment";
 
 const router = createBrowserRouter([
   {
@@ -63,37 +64,25 @@ const router = createBrowserRouter([
       },
       {
         path: "cart",
-        element: (
-          <PrivateRoute>
-            <Cart />
-          </PrivateRoute>
-        ),
+        element: <PrivateRoute children={<Cart />} />,
       },
       {
         path: "address",
-        element: (
-          <PrivateRoute>
-            <Address />
-          </PrivateRoute>
-        ),
+        element: <PrivateRoute children={<Address />} />,
+      },
+      {
+        path: "payment",
+        element: <PrivateRoute children={<Payment />} />,
       },
     ],
   },
   {
     path: "register",
-    element: (
-      <AuthRedirect>
-        <Register />
-      </AuthRedirect>
-    ),
+    element: <AuthRedirect children={<Register />} />,
   },
   {
     path: "login",
-    element: (
-      <AuthRedirect>
-        <Login />
-      </AuthRedirect>
-    ),
+    element: <AuthRedirect children={<Login />} />,
   },
   {
     path: "error",

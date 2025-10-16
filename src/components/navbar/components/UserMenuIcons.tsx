@@ -179,7 +179,7 @@ const UserMenuIcons = ({
             className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6"
           />
           {cart?.products && cart?.products.length > 0 && (
-            <span className="absolute bottom-0.5 md:bottom-[3px] font-semibold bg-clip-text text-transparent bg-accent-duo inset-x-0 text-[11px] md:text-[11px] leading-none w-fit mx-auto">
+            <span className="absolute bottom-0.5 md:bottom-[3px] font-semibold bg-clip-text text-transparent bg-accent-duo inset-x-0 text-[11px] md:text-[11px] leading-none w-fit mx-auto pointer-events-none">
               {cart?.products.length}
             </span>
           )}
