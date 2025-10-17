@@ -20,8 +20,14 @@ declare global {
   interface RazorpayInstance {
     open: () => void;
     close: () => void;
-    on(event: string, callback: () => void): void;
-    off(event: string, callback: () => void): void;
+    on(
+      event: string,
+      callback: (response: { [key: string]: string }) => void
+    ): void;
+    off(
+      event: string,
+      callback: (response: { [key: string]: string }) => void
+    ): void;
   }
 
   interface Window {

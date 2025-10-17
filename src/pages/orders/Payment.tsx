@@ -1,5 +1,6 @@
+import { useMemo } from "react";
 import toast from "react-hot-toast";
-import { toINRCurrency } from "../../utils";
+import { getUserToken, toINRCurrency } from "../../utils";
 import {
   useCreateOrder,
   useVerifyPayment,
@@ -13,7 +14,7 @@ import Button from "../../components/button/Button";
 import { RightArrowIcon } from "../../icons";
 import { IAddress } from "../../types";
 import useCartStore from "../../store/cart.store";
-import { useMemo } from "react";
+import axios from "axios";
 
 const Payment = () => {
   const { mutateAsync: createOrder, isPending: isOrderPending } =
@@ -70,16 +71,10 @@ const Payment = () => {
         description: `Ordered by ${user?.firstName} ${user?.lastName}, with Razorpay secure payment gateway.`,
         image: "/images/logo/BQ_gradient_logo.webp",
         order_id: createdOrder.razorpayOrder.id,
-        handler: async function ({
-          razorpay_order_id,
-          razorpay_payment_id,
-          razorpay_signature,
-        }: Record<string, string>) {
+        handler: async function (response: Record<string, string>) {
           try {
             await verifyPayment({
-              razorpay_order_id,
-              razorpay_payment_id,
-              razorpay_signature,
+              ...response,
               orderDBId: createdOrder.order._id,
             });
 
@@ -96,7 +91,19 @@ const Payment = () => {
         },
         theme: { color: "#6700EE" },
         modal: {
-          ondismiss: () => console.log("Checkout dismissed"),
+          ondismiss: async () => {
+            try {
+              const resp = await axios.request({
+                url: `http://localhost:8080/api/orders/cancel-payment/${createdOrder.order._id}`,
+                method: "PATCH",
+                headers: { Authorization: getUserToken() },
+              });
+              const data = resp.data;
+              console.log("DATA", data);
+            } catch (error) {
+              console.log("ERROR", error);
+            }
+          },
         },
         method: {
           card: true,
