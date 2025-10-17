@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import toast from "react-hot-toast";
 import { getUserToken, toINRCurrency } from "../../utils";
 import {
@@ -17,8 +17,11 @@ import useCartStore from "../../store/cart.store";
 import axios from "axios";
 
 const Payment = () => {
-  const { mutateAsync: createOrder, isPending: isOrderPending } =
-    useCreateOrder();
+  const {
+    mutateAsync: createOrder,
+    isPending: isOrderPending,
+    data: createdOrderData,
+  } = useCreateOrder();
   const { mutateAsync: verifyPayment } = useVerifyPayment();
   const { user } = useUserStore();
   const { cart } = useCartStore();
@@ -73,12 +76,18 @@ const Payment = () => {
         order_id: createdOrder.razorpayOrder.id,
         handler: async function (response: Record<string, string>) {
           try {
-            await verifyPayment({
-              ...response,
-              orderDBId: createdOrder.order._id,
-            });
-
-            toast.success("Payment successful!");
+            await verifyPayment(
+              {
+                ...response,
+                orderDBId: createdOrder.order._id,
+              },
+              {
+                onSuccess: () => {
+                  navigate("/");
+                  toast.success("Payment successful!");
+                },
+              }
+            );
           } catch (err) {
             console.error("Payment verification failed:", err);
             toast.error("Payment verification failed!");
@@ -122,6 +131,24 @@ const Payment = () => {
       toast.error("Failed to initiate payment. Please try again.");
     }
   };
+
+  useEffect(() => {
+    if (!createdOrderData?.order?._id) return;
+    const handleTabClose = async () => {
+      try {
+        await axios.request({
+          url: `http://localhost:8080/api/orders/cancel-payment/${createdOrderData?.order?._id}`,
+          method: "PATCH",
+          headers: { Authorization: getUserToken() },
+        });
+      } catch (error) {
+        console.log("Tab close/refresh cancel payment error:", error);
+      }
+    };
+
+    window.addEventListener("beforeunload", handleTabClose);
+    return () => window.removeEventListener("beforeunload", handleTabClose);
+  }, [createdOrderData]);
 
   return (
     <div className="flex flex-col lg:flex-row gap-4">
