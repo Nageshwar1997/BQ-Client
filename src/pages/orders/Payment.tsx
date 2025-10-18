@@ -1,7 +1,8 @@
 import { useEffect, useMemo } from "react";
 import toast from "react-hot-toast";
-import { getUserToken, toINRCurrency } from "../../utils";
+import { toINRCurrency } from "../../utils";
 import {
+  useCancelPayment,
   useCreateOrder,
   useVerifyPayment,
 } from "../../api/order/order.service";
@@ -14,7 +15,6 @@ import Button from "../../components/button/Button";
 import { RightArrowIcon } from "../../icons";
 import { IAddress } from "../../types";
 import useCartStore from "../../store/cart.store";
-import axios from "axios";
 
 const Payment = () => {
   const {
@@ -23,6 +23,7 @@ const Payment = () => {
     data: createdOrderData,
   } = useCreateOrder();
   const { mutateAsync: verifyPayment } = useVerifyPayment();
+  const { mutateAsync: cancelPayment } = useCancelPayment();
   const { user } = useUserStore();
   const { cart } = useCartStore();
   const { state, navigate } = usePathParams();
@@ -100,19 +101,10 @@ const Payment = () => {
         },
         theme: { color: "#6700EE" },
         modal: {
-          ondismiss: async () => {
-            try {
-              const resp = await axios.request({
-                url: `http://localhost:8080/api/orders/cancel-payment/${createdOrder.order._id}`,
-                method: "PATCH",
-                headers: { Authorization: getUserToken() },
-              });
-              const data = resp.data;
-              console.log("DATA", data);
-            } catch (error) {
-              console.log("ERROR", error);
-            }
-          },
+          ...(createdOrder.order._id && {
+            ondismiss: async () =>
+              await cancelPayment({ orderId: createdOrder.order._id }),
+          }),
         },
         method: {
           card: true,
@@ -135,19 +127,12 @@ const Payment = () => {
   useEffect(() => {
     if (!createdOrderData?.order?._id) return;
     const handleTabClose = async () => {
-      try {
-        await axios.request({
-          url: `http://localhost:8080/api/orders/cancel-payment/${createdOrderData?.order?._id}`,
-          method: "PATCH",
-          headers: { Authorization: getUserToken() },
-        });
-      } catch (error) {
-        console.log("Tab close/refresh cancel payment error:", error);
-      }
+      await cancelPayment({ orderId: createdOrderData.order._id });
     };
 
     window.addEventListener("beforeunload", handleTabClose);
     return () => window.removeEventListener("beforeunload", handleTabClose);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [createdOrderData]);
 
   return (

@@ -46,3 +46,23 @@ export const verify_payment = async (data: TQueryParams) => {
     throw "Something went wrong!"; // For non-Axios errors
   }
 };
+
+export const cancel_payment = async (data: TQueryParams) => {
+  try {
+    const user_token = getUserToken();
+
+    const { method, url } = orderRoutes.cancelPayment;
+    const response = await api.request({
+      method,
+      url: `${url}/${data.orderId}`,
+      headers: { Authorization: user_token },
+    });
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      // If it's an Axios error
+      throw error?.response?.data?.message || "API Error occurred";
+    }
+    throw "Something went wrong!"; // For non-Axios errors
+  }
+};
