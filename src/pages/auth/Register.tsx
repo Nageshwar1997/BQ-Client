@@ -34,7 +34,7 @@ const Register = () => {
   const { navigate } = usePathParams();
   const { setUser } = useUserStore();
 
-  const userRegisterMutation = useRegisterUser();
+  const { mutateAsync, isPending } = useRegisterUser();
 
   const {
     control,
@@ -70,7 +70,7 @@ const Register = () => {
     if (file) {
       formData.append("profilePic", file);
     }
-    userRegisterMutation.mutateAsync(formData, {
+    mutateAsync(formData, {
       onSettled(data, error) {
         if (data && !error) {
           if (data.user) {
@@ -92,7 +92,7 @@ const Register = () => {
 
   return (
     <div className="w-full min-h-dvh max-h-dvh h-full p-4 flex gap-4 overflow-hidden relative">
-      {userRegisterMutation.isPending && <LoadingPage text="Please wait" />}
+      {isPending && <LoadingPage text="Please wait" />}
       <AuthRobot />
       <DarkMode className="border absolute top-5 right-5 h-fit p-2 md:p-3 rounded-full bg-secondary-inverted [&_path]:!stroke-secondary z-10" />
       <div

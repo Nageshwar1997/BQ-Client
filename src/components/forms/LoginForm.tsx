@@ -26,7 +26,7 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
   const { paths } = usePathParams();
   const { setUser } = useUserStore();
 
-  const userLoginMutation = useLoginUser();
+  const { mutateAsync, isPending } = useLoginUser();
 
   const {
     control,
@@ -58,7 +58,7 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
     });
   };
 
-  const onSubmit = (bodyData: TLogin) => {
+  const onSubmit = async (bodyData: TLogin) => {
     const finalData: Partial<LoginFormInputProps> = {
       password: bodyData.password,
     };
@@ -69,7 +69,7 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
       finalData.phoneNumber = bodyData.phoneNumber;
     }
 
-    userLoginMutation.mutateAsync(finalData, {
+    mutateAsync(finalData, {
       onSettled(data, error) {
         if (data && !error) {
           if (onLoginSuccess) {
@@ -95,7 +95,7 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
   };
   return (
     <>
-      {userLoginMutation.isPending && <LoadingPage text="Please wait" />}
+      {isPending && <LoadingPage text="Please wait" />}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full flex flex-col gap-4"
