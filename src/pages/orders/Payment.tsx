@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { toINRCurrency } from "../../utils";
 import {
@@ -15,12 +15,16 @@ import Button from "../../components/button/Button";
 import { RightArrowIcon } from "../../icons";
 import { IAddress } from "../../types";
 import useCartStore from "../../store/cart.store";
+import InitialNotCloseConfirmModal from "../../components/modal/children/InitialNotCloseConfirmModal";
+import usePrompt from "../../hooks/usePrompt";
 
 const Payment = () => {
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+
   const {
     mutateAsync: createOrder,
+    data: createdOrderData = {},
     isPending: isOrderPending,
-    data: createdOrderData,
   } = useCreateOrder();
   const { mutateAsync: verifyPayment } = useVerifyPayment();
   const { mutateAsync: cancelPayment } = useCancelPayment();
@@ -33,15 +37,48 @@ const Payment = () => {
   const addresses: IAddress[] = Object.values(baseAddresses ?? {});
   const products = useMemo(() => cart?.products || [], [cart?.products]);
 
-  const subtotal = useMemo(() => {
-    return products.reduce(
-      (acc, item) => acc + item?.product?.sellingPrice * item?.quantity,
-      0
-    );
-  }, [products]);
+  const subtotal = useMemo(
+    () =>
+      products.reduce(
+        (acc, item) => acc + item?.product?.sellingPrice * item?.quantity,
+        0
+      ),
+    [products]
+  );
 
   const shipping = subtotal > 499 ? 0 : 40;
   const total = subtotal + shipping;
+
+  useEffect(() => {
+    const handleBeforeUnload = async (e: BeforeUnloadEvent) => {
+      if (createdOrderData?.order?._id) {
+        cancelPayment({ orderId: createdOrderData?.order?._id });
+      }
+      e.preventDefault();
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [createdOrderData?.order?._id, cancelPayment]);
+
+  const { proceed, reset } = usePrompt(
+    true,
+    () => setOpenConfirmationModal(true),
+    () => setOpenConfirmationModal(false)
+  );
+
+  const handleModalYes = async () => {
+    setOpenConfirmationModal(false);
+    if (createdOrderData?.order?._id) {
+      await cancelPayment({ orderId: createdOrderData.order._id });
+    }
+    proceed(); // continue navigation
+  };
+
+  const handleModalNo = () => {
+    setOpenConfirmationModal(false);
+    reset(); // cancel navigation
+  };
 
   const handlePayment = async () => {
     if (
@@ -63,10 +100,9 @@ const Payment = () => {
       });
 
       if (!createdOrder?.razorpayOrder?.id) {
-        throw new Error("Invalid order response from server.");
+        throw new Error("Invalid order response");
       }
 
-      // 🟣 Step 2: Configure Razorpay options
       const options = {
         key: envs.RAZORPAY_KEY_ID,
         amount: createdOrder.razorpayOrder.amount,
@@ -75,13 +111,10 @@ const Payment = () => {
         description: `Ordered by ${user?.firstName} ${user?.lastName}, with Razorpay secure payment gateway.`,
         image: "/images/logo/BQ_gradient_logo.webp",
         order_id: createdOrder.razorpayOrder.id,
-        handler: async function (response: Record<string, string>) {
+        handler: async (response: Record<string, string>) => {
           try {
             await verifyPayment(
-              {
-                ...response,
-                orderDBId: createdOrder.order._id,
-              },
+              { ...response, orderDBId: createdOrder.order._id },
               {
                 onSuccess: () => {
                   navigate("/");
@@ -101,10 +134,11 @@ const Payment = () => {
         },
         theme: { color: "#6700EE" },
         modal: {
-          ...(createdOrder.order._id && {
-            ondismiss: async () =>
-              await cancelPayment({ orderId: createdOrder.order._id }),
-          }),
+          ondismiss: async () => {
+            if (createdOrder.order._id) {
+              await cancelPayment({ orderId: createdOrder.order._id });
+            }
+          },
         },
         method: {
           card: true,
@@ -119,24 +153,27 @@ const Payment = () => {
       const rzp = new window.Razorpay(options);
       rzp.open();
     } catch (error) {
-      console.error("Error during payment initiation:", error);
-      toast.error("Failed to initiate payment. Please try again.");
+      console.error("Payment initiation failed:", error);
+      toastErrorMessage("Failed to initiate payment. Please try again.");
     }
   };
 
-  useEffect(() => {
-    if (!createdOrderData?.order?._id) return;
-    const handleTabClose = async () => {
-      await cancelPayment({ orderId: createdOrderData.order._id });
-    };
-
-    window.addEventListener("beforeunload", handleTabClose);
-    return () => window.removeEventListener("beforeunload", handleTabClose);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [createdOrderData]);
-
   return (
     <div className="flex flex-col lg:flex-row gap-4">
+      {/* Modal for confirming navigation */}
+      <InitialNotCloseConfirmModal
+        modalProps={{
+          isOpen: openConfirmationModal,
+          onClose: () => setOpenConfirmationModal(false),
+        }}
+        type="warning"
+        title="Are you sure you want to leave this page?"
+        description="Please confirm that you want to navigate away from the payment page. Any unsaved changes will be lost."
+        buttons={{
+          left: { content: "Stay", buttonProps: { onClick: handleModalNo } },
+          right: { content: "Leave", buttonProps: { onClick: handleModalYes } },
+        }}
+      />
       {/* Left - Cart Items */}
       <div className="flex-1 p-6">
         <h2 className="text-2xl font-semibold text-secondary mb-6">

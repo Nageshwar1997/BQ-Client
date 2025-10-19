@@ -1,7 +1,8 @@
+import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 
 export const toastCatchErrorMessage = (error: unknown, message?: string) => {
-  if (error instanceof Error) {
+  if (error instanceof Error || error instanceof AxiosError) {
     toast.error(error.message);
   } else {
     toast.error(message || "Something went wrong!");
