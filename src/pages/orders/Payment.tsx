@@ -47,15 +47,15 @@ const Payment = () => {
 
   useEffect(() => {
     const handleBeforeUnload = async (e: BeforeUnloadEvent) => {
-      if (createdOrderData?.order?._id) {
-        cancelPayment({ orderId: createdOrderData?.order?._id });
+      if (createdOrderData?.orderId) {
+        cancelPayment({ orderId: createdOrderData?.orderId });
       }
       e.preventDefault();
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, [createdOrderData?.order?._id, cancelPayment]);
+  }, [createdOrderData?.orderId, cancelPayment]);
 
   const handlePayment = async () => {
     if (
@@ -91,7 +91,7 @@ const Payment = () => {
         handler: async (response: Record<string, string>) => {
           try {
             await verifyPayment(
-              { ...response, orderDBId: createdOrder.order._id },
+              { ...response, orderDBId: createdOrder.orderId },
               { onSuccess: () => navigate("/orders") }
             );
           } catch (err) {
@@ -107,8 +107,8 @@ const Payment = () => {
         theme: { color: "#6700EE" },
         modal: {
           ondismiss: async () => {
-            if (createdOrder.order._id) {
-              await cancelPayment({ orderId: createdOrder.order._id });
+            if (createdOrder.orderId) {
+              await cancelPayment({ orderId: createdOrder.orderId });
             }
           },
         },
