@@ -27,6 +27,15 @@ export const REVIEWS_OPTIONS = [
   { name: "Most Disliked", value: "most-disliked", disabled: false },
 ];
 
+export const ORDER_STATUS_OPTIONS = [
+  { name: "All", value: "", disabled: false },
+  { name: "Pending", value: "pending", disabled: false },
+  { name: "Confirmed", value: "confirmed", disabled: false },
+  { name: "Delivered", value: "delivered", disabled: false },
+  { name: "Cancelled", value: "cancelled", disabled: false },
+  { name: "Returned", value: "returned", disabled: false },
+];
+
 export const CATEGORY_VIDEOS = [
   {
     src: "/videos/product/offers.mp4",
@@ -166,7 +175,10 @@ export const RAZORPAY_PAYMENT_STATUS = [
   "CANCELLED",
 ];
 
-export const ORDER_STATUS_CLASSES: Record<(typeof ORDER_STATUS)[number], string> = {
+export const ORDER_STATUS_CLASSES: Record<
+  (typeof ORDER_STATUS)[number],
+  string
+> = {
   PENDING: "bg-yellow-100 text-yellow-800",
   CONFIRMED: "bg-blue-100 text-blue-800",
   DELIVERED: "bg-green-100 text-green-800",

@@ -2,13 +2,17 @@ import { useEffect, useMemo } from "react";
 import { useGetAllOrdersInfinite } from "../../api/order/order.service";
 import { IOrder } from "../../types";
 import { formatDate, toINRCurrency } from "../../utils";
-import { ORDER_STATUS_CLASSES } from "../../constants";
+import { ORDER_STATUS_CLASSES, ORDER_STATUS_OPTIONS } from "../../constants";
 import { useInView } from "react-intersection-observer";
+import Dropdown from "../../components/dropdown/Dropdown";
+import DropdownOptions from "../../components/dropdown/children/DropdownOptions";
+import useQueryParams from "../../hooks/useQueryParams";
 
 const Orders = () => {
   const { data, fetchNextPage, hasNextPage } = useGetAllOrdersInfinite({
     limit: 10,
   });
+  const { queryParams, setParams, removeParam } = useQueryParams();
   const { ref, inView } = useInView();
 
   const orders: IOrder[] = useMemo(
@@ -22,11 +26,44 @@ const Orders = () => {
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => removeParam("order_status"), []);
+
   return (
     <div className="p-4 sm:p-6">
-      <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-primary">
-        Orders
-      </h1>
+      <div className="flex items-center justify-between mb-4 sm:mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold text-primary">Orders</h1>
+        <Dropdown
+          title={
+            ORDER_STATUS_OPTIONS.find(
+              (o) => o.value === queryParams?.order_status
+            )?.name ?? ORDER_STATUS_OPTIONS[0].name
+          }
+          isAbsolute={true}
+          closeOnOptionClick={true}
+          closeOnOutsideClick={true}
+          showShadow={true}
+          className="!w-[180px] ml-auto [&>button]:border [&>button]:border-primary-30 [&>button]:rounded-md [&>div]:rounded-md sticky top-[65px]"
+        >
+          <DropdownOptions
+            options={ORDER_STATUS_OPTIONS}
+            selected={
+              queryParams?.order_status ?? ORDER_STATUS_OPTIONS[0].value
+            }
+            onChange={(data) => {
+              if (
+                queryParams?.order_status === data.value ||
+                data.value === "most-recent"
+              ) {
+                removeParam("order_status");
+              } else {
+                setParams({ order_status: data.value });
+              }
+            }}
+            className="[&>button]:text-nowrap bg-secondary-inverted"
+          />
+        </Dropdown>
+      </div>
 
       <div className="space-y-4">
         {orders.map((order, index) => {
