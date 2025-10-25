@@ -106,7 +106,7 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
             type="error"
             headingText="Something went wrong"
             descriptionText="Please try again later."
-            className="gap-1 [&_svg]:w-8 [&_svg]:h-8 [&_h3]:text-lg [&_p]:text-sm m-auto"
+            className="gap-1 [&_svg]:w-8 [&_svg]:h-8 [&_h3]:text-lg [&_p]:text-sm"
           />
         ) : products.length ? (
           <ul className="flex flex-col gap-1 p-1">

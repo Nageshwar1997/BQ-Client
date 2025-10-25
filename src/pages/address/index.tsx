@@ -10,7 +10,7 @@ import AddressFormModal from "../../components/modal/children/AddressFormModal";
 import useQueryParams from "../../hooks/useQueryParams";
 import { toastErrorMessage } from "../../utils/toasts";
 import AddressForm from "./children/AddressForm";
-import ShowError from "../../components/errors/ShowError";
+import ShowApiStatus from "../../components/api-status/ShowApiStatus";
 import LoadingPage from "../../components/loaders/LoadingPage";
 import usePathParams from "../../hooks/usePathParams";
 
@@ -129,9 +129,11 @@ const Address = () => {
           className="!static min-h-[300px]"
         />
       ) : isError ? (
-        <ShowError
+        <ShowApiStatus
+          type="error"
           headingText="Error loading addresses"
           descriptionText="Please try again"
+          className="min-h-[75dvh]"
         />
       ) : addresses?.length > 0 ? (
         <div className="flex flex-col lg:flex-row gap-6">
