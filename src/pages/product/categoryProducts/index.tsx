@@ -161,7 +161,7 @@ const CategoryProducts = () => {
                   <ProductCardSkeleton key={index} />
                 ))}
               {products?.map((product, index) => {
-                const isLastItem = index === products.length - 1;
+                const isLastItem = index === products.length - 4;
                 return (
                   <div
                     key={product._id}

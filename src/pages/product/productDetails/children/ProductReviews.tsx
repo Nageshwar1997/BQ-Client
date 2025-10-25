@@ -20,7 +20,7 @@ const ProductReviews = ({
       {reviews.map((review, index) => (
         <div
           key={index}
-          ref={index === reviews.length - 1 ? ref : null}
+          ref={index === reviews.length - 4 ? ref : null}
           className={`py-4 ${
             index === reviews.length - 1
               ? "pb-0"
