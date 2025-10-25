@@ -12,8 +12,13 @@ import useQueryParams from "./useQueryParams";
 import usePathParams from "./usePathParams";
 
 export const useUserCart = () => {
-  const { cart, setCart, updateProductQuantity, removeProductFromCart } =
-    useCartStore();
+  const {
+    cart,
+    setCart,
+    updateProductQuantity,
+    removeProductFromCart,
+    addProductToCart,
+  } = useCartStore();
   const { isAuthenticated } = useUserStore();
   const { setParams } = useQueryParams();
   const { pathParams } = usePathParams();
@@ -46,29 +51,15 @@ export const useUserCart = () => {
       return;
     }
 
-    if (!cart) return;
-    const exists = cart.products.some(
-      (item) => item.product._id === pathParams?.productId
-    );
-    if (exists) return;
-
-    const newItem = {
-      _id: Date.now().toString(), // temporary id
-      cart: cart._id,
-      quantity: 1,
-      product,
-      shade,
-    };
-
-    setCart({ ...cart, products: [...cart.products, newItem] });
+    addProductToCart(product, shade);
 
     addToCart(
       {
         productId: pathParams?.productId ?? "",
-        ...(shade?._id && { shadeId: shade?._id }),
+        ...(shade?._id && { shadeId: shade._id }),
       },
       {
-        onError: () => setCart(cart), // reset cart on error
+        onError: () => setCart(cart), // revert on error
       }
     );
   };
