@@ -5,7 +5,7 @@ import LoadingPage from "../loaders/LoadingPage";
 
 interface ShowApiStatusProps {
   headingText: string | JSX.Element;
-  descriptionText: string | JSX.Element;
+  descriptionText?: string | JSX.Element;
   className?: string;
   showHrLine?: boolean;
   type?: "error" | "empty" | "loading";
@@ -37,9 +37,11 @@ const ShowApiStatus = ({
           <h3 className="text-center bg-clip-text text-fill-transparent text-shadow-sm font-medium bg-silver-duo text-base base:text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl">
             {headingText}
           </h3>
-          <p className="text-silver-jet text-center font-normal text-sm sm:text-base md:text-lg leading-6 font-metropolis">
-            {descriptionText}
-          </p>
+          {descriptionText && (
+            <p className="text-silver-jet text-center font-normal text-sm sm:text-base md:text-lg leading-6 font-metropolis">
+              {descriptionText}
+            </p>
+          )}
           {showHrLine && (
             <hr className="w-full h-px block border-none bg-gradient-line mt-1" />
           )}

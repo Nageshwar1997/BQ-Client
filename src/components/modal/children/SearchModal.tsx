@@ -3,7 +3,6 @@ import { CloseIcon, SearchIcon } from "../../../icons";
 import Input from "../../input/Input";
 import { useGetAllProducts } from "../../../api/product/product.service";
 import SearchModalSkeleton from "../../skeletons/children/SearchModalSkeleton";
-import EmptyData from "../../empty-data/EmptyData";
 import { FetchedProductType } from "../../../types";
 import { TUseGetAllProducts } from "../../../api/types";
 import { debounce } from "../../../utils";
@@ -133,12 +132,14 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
             ))}
           </ul>
         ) : debouncedQuery ? (
-          <EmptyData
-            content={
+          <ShowApiStatus
+            type="empty"
+            headingText={
               <>
                 No results found for <strong>{debouncedQuery}</strong>
               </>
             }
+            className="gap-1 [&_svg]:w-8 [&_svg]:h-8 [&_h3]:text-lg [&_p]:text-sm"
           />
         ) : (
           <div className="w-full flex-1 flex items-center justify-center text-center text-sm md:text-base">
