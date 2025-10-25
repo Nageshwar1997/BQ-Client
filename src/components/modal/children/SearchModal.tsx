@@ -8,7 +8,7 @@ import { FetchedProductType } from "../../../types";
 import { TUseGetAllProducts } from "../../../api/types";
 import { debounce } from "../../../utils";
 import usePathParams from "../../../hooks/usePathParams";
-import ShowApiStatus from "../../errors/ShowError";
+import ShowApiStatus from "../../api-status/ShowApiStatus";
 
 const SearchModal = ({ onClose }: { onClose: () => void }) => {
   const [searchQuery, setSearchQuery] = useState("");
