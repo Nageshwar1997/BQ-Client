@@ -20,6 +20,7 @@ import AuthRedirect from "./AuthRedirect";
 import Register from "../pages/auth/Register";
 import Address from "../pages/address";
 import Payment from "../pages/orders/Payment";
+import Orders from "../pages/orders/Orders";
 
 const router = createBrowserRouter([
   {
@@ -73,6 +74,10 @@ const router = createBrowserRouter([
       {
         path: "payment",
         element: <PrivateRoute children={<Payment />} />,
+      },
+      {
+        path: "orders",
+        element: <PrivateRoute children={<Orders />} />,
       },
     ],
   },

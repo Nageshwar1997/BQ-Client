@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import toast from "react-hot-toast";
 import { toINRCurrency } from "../../utils";
 import {
@@ -15,12 +15,8 @@ import Button from "../../components/button/Button";
 import { RightArrowIcon } from "../../icons";
 import { IAddress } from "../../types";
 import useCartStore from "../../store/cart.store";
-import InitialNotCloseConfirmModal from "../../components/modal/children/InitialNotCloseConfirmModal";
-import usePrompt from "../../hooks/usePrompt";
 
 const Payment = () => {
-  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-
   const {
     mutateAsync: createOrder,
     data: createdOrderData = {},
@@ -61,25 +57,6 @@ const Payment = () => {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [createdOrderData?.order?._id, cancelPayment]);
 
-  const { proceed, reset } = usePrompt(
-    true,
-    () => setOpenConfirmationModal(true),
-    () => setOpenConfirmationModal(false)
-  );
-
-  const handleModalYes = async () => {
-    setOpenConfirmationModal(false);
-    if (createdOrderData?.order?._id) {
-      await cancelPayment({ orderId: createdOrderData.order._id });
-    }
-    proceed(); // continue navigation
-  };
-
-  const handleModalNo = () => {
-    setOpenConfirmationModal(false);
-    reset(); // cancel navigation
-  };
-
   const handlePayment = async () => {
     if (
       (!baseAddresses?.billing || !baseAddresses?.shipping) &&
@@ -115,12 +92,7 @@ const Payment = () => {
           try {
             await verifyPayment(
               { ...response, orderDBId: createdOrder.order._id },
-              {
-                onSuccess: () => {
-                  navigate("/");
-                  toast.success("Payment successful!");
-                },
-              }
+              { onSuccess: () => navigate("/orders") }
             );
           } catch (err) {
             console.error("Payment verification failed:", err);
@@ -160,20 +132,6 @@ const Payment = () => {
 
   return (
     <div className="flex flex-col lg:flex-row gap-4">
-      {/* Modal for confirming navigation */}
-      <InitialNotCloseConfirmModal
-        modalProps={{
-          isOpen: openConfirmationModal,
-          onClose: () => setOpenConfirmationModal(false),
-        }}
-        type="warning"
-        title="Are you sure you want to leave this page?"
-        description="Please confirm that you want to navigate away from the payment page. Any unsaved changes will be lost."
-        buttons={{
-          left: { content: "Stay", buttonProps: { onClick: handleModalNo } },
-          right: { content: "Leave", buttonProps: { onClick: handleModalYes } },
-        }}
-      />
       {/* Left - Cart Items */}
       <div className="flex-1 p-6">
         <h2 className="text-2xl font-semibold text-secondary mb-6">
