@@ -9,7 +9,6 @@ import useCartStore from "../store/cart.store";
 import { TCartProduct } from "../types";
 import { useUserStore } from "../store/user.store";
 import useQueryParams from "./useQueryParams";
-import usePathParams from "./usePathParams";
 
 export const useUserCart = () => {
   const {
@@ -21,7 +20,6 @@ export const useUserCart = () => {
   } = useCartStore();
   const { isAuthenticated } = useUserStore();
   const { setParams } = useQueryParams();
-  const { pathParams } = usePathParams();
 
   const { data, isLoading, isError } = useGetUserCart();
   const { mutateAsync: updateQuantity } = useUpdateProductQuantityInCart();
@@ -51,11 +49,14 @@ export const useUserCart = () => {
       return;
     }
 
+    if (!cart) return;
+
     addProductToCart(product, shade);
 
+    // API call
     addToCart(
       {
-        productId: pathParams?.productId ?? "",
+        productId: product._id,
         ...(shade?._id && { shadeId: shade._id }),
       },
       {

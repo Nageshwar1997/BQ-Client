@@ -67,7 +67,7 @@ const ReviewsMedia = ({
       ) : (
         <EmptyData
           content={"Reviews media not available"}
-          className="w-full mx-auto [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase gap-3 border border-[red] !p-[14px]"
+          className="w-full mx-auto [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase gap-3 !p-[14px]"
         />
       )}
       {showMediaModal && (
