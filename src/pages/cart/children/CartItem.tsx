@@ -1,19 +1,13 @@
 import Button from "../../../components/button/Button";
 import usePathParams from "../../../hooks/usePathParams";
+import { useUserCart } from "../../../hooks/useUserCart";
 import { MinusIcon, PlusIcon, TrashIcon } from "../../../icons";
 import { TCartProduct } from "../../../types";
 import { toINRCurrency } from "../../../utils";
 
-const CartItem = ({
-  item,
-  onQuantityChange,
-  onRemoveItem,
-}: {
-  item: TCartProduct;
-  onQuantityChange: (id: string, newQty: number) => void;
-  onRemoveItem: (id: string) => void;
-}) => {
+const CartItem = ({ item }: { item: TCartProduct }) => {
   const { navigate } = usePathParams();
+  const { handleQuantityChange, handleRemoveItem } = useUserCart();
   const stock =
     (item.shade && item.shade?.stock) || item.product?.totalStock || 0;
   const isOutOfStock = stock <= 0;
@@ -48,7 +42,7 @@ const CartItem = ({
             className="!rounded-full !p-0 !w-6 h-6 !shadow-none disabled:!opacity-50"
             buttonProps={{
               disabled: !allowDec || isOutOfStock,
-              onClick: () => onQuantityChange(item._id, item.quantity - 1),
+              onClick: () => handleQuantityChange(item._id, item.quantity - 1),
             }}
             content={
               <MinusIcon
@@ -65,7 +59,7 @@ const CartItem = ({
             className="!w-6 h-6 !rounded-full !p-0 !shadow-none disabled:!opacity-50"
             buttonProps={{
               disabled: !allowInc || isOutOfStock,
-              onClick: () => onQuantityChange(item._id, item.quantity + 1),
+              onClick: () => handleQuantityChange(item._id, item.quantity + 1),
             }}
             content={
               <PlusIcon
@@ -108,7 +102,7 @@ const CartItem = ({
               strokeWidth={2.5}
             />
           }
-          buttonProps={{ onClick: () => onRemoveItem(item._id) }}
+          buttonProps={{ onClick: () => handleRemoveItem(item._id) }}
         />
       </div>
     </div>

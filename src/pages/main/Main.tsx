@@ -6,19 +6,19 @@ import Footer from "../../components/footer/Footer";
 import ErrorBoundary from "../error/ErrorBoundary";
 import AuthModal from "../../components/modal/children/AuthModal";
 import useCartStore from "../../store/cart.store";
-import { useGetUserCart } from "../../api/cart/cart.service";
+import { useUserCart } from "../../hooks/useUserCart";
 import { useUserStore } from "../../store/user.store";
 
 const Main = () => {
   const { isAuthenticated } = useUserStore();
   const { setCart } = useCartStore();
-  const { data: cartData } = useGetUserCart();
+  const { cart } = useUserCart();
 
   useEffect(() => {
-    if (isAuthenticated && cartData?.cart) {
-      setCart(cartData.cart);
+    if (isAuthenticated) {
+      setCart(cart ?? null);
     }
-  }, [cartData?.cart, isAuthenticated, setCart]);
+  }, [cart, isAuthenticated, setCart]);
   return (
     <ErrorBoundary>
       {/* If the user isn't logged in, show the auth modal. just add queryParams.login = "true" to the url */}
