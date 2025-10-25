@@ -140,7 +140,7 @@ const Orders = () => {
                   </div>
                 ))}
               </div>
-              <div className="text-sm">
+              <div className="text-sm text-tertiary">
                 <p>
                   {order.razorpay_payment_result.rzp_payment_status === "PAID"
                     ? "Paid amount"
