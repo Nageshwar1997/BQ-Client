@@ -3,10 +3,10 @@ import Button from "../../components/button/Button";
 import { RightArrowIcon } from "../../icons";
 import CartItem from "./children/CartItem";
 import { useUserCart } from "../../hooks/useUserCart";
-import ShowError from "../../components/errors/ShowError";
 import CartSkeleton from "../../components/skeletons/children/CartSkeleton";
 import EmptyData from "../../components/empty-data/EmptyData";
 import usePathParams from "../../hooks/usePathParams";
+import ShowApiStatus from "../../components/errors/ShowError";
 
 const Cart = () => {
   const { navigate } = usePathParams();
@@ -36,7 +36,7 @@ const Cart = () => {
       {loading ? (
         <CartSkeleton />
       ) : error ? (
-        <ShowError
+        <ShowApiStatus
           headingText="Something went wrong!"
           descriptionText="Failed to get the product. Please reload the page"
           className="w-full h-full mx-auto [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase [&>p]:text-xs [&>p]:base:text-sm [&>p]:sm:text-base [&>p]:md:text-lg"

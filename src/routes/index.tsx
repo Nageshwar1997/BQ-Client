@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Outlet } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
 // Lazy load route components
@@ -21,6 +21,7 @@ import Register from "../pages/auth/Register";
 import Address from "../pages/address";
 import Payment from "../pages/orders/Payment";
 import Orders from "../pages/orders/Orders";
+import OrderDetails from "../pages/orders/OrderDetails";
 
 const router = createBrowserRouter([
   {
@@ -77,7 +78,18 @@ const router = createBrowserRouter([
       },
       {
         path: "orders",
-        element: <PrivateRoute children={<Orders />} />,
+        // element: <PrivateRoute children={<Orders />} />,
+        element: <Outlet />,
+        children: [
+          {
+            index: true,
+            element: <PrivateRoute children={<Orders />} />,
+          },
+          {
+            path: ":orderId",
+            element: <PrivateRoute children={<OrderDetails />} />,
+          },
+        ],
       },
     ],
   },
