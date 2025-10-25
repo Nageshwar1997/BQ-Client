@@ -3,12 +3,12 @@ import { CloseIcon, SearchIcon } from "../../../icons";
 import Input from "../../input/Input";
 import { useGetAllProducts } from "../../../api/product/product.service";
 import SearchModalSkeleton from "../../skeletons/children/SearchModalSkeleton";
-import ShowError from "../../errors/ShowError";
 import EmptyData from "../../empty-data/EmptyData";
 import { FetchedProductType } from "../../../types";
 import { TUseGetAllProducts } from "../../../api/types";
 import { debounce } from "../../../utils";
 import usePathParams from "../../../hooks/usePathParams";
+import ShowApiStatus from "../../errors/ShowError";
 
 const SearchModal = ({ onClose }: { onClose: () => void }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -102,10 +102,11 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
         {productsQuery.isPending && debouncedQuery ? (
           <SearchModalSkeleton count={5} />
         ) : productsQuery.isError ? (
-          <ShowError
+          <ShowApiStatus
+            type="error"
             headingText="Something went wrong"
             descriptionText="Please try again later."
-            className="gap-1"
+            className="gap-1 [&_svg]:w-8 [&_svg]:h-8 [&_h3]:text-lg [&_p]:text-sm m-auto"
           />
         ) : products.length ? (
           <ul className="flex flex-col gap-1 p-1">
