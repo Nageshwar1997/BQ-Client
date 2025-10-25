@@ -2,7 +2,7 @@ import { AxiosError } from "axios";
 import api from "../../configs/axios.instance.config";
 import { getUserToken } from "../../utils";
 import { orderRoutes } from "../api.routes";
-import { TQueryParams } from "../types";
+import { TPageParams, TQueryParams } from "../types";
 
 export const create_order = async (addresses: TQueryParams) => {
   try {
@@ -13,6 +13,34 @@ export const create_order = async (addresses: TQueryParams) => {
       method,
       url,
       params: addresses,
+      headers: { Authorization: user_token },
+    });
+
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      // If it's an Axios error
+      throw error?.response?.data?.message || "API Error occurred";
+    }
+    throw "Something went wrong!"; // For non-Axios errors
+  }
+};
+
+export const get_all_orders = async (params: {
+  queryParams: TQueryParams;
+  pageParams?: TPageParams;
+}) => {
+  try {
+    const user_token = getUserToken();
+
+    const { method, url } = orderRoutes.getAllOrder;
+    const response = await api.request({
+      method,
+      url,
+      params: {
+        ...params.pageParams,
+        ...params.queryParams,
+      },
       headers: { Authorization: user_token },
     });
 

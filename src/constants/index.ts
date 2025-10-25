@@ -135,3 +135,41 @@ export const STATES_AND_UNION_TERRITORIES = [
 ];
 
 export const ALLOWED_COUNTRIES = ["India"];
+
+export const ALLOWED_PAYMENT_MODE = ["ONLINE"];
+
+export const ORDER_STATUS = [
+  "PENDING",
+  "CONFIRMED",
+  "DELIVERED",
+  "CANCELLED",
+  "RETURNED",
+];
+
+export const ALLOWED_CURRENCIES = ["INR"];
+
+export const RAZORPAY_PAYMENT_METHODS = [
+  "CARD",
+  "UPI",
+  "NETBANKING",
+  "WALLET",
+  // "PAYLATER", // *LINK - Not Implemented yet in FRONTEND & BACKEND
+  // "EMI", // *LINK - Not Implemented yet in FRONTEND & BACKEND
+  "OTHER",
+];
+
+export const RAZORPAY_PAYMENT_STATUS = [
+  "UNPAID",
+  "PAID",
+  "FAILED",
+  "REFUNDED",
+  "CANCELLED",
+];
+
+export const ORDER_STATUS_CLASSES: Record<(typeof ORDER_STATUS)[number], string> = {
+  PENDING: "bg-yellow-100 text-yellow-800",
+  CONFIRMED: "bg-blue-100 text-blue-800",
+  DELIVERED: "bg-green-100 text-green-800",
+  CANCELLED: "bg-red-100 text-red-800",
+  RETURNED: "bg-purple-100 text-purple-800",
+};
