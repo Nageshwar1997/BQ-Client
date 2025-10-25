@@ -72,7 +72,7 @@ const Orders = () => {
             <div
               ref={isLastItem ? ref : null}
               key={order._id}
-              className="shadow-lg shadow-primary-10 rounded-lg p-4 sm:p-6 border border-primary-30 light:border-primary-10"
+              className="shadow-lg shadow-primary-10 rounded-lg p-4 sm:p-6 border border-primary-30 light:border-primary-10 flex flex-col gap-4"
             >
               {/* Order Header */}
               <div className="text-sm flex flex-col md:flex-row md:justify-between items-center mb-4 gap-3">
@@ -139,6 +139,54 @@ const Orders = () => {
                     </h4>
                   </div>
                 ))}
+              </div>
+              <div className="text-sm">
+                <p>
+                  {order.razorpay_payment_result.rzp_payment_status === "PAID"
+                    ? "Paid amount"
+                    : order.razorpay_payment_result.rzp_payment_status ===
+                      "UNPAID"
+                    ? "Payable amount"
+                    : order.razorpay_payment_result.rzp_payment_status ===
+                      "FAILED"
+                    ? "Unpaid amount"
+                    : order.razorpay_payment_result.rzp_payment_status ===
+                      "REFUNDED"
+                    ? "Refunded amount"
+                    : order.razorpay_payment_result.rzp_payment_status ===
+                      "CANCELLED"
+                    ? "Cancelled amount"
+                    : ""}
+                  : {toINRCurrency(order.order_result.price)}
+                </p>
+                {order.order_result.charges && (
+                  <p>Charges: {toINRCurrency(order.order_result.charges)}</p>
+                )}
+                {order.order_result.paid_at && (
+                  <p>
+                    Paid on: {formatDate(order.order_result.paid_at, "LLL")}
+                  </p>
+                )}
+                {order.order_result.cancelled_at && (
+                  <p>
+                    Paid on:{" "}
+                    {formatDate(order.order_result.cancelled_at, "LLL")}
+                  </p>
+                )}
+                {order.order_result.delivered_at && (
+                  <p>
+                    Paid on:{" "}
+                    {formatDate(order.order_result.delivered_at, "LLL")}
+                  </p>
+                )}
+                {order.order_result.returned_at && (
+                  <p>
+                    Paid on: {formatDate(order.order_result.returned_at, "LLL")}
+                  </p>
+                )}
+                {order.payment_details?.refund_status && (
+                  <p>Refund status: {order.payment_details.refund_status}</p>
+                )}
               </div>
             </div>
           );
