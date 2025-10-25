@@ -41,6 +41,9 @@ export const useGetAllOrdersInfinite = ({ limit }: { limit: number }) => {
         queryParams,
       });
     },
+    placeholderData: keepPreviousData,
+    staleTime: Infinity, // 30 seconds
+    gcTime: Infinity, // 5 minutes
     enabled: true,
     refetchOnWindowFocus: false,
     getNextPageParam: (lastPage, allPages) => {
