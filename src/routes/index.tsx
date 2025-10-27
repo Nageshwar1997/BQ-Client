@@ -38,6 +38,11 @@ import ContactUs from "../pages/services/ContactUs";
 import HelpCenterFAQ from "../pages/services/HelpCenterFAQ";
 import ShippingInfo from "../pages/services/ShippingInfo";
 import OrderReturnRefund from "../pages/account/order/OrderReturnRefund";
+import Accessibility from "../pages/legal-policies/Accessibility";
+import Disclaimer from "../pages/legal-policies/Disclaimer";
+import TermsAndConditions from "../pages/legal-policies/TermsAndConditions";
+import CookiePolicy from "../pages/legal-policies/CookiePolicy";
+import PrivacyPolicy from "../pages/legal-policies/PrivacyPolicy";
 
 const router = createBrowserRouter([
   {
@@ -103,7 +108,12 @@ const router = createBrowserRouter([
       { path: "contact", element: <ContactUs /> },
       { path: "help-center-faq", element: <HelpCenterFAQ /> },
       { path: "shipping-info", element: <ShippingInfo /> },
-      // 
+      // Legal Policies Pages
+      { path: "privacy-policy", element: <PrivacyPolicy /> },
+      { path: "cookie-policy", element: <CookiePolicy /> },
+      { path: "terms-conditions", element: <TermsAndConditions /> },
+      { path: "disclaimer", element: <Disclaimer /> },
+      { path: "accessibility", element: <Accessibility /> },
     ],
   },
   {
