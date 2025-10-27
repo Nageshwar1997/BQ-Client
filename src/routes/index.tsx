@@ -114,22 +114,10 @@ const router = createBrowserRouter([
       { path: "accessibility", element: <Accessibility /> },
     ],
   },
-  {
-    path: "register",
-    element: <AuthRedirect children={<Register />} />,
-  },
-  {
-    path: "login",
-    element: <AuthRedirect children={<Login />} />,
-  },
-  {
-    path: "error",
-    element: <SomethingWentWrong />,
-  },
-  {
-    path: "*",
-    element: <NotFound />,
-  },
+  { path: "register", element: <AuthRedirect children={<Register />} /> },
+  { path: "login", element: <AuthRedirect children={<Login />} /> },
+  { path: "error", element: <SomethingWentWrong /> },
+  { path: "*", element: <NotFound /> },
 ]);
 
 export default router;
