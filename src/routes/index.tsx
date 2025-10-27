@@ -34,6 +34,10 @@ import Wishlist from "../pages/quick-links/Wishlist";
 import ReferFriend from "../pages/quick-links/ReferFriend";
 import StoreLocator from "../pages/quick-links/StoreLocator";
 import BecomeSeller from "../pages/quick-links/BecomeSeller";
+import ContactUs from "../pages/services/ContactUs";
+import HelpCenterFAQ from "../pages/services/HelpCenterFAQ";
+import ShippingInfo from "../pages/services/ShippingInfo";
+import OrderReturnRefund from "../pages/account/order/OrderReturnRefund";
 
 const router = createBrowserRouter([
   {
@@ -65,12 +69,14 @@ const router = createBrowserRouter([
         element: <PrivateRoute children={<Outlet />} />,
         children: [
           { index: true, element: <Account /> },
+          { path: "wishlist", element: <Wishlist /> },
           {
             path: "orders",
             element: <Outlet />,
             children: [
               { index: true, element: <Orders /> },
               { path: ":orderId", element: <OrderDetails /> },
+              { path: "return-refund", element: <OrderReturnRefund /> },
               { path: "payment", element: <Payment /> },
             ],
           },
@@ -90,12 +96,14 @@ const router = createBrowserRouter([
         ],
       },
       // Quick Link Pages
-      { path: "wishlist", element: <PrivateRoute children={<Wishlist />} /> },
       { path: "refer", element: <ReferFriend /> },
       { path: "store-locator", element: <StoreLocator /> },
       { path: "become-seller", element: <BecomeSeller /> },
       // Services Pages
-      // { path: "contact", element: <Outlet /> },
+      { path: "contact", element: <ContactUs /> },
+      { path: "help-center-faq", element: <HelpCenterFAQ /> },
+      { path: "shipping-info", element: <ShippingInfo /> },
+      // 
     ],
   },
   {
