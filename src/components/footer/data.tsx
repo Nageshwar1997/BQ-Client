@@ -36,7 +36,7 @@ export const footerCategories = [
     title: "Quick Links",
     options: [
       { title: "My Account", disable: true },
-      { title: "Order History", disable: true },
+      { title: "Order History", path: "account/orders" },
       { title: "Wishlist", disable: true },
       { title: "Refer a Friend", disable: true },
       { title: "Store Locator", disable: true },

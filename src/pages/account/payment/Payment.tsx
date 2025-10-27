@@ -1,20 +1,20 @@
 import { useEffect, useMemo } from "react";
 import toast from "react-hot-toast";
-import { toINRCurrency } from "../../utils";
+import { toINRCurrency } from "../../../utils";
 import {
   useCancelPayment,
   useCreateOrder,
   useVerifyPayment,
-} from "../../api/order/order.service";
-import { toastErrorMessage } from "../../utils/toasts";
-import { envs } from "../../envs/index.env";
-import { useUserStore } from "../../store/user.store";
-import usePathParams from "../../hooks/usePathParams";
-import AddressInfo from "../address/children/AddressInfo";
-import Button from "../../components/button/Button";
-import { RightArrowIcon } from "../../icons";
-import { IAddress } from "../../types";
-import useCartStore from "../../store/cart.store";
+} from "../../../api/order/order.service";
+import { toastErrorMessage } from "../../../utils/toasts";
+import { envs } from "../../../envs/index.env";
+import { useUserStore } from "../../../store/user.store";
+import usePathParams from "../../../hooks/usePathParams";
+import AddressInfo from "../../address/children/AddressInfo";
+import Button from "../../../components/button/Button";
+import { RightArrowIcon } from "../../../icons";
+import { IAddress } from "../../../types";
+import useCartStore from "../../../store/cart.store";
 
 const Payment = () => {
   const {
@@ -92,7 +92,7 @@ const Payment = () => {
           try {
             await verifyPayment(
               { ...response, orderDBId: createdOrder.orderId },
-              { onSuccess: () => navigate("/orders") }
+              { onSuccess: () => navigate("/account/orders") }
             );
           } catch (err) {
             console.error("Payment verification failed:", err);
@@ -141,8 +141,7 @@ const Payment = () => {
           {products.map((item) => (
             <div
               key={item._id}
-              className="p-2 flex gap-4 border shadow-md border-primary-30 rounded-xl opacity-90 items-stretch cursor-pointer"
-              onClick={() => navigate(`/product/${item?.product?._id}`)}
+              className="p-2 flex gap-4 border shadow-md border-primary-30 rounded-xl opacity-90 items-stretch"
             >
               <div className="w-24 rounded-sm shadow">
                 <img

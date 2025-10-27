@@ -19,9 +19,10 @@ import Login from "../pages/auth/Login";
 import AuthRedirect from "./AuthRedirect";
 import Register from "../pages/auth/Register";
 import Address from "../pages/address";
-import Payment from "../pages/orders/Payment";
-import Orders from "../pages/orders/Orders";
-import OrderDetails from "../pages/orders/OrderDetails";
+import Payment from "../pages/account/payment/Payment";
+import Orders from "../pages/account/order/Orders";
+import OrderDetails from "../pages/account/order/OrderDetails";
+import Account from "../pages/account";
 
 const router = createBrowserRouter([
   {
@@ -73,21 +74,18 @@ const router = createBrowserRouter([
         element: <PrivateRoute children={<Address />} />,
       },
       {
-        path: "payment",
-        element: <PrivateRoute children={<Payment />} />,
-      },
-      {
-        path: "orders",
-        // element: <PrivateRoute children={<Orders />} />,
-        element: <Outlet />,
+        path: "account",
+        element: <PrivateRoute children={<Outlet />} />,
         children: [
+          { index: true, element: <Account /> },
           {
-            index: true,
-            element: <PrivateRoute children={<Orders />} />,
-          },
-          {
-            path: ":orderId",
-            element: <PrivateRoute children={<OrderDetails />} />,
+            path: "orders",
+            element: <Outlet />,
+            children: [
+              { index: true, element: <Orders /> },
+              { path: ":orderId", element: <OrderDetails /> },
+              { path: "payment", element: <Payment /> },
+            ],
           },
         ],
       },

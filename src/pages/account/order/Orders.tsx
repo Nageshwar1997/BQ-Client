@@ -1,16 +1,16 @@
 import { useEffect, useMemo } from "react";
-import { useGetAllOrdersInfinite } from "../../api/order/order.service";
-import { IOrder } from "../../types";
-import { formatDate, toINRCurrency } from "../../utils";
-import { ORDER_STATUS_CLASSES, ORDER_STATUS_OPTIONS } from "../../constants";
+import { useGetAllOrdersInfinite } from "../../../api/order/order.service";
+import { IOrder } from "../../../types";
+import { formatDate, toINRCurrency } from "../../../utils";
+import { ORDER_STATUS_CLASSES, ORDER_STATUS_OPTIONS } from "../../../constants";
 import { useInView } from "react-intersection-observer";
-import Dropdown from "../../components/dropdown/Dropdown";
-import DropdownOptions from "../../components/dropdown/children/DropdownOptions";
-import useQueryParams from "../../hooks/useQueryParams";
+import Dropdown from "../../../components/dropdown/Dropdown";
+import DropdownOptions from "../../../components/dropdown/children/DropdownOptions";
+import useQueryParams from "../../../hooks/useQueryParams";
 import { Link } from "react-router-dom";
-import LoadingPage from "../../components/loaders/LoadingPage";
-import ShowError from "../../components/errors/ShowError";
-import EmptyData from "../../components/empty-data/EmptyData";
+import LoadingPage from "../../../components/loaders/LoadingPage";
+import ShowError from "../../../components/errors/ShowError";
+import EmptyData from "../../../components/empty-data/EmptyData";
 
 const Orders = () => {
   const { data, fetchNextPage, hasNextPage, isLoading, isError } =
