@@ -23,6 +23,13 @@ import Payment from "../pages/account/payment/Payment";
 import Orders from "../pages/account/order/Orders";
 import OrderDetails from "../pages/account/order/OrderDetails";
 import Account from "../pages/account";
+import AboutUs from "../pages/company/AboutUs";
+import PartnerWithUs from "../pages/company/PartnerWithUs";
+import Careers from "../pages/company/Careers";
+import Sustainability from "../pages/company/Sustainability";
+import Ethics from "../pages/company/Ethics";
+import PressMedia from "../pages/company/PressMedia";
+import Teams from "../pages/company/Teams";
 
 const router = createBrowserRouter([
   {
@@ -33,30 +40,12 @@ const router = createBrowserRouter([
       </Suspense>
     ),
     children: [
-      {
-        index: true,
-        element: <Home />,
-      },
-      {
-        path: "offers",
-        element: <Offers />,
-      },
-      {
-        path: "blogs",
-        element: <Blogs />,
-      },
-      {
-        path: "search",
-        element: <SearchProducts />,
-      },
-      {
-        path: "product/:productId",
-        element: <ProductDetails />,
-      },
-      {
-        path: "products/:levelOneCategory",
-        element: <CategoryProducts />,
-      },
+      { index: true, element: <Home /> },
+      { path: "offers", element: <Offers /> },
+      { path: "blogs", element: <Blogs /> },
+      { path: "search", element: <SearchProducts /> },
+      { path: "product/:productId", element: <ProductDetails /> },
+      { path: "products/:levelOneCategory", element: <CategoryProducts /> },
       {
         path: "products/:levelOneCategory/:levelTwoCategory",
         element: <CategoryProducts />,
@@ -65,14 +54,8 @@ const router = createBrowserRouter([
         path: "products/:levelOneCategory/:levelTwoCategory/:levelThreeCategory",
         element: <CategoryProducts />,
       },
-      {
-        path: "cart",
-        element: <PrivateRoute children={<Cart />} />,
-      },
-      {
-        path: "address",
-        element: <PrivateRoute children={<Address />} />,
-      },
+      { path: "cart", element: <PrivateRoute children={<Cart />} /> },
+      { path: "address", element: <PrivateRoute children={<Address />} /> },
       {
         path: "account",
         element: <PrivateRoute children={<Outlet />} />,
@@ -87,6 +70,19 @@ const router = createBrowserRouter([
               { path: "payment", element: <Payment /> },
             ],
           },
+        ],
+      },
+      {
+        path: "company",
+        element: <Outlet />,
+        children: [
+          { index: true, path: "about", element: <AboutUs /> },
+          { path: "partner-with-us", element: <PartnerWithUs /> },
+          { path: "careers", element: <Careers /> },
+          { path: "sustainability", element: <Sustainability /> },
+          { path: "ethics", element: <Ethics /> },
+          { path: "teams", element: <Teams /> },
+          { path: "press-media", element: <PressMedia /> },
         ],
       },
     ],
