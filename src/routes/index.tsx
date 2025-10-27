@@ -30,6 +30,10 @@ import Sustainability from "../pages/company/Sustainability";
 import Ethics from "../pages/company/Ethics";
 import PressMedia from "../pages/company/PressMedia";
 import Teams from "../pages/company/Teams";
+import Wishlist from "../pages/quick-links/Wishlist";
+import ReferFriend from "../pages/quick-links/ReferFriend";
+import StoreLocator from "../pages/quick-links/StoreLocator";
+import BecomeSeller from "../pages/quick-links/BecomeSeller";
 
 const router = createBrowserRouter([
   {
@@ -85,6 +89,13 @@ const router = createBrowserRouter([
           { path: "press-media", element: <PressMedia /> },
         ],
       },
+      // Quick Link Pages
+      { path: "wishlist", element: <PrivateRoute children={<Wishlist />} /> },
+      { path: "refer", element: <ReferFriend /> },
+      { path: "store-locator", element: <StoreLocator /> },
+      { path: "become-seller", element: <BecomeSeller /> },
+      // Services Pages
+      // { path: "contact", element: <Outlet /> },
     ],
   },
   {
