@@ -43,6 +43,7 @@ import Disclaimer from "../pages/legal-policies/Disclaimer";
 import TermsAndConditions from "../pages/legal-policies/TermsAndConditions";
 import CookiePolicy from "../pages/legal-policies/CookiePolicy";
 import PrivacyPolicy from "../pages/legal-policies/PrivacyPolicy";
+import TrackMyOrders from "../pages/account/order/TrackMyOrders";
 
 const router = createBrowserRouter([
   {
@@ -82,24 +83,21 @@ const router = createBrowserRouter([
               { index: true, element: <Orders /> },
               { path: ":orderId", element: <OrderDetails /> },
               { path: "return-refund", element: <OrderReturnRefund /> },
+              { path: "track", element: <TrackMyOrders /> },
               { path: "payment", element: <Payment /> },
             ],
           },
         ],
       },
-      {
-        path: "company",
-        element: <Outlet />,
-        children: [
-          { index: true, path: "about", element: <AboutUs /> },
-          { path: "partner-with-us", element: <PartnerWithUs /> },
-          { path: "careers", element: <Careers /> },
-          { path: "sustainability", element: <Sustainability /> },
-          { path: "ethics", element: <Ethics /> },
-          { path: "teams", element: <Teams /> },
-          { path: "press-media", element: <PressMedia /> },
-        ],
-      },
+      // Company Pages
+      { path: "about-us", element: <AboutUs /> },
+      { path: "partner-with-us", element: <PartnerWithUs /> },
+      { path: "careers", element: <Careers /> },
+      { path: "sustainability", element: <Sustainability /> },
+      { path: "ethics", element: <Ethics /> },
+      { path: "teams", element: <Teams /> },
+      { path: "press-media", element: <PressMedia /> },
+
       // Quick Link Pages
       { path: "refer", element: <ReferFriend /> },
       { path: "store-locator", element: <StoreLocator /> },

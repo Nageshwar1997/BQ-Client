@@ -24,21 +24,11 @@ const FooterOptionList = ({
           isFirst ? "grid-cols-2 sm:grid-cols-1" : ""
         } gap-2`}
       >
-        {options.map((link, i: number) => {
-          return (
-            <button
-              key={i}
-              className="text-nowrap cursor-pointer disabled:cursor-not-allowed disabled:text-primary-30"
-              disabled={link?.disable}
-            >
-              {link.path ? (
-                <Link to={link.path}>{link.title}</Link>
-              ) : (
-                link.title
-              )}
-            </button>
-          );
-        })}
+        {options.map((link, i) => (
+          <Link key={i} to={link.path} className="text-nowrap cursor-pointer">
+            {link.title}
+          </Link>
+        ))}
       </div>
     </div>
   );

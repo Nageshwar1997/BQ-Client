@@ -22,6 +22,7 @@ import {
 } from "../constants";
 import { loginSchema, registerSchema } from "../pages/auth/helpers/auth.schema";
 import { addressSchema } from "../schemas/address";
+import { footerCategories } from "../components/footer/data";
 
 export interface ClassName {
   className?: string;
@@ -380,14 +381,8 @@ export type TRegexes =
   | "atLeastOneUppercaseLetter"
   | "onlyLettersAndSpacesAndDots";
 
-type TFooterOption = {
-  title: string;
-  disable?: boolean;
-  path?: string;
-};
-
 export interface IFooterOptionList {
-  options: TFooterOption[];
+  options: (typeof footerCategories)[number]["options"];
   title?: string;
   isFirst?: boolean;
 }
