@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { useUserStore } from "../../store/user.store";
+import Input from "../../components/input/Input";
+import Button from "../../components/button/Button";
+import useRequireAuth from "../../hooks/useRequireAuth";
 
 const ReferFriend = () => {
+  const requireAuth = useRequireAuth();
   const { isAuthenticated, user } = useUserStore();
   const [referralLink, setReferralLink] = useState(
     "https://beautinique.com/referral"
@@ -9,18 +13,21 @@ const ReferFriend = () => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(referralLink);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    const action = () => {
+      navigator.clipboard.writeText(referralLink);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    };
+
+    if (!requireAuth(action)) return;
+    action();
   };
 
   useEffect(() => {
-    if (isAuthenticated && user) {
-      setReferralLink(
-        `https://beautinique.com/referral?referralCode=${user._id}`
-      );
+    if (isAuthenticated && user?._id) {
+      setReferralLink(`https://beautinique.com/referral/${user._id}`);
     }
-  }, [isAuthenticated, user]);
+  }, [isAuthenticated, user?._id]);
 
   return (
     <div className="p-6 max-w-5xl mx-auto space-y-10">
@@ -60,19 +67,23 @@ const ReferFriend = () => {
         <h2 className="text-xl sm:text-2xl font-semibold">
           Your Referral Link
         </h2>
+        {/* Todo: Disabled for Temporary */}
         <div className="flex flex-col sm:flex-row justify-center items-center gap-3">
-          <input
-            type="text"
-            value={referralLink}
-            readOnly
-            className="border border-tertiary rounded px-4 py-2 w-full sm:w-96 text-sm sm:text-base focus:outline-none"
+          <Input
+            inputProps={{
+              value: referralLink,
+              type: "url",
+              readOnly: true,
+              className: "!select-none pointer-events-none",
+            }}
+            containerClassName="max-w-lg"
           />
-          <button
-            onClick={handleCopy}
-            className="px-4 py-2 bg-accent-duo text-white rounded hover:brightness-110 transition"
-          >
-            {copied ? "Copied!" : "Copy Link"}
-          </button>
+          <Button
+            content={copied ? "Copied!" : "Copy Link"}
+            pattern="primary"
+            className="max-w-40 !py-3 !rounded-lg"
+            buttonProps={{ disabled: true, onClick: handleCopy }}
+          />
         </div>
       </section>
 
