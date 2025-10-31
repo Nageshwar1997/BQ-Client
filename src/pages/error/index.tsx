@@ -33,20 +33,15 @@ const Errors = ({ imgText, title, message }: TError) => {
         </pre>
       )}
       <div className="flex items-center justify-center gap-4">
-        <Link to="/contact">
-          <Button
-            content="Contact Us"
-            pattern="secondary"
-            className="min-w-36 base:min-w-40 !rounded-lg"
-          />
-        </Link>
-        <Link to="/">
-          <Button
-            content="Home"
-            pattern="primary"
-            className="min-w-36 base:min-w-40 !rounded-lg"
-          />
-        </Link>
+        {Array.from({ length: 2 }).map((_, index) => (
+          <Link to={index === 0 ? "/contact" : "/"} key={index}>
+            <Button
+              content={index === 0 ? "Contact Us" : "Home"}
+              pattern={index === 0 ? "secondary" : "primary"}
+              className="min-w-36 base:min-w-40 !rounded-lg"
+            />
+          </Link>
+        ))}
       </div>
     </div>
   );
