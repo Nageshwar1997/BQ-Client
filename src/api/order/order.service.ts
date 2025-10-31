@@ -3,6 +3,7 @@ import {
   useInfiniteQuery,
   useMutation,
   useQuery,
+  useQueryClient,
 } from "@tanstack/react-query";
 import {
   cancel_payment,
@@ -54,7 +55,13 @@ export const useGetAllOrdersInfinite = ({ limit }: { limit: number }) => {
 };
 
 export const useVerifyPayment = () => {
-  return useMutation({ mutationFn: verify_payment });
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: verify_payment,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get_user_cart"] });
+    },
+  });
 };
 
 export const useCancelPayment = () => {
