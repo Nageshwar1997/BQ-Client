@@ -1,9 +1,10 @@
 import { createBrowserRouter, Outlet } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
-// Lazy load route components
+// Lazy loaded main layout
 const Main = lazy(() => import("../pages/main/Main"));
 
+// Pages
 import Home from "../pages/home/Home";
 import NotFound from "../pages/error/NotFound";
 import SomethingWentWrong from "../pages/error/SomethingWentWrong";
@@ -53,6 +54,7 @@ const router = createBrowserRouter([
         <Main />
       </Suspense>
     ),
+    errorElement: <SomethingWentWrong />,
     children: [
       { index: true, element: <Home /> },
       { path: "offers", element: <Offers /> },
