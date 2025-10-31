@@ -118,7 +118,6 @@ const router = createBrowserRouter([
   },
   { path: "register", element: <AuthRedirect children={<Register />} /> },
   { path: "login", element: <AuthRedirect children={<Login />} /> },
-  { path: "error", element: <SomethingWentWrong /> },
   { path: "*", element: <NotFound /> },
 ]);
 
