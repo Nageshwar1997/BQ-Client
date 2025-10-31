@@ -1,17 +1,18 @@
 import { AxiosError } from "axios";
-import { Link } from "react-router-dom";
+import { Link, useRouteError } from "react-router-dom";
 
-import { envs } from "../../../envs/index.env";
-import Button from "../../../components/button/Button";
+import { envs } from "../../envs/index.env";
+import Button from "../../components/button/Button";
 
 type TError = {
   imgText: string;
   title: string;
   message: string;
-  error?: unknown;
 };
 
-const Errors = ({ imgText, title, message, error }: TError) => {
+const Errors = ({ imgText, title, message }: TError) => {
+  const error = useRouteError();
+
   return (
     <div className="w-dvw h-dvh flex flex-col items-center justify-center space-y-4 p-6 text-center">
       <h1
@@ -51,4 +52,22 @@ const Errors = ({ imgText, title, message, error }: TError) => {
   );
 };
 
-export default Errors;
+export const NotFound = () => {
+  return (
+    <Errors
+      imgText="404"
+      title="Not Found"
+      message="Sorry, the page you are looking for does not exist."
+    />
+  );
+};
+
+export const SomethingWentWrong = () => {
+  return (
+    <Errors
+      imgText="Oops"
+      title="Something went wrong."
+      message="Seems like something is broken, hopefully it's not your heart!"
+    />
+  );
+};

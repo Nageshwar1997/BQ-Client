@@ -6,8 +6,7 @@ const Main = lazy(() => import("../pages/main/Main"));
 
 // Pages
 import Home from "../pages/home/Home";
-import NotFound from "../pages/error/NotFound";
-import SomethingWentWrong from "../pages/error/SomethingWentWrong";
+import { NotFound, SomethingWentWrong } from "../pages/error";
 import LoadingScreen from "../components/loaders/LoadingScreen";
 import CategoryProducts from "../pages/product/categoryProducts";
 import Offers from "../pages/offers/Offers";
