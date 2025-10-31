@@ -56,8 +56,8 @@ const router = createBrowserRouter([
     errorElement: <SomethingWentWrong />,
     children: [
       { index: true, element: <Home /> },
-      { path: "offers", element: <Offers /> },
-      { path: "blogs", element: <Blogs /> },
+      { path: "offers", element: <Offers /> }, // Todo: Pending
+      { path: "blogs", element: <Blogs /> }, // Todo: Pending
       { path: "search", element: <SearchProducts /> },
       { path: "product/:productId", element: <ProductDetails /> },
       { path: "products/:levelOneCategory", element: <CategoryProducts /> },
@@ -75,38 +75,38 @@ const router = createBrowserRouter([
         path: "account",
         element: <PrivateRoute children={<Outlet />} />,
         children: [
-          { index: true, element: <Account /> },
-          { path: "wishlist", element: <Wishlist /> },
+          { index: true, element: <Account /> }, // Todo: Pending
+          { path: "wishlist", element: <Wishlist /> }, // Todo: Pending
           {
             path: "orders",
             element: <Outlet />,
             children: [
               { index: true, element: <Orders /> },
-              { path: ":orderId", element: <OrderDetails /> },
-              { path: "return-refund", element: <OrderReturnRefund /> },
-              { path: "track", element: <TrackMyOrders /> },
+              { path: ":orderId", element: <OrderDetails /> }, // Todo: Pending
+              { path: "return-refund", element: <OrderReturnRefund /> }, // Todo: Pending
+              { path: "track", element: <TrackMyOrders /> }, // Todo: Pending
               { path: "payment", element: <Payment /> },
             ],
           },
         ],
       },
       // Company Pages
-      { path: "about-us", element: <AboutUs /> },
+      { path: "about-us", element: <AboutUs /> }, // Todo: Pending
       { path: "partner-with-us", element: <PartnerWithUs /> },
-      { path: "careers", element: <Careers /> },
-      { path: "sustainability", element: <Sustainability /> },
-      { path: "ethics", element: <Ethics /> },
-      { path: "teams", element: <Teams /> },
-      { path: "press-media", element: <PressMedia /> },
+      { path: "careers", element: <Careers /> }, // Todo: Pending
+      { path: "sustainability", element: <Sustainability /> }, // Todo: Pending
+      { path: "ethics", element: <Ethics /> }, // Todo: Pending
+      { path: "teams", element: <Teams /> }, // Todo: Pending
+      { path: "press-media", element: <PressMedia /> }, // Todo: Pending
 
       // Quick Link Pages
-      { path: "refer", element: <ReferFriend /> },
-      { path: "store-locator", element: <StoreLocator /> },
-      { path: "become-seller", element: <BecomeSeller /> },
+      { path: "refer", element: <ReferFriend /> }, // Todo: Pending
+      { path: "store-locator", element: <StoreLocator /> }, // Todo: Pending
+      { path: "become-seller", element: <BecomeSeller /> }, // Todo: Pending
       // Services Pages
-      { path: "contact", element: <ContactUs /> },
+      { path: "contact", element: <ContactUs /> }, // Todo: Pending
       { path: "help-center-faq", element: <HelpCenterFAQ /> },
-      { path: "shipping-info", element: <ShippingInfo /> },
+      { path: "shipping-info", element: <ShippingInfo /> }, // Todo: Pending
       // Legal Policies Pages
       { path: "privacy-policy", element: <PrivacyPolicy /> },
       { path: "cookie-policy", element: <CookiePolicy /> },
