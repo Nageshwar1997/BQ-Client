@@ -100,7 +100,7 @@ const router = createBrowserRouter([
       { path: "press-media", element: <PressMedia /> }, // Todo: Pending
 
       // Quick Link Pages
-      { path: "refer", element: <ReferFriend /> }, // Todo: Pending
+      { path: "refer", element: <ReferFriend /> }, // Todo: Refer Part is Pending
       { path: "store-locator", element: <StoreLocator /> }, // Todo: Pending
       { path: "become-seller", element: <BecomeSeller /> }, // Todo: Pending
       // Services Pages
