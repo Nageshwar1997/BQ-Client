@@ -106,7 +106,7 @@ const router = createBrowserRouter([
       // Services Pages
       { path: "contact", element: <ContactUs /> }, // Todo: Pending
       { path: "help-center-faq", element: <HelpCenterFAQ /> },
-      { path: "shipping-info", element: <ShippingInfo /> }, // Todo: Pending
+      { path: "shipping-info", element: <ShippingInfo /> },
       // Legal Policies Pages
       { path: "privacy-policy", element: <PrivacyPolicy /> },
       { path: "cookie-policy", element: <CookiePolicy /> },
