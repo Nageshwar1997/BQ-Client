@@ -58,7 +58,7 @@ export const useRemoveProductFromCart = () => {
 
 export const useGetUserCart = () => {
   const { queryParams } = useQueryParams();
-  const { isAuthenticated } = useUserStore();
+  const isAuthenticated = useUserStore.getState().isAuthenticated;
   return useQuery({
     queryKey: ["get_user_cart", queryParams.login, isAuthenticated],
     queryFn: get_user_cart,

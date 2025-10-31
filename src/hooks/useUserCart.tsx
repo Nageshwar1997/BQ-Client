@@ -7,19 +7,12 @@ import {
 } from "../api/cart/cart.service";
 import useCartStore from "../store/cart.store";
 import { TCartProduct } from "../types";
-import { useUserStore } from "../store/user.store";
-import useQueryParams from "./useQueryParams";
+import useRequireAuth from "./useRequireAuth";
 
 export const useUserCart = () => {
-  const {
-    cart,
-    setCart,
-    updateProductQuantity,
-    removeProductFromCart,
-    addProductToCart,
-  } = useCartStore();
-  const { isAuthenticated } = useUserStore();
-  const { setParams } = useQueryParams();
+  const { cart, setCart, updateProductQuantity, removeProductFromCart } =
+    useCartStore();
+  const requireAuth = useRequireAuth();
 
   const { data, isLoading, isError } = useGetUserCart();
   const { mutateAsync: updateQuantity } = useUpdateProductQuantityInCart();
@@ -31,12 +24,12 @@ export const useUserCart = () => {
   }, [data, setCart]);
 
   const handleQuantityChange = (id: string, newQty: number) => {
-    updateProductQuantity(id, newQty); // update store immediately
+    updateProductQuantity(id, newQty);
     updateQuantity({ cartItemId: id, quantity: String(newQty) });
   };
 
   const handleRemoveItem = (id: string) => {
-    removeProductFromCart(id); // update store immediately
+    removeProductFromCart(id);
     removeProduct({ cartItemId: id });
   };
 
@@ -44,25 +37,29 @@ export const useUserCart = () => {
     product: TCartProduct["product"],
     shade?: TCartProduct["shade"]
   ) => {
-    if (!isAuthenticated) {
-      setParams({ login: "true" });
-      return;
-    }
+    const action = () => {
+      const {
+        cart: latestCart,
+        addProductToCart,
+        setCart,
+      } = useCartStore.getState();
 
-    if (!cart) return;
+      addProductToCart(product, shade);
 
-    addProductToCart(product, shade);
+      // API call
+      addToCart(
+        {
+          productId: product._id,
+          ...(shade?._id && { shadeId: shade._id }),
+        },
+        {
+          onError: () => setCart(latestCart), // rollback safely
+        }
+      );
+    };
 
-    // API call
-    addToCart(
-      {
-        productId: product._id,
-        ...(shade?._id && { shadeId: shade._id }),
-      },
-      {
-        onError: () => setCart(cart), // revert on error
-      }
-    );
+    if (!requireAuth(action)) return; // store action if not logged in
+    action(); // run immediately if logged in
   };
 
   return {
