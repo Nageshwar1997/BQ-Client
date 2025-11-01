@@ -96,8 +96,8 @@ const router = createBrowserRouter([
       { path: "careers", element: <Careers /> }, // Todo: Pending
       { path: "sustainability", element: <Sustainability /> }, // Todo: Pending
       { path: "ethics", element: <Ethics /> }, // Todo: Pending
-      { path: "teams", element: <Teams /> }, // Todo: Pending
-      { path: "press-media", element: <PressMedia /> }, // Todo: Pending
+      { path: "teams", element: <Teams /> }, // Todo: Ongoing
+      { path: "press-media", element: <PressMedia /> },
 
       // Quick Link Pages
       { path: "refer", element: <ReferFriend /> }, // Todo: Refer Part is Pending
