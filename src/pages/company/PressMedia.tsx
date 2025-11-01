@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { BRAND_FEATURE_HIGHLIGHTS } from "../../constants";
 
 const PressMedia = () => {
   return (
@@ -30,26 +31,16 @@ const PressMedia = () => {
           Featured In
         </h2>
         <div className="flex flex-wrap gap-3 base:gap-4 sm:gap-6 items-center justify-center">
-          <img
-            src="/images/company/press-media/TOI.webp"
-            alt="Times of India"
-            className="w-16 h-16 base:w-20 base:h-20 md:h-40 md:w-40 aspect-square rounded-xl object-contain bg-[#D32000] border border-primary-30 shadow-sm shadow-primary-30"
-          />
-          <img
-            src="/images/company/press-media/Vogue.webp"
-            alt="Vogue"
-            className="w-16 h-16 base:w-20 base:h-20 md:h-40 md:w-40 aspect-square rounded-xl p-2 object-contain bg-white border border-primary-30 shadow-sm shadow-primary-30"
-          />
-          <img
-            src="/images/company/press-media/Elle.webp"
-            alt="Elle"
-            className="w-16 h-16 base:w-20 base:h-20 md:h-40 md:w-40 aspect-square rounded-xl object-contain border border-primary-30 shadow-sm shadow-primary-30"
-          />
-          <img
-            src="/images/company/press-media/Cosmopolitan.webp"
-            alt="Cosmopolitan"
-            className="w-16 h-16 base:w-20 base:h-20 md:h-40 md:w-40 aspect-square rounded-xl bg-white object-contain p-1 border border-primary-30 shadow-sm shadow-primary-30"
-          />
+          {["TOI", "Vogue", "Elle", "Cosmopolitan"].map((name, index) => (
+            <img
+              key={index}
+              src={`/images/company/press-media/${name}.webp`}
+              alt="Times of India"
+              className={`w-16 h-16 base:w-20 base:h-20 md:h-40 md:w-40 aspect-square rounded-xl object-contain border border-primary-30 shadow-sm shadow-primary-30 p-2 ${
+                name === "TOI" ? "bg-[#D32000]" : "bg-white"
+              }`}
+            />
+          ))}
         </div>
       </section>
       <section className="space-y-5 sm:space-y-6">
@@ -57,63 +48,19 @@ const PressMedia = () => {
           Brand Feature Highlights
         </h2>
         <div className="grid gap-6 grid-cols-[repeat(auto-fit,minmax(250px,1fr))]">
-          <div className="rounded-2xl overflow-hidden shadow-md bg-primary-1 shadow-primary-10 border border-primary-30">
-            <img
-              src="/images/company/press-media/ELLE-India-Award.webp"
-              alt="Elle India Feature"
-              className="w-full h-48 object-cover object-top"
-            />
-            <div className="p-4 space-y-2 border-t border-t-primary-30">
-              <h3 className="font-semibold">ELLE India Award</h3>
-              <p className="text-sm text-tertiary">
-                Beautinique featured in ELLE India for redefining modern clean
-                beauty standards.
-              </p>
+          {BRAND_FEATURE_HIGHLIGHTS.map(({ title, description, image }) => (
+            <div className="rounded-2xl overflow-hidden shadow-md bg-primary-1 shadow-primary-10 border border-primary-30">
+              <img
+                src={`/images/company/press-media/${image}`}
+                alt="Magazine"
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-4 space-y-2 border-t border-t-primary-30">
+                <h3 className="font-semibold">{title}</h3>
+                <p className="text-sm text-tertiary">{description}</p>
+              </div>
             </div>
-          </div>
-
-          <div className="rounded-2xl overflow-hidden shadow-md bg-primary-1 shadow-primary-10 border border-primary-30">
-            <img
-              src="/images/company/press-media/Vogue-India-Special-Edition.webp"
-              alt="Magazine feature"
-              className="w-full h-48 object-cover object-top"
-            />
-            <div className="p-4 space-y-2 border-t border-t-primary-30">
-              <h3 className="font-semibold">Vogue India Special Edition</h3>
-              <p className="text-sm text-tertiary">
-                Beautinique named as one of the top emerging beauty brands to
-                watch.
-              </p>
-            </div>
-          </div>
-
-          <div className="rounded-2xl overflow-hidden shadow-md bg-primary-1 shadow-primary-10 border border-primary-30">
-            <img
-              src="/images/company/press-media/Cosmopolitan-Beauty-Awards.webp"
-              alt="Magazine"
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-4 space-y-2 border-t border-t-primary-30">
-              <h3 className="font-semibold">Cosmopolitan Beauty Awards</h3>
-              <p className="text-sm text-tertiary">
-                Award nominee for Best Natural Skincare Line 2025.
-              </p>
-            </div>
-          </div>
-
-          <div className="rounded-2xl overflow-hidden shadow-md bg-primary-1 shadow-primary-10 border border-primary-30">
-            <img
-              src="/images/company/press-media/Times-Lifestyle-Feature.webp"
-              alt="Press shoot"
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-4 space-y-2 border-t border-t-primary-30">
-              <h3 className="font-semibold">Times Lifestyle Feature</h3>
-              <p className="text-sm text-tertiary">
-                Interview with our founder on ethical beauty & clean formulas.
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
       <section className="space-y-5 sm:space-y-6">

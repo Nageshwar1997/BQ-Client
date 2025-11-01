@@ -185,3 +185,29 @@ export const ORDER_STATUS_CLASSES: Record<
   CANCELLED: "bg-red-100 text-red-800",
   RETURNED: "bg-purple-100 text-purple-800",
 };
+
+export const BRAND_FEATURE_HIGHLIGHTS = [
+  {
+    title: "Times Lifestyle Feature",
+    description:
+      "Interview with our founder on ethical beauty & clean formulas.",
+    image: "Times-Lifestyle-Feature.webp",
+  },
+  {
+    title: "Vogue India Special Edition",
+    description:
+      "Beautinique named as one of the top emerging beauty brands to watch.",
+    image: "Vogue-India-Special-Edition.webp",
+  },
+  {
+    title: "ELLE India Award",
+    description:
+      "Beautinique featured in ELLE India for redefining modern clean beauty standards.",
+    image: "ELLE-India-Award.webp",
+  },
+  {
+    title: "Cosmopolitan Beauty Awards",
+    description: "Award nominee for Best Natural Skincare Line 2025.",
+    image: "Cosmopolitan-Beauty-Awards.webp",
+  },
+];
