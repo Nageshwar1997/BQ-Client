@@ -233,7 +233,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         name: "Deepika Padukone",
         role: "CEO (Chief Executive Officer)",
         gender: "Female",
-        image: "",
+        image: "/images/company/teams/actresses/Deepika-Padukone.webp",
       },
       {
         name: "Akshay Kumar",
@@ -245,7 +245,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         name: "Kareena Kapoor",
         role: "CFO (Chief Financial Officer)",
         gender: "Female",
-        image: "",
+        image: "/images/company/teams/actresses/Kareena-Kapoor.webp",
       },
       {
         name: "Ranveer Singh",
@@ -257,7 +257,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         name: "Priyanka Chopra",
         role: "CTO (Chief Technology Officer)",
         gender: "Female",
-        image: "",
+        image: "/images/company/teams/actresses/Priyanka-Chopra.webp",
       },
       {
         name: "Hrithik Roshan",
@@ -275,7 +275,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         name: "Alia Bhatt",
         role: "Head of Product",
         gender: "Female",
-        image: "",
+        image: "/images/company/teams/actresses/Alia-Bhatt.webp",
         description: {
           title: "Crafting Icons",
           description:
@@ -292,7 +292,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         name: "Kriti Sanon",
         role: "Merchandiser",
         gender: "Female",
-        image: "",
+        image: "/images/company/teams/actresses/Kriti-Sanon.webp",
       },
       {
         name: "Vicky Kaushal",
@@ -321,7 +321,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         name: "Anushka Sharma",
         role: "Engineering Manager",
         gender: "Female",
-        image: "",
+        image: "/images/company/teams/actresses/Anushka-Sharma.webp",
       },
       {
         name: "Tiger Shroff",
@@ -333,7 +333,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         name: "Sara Ali Khan",
         role: "Backend Developer",
         gender: "Female",
-        image: "",
+        image: "/images/company/teams/actresses/Sara-Ali-Khan.webp",
       },
       {
         name: "Ayushmann Khurrana",
@@ -345,7 +345,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         name: "Shraddha Kapoor",
         role: "Android/IOS Developer",
         gender: "Female",
-        image: "",
+        image: "/images/company/teams/actresses/Shraddha-Kapoor.webp",
       },
       {
         name: "Sidharth Malhotra",
@@ -357,7 +357,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         name: "Taapsee Pannu",
         role: "QA Engineer",
         gender: "Female",
-        image: "",
+        image: "/images/company/teams/actresses/Taapsee-Pannu.webp",
       },
       {
         name: "Rajkummar Rao",
@@ -375,7 +375,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         name: "Katrina Kaif",
         role: "Head of Marketing",
         gender: "Female",
-        image: "",
+        image: "/images/company/teams/actresses/Katrina-Kaif.webp",
         description: {
           title: "Redefining Influence",
           description:
@@ -392,7 +392,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         name: "Kiara Advani",
         role: "Content Writer",
         gender: "Female",
-        image: "",
+        image: "/images/company/teams/actresses/Kiara-Advani.webp",
       },
       {
         name: "Nawazuddin Siddiqui",
@@ -404,7 +404,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         name: "Parineeti Chopra",
         role: "Social Media Manager",
         gender: "Female",
-        image: "",
+        image: "/images/company/teams/actresses/Parineeti-Chopra.webp",
       },
       {
         name: "John Abraham",
@@ -416,7 +416,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         name: "Madhuri Dixit",
         role: "Influencer Manager",
         gender: "Female",
-        image: "",
+        image: "/images/company/teams/actresses/Madhuri-Dixit.webp",
       },
       {
         name: "Saif Ali Khan",
@@ -445,7 +445,8 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         name: "Jacqueline Fernandez",
         role: "BD Manager",
         gender: "Female",
-        image: "",
+        image:
+          "/images/company/teams/actresses/Jacqueline-Fernandez.webp",
       },
       {
         name: "Farhan Akhtar",
@@ -457,7 +458,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         name: "Disha Patani",
         role: "Sales Associate",
         gender: "Female",
-        image: "",
+        image: "/images/company/teams/actresses/Disha-Patani.webp",
       },
       {
         name: "Arjun Kapoor",
@@ -469,7 +470,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         name: "Vidya Balan",
         role: "Chat Support",
         gender: "Female",
-        image: "",
+        image: "/images/company/teams/actresses/Vidya-Balan.webp",
       },
     ],
   },
@@ -492,7 +493,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         name: "Sonakshi Sinha",
         role: "Inventory Manager",
         gender: "Female",
-        image: "",
+        image: "/images/company/teams/actresses/Sonakshi-Sinha.webp",
       },
       {
         name: "Abhishek Bachchan",
@@ -504,7 +505,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         name: "Sonam Kapoor",
         role: "Logistics Coordinator",
         gender: "Female",
-        image: "",
+        image: "/images/company/teams/actresses/Sonam-Kapoor.webp",
       },
       {
         name: "R. Madhavan",
@@ -516,7 +517,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         name: "Radhika Apte",
         role: "Packaging Staff",
         gender: "Female",
-        image: "",
+        image: "/images/company/teams/actresses/Radhika-Apte.webp",
       },
     ],
   },
@@ -539,7 +540,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         name: "Bhumika Pednekar",
         role: "Accountant",
         gender: "Female",
-        image: "",
+        image: "/images/company/teams/actresses/Bhumika-Pednekar.webp",
       },
       {
         name: "Dulquer Salmaan",
@@ -547,7 +548,12 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         gender: "Male",
         image: "",
       },
-      { name: "Nora Fatehi", role: "HR Manager", gender: "Female", image: "" },
+      {
+        name: "Nora Fatehi",
+        role: "HR Manager",
+        gender: "Female",
+        image: "/images/company/teams/actresses/Nora-Fatehi.webp",
+      },
       {
         name: "Dev Patel",
         role: "Office Administrator",
@@ -561,10 +567,10 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
     value: "data_and_analytics",
     employees: [
       {
-        name: "Aishwarya Rai",
+        name: "Amrita Rao",
         role: "Head of Data",
         gender: "Female",
-        image: "",
+        image: "/images/company/teams/actresses/Amrita-Rao.webp",
         description: {
           title: "Insights Into Action",
           description:
@@ -572,7 +578,12 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         },
       },
       { name: "Raj Patel", role: "Data Analyst", gender: "Male", image: "" },
-      { name: "Kajol Devgn", role: "BI Analyst", gender: "Female", image: "" },
+      {
+        name: "Kajol Devgn",
+        role: "BI Analyst",
+        gender: "Female",
+        image: "/images/company/teams/actresses/Kajol-Devgn.webp",
+      },
       {
         name: "Kunal Kapoor",
         role: "Data Scientist",
@@ -583,7 +594,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         name: "Urvashi Rautela",
         role: "Marketing Analyst",
         gender: "Female",
-        image: "",
+        image: "/images/company/teams/actresses/Urvashi-Rautela.webp",
       },
     ],
   },
@@ -595,7 +606,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         name: "Sridevi Kapoor",
         role: "Legal Counsel",
         gender: "Female",
-        image: "",
+        image: "/images/company/teams/actresses/Sridevi-Kapoor.webp",
         description: {
           title: "Ethics & Trust",
           description:
@@ -608,7 +619,12 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         gender: "Male",
         image: "",
       },
-      { name: "Aditi Sen", role: "Photographer", gender: "Female", image: "" },
+      {
+        name: "Janhvi Kapoor",
+        role: "Photographer",
+        gender: "Female",
+        image: "/images/company/teams/actresses/Janhvi-Kapoor.webp",
+      },
       {
         name: "Manoj Bajpayee",
         role: "Content Moderator",
