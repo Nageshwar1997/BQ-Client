@@ -506,3 +506,19 @@ export interface IOrder {
   createdAt: Date;
   updatedAt: Date;
 }
+
+// ========== Teams Page Types ==========
+export type TEmployee = {
+  name: string;
+  role: string;
+  gender: string;
+  image: string;
+  isLead?: boolean;
+  description?: string; // Only lead has description
+};
+
+export interface IDepartment {
+  title: string;
+  value: string;
+  employees: TEmployee[];
+}

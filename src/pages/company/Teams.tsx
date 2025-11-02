@@ -1,36 +1,31 @@
-const teamMembers = [
-  {
-    name: "Vineeta Singh",
-    role: "CEO & Co-Founder",
-    image:
-      "https://images.indianexpress.com/2023/01/vineeta-singh-shark-tank-india.jpg",
-  },
-  {
-    name: "Kaushik Mukherjee",
-    role: "COO & Co-Founder",
-    image:
-      "https://globalprimenews.com/wp-content/uploads/2022/06/L-R-Kaushik-Mukherjee_COO-Co-founder-SUGAR-Cosmetic-and-Vineeta-Singh_CEO-Co-founder-SUGAR-Cosmetics-1-scaled.jpg",
-  },
-  {
-    name: "Priya Sharma",
-    role: "Head of Marketing",
-    image: "https://randomuser.me/api/portraits/women/44.jpg",
-  },
-  {
-    name: "Rohit Patel",
-    role: "Lead Developer",
-    image: "https://randomuser.me/api/portraits/men/45.jpg",
-  },
-  {
-    name: "Sneha Kapoor",
-    role: "Product Designer",
-    image: "https://randomuser.me/api/portraits/women/46.jpg",
-  },
-];
+import { useMemo, useState } from "react";
+import { DEPARTMENT_AND_TEAMS_DATA, ONLY_DEPARTMENTS } from "../../constants";
+import useThemeStore from "../../store/theme.store";
+import useHorizontalScrollable from "../../hooks/useHorizontalScrollable";
+import { LeftGradient, RightGradient } from "../../components/Gradients";
 
 const Teams = () => {
+  const { theme } = useThemeStore();
+  const { containerRef, showGradient } = useHorizontalScrollable();
+  const [selectedDept, setSelectedDept] = useState({
+    title: "All",
+    value: "",
+  });
+
+  const employees = useMemo(() => {
+    if (selectedDept.value) {
+      return (
+        DEPARTMENT_AND_TEAMS_DATA.find(
+          (dept) => dept.value === selectedDept.value
+        )?.employees || []
+      );
+    } else {
+      return DEPARTMENT_AND_TEAMS_DATA.flatMap((dept) => dept.employees) || [];
+    }
+  }, [selectedDept]);
+
   return (
-    <div className="p-6 max-w-6xl mx-auto space-y-10">
+    <div className="p-6 mx-auto space-y-10">
       <header className="text-center space-y-3 sm:space-y-4">
         <h1 className="text-2xl base:text-3xl sm:text-4xl font-bold tracking-tight bg-clip-text bg-silver-duo text-transparent">
           Meet Our Team
@@ -40,25 +35,80 @@ const Teams = () => {
           and cosmetics.
         </p>
       </header>
-
-      <div className="grid gap-6 grid-cols-[repeat(auto-fit,minmax(220px,1fr))] justify-center">
-        {teamMembers.map((member, index) => (
-          <div
-            key={index}
-            className="rounded-2xl overflow-hidden shadow-md bg-primary-1 shadow-primary-10 border border-primary-30 w-full max-w-[220px] text-center"
-          >
-            <img
-              src={member.image}
-              alt={member.name}
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-4 space-y-1 border-t border-t-primary-30">
-              <h3 className="font-semibold">{member.name}</h3>
-              <p className="text-sm text-tertiary">{member.role}</p>
+      <div className="relative py-2">
+        {showGradient.left && <LeftGradient className="!w-20 h-full" />}
+        {showGradient.right && <RightGradient className="!w-20 h-full" />}
+        <div
+          className="flex gap-4 overflow-y-scroll scroll-smooth"
+          ref={containerRef}
+        >
+          {[{ title: "All", value: "" }, ...ONLY_DEPARTMENTS].map((dept) => (
+            <div
+              key={dept.value}
+              className={`text-nowrap cursor-pointer font-semibold p-1 bg-clip-text text-transparent ${
+                selectedDept.value === dept.value
+                  ? "bg-accent-duo"
+                  : "bg-silver-duo hover:text-primary"
+              }`}
+              onClick={() => setSelectedDept(dept)}
+            >
+              {dept.title}
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
+
+      <main className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-center">
+        {employees.map((emp, index) => {
+          const isLead = emp.isLead && selectedDept.value;
+          return (
+            <div
+              key={index}
+              className={`rounded-2xl overflow-hidden shadow-md bg-primary-1 shadow-primary-10 border border-primary-30 text-center w-full ${
+                isLead ? "sm:col-span-2" : ""
+              }`}
+            >
+              <div className="flex flex-col sm:flex-row">
+                <div
+                  className={`h-full border border-[blue] relative ${
+                    isLead ? "sm:w-1/2" : "w-full"
+                  }`}
+                >
+                  <img
+                    src={
+                      emp.image ||
+                      `/images/company/teams/${emp.gender}-${theme}.webp`
+                    }
+                    alt={emp.name}
+                    className="w-full h-56 object-contain object-bottom"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 flex flex-col items-center justify-center bg-gradient-to-t from-primary-inverted to-transparent px-4 py-2 space-y-0.5">
+                    <h3 className="font-semibold bg-clip-text text-transparent bg-silver-duo text-center">
+                      {emp.name}
+                    </h3>
+                    <p className="text-tertiary text-center border border-primary-30 w-fit mx-auto px-2 py-0.5 rounded-full text-xs">
+                      {emp.role}
+                    </p>
+                  </div>
+                </div>
+                {isLead && (
+                  <div className="flex-1 flex flex-col gap-3 p-4 border border-[red] italic">
+                    <h3 className="line-clamp-2 leading-5">
+                      Engineering an XR moonshot!
+                    </h3>
+                    <q className="line-clamp-[7] text-sm/5 text-tertiary">
+                      Just like every business built websites and came online,
+                      very soon, each one of them will have their own immersive
+                      experiences. What we are doing here has the potential to
+                      change the world.
+                    </q>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </main>
     </div>
   );
 };
