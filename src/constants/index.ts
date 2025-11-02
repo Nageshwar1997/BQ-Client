@@ -445,8 +445,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         name: "Jacqueline Fernandez",
         role: "BD Manager",
         gender: "Female",
-        image:
-          "/images/company/teams/actresses/Jacqueline-Fernandez.webp",
+        image: "/images/company/teams/actresses/Jacqueline-Fernandez.webp",
       },
       {
         name: "Farhan Akhtar",
