@@ -218,7 +218,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
     value: "executive_or_leadership",
     employees: [
       {
-        name: "Aarav Shah",
+        name: "Shah Rukh Khan",
         role: "Founder",
         gender: "Male",
         image: "",
@@ -228,39 +228,39 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
             "Just like every business built websites and came online, very soon, each one will have immersive beauty experiences. What we’re building today will shape how the world explores, feels, and enjoys beauty tomorrow.",
         },
       },
-      { name: "Aarav Shah", role: "Co-Founder", gender: "Male", image: "" },
+      { name: "Aamir Khan", role: "Co-Founder", gender: "Male", image: "" },
       {
-        name: "Riya Mehta",
+        name: "Deepika Padukone",
         role: "CEO (Chief Executive Officer)",
         gender: "Female",
         image: "",
       },
       {
-        name: "Rohan Patel",
+        name: "Akshay Kumar",
         role: "COO (Chief Operating Officer)",
         gender: "Male",
         image: "",
       },
       {
-        name: "Neha Verma",
+        name: "Kareena Kapoor",
         role: "CFO (Chief Financial Officer)",
         gender: "Female",
         image: "",
       },
       {
-        name: "Arjun Singh",
+        name: "Ranveer Singh",
         role: "CMO (Chief Marketing Officer)",
         gender: "Male",
         image: "",
       },
       {
-        name: "Priya Nair",
+        name: "Priyanka Chopra",
         role: "CTO (Chief Technology Officer)",
         gender: "Female",
         image: "",
       },
       {
-        name: "Kunal Joshi",
+        name: "Hrithik Roshan",
         role: "CPO (Chief Product Officer)",
         gender: "Male",
         image: "",
@@ -272,7 +272,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
     value: "product_and_merchandising",
     employees: [
       {
-        name: "Simran Kaur",
+        name: "Alia Bhatt",
         role: "Head of Product",
         gender: "Female",
         image: "",
@@ -283,19 +283,19 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         },
       },
       {
-        name: "Aditya Malhotra",
+        name: "Varun Dhawan",
         role: "Category Manager",
         gender: "Male",
         image: "",
       },
       {
-        name: "Jasleen Arora",
+        name: "Kriti Sanon",
         role: "Merchandiser",
         gender: "Female",
         image: "",
       },
       {
-        name: "Nikhil Kapoor",
+        name: "Vicky Kaushal",
         role: "Product Analyst",
         gender: "Male",
         image: "",
@@ -307,7 +307,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
     value: "technology_or_engineering",
     employees: [
       {
-        name: "Rahul Krishnan",
+        name: "Ranbir Kapoor",
         role: "Head of Engineering",
         gender: "Male",
         image: "",
@@ -318,43 +318,53 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         },
       },
       {
-        name: "Ishika Desai",
+        name: "Anushka Sharma",
         role: "Engineering Manager",
         gender: "Female",
         image: "",
       },
       {
-        name: "Yash Gupta",
+        name: "Tiger Shroff",
         role: "Frontend Developer",
         gender: "Male",
         image: "",
       },
       {
-        name: "Sanya Rao",
+        name: "Sara Ali Khan",
         role: "Backend Developer",
         gender: "Female",
         image: "",
       },
       {
-        name: "Manish Kumar",
+        name: "Ayushmann Khurrana",
         role: "Full-stack Developer",
         gender: "Male",
         image: "",
       },
       {
-        name: "Aditi Sen",
+        name: "Shraddha Kapoor",
         role: "Android/IOS Developer",
         gender: "Female",
         image: "",
       },
       {
-        name: "Karan Thapa",
+        name: "Sidharth Malhotra",
         role: "DevOps Engineer",
         gender: "Male",
         image: "",
       },
-      { name: "Sneha Paul", role: "QA Engineer", gender: "Female", image: "" },
-      { name: "Dhruv Soni", role: "UI/UX Designer", gender: "Male", image: "" },
+      {
+        name: "Taapsee Pannu",
+        role: "QA Engineer",
+        gender: "Female",
+        image: "",
+      },
+      {
+        name: "Rajkummar Rao",
+        role: "UI/UX Designer",
+        gender: "Male",
+        image: "",
+      },
     ],
   },
   {
@@ -362,7 +372,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
     value: "marketing_and_growth",
     employees: [
       {
-        name: "Meera Kulkarni",
+        name: "Katrina Kaif",
         role: "Head of Marketing",
         gender: "Female",
         image: "",
@@ -373,38 +383,43 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         },
       },
       {
-        name: "Kabir Rana",
+        name: "Shahid Kapoor",
         role: "Digital Marketing Manager",
         gender: "Male",
         image: "",
       },
       {
-        name: "Anna D'Souza",
+        name: "Kiara Advani",
         role: "Content Writer",
         gender: "Female",
         image: "",
       },
-      { name: "Harsh Jain", role: "SEO Specialist", gender: "Male", image: "" },
       {
-        name: "Mitali Kapoor",
+        name: "Nawazuddin Siddiqui",
+        role: "SEO Specialist",
+        gender: "Male",
+        image: "",
+      },
+      {
+        name: "Parineeti Chopra",
         role: "Social Media Manager",
         gender: "Female",
         image: "",
       },
       {
-        name: "Rohit Chatterjee",
+        name: "John Abraham",
         role: "Email Specialist",
         gender: "Male",
         image: "",
       },
       {
-        name: "Tanya Singh",
+        name: "Madhuri Dixit",
         role: "Influencer Manager",
         gender: "Female",
         image: "",
       },
       {
-        name: "Vivek Bansal",
+        name: "Saif Ali Khan",
         role: "Graphic Designer",
         gender: "Male",
         image: "",
@@ -416,7 +431,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
     value: "sales_and_customer_engagement",
     employees: [
       {
-        name: "Sahil Khan",
+        name: "Ajay Devgn",
         role: "Head of Sales",
         gender: "Male",
         image: "",
@@ -426,27 +441,32 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
             "Just like commerce evolved from shops to hyper-personal digital touchpoints, customer trust is evolving too. We are building a system where every interaction feels human, honest, and emotionally connected.",
         },
       },
-      { name: "Nisha Jain", role: "BD Manager", gender: "Female", image: "" },
       {
-        name: "Arjun Bhat",
+        name: "Jacqueline Fernandez",
+        role: "BD Manager",
+        gender: "Female",
+        image: "",
+      },
+      {
+        name: "Farhan Akhtar",
         role: "Client Success Manager",
         gender: "Male",
         image: "",
       },
       {
-        name: "Snehal Patil",
+        name: "Disha Patani",
         role: "Sales Associate",
         gender: "Female",
         image: "",
       },
       {
-        name: "Varun Gupta",
+        name: "Arjun Kapoor",
         role: "Customer Support",
         gender: "Male",
         image: "",
       },
       {
-        name: "Pooja Sharma",
+        name: "Vidya Balan",
         role: "Chat Support",
         gender: "Female",
         image: "",
@@ -458,7 +478,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
     value: "operations_and_logistics",
     employees: [
       {
-        name: "Ajay Kumar",
+        name: "Salman Khan",
         role: "Head of Operations",
         gender: "Male",
         image: "",
@@ -469,31 +489,31 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         },
       },
       {
-        name: "Ritu Shah",
+        name: "Sonakshi Sinha",
         role: "Inventory Manager",
         gender: "Female",
         image: "",
       },
       {
-        name: "Aman Yadav",
+        name: "Abhishek Bachchan",
         role: "Warehouse Manager",
         gender: "Male",
         image: "",
       },
       {
-        name: "Fatima Khan",
+        name: "Sonam Kapoor",
         role: "Logistics Coordinator",
         gender: "Female",
         image: "",
       },
       {
-        name: "Rakesh Verma",
+        name: "R. Madhavan",
         role: "Vendor Manager",
         gender: "Male",
         image: "",
       },
       {
-        name: "Sana Sheikh",
+        name: "Radhika Apte",
         role: "Packaging Staff",
         gender: "Female",
         image: "",
@@ -505,7 +525,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
     value: "finance_and_admin",
     employees: [
       {
-        name: "Krishna Rao",
+        name: "Kartik Aaryan",
         role: "Finance Manager",
         gender: "Male",
         image: "",
@@ -516,20 +536,20 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         },
       },
       {
-        name: "Neelam Sharma",
+        name: "Bhumika Pednekar",
         role: "Accountant",
         gender: "Female",
         image: "",
       },
       {
-        name: "Chetan More",
+        name: "Dulquer Salmaan",
         role: "Payroll Specialist",
         gender: "Male",
         image: "",
       },
-      { name: "Divya Kapoor", role: "HR Manager", gender: "Female", image: "" },
+      { name: "Nora Fatehi", role: "HR Manager", gender: "Female", image: "" },
       {
-        name: "Aakash Singh",
+        name: "Dev Patel",
         role: "Office Administrator",
         gender: "Male",
         image: "",
@@ -541,7 +561,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
     value: "data_and_analytics",
     employees: [
       {
-        name: "Shreya Iyer",
+        name: "Aishwarya Rai",
         role: "Head of Data",
         gender: "Female",
         image: "",
@@ -551,11 +571,16 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
             "Just like data reshaped world-changing industries, beauty is stepping into an intelligent era. We turn numbers into intuition, enabling better products, deeper loyalty, and limitless innovation.",
         },
       },
-      { name: "Rohan Mishra", role: "Data Analyst", gender: "Male", image: "" },
-      { name: "Aisha Khan", role: "BI Analyst", gender: "Female", image: "" },
-      { name: "Vikas Jain", role: "Data Scientist", gender: "Male", image: "" },
+      { name: "Raj Patel", role: "Data Analyst", gender: "Male", image: "" },
+      { name: "Kajol Devgn", role: "BI Analyst", gender: "Female", image: "" },
       {
-        name: "Kritika Gupta",
+        name: "Kunal Kapoor",
+        role: "Data Scientist",
+        gender: "Male",
+        image: "",
+      },
+      {
+        name: "Urvashi Rautela",
         role: "Marketing Analyst",
         gender: "Female",
         image: "",
@@ -567,7 +592,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
     value: "specialized_roles",
     employees: [
       {
-        name: "Adv. Rohini Deshpande",
+        name: "Sridevi Kapoor",
         role: "Legal Counsel",
         gender: "Female",
         image: "",
@@ -578,14 +603,14 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         },
       },
       {
-        name: "Yuvraj Rathod",
+        name: "Vivek Oberoi",
         role: "Cybersecurity Engineer",
         gender: "Male",
         image: "",
       },
-      { name: "Sara Ali", role: "Photographer", gender: "Female", image: "" },
+      { name: "Aditi Sen", role: "Photographer", gender: "Female", image: "" },
       {
-        name: "Raj Patel",
+        name: "Manoj Bajpayee",
         role: "Content Moderator",
         gender: "Male",
         image: "",
@@ -593,6 +618,5 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
     ],
   },
 ];
-
 export const ONLY_DEPARTMENTS: Omit<IDepartment, "employees">[] =
   DEPARTMENT_AND_TEAMS_DATA.map(({ title, value }) => ({ title, value }));
