@@ -80,9 +80,9 @@ const Teams = () => {
                       `/images/company/teams/${emp.gender}-${theme}.webp`
                     }
                     alt={emp.name}
-                    className="w-full h-56 object-contain object-bottom"
+                    className="w-full h-56 object-cover object-top"
                   />
-                  <div className="absolute inset-x-0 bottom-0 flex flex-col items-center justify-center bg-gradient-to-t from-primary-inverted to-transparent px-4 py-2 space-y-0.5">
+                  <div className="absolute inset-x-0 bottom-0 flex flex-col items-center justify-center bg-gradient-to-t from-primary-inverted to-transparent px-4 py-2 pt-4 space-y-0.5">
                     <h3 className="font-semibold bg-clip-text text-transparent bg-silver-duo text-center">
                       {emp.name}
                     </h3>
