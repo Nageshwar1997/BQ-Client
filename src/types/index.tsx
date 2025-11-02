@@ -513,8 +513,7 @@ export type TEmployee = {
   role: string;
   gender: string;
   image: string;
-  isLead?: boolean;
-  description?: string; // Only lead has description
+  description?: { title: string; description: string };
 };
 
 export interface IDepartment {

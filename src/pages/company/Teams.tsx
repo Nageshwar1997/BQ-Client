@@ -60,7 +60,7 @@ const Teams = () => {
 
       <main className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-center">
         {employees.map((emp, index) => {
-          const isLead = emp.isLead && selectedDept.value;
+          const isLead = emp.description && selectedDept.value;
           return (
             <div
               key={index}
@@ -70,8 +70,8 @@ const Teams = () => {
             >
               <div className="flex flex-col sm:flex-row">
                 <div
-                  className={`h-full border border-[blue] relative ${
-                    isLead ? "sm:w-1/2" : "w-full"
+                  className={`h-full relative ${
+                    isLead ? "sm:w-2/5" : "w-full"
                   }`}
                 >
                   <img
@@ -92,15 +92,12 @@ const Teams = () => {
                   </div>
                 </div>
                 {isLead && (
-                  <div className="flex-1 flex flex-col gap-3 p-4 border border-[red] italic">
-                    <h3 className="line-clamp-2 leading-5">
-                      Engineering an XR moonshot!
+                  <div className="flex-1 flex flex-col gap-3 p-4 italic">
+                    <h3 className="line-clamp-2 leading-5 text-xl font-semibold text-secondary">
+                      {emp.description?.title}
                     </h3>
-                    <q className="line-clamp-[7] text-sm/5 text-tertiary">
-                      Just like every business built websites and came online,
-                      very soon, each one of them will have their own immersive
-                      experiences. What we are doing here has the potential to
-                      change the world.
+                    <q className="line-clamp-[7] text-base/5 text-tertiary">
+                      {emp.description?.description}
                     </q>
                   </div>
                 )}

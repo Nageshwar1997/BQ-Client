@@ -222,7 +222,11 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         role: "Founder",
         gender: "Male",
         image: "",
-        isLead: true,
+        description: {
+          title: "Vision Beyond Beauty",
+          description:
+            "Just like every business built websites and came online, very soon, each one will have immersive beauty experiences. What we’re building today will shape how the world explores, feels, and enjoys beauty tomorrow.",
+        },
       },
       { name: "Aarav Shah", role: "Co-Founder", gender: "Male", image: "" },
       {
@@ -272,7 +276,11 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         role: "Head of Product",
         gender: "Female",
         image: "",
-        isLead: true,
+        description: {
+          title: "Crafting Icons",
+          description:
+            "Just like the world shifted from basic products to thoughtful experiences, beauty will move toward personalized science-led creation. We are designing formulas and innovation that redefine what true premium care feels like.",
+        },
       },
       {
         name: "Aditya Malhotra",
@@ -303,16 +311,18 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         role: "Head of Engineering",
         gender: "Male",
         image: "",
-        isLead: true,
+        description: {
+          title: "Engineering Tomorrow",
+          description:
+            "Just like every major innovation reshaped how we live, tech will re-invent how beauty interacts with people. We build intelligent systems that make beauty smarter, simpler, and deeply personal for everyone.",
+        },
       },
-
       {
         name: "Ishika Desai",
         role: "Engineering Manager",
         gender: "Female",
         image: "",
       },
-
       {
         name: "Yash Gupta",
         role: "Frontend Developer",
@@ -325,7 +335,6 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         gender: "Female",
         image: "",
       },
-
       {
         name: "Manish Kumar",
         role: "Full-stack Developer",
@@ -338,19 +347,13 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         gender: "Female",
         image: "",
       },
-
       {
         name: "Karan Thapa",
         role: "DevOps Engineer",
         gender: "Male",
         image: "",
       },
-      {
-        name: "Sneha Paul",
-        role: "QA Engineer",
-        gender: "Female",
-        image: "",
-      },
+      { name: "Sneha Paul", role: "QA Engineer", gender: "Female", image: "" },
       { name: "Dhruv Soni", role: "UI/UX Designer", gender: "Male", image: "" },
     ],
   },
@@ -363,7 +366,11 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         role: "Head of Marketing",
         gender: "Female",
         image: "",
-        isLead: true,
+        description: {
+          title: "Redefining Influence",
+          description:
+            "Just like storytelling evolved from print to screens and now to immersive experiences, beauty influence will transform too. We craft narratives that inspire confidence, culture, and meaningful connection.",
+        },
       },
       {
         name: "Kabir Rana",
@@ -377,12 +384,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         gender: "Female",
         image: "",
       },
-      {
-        name: "Harsh Jain",
-        role: "SEO Specialist",
-        gender: "Male",
-        image: "",
-      },
+      { name: "Harsh Jain", role: "SEO Specialist", gender: "Male", image: "" },
       {
         name: "Mitali Kapoor",
         role: "Social Media Manager",
@@ -418,14 +420,13 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         role: "Head of Sales",
         gender: "Male",
         image: "",
-        isLead: true,
+        description: {
+          title: "Relationships First",
+          description:
+            "Just like commerce evolved from shops to hyper-personal digital touchpoints, customer trust is evolving too. We are building a system where every interaction feels human, honest, and emotionally connected.",
+        },
       },
-      {
-        name: "Nisha Jain",
-        role: "BD Manager",
-        gender: "Female",
-        image: "",
-      },
+      { name: "Nisha Jain", role: "BD Manager", gender: "Female", image: "" },
       {
         name: "Arjun Bhat",
         role: "Client Success Manager",
@@ -461,7 +462,11 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         role: "Head of Operations",
         gender: "Male",
         image: "",
-        isLead: true,
+        description: {
+          title: "Operational Mastery",
+          description:
+            "Just like global supply systems reinvented speed and quality, beauty logistics is entering a precision era. We ensure every product reaches with care, commitment, and seamless reliability.",
+        },
       },
       {
         name: "Ritu Shah",
@@ -504,7 +509,11 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         role: "Finance Manager",
         gender: "Male",
         image: "",
-        isLead: true,
+        description: {
+          title: "Strategic Stability",
+          description:
+            "Just like strong foundations built iconic companies, future-beauty brands need disciplined boldness. We balance smart risk with sustainable growth to create a brand built to last decades.",
+        },
       },
       {
         name: "Neelam Sharma",
@@ -518,12 +527,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         gender: "Male",
         image: "",
       },
-      {
-        name: "Divya Kapoor",
-        role: "HR Manager",
-        gender: "Female",
-        image: "",
-      },
+      { name: "Divya Kapoor", role: "HR Manager", gender: "Female", image: "" },
       {
         name: "Aakash Singh",
         role: "Office Administrator",
@@ -541,26 +545,15 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         role: "Head of Data",
         gender: "Female",
         image: "",
-        isLead: true,
+        description: {
+          title: "Insights Into Action",
+          description:
+            "Just like data reshaped world-changing industries, beauty is stepping into an intelligent era. We turn numbers into intuition, enabling better products, deeper loyalty, and limitless innovation.",
+        },
       },
-      {
-        name: "Rohan Mishra",
-        role: "Data Analyst",
-        gender: "Male",
-        image: "",
-      },
-      {
-        name: "Aisha Khan",
-        role: "BI Analyst",
-        gender: "Female",
-        image: "",
-      },
-      {
-        name: "Vikas Jain",
-        role: "Data Scientist",
-        gender: "Male",
-        image: "",
-      },
+      { name: "Rohan Mishra", role: "Data Analyst", gender: "Male", image: "" },
+      { name: "Aisha Khan", role: "BI Analyst", gender: "Female", image: "" },
+      { name: "Vikas Jain", role: "Data Scientist", gender: "Male", image: "" },
       {
         name: "Kritika Gupta",
         role: "Marketing Analyst",
@@ -578,7 +571,11 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         role: "Legal Counsel",
         gender: "Female",
         image: "",
-        isLead: true,
+        description: {
+          title: "Ethics & Trust",
+          description:
+            "Just like the future demands transparency and fairness in all innovation, beauty needs legal integrity. We protect our mission with clarity, compliance, and responsibility at every step.",
+        },
       },
       {
         name: "Yuvraj Rathod",
@@ -586,12 +583,7 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
         gender: "Male",
         image: "",
       },
-      {
-        name: "Sara Ali",
-        role: "Photographer",
-        gender: "Female",
-        image: "",
-      },
+      { name: "Sara Ali", role: "Photographer", gender: "Female", image: "" },
       {
         name: "Raj Patel",
         role: "Content Moderator",
