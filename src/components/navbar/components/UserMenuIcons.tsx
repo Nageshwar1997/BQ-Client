@@ -17,7 +17,8 @@ import { useUserStore } from "../../../store/user.store";
 import useOutsideClick from "../../../hooks/useOutsideClick";
 import Button from "../../button/Button";
 import useQueryParams from "../../../hooks/useQueryParams";
-import useAuthActionStore from "../../../store/authAction";
+import useActionStore from "../../../store/action.store";
+import useCartStore from "../../../store/cart.store";
 
 const UserPopup = ({
   isOpen,
@@ -125,7 +126,8 @@ const UserMenuIcons = ({
   const { paths, navigate } = usePathParams();
   const { setParams } = useQueryParams();
   const { isAuthenticated } = useUserStore();
-  const { setAction } = useAuthActionStore();
+  const { setAction } = useActionStore();
+  const { cart } = useCartStore();
 
   useEffect(() => {
     if (closeOnNavbarLeave) {
@@ -164,17 +166,24 @@ const UserMenuIcons = ({
           />
         </div>
         <BuildingIcon className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
-        <ShoppingBag
-          onClick={() => {
-            if (!isAuthenticated) {
-              setParams({ login: "true" });
-              setAction(() => navigate("/cart"));
-              return;
-            }
-            navigate("/cart");
-          }}
-          className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6"
-        />
+        <div className="relative">
+          <ShoppingBag
+            onClick={() => {
+              if (!isAuthenticated) {
+                setParams({ login: "true" });
+                setAction(() => navigate("/cart"));
+                return;
+              }
+              navigate("/cart");
+            }}
+            className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6"
+          />
+          {cart?.products && cart?.products.length > 0 && (
+            <span className="absolute bottom-0.5 md:bottom-[3px] font-semibold bg-clip-text text-transparent bg-accent-duo inset-x-0 text-[11px] md:text-[11px] leading-none w-fit mx-auto pointer-events-none">
+              {cart?.products.length}
+            </span>
+          )}
+        </div>
         <HeartIcon className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
         <DarkMode />
       </div>

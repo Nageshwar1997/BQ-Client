@@ -1,7 +1,7 @@
 import { STATES_AND_UNION_TERRITORIES } from "../../../constants";
 import { TAddressForm } from "../../../types";
 
-export const addAddressFormMapData: TAddressForm[] = [
+export const addAddressFormMapData: Omit<TAddressForm, "isDefaultAddress">[] = [
   {
     name: "firstName",
     label: "First Name",
@@ -105,4 +105,5 @@ export const addressInitialValues = {
   pinCode: "",
   state: "",
   email: "",
+  isDefaultAddress: false,
 };

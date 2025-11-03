@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -6,27 +7,41 @@ import Radio from "../../../components/input/Radio";
 import Select from "../../../components/input/Select";
 import { addAddressFormMapData, addressInitialValues } from "../data";
 import { addressSchema } from "../../../schemas/address";
-import z from "zod";
 import Button from "../../../components/button/Button";
 import {
   useAddAddress,
   useUpdateAddress,
 } from "../../../api/address/address.service";
 import useQueryParams from "../../../hooks/useQueryParams";
-import { ClassName, IAddress, IBaseAddress } from "../../../types";
+import { ClassName, IAddress, TBaseAddress } from "../../../types";
 import { deepEqual } from "../../../utils";
 import { toastErrorMessage } from "../../../utils/toasts";
+import { useUserStore } from "../../../store/user.store";
+import Checkbox from "../../../components/input/Checkbox";
 
 const AddressForm = ({
   addresses,
   className = "",
 }: { addresses?: IAddress[] } & ClassName) => {
+  const { user, isAuthenticated } = useUserStore();
   const { mutateAsync: addAddress } = useAddAddress();
   const { mutateAsync: updateAddress } = useUpdateAddress();
   const { removeParam, queryParams } = useQueryParams();
 
+  const defaultAddressValues = useMemo(() => {
+    return {
+      ...addressInitialValues,
+      ...(isAuthenticated && {
+        firstName: user?.firstName,
+        lastName: user?.lastName,
+        phoneNumber: user?.phoneNumber,
+        email: user?.email,
+      }),
+    };
+  }, [isAuthenticated, user]);
+
   const address =
-    addresses?.find((a) => a._id === queryParams.edit) || addressInitialValues;
+    addresses?.find((a) => a._id === queryParams.edit) || defaultAddressValues;
 
   const {
     control,
@@ -34,50 +49,72 @@ const AddressForm = ({
     register,
     reset,
     formState: { errors },
-  } = useForm<z.infer<typeof addressSchema>>({
+  } = useForm<TBaseAddress>({
     resolver: zodResolver(addressSchema),
     defaultValues: address,
   });
 
-  const handleReset = (defaultValues?: z.infer<typeof addressSchema>) => {
+  const handleReset = (defaultValues?: TBaseAddress) => {
     reset(
       defaultValues
         ? defaultValues
         : queryParams.edit
         ? address
-        : addressInitialValues
+        : defaultAddressValues
     );
   };
 
-  const handleAddAddress = (data: z.infer<typeof addressSchema>) => {
+  const handleSubmitAddress = (data: TBaseAddress) => {
     if ("_id" in address && address?._id) {
-      const changedFields: Partial<IBaseAddress> = {};
+      const changedFields: Partial<TBaseAddress> = {};
       Object.keys(data).forEach((key) => {
-        const typedKey = key as keyof IBaseAddress;
+        const typedKey = key as keyof TBaseAddress;
         if (!deepEqual(data[typedKey], address[typedKey])) {
           (changedFields[typedKey] as unknown) = data[typedKey];
         }
       });
 
-      if (!Object.keys(changedFields).length) {
+      const removedOptionalFields: (keyof Pick<
+        TBaseAddress,
+        "altPhoneNumber" | "gst" | "landmark"
+      >)[] = [];
+      const changedOptionalFields = {
+        altPhoneNumber: changedFields.altPhoneNumber,
+        landmark: changedFields.landmark,
+        gst: changedFields.gst,
+      };
+
+      Object.keys(changedOptionalFields).forEach((key) => {
+        const typedKey = key as keyof typeof changedOptionalFields;
+        if (!changedOptionalFields[typedKey] && address[typedKey]) {
+          delete changedFields[typedKey];
+          removedOptionalFields.push(typedKey);
+        }
+      });
+
+      if (!Object.keys(changedFields).length && !removedOptionalFields.length) {
         toastErrorMessage("No changes made to update address!");
         return;
       }
 
       updateAddress(
-        { _id: address._id, ...changedFields },
+        {
+          _id: address._id,
+          ...(removedOptionalFields.length > 0 && { removedOptionalFields }),
+          ...changedFields,
+        },
         {
           onSuccess: () => (
-            removeParam("edit"), handleReset(addressInitialValues)
+            removeParam("edit"), handleReset(defaultAddressValues)
           ),
         }
       );
     } else {
       const finalizedData = data;
       Object.keys(data).forEach((key) => {
-        const typedKey = key as keyof IBaseAddress;
+        const typedKey = key as keyof TBaseAddress;
         if (data[typedKey]) {
-          finalizedData[typedKey] = data[typedKey];
+          (finalizedData[typedKey] as unknown) = data[typedKey];
         } else {
           delete finalizedData[typedKey];
         }
@@ -90,7 +127,7 @@ const AddressForm = ({
 
   return (
     <form
-      onSubmit={handleSubmit(handleAddAddress)}
+      onSubmit={handleSubmit(handleSubmitAddress)}
       className={`flex flex-col gap-6 ${className}`}
     >
       <Controller
@@ -124,7 +161,7 @@ const AddressForm = ({
                   label={label}
                   options={options}
                   selectProps={{
-                    value,
+                    value: value?.toString(),
                     onChange,
                     placeholder,
                     autoComplete,
@@ -146,6 +183,18 @@ const AddressForm = ({
             />
           );
         })}
+      </div>
+      <div className="flex items-center justify-center space-x-2 sm:space-x-3">
+        <Controller
+          name="isDefaultAddress"
+          control={control}
+          render={({ field }) => (
+            <Checkbox register={field} checked={field.value} />
+          )}
+        />
+        <span className="text-xs sm:text-[13px] md:text-sm text-primary-50 font-medium whitespace-nowrap">
+          Make this my default address
+        </span>
       </div>
       <hr className="h-px block border-none bg-gradient-line" />
       <div className="flex items-center justify-between gap-4">

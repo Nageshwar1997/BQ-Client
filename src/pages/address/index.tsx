@@ -10,11 +10,12 @@ import AddressFormModal from "../../components/modal/children/AddressFormModal";
 import useQueryParams from "../../hooks/useQueryParams";
 import { toastErrorMessage } from "../../utils/toasts";
 import AddressForm from "./children/AddressForm";
-import ShowError from "../../components/errors/ShowError";
-import LoadingPage from "../../components/loaders/LoadingPage";
+import ShowApiStatus from "../../components/api-status/ShowApiStatus";
+import usePathParams from "../../hooks/usePathParams";
 
 const Address = () => {
   const { removeParam, setParams, queryParams } = useQueryParams();
+  const { navigate } = usePathParams();
   const [selectedAddress, setSelectedAddress] = useState<
     Record<(typeof ADDRESS_TYPES)[number], string | null>
   >({
@@ -46,31 +47,23 @@ const Address = () => {
 
   const handleSelect = (type: (typeof ADDRESS_TYPES)[number], id: string) => {
     setSelectedAddress((prev) => {
-      if (type === "both") {
-        return { billing: null, shipping: null, both: id };
-      }
-
+      if (type === "both") return { billing: null, shipping: null, both: id };
       if (type === "billing") {
-        if (prev.shipping === id) {
-          return { ...prev, shipping: null, billing: id, both: null };
-        }
-        return { ...prev, billing: id, both: null };
+        return prev.shipping === id
+          ? { ...prev, shipping: null, billing: id, both: null }
+          : { ...prev, billing: id, both: null };
       }
-
       if (type === "shipping") {
-        if (prev.billing === id) {
-          return { ...prev, billing: null, shipping: id, both: null };
-        }
-        return { ...prev, shipping: id, both: null };
+        return prev.billing === id
+          ? { ...prev, billing: null, shipping: id, both: null }
+          : { ...prev, shipping: id, both: null };
       }
-
       return prev;
     });
   };
 
   const finalAddresses = useMemo(() => {
     const returnAddresses: { address: IAddress; type: string }[] = [];
-
     const addIfNotExists = (id: string | null, type: string) => {
       if (!id) return;
       const addr = addresses.find((a) => a._id === id);
@@ -78,11 +71,16 @@ const Address = () => {
         returnAddresses.push({ address: addr, type });
       }
     };
-
     ADDRESS_TYPES.map((type) => addIfNotExists(selectedAddress[type], type));
-
-    return returnAddresses || [];
+    return returnAddresses;
   }, [addresses, selectedAddress]);
+
+  const prefillData = useMemo(() => {
+    const shipping = finalAddresses.find((a) => a.type === "shipping");
+    const billing = finalAddresses.find((a) => a.type === "billing");
+    const both = finalAddresses.find((a) => a.type === "both");
+    return { shipping, billing, both };
+  }, [finalAddresses]);
 
   if (isError) return <div>Error loading addresses</div>;
 
@@ -102,7 +100,6 @@ const Address = () => {
             ? "Your Addresses"
             : "Add Address to get started"}
         </h2>
-
         <Button
           pattern="secondary"
           content="Add Address"
@@ -125,15 +122,13 @@ const Address = () => {
           }}
         />
       </div>
-      {isLoading ? (
-        <LoadingPage
-          text="Loading addresses"
-          className="!static min-h-[300px]"
-        />
-      ) : isError ? (
-        <ShowError
-          headingText="Error loading addresses"
-          descriptionText="Please try again"
+      {isLoading || isError ? (
+        <ShowApiStatus
+          className="min-h-[75dvh]"
+          type={`${isLoading ? "loading" : "error"}`}
+          headingText="Error getting addresses"
+          descriptionText="Please try again, refreshing the page may help"
+          loadingText="Please wait..."
         />
       ) : addresses?.length > 0 ? (
         <div className="flex flex-col lg:flex-row gap-6">
@@ -194,6 +189,23 @@ const Address = () => {
                   disabled:
                     (!selectedAddress.billing || !selectedAddress.shipping) &&
                     !selectedAddress.both,
+                  onClick: () => {
+                    navigate("/account/orders/payment", {
+                      state: {
+                        addresses: {
+                          ...(prefillData.billing?.address && {
+                            billing: prefillData.billing.address,
+                          }),
+                          ...(prefillData.shipping?.address && {
+                            shipping: prefillData.shipping.address,
+                          }),
+                          ...(prefillData.both?.address && {
+                            both: prefillData.both.address,
+                          }),
+                        },
+                      },
+                    });
+                  },
                 }}
               />
             </div>

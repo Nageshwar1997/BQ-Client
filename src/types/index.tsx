@@ -1,5 +1,6 @@
 import {
   ButtonHTMLAttributes,
+  FC,
   InputHTMLAttributes,
   JSX,
   ReactElement,
@@ -11,7 +12,18 @@ import {
   VideoHTMLAttributes,
 } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
-import { ADDRESS_TYPES } from "../constants";
+import z from "zod";
+import {
+  ADDRESS_TYPES,
+  ALLOWED_CURRENCIES,
+  ALLOWED_PAYMENT_MODE,
+  ORDER_STATUS,
+  RAZORPAY_PAYMENT_METHODS,
+  RAZORPAY_PAYMENT_STATUS,
+} from "../constants";
+import { loginSchema, registerSchema } from "../pages/auth/helpers/auth.schema";
+import { addressSchema } from "../schemas/address";
+import { footerCategories } from "../components/footer/data";
 
 export interface ClassName {
   className?: string;
@@ -42,6 +54,13 @@ export interface ProfilePicInputProps extends ClassName {
 export type TFile = "image" | "video";
 
 export type TMediaOption = { type: TFile; url: string };
+
+export type TId = { _id: string };
+
+export interface ITimeStamp extends TId {
+  createdAt: string;
+  updatedAt: string;
+}
 
 interface TBaseInput extends ClassName {
   containerClassName?: string;
@@ -89,25 +108,16 @@ export interface TextDisplayProps extends ClassName {
   contentClassName?: string;
 }
 
-export interface RegisterFormInputProps {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phoneNumber: string;
-  password: string;
-  confirmPassword: string;
-  profilePic?: File; // Correctly type the file input
-  remember?: boolean;
-}
+export type TRegister = z.infer<typeof registerSchema>;
+export type TLogin = z.infer<typeof loginSchema>;
 
 export type TPasswordField = keyof Pick<
-  RegisterFormInputProps,
+  TRegister,
   "password" | "confirmPassword"
 >;
-export type TPasswordVisibility = Record<TPasswordField, boolean>;
 
 export interface RegisterInputMapDataProps {
-  name: keyof RegisterFormInputProps;
+  name: keyof TRegister;
   label?: string;
   type?: string;
   placeholder?: string;
@@ -150,15 +160,10 @@ export interface HorizontalScrollType {
 
 export type IconProps = SVGProps<SVGSVGElement>;
 
-export interface UserTypes {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phoneNumber: string;
+export interface UserTypes
+  extends Pick<TRegister, "firstName" | "lastName" | "email" | "phoneNumber">,
+    ITimeStamp {
   profilePic: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface UserStoreType {
@@ -195,12 +200,9 @@ export interface ShadeType {
   images: (File | string)[];
 }
 
-export interface FetchedShadeType extends ShadeType {
-  _id: string;
+export interface FetchedShadeType extends ShadeType, ITimeStamp {
   images: string[];
   stock: number;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface ProductType {
@@ -220,44 +222,37 @@ export interface ProductType {
   shades?: ShadeType[];
 }
 
-export type TCartProduct = {
-  _id: string;
+export type TCartProduct = TId & {
   cart: string;
-  product: Pick<
-    FetchedProductType,
-    | "_id"
-    | "title"
-    | "brand"
-    | "originalPrice"
-    | "sellingPrice"
-    | "discount"
-    | "commonImages"
-    | "totalStock"
-  >;
-  shade?: Pick<FetchedShadeType, "_id" | "shadeName" | "images" | "stock">;
+  product: TId &
+    Pick<
+      FetchedProductType,
+      | "title"
+      | "brand"
+      | "originalPrice"
+      | "sellingPrice"
+      | "discount"
+      | "commonImages"
+      | "totalStock"
+    >;
+  shade?: TId & Pick<FetchedShadeType, "shadeName" | "images" | "stock">;
   quantity: number;
 };
 
-export interface ICart {
-  _id: string;
+export interface ICart extends ITimeStamp {
   charges: number;
-  createdAt: string;
-  updatedAt: string;
   products: TCartProduct[];
 }
 
-export interface PopulatedCategory {
-  _id: string;
+export interface PopulatedCategory extends TId {
   name: string;
   category: string;
   level: number;
-  parentCategory: {
-    _id: string;
+  parentCategory: TId & {
     name: string;
     category: string;
     level: number;
-    parentCategory: {
-      _id: string;
+    parentCategory: TId & {
       name: string;
       category: string;
       level: number;
@@ -279,19 +274,14 @@ export interface ReviewType {
 }
 
 export interface FetchedReviewType
-  extends Omit<ReviewType, "images" | "videos" | "user"> {
-  _id: string;
+  extends Omit<ReviewType, "images" | "videos" | "user">,
+    ITimeStamp {
   images: string[];
   videos: string[];
   user: UserTypes;
-  createdAt: string;
-  updatedAt: string;
 }
 
-export interface FetchedProductType extends ProductType {
-  _id: string;
-  createdAt: string;
-  updatedAt: string;
+export interface FetchedProductType extends ProductType, ITimeStamp {
   commonImages: string[];
   discount: number;
   sellingPrice: number;
@@ -392,46 +382,24 @@ export type TRegexes =
   | "atLeastOneUppercaseLetter"
   | "onlyLettersAndSpacesAndDots";
 
-type TFooterOption = {
-  title: string;
-  disable?: boolean;
-  path?: string;
-};
-
 export interface IFooterOptionList {
-  options: TFooterOption[];
+  options: (typeof footerCategories)[number]["options"];
   title?: string;
   isFirst?: boolean;
 }
 
-export interface IAddress extends IBaseAddress {
-  _id: string;
+export type TBaseAddress = z.infer<typeof addressSchema>;
+export interface IAddress extends TBaseAddress, ITimeStamp {
   user: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
-export interface IBaseAddress
-  extends Pick<UserTypes, "firstName" | "lastName" | "email" | "phoneNumber"> {
-  altPhoneNumber?: string;
-  address: string;
-  landmark?: string;
-  city: string;
-  state: string;
-  pinCode: string;
-  country: string;
-  gst?: string;
-  type: (typeof ADDRESS_TYPES)[number];
-}
-
-export interface IUserAddresses {
-  _id: string;
+export interface IUserAddresses extends ITimeStamp {
   user: string;
   addresses: IAddress[];
   defaultAddress: string | null;
 }
 
-export interface IAddressCard {
+export interface IAddressCard extends ClassName {
   address: IAddress;
   handleAddressSelect: (
     type: (typeof ADDRESS_TYPES)[number],
@@ -440,11 +408,10 @@ export interface IAddressCard {
   isBilling?: boolean;
   isShipping?: boolean;
   isBoth?: boolean;
-  className?: string;
 }
 
 export interface TAddressForm {
-  name: keyof IBaseAddress;
+  name: keyof TBaseAddress;
   label: string;
   placeholder: string;
   autoComplete: string;
@@ -452,13 +419,12 @@ export interface TAddressForm {
   options?: TDropdownOption[];
 }
 
-export interface ModalProps {
+export interface ModalProps extends ClassName {
   isOpen: boolean;
   onClose: () => void;
   children: JSX.Element;
   containerProps?: JSX.IntrinsicElements["div"];
   heading?: string;
-  className?: string;
 }
 
 export interface ButtonProps extends ClassName {
@@ -482,4 +448,104 @@ export interface IConfirmModal {
     left?: Omit<ButtonProps, "pattern">;
     right?: Omit<ButtonProps, "pattern">;
   };
+}
+
+export interface IOrder {
+  _id: string;
+  user: string;
+  products: TCartProduct[];
+  addresses: {
+    shipping?: Omit<IAddress, "user"> | null;
+    billing?: Omit<IAddress, "user"> | null;
+    both?: Omit<IAddress, "user"> | null;
+  };
+  razorpay_payment_result: {
+    payment_mode: (typeof ALLOWED_PAYMENT_MODE)[number];
+    currency: (typeof ALLOWED_CURRENCIES)[number];
+    rzp_order_id: string;
+    rzp_payment_id: string;
+    rzp_signature: string;
+    rzp_payment_status: (typeof RAZORPAY_PAYMENT_STATUS)[number];
+  };
+  order_result: {
+    order_status: (typeof ORDER_STATUS)[number];
+    price: number;
+    discount: number;
+    charges: number;
+    order_receipt: string;
+    paid_at?: Date;
+    delivered_at?: Date;
+    cancelled_at?: Date;
+    returned_at?: Date;
+  };
+  payment_details?: {
+    method: (typeof RAZORPAY_PAYMENT_METHODS)[number];
+    refund_status?: string | null;
+    bank?: string | null;
+    wallet?: string | null;
+    email: string;
+    contact: string;
+    fee: number;
+    tax: number;
+    upi?: {
+      acquirer_data: { rrn: string; upi_transaction_id: string; vpa: string };
+    };
+    netbanking?: { acquirer_data: { bank_transaction_id: string } };
+    card?: {
+      token_id: string;
+      acquirer_data: { auth_code: string };
+      card: {
+        id?: string;
+        name?: string;
+        last4: string;
+        network: string;
+        type: string;
+        issuer: string;
+      };
+    };
+  };
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// ========== Teams Page Types ==========
+export type TEmployee = {
+  name: string;
+  role: string;
+  gender: string;
+  image: string;
+  description?: { title: string; description: string };
+};
+
+export type TBaseDept = {
+  title: string;
+  value: string;
+};
+
+export interface IDepartment extends TBaseDept {
+  employees: TEmployee[];
+}
+
+export type TRoleOpening = {
+  role: string;
+  experience: string;
+  description: string;
+  type: string;
+  location: string;
+  salary: string;
+  tags: string[];
+  technologies: string[];
+  summary: string;
+  responsibilities: string[];
+  requirements: string[];
+  qualifications: string[];
+  benefits: string[];
+};
+
+export interface IOpening {
+  department: TBaseDept & {
+    color: string;
+    icon?: FC<IconProps>;
+  };
+  openings: TRoleOpening[];
 }

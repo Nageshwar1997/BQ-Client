@@ -134,6 +134,9 @@ export default {
           background:
             "linear-gradient(to bottom, var(--battleship-davys-gray),  var(--timberwolf-eerie-black))",
         },
+        ".opening-card:hover": {
+          background: `radial-gradient(67.31% 80.26% at 0% 0%, var(--dept-color-30) 0%, var(--dept-color-0) 100%), linear-gradient(0deg, var(--primary-inverted-10) 0%, var(--primary-inverted-10) 100%), var(--primary-inverted)`,
+        },
       });
     },
     // Theme variants

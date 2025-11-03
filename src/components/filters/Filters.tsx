@@ -129,7 +129,8 @@ function Filters({
         >
           <div className="w-full flex items-center gap-2 -mt-2 !px-1">
             <Checkbox
-              className="!w-10 !h-5 !bg-primary peer-checked:bg-primary after:!bg-primary-inverted after:!h-3 after:!w-3 peer-checked:after:bg-accent-duo after:border-tertiary-inverted"
+              labelClassName="!bg-primary"
+              className="!w-10 !h-5 after:!h-3 after:!w-3"
               checked={queryParams.inStock === "true"}
               onChange={(e) => {
                 if (e.target.checked) {

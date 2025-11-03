@@ -59,7 +59,7 @@ export const addressSchema = z.object({
     showingFieldName: "Email",
     blockSingleSpace: true,
     customRegexes: [{ regex: regexes.validEmail, message: "must be a valid" }],
-  }),
+  }).toLowerCase(),
   altPhoneNumber: zodStringOptional({
     field: "altPhoneNumber",
     showingFieldName: "Alternate phone number",
@@ -127,4 +127,12 @@ export const addressSchema = z.object({
       { regex: regexes.validGST, message: "Please provide a valid GST number" },
     ],
   }),
+  isDefaultAddress: z.coerce
+    .boolean({
+      errorMap: () => ({
+        message: "isDefaultAddress must be a boolean",
+      }),
+    })
+    .default(false)
+    .optional(),
 });

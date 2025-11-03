@@ -1,9 +1,12 @@
-import { IAddress } from "../../../types";
+import { ClassName, IAddress } from "../../../types";
 import { formatPhoneNumber } from "../../../utils";
 
-const AddressInfo = ({ address }: { address: IAddress }) => {
+const AddressInfo = ({
+  address,
+  className = "",
+}: { address: IAddress } & ClassName) => {
   return (
-    <div>
+    <div className={`${className}`}>
       <h3 className="text-lg font-semibold text-secondary">
         {address.firstName} {address.lastName}
       </h3>

@@ -7,13 +7,13 @@ import { getAvgRating } from "../../../../utils";
 import CustomerReviews from "../CustomerReviews";
 import AddReviewModal from "../../../../components/modal/children/AddReviewModal";
 import { useUserStore } from "../../../../store/user.store";
-import useAuthActionStore from "../../../../store/authAction";
+import useActionStore from "../../../../store/action.store";
 import useQueryParams from "../../../../hooks/useQueryParams";
 
 const RatingBars = ({ reviews = [] }: { reviews: FetchedReviewType[] }) => {
   const { isAuthenticated } = useUserStore();
   const { setParams } = useQueryParams();
-  const { setAction } = useAuthActionStore();
+  const { setAction } = useActionStore();
   const [showAddReviewModal, setShowAddReviewModal] = useState(false);
   return (
     <>

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { TAuthAction } from "../types";
 
-const useAuthActionStore = create<TAuthAction>((set, get) => ({
+const useActionStore = create<TAuthAction>((set, get) => ({
   action: null,
 
   setAction: (action) => set({ action }),
@@ -17,4 +17,4 @@ const useAuthActionStore = create<TAuthAction>((set, get) => ({
   clearAction: () => set({ action: null }),
 }));
 
-export default useAuthActionStore;
+export default useActionStore;

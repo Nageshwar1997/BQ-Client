@@ -1,12 +1,12 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Outlet } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
-// Lazy load route components
+// Lazy loaded main layout
 const Main = lazy(() => import("../pages/main/Main"));
 
+// Pages
 import Home from "../pages/home/Home";
-import NotFound from "../pages/error/NotFound";
-import SomethingWentWrong from "../pages/error/SomethingWentWrong";
+import { NotFound, SomethingWentWrong } from "../pages/error";
 import LoadingScreen from "../components/loaders/LoadingScreen";
 import CategoryProducts from "../pages/product/categoryProducts";
 import Offers from "../pages/offers/Offers";
@@ -19,6 +19,31 @@ import Login from "../pages/auth/Login";
 import AuthRedirect from "./AuthRedirect";
 import Register from "../pages/auth/Register";
 import Address from "../pages/address";
+import Payment from "../pages/account/payment/Payment";
+import Orders from "../pages/account/order/Orders";
+import OrderDetails from "../pages/account/order/OrderDetails";
+import Account from "../pages/account";
+import AboutUs from "../pages/company/AboutUs";
+import PartnerWithUs from "../pages/company/PartnerWithUs";
+import Careers from "../pages/company/Careers";
+import Sustainability from "../pages/company/Sustainability";
+import Ethics from "../pages/company/Ethics";
+import PressMedia from "../pages/company/PressMedia";
+import Teams from "../pages/company/Teams";
+import Wishlist from "../pages/quick-links/Wishlist";
+import ReferFriend from "../pages/quick-links/ReferFriend";
+import StoreLocator from "../pages/quick-links/StoreLocator";
+import BecomeSeller from "../pages/quick-links/BecomeSeller";
+import ContactUs from "../pages/services/ContactUs";
+import HelpCenterFAQ from "../pages/services/HelpCenterFAQ";
+import ShippingInfo from "../pages/services/ShippingInfo";
+import OrderReturnRefund from "../pages/account/order/OrderReturnRefund";
+import Accessibility from "../pages/legal-policies/Accessibility";
+import Disclaimer from "../pages/legal-policies/Disclaimer";
+import TermsAndConditions from "../pages/legal-policies/TermsAndConditions";
+import CookiePolicy from "../pages/legal-policies/CookiePolicy";
+import PrivacyPolicy from "../pages/legal-policies/PrivacyPolicy";
+import TrackMyOrders from "../pages/account/order/TrackMyOrders";
 
 const router = createBrowserRouter([
   {
@@ -28,31 +53,14 @@ const router = createBrowserRouter([
         <Main />
       </Suspense>
     ),
+    errorElement: <SomethingWentWrong />,
     children: [
-      {
-        index: true,
-        element: <Home />,
-      },
-      {
-        path: "offers",
-        element: <Offers />,
-      },
-      {
-        path: "blogs",
-        element: <Blogs />,
-      },
-      {
-        path: "search",
-        element: <SearchProducts />,
-      },
-      {
-        path: "product/:productId",
-        element: <ProductDetails />,
-      },
-      {
-        path: "products/:levelOneCategory",
-        element: <CategoryProducts />,
-      },
+      { index: true, element: <Home /> },
+      { path: "offers", element: <Offers /> }, // Todo: Pending
+      { path: "blogs", element: <Blogs /> }, // Todo: Pending
+      { path: "search", element: <SearchProducts /> },
+      { path: "product/:productId", element: <ProductDetails /> },
+      { path: "products/:levelOneCategory", element: <CategoryProducts /> },
       {
         path: "products/:levelOneCategory/:levelTwoCategory",
         element: <CategoryProducts />,
@@ -61,48 +69,55 @@ const router = createBrowserRouter([
         path: "products/:levelOneCategory/:levelTwoCategory/:levelThreeCategory",
         element: <CategoryProducts />,
       },
+      { path: "cart", element: <PrivateRoute children={<Cart />} /> },
+      { path: "address", element: <PrivateRoute children={<Address />} /> },
       {
-        path: "cart",
-        element: (
-          <PrivateRoute>
-            <Cart />
-          </PrivateRoute>
-        ),
+        path: "account",
+        element: <PrivateRoute children={<Outlet />} />,
+        children: [
+          { index: true, element: <Account /> }, // Todo: Pending
+          { path: "wishlist", element: <Wishlist /> }, // Todo: Pending
+          {
+            path: "orders",
+            element: <Outlet />,
+            children: [
+              { index: true, element: <Orders /> },
+              { path: ":orderId", element: <OrderDetails /> }, // Todo: Pending
+              { path: "return-refund", element: <OrderReturnRefund /> }, // Todo: Pending
+              { path: "track", element: <TrackMyOrders /> }, // Todo: Pending
+              { path: "payment", element: <Payment /> },
+            ],
+          },
+        ],
       },
-      {
-        path: "address",
-        element: (
-          <PrivateRoute>
-            <Address />
-          </PrivateRoute>
-        ),
-      },
+      // Company Pages
+      { path: "about-us", element: <AboutUs /> }, // Todo: Pending
+      { path: "partner-with-us", element: <PartnerWithUs /> },
+      { path: "careers", element: <Careers /> }, // Todo: Pending
+      { path: "sustainability", element: <Sustainability /> },
+      { path: "ethics", element: <Ethics /> },
+      { path: "teams", element: <Teams /> },
+      { path: "press-media", element: <PressMedia /> },
+
+      // Quick Link Pages
+      { path: "refer", element: <ReferFriend /> }, // Todo: Refer Part is Pending
+      { path: "store-locator", element: <StoreLocator /> }, // Todo: Pending
+      { path: "become-seller", element: <BecomeSeller /> }, // Todo: Pending
+      // Services Pages
+      { path: "contact", element: <ContactUs /> }, // Todo: Pending
+      { path: "help-center-faq", element: <HelpCenterFAQ /> },
+      { path: "shipping-info", element: <ShippingInfo /> },
+      // Legal Policies Pages
+      { path: "privacy-policy", element: <PrivacyPolicy /> },
+      { path: "cookie-policy", element: <CookiePolicy /> },
+      { path: "terms-conditions", element: <TermsAndConditions /> },
+      { path: "disclaimer", element: <Disclaimer /> },
+      { path: "accessibility", element: <Accessibility /> },
     ],
   },
-  {
-    path: "register",
-    element: (
-      <AuthRedirect>
-        <Register />
-      </AuthRedirect>
-    ),
-  },
-  {
-    path: "login",
-    element: (
-      <AuthRedirect>
-        <Login />
-      </AuthRedirect>
-    ),
-  },
-  {
-    path: "error",
-    element: <SomethingWentWrong />,
-  },
-  {
-    path: "*",
-    element: <NotFound />,
-  },
+  { path: "register", element: <AuthRedirect children={<Register />} /> },
+  { path: "login", element: <AuthRedirect children={<Login />} /> },
+  { path: "*", element: <NotFound /> },
 ]);
 
 export default router;

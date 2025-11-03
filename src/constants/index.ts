@@ -27,6 +27,15 @@ export const REVIEWS_OPTIONS = [
   { name: "Most Disliked", value: "most-disliked", disabled: false },
 ];
 
+export const ORDER_STATUS_OPTIONS = [
+  { name: "All", value: "", disabled: false },
+  { name: "Pending", value: "pending", disabled: false },
+  { name: "Confirmed", value: "confirmed", disabled: false },
+  { name: "Delivered", value: "delivered", disabled: false },
+  { name: "Cancelled", value: "cancelled", disabled: false },
+  { name: "Returned", value: "returned", disabled: false },
+];
+
 export const CATEGORY_VIDEOS = [
   {
     src: "/videos/product/offers.mp4",
@@ -135,3 +144,70 @@ export const STATES_AND_UNION_TERRITORIES = [
 ];
 
 export const ALLOWED_COUNTRIES = ["India"];
+
+export const ALLOWED_PAYMENT_MODE = ["ONLINE"];
+
+export const ORDER_STATUS = [
+  "PENDING",
+  "CONFIRMED",
+  "DELIVERED",
+  "CANCELLED",
+  "RETURNED",
+];
+
+export const ALLOWED_CURRENCIES = ["INR"];
+
+export const RAZORPAY_PAYMENT_METHODS = [
+  "CARD",
+  "UPI",
+  "NETBANKING",
+  "WALLET",
+  // "PAYLATER", // *LINK - Not Implemented yet in FRONTEND & BACKEND
+  // "EMI", // *LINK - Not Implemented yet in FRONTEND & BACKEND
+  "OTHER",
+];
+
+export const RAZORPAY_PAYMENT_STATUS = [
+  "UNPAID",
+  "PAID",
+  "FAILED",
+  "REFUNDED",
+  "CANCELLED",
+];
+
+export const ORDER_STATUS_CLASSES: Record<
+  (typeof ORDER_STATUS)[number],
+  string
+> = {
+  PENDING: "bg-yellow-100 text-yellow-800",
+  CONFIRMED: "bg-blue-100 text-blue-800",
+  DELIVERED: "bg-green-100 text-green-800",
+  CANCELLED: "bg-red-100 text-red-800",
+  RETURNED: "bg-purple-100 text-purple-800",
+};
+
+export const BRAND_FEATURE_HIGHLIGHTS = [
+  {
+    title: "Times Lifestyle Feature",
+    description:
+      "Interview with our founder on ethical beauty & clean formulas.",
+    image: "Times-Lifestyle-Feature.webp",
+  },
+  {
+    title: "Vogue India Special Edition",
+    description:
+      "Beautinique named as one of the top emerging beauty brands to watch.",
+    image: "Vogue-India-Special-Edition.webp",
+  },
+  {
+    title: "ELLE India Award",
+    description:
+      "Beautinique featured in ELLE India for redefining modern clean beauty standards.",
+    image: "ELLE-India-Award.webp",
+  },
+  {
+    title: "Cosmopolitan Beauty Awards",
+    description: "Award nominee for Best Natural Skincare Line 2025.",
+    image: "Cosmopolitan-Beauty-Awards.webp",
+  },
+];

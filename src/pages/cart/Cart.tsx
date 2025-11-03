@@ -1,34 +1,16 @@
-import { useEffect, useMemo, useState } from "react";
-import {
-  useGetUserCart,
-  useRemoveProductFromCart,
-  useUpdateProductQuantityInCart,
-} from "../../api/cart/cart.service";
+import { useMemo } from "react";
 import Button from "../../components/button/Button";
 import { RightArrowIcon } from "../../icons";
 import CartItem from "./children/CartItem";
-import { ICart, TCartProduct } from "../../types";
-import ShowError from "../../components/errors/ShowError";
+import { useUserCart } from "../../hooks/useUserCart";
 import CartSkeleton from "../../components/skeletons/children/CartSkeleton";
 import EmptyData from "../../components/empty-data/EmptyData";
 import usePathParams from "../../hooks/usePathParams";
+import ShowApiStatus from "../../components/errors/ShowError";
 
 const Cart = () => {
-  const { data, isLoading, isError, refetch } = useGetUserCart();
   const { navigate } = usePathParams();
-
-  const { mutateAsync: updateQuantity } = useUpdateProductQuantityInCart();
-  const { mutateAsync: removeProduct } = useRemoveProductFromCart();
-
-  const [products, setProducts] = useState<TCartProduct[]>([]);
-
-  const cart: ICart = data?.cart || {};
-
-  useEffect(() => {
-    if (cart.products) {
-      setProducts(cart.products);
-    }
-  }, [cart.products]);
+  const { products, loading, error } = useUserCart();
 
   // subtotal calculation
   const subtotal = useMemo(() => {
@@ -49,42 +31,17 @@ const Cart = () => {
     );
   }, [products]);
 
-  const handleQuantityChange = (id: string, newQty: number) => {
-    setProducts((prev) =>
-      prev.map((item) =>
-        item._id === id ? { ...item, quantity: newQty } : item
-      )
-    );
-    updateQuantity(
-      { cartItemId: id, quantity: String(newQty) },
-      { onError: () => setProducts(cart.products) }
-    );
-  };
-
-  const handleRemoveItemFromCart = (id: string) => {
-    removeProduct(
-      { cartItemId: id },
-      {
-        onSuccess: () => {
-          setProducts((prev) => prev.filter((item) => item._id !== id));
-          refetch();
-        },
-        onError: () => setProducts(cart.products),
-      }
-    );
-  };
-
   return (
     <div className="bg-primary-inverted p-4 lg:p-8">
-      {isLoading ? (
+      {loading ? (
         <CartSkeleton />
-      ) : isError ? (
-        <ShowError
+      ) : error ? (
+        <ShowApiStatus
           headingText="Something went wrong!"
           descriptionText="Failed to get the product. Please reload the page"
           className="w-full h-full mx-auto [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase [&>p]:text-xs [&>p]:base:text-sm [&>p]:sm:text-base [&>p]:md:text-lg"
         />
-      ) : Object.keys(cart).length > 0 && cart?.products?.length > 0 ? (
+      ) : products?.length > 0 ? (
         <div className="flex flex-col lg:flex-row gap-4">
           {/* Left - Cart Items */}
           <div className="flex-1 p-6">
@@ -93,12 +50,7 @@ const Cart = () => {
             </h2>
             <div className="h-full space-y-6">
               {products.map((item) => (
-                <CartItem
-                  key={item._id}
-                  item={item}
-                  onQuantityChange={handleQuantityChange}
-                  onRemoveItem={handleRemoveItemFromCart}
-                />
+                <CartItem key={item._id} item={item} />
               ))}
             </div>
           </div>

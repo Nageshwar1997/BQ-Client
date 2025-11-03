@@ -3,8 +3,7 @@ import { CloseIcon, SearchIcon } from "../../../icons";
 import Input from "../../input/Input";
 import { useGetAllProducts } from "../../../api/product/product.service";
 import SearchModalSkeleton from "../../skeletons/children/SearchModalSkeleton";
-import ShowError from "../../errors/ShowError";
-import EmptyData from "../../empty-data/EmptyData";
+import ShowApiStatus from "../../api-status/ShowApiStatus";
 import { FetchedProductType } from "../../../types";
 import { TUseGetAllProducts } from "../../../api/types";
 import { debounce } from "../../../utils";
@@ -67,7 +66,7 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
         inputProps={{
           placeholder: "Search products here...",
           value: searchQuery,
-          type: "search",
+          type: "text",
           name: "searchQuery",
           onChange: (e) => setSearchQuery(e.target.value),
           onKeyDown: (e) => {
@@ -102,10 +101,11 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
         {productsQuery.isPending && debouncedQuery ? (
           <SearchModalSkeleton count={5} />
         ) : productsQuery.isError ? (
-          <ShowError
+          <ShowApiStatus
+            type="error"
             headingText="Something went wrong"
             descriptionText="Please try again later."
-            className="gap-1"
+            className="gap-1 [&_svg]:w-8 [&_svg]:h-8 [&_h3]:text-lg [&_p]:text-sm"
           />
         ) : products.length ? (
           <ul className="flex flex-col gap-1 p-1">
@@ -132,12 +132,14 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
             ))}
           </ul>
         ) : debouncedQuery ? (
-          <EmptyData
-            content={
+          <ShowApiStatus
+            type="empty"
+            headingText={
               <>
                 No results found for <strong>{debouncedQuery}</strong>
               </>
             }
+            className="gap-1 [&_svg]:w-8 [&_svg]:h-8 [&_h3]:text-lg [&_p]:text-sm"
           />
         ) : (
           <div className="w-full flex-1 flex items-center justify-center text-center text-sm md:text-base">

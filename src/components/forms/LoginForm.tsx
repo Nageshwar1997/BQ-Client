@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import z from "zod";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { loginInputMapData, LoginTextContent } from "../../pages/auth/data";
 import { LoginFormInputProps, LoginTypes } from "../../types";
 import { loginSchema } from "../../pages/auth/helpers/auth.schema";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Controller, useForm } from "react-hook-form";
 import { useLoginUser } from "../../api/auth/auth.service";
 import { saveLocalToken, saveSessionToken } from "../../utils";
 import TextDisplay from "../TextDisplay";
@@ -26,7 +27,7 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
   const { paths } = usePathParams();
   const { setUser } = useUserStore();
 
-  const userLoginMutation = useLoginUser();
+  const { mutateAsync, isPending } = useLoginUser();
 
   const {
     control,
@@ -35,8 +36,8 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
     reset,
     register,
     watch,
-  } = useForm({
-    resolver: yupResolver(loginSchema),
+  } = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       loginMethod: "email",
       email: "",
@@ -58,7 +59,7 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
     });
   };
 
-  const onSubmit = (bodyData: LoginFormInputProps) => {
+  const onSubmit = async (bodyData: z.infer<typeof loginSchema>) => {
     const finalData: Partial<LoginFormInputProps> = {
       password: bodyData.password,
     };
@@ -69,7 +70,7 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
       finalData.phoneNumber = bodyData.phoneNumber;
     }
 
-    userLoginMutation.mutateAsync(finalData, {
+    mutateAsync(finalData, {
       onSettled(data, error) {
         if (data && !error) {
           if (onLoginSuccess) {
@@ -95,7 +96,7 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
   };
   return (
     <>
-      {userLoginMutation.isPending && <LoadingPage text="Please wait" />}
+      {isPending && <LoadingPage text="Please wait" />}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full flex flex-col gap-4"

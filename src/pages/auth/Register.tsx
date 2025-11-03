@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { yupResolver } from "@hookform/resolvers/yup";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import { RegisterTextContent, registerInputMapData } from "./data";
-import {
-  RegisterFormInputProps,
-  TPasswordField,
-  TPasswordVisibility,
-} from "../../types";
+import { TPasswordField } from "../../types";
 import AuthRobot from "./components/AuthRobot";
 import UploadProfile from "./components/UploadProfile";
 import TextDisplay from "../../components/TextDisplay";
@@ -29,14 +27,16 @@ import usePathParams from "../../hooks/usePathParams";
 
 const Register = () => {
   const { showGradient, containerRef } = useVerticalScrollable();
-  const [showPasswords, setShowPasswords] = useState<TPasswordVisibility>({
+  const [showPasswords, setShowPasswords] = useState<
+    Record<TPasswordField, boolean>
+  >({
     password: false,
     confirmPassword: false,
   });
   const { navigate } = usePathParams();
   const { setUser } = useUserStore();
 
-  const userRegisterMutation = useRegisterUser();
+  const { mutateAsync, isPending } = useRegisterUser();
 
   const {
     control,
@@ -45,8 +45,8 @@ const Register = () => {
     setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterFormInputProps>({
-    resolver: yupResolver(registerSchema), // Use yup resolver for validation
+  } = useForm<z.infer<typeof registerSchema>>({
+    resolver: zodResolver(registerSchema),
   });
 
   const togglePasswordVisibility = (field: TPasswordField) => {
@@ -56,7 +56,9 @@ const Register = () => {
     }));
   };
 
-  const onSubmit = async (bodyData: RegisterFormInputProps) => {
+  const profilePic = watch("profilePic");
+
+  const onSubmit = async (bodyData: z.infer<typeof registerSchema>) => {
     const formData = new FormData();
 
     formData.append("firstName", bodyData.firstName);
@@ -70,7 +72,7 @@ const Register = () => {
     if (file) {
       formData.append("profilePic", file);
     }
-    userRegisterMutation.mutateAsync(formData, {
+    mutateAsync(formData, {
       onSettled(data, error) {
         if (data && !error) {
           if (data.user) {
@@ -92,7 +94,7 @@ const Register = () => {
 
   return (
     <div className="w-full min-h-dvh max-h-dvh h-full p-4 flex gap-4 overflow-hidden relative">
-      {userRegisterMutation.isPending && <LoadingPage text="Please wait" />}
+      {isPending && <LoadingPage text="Please wait" />}
       <AuthRobot />
       <DarkMode className="border absolute top-5 right-5 h-fit p-2 md:p-3 rounded-full bg-secondary-inverted [&_path]:!stroke-secondary z-10" />
       <div
@@ -120,8 +122,8 @@ const Register = () => {
                 className="!h-56"
                 errorText={errors?.profilePic?.message}
                 previewImage={
-                  watch("profilePic") instanceof File
-                    ? URL.createObjectURL(watch("profilePic") as File)
+                  profilePic instanceof File
+                    ? URL.createObjectURL(profilePic)
                     : ""
                 }
                 onChange={(file) => {

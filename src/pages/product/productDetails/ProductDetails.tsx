@@ -1,6 +1,5 @@
 import { Fragment, useMemo, useState } from "react";
 import { useGetProductById } from "../../../api/product/product.service";
-import useQueryParams from "../../../hooks/useQueryParams";
 import { FetchedProductType, TMediaOption } from "../../../types";
 import ReviewsSection from "./children/ReviewsSection";
 import MediaCarouselWithParentMedia from "../../../components/carousels/MediaCarouselWithParentMedia";
@@ -17,20 +16,15 @@ import ShowError from "../../../components/errors/ShowError";
 import EmptyData from "../../../components/empty-data/EmptyData";
 import RatingBars from "./children/RatingBars";
 import ReviewsMedia from "./children/ReviewsMedia";
-import {
-  useAddProductToCart,
-  useGetUserCart,
-} from "../../../api/cart/cart.service";
-import { useUserStore } from "../../../store/user.store";
+import useCartStore from "../../../store/cart.store";
 import usePathParams from "../../../hooks/usePathParams";
+import { useUserCart } from "../../../hooks/useUserCart";
 
 const ProductDetails = () => {
-  const { setParams } = useQueryParams();
   const { pathParams, navigate } = usePathParams();
   const [selectedShadeIdx, setSelectedShadeIdx] = useState<null | number>(null);
-  const { isAuthenticated } = useUserStore();
-  const { mutateAsync, isPending } = useAddProductToCart();
-  const getUserCartQuery = useGetUserCart();
+  const { cart } = useCartStore();
+  const { adding, handleAddToCart } = useUserCart();
 
   const { data, isLoading, isError } = useGetProductById({
     queryParams: { productId: pathParams.productId ?? "" },
@@ -53,14 +47,10 @@ const ProductDetails = () => {
   }, [product?.commonImages, product?.shades]);
 
   const currentShade = useMemo(() => {
-    return product?.shades?.[selectedShadeIdx || 0];
+    return product?.shades?.[selectedShadeIdx ?? 0] ?? {};
   }, [product?.shades, selectedShadeIdx]);
 
-  const cartProducts = useMemo(() => {
-    return getUserCartQuery.data?.cart?.products ?? [];
-  }, [getUserCartQuery.data?.cart?.products]);
-
-  const isCartFull = cartProducts?.length >= 10;
+  const isCartFull = cart && cart?.products?.length >= 10;
 
   const isOutOfStock = useMemo(() => {
     return (
@@ -72,26 +62,12 @@ const ProductDetails = () => {
 
   const isProductExistInCart = useMemo(() => {
     return (
-      cartProducts.some(
+      cart?.products?.some(
         (item: { product: { _id: string } }) =>
           item?.product?._id === pathParams?.productId
       ) ?? false
     );
-  }, [cartProducts, pathParams?.productId]);
-
-  const handleAddToCart = () => {
-    if (!isAuthenticated) {
-      setParams({ login: "true" });
-      return;
-    }
-    mutateAsync(
-      {
-        productId: pathParams?.productId ?? "",
-        shadeId: currentShade?._id,
-      },
-      { onSuccess: getUserCartQuery.refetch }
-    );
-  };
+  }, [cart?.products, pathParams?.productId]);
 
   return (
     <div className="w-full h-auto flex flex-col gap-8 p-8">
@@ -170,9 +146,7 @@ const ProductDetails = () => {
                   <Button
                     className="[&>span]:line-clamp-1"
                     content={
-                      getUserCartQuery?.isRefetching
-                        ? "Checking..."
-                        : isPending
+                      adding
                         ? "Adding..."
                         : isOutOfStock
                         ? "Out of stock"
@@ -184,10 +158,9 @@ const ProductDetails = () => {
                     }
                     pattern="primary"
                     buttonProps={{
-                      onClick: handleAddToCart,
+                      onClick: () => handleAddToCart(product, currentShade),
                       disabled:
-                        isPending ||
-                        getUserCartQuery?.isRefetching ||
+                        adding ||
                         isOutOfStock ||
                         isCartFull ||
                         isProductExistInCart,
