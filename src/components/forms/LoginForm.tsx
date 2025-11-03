@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import z from "zod";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { loginInputMapData, LoginTextContent } from "../../pages/auth/data";
-import { LoginFormInputProps, LoginTypes, TLogin } from "../../types";
+import { LoginFormInputProps, LoginTypes } from "../../types";
 import { loginSchema } from "../../pages/auth/helpers/auth.schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
 import { useLoginUser } from "../../api/auth/auth.service";
 import { saveLocalToken, saveSessionToken } from "../../utils";
 import TextDisplay from "../TextDisplay";
@@ -35,7 +36,7 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
     reset,
     register,
     watch,
-  } = useForm<TLogin>({
+  } = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       loginMethod: "email",
@@ -58,7 +59,7 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
     });
   };
 
-  const onSubmit = async (bodyData: TLogin) => {
+  const onSubmit = async (bodyData: z.infer<typeof loginSchema>) => {
     const finalData: Partial<LoginFormInputProps> = {
       password: bodyData.password,
     };
