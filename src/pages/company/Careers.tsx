@@ -1,21 +1,19 @@
 import { useMemo, useState } from "react";
 import { LeftGradient, RightGradient } from "../../components/Gradients";
-import {
-  departmentConfigMap,
-  OPENINGS_DATA,
-  OPENINGS_DEPARTMENTS,
-} from "../../constants";
+import { departmentConfigMap, OPENINGS_DATA } from "../../constants";
 import useHorizontalScrollable from "../../hooks/useHorizontalScrollable";
+import OpeningCard from "./children/OpeningCard";
+import { TBaseDept } from "../../types";
 
 const Careers = () => {
   const { containerRef, showGradient } = useHorizontalScrollable();
-  const [selectedDept, setSelectedDept] = useState({
+  const [selectedDept, setSelectedDept] = useState<TBaseDept>({
     title: "All",
     value: "all",
   });
 
   const openings = useMemo(() => {
-    if (selectedDept.value) {
+    if (selectedDept.value && selectedDept.value !== "all") {
       return (
         OPENINGS_DATA.find(
           (data) => data.department.value === selectedDept.value
@@ -26,7 +24,6 @@ const Careers = () => {
     }
   }, [selectedDept]);
 
-  console.log("openings", openings);
   return (
     <div className="p-6 mx-auto space-y-10">
       <header className="text-center space-y-3 sm:space-y-4">
@@ -46,93 +43,59 @@ const Careers = () => {
             className="flex gap-1 overflow-y-scroll scroll-smooth"
             ref={containerRef}
           >
-            {[{ title: "All", value: "all" }, ...OPENINGS_DEPARTMENTS].map(
-              (dept) => {
-                const current = selectedDept.value === dept.value;
-                const config = departmentConfigMap[dept.value];
-                return (
+            {OPENINGS_DATA.map((opening) => {
+              const current = selectedDept.value === opening.department.value;
+              const config = departmentConfigMap[opening.department.value];
+              return (
+                <div
+                  key={opening.department.value}
+                  className={`p-2 border-b border-transparent ${
+                    current
+                      ? // ? `${departmentConfigMap[dept.value]?.headingClass}`
+                        ""
+                      : ""
+                  }`}
+                  style={
+                    current && config
+                      ? {
+                          background: `radial-gradient(39.35% 50% at 50.37% 100%, ${config.color}4d 0%, ${config.color}00 100%), linear-gradient(0deg, var(--primary-inverted) 0%, var(--primary-inverted) 100%), var(--primary-inverted)`,
+                          borderImage: `linear-gradient(to right, ${config?.color}00, ${config?.color},  ${config?.color}00)`,
+                          borderImageSlice: 1,
+                        }
+                      : {}
+                  }
+                >
                   <div
-                    className={`p-2 border-b border-transparent ${
+                    className={`text-nowrap cursor-pointer font-semibold p-1 bg-clip-text text-transparent ${
                       current
-                        ? // ? `${departmentConfigMap[dept.value]?.headingClass}`
-                          ""
-                        : ""
+                        ? "bg-accent-duo"
+                        : "bg-silver-duo hover:text-primary"
                     }`}
-                    style={
-                      current && config
-                        ? {
-                            background: `radial-gradient(39.35% 50% at 50.37% 100%, ${config.color}4d 0%, ${config.color}00 100%), linear-gradient(0deg, var(--primary-inverted) 0%, var(--primary-inverted) 100%), var(--primary-inverted)`,
-                            borderImage: `linear-gradient(to right, ${config?.color}00, ${config?.color},  ${config?.color}00)`,
-                            borderImageSlice: 1,
-                          }
-                        : {}
-                    }
+                    onClick={() => setSelectedDept(opening.department)}
                   >
-                    <div
-                      key={dept.value}
-                      className={`text-nowrap cursor-pointer font-semibold p-1 bg-clip-text text-transparent ${
-                        current
-                          ? "bg-accent-duo"
-                          : "bg-silver-duo hover:text-primary"
-                      }`}
-                      onClick={() => setSelectedDept(dept)}
-                    >
-                      {dept.title}
-                    </div>
+                    {opening.department.title}
                   </div>
-                );
-              }
-            )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
 
       <main className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-center">
-        {/* {openings.map((opening, index) => {
-          const isLead = emp.description && selectedDept.value;
-          return (
-            <div
-              key={index}
-              className={`rounded-2xl overflow-hidden shadow-md shadow-primary-10 bg-primary-30 hover:bg-accent-duo p-0.5 w-full ${
-                isLead ? "sm:col-span-2" : ""
-              }`}
-            >
-              <div className="rounded-[14px] bg-primary-inverted shadow-light-dark-soft text-center">
-                <div className="flex flex-col sm:flex-row">
-                  <div
-                    className={`h-full relative ${
-                      isLead ? "sm:w-2/5" : "w-full"
-                    }`}
-                  >
-                    <img
-                      src={emp.image}
-                      alt={emp.name}
-                      className="w-full h-56 object-cover object-top"
-                    />
-                    <div className="absolute inset-x-0 bottom-0 flex flex-col items-center justify-center bg-gradient-to-t from-primary-inverted to-transparent px-4 py-2 pt-4 space-y-0.5 rounded-b-[14px]">
-                      <h3 className="font-semibold bg-clip-text text-transparent bg-silver-duo text-center">
-                        {emp.name}
-                      </h3>
-                      <p className="text-tertiary text-center border border-primary-30 w-fit mx-auto px-2 py-0.5 rounded-full text-xs">
-                        {emp.role}
-                      </p>
-                    </div>
-                  </div>
-                  {isLead && (
-                    <div className="flex-1 flex flex-col gap-3 p-4 italic">
-                      <h3 className="line-clamp-2 leading-5 text-xl font-semibold text-secondary">
-                        {emp.description?.title}
-                      </h3>
-                      <q className="line-clamp-[7] text-base/5 text-tertiary">
-                        {emp.description?.description}
-                      </q>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          );
-        })} */}
+        {openings.map((opening, index) => (
+          <OpeningCard
+            key={index}
+            opening={opening}
+            department={
+              selectedDept.value === "all"
+                ? OPENINGS_DATA.find((d) => d.openings.includes(opening))!
+                    .department
+                : selectedDept
+            }
+            selectedDept={selectedDept}
+          />
+        ))}
       </main>
     </div>
   );

@@ -7,6 +7,17 @@ import {
   TPasswordField,
   TRegexes,
 } from "../types";
+import {
+  DataAnalyticsOpeningIcon,
+  FinanceOpeningIcon,
+  LeadershipOpeningIcon,
+  MarketingOpeningIcon,
+  OperationsOpeningIcon,
+  ProductOpeningIcon,
+  SalesOpeningIcon,
+  SpecializedOpeningIcon,
+  TechnologyOpeningIcon,
+} from "../pages/company/data";
 
 export * from "./categories";
 export const DEFAULT_FILTER = { name: "All", value: "all", default: true };
@@ -663,6 +674,10 @@ export const TEAMS_DEPARTMENTS: TBaseDept[] = DEPARTMENT_AND_TEAMS_DATA.map(
 );
 
 export const OPENINGS_DATA: IOpening[] = [
+  {
+    department: { title: "All", value: "all" },
+    openings: [],
+  },
   {
     department: {
       title: "Executive / Leadership",
@@ -1346,97 +1361,80 @@ export const OPENINGS_DATA: IOpening[] = [
   },
 ];
 
-export const OPENINGS_DEPARTMENTS: TBaseDept[] = OPENINGS_DATA.map(
-  ({ department }) => ({ title: department.title, value: department.value })
-);
-
 export interface DepartmentConfig {
   bgClass?: string;
   color: string;
   headingClass?: string;
-  textColor?: string;
-  imageSrc?: string;
   icon?: FC<IconProps>;
 }
 
 const all_config: DepartmentConfig = {
   bgClass: "hover:opening-dept-all-bg",
   headingClass: "opening-dept-all-heading-bg",
-  textColor: "text-[#2E90FA]",
   color: "#2e90fa",
-  imageSrc: "/icons/about/careers/openings/software.svg",
 };
 
 const executive_or_leadership_config: DepartmentConfig = {
   bgClass: "hover:opening-dept-executive_or_leadership-bg",
   headingClass: "opening-dept-executive_or_leadership-heading-bg",
-  textColor: "text-[#2E90FA]",
   color: "#f79009",
-  imageSrc: "/icons/about/careers/openings/software.svg",
+  icon: LeadershipOpeningIcon,
 };
 
 const product_and_merchandising_config: DepartmentConfig = {
   bgClass: "hover:opening-dept-product_and_merchandising-bg",
   headingClass: "opening-dept-product_and_merchandising-heading-bg",
-  textColor: "text-[#2E90FA]",
   color: "#f7d158",
-  imageSrc: "/icons/about/careers/openings/software.svg",
+  icon: ProductOpeningIcon,
 };
 
 const technology_or_engineering_config: DepartmentConfig = {
   bgClass: "hover:opening-dept-technology_or_engineering-bg",
   headingClass: "opening-dept-technology_or_engineering-heading-bg",
-  textColor: "text-[#2E90FA]",
   color: "#ee46bc",
-  imageSrc: "/icons/about/careers/openings/software.svg",
+  icon: TechnologyOpeningIcon,
 };
 
 const marketing_and_growth_config: DepartmentConfig = {
   bgClass: "hover:opening-dept-marketing_and_growth-bg",
   headingClass: "opening-dept-marketing_and_growth-heading-bg",
-  textColor: "text-[#2E90FA]",
   color: "#9747ff",
-  imageSrc: "/icons/about/careers/openings/software.svg",
+  icon: MarketingOpeningIcon,
 };
 
 const sales_and_customer_engagement_config: DepartmentConfig = {
   bgClass: "hover:opening-dept-sales_and_customer_engagement-bg",
   headingClass: "opening-dept-sales_and_customer_engagement-heading-bg",
-  textColor: "text-[#2E90FA]",
   color: "#12b76a",
-  imageSrc: "/icons/about/careers/openings/software.svg",
+  icon: SalesOpeningIcon,
 };
 
 const operations_and_logistics_config: DepartmentConfig = {
   bgClass: "hover:opening-dept-operations_and_logistics-bg",
   headingClass: "opening-dept-operations_and_logistics-heading-bg",
-  textColor: "text-[#2E90FA]",
   color: "#00e5d1",
-  imageSrc: "/icons/about/careers/openings/software.svg",
+  icon: OperationsOpeningIcon,
 };
 
 const finance_and_admin_config: DepartmentConfig = {
   bgClass: "hover:opening-dept-finance_and_admin-bg",
   headingClass: "opening-dept-finance_and_admin-heading-bg",
-  textColor: "text-[#2E90FA]",
   color: "#fe026c",
-  imageSrc: "/icons/about/careers/openings/software.svg",
+  icon: FinanceOpeningIcon,
 };
 
 const data_and_analytics_config: DepartmentConfig = {
   bgClass: "hover:opening-dept-data_and_analytics-bg",
   headingClass: "opening-dept-data_and_analytics-heading-bg",
-  textColor: "text-[#2E90FA]",
   color: "#b519df",
-  imageSrc: "/icons/about/careers/openings/software.svg",
+  icon: DataAnalyticsOpeningIcon,
 };
 
 const specialized_roles_config: DepartmentConfig = {
   bgClass: "hover:opening-dept-specialized_roles-bg",
   headingClass: "opening-dept-specialized_roles-heading-bg",
-  textColor: "text-[#2E90FA]",
   color: "#2e90fa",
-  imageSrc: "/icons/about/careers/openings/software.svg",
+  icon: SpecializedOpeningIcon,
 };
 
 export const departmentConfigMap: Record<TBaseDept["value"], DepartmentConfig> =

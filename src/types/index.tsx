@@ -525,7 +525,7 @@ export interface IDepartment extends TBaseDept {
   employees: TEmployee[];
 }
 
-export type TOpeningRole = {
+export type TRoleOpening = {
   role: string;
   experience: string;
   description: string;
@@ -538,5 +538,5 @@ export type TOpeningRole = {
 
 export interface IOpening {
   department: TBaseDept;
-  openings: TOpeningRole[];
+  openings: TRoleOpening[];
 }
