@@ -1,11 +1,9 @@
 import { useMemo, useState } from "react";
-import { DEPARTMENT_AND_TEAMS_DATA, ONLY_DEPARTMENTS } from "../../constants";
-import useThemeStore from "../../store/theme.store";
+import { DEPARTMENT_AND_TEAMS_DATA, TEAMS_DEPARTMENTS } from "../../constants";
 import useHorizontalScrollable from "../../hooks/useHorizontalScrollable";
 import { LeftGradient, RightGradient } from "../../components/Gradients";
 
 const Teams = () => {
-  const { theme } = useThemeStore();
   const { containerRef, showGradient } = useHorizontalScrollable();
   const [selectedDept, setSelectedDept] = useState({
     title: "All",
@@ -43,7 +41,7 @@ const Teams = () => {
             className="flex gap-4 overflow-y-scroll scroll-smooth"
             ref={containerRef}
           >
-            {[{ title: "All", value: "" }, ...ONLY_DEPARTMENTS].map((dept) => (
+            {[{ title: "All", value: "" }, ...TEAMS_DEPARTMENTS].map((dept) => (
               <div
                 key={dept.value}
                 className={`text-nowrap cursor-pointer font-semibold p-1 bg-clip-text text-transparent ${
@@ -78,10 +76,7 @@ const Teams = () => {
                     }`}
                   >
                     <img
-                      src={
-                        emp.image ||
-                        `/images/company/teams/${emp.gender}-${theme}.webp`
-                      }
+                      src={emp.image}
                       alt={emp.name}
                       className="w-full h-56 object-cover object-top"
                     />
