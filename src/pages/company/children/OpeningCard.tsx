@@ -27,7 +27,7 @@ const OpeningCard = ({
     >
       <div className="flex flex-col items-start gap-[18px] self-stretch justify-between w-full h-[228px]">
         <div className="flex justify-between items-start self-stretch">
-          {Icon && <Icon className="w-12 h-12 border border-[red]" />}
+          {Icon && <Icon className="w-12 h-12 mix-blend-difference" />}
           <div className="text-light-secondary text-[8px] font-metropolis not-italic font-normal leading-[9.6px] tracking-[0.8px] uppercase">
             {opening.location}
           </div>
