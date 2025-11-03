@@ -2,6 +2,7 @@ import { useState } from "react";
 import { IOpening, TRoleOpening } from "../../../types";
 import { hexToRgba } from "../../../utils";
 import Button from "../../../components/button/Button";
+import OpeningModal from "./OpeningModal";
 
 const OpeningCard = ({
   opening,
@@ -10,11 +11,7 @@ const OpeningCard = ({
   opening: TRoleOpening;
   department: IOpening["department"];
 }) => {
-  const [
-    ,
-    // isModalOpen
-    setIsModalOpen,
-  ] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className="flex max-w-sm mx-auto w-full rounded-xl border border-primary-30 shadow-light-dark-soft overflow-hidden">
@@ -67,13 +64,11 @@ const OpeningCard = ({
           className="!w-fit !rounded-full !py-1.5 !px-5 !duration-0 !text-xs/[18px] backdrop-blur-md"
           buttonProps={{ onClick: () => setIsModalOpen(true) }}
         />
-        {/* <Modal
-          className="[&>div]:card-one-data-bg [&>div]:border-ctruh-divider-light [&>div]:border-[1px] [&>div]:md:m-4 [&>div]:overflow-hidden [&>div]:rounded-3xl"
+        <OpeningModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-        >
-          <JobModal data={data} onClose={() => setIsModalOpen(false)} />
-        </Modal> */}
+          opening={opening}
+        />
       </div>
     </div>
   );

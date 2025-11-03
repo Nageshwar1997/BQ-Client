@@ -535,6 +535,11 @@ export type TRoleOpening = {
   salary: string;
   tags: string[];
   technologies: string[];
+  summary: string;
+  responsibilities: string[];
+  requirements: string[];
+  qualifications: string[];
+  benefits: string[];
 };
 
 export interface IOpening {
