@@ -684,17 +684,17 @@ export const OPENINGS_DATA: IOpening[] = [
       value: "executive_or_leadership",
     },
     openings: [
-      {
-        role: "Founder / Co-Founder",
-        experience: "10+ Years",
-        description:
-          "Lead and shape the vision of our beauty e-commerce brand, driving strategy, partnerships, and market expansion.",
-        type: "Full-Time",
-        location: "Bengaluru / Remote",
-        salary: "Negotiable",
-        tags: ["Leadership", "Strategy", "Vision"],
-        technologies: [],
-      },
+      // {
+      //   role: "Founder / Co-Founder",
+      //   experience: "10+ Years",
+      //   description:
+      //     "Lead and shape the vision of our beauty e-commerce brand, driving strategy, partnerships, and market expansion.",
+      //   type: "Full-Time",
+      //   location: "Bengaluru / Remote",
+      //   salary: "Negotiable",
+      //   tags: ["Leadership", "Strategy", "Vision"],
+      //   technologies: [],
+      // },
       {
         role: "CEO (Chief Executive Officer)",
         experience: "8+ Years",

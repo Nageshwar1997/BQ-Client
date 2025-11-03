@@ -1,27 +1,23 @@
 import { useMemo, useState } from "react";
 import { DepartmentConfig, departmentConfigMap } from "../../../constants";
-import { IOpening, TBaseDept, TRoleOpening } from "../../../types";
+import { IOpening, TRoleOpening } from "../../../types";
 
 const OpeningCard = ({
   opening,
   department,
-  selectedDept,
 }: {
   opening: TRoleOpening;
   department: IOpening["department"];
-  selectedDept: TBaseDept;
 }) => {
   const [
     ,
     // isModalOpen
     setIsModalOpen,
   ] = useState(false);
-  const departmentDetails = useMemo<DepartmentConfig | undefined>(() => {
-    const deptKey =
-      selectedDept.value === "all" ? department.value : selectedDept.value;
-
-    return departmentConfigMap[deptKey];
-  }, [department.value, selectedDept.value]);
+  const departmentDetails = useMemo<DepartmentConfig | undefined>(
+    () => departmentConfigMap[department.value],
+    [department.value]
+  );
 
   const Icon = departmentDetails?.icon;
 
