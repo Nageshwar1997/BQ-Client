@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import { RegisterTextContent, registerInputMapData } from "./data";
-import { TPasswordField, TRegister } from "../../types";
+import { TPasswordField } from "../../types";
 import AuthRobot from "./components/AuthRobot";
 import UploadProfile from "./components/UploadProfile";
 import TextDisplay from "../../components/TextDisplay";
@@ -43,7 +45,7 @@ const Register = () => {
     setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm<TRegister>({
+  } = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
   });
 
@@ -56,7 +58,7 @@ const Register = () => {
 
   const profilePic = watch("profilePic");
 
-  const onSubmit = async (bodyData: TRegister) => {
+  const onSubmit = async (bodyData: z.infer<typeof registerSchema>) => {
     const formData = new FormData();
 
     formData.append("firstName", bodyData.firstName);
