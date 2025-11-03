@@ -3,11 +3,11 @@ import { CloseIcon, SearchIcon } from "../../../icons";
 import Input from "../../input/Input";
 import { useGetAllProducts } from "../../../api/product/product.service";
 import SearchModalSkeleton from "../../skeletons/children/SearchModalSkeleton";
+import ShowApiStatus from "../../api-status/ShowApiStatus";
 import { FetchedProductType } from "../../../types";
 import { TUseGetAllProducts } from "../../../api/types";
 import { debounce } from "../../../utils";
 import usePathParams from "../../../hooks/usePathParams";
-import ShowApiStatus from "../../api-status/ShowApiStatus";
 
 const SearchModal = ({ onClose }: { onClose: () => void }) => {
   const [searchQuery, setSearchQuery] = useState("");
