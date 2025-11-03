@@ -274,3 +274,41 @@ export const deepEqual = <T>(obj1: T, obj2: T): boolean => {
 
   return keys1.every((key) => deepEqual(obj1[key], obj2[key]));
 };
+
+export const hexToRgba = (hex: string, alphaOverride?: number) => {
+  const cleanHex = hex.replace("#", "");
+
+  let r: number, g: number, b: number, a: number;
+
+  if (cleanHex.length === 3) {
+    // #abc → #aabbcc
+    r = parseInt(cleanHex[0] + cleanHex[0], 16);
+    g = parseInt(cleanHex[1] + cleanHex[1], 16);
+    b = parseInt(cleanHex[2] + cleanHex[2], 16);
+    a = 1;
+  } else if (cleanHex.length === 4) {
+    // #abcd → #aabbcc + alpha
+    r = parseInt(cleanHex[0] + cleanHex[0], 16);
+    g = parseInt(cleanHex[1] + cleanHex[1], 16);
+    b = parseInt(cleanHex[2] + cleanHex[2], 16);
+    a = parseInt(cleanHex[3] + cleanHex[3], 16) / 255;
+  } else if (cleanHex.length === 6) {
+    r = parseInt(cleanHex.substring(0, 2), 16);
+    g = parseInt(cleanHex.substring(2, 4), 16);
+    b = parseInt(cleanHex.substring(4, 6), 16);
+    a = 1;
+  } else if (cleanHex.length === 8) {
+    r = parseInt(cleanHex.substring(0, 2), 16);
+    g = parseInt(cleanHex.substring(2, 4), 16);
+    b = parseInt(cleanHex.substring(4, 6), 16);
+    a = parseInt(cleanHex.substring(6, 8), 16) / 255;
+  } else {
+    throw new Error(`Invalid hex color: ${hex}`);
+  }
+
+  if (typeof alphaOverride === "number") {
+    a = alphaOverride;
+  }
+
+  return `rgba(${r}, ${g}, ${b}, ${a})`;
+};

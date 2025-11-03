@@ -1,9 +1,4 @@
-import {
-  DepartmentConfig,
-  IDepartment,
-  IOpening,
-  TBaseDept,
-} from "../../../types";
+import { IDepartment, IOpening, TBaseDept } from "../../../types";
 import {
   DataAnalyticsOpeningIcon,
   FinanceOpeningIcon,
@@ -460,13 +455,15 @@ export const TEAMS_DEPARTMENTS: TBaseDept[] = DEPARTMENT_AND_TEAMS_DATA.map(
 
 export const OPENINGS_DATA: IOpening[] = [
   {
-    department: { title: "All", value: "all" },
+    department: { title: "All", value: "all", color: "#2e90fa" },
     openings: [],
   },
   {
     department: {
       title: "Executive / Leadership",
       value: "executive_or_leadership",
+      color: "#f79009",
+      icon: LeadershipOpeningIcon,
     },
     openings: [
       // {
@@ -552,6 +549,8 @@ export const OPENINGS_DATA: IOpening[] = [
     department: {
       title: "Product & Merchandising",
       value: "product_and_merchandising",
+      color: "#f7d158",
+      icon: ProductOpeningIcon,
     },
     openings: [
       {
@@ -604,6 +603,8 @@ export const OPENINGS_DATA: IOpening[] = [
     department: {
       title: "Technology / Engineering",
       value: "technology_or_engineering",
+      color: "#ee46bc",
+      icon: TechnologyOpeningIcon,
     },
     openings: [
       {
@@ -722,6 +723,8 @@ export const OPENINGS_DATA: IOpening[] = [
     department: {
       title: "Marketing & Growth",
       value: "marketing_and_growth",
+      color: "#9747ff",
+      icon: MarketingOpeningIcon,
     },
     openings: [
       {
@@ -822,6 +825,8 @@ export const OPENINGS_DATA: IOpening[] = [
     department: {
       title: "Sales & Customer Engagement",
       value: "sales_and_customer_engagement",
+      color: "#12b76a",
+      icon: SalesOpeningIcon,
     },
     openings: [
       {
@@ -896,6 +901,8 @@ export const OPENINGS_DATA: IOpening[] = [
     department: {
       title: "Operations & Logistics",
       value: "operations_and_logistics",
+      color: "#00e5d1",
+      icon: OperationsOpeningIcon,
     },
     openings: [
       {
@@ -970,6 +977,8 @@ export const OPENINGS_DATA: IOpening[] = [
     department: {
       title: "Finance & Admin",
       value: "finance_and_admin",
+      color: "#fe026c",
+      icon: FinanceOpeningIcon,
     },
     openings: [
       {
@@ -1033,6 +1042,8 @@ export const OPENINGS_DATA: IOpening[] = [
     department: {
       title: "Data & Analytics",
       value: "data_and_analytics",
+      color: "#b519df",
+      icon: DataAnalyticsOpeningIcon,
     },
     openings: [
       {
@@ -1096,6 +1107,8 @@ export const OPENINGS_DATA: IOpening[] = [
     department: {
       title: "Specialized Roles",
       value: "specialized_roles",
+      color: "#2e90fa",
+      icon: SpecializedOpeningIcon,
     },
     openings: [
       {
@@ -1145,86 +1158,3 @@ export const OPENINGS_DATA: IOpening[] = [
     ],
   },
 ];
-
-const all_config: DepartmentConfig = {
-  bgClass: "hover:opening-dept-all-bg",
-  headingClass: "opening-dept-all-heading-bg",
-  color: "#2e90fa",
-};
-
-const executive_or_leadership_config: DepartmentConfig = {
-  bgClass: "hover:opening-dept-executive_or_leadership-bg",
-  headingClass: "opening-dept-executive_or_leadership-heading-bg",
-  color: "#f79009",
-  icon: LeadershipOpeningIcon,
-};
-
-const product_and_merchandising_config: DepartmentConfig = {
-  bgClass: "hover:opening-dept-product_and_merchandising-bg",
-  headingClass: "opening-dept-product_and_merchandising-heading-bg",
-  color: "#f7d158",
-  icon: ProductOpeningIcon,
-};
-
-const technology_or_engineering_config: DepartmentConfig = {
-  bgClass: "hover:opening-dept-technology_or_engineering-bg",
-  headingClass: "opening-dept-technology_or_engineering-heading-bg",
-  color: "#ee46bc",
-  icon: TechnologyOpeningIcon,
-};
-
-const marketing_and_growth_config: DepartmentConfig = {
-  bgClass: "hover:opening-dept-marketing_and_growth-bg",
-  headingClass: "opening-dept-marketing_and_growth-heading-bg",
-  color: "#9747ff",
-  icon: MarketingOpeningIcon,
-};
-
-const sales_and_customer_engagement_config: DepartmentConfig = {
-  bgClass: "hover:opening-dept-sales_and_customer_engagement-bg",
-  headingClass: "opening-dept-sales_and_customer_engagement-heading-bg",
-  color: "#12b76a",
-  icon: SalesOpeningIcon,
-};
-
-const operations_and_logistics_config: DepartmentConfig = {
-  bgClass: "hover:opening-dept-operations_and_logistics-bg",
-  headingClass: "opening-dept-operations_and_logistics-heading-bg",
-  color: "#00e5d1",
-  icon: OperationsOpeningIcon,
-};
-
-const finance_and_admin_config: DepartmentConfig = {
-  bgClass: "hover:opening-dept-finance_and_admin-bg",
-  headingClass: "opening-dept-finance_and_admin-heading-bg",
-  color: "#fe026c",
-  icon: FinanceOpeningIcon,
-};
-
-const data_and_analytics_config: DepartmentConfig = {
-  bgClass: "hover:opening-dept-data_and_analytics-bg",
-  headingClass: "opening-dept-data_and_analytics-heading-bg",
-  color: "#b519df",
-  icon: DataAnalyticsOpeningIcon,
-};
-
-const specialized_roles_config: DepartmentConfig = {
-  bgClass: "hover:opening-dept-specialized_roles-bg",
-  headingClass: "opening-dept-specialized_roles-heading-bg",
-  color: "#2e90fa",
-  icon: SpecializedOpeningIcon,
-};
-
-export const departmentConfigMap: Record<TBaseDept["value"], DepartmentConfig> =
-  {
-    all: all_config,
-    executive_or_leadership: executive_or_leadership_config,
-    product_and_merchandising: product_and_merchandising_config,
-    technology_or_engineering: technology_or_engineering_config,
-    marketing_and_growth: marketing_and_growth_config,
-    sales_and_customer_engagement: sales_and_customer_engagement_config,
-    operations_and_logistics: operations_and_logistics_config,
-    finance_and_admin: finance_and_admin_config,
-    data_and_analytics: data_and_analytics_config,
-    specialized_roles: specialized_roles_config,
-  };

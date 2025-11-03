@@ -538,13 +538,9 @@ export type TRoleOpening = {
 };
 
 export interface IOpening {
-  department: TBaseDept;
+  department: TBaseDept & {
+    color: string;
+    icon?: FC<IconProps>;
+  };
   openings: TRoleOpening[];
-}
-
-export interface DepartmentConfig {
-  bgClass?: string;
-  color: string;
-  headingClass?: string;
-  icon?: FC<IconProps>;
 }

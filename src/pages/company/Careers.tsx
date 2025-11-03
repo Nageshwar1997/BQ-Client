@@ -1,16 +1,15 @@
 import { useMemo, useState } from "react";
 import { LeftGradient, RightGradient } from "../../components/Gradients";
-import { departmentConfigMap, OPENINGS_DATA } from "./data/data";
+import { OPENINGS_DATA } from "./data/data";
 import useHorizontalScrollable from "../../hooks/useHorizontalScrollable";
 import OpeningCard from "./children/OpeningCard";
-import { TBaseDept } from "../../types";
+import { IOpening } from "../../types";
 
 const Careers = () => {
   const { containerRef, showGradient } = useHorizontalScrollable();
-  const [selectedDept, setSelectedDept] = useState<TBaseDept>({
-    title: "All",
-    value: "all",
-  });
+  const [selectedDept, setSelectedDept] = useState<IOpening["department"]>(
+    OPENINGS_DATA[0].department
+  );
 
   const openings = useMemo(() => {
     if (selectedDept.value && selectedDept.value !== "all") {
@@ -45,21 +44,16 @@ const Careers = () => {
           >
             {OPENINGS_DATA.map((opening) => {
               const current = selectedDept.value === opening.department.value;
-              const config = departmentConfigMap[opening.department.value];
+              const color = opening.department.color;
               return (
                 <div
                   key={opening.department.value}
-                  className={`p-2 border-b border-transparent ${
-                    current
-                      ? // ? `${departmentConfigMap[dept.value]?.headingClass}`
-                        ""
-                      : ""
-                  }`}
+                  className="p-2 border-b border-transparent"
                   style={
-                    current && config
+                    current && color
                       ? {
-                          background: `radial-gradient(39.35% 50% at 50.37% 100%, ${config.color}4d 0%, ${config.color}00 100%), linear-gradient(0deg, var(--primary-inverted) 0%, var(--primary-inverted) 100%), var(--primary-inverted)`,
-                          borderImage: `linear-gradient(to right, ${config?.color}00, ${config?.color},  ${config?.color}00)`,
+                          background: `radial-gradient(39.35% 50% at 50.37% 100%, ${color}4d 0%, ${color}00 100%), linear-gradient(0deg, var(--primary-inverted) 0%, var(--primary-inverted) 100%), var(--primary-inverted)`,
+                          borderImage: `linear-gradient(to right, ${color}00, ${color},  ${color}00)`,
                           borderImageSlice: 1,
                         }
                       : {}

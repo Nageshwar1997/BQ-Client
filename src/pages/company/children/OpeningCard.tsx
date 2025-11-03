@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
-import { departmentConfigMap } from "../data/data";
+import { useState } from "react";
 import { IOpening, TRoleOpening } from "../../../types";
+import { hexToRgba } from "../../../utils";
 
 const OpeningCard = ({
   opening,
@@ -14,20 +14,20 @@ const OpeningCard = ({
     // isModalOpen
     setIsModalOpen,
   ] = useState(false);
-  const departmentDetails = useMemo(
-    () => departmentConfigMap[department.value],
-    [department.value]
-  );
-
-  const Icon = departmentDetails?.icon;
 
   return (
     <div
-      className={`flex w-[80%] md:w-full h-[272px] px-4 sm:px-[27px] pt-2 sm:pt-[27px] pb-2 sm:pb-[18px] flex-col items-center justify-center gap-6 shrink-0 rounded-[13px] border border-ctruh-divider-light bg-${departmentDetails?.bgClass} shadow-stats-card-glow`}
+      className="flex max-w-sm mx-auto w-full p-6 flex-col items-center justify-center gap-6 shrink-0 rounded-[13px] border border-primary-30 shadow-light-dark-soft opening-card"
+      style={{
+        ["--dept-color-0" as string]: hexToRgba(department.color, 0),
+        ["--dept-color-30" as string]: hexToRgba(department.color, 0.3),
+      }}
     >
       <div className="flex flex-col items-start gap-[18px] self-stretch justify-between w-full h-[228px]">
         <div className="flex justify-between items-start self-stretch">
-          {Icon && <Icon className="w-12 h-12 mix-blend-difference" />}
+          {department.icon && (
+            <department.icon className="w-12 h-12 mix-blend-difference" />
+          )}
           <div className="text-light-secondary text-[8px] font-metropolis not-italic font-normal leading-[9.6px] tracking-[0.8px] uppercase">
             {opening.location}
           </div>
@@ -36,7 +36,7 @@ const OpeningCard = ({
           <div className="flex flex-col items-start gap-[5.625px] self-stretch mb-[9px]">
             <div
               className="self-stretch font-metropolis text-[10px] not-italic font-bold leading-3 tracking-[2px] uppercase"
-              style={{ color: departmentDetails?.color }}
+              style={{ color: department.color }}
             >
               {opening.role}
             </div>
