@@ -34,7 +34,7 @@ const Careers = () => {
           working together to shape the future of the beauty industry.
         </p>
       </header>
-      <div className="sticky top-16 bg-primary-inverted z-[1]">
+      <div className="sticky top-16 bg-primary-inverted z-[1] border-b border-b-tertiary">
         <div className="relative py-2">
           {showGradient.left && <LeftGradient className="!w-20 h-full" />}
           {showGradient.right && <RightGradient className="!w-20 h-full" />}
