@@ -1,5 +1,6 @@
 import {
   ButtonHTMLAttributes,
+  FC,
   InputHTMLAttributes,
   JSX,
   ReactElement,
@@ -539,4 +540,11 @@ export type TRoleOpening = {
 export interface IOpening {
   department: TBaseDept;
   openings: TRoleOpening[];
+}
+
+export interface DepartmentConfig {
+  bgClass?: string;
+  color: string;
+  headingClass?: string;
+  icon?: FC<IconProps>;
 }

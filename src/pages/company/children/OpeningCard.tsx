@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { DepartmentConfig, departmentConfigMap } from "../../../constants";
+import { departmentConfigMap } from "../data/data";
 import { IOpening, TRoleOpening } from "../../../types";
 
 const OpeningCard = ({
@@ -14,7 +14,7 @@ const OpeningCard = ({
     // isModalOpen
     setIsModalOpen,
   ] = useState(false);
-  const departmentDetails = useMemo<DepartmentConfig | undefined>(
+  const departmentDetails = useMemo(
     () => departmentConfigMap[department.value],
     [department.value]
   );
