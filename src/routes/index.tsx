@@ -96,7 +96,7 @@ const router = createBrowserRouter([
       { path: "careers", element: <Careers /> }, // Todo: Pending
       { path: "sustainability", element: <Sustainability /> }, // Todo: Pending
       { path: "ethics", element: <Ethics /> }, // Todo: Pending
-      { path: "teams", element: <Teams /> }, // Todo: Ongoing
+      { path: "teams", element: <Teams /> },
       { path: "press-media", element: <PressMedia /> },
 
       // Quick Link Pages

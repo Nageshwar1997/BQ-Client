@@ -35,26 +35,28 @@ const Teams = () => {
           and cosmetics.
         </p>
       </header>
-      <div className="relative py-2">
-        {showGradient.left && <LeftGradient className="!w-20 h-full" />}
-        {showGradient.right && <RightGradient className="!w-20 h-full" />}
-        <div
-          className="flex gap-4 overflow-y-scroll scroll-smooth"
-          ref={containerRef}
-        >
-          {[{ title: "All", value: "" }, ...ONLY_DEPARTMENTS].map((dept) => (
-            <div
-              key={dept.value}
-              className={`text-nowrap cursor-pointer font-semibold p-1 bg-clip-text text-transparent ${
-                selectedDept.value === dept.value
-                  ? "bg-accent-duo"
-                  : "bg-silver-duo hover:text-primary"
-              }`}
-              onClick={() => setSelectedDept(dept)}
-            >
-              {dept.title}
-            </div>
-          ))}
+      <div className="sticky top-16 bg-primary-inverted z-[1]">
+        <div className="relative py-2">
+          {showGradient.left && <LeftGradient className="!w-20 h-full" />}
+          {showGradient.right && <RightGradient className="!w-20 h-full" />}
+          <div
+            className="flex gap-4 overflow-y-scroll scroll-smooth"
+            ref={containerRef}
+          >
+            {[{ title: "All", value: "" }, ...ONLY_DEPARTMENTS].map((dept) => (
+              <div
+                key={dept.value}
+                className={`text-nowrap cursor-pointer font-semibold p-1 bg-clip-text text-transparent ${
+                  selectedDept.value === dept.value
+                    ? "bg-accent-duo"
+                    : "bg-silver-duo hover:text-primary"
+                }`}
+                onClick={() => setSelectedDept(dept)}
+              >
+                {dept.title}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
