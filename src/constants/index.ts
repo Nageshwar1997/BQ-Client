@@ -1,4 +1,10 @@
-import { IDepartment, TPasswordField, TRegexes } from "../types";
+import {
+  IDepartment,
+  IOpening,
+  TBaseDept,
+  TPasswordField,
+  TRegexes,
+} from "../types";
 
 export * from "./categories";
 export const DEFAULT_FILTER = { name: "All", value: "all", default: true };
@@ -649,5 +655,695 @@ export const DEPARTMENT_AND_TEAMS_DATA: IDepartment[] = [
     ],
   },
 ];
-export const ONLY_DEPARTMENTS: Omit<IDepartment, "employees">[] =
-  DEPARTMENT_AND_TEAMS_DATA.map(({ title, value }) => ({ title, value }));
+
+export const TEAMS_DEPARTMENTS: TBaseDept[] = DEPARTMENT_AND_TEAMS_DATA.map(
+  ({ title, value }) => ({ title, value })
+);
+
+export const OPENINGS_DATA: IOpening[] = [
+  {
+    department: {
+      title: "Executive / Leadership",
+      value: "executive_or_leadership",
+    },
+    openings: [
+      {
+        role: "Founder / Co-Founder",
+        experience: "10+ Years",
+        description:
+          "Lead and shape the vision of our beauty e-commerce brand, driving strategy, partnerships, and market expansion.",
+        type: "Full-Time",
+        location: "Bengaluru / Remote",
+        salary: "Negotiable",
+        tags: ["Leadership", "Strategy", "Vision"],
+        technologies: [],
+      },
+      {
+        role: "CEO (Chief Executive Officer)",
+        experience: "8+ Years",
+        description:
+          "Oversee all operations, lead growth initiatives, and ensure organizational excellence in a fast-paced cosmetics business.",
+        type: "Full-Time",
+        location: "Bengaluru",
+        salary: "Negotiable",
+        tags: ["Leadership", "Management"],
+        technologies: [],
+      },
+      {
+        role: "COO (Chief Operating Officer)",
+        experience: "7+ Years",
+        description:
+          "Manage day-to-day operations, optimize processes, and ensure seamless logistics and fulfillment across departments.",
+        type: "Full-Time",
+        location: "Bengaluru",
+        salary: "Negotiable",
+        tags: ["Operations", "Process Management"],
+        technologies: [],
+      },
+      {
+        role: "CFO (Chief Financial Officer)",
+        experience: "7+ Years",
+        description:
+          "Manage company finances, budgeting, financial planning, and investor relations to ensure sustainable growth.",
+        type: "Full-Time",
+        location: "Bengaluru",
+        salary: "Negotiable",
+        tags: ["Finance", "Strategy"],
+        technologies: [],
+      },
+      {
+        role: "CMO (Chief Marketing Officer)",
+        experience: "7+ Years",
+        description:
+          "Drive brand strategy, marketing campaigns, and customer engagement for a global cosmetics audience.",
+        type: "Full-Time",
+        location: "Bengaluru / Remote",
+        salary: "Negotiable",
+        tags: ["Marketing", "Brand Strategy", "Growth"],
+        technologies: [],
+      },
+      {
+        role: "CTO (Chief Technology Officer)",
+        experience: "8+ Years",
+        description:
+          "Lead technology vision, oversee engineering, product tech, and innovation for the digital beauty experience.",
+        type: "Full-Time",
+        location: "Bengaluru",
+        salary: "Negotiable",
+        tags: ["Technology", "Leadership"],
+        technologies: ["Node.js", "React", "Cloud", "AI"],
+      },
+      {
+        role: "CPO (Chief Product Officer)",
+        experience: "7+ Years",
+        description:
+          "Lead product strategy, R&D, and merchandising innovation for a premium cosmetics line.",
+        type: "Full-Time",
+        location: "Bengaluru",
+        salary: "Negotiable",
+        tags: ["Product Management", "Innovation"],
+        technologies: [],
+      },
+    ],
+  },
+  {
+    department: {
+      title: "Product & Merchandising",
+      value: "product_and_merchandising",
+    },
+    openings: [
+      {
+        role: "Head of Product",
+        experience: "5+ Years",
+        description:
+          "Design and lead product strategy, innovation, and merchandising for our cosmetic products.",
+        type: "Full-Time",
+        location: "Bengaluru / Remote",
+        salary: "₹12L–₹18L",
+        tags: ["Product Strategy", "Merchandising"],
+        technologies: ["Excel", "Product Analytics"],
+      },
+      {
+        role: "Category Manager",
+        experience: "3+ Years",
+        description:
+          "Manage product categories, optimize listings, and drive category growth for cosmetics.",
+        type: "Full-Time",
+        location: "Bengaluru",
+        salary: "₹8L–₹12L",
+        tags: ["Category Management", "Analytics"],
+        technologies: ["Excel", "ERP Tools"],
+      },
+      {
+        role: "Merchandiser",
+        experience: "2+ Years",
+        description:
+          "Plan, execute, and optimize product display strategies to maximize sales and customer experience.",
+        type: "Full-Time",
+        location: "Bengaluru",
+        salary: "₹6L–₹10L",
+        tags: ["Merchandising", "Retail", "Product Planning"],
+        technologies: ["Excel", "PowerPoint"],
+      },
+      {
+        role: "Product Analyst",
+        experience: "2–4 Years",
+        description:
+          "Analyze sales, inventory, and trends to optimize product assortment and merchandising strategies.",
+        type: "Full-Time",
+        location: "Bengaluru / Remote",
+        salary: "₹7L–₹11L",
+        tags: ["Analytics", "Data Driven"],
+        technologies: ["Excel", "SQL", "Tableau"],
+      },
+    ],
+  },
+  {
+    department: {
+      title: "Technology / Engineering",
+      value: "technology_or_engineering",
+    },
+    openings: [
+      {
+        role: "Head of Engineering",
+        experience: "5+ Years",
+        description:
+          "Lead the engineering team, define architecture, and ensure high-quality delivery of our beauty tech platform.",
+        type: "Full-Time",
+        location: "Bengaluru",
+        salary: "₹18L–₹25L",
+        tags: ["Engineering Leadership", "Architecture"],
+        technologies: ["Node.js", "React", "AWS"],
+      },
+      {
+        role: "Engineering Manager",
+        experience: "4+ Years",
+        description:
+          "Manage engineering teams, drive projects, and ensure delivery excellence across backend and frontend.",
+        type: "Full-Time",
+        location: "Bengaluru / Remote",
+        salary: "₹15L–₹20L",
+        tags: ["Team Management", "Engineering"],
+        technologies: ["Node.js", "React", "Agile"],
+      },
+      {
+        role: "Frontend Developer",
+        experience: "2–4 Years",
+        description:
+          "Develop beautiful and responsive user interfaces for our digital beauty platform.",
+        type: "Full-Time",
+        location: "Remote",
+        salary: "₹8L–₹14L",
+        tags: ["Frontend", "React", "UI/UX"],
+        technologies: ["React", "Next.js", "TypeScript", "Tailwind"],
+      },
+      {
+        role: "Backend Developer",
+        experience: "2–5 Years",
+        description:
+          "Build scalable APIs, manage database schemas, and integrate third-party services for our e-commerce platform.",
+        type: "Full-Time",
+        location: "Bengaluru",
+        salary: "₹10L–₹16L",
+        tags: ["Backend", "Node.js", "API"],
+        technologies: ["Node.js", "Express", "MongoDB", "Cloudinary", "AWS"],
+      },
+      {
+        role: "Full-stack Developer",
+        experience: "2–5 Years",
+        description:
+          "Work across frontend and backend to deliver end-to-end features for our digital beauty experience.",
+        type: "Full-Time",
+        location: "Remote",
+        salary: "₹10L–₹18L",
+        tags: ["Full-stack", "React", "Node.js"],
+        technologies: ["React", "Next.js", "Node.js", "Express", "MongoDB"],
+      },
+      {
+        role: "Full-stack AI Developer",
+        experience: "3–6 Years",
+        description:
+          "Develop AI-driven features like virtual try-on, recommendations, and personalization systems.",
+        type: "Full-Time",
+        location: "Bengaluru",
+        salary: "₹14L–₹22L",
+        tags: ["AI", "Full-stack", "Machine Learning"],
+        technologies: ["Python", "Node.js", "TensorFlow", "React"],
+      },
+      {
+        role: "Android/iOS Developer",
+        experience: "2–4 Years",
+        description:
+          "Build and maintain mobile applications for our beauty platform.",
+        type: "Full-Time",
+        location: "Remote",
+        salary: "₹8L–₹14L",
+        tags: ["Mobile", "Android", "iOS"],
+        technologies: ["React Native", "Flutter", "Swift", "Kotlin"],
+      },
+      {
+        role: "DevOps Engineer",
+        experience: "3+ Years",
+        description:
+          "Ensure smooth deployment, CI/CD, and cloud infrastructure management for our platform.",
+        type: "Full-Time",
+        location: "Bengaluru",
+        salary: "₹10L–₹16L",
+        tags: ["DevOps", "Cloud", "CI/CD"],
+        technologies: ["AWS", "Docker", "Kubernetes", "Terraform"],
+      },
+      {
+        role: "QA Engineer",
+        experience: "2–4 Years",
+        description:
+          "Write and execute test plans, perform QA for web and mobile apps ensuring high quality standards.",
+        type: "Full-Time",
+        location: "Remote",
+        salary: "₹6L–₹10L",
+        tags: ["QA", "Testing", "Automation"],
+        technologies: ["Selenium", "Cypress", "Jest", "Playwright"],
+      },
+      {
+        role: "UI/UX Designer",
+        experience: "2–4 Years",
+        description:
+          "Design intuitive, engaging interfaces and workflows for the beauty e-commerce platform.",
+        type: "Full-Time",
+        location: "Remote",
+        salary: "₹7L–₹12L",
+        tags: ["UI/UX", "Design"],
+        technologies: ["Figma", "Adobe XD", "Illustrator"],
+      },
+    ],
+  },
+  {
+    department: {
+      title: "Marketing & Growth",
+      value: "marketing_and_growth",
+    },
+    openings: [
+      {
+        role: "Head of Marketing",
+        experience: "5+ Years",
+        description:
+          "Lead marketing strategy, brand campaigns, and customer engagement to strengthen our beauty brand presence.",
+        type: "Full-Time",
+        location: "Bengaluru / Remote",
+        salary: "₹15L–₹25L",
+        tags: ["Marketing Strategy", "Brand Management", "Leadership"],
+        technologies: [
+          "Google Analytics",
+          "CRM Tools",
+          "Social Media Platforms",
+        ],
+      },
+      {
+        role: "Digital Marketing Manager",
+        experience: "3–5 Years",
+        description:
+          "Plan and execute digital campaigns, SEO/SEM, and performance marketing initiatives.",
+        type: "Full-Time",
+        location: "Bengaluru",
+        salary: "₹8L–₹12L",
+        tags: ["Digital Marketing", "SEO", "SEM"],
+        technologies: ["Google Ads", "Facebook Ads", "SEO Tools"],
+      },
+      {
+        role: "Content Writer",
+        experience: "2–4 Years",
+        description:
+          "Create compelling content for blogs, social media, and product descriptions to engage beauty enthusiasts.",
+        type: "Full-Time",
+        location: "Remote",
+        salary: "₹5L–₹8L",
+        tags: ["Content Creation", "Copywriting", "SEO"],
+        technologies: ["WordPress", "SEO Tools", "Google Docs"],
+      },
+      {
+        role: "SEO Specialist",
+        experience: "2–4 Years",
+        description:
+          "Optimize website content, track performance, and improve organic search visibility for our e-commerce platform.",
+        type: "Full-Time",
+        location: "Bengaluru / Remote",
+        salary: "₹6L–₹10L",
+        tags: ["SEO", "Analytics", "Content Optimization"],
+        technologies: ["Google Analytics", "Ahrefs", "SEMRush"],
+      },
+      {
+        role: "Social Media Manager",
+        experience: "2–5 Years",
+        description:
+          "Manage social channels, engage audiences, and implement campaigns to grow brand presence online.",
+        type: "Full-Time",
+        location: "Remote",
+        salary: "₹6L–₹10L",
+        tags: ["Social Media", "Campaign Management", "Community Engagement"],
+        technologies: ["Instagram", "Facebook", "LinkedIn", "Canva"],
+      },
+      {
+        role: "Email Specialist",
+        experience: "2–4 Years",
+        description:
+          "Create, manage, and optimize email marketing campaigns to drive customer engagement and retention.",
+        type: "Full-Time",
+        location: "Remote",
+        salary: "₹5L–₹8L",
+        tags: ["Email Marketing", "CRM", "Analytics"],
+        technologies: ["Mailchimp", "HubSpot", "Salesforce"],
+      },
+      {
+        role: "Influencer Manager",
+        experience: "3+ Years",
+        description:
+          "Identify, onboard, and manage influencers to expand brand visibility and engagement across platforms.",
+        type: "Full-Time",
+        location: "Bengaluru / Remote",
+        salary: "₹7L–₹12L",
+        tags: ["Influencer Marketing", "Partnerships"],
+        technologies: ["Instagram", "YouTube", "TikTok"],
+      },
+      {
+        role: "Graphic Designer",
+        experience: "2–4 Years",
+        description:
+          "Design creative visual content for campaigns, social media, and product promotions.",
+        type: "Full-Time",
+        location: "Remote",
+        salary: "₹5L–₹9L",
+        tags: ["Graphic Design", "Branding", "Creativity"],
+        technologies: ["Photoshop", "Illustrator", "Figma"],
+      },
+    ],
+  },
+  {
+    department: {
+      title: "Sales & Customer Engagement",
+      value: "sales_and_customer_engagement",
+    },
+    openings: [
+      {
+        role: "Head of Sales",
+        experience: "5+ Years",
+        description:
+          "Lead the sales team, drive revenue growth, and build strong client relationships in the beauty sector.",
+        type: "Full-Time",
+        location: "Bengaluru",
+        salary: "₹15L–₹25L",
+        tags: ["Sales Leadership", "Client Relationships"],
+        technologies: ["CRM Tools", "Salesforce", "MS Excel"],
+      },
+      {
+        role: "BD Manager",
+        experience: "3–5 Years",
+        description:
+          "Identify business opportunities, negotiate deals, and grow partnerships for the brand.",
+        type: "Full-Time",
+        location: "Bengaluru",
+        salary: "₹8L–₹12L",
+        tags: ["Business Development", "Negotiation", "Networking"],
+        technologies: ["CRM", "Excel", "LinkedIn Sales Navigator"],
+      },
+      {
+        role: "Client Success Manager",
+        experience: "2–4 Years",
+        description:
+          "Ensure client satisfaction, manage accounts, and deliver tailored solutions to partners.",
+        type: "Full-Time",
+        location: "Remote",
+        salary: "₹6L–₹10L",
+        tags: ["Client Management", "Relationship Building"],
+        technologies: ["CRM", "Slack", "Excel"],
+      },
+      {
+        role: "Sales Associate",
+        experience: "1–3 Years",
+        description:
+          "Assist customers, manage inquiries, and drive sales both online and offline.",
+        type: "Full-Time",
+        location: "Bengaluru",
+        salary: "₹4L–₹7L",
+        tags: ["Sales", "Customer Engagement"],
+        technologies: ["POS Systems", "CRM"],
+      },
+      {
+        role: "Customer Support",
+        experience: "1–3 Years",
+        description:
+          "Provide excellent customer support, resolve issues, and enhance customer experience.",
+        type: "Full-Time",
+        location: "Remote",
+        salary: "₹4L–₹7L",
+        tags: ["Customer Support", "Communication Skills"],
+        technologies: ["Zendesk", "Freshdesk", "CRM"],
+      },
+      {
+        role: "Chat Support",
+        experience: "1–2 Years",
+        description:
+          "Assist customers via chat platforms, answer queries, and maintain high customer satisfaction.",
+        type: "Full-Time",
+        location: "Remote",
+        salary: "₹3.5L–₹6L",
+        tags: ["Chat Support", "Customer Service"],
+        technologies: ["Zendesk", "Intercom", "Freshdesk"],
+      },
+    ],
+  },
+  {
+    department: {
+      title: "Operations & Logistics",
+      value: "operations_and_logistics",
+    },
+    openings: [
+      {
+        role: "Head of Operations",
+        experience: "5+ Years",
+        description:
+          "Oversee operations, supply chain, and logistics to ensure smooth delivery of products to customers.",
+        type: "Full-Time",
+        location: "Bengaluru",
+        salary: "₹15L–₹25L",
+        tags: ["Operations Leadership", "Supply Chain"],
+        technologies: ["ERP Systems", "Excel", "Logistics Tools"],
+      },
+      {
+        role: "Inventory Manager",
+        experience: "2–4 Years",
+        description:
+          "Manage inventory levels, stock control, and warehouse operations for optimal efficiency.",
+        type: "Full-Time",
+        location: "Bengaluru",
+        salary: "₹6L–₹10L",
+        tags: ["Inventory Management", "Stock Control"],
+        technologies: ["ERP", "Excel"],
+      },
+      {
+        role: "Warehouse Manager",
+        experience: "3–5 Years",
+        description:
+          "Supervise warehouse operations, team management, and product dispatch for timely delivery.",
+        type: "Full-Time",
+        location: "Bengaluru",
+        salary: "₹7L–₹12L",
+        tags: ["Warehouse Management", "Logistics"],
+        technologies: ["Warehouse Management Software", "ERP"],
+      },
+      {
+        role: "Logistics Coordinator",
+        experience: "2–4 Years",
+        description:
+          "Coordinate shipments, track deliveries, and ensure efficient logistics operations.",
+        type: "Full-Time",
+        location: "Remote / Bengaluru",
+        salary: "₹5L–₹9L",
+        tags: ["Logistics", "Coordination"],
+        technologies: ["ERP", "Shipping Tools"],
+      },
+      {
+        role: "Vendor Manager",
+        experience: "3–5 Years",
+        description:
+          "Manage vendor relationships, negotiate contracts, and optimize procurement processes.",
+        type: "Full-Time",
+        location: "Bengaluru",
+        salary: "₹7L–₹12L",
+        tags: ["Vendor Management", "Negotiation"],
+        technologies: ["ERP", "CRM"],
+      },
+      {
+        role: "Packaging Staff",
+        experience: "1–2 Years",
+        description:
+          "Handle packaging of products ensuring quality and timely dispatch.",
+        type: "Full-Time",
+        location: "Bengaluru",
+        salary: "₹3L–₹5L",
+        tags: ["Packaging", "Operations"],
+        technologies: [],
+      },
+    ],
+  },
+  {
+    department: {
+      title: "Finance & Admin",
+      value: "finance_and_admin",
+    },
+    openings: [
+      {
+        role: "Finance Manager",
+        experience: "5+ Years",
+        description:
+          "Oversee financial planning, budgeting, and strategic financial decisions to ensure business growth.",
+        type: "Full-Time",
+        location: "Bengaluru",
+        salary: "₹12L–₹20L",
+        tags: ["Finance Strategy", "Budgeting", "Leadership"],
+        technologies: ["Tally", "MS Excel", "ERP Software"],
+      },
+      {
+        role: "Accountant",
+        experience: "2–5 Years",
+        description:
+          "Manage accounts, reconcile financial records, and ensure compliance with accounting standards.",
+        type: "Full-Time",
+        location: "Bengaluru / Remote",
+        salary: "₹5L–₹8L",
+        tags: ["Accounting", "Bookkeeping", "Compliance"],
+        technologies: ["Tally", "QuickBooks", "MS Excel"],
+      },
+      {
+        role: "Payroll Specialist",
+        experience: "2–4 Years",
+        description:
+          "Handle employee payroll, tax compliance, and benefits administration with accuracy.",
+        type: "Full-Time",
+        location: "Bengaluru",
+        salary: "₹6L–₹9L",
+        tags: ["Payroll Management", "Compliance"],
+        technologies: ["Payroll Software", "MS Excel"],
+      },
+      {
+        role: "HR Manager",
+        experience: "3–6 Years",
+        description:
+          "Manage HR operations, recruitment, employee relations, and ensure organizational compliance.",
+        type: "Full-Time",
+        location: "Bengaluru / Remote",
+        salary: "₹8L–₹14L",
+        tags: ["Human Resources", "Recruitment", "Employee Engagement"],
+        technologies: ["HRMS", "Payroll Software", "MS Excel"],
+      },
+      {
+        role: "Office Administrator",
+        experience: "2–4 Years",
+        description:
+          "Maintain office operations, manage schedules, and provide administrative support.",
+        type: "Full-Time",
+        location: "Bengaluru",
+        salary: "₹4L–₹7L",
+        tags: ["Office Management", "Administrative Support"],
+        technologies: ["MS Office", "ERP"],
+      },
+    ],
+  },
+  {
+    department: {
+      title: "Data & Analytics",
+      value: "data_and_analytics",
+    },
+    openings: [
+      {
+        role: "Head of Data",
+        experience: "5+ Years",
+        description:
+          "Lead data strategy, analytics, and insights to drive informed business decisions.",
+        type: "Full-Time",
+        location: "Bengaluru / Remote",
+        salary: "₹15L–₹25L",
+        tags: ["Data Strategy", "Leadership", "Analytics"],
+        technologies: ["Python", "SQL", "Power BI", "Tableau"],
+      },
+      {
+        role: "Data Analyst",
+        experience: "2–4 Years",
+        description:
+          "Analyze data, generate reports, and provide insights to support business growth.",
+        type: "Full-Time",
+        location: "Remote",
+        salary: "₹6L–₹10L",
+        tags: ["Data Analysis", "Reporting", "Visualization"],
+        technologies: ["Excel", "SQL", "Tableau", "Power BI"],
+      },
+      {
+        role: "BI Analyst",
+        experience: "2–4 Years",
+        description:
+          "Develop business intelligence reports and dashboards for data-driven decision-making.",
+        type: "Full-Time",
+        location: "Remote",
+        salary: "₹6L–₹10L",
+        tags: ["Business Intelligence", "Analytics", "Visualization"],
+        technologies: ["Power BI", "Tableau", "SQL"],
+      },
+      {
+        role: "Data Scientist",
+        experience: "3–5 Years",
+        description:
+          "Build predictive models, perform advanced analytics, and derive actionable insights.",
+        type: "Full-Time",
+        location: "Bengaluru / Remote",
+        salary: "₹12L–₹20L",
+        tags: ["Machine Learning", "Data Modeling", "Analytics"],
+        technologies: ["Python", "R", "TensorFlow", "SQL"],
+      },
+      {
+        role: "Marketing Analyst",
+        experience: "2–4 Years",
+        description:
+          "Analyze marketing campaigns, customer behavior, and sales data to optimize performance.",
+        type: "Full-Time",
+        location: "Remote",
+        salary: "₹5L–₹9L",
+        tags: ["Marketing Analytics", "Data Analysis", "Reporting"],
+        technologies: ["Google Analytics", "Excel", "Tableau"],
+      },
+    ],
+  },
+  {
+    department: {
+      title: "Specialized Roles",
+      value: "specialized_roles",
+    },
+    openings: [
+      {
+        role: "Legal Counsel",
+        experience: "5+ Years",
+        description:
+          "Provide legal guidance, ensure compliance, and protect company interests in all business matters.",
+        type: "Full-Time",
+        location: "Bengaluru",
+        salary: "₹12L–₹20L",
+        tags: ["Legal", "Compliance", "Corporate Law"],
+        technologies: ["MS Office", "Legal Research Tools"],
+      },
+      {
+        role: "Cybersecurity Engineer",
+        experience: "3–5 Years",
+        description:
+          "Protect company systems and data by implementing security measures and monitoring for threats.",
+        type: "Full-Time",
+        location: "Remote / Bengaluru",
+        salary: "₹10L–₹18L",
+        tags: ["Cybersecurity", "Network Security", "Risk Management"],
+        technologies: ["Firewalls", "SIEM Tools", "Python"],
+      },
+      {
+        role: "Photographer",
+        experience: "2–5 Years",
+        description:
+          "Capture high-quality product and lifestyle images for marketing and e-commerce purposes.",
+        type: "Full-Time / Contract",
+        location: "Bengaluru / On-site",
+        salary: "₹4L–₹8L",
+        tags: ["Photography", "Product Photography", "Editing"],
+        technologies: ["Camera Equipment", "Photoshop", "Lightroom"],
+      },
+      {
+        role: "Content Moderator",
+        experience: "1–3 Years",
+        description:
+          "Review and moderate user-generated content to ensure compliance with company guidelines.",
+        type: "Full-Time",
+        location: "Remote",
+        salary: "₹3.5L–₹6L",
+        tags: ["Content Moderation", "Quality Control"],
+        technologies: ["CMS Tools", "Moderation Software"],
+      },
+    ],
+  },
+];
+
+export const OPENINGS_DEPARTMENTS: TBaseDept[] = OPENINGS_DATA.map(
+  ({ department }) => ({ title: department.title, value: department.value })
+);

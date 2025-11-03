@@ -516,8 +516,27 @@ export type TEmployee = {
   description?: { title: string; description: string };
 };
 
-export interface IDepartment {
+export type TBaseDept = {
   title: string;
   value: string;
+};
+
+export interface IDepartment extends TBaseDept {
   employees: TEmployee[];
+}
+
+export type TOpeningRole = {
+  role: string;
+  experience: string;
+  description: string;
+  type: string;
+  location: string;
+  salary: string;
+  tags: string[];
+  technologies: string[];
+};
+
+export interface IOpening {
+  department: TBaseDept;
+  openings: TOpeningRole[];
 }
