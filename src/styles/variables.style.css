@@ -9,6 +9,17 @@
 :root {
   --picton-blue-c: #25adf9;
   --blue-crayola-c: #07f;
+
+  --dodger-blue-c: #2e90fa;
+  --princeton-orange-c: #f79009;
+  --naples-yellow-c: #f7d158;
+  --razzle-dazzle-rose-c: #ee46bc;
+  --veronica-c: #9747ff;
+  --jade-c: #12b76a;
+  --turquoise-c: #00e5d1;
+  --rose-c: #fe026c;
+  --electric-purple-c: #b519df;
+
   --sky-blue-burst: radial-gradient(
       50% 50% at 50% 50%,
       rgba(0, 0, 0, 0.2) 0%,
@@ -19,8 +30,8 @@
     135deg,
     var(--picton-blue-c) 0%,
     var(--blue-crayola-c) 33%,
-    #b519df 66%,
-    #fe026c 100%
+    var(--electric-purple-c) 66%,
+    var(--rose-c) 100%
   );
   --light-pink-gradient: linear-gradient(
     57deg,
@@ -75,6 +86,7 @@
   --silver: #b3b3b3;
   --silver-jet: #bfbfbf;
   --silver-jet-2: #7e7e7e;
+  /* Argentinian Celestial Blue */
   --argentinian-celestial-blue: #25a6f9;
   --argentinian-celestial-blue-10: #25a6f91a;
   --argentinian-celestial-blue-30: #25a6f94d;

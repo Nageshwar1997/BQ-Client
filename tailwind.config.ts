@@ -134,6 +134,13 @@ export default {
           background:
             "linear-gradient(to bottom, var(--battleship-davys-gray),  var(--timberwolf-eerie-black))",
         },
+        ".opening-dept-all-heading-bg": {
+          background:
+            "radial-gradient(39.35% 50% at 50.37% 100%, rgba(37, 166, 249, 0.30) 0%, rgba(37, 166, 249, 0.00) 100%), linear-gradient(0deg, rgba(255, 255, 255, 0.01) 0%, rgba(255, 255, 255, 0.01) 100%), var(--primary-inverted)",
+          borderImage:
+            "linear-gradient(to right, #2E90FA00, #2E90FA,  #2E90FA00)",
+          "border-image-slice": "1",
+        },
       });
     },
     // Theme variants

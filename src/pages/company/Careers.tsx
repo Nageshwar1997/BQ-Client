@@ -1,13 +1,17 @@
 import { useMemo, useState } from "react";
 import { LeftGradient, RightGradient } from "../../components/Gradients";
-import { OPENINGS_DATA, OPENINGS_DEPARTMENTS } from "../../constants";
+import {
+  departmentConfigMap,
+  OPENINGS_DATA,
+  OPENINGS_DEPARTMENTS,
+} from "../../constants";
 import useHorizontalScrollable from "../../hooks/useHorizontalScrollable";
 
 const Careers = () => {
   const { containerRef, showGradient } = useHorizontalScrollable();
   const [selectedDept, setSelectedDept] = useState({
     title: "All",
-    value: "",
+    value: "all",
   });
 
   const openings = useMemo(() => {
@@ -35,27 +39,49 @@ const Careers = () => {
         </p>
       </header>
       <div className="sticky top-16 bg-primary-inverted z-[1] border-b border-b-tertiary">
-        <div className="relative py-2">
+        <div className="relative">
           {showGradient.left && <LeftGradient className="!w-20 h-full" />}
           {showGradient.right && <RightGradient className="!w-20 h-full" />}
           <div
-            className="flex gap-4 overflow-y-scroll scroll-smooth"
+            className="flex gap-1 overflow-y-scroll scroll-smooth"
             ref={containerRef}
           >
-            {[{ title: "All", value: "" }, ...OPENINGS_DEPARTMENTS].map(
-              (dept) => (
-                <div
-                  key={dept.value}
-                  className={`text-nowrap cursor-pointer font-semibold p-1 bg-clip-text text-transparent ${
-                    selectedDept.value === dept.value
-                      ? "bg-accent-duo"
-                      : "bg-silver-duo hover:text-primary"
-                  }`}
-                  onClick={() => setSelectedDept(dept)}
-                >
-                  {dept.title}
-                </div>
-              )
+            {[{ title: "All", value: "all" }, ...OPENINGS_DEPARTMENTS].map(
+              (dept) => {
+                const current = selectedDept.value === dept.value;
+                const config = departmentConfigMap[dept.value];
+                return (
+                  <div
+                    className={`p-2 border-b border-transparent ${
+                      current
+                        ? // ? `${departmentConfigMap[dept.value]?.headingClass}`
+                          ""
+                        : ""
+                    }`}
+                    style={
+                      current && config
+                        ? {
+                            background: `radial-gradient(39.35% 50% at 50.37% 100%, ${config.color}4d 0%, ${config.color}00 100%), linear-gradient(0deg, var(--primary-inverted) 0%, var(--primary-inverted) 100%), var(--primary-inverted)`,
+                            borderImage: `linear-gradient(to right, ${config?.color}00, ${config?.color},  ${config?.color}00)`,
+                            borderImageSlice: 1,
+                          }
+                        : {}
+                    }
+                  >
+                    <div
+                      key={dept.value}
+                      className={`text-nowrap cursor-pointer font-semibold p-1 bg-clip-text text-transparent ${
+                        current
+                          ? "bg-accent-duo"
+                          : "bg-silver-duo hover:text-primary"
+                      }`}
+                      onClick={() => setSelectedDept(dept)}
+                    >
+                      {dept.title}
+                    </div>
+                  </div>
+                );
+              }
             )}
           </div>
         </div>
