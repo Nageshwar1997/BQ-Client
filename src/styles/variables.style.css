@@ -63,6 +63,9 @@
   --secondary-30: #f5f5f54d;
   --secondary-50: #f5f5f580;
   --secondary-inverted: #1c1c1c;
+  --secondary-inverted-10: #1c1c1c1a;
+  --secondary-inverted-30: #1c1c1c4d;
+  --secondary-inverted-50: #1c1c1c80;
   --secondary-battleship-davys-gray: #4d4d4d;
   --secondary-battleship-davys-gray-inverted: #8a8a8a4d;
 
@@ -72,6 +75,9 @@
   --tertiary-30: #c8c8c84d;
   --tertiary-50: #c8c8c880;
   --tertiary-inverted: #2e2e2e;
+  --tertiary-inverted-10: #2e2e2e1a;
+  --tertiary-inverted-30: #2e2e2e4d;
+  --tertiary-inverted-50: #2e2e2e80;
 
   /* Other */
   --smoke-eerie: #1a1a1a;
@@ -146,6 +152,9 @@
   --secondary-30: #1c1c1c4d;
   --secondary-50: #1c1c1c80;
   --secondary-inverted: #f5f5f5;
+  --secondary-inverted-10: #f5f5f51a;
+  --secondary-inverted-30: #f5f5f54d;
+  --secondary-inverted-50: #f5f5f580;
   --secondary-battleship-davys-gray: #8a8a8a4d;
   --secondary-battleship-davys-gray-inverted: #4d4d4d;
 
@@ -155,6 +164,9 @@
   --tertiary-30: #2e2e2e4d;
   --tertiary-50: #2e2e2e80;
   --tertiary-inverted: #c8c8c8;
+  --tertiary-inverted-10: #c8c8c81a;
+  --tertiary-inverted-30: #c8c8c84d;
+  --tertiary-inverted-50: #c8c8c880;
 
   /* Other */
   --smoke-eerie: #f2f2f2;

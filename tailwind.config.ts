@@ -34,8 +34,14 @@ export default {
         },
         secondary: {
           DEFAULT: "var(--secondary)",
+          10: "var(--secondary-10)",
+          30: "var(--secondary-30)",
+          50: "var(--secondary-50)",
           inverted: {
             DEFAULT: "var(--secondary-inverted)",
+            10: "var(--secondary-inverted-10)",
+            30: "var(--secondary-inverted-30)",
+            50: "var(--secondary-inverted-50)",
           },
           "battleship-davys-gray": {
             DEFAULT: "var(--secondary-battleship-davys-gray)",
@@ -46,8 +52,14 @@ export default {
         },
         tertiary: {
           DEFAULT: "var(--tertiary)",
+          10: "var(--tertiary-10)",
+          30: "var(--tertiary-30)",
+          50: "var(--tertiary-50)",
           inverted: {
             DEFAULT: "var(--tertiary-inverted)",
+            10: "var(--tertiary-inverted-10)",
+            30: "var(--tertiary-inverted-30)",
+            50: "var(--tertiary-inverted-50)",
           },
         },
         silver: {

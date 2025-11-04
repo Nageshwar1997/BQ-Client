@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import Modal from "../../../components/modal";
 import { TRoleOpening } from "../../../types";
 
@@ -7,90 +8,126 @@ interface IOpeningModal {
   opening: TRoleOpening;
 }
 
+const Section = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) => (
+  <div>
+    <h3 className="font-semibold text-primary border-l-4 border-blue-crayola-c pl-3 mb-2 text-sm uppercase tracking-wide">
+      {title}
+    </h3>
+    {children}
+  </div>
+);
+
+const DetailItem = ({ label, value }: { label: string; value: string }) => (
+  <p className="text-secondary">
+    <span className="font-semibold">{label}:</span> {value}
+  </p>
+);
+
+const Badge = ({ children }: { children: string | ReactNode }) => (
+  <span className="px-3 py-1 text-xs bg-tertiary-inverted text-secondary rounded-full capitalize">
+    {children}
+  </span>
+);
+
 const OpeningModal = ({ opening, isOpen, onClose }: IOpeningModal) => {
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
       heading={opening.role}
-      className="max-w-xl [&>div>div>h2]:text-start"
+      className="!max-w-xl [&>div>div>h2]:text-start"
     >
-      <div className="job-details">
-        <p>
-          <strong>Title:</strong> {opening.role}
-        </p>
-        <p>
-          <strong>Location:</strong> {opening.location}
-        </p>
-        <p>
-          <strong>Job Type:</strong> {opening.type}
-        </p>
-        <p>
-          <strong>Salary Range:</strong> {opening.salary}
-        </p>
-        <p>
-          <strong>Job Description:</strong> {opening.description}
-        </p>
-        <p>
-          <strong>Job Summary:</strong> {opening.summary}
-        </p>
-
-        <div>
-          <strong>Responsibilities:</strong>
-          <ul>
-            {opening.responsibilities?.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </ul>
+      <div className="space-y-6">
+        {/* Overview */}
+        <div className="bg-tertiary-inverted rounded-lg p-4 text-sm space-y-2">
+          <DetailItem label="Title" value={opening.role} />
+          <DetailItem label="Location" value={opening.location} />
+          <DetailItem label="Job Type" value={opening.type} />
+          <DetailItem label="Experience" value={opening.experience} />
+          <DetailItem label="Salary Range" value={opening.salary} />
         </div>
+        {/* Technologies */}
+        {opening.technologies?.length > 0 && (
+          <Section title="Technologies">
+            <div className="flex flex-wrap gap-2">
+              {opening.technologies.map((tech, i) => (
+                <Badge key={i}>{tech}</Badge>
+              ))}
+            </div>
+          </Section>
+        )}
 
-        <div>
-          <strong>Requirements:</strong>
-          <ul>
-            {opening.requirements?.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </ul>
-        </div>
-        {opening.qualifications && (
-          <div>
-            <strong>Qualifications:</strong>
-            <ul>
-              {opening.qualifications?.map((item, index) => (
-                <li key={index}>{item}</li>
+        {/* Tags */}
+        {opening.tags?.length > 0 && (
+          <Section title="Tags">
+            <div className="flex flex-wrap gap-2">
+              {opening.tags.map((tag, i) => (
+                <Badge key={i}>{tag}</Badge>
               ))}
-            </ul>
-          </div>
+            </div>
+          </Section>
         )}
-        {opening.technologies.length > 0 && (
-          <div>
-            <strong>Technologies:</strong>
-            <ul>
-              {opening.technologies?.map((tech, index) => (
-                <li key={index}>{tech}</li>
-              ))}
-            </ul>
-          </div>
+
+        {/* Description */}
+        <Section title="Job Description">
+          <p className="ml-4 text-tertiary text-sm">{opening.description}</p>
+        </Section>
+
+        {/* Summary */}
+        {opening.summary && (
+          <Section title="Job Summary">
+            <p className="ml-4 text-tertiary text-sm">{opening.summary}</p>
+          </Section>
         )}
-        {opening.tags.length > 0 && (
-          <div>
-            <strong>Tags:</strong>
-            <ul>
-              {opening.tags?.map((tag, index) => (
-                <li key={index}>{tag}</li>
+
+        {/* Responsibilities */}
+        {opening.responsibilities?.length > 0 && (
+          <Section title="Responsibilities">
+            <ul className="list-disc pl-5 space-y-1  text-tertiary text-sm">
+              {opening.responsibilities.map((item, i) => (
+                <li key={i}>{item}</li>
               ))}
             </ul>
-          </div>
+          </Section>
         )}
-        {opening.benefits && (
-          <div>
-            <strong>Benefits:</strong>
-            <ul>
-              {opening.benefits?.map((benefit, index) => (
-                <li key={index}>{benefit}</li>
+
+        {/* Requirements */}
+        {opening.requirements?.length > 0 && (
+          <Section title="Requirements">
+            <ul className="list-disc pl-5 space-y-1  text-tertiary text-sm">
+              {opening.requirements.map((item, i) => (
+                <li key={i}>{item}</li>
               ))}
             </ul>
-          </div>
+          </Section>
+        )}
+
+        {/* Qualifications */}
+        {opening.qualifications?.length > 0 && (
+          <Section title="Qualifications">
+            <ul className="list-disc pl-5 space-y-1  text-tertiary text-sm">
+              {opening.qualifications.map((item, i) => (
+                <li key={i}>{item}</li>
+              ))}
+            </ul>
+          </Section>
+        )}
+
+        {/* Benefits */}
+        {opening.benefits?.length > 0 && (
+          <Section title="Benefits">
+            <ul className="list-disc pl-5 space-y-1  text-tertiary text-sm">
+              {opening.benefits.map((item, i) => (
+                <li key={i}>{item}</li>
+              ))}
+            </ul>
+          </Section>
         )}
       </div>
     </Modal>
