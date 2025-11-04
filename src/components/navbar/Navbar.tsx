@@ -181,7 +181,7 @@ const Navbar = () => {
             <div className="flex items-center gap-2 h-full" ref={navbarRef}>
               {levelOneCategories.map((item, index) => (
                 <div
-                  onClick={() => item.path && navigate(item.path)}
+                  onClick={() => item?.path && navigate(item.path)}
                   className="h-full relative"
                   key={item.id}
                 >

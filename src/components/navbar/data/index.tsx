@@ -65,7 +65,7 @@ export const for_you: LevelOneCategoryType = {
   level: 1,
   label: "For You",
   category: "for_you",
-  path: "/for_you",
+  path: "/products/for_you",
   component: ForYou,
   subCategories: [
     new_new, // only new is reserved keyword we can't use new
@@ -80,7 +80,7 @@ export const lips: LevelOneCategoryType = {
   level: 1,
   label: "Lips",
   category: "lips",
-  path: "/lips",
+  path: "/products/lips",
   component: Lips,
   subCategories: [
     finish_types,
@@ -97,7 +97,7 @@ export const eyes: LevelOneCategoryType = {
   level: 1,
   label: "Eyes",
   category: "eyes",
-  path: "/eyes",
+  path: "/products/eyes",
   component: Eyes,
   subCategories: [
     kohl_and_kajal,
@@ -114,7 +114,7 @@ export const face: LevelOneCategoryType = {
   level: 1,
   label: "Face",
   category: "face",
-  path: "/face",
+  path: "/products/face",
   component: Face,
   subCategories: [
     face_makeup,
@@ -134,7 +134,7 @@ export const skin: LevelOneCategoryType = {
   level: 1,
   label: "Skin",
   category: "skin",
-  path: "/skin",
+  path: "/products/skin",
   component: Skin,
   subCategories: [
     moisturizers,
@@ -149,7 +149,7 @@ export const collections: LevelOneCategoryType = {
   level: 1,
   label: "Collections",
   category: "collections",
-  path: "/collections",
+  path: "/products/collections",
   component: Collections,
   subCategories: [bath_and_body, sugar_pop, hair_care, gifting],
 };
@@ -159,7 +159,6 @@ export const about: LevelOneCategoryType = {
   level: 1,
   label: "About",
   category: "about",
-  path: "/about",
   component: About,
   subCategories: [company, careers, press, trust_center],
 };
