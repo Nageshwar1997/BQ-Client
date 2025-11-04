@@ -23,7 +23,7 @@ const Navbar = () => {
 
   const { isAuthenticated } = useUserStore();
 
-  const { paths, pathname } = usePathParams();
+  const { paths, pathname, navigate } = usePathParams();
 
   const [isMobileNavbarOpened, setIsMobileNavbarOpened] =
     useState<boolean>(false);
@@ -180,8 +180,8 @@ const Navbar = () => {
           <div className="h-full w-full flex items-center gap-7 justify-between pl-4 xl:pl-6 relative">
             <div className="flex items-center gap-2 h-full" ref={navbarRef}>
               {levelOneCategories.map((item, index) => (
-                <Link
-                  to={`/products${item.path}`}
+                <div
+                  onClick={() => item.path && navigate(item.path)}
                   className="h-full relative"
                   key={item.id}
                 >
@@ -192,11 +192,13 @@ const Navbar = () => {
                     </div>
                   )}
                   <div
-                    className={`h-full px-3 flex items-center justify-center gap-0.5 text-sm text-nowrap font-semibold cursor-pointer rounded-t-lg border-l border-r relative ${
+                    className={`h-full px-3 flex items-center justify-center gap-0.5 text-sm text-nowrap font-semibold rounded-t-lg border-l border-r relative ${
                       hoveredIndex === index
                         ? "bg-secondary-inverted border-primary-battleship-davys-gray z-50"
                         : "border-transparent"
-                    } ${isNavbarAtTop ? "border-t-transparent" : "border-t"}`}
+                    } ${isNavbarAtTop ? "border-t-transparent" : "border-t"} ${
+                      item.path ? "cursor-pointer" : "cursor-default"
+                    }`}
                     onMouseEnter={() => handleMouseEnter(index)}
                   >
                     <p
@@ -230,7 +232,7 @@ const Navbar = () => {
                       <div className="bg-tertiary-inverted h-full w-full rounded-bl-full border-b border-l border-primary-battleship-davys-gray" />
                     </div>
                   )}
-                </Link>
+                </div>
               ))}
             </div>
             <UserMenuIcons
