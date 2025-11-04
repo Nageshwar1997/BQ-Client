@@ -7,8 +7,10 @@ import { PlayIcon } from "../../../../icons";
 import VideoPlayer from "../../../videoPlayers/VideoPlayer";
 import { LevelTwoCategoryType } from "../../types";
 import CategoryLabel from "../CategoryLabel";
+import usePathParams from "../../../../hooks/usePathParams";
 
 const ForYou = () => {
+  const { navigate } = usePathParams();
   const [playingVideoIndex, setPlayingVideoIndex] = useState<null | number>(
     null
   );
@@ -17,6 +19,7 @@ const ForYou = () => {
     <div className="p-4 lg:p-0 w-full h-full space-y-4">
       <div className="grid grid-cols-1 lg:grid-cols-4 lg:gap-4">
         {categories?.map((category, index) => {
+          const subCategoryPath = category?.subCategories?.[0]?.path;
           return (
             <Fragment key={index}>
               {/* Desktop View */}
@@ -24,17 +27,15 @@ const ForYou = () => {
                 {/* Top Heading Label */}
                 <CategoryLabel
                   text={category?.heading as string}
-                  path={`/products${category.path}`}
+                  path={category?.path}
                 />
-                <Link
-                  to={
-                    ["offers", "blogs"].includes(category.category)
-                      ? category.path
-                      : `/products${category.path}${
-                          category.category === "new"
-                            ? "/new_arrivals"
-                            : "/sugar_play"
-                        }`
+                <div
+                  onClick={() =>
+                    subCategoryPath
+                      ? navigate(subCategoryPath)
+                      : category?.path
+                      ? navigate(category.path)
+                      : null
                   }
                   className="flex flex-col gap-2 p-3 hover:bg-platinum-black rounded-xl cursor-pointer group relative"
                   onMouseEnter={() => setPlayingVideoIndex(index)}
@@ -65,7 +66,7 @@ const ForYou = () => {
                       />
                     )}
                   </div>
-                </Link>
+                </div>
               </div>
 
               {/* Mobile View */}
@@ -73,14 +74,14 @@ const ForYou = () => {
                 <div className="w-1/2 sm:w-2/3 flex flex-col items-start justify-start gap-1 sm:gap-3">
                   <CategoryLabel
                     text={category?.heading as string}
-                    path={`/products${category.path}`}
+                    path={category?.path}
                     className="!px-0 !mt-0 py-1 border-b border-secondary-battleship-davys-gray text-left"
                   />
                   <div className="flex gap-4 cursor-pointer justify-between items-center pt-1">
                     <div className="flex gap-1 flex-col items-start">
                       <CategoryLabel
                         text={category.label}
-                        path={`/products${category.path}`}
+                        path={subCategoryPath || category.path}
                         className="capitalize font-metropolis text-silver-jet !px-0 !mt-0 text-left"
                       />
                       <p className="text-[10.5px] sm:text-xs md:text-sm pt-1 leading-[18px] text-primary-battleship-davys-gray-inverted text-left">
