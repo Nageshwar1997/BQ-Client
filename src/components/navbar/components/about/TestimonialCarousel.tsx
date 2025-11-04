@@ -63,7 +63,7 @@ const TestimonialCarousel: React.FC<{ testimonials: Testimonial[] }> = ({
               <img
                 src={testimonial.image}
                 alt={testimonial.name}
-                className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover"
+                className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover bg-secondary-inverted-50 border border-primary-50"
                 loading="lazy"
               />
               <div className="flex flex-col">

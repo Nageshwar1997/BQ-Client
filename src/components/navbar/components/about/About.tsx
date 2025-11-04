@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Button from "../../../button/Button";
 import CategoryLabel from "../CategoryLabel";
 import SubCategories from "../SubCategories";
@@ -27,10 +28,7 @@ const Collections = () => {
                     : "lg:pb-2"
                 }`}
               >
-                <CategoryLabel
-                  text={label}
-                  path={`/products${category.path}`}
-                />
+                <CategoryLabel text={label} path={category.path} />
                 <SubCategories subCategories={subCategories} />
               </div>
             );
@@ -45,14 +43,16 @@ const Collections = () => {
         <div className="space-y-4 min-w-[200px] max-w-[300px] pb-4 lg:pb-2 border-b border-primary-battleship-davys-gray lg:border-none">
           <CategoryLabel text={"Partner with us"} className="cursor-default" />
           <div className="px-3 space-y-4">
-            <span className="bg-accent-duo bg-clip-text text-transparent italic text-sm font-medium leading-[21px]">
+            <span className="block bg-accent-duo bg-clip-text text-transparent italic text-sm font-medium leading-[21px]">
               Together, we're Unstoppable!
             </span>
-            <Button
-              content="Team Up"
-              pattern="outline"
-              className="!w-fit !py-1 !rounded-full leading-3 !text-sm"
-            />
+            <Link to="/partner-with-us" className="block w-fit">
+              <Button
+                content="Team Up"
+                pattern="outline"
+                className="!w-fit !py-1 !rounded-full leading-3 !text-sm"
+              />
+            </Link>
           </div>
         </div>
       </div>

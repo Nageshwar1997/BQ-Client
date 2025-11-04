@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
 import { isHighlightedOption } from "../../../utils";
 import { LevelThreeCategoryType } from "../types";
+import usePathParams from "../../../hooks/usePathParams";
 
 const SubCategories = ({
   subCategories,
@@ -9,14 +9,15 @@ const SubCategories = ({
   subCategories: LevelThreeCategoryType[];
   className?: string;
 }) => {
+  const { navigate } = usePathParams();
   return (
     <div className={`flex flex-col gap-1 md:gap-2 ${className}`}>
-      {subCategories.map((subCategory, index: number) => {
+      {subCategories.map((subCategory, index) => {
         const isHighlighted = isHighlightedOption(subCategory.category);
         const Icon = subCategory.icon;
         return (
-          <Link
-            to={`/products${subCategory.path}`}
+          <div
+            onClick={() => subCategory?.path && navigate(subCategory.path)}
             key={index}
             className={`flex justify-start gap-2 p-2 border border-transparent hover:bg-white-smoke-night-inverted rounded-xl cursor-pointer ${
               isHighlighted
@@ -42,7 +43,7 @@ const SubCategories = ({
                 {subCategory.description}
               </p>
             </div>
-          </Link>
+          </div>
         );
       })}
     </div>

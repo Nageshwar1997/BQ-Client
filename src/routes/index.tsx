@@ -44,6 +44,10 @@ import TermsAndConditions from "../pages/legal-policies/TermsAndConditions";
 import CookiePolicy from "../pages/legal-policies/CookiePolicy";
 import PrivacyPolicy from "../pages/legal-policies/PrivacyPolicy";
 import TrackMyOrders from "../pages/account/order/TrackMyOrders";
+import MissionVisionValues from "../pages/company/MissionVisionValues";
+import Awards from "../pages/company/Awards";
+import ValuesAndCulture from "../pages/company/ValuesAndCulture";
+import RetailAndECommerce from "../pages/company/RetailAndECommerce";
 
 const router = createBrowserRouter([
   {
@@ -94,10 +98,14 @@ const router = createBrowserRouter([
       { path: "about-us", element: <AboutUs /> }, // Todo: Pending
       { path: "partner-with-us", element: <PartnerWithUs /> },
       { path: "careers", element: <Careers /> }, // Todo: Pending
+      { path: "mission-vision", element: <MissionVisionValues /> }, // Todo: Pending
       { path: "sustainability", element: <Sustainability /> },
       { path: "ethics", element: <Ethics /> },
       { path: "teams", element: <Teams /> },
       { path: "press-media", element: <PressMedia /> },
+      { path: "awards", element: <Awards /> }, // Todo: Pending
+      { path: "values-and-culture", element: <ValuesAndCulture /> }, // Todo: Pending
+      { path: "retail-and-e-commerce", element: <RetailAndECommerce /> }, // Todo: Pending
 
       // Quick Link Pages
       { path: "refer", element: <ReferFriend /> }, // Todo: Refer Part is Pending

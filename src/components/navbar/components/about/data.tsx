@@ -14,21 +14,18 @@ import {
   ValuesAndCultureIcon,
 } from "../icons";
 
-const basePath = "/about";
-
 export const company: LevelTwoCategoryType = {
   id: 1,
   level: 2,
   label: "Company",
   category: "company",
-  path: `${basePath}/company`,
   subCategories: [
     {
       id: 1,
       level: 3,
       label: "About Us",
       category: "about_us",
-      path: `${basePath}/company/about_us`,
+      path: "/about-us",
       icon: AboutUsIcon,
       description:
         "Learn about our journey, mission, and values that define our brand.",
@@ -38,7 +35,7 @@ export const company: LevelTwoCategoryType = {
       level: 3,
       label: "Mission Vision Values",
       category: "mission_vision_values",
-      path: `${basePath}/company/mission_vision_values`,
+      path: "/mission-vision",
       icon: MissionVisionValuesIcon,
       description:
         "Discover our purpose, vision, and values driving our company's success.",
@@ -48,7 +45,7 @@ export const company: LevelTwoCategoryType = {
       level: 3,
       label: "Team",
       category: "team",
-      path: `${basePath}/company/team`,
+      path: "/teams",
       icon: TeamIcon,
       description:
         "Meet our talented team committed to delivering excellence every day.",
@@ -58,7 +55,7 @@ export const company: LevelTwoCategoryType = {
       level: 3,
       label: "Contact Us",
       category: "contact_us",
-      path: `${basePath}/company/contact_us`,
+      path: "/contact",
       icon: ContactUsIcon,
       description:
         "Get in touch with us for inquiries, support, or collaboration opportunities.",
@@ -71,14 +68,13 @@ export const press: LevelTwoCategoryType = {
   level: 2,
   label: "Press",
   category: "press",
-  path: `${basePath}/press`,
   subCategories: [
     {
       id: 1,
       level: 3,
       label: "Newsroom",
       category: "newsroom",
-      path: `${basePath}/press/newsroom`,
+      path: "/press-media",
       icon: NewsRoomIcon,
       description:
         "Stay updated with our latest news, events, and media announcements.",
@@ -88,7 +84,7 @@ export const press: LevelTwoCategoryType = {
       level: 3,
       label: "Awards",
       category: "awards",
-      path: `${basePath}/press/awards`,
+      path: "/awards",
       icon: AwardsIcon,
       description:
         "Explore the recognitions and awards we have received for excellence.",
@@ -101,14 +97,13 @@ export const careers: LevelTwoCategoryType = {
   level: 2,
   label: "Careers",
   category: "careers",
-  path: `${basePath}/careers`,
   subCategories: [
     {
       id: 1,
       level: 3,
       label: "Values/Culture",
       category: "values_culture",
-      path: `${basePath}/careers/values_culture`,
+      path: "/values-and-culture",
       icon: ValuesAndCultureIcon,
       description:
         "Experience our vibrant culture driven by values of growth and innovation.",
@@ -118,7 +113,7 @@ export const careers: LevelTwoCategoryType = {
       level: 3,
       label: "Openings",
       category: "openings",
-      path: `${basePath}/careers/openings`,
+      path: "/careers",
       icon: OpeningsIcon,
       description:
         "Discover exciting career opportunities and join our dynamic team today.",
@@ -128,7 +123,7 @@ export const careers: LevelTwoCategoryType = {
       level: 3,
       label: "Retail/E-Commerce",
       category: "retail_e_commerce",
-      path: `${basePath}/careers/retail_e_commerce`,
+      path: "/retail-and-e-commerce",
       icon: RetailECommerceIcon,
       description:
         "Explore roles in retail and e-commerce driving our digital success.",
@@ -141,14 +136,13 @@ export const trust_center: LevelTwoCategoryType = {
   level: 2,
   label: "Trust Center & Legal",
   category: "trust_center_and_legal",
-  path: `${basePath}/trust_center_and_legal`,
   subCategories: [
     {
       id: 1,
       level: 3,
       label: "Compliance",
       category: "compliance",
-      path: `${basePath}/trust_center_and_legal/compliance`,
+      path: "/cookie-policy",
       icon: ComplianceIcon,
       description:
         "Understand our compliance standards ensuring trust and transparency.",
@@ -158,7 +152,7 @@ export const trust_center: LevelTwoCategoryType = {
       level: 3,
       label: "Privacy/Policy",
       category: "privacy_policy",
-      path: `${basePath}/trust_center_and_legal/privacy_policy`,
+      path: "/privacy-policy",
       icon: PrivacyPolicyIcon,
       description:
         "Learn about our privacy practices and data protection commitments.",
@@ -168,7 +162,7 @@ export const trust_center: LevelTwoCategoryType = {
       level: 3,
       label: "Terms & Conditions",
       category: "terms_and_conditions",
-      path: `${basePath}/trust_center_and_legal/terms_and_conditions`,
+      path: "/terms-conditions",
       icon: TermsAndConditionsIcon,
       description:
         "Review our terms and conditions for using our products and services.",
@@ -188,23 +182,20 @@ export const testimonials = [
       "I absolutely love the range of products on this website! The quality is unmatched, and my skin has never felt better. I always get compliments!",
     name: "Nageshwar Pawar",
     role: "Founder",
-    image:
-      "https://ctruh-data.s3.ap-south-1.amazonaws.com/main-webiste/public/images/navbar/krishna-gupta.webp",
+    image: "/images/company/teams/male/Nageshwar-Pawar.webp",
   },
   {
     id: 2,
     content: `Finding the perfect shade was so easy. The product descriptions and customer reviews helped me make the right choice. Fast delivery too!`,
     name: "Manjusha Magar",
-    role: "CEO",
-    image:
-      "https://ctruh-data.s3.ap-south-1.amazonaws.com/main-webiste/public/images/navbar/aarav-joshi.webp",
+    role: "Co-Founder",
+    image: "/images/company/teams/female/Manjusha-Magar.webp",
   },
   {
     id: 3,
     content: `I love how the products feel on my skin. They are lightweight, long-lasting, and make me feel confident all day. Highly recommended!`,
-    name: "Sanket Pawar",
-    role: "Manager",
-    image:
-      "https://ctruh-data.s3.ap-south-1.amazonaws.com/main-webiste/public/images/navbar/lucas-smith.webp",
+    name: "Deepika Padukone",
+    role: "CEO",
+    image: "/images/company/teams/female/Deepika-Padukone.webp",
   },
 ];
