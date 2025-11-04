@@ -38,7 +38,7 @@ const Modal = ({
       }`}
     >
       <div
-        className={`bg-primary-inverted rounded-xl shadow-[var(--primary-8)_0px_4px_16px,_var(--primary-10)_0px_8px_32px] w-full max-w-md max-h-[90vh] relative ${className}`}
+        className={`bg-primary-inverted rounded-xl shadow-[var(--primary-8)_0px_4px_16px,_var(--primary-10)_0px_8px_32px] w-full max-w-md max-h-[90vh] relative overflow-hidden ${className}`}
         onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
       >
         {/* Scrollable area */}
