@@ -20,7 +20,7 @@ import {
   WaterproofMascara,
 } from "../icons";
 
-const basePath = "/eyes";
+const basePath = "/products/eyes";
 
 export const kohl_and_kajal: LevelTwoCategoryType = {
   id: 1,

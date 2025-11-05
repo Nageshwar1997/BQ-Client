@@ -24,7 +24,7 @@ import {
   SmudgeProofLipstickIcon,
 } from "../icons";
 
-const basePath = "/lips";
+const basePath = "/products/lips";
 
 export const finish_types: LevelTwoCategoryType = {
   id: 1,

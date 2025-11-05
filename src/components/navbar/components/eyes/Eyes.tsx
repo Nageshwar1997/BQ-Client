@@ -23,7 +23,7 @@ const Eyes = () => {
                 : "lg:pb-2"
             }`}
           >
-            <CategoryLabel text={label} path={`/products${category.path}`} />
+            <CategoryLabel text={label} path={category.path} />
             <SubCategories subCategories={subCategories} />
           </div>
         );

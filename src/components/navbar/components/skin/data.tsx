@@ -16,7 +16,7 @@ import {
   FacePackIcon,
 } from "../icons";
 
-const basePath = "/skin";
+const basePath = "/products/skin";
 
 export const moisturizers: LevelTwoCategoryType = {
   id: 1,

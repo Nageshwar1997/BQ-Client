@@ -18,7 +18,7 @@ const Skin = () => {
               key={index}
               className="space-y-4 min-w-[200px] max-w-[300px] pb-4 lg:pb-0 border-b border-primary-battleship-davys-gray lg:border-none"
             >
-              <CategoryLabel text={label} path={`/products${category.path}`} />
+              <CategoryLabel text={label} path={category.path} />
               <SubCategories subCategories={subCategories} />
             </div>
           );

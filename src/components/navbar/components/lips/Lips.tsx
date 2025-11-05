@@ -26,7 +26,7 @@ const Lips = () => {
                 : "lg:border-none"
             }`}
           >
-            <CategoryLabel text={label} path={`/products${category.path}`} />
+            <CategoryLabel text={label} path={category.path} />
             <SubCategories subCategories={subCategories} />
           </div>
         );

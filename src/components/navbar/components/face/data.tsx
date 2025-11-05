@@ -29,7 +29,7 @@ import {
   WaterResistantFoundationIcon,
 } from "../icons";
 
-const basePath = "/face";
+const basePath = "/products/face";
 
 export const face_makeup: LevelTwoCategoryType = {
   id: 1,

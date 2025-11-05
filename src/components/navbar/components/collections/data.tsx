@@ -29,7 +29,7 @@ import {
   ValueSetIcon,
 } from "../icons";
 
-const basePath = "/collections";
+const basePath = "/products/collections";
 
 export const bath_and_body: LevelTwoCategoryType = {
   id: 1,
