@@ -74,6 +74,7 @@ export default {
         "platinum-black": "var(--platinum-black)",
         "platinum-black-inverted": "var(--platinum-black-inverted)",
         "blue-crayola-c": "var(--blue-crayola-c)",
+        "picton-blue-c": "var(--picton-blue-c)",
         "white-smoke-night": "var(--white-smoke-night)",
         "white-smoke-night-inverted": "var(--white-smoke-night-inverted)",
         "silver-jet": "var(--silver-jet)",

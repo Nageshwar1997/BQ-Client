@@ -4,8 +4,24 @@ import Input from "../../components/input/Input";
 import Textarea from "../../components/input/Textarea";
 import { formatPhoneNumber } from "../../utils";
 import { socialMediaLinks } from "../../components/footer/data";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { contactUsSchema } from "../../schemas/contact-us";
+import z from "zod";
 
 const ContactUs = () => {
+  const {
+    handleSubmit,
+    formState: { errors },
+    register,
+  } = useForm<z.infer<typeof contactUsSchema>>({
+    resolver: zodResolver(contactUsSchema),
+    defaultValues: { name: "", email: "", phoneNumber: "", message: "" },
+  });
+
+  const onSubmit = (data: z.infer<typeof contactUsSchema>) => {
+    console.log("DATA", data);
+  };
   return (
     <div className="p-6 max-w-5xl mx-auto space-y-10">
       <header className="text-center space-y-3 sm:space-y-4">
@@ -16,39 +32,56 @@ const ContactUs = () => {
           We'd love to hear from you! Reach out with any questions or feedback.
         </p>
       </header>
-      <div className="px-4 md:px-8 py-12 grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div className="px-4 md:px-8 py-12 space-y-12 max-w-4xl mx-auto">
         <div className="shadow-neumorphic-layered rounded-2xl overflow-hidden">
           <div className="shadow-light-dark-soft p-8 w-full h-full flex flex-col items-center justify-center">
             <h2 className="text-2xl font-semibold mb-6 text-primary">
               Send Us a Message
             </h2>
-            <form className="space-y-7 w-full">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="space-y-7 w-full"
+            >
               <Input
                 label="Name"
-                needRef={true}
-                inputProps={{ placeholder: "Enter your name...", type: "text" }}
+                register={register("name")}
+                error={errors.name?.message}
+                inputProps={{
+                  placeholder: "Enter your name...",
+                  type: "text",
+                  name: "name",
+                }}
               />
               <Input
                 label="Email"
+                register={register("email")}
+                error={errors.email?.message}
                 inputProps={{
                   placeholder: "Enter your email...",
                   type: "text",
+                  name: "email",
                 }}
               />
               <Input
                 label="Phone Number"
+                register={register("phoneNumber")}
+                error={errors.phoneNumber?.message}
                 inputProps={{
                   placeholder: "Enter your phone number...",
                   type: "number",
+                  name: "phoneNumber",
                 }}
                 icons={{ left: { text: "+91" } }}
               />
               <Textarea
                 label="Message"
                 containerClassName="[&>div]:h-24"
+                register={register("message")}
+                error={errors.message?.message}
                 textAreaProps={{
                   placeholder: "Enter your message...",
                   cols: 5,
+                  name: "message",
                 }}
               />
               <Button
@@ -59,9 +92,9 @@ const ContactUs = () => {
             </form>
           </div>
         </div>
-
+        <hr className="w-full h-px block border-none bg-gradient-line" />
         {/* Contact Info */}
-        <div className="shadow-neumorphic-layered rounded-2xl overflow-hidden">
+        <div className="shadow-neumorphic-layered rounded-2xl max-h-[536px] overflow-hidden">
           <div className="h-full shadow-light-dark-soft p-8 flex flex-col justify-center space-y-6">
             <h2 className="text-2xl font-semibold text-primary text-center">
               Contact Information
@@ -71,23 +104,32 @@ const ContactUs = () => {
             </p>
             <div className="space-y-4 text-secondary">
               <div>
-                <span className="font-semibold">Email:</span>{" "}
+                <strong>Email: </strong>
                 <a
                   href="mailto:beautinique.bq@gmail.com"
-                  className="text-picton-blue-c hover:underline"
+                  className="text-blue-crayola-c hover:underline"
                 >
                   beautinique.bq@gmail.com
                 </a>
               </div>
               <div>
-                <strong>Phone:</strong>{" "}
-                <Link to="tel:+911234567890" className="hover:underline">
+                <strong>Phone: </strong>
+                <Link
+                  to="tel:+919730870409"
+                  className="text-blue-crayola-c hover:underline"
+                >
                   {formatPhoneNumber("9730870409")}
                 </Link>
               </div>
               <div>
-                <span className="font-semibold">Address:</span> 21, At. Amdura
-                Po. Mugat Tq. Mudkhed Dist. Nanded, Maharashtra, 431605 India
+                <strong>Address: </strong>
+                <Link
+                  to="/store-locator"
+                  className="text-blue-crayola-c hover:underline"
+                >
+                  21, At. Amdura Po. Mugat Tq. Mudkhed Dist. Nanded,
+                  Maharashtra, 431605 India
+                </Link>
               </div>
             </div>
 
