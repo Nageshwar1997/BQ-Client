@@ -25,7 +25,7 @@ const Careers = () => {
 
   return (
     <div className="p-6 mx-auto space-y-10">
-      <header className="text-center space-y-3 sm:space-y-4">
+      <header className="max-w-4xl mx-auto text-center space-y-3 sm:space-y-4">
         <h1 className="text-2xl base:text-3xl sm:text-4xl font-bold tracking-tight bg-clip-text bg-silver-duo text-transparent">
           Join the Future of Beauty
         </h1>
