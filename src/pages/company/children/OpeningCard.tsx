@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { IOpening, TRoleOpening } from "../../../types";
-import { hexToRgba } from "../../../utils";
 import Button from "../../../components/button/Button";
 import OpeningModal from "./OpeningModal";
 
@@ -17,8 +16,8 @@ const OpeningCard = ({
     <div className="flex max-w-sm mx-auto w-full rounded-xl border border-primary-30 shadow-light-dark-soft overflow-hidden">
       <div
         style={{
-          ["--dept-color-0" as string]: hexToRgba(department.color, 0),
-          ["--dept-color-30" as string]: hexToRgba(department.color, 0.3),
+          ["--dept-color-0" as string]: `${department.color}00`,
+          ["--dept-color-30" as string]: `${department.color}4d`,
         }}
         className="p-6 flex flex-col items-start gap-4 self-stretch justify-between w-full opening-card"
       >
