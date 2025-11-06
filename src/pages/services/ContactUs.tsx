@@ -1,3 +1,4 @@
+import z from "zod";
 import { Link } from "react-router-dom";
 import Button from "../../components/button/Button";
 import Input from "../../components/input/Input";
@@ -7,21 +8,26 @@ import { socialMediaLinks } from "../../components/footer/data";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { contactUsSchema } from "../../schemas/contact-us";
-import z from "zod";
+import { useSendContactRequestAndMail } from "../../api/G-form/G-form.service";
 
 const ContactUs = () => {
+  const { mutateAsync, isPending } = useSendContactRequestAndMail();
   const {
     handleSubmit,
     formState: { errors },
     register,
+    reset,
   } = useForm<z.infer<typeof contactUsSchema>>({
     resolver: zodResolver(contactUsSchema),
     defaultValues: { name: "", email: "", phoneNumber: "", message: "" },
   });
 
-  const onSubmit = (data: z.infer<typeof contactUsSchema>) => {
-    console.log("DATA", data);
+  const onSubmit = async (data: z.infer<typeof contactUsSchema>) => {
+    mutateAsync(data, {
+      onSuccess: () => reset(),
+    });
   };
+
   return (
     <div className="p-6 max-w-5xl mx-auto space-y-10">
       <header className="text-center space-y-3 sm:space-y-4">
@@ -50,6 +56,7 @@ const ContactUs = () => {
                   placeholder: "Enter your name...",
                   type: "text",
                   name: "name",
+                  autoComplete: "name",
                 }}
               />
               <Input
@@ -60,6 +67,7 @@ const ContactUs = () => {
                   placeholder: "Enter your email...",
                   type: "text",
                   name: "email",
+                  autoComplete: "email",
                 }}
               />
               <Input
@@ -70,6 +78,7 @@ const ContactUs = () => {
                   placeholder: "Enter your phone number...",
                   type: "number",
                   name: "phoneNumber",
+                  autoComplete: "tel",
                 }}
                 icons={{ left: { text: "+91" } }}
               />
@@ -82,12 +91,13 @@ const ContactUs = () => {
                   placeholder: "Enter your message...",
                   cols: 5,
                   name: "message",
+                  autoComplete: "off",
                 }}
               />
               <Button
                 pattern="primary"
-                content="Submit"
-                buttonProps={{ type: "submit" }}
+                content={isPending ? "Sending..." : "Send Message"}
+                buttonProps={{ type: "submit", disabled: isPending }}
               />
             </form>
           </div>
