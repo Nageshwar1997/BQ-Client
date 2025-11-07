@@ -42,7 +42,7 @@ select:-webkit-autofill:focus  */
   appearance: textfield;
 }
 
-/* Loading Screen Page */
+/* *Loading Screen Page */
 .loadingHighlight,
 .highlight {
   color: transparent;
@@ -79,6 +79,7 @@ select:-webkit-autofill:focus  */
   @apply range-slider-thumb-base;
 }
 
+/* *Google Map Custom Style */
 .gm-style {
   .gm-style-iw-c {
     padding-inline-end: 12px !important;
