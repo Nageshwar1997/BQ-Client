@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { IOpening, TRoleOpening } from "../../../types";
 import Button from "../../../components/button/Button";
 import OpeningModal from "./OpeningModal";
@@ -46,14 +46,18 @@ const OpeningCard = ({
               {opening.type}
             </div>
             <div className="flex items-start content-start gap-1.5 self-stretch flex-wrap">
-              {opening?.tags?.map((tag, index) => (
-                <div
-                  key={`${tag}-${index}`}
-                  className="flex py-0.5 px-1.5 justify-center items-center gap-1.5 rounded bg-tertiary-inverted text-primary text-[10px]/[14px] font-semibold"
-                >
-                  {tag}
-                </div>
+              {opening?.tags?.slice(0, 2).map((tag, index) => (
+                <Fragment key={`${tag}-${index}`}>
+                  <div className="flex py-0.5 px-1.5 rounded bg-tertiary-inverted text-primary text-[10px]/[14px] font-semibold">
+                    {tag}
+                  </div>
+                </Fragment>
               ))}
+              {opening?.tags?.length > 2 && (
+                <div className="h-[18px] w-[18px] flex items-center justify-center rounded-full bg-tertiary-inverted text-primary text-[10px]/[14px] font-semibold">
+                  {opening?.tags?.length - 2}+
+                </div>
+              )}
             </div>
           </div>
         </div>
