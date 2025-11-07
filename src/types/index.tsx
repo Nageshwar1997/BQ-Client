@@ -368,6 +368,7 @@ export type TRegexes =
   | "validEmail"
   | "validPinCode"
   | "validGST"
+  | "validUrl"
   | "validPhone"
   | "phoneStart"
   | "phoneExactLength"

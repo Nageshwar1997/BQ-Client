@@ -9,6 +9,7 @@ import Button from "../../../components/button/Button";
 import Input from "../../../components/input/Input";
 import { zodStringRequired } from "../../../utils/zod";
 import { useSendJobApplicationRequestAndMail } from "../../../api/G-form/G-form.service";
+import { regexes } from "../../../constants";
 
 interface IOpeningModal {
   isOpen: boolean;
@@ -62,6 +63,9 @@ const OpeningModal = ({
         portfolio: zodStringRequired({
           field: "portfolio",
           showingFieldName: "Portfolio link",
+          customRegexes: [
+            { regex: regexes.validUrl, message: "must be a valid URL" },
+          ],
         }),
       })
     ),
@@ -76,7 +80,7 @@ const OpeningModal = ({
       experience: opening.experience,
     };
 
-    await mutateAsync(bodyData, { onSuccess: () => reset() });
+    await mutateAsync(bodyData, { onSuccess: () => (reset(), onClose()) });
   };
 
   return (
