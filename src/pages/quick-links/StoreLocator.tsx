@@ -5,6 +5,9 @@ import {
   useLoadScript,
 } from "@react-google-maps/api";
 import { useEffect, useState } from "react";
+import Button from "../../components/button/Button";
+import { NavigationIcon } from "../../icons";
+import ShowApiStatus from "../../components/api-status/ShowApiStatus";
 
 interface Store {
   id: number;
@@ -19,26 +22,17 @@ interface Store {
 const stores: Store[] = [
   {
     id: 1,
-    name: "Store A",
-    address: "Mumbai, India",
-    lat: 19.076,
-    lng: 72.8777,
+    name: "Jaishambho Beauty Store",
+    address: "Amdura, Nanded, India",
+    lat: 19.0,
+    lng: 77.0,
     phone: "+91 12345 67890",
     hours: "10 AM - 8 PM",
-  },
-  {
-    id: 2,
-    name: "Store B",
-    address: "Pune, India",
-    lat: 18.5204,
-    lng: 73.8567,
-    phone: "+91 98765 43210",
-    hours: "11 AM - 7 PM",
   },
 ];
 
 const StoreLocator = () => {
-  const { isLoaded } = useLoadScript({
+  const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY!,
   });
 
@@ -62,47 +56,85 @@ const StoreLocator = () => {
     }
   }, []);
 
-  if (!isLoaded) return <div>Loading Map...</div>;
+  useEffect(() => {
+    if (isLoaded && hoveredStore) {
+      // wait for InfoWindow DOM to be inserted
+      const timer = setTimeout(() => {
+        const imgDiv = document.querySelector(".gm-style-iw-ch");
+        const closeIconDiv = document.querySelector(".gm-ui-hover-effect");
+        if (imgDiv && !imgDiv.querySelector("img.custom-logo")) {
+          const img = document.createElement("img");
+          img.src = "/images/logo/BQ_gradient_logo.webp";
+          img.alt = "Appended Image";
+          img.className = "custom-logo";
+          img.loading = "eager";
+          imgDiv.prepend(img);
+        }
+
+        if (closeIconDiv && !closeIconDiv.querySelector(".custom-close-icon")) {
+          const closeIcon = document.createElement("img");
+          closeIcon.src = `/icons/close.svg`;
+          closeIcon.alt = "Appended Image";
+          closeIcon.className = "custom-close-icon";
+          closeIcon.loading = "eager";
+          closeIconDiv.prepend(closeIcon);
+        }
+      }, 50);
+
+      return () => clearTimeout(timer);
+    }
+  }, [hoveredStore, isLoaded]);
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 p-4">
       {/* Map */}
       <div className="w-full h-[600px] rounded-xl overflow-hidden shadow-lg">
-        <GoogleMap
-          zoom={5.3}
-          center={center}
-          mapContainerClassName="w-full h-full"
-        >
-          {stores.map((store) => (
-            <Marker
-              key={store.id}
-              position={{ lat: store.lat, lng: store.lng }}
-              onMouseOver={() => setHoveredStore(store)}
-            />
-          ))}
-          {hoveredStore && (
-            <InfoWindow
-              position={{ lat: hoveredStore.lat, lng: hoveredStore.lng }}
-              onCloseClick={() => setHoveredStore(null)}
-            >
-              <div className="p-2 border border-[red]"
+        {isLoaded ? (
+          <GoogleMap
+            zoom={5.3}
+            center={center}
+            mapContainerClassName="w-full h-full"
+          >
+            {stores.map((store) => (
+              <Marker
+                key={store.id}
+                position={{ lat: store.lat, lng: store.lng }}
+                onMouseOver={() => setHoveredStore(store)}
+              />
+            ))}
+            {hoveredStore && (
+              <InfoWindow
+                position={{ lat: hoveredStore.lat, lng: hoveredStore.lng }}
+                onCloseClick={() => setHoveredStore(null)}
               >
-                <h3 className="font-bold">{hoveredStore.name}</h3>
-                <p>{hoveredStore.address}</p>
-                <p>Phone: {hoveredStore.phone}</p>
-                <p>Hours: {hoveredStore.hours}</p>
-                <button
-                  onClick={() =>
-                    window.open(
-                      `https://www.google.com/maps/dir/?api=1&destination=${hoveredStore.lat},${hoveredStore.lng}`,
-                      "_blank"
-                    )
-                  }
-                >Navigate</button>
-              </div>
-            </InfoWindow>
-          )}
-        </GoogleMap>
+                <div className="relative p-2 border border-primary-30 rounded-lg text-xs font-metropolis">
+                  <h3 className="font-bold mb-1">{hoveredStore.name}</h3>
+                  <p className="text-[11px]">{hoveredStore.address}</p>
+                  <p className="text-[11px]">Phone: {hoveredStore.phone}</p>
+                  <p className="text-[11px]">Hours: {hoveredStore.hours}</p>
+                  <Button
+                    content="Navigate"
+                    pattern="primary"
+                    className="!py-1 !px-2 !rounded !text-xs max-w-40 mx-auto gap-1.5 mt-2"
+                    rightIcon={
+                      <NavigationIcon
+                        className="w-4 h-4 stroke-white"
+                        strokeWidth={2.2}
+                      />
+                    }
+                  />
+                </div>
+              </InfoWindow>
+            )}
+          </GoogleMap>
+        ) : (
+          <ShowApiStatus
+            headingText="Something went wrong!"
+            descriptionText="Please try again later."
+            loadingText="Loading G-Map"
+            type={loadError ? "error" : "loading"}
+          />
+        )}
       </div>
     </div>
   );
