@@ -95,10 +95,10 @@ const router = createBrowserRouter([
         ],
       },
       // Company Pages
-      { path: "about-us", element: <AboutUs /> }, // Todo: Pending
+      { path: "about-us", element: <AboutUs /> },
       { path: "partner-with-us", element: <PartnerWithUs /> },
-      { path: "careers", element: <Careers /> }, // Todo: Pending
-      { path: "mission-vision", element: <MissionVisionValues /> }, // Todo: Pending
+      { path: "careers", element: <Careers /> },
+      { path: "mission-vision", element: <MissionVisionValues /> },
       { path: "sustainability", element: <Sustainability /> },
       { path: "ethics", element: <Ethics /> },
       { path: "teams", element: <Teams /> },
@@ -112,7 +112,7 @@ const router = createBrowserRouter([
       { path: "store-locator", element: <StoreLocator /> }, // Todo: Pending
       { path: "become-seller", element: <BecomeSeller /> }, // Todo: Pending
       // Services Pages
-      { path: "contact", element: <ContactUs /> }, // Todo: Pending
+      { path: "contact", element: <ContactUs /> },
       { path: "help-center-faq", element: <HelpCenterFAQ /> },
       { path: "shipping-info", element: <ShippingInfo /> },
       // Legal Policies Pages
