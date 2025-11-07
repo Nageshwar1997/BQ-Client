@@ -477,186 +477,186 @@ export const OPENINGS_DATA: IOpening[] = [
       //   tags: ["Leadership", "Strategy", "Vision"],
       //   technologies: [],
       // },
-      {
-        role: "CEO (Chief Executive Officer)",
-        experience: "8+ Years",
-        description:
-          "Oversee all operations, lead growth initiatives, and ensure organizational excellence in a fast-paced cosmetics business.",
-        type: "Full-Time",
-        location: "Bengaluru",
-        salary: "Negotiable",
-        tags: ["Leadership", "Management"],
-        technologies: [],
-        summary:
-          "Lead the company vision and strategy, drive market growth, and ensure operational excellence in all departments.",
-        responsibilities: [
-          "Define and execute company strategy.",
-          "Manage cross-department operations.",
-          "Drive business growth and partnerships.",
-          "Ensure organizational health and culture.",
-        ],
-        requirements: [
-          "8+ years experience in executive roles.",
-          "Proven leadership and management skills.",
-          "Strong strategic thinking and problem-solving.",
-          "Excellent communication and interpersonal skills.",
-        ],
-        qualifications: [
-          "Experience in e-commerce or beauty industry.",
-          "MBA or relevant executive education.",
-        ],
-        benefits: [
-          "Competitive executive compensation.",
-          "Performance-based incentives.",
-          "Health insurance and wellness benefits.",
-          "Opportunities for global exposure and strategic impact.",
-        ],
-      },
-      {
-        role: "COO (Chief Operating Officer)",
-        experience: "7+ Years",
-        description:
-          "Manage day-to-day operations, optimize processes, and ensure seamless logistics and fulfillment across departments.",
-        type: "Full-Time",
-        location: "Bengaluru",
-        salary: "Negotiable",
-        tags: ["Operations", "Process Management"],
-        technologies: [],
-        summary:
-          "Responsible for smooth operations, process optimization, and coordination across all business units.",
-        responsibilities: [
-          "Oversee daily operations of all departments.",
-          "Implement operational strategies and processes.",
-          "Ensure high efficiency and productivity.",
-          "Support CEO in executing company strategy.",
-        ],
-        requirements: [
-          "7+ years experience in operational leadership.",
-          "Strong problem-solving and decision-making skills.",
-          "Excellent organizational and planning abilities.",
-        ],
-        qualifications: ["Experience in logistics, e-commerce, or retail."],
-        benefits: [
-          "Competitive salary, incentives, health insurance, professional growth.",
-        ],
-      },
-      {
-        role: "CFO (Chief Financial Officer)",
-        experience: "7+ Years",
-        description:
-          "Manage company finances, budgeting, financial planning, and investor relations to ensure sustainable growth.",
-        type: "Full-Time",
-        location: "Bengaluru",
-        salary: "Negotiable",
-        tags: ["Finance", "Strategy"],
-        technologies: [],
-        summary:
-          "Lead financial planning, strategy, budgeting, and reporting to ensure long-term business sustainability.",
-        responsibilities: [
-          "Develop and manage financial strategy.",
-          "Prepare budgets and forecasts.",
-          "Monitor cash flow and financial performance.",
-          "Ensure compliance with financial regulations.",
-        ],
-        requirements: [
-          "7+ years experience in finance leadership roles.",
-          "Expertise in budgeting, forecasting, and financial analysis.",
-          "Strong analytical and strategic skills.",
-        ],
-        qualifications: ["CFA, CPA, or MBA in Finance."],
-        benefits: [
-          "Competitive executive compensation, incentives, health benefits, growth opportunities.",
-        ],
-      },
-      {
-        role: "CMO (Chief Marketing Officer)",
-        experience: "7+ Years",
-        description:
-          "Drive brand strategy, marketing campaigns, and customer engagement for a global cosmetics audience.",
-        type: "Full-Time",
-        location: "Bengaluru / Remote",
-        salary: "Negotiable",
-        tags: ["Marketing", "Brand Strategy", "Growth"],
-        technologies: [],
-        summary:
-          "Lead marketing strategy, brand campaigns, and customer engagement across all channels.",
-        responsibilities: [
-          "Define brand vision and marketing strategy.",
-          "Oversee marketing campaigns and performance.",
-          "Manage marketing teams and budgets.",
-          "Drive customer acquisition and engagement.",
-        ],
-        requirements: [
-          "7+ years in senior marketing roles.",
-          "Proven success in branding and digital marketing.",
-          "Strong leadership and communication skills.",
-        ],
-        qualifications: [
-          "Experience in beauty, fashion, or e-commerce sectors.",
-        ],
-        benefits: [
-          "Competitive salary, incentives, health insurance, growth opportunities.",
-        ],
-      },
-      {
-        role: "CTO (Chief Technology Officer)",
-        experience: "8+ Years",
-        description:
-          "Lead technology vision, oversee engineering, product tech, and innovation for the digital beauty experience.",
-        type: "Full-Time",
-        location: "Bengaluru",
-        salary: "Negotiable",
-        tags: ["Technology", "Leadership"],
-        technologies: ["Node.js", "React", "Cloud", "AI"],
-        summary:
-          "Define technology strategy, oversee development teams, and ensure innovative tech solutions for the business.",
-        responsibilities: [
-          "Lead engineering and product development teams.",
-          "Define tech roadmap and architecture.",
-          "Ensure scalability, security, and innovation in tech solutions.",
-          "Collaborate with leadership to align tech with business goals.",
-        ],
-        requirements: [
-          "8+ years in technology leadership.",
-          "Strong knowledge of modern web technologies, cloud, and AI.",
-          "Experience managing development teams.",
-        ],
-        qualifications: [
-          "Experience in e-commerce or SaaS.",
-          "Familiarity with serverless architectures.",
-        ],
-        benefits: [
-          "Executive compensation, growth opportunities, health benefits, exposure to emerging tech.",
-        ],
-      },
-      {
-        role: "CPO (Chief Product Officer)",
-        experience: "7+ Years",
-        description:
-          "Lead product strategy, R&D, and merchandising innovation for a premium cosmetics line.",
-        type: "Full-Time",
-        location: "Bengaluru",
-        salary: "Negotiable",
-        tags: ["Product Management", "Innovation"],
-        technologies: [],
-        summary:
-          "Responsible for product vision, R&D, and delivering innovative products for the brand.",
-        responsibilities: [
-          "Define product roadmap and strategy.",
-          "Manage product teams and development cycles.",
-          "Ensure product-market fit and innovation.",
-          "Collaborate with marketing and sales for product launches.",
-        ],
-        requirements: [
-          "7+ years in product leadership roles.",
-          "Strong understanding of consumer products and market trends.",
-          "Excellent leadership and analytical skills.",
-        ],
-        qualifications: ["Experience in beauty, fashion, or consumer goods."],
-        benefits: [
-          "Competitive salary, performance incentives, health insurance, career growth.",
-        ],
-      },
+      //   {
+      //     role: "CEO (Chief Executive Officer)",
+      //     experience: "8+ Years",
+      //     description:
+      //       "Oversee all operations, lead growth initiatives, and ensure organizational excellence in a fast-paced cosmetics business.",
+      //     type: "Full-Time",
+      //     location: "Bengaluru",
+      //     salary: "Negotiable",
+      //     tags: ["Leadership", "Management"],
+      //     technologies: [],
+      //     summary:
+      //       "Lead the company vision and strategy, drive market growth, and ensure operational excellence in all departments.",
+      //     responsibilities: [
+      //       "Define and execute company strategy.",
+      //       "Manage cross-department operations.",
+      //       "Drive business growth and partnerships.",
+      //       "Ensure organizational health and culture.",
+      //     ],
+      //     requirements: [
+      //       "8+ years experience in executive roles.",
+      //       "Proven leadership and management skills.",
+      //       "Strong strategic thinking and problem-solving.",
+      //       "Excellent communication and interpersonal skills.",
+      //     ],
+      //     qualifications: [
+      //       "Experience in e-commerce or beauty industry.",
+      //       "MBA or relevant executive education.",
+      //     ],
+      //     benefits: [
+      //       "Competitive executive compensation.",
+      //       "Performance-based incentives.",
+      //       "Health insurance and wellness benefits.",
+      //       "Opportunities for global exposure and strategic impact.",
+      //     ],
+      //   },
+      //   {
+      //     role: "COO (Chief Operating Officer)",
+      //     experience: "7+ Years",
+      //     description:
+      //       "Manage day-to-day operations, optimize processes, and ensure seamless logistics and fulfillment across departments.",
+      //     type: "Full-Time",
+      //     location: "Bengaluru",
+      //     salary: "Negotiable",
+      //     tags: ["Operations", "Process Management"],
+      //     technologies: [],
+      //     summary:
+      //       "Responsible for smooth operations, process optimization, and coordination across all business units.",
+      //     responsibilities: [
+      //       "Oversee daily operations of all departments.",
+      //       "Implement operational strategies and processes.",
+      //       "Ensure high efficiency and productivity.",
+      //       "Support CEO in executing company strategy.",
+      //     ],
+      //     requirements: [
+      //       "7+ years experience in operational leadership.",
+      //       "Strong problem-solving and decision-making skills.",
+      //       "Excellent organizational and planning abilities.",
+      //     ],
+      //     qualifications: ["Experience in logistics, e-commerce, or retail."],
+      //     benefits: [
+      //       "Competitive salary, incentives, health insurance, professional growth.",
+      //     ],
+      //   },
+      //   {
+      //     role: "CFO (Chief Financial Officer)",
+      //     experience: "7+ Years",
+      //     description:
+      //       "Manage company finances, budgeting, financial planning, and investor relations to ensure sustainable growth.",
+      //     type: "Full-Time",
+      //     location: "Bengaluru",
+      //     salary: "Negotiable",
+      //     tags: ["Finance", "Strategy"],
+      //     technologies: [],
+      //     summary:
+      //       "Lead financial planning, strategy, budgeting, and reporting to ensure long-term business sustainability.",
+      //     responsibilities: [
+      //       "Develop and manage financial strategy.",
+      //       "Prepare budgets and forecasts.",
+      //       "Monitor cash flow and financial performance.",
+      //       "Ensure compliance with financial regulations.",
+      //     ],
+      //     requirements: [
+      //       "7+ years experience in finance leadership roles.",
+      //       "Expertise in budgeting, forecasting, and financial analysis.",
+      //       "Strong analytical and strategic skills.",
+      //     ],
+      //     qualifications: ["CFA, CPA, or MBA in Finance."],
+      //     benefits: [
+      //       "Competitive executive compensation, incentives, health benefits, growth opportunities.",
+      //     ],
+      //   },
+      //   {
+      //     role: "CMO (Chief Marketing Officer)",
+      //     experience: "7+ Years",
+      //     description:
+      //       "Drive brand strategy, marketing campaigns, and customer engagement for a global cosmetics audience.",
+      //     type: "Full-Time",
+      //     location: "Bengaluru / Remote",
+      //     salary: "Negotiable",
+      //     tags: ["Marketing", "Brand Strategy", "Growth"],
+      //     technologies: [],
+      //     summary:
+      //       "Lead marketing strategy, brand campaigns, and customer engagement across all channels.",
+      //     responsibilities: [
+      //       "Define brand vision and marketing strategy.",
+      //       "Oversee marketing campaigns and performance.",
+      //       "Manage marketing teams and budgets.",
+      //       "Drive customer acquisition and engagement.",
+      //     ],
+      //     requirements: [
+      //       "7+ years in senior marketing roles.",
+      //       "Proven success in branding and digital marketing.",
+      //       "Strong leadership and communication skills.",
+      //     ],
+      //     qualifications: [
+      //       "Experience in beauty, fashion, or e-commerce sectors.",
+      //     ],
+      //     benefits: [
+      //       "Competitive salary, incentives, health insurance, growth opportunities.",
+      //     ],
+      //   },
+      //   {
+      //     role: "CTO (Chief Technology Officer)",
+      //     experience: "8+ Years",
+      //     description:
+      //       "Lead technology vision, oversee engineering, product tech, and innovation for the digital beauty experience.",
+      //     type: "Full-Time",
+      //     location: "Bengaluru",
+      //     salary: "Negotiable",
+      //     tags: ["Technology", "Leadership"],
+      //     technologies: ["Node.js", "React", "Cloud", "AI"],
+      //     summary:
+      //       "Define technology strategy, oversee development teams, and ensure innovative tech solutions for the business.",
+      //     responsibilities: [
+      //       "Lead engineering and product development teams.",
+      //       "Define tech roadmap and architecture.",
+      //       "Ensure scalability, security, and innovation in tech solutions.",
+      //       "Collaborate with leadership to align tech with business goals.",
+      //     ],
+      //     requirements: [
+      //       "8+ years in technology leadership.",
+      //       "Strong knowledge of modern web technologies, cloud, and AI.",
+      //       "Experience managing development teams.",
+      //     ],
+      //     qualifications: [
+      //       "Experience in e-commerce or SaaS.",
+      //       "Familiarity with serverless architectures.",
+      //     ],
+      //     benefits: [
+      //       "Executive compensation, growth opportunities, health benefits, exposure to emerging tech.",
+      //     ],
+      //   },
+      //   {
+      //     role: "CPO (Chief Product Officer)",
+      //     experience: "7+ Years",
+      //     description:
+      //       "Lead product strategy, R&D, and merchandising innovation for a premium cosmetics line.",
+      //     type: "Full-Time",
+      //     location: "Bengaluru",
+      //     salary: "Negotiable",
+      //     tags: ["Product Management", "Innovation"],
+      //     technologies: [],
+      //     summary:
+      //       "Responsible for product vision, R&D, and delivering innovative products for the brand.",
+      //     responsibilities: [
+      //       "Define product roadmap and strategy.",
+      //       "Manage product teams and development cycles.",
+      //       "Ensure product-market fit and innovation.",
+      //       "Collaborate with marketing and sales for product launches.",
+      //     ],
+      //     requirements: [
+      //       "7+ years in product leadership roles.",
+      //       "Strong understanding of consumer products and market trends.",
+      //       "Excellent leadership and analytical skills.",
+      //     ],
+      //     qualifications: ["Experience in beauty, fashion, or consumer goods."],
+      //     benefits: [
+      //       "Competitive salary, performance incentives, health insurance, career growth.",
+      //     ],
+      //   },
     ],
   },
   {

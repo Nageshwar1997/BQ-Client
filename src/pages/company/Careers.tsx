@@ -4,6 +4,7 @@ import { OPENINGS_DATA } from "./data/data";
 import useHorizontalScrollable from "../../hooks/useHorizontalScrollable";
 import OpeningCard from "./children/OpeningCard";
 import { IOpening } from "../../types";
+import ShowApiStatus from "../../components/api-status/ShowApiStatus";
 
 const Careers = () => {
   const { containerRef, showGradient } = useHorizontalScrollable();
@@ -75,20 +76,29 @@ const Careers = () => {
           </div>
         </div>
       </div>
-      <main className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-center">
-        {openings.map((opening, index) => (
-          <OpeningCard
-            key={index}
-            opening={opening}
-            department={
-              selectedDept.value === "all"
-                ? OPENINGS_DATA.find((d) => d.openings.includes(opening))!
-                    .department
-                : selectedDept
-            }
-          />
-        ))}
-      </main>
+      {openings.length > 0 ? (
+        <main className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-center">
+          {openings.map((opening, index) => (
+            <OpeningCard
+              key={index}
+              opening={opening}
+              department={
+                selectedDept.value === "all"
+                  ? OPENINGS_DATA.find((d) => d.openings.includes(opening))!
+                      .department
+                  : selectedDept
+              }
+            />
+          ))}
+        </main>
+      ) : (
+        <ShowApiStatus
+          headingText="No Vacancies today, but keep an eye out."
+          descriptionText="Your perfect fit might be coming soon!"
+          type="empty"
+          className="min-h-[50dvh]"
+        />
+      )}
     </div>
   );
 };
