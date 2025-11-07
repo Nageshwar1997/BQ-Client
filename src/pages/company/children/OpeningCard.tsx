@@ -71,6 +71,7 @@ const OpeningCard = ({
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           opening={opening}
+          department={department}
         />
       </div>
     </div>

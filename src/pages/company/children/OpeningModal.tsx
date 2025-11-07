@@ -4,15 +4,17 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import Modal from "../../../components/modal";
-import { TRoleOpening } from "../../../types";
+import { IOpening, TRoleOpening } from "../../../types";
 import Button from "../../../components/button/Button";
 import Input from "../../../components/input/Input";
 import { zodStringRequired } from "../../../utils/zod";
+import { useSendJobApplicationRequestAndMail } from "../../../api/G-form/G-form.service";
 
 interface IOpeningModal {
   isOpen: boolean;
   onClose: () => void;
   opening: TRoleOpening;
+  department: IOpening["department"];
 }
 
 const Section = ({
@@ -42,10 +44,17 @@ const Badge = ({ children }: { children: string | ReactNode }) => (
   </span>
 );
 
-const OpeningModal = ({ opening, isOpen, onClose }: IOpeningModal) => {
+const OpeningModal = ({
+  opening,
+  department,
+  isOpen,
+  onClose,
+}: IOpeningModal) => {
+  const { mutateAsync, isPending } = useSendJobApplicationRequestAndMail();
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(
@@ -58,8 +67,16 @@ const OpeningModal = ({ opening, isOpen, onClose }: IOpeningModal) => {
     ),
   });
 
-  const onSubmit = (data: { portfolio: string }) => {
-    console.log(data);
+  const onSubmit = async (data: { portfolio: string }) => {
+    const bodyData = {
+      department: department.title,
+      role: opening.role,
+      portfolio: data.portfolio,
+      salary: opening.salary,
+      experience: opening.experience,
+    };
+
+    await mutateAsync(bodyData, { onSuccess: () => reset() });
   };
 
   return (
@@ -171,8 +188,8 @@ const OpeningModal = ({ opening, isOpen, onClose }: IOpeningModal) => {
         <div className="flex flex-col items-end justify-end sticky bottom-0 inset-x-0 z-10 py-4 h-24 bg-gradient-to-t from-primary-inverted to-transparent">
           <Button
             pattern="primary"
-            content="Apply Now"
-            buttonProps={{ type: "submit" }}
+            content={isPending ? "Applying..." : "Apply Now"}
+            buttonProps={{ type: "submit", disabled: isPending }}
           />
         </div>
       </form>
