@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import Button from "../../components/button/Button";
 import { NavigationIcon } from "../../icons";
 import ShowApiStatus from "../../components/api-status/ShowApiStatus";
+import { Link } from "react-router-dom";
 
 interface Store {
   id: number;
@@ -37,8 +38,8 @@ const StoreLocator = () => {
   });
 
   const [center, setCenter] = useState<{ lat: number; lng: number }>({
-    lat: 19.0,
-    lng: 77.0,
+    lat: 19.12875937998702,
+    lng: 77.40966032992965,
   });
   const [hoveredStore, setHoveredStore] = useState<Store | null>(null);
 
@@ -46,6 +47,7 @@ const StoreLocator = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          console.log("position", position);
           setCenter({
             lat: position.coords.latitude,
             lng: position.coords.longitude,
@@ -112,17 +114,23 @@ const StoreLocator = () => {
                   <p className="text-[11px]">{hoveredStore.address}</p>
                   <p className="text-[11px]">Phone: {hoveredStore.phone}</p>
                   <p className="text-[11px]">Hours: {hoveredStore.hours}</p>
-                  <Button
-                    content="Navigate"
-                    pattern="primary"
-                    className="!py-1 !px-2 !rounded !text-xs max-w-40 mx-auto gap-1.5 mt-2"
-                    rightIcon={
-                      <NavigationIcon
-                        className="w-4 h-4 stroke-white"
-                        strokeWidth={2.2}
-                      />
-                    }
-                  />
+                  <Link
+                    to={`https://www.google.com/maps/dir/?api=1&destination=${hoveredStore.lat},${hoveredStore.lng}`}
+                    target="_blank"
+                    className="block mt-2"
+                  >
+                    <Button
+                      content="Navigate"
+                      pattern="primary"
+                      className="!py-1 !px-2 !rounded !text-xs max-w-40 mx-auto gap-1.5"
+                      rightIcon={
+                        <NavigationIcon
+                          className="w-4 h-4 stroke-white"
+                          strokeWidth={2.2}
+                        />
+                      }
+                    />
+                  </Link>
                 </div>
               </InfoWindow>
             )}
