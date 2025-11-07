@@ -106,43 +106,43 @@ const ContactUs = () => {
         {/* Contact Info */}
         <div className="shadow-neumorphic-layered rounded-2xl max-h-[536px] overflow-hidden">
           <div className="h-full shadow-light-dark-soft p-8 flex flex-col justify-center space-y-6">
-            <h2 className="text-2xl font-semibold text-primary text-center">
+            <h2 className="text-2xl font-semibold bg-clip-text bg-silver-duo text-transparent text-center">
               Contact Information
             </h2>
             <p className="text-secondary">
               Have questions about our products or orders? Reach us through:
             </p>
-            <div className="space-y-4 text-secondary">
-              <div>
-                <strong>Email: </strong>
-                <a
-                  href="mailto:beautinique.bq@gmail.com"
-                  className="text-blue-crayola-c hover:underline"
+            <div className="flex flex-col gap-4 text-secondary">
+              <strong>
+                Email:{" "}
+                <Link
+                  to="mailto:beautinique.bq@gmail.com"
+                  className="bg-clip-text bg-accent-duo text-transparent"
                 >
                   beautinique.bq@gmail.com
-                </a>
-              </div>
-              <div>
-                <strong>Phone: </strong>
+                </Link>
+              </strong>
+              <strong>
+                Phone:{" "}
                 <Link
                   to="tel:+919730870409"
-                  className="text-blue-crayola-c hover:underline"
+                  className="bg-clip-text bg-accent-duo text-transparent"
                 >
                   {formatPhoneNumber("9730870409")}
                 </Link>
-              </div>
-              <div>
-                <strong>Address: </strong>
+              </strong>
+              <strong>
+                Address:{" "}
                 <Link
                   to="/store-locator"
-                  className="text-blue-crayola-c hover:underline"
+                  className="bg-clip-text bg-accent-duo text-transparent"
                 >
                   21, At. Amdura Po. Mugat Tq. Mudkhed Dist. Nanded,
                   Maharashtra, 431605 India
                 </Link>
-              </div>
+              </strong>
             </div>
-
+            {/* Social Media */}
             <div className="flex items-center justify-center flex-wrap gap-4 mt-4">
               {socialMediaLinks.map((item) => (
                 <Link

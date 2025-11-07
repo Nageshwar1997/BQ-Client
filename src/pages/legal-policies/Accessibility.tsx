@@ -51,10 +51,10 @@ const Accessibility = () => {
           help us improve, we’d love to hear from you.
         </p>
         <div className="rounded-2xl shadow-sm flex flex-col base:flex-row base:items-center justify-start gap-1">
-          <p className="font-medium">Contact us at:</p>
+          <p className="font-medium">Contact us at: </p>
           <Link
             to="mailto:beautinique.bq@gmail.com"
-            className="text-primary dark:text-purple-400 underline"
+            className="font-semibold bg-clip-text bg-accent-duo text-transparent"
           >
             beautinique.bq@gmail.com
           </Link>

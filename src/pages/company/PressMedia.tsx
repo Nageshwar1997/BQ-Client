@@ -83,14 +83,11 @@ const PressMedia = () => {
         </p>
         <Link
           to="mailto:beautinique.bq@gmail.com"
-          className="text-accent-duo font-semibold hover:underline"
+          className="font-semibold bg-clip-text bg-accent-duo text-transparent"
         >
-          <strong className="bg-clip-text bg-accent-duo text-transparent">
-            beautinique.bq@gmail.com
-          </strong>
+          beautinique.bq@gmail.com
         </Link>
       </section>
-
       <p className="text-sm sm:text-base text-center font-semibold">
         Last updated: {new Date().getFullYear()}
       </p>
