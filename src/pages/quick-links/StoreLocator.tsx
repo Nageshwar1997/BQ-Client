@@ -1,6 +1,10 @@
-import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  Marker,
+  InfoWindow,
+  useLoadScript,
+} from "@react-google-maps/api";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
 interface Store {
   id: number;
@@ -37,22 +41,23 @@ const StoreLocator = () => {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY!,
   });
-  const [hoveredStore, setHoveredStore] = useState<Store | null>(null);
+
   const [center, setCenter] = useState<{ lat: number; lng: number }>({
     lat: 19.0,
     lng: 77.0,
   });
+  const [hoveredStore, setHoveredStore] = useState<Store | null>(null);
 
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const { latitude, longitude } = position.coords;
-          setCenter({ lat: latitude, lng: longitude });
+          setCenter({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
         },
-        (err) => {
-          console.error("Error getting user location:", err);
-        }
+        (err) => console.error("Error getting location:", err)
       );
     }
   }, []);
@@ -61,48 +66,43 @@ const StoreLocator = () => {
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 p-4">
-      {/* Map Section */}
-      <div className="w-full lg:w-2/3 h-[600px] rounded-xl overflow-hidden shadow-lg">
+      {/* Map */}
+      <div className="w-full h-[600px] rounded-xl overflow-hidden shadow-lg">
         <GoogleMap
-          zoom={6.5}
+          zoom={5.3}
           center={center}
           mapContainerClassName="w-full h-full"
         >
           {stores.map((store) => (
             <Marker
-              onMouseOver={() => setHoveredStore(store)}
-              onMouseOut={() => setHoveredStore(null)}
               key={store.id}
               position={{ lat: store.lat, lng: store.lng }}
-              title={store.name}
-              onClick={() =>
-                window.open(
-                  `https://www.google.com/maps/dir/?api=1&destination=${store.lat},${store.lng}`,
-                  "_blank"
-                )
-              }
+              onMouseOver={() => setHoveredStore(store)}
             />
           ))}
-        </GoogleMap>
-      </div>
-      {/* Store Details */}
-      <div className="w-full lg:w-1/3 space-y-4">
-        {stores.map((store) => (
-          <div key={store.id} className="p-4 border rounded-lg shadow-sm">
-            <h3 className="font-semibold text-lg">{store.name}</h3>
-            <p>{store.address}</p>
-            <p>Phone: {store.phone}</p>
-            <p>Hours: {store.hours}</p>
-            <Link
-              to={`https://www.google.com/maps/dir/?api=1&destination=${store.lat},${store.lng}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-2 inline-block text-blue-600 underline hover:text-blue-800"
+          {hoveredStore && (
+            <InfoWindow
+              position={{ lat: hoveredStore.lat, lng: hoveredStore.lng }}
+              onCloseClick={() => setHoveredStore(null)}
             >
-              Get Directions
-            </Link>
-          </div>
-        ))}
+              <div className="p-2 border border-[red]"
+              >
+                <h3 className="font-bold">{hoveredStore.name}</h3>
+                <p>{hoveredStore.address}</p>
+                <p>Phone: {hoveredStore.phone}</p>
+                <p>Hours: {hoveredStore.hours}</p>
+                <button
+                  onClick={() =>
+                    window.open(
+                      `https://www.google.com/maps/dir/?api=1&destination=${hoveredStore.lat},${hoveredStore.lng}`,
+                      "_blank"
+                    )
+                  }
+                >Navigate</button>
+              </div>
+            </InfoWindow>
+          )}
+        </GoogleMap>
       </div>
     </div>
   );
