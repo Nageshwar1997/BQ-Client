@@ -96,7 +96,6 @@ const Careers = () => {
           headingText="No Vacancies today, but keep an eye out."
           descriptionText="Your perfect fit might be coming soon!"
           type="empty"
-          className="min-h-[50dvh]"
         />
       )}
     </div>
