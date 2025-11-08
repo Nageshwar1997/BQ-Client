@@ -105,11 +105,11 @@ const router = createBrowserRouter([
       { path: "press-media", element: <PressMedia /> },
       { path: "awards", element: <Awards /> }, // Todo: Pending
       { path: "values-and-culture", element: <ValuesAndCulture /> }, // Todo: Pending
-      { path: "retail-and-e-commerce", element: <RetailAndECommerce /> }, // Todo: Pending
+      { path: "retail-and-e-commerce", element: <RetailAndECommerce /> },
 
       // Quick Link Pages
       { path: "refer", element: <ReferFriend /> }, // Todo: Refer Part is Pending
-      { path: "store-locator", element: <StoreLocator /> }, // Todo: Pending
+      { path: "store-locator", element: <StoreLocator /> },
       { path: "become-seller", element: <BecomeSeller /> }, // Todo: Pending
       // Services Pages
       { path: "contact", element: <ContactUs /> },

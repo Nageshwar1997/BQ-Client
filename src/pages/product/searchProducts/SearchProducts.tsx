@@ -61,7 +61,7 @@ const SearchProducts = () => {
         ...(queryParams && queryParams),
         ...(debouncedQuery && { search: debouncedQuery }),
       },
-      enabled: !!Object.keys(queryParams).length,
+      enabled: true,
     }),
     [debouncedQuery, queryParams]
   );
