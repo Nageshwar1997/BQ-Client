@@ -103,7 +103,7 @@ const router = createBrowserRouter([
       { path: "ethics", element: <Ethics /> },
       { path: "teams", element: <Teams /> },
       { path: "press-media", element: <PressMedia /> },
-      { path: "awards", element: <Awards /> }, // Todo: Pending
+      { path: "awards", element: <Awards /> },
       { path: "values-and-culture", element: <ValuesAndCulture /> }, // Todo: Pending
       { path: "retail-and-e-commerce", element: <RetailAndECommerce /> },
 

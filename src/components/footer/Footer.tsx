@@ -37,12 +37,13 @@ const Footer = () => {
           </div>
           <div className="flex flex-col base:flex-row items-center justify-end gap-2 lg:gap-4">
             {awards.map((award, ind) => (
-              <img
-                key={ind}
-                src={theme === "dark" ? award.darkImage : award.lightImage}
-                alt={award.name}
-                className="w-fit h-10 md:h-12 lg:h-14 object-contain"
-              />
+              <Link key={ind} to="/awards">
+                <img
+                  src={theme === "dark" ? award.darkImage : award.lightImage}
+                  alt={award.name}
+                  className="w-fit h-10 md:h-12 lg:h-14 object-contain"
+                />
+              </Link>
             ))}
           </div>
         </div>
