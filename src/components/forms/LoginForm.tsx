@@ -177,18 +177,11 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
             </div>
             <div className="space-y-3">
               <div className="flex justify-between gap-2 items-center">
-                <div className="flex items-center space-x-2 sm:space-x-3">
-                  <Controller
-                    name="remember"
-                    control={control}
-                    render={({ field }) => (
-                      <Checkbox register={field} checked={field.value} />
-                    )}
-                  />
-                  <span className="text-xs sm:text-[13px] md:text-sm text-primary-50 font-medium whitespace-nowrap">
-                    Remember
-                  </span>
-                </div>
+                <Checkbox
+                  register={register("remember")}
+                  checkboxProps={{ name: "remember" }}
+                  rightText="Remember"
+                />
                 <Link
                   to={"/forgot-password"}
                   className={`bg-clip-text text-transparent bg-accent-duo text-[10px] sm:text-[13px] md:text-sm mr-2 hover:underline whitespace-nowrap`}

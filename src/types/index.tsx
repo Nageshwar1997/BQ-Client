@@ -77,6 +77,12 @@ export interface IInput extends TBaseInput {
   inputProps: InputHTMLAttributes<HTMLInputElement>;
 }
 
+export interface ICheckbox extends TBaseInput {
+  labelClassName?: string;
+  rightText?: string;
+  checkboxProps: Omit<InputHTMLAttributes<HTMLInputElement>, "type">;
+}
+
 export interface ISelect extends Omit<TBaseInput, "icons" | "needRef"> {
   selectProps: SelectHTMLAttributes<HTMLSelectElement> &
     Partial<Pick<InputHTMLAttributes<HTMLInputElement>, "placeholder">>;
@@ -382,8 +388,8 @@ export type TRegexes =
   | "atLeastOneLowercaseLetter"
   | "atLeastOneSpecialCharacter"
   | "atLeastOneUppercaseLetter"
-  | "onlyLettersAndSpacesAndDots";
-
+  | "onlyLettersAndSpacesAndDots"
+  | "validPan";
 export interface IFooterOptionList {
   options: (typeof footerCategories)[number]["options"];
   title?: string;

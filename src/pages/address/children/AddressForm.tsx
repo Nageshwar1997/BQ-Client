@@ -184,18 +184,12 @@ const AddressForm = ({
           );
         })}
       </div>
-      <div className="flex items-center justify-center space-x-2 sm:space-x-3">
-        <Controller
-          name="isDefaultAddress"
-          control={control}
-          render={({ field }) => (
-            <Checkbox register={field} checked={field.value} />
-          )}
-        />
-        <span className="text-xs sm:text-[13px] md:text-sm text-primary-50 font-medium whitespace-nowrap">
-          Make this my default address
-        </span>
-      </div>
+      <Checkbox
+        register={register("isDefaultAddress")}
+        checkboxProps={{ name: "isDefaultAddress" }}
+        rightText="Make this my default address"
+      />
+
       <hr className="h-px block border-none bg-gradient-line" />
       <div className="flex items-center justify-between gap-4">
         <Button

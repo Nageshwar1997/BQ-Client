@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -39,7 +39,6 @@ const Register = () => {
   const { mutateAsync, isPending } = useRegisterUser();
 
   const {
-    control,
     watch,
     register,
     setValue,
@@ -191,18 +190,11 @@ const Register = () => {
                 ))}
               </div>
               <div className="space-y-3">
-                <div className="flex items-center space-x-3">
-                  <Controller
-                    name="remember"
-                    control={control}
-                    render={({ field }) => (
-                      <Checkbox register={field} checked={field.value} />
-                    )}
-                  />
-                  <span className="text-sm text-primary-50 font-medium">
-                    Remember me
-                  </span>
-                </div>
+                <Checkbox
+                  register={register("remember")}
+                  checkboxProps={{ name: "remember" }}
+                  rightText="Remember me"
+                />
                 <Button
                   pattern="primary"
                   buttonProps={{ type: "submit" }}
