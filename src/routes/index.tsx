@@ -60,7 +60,7 @@ const router = createBrowserRouter([
     errorElement: <SomethingWentWrong />,
     children: [
       { index: true, element: <Home /> },
-      { path: "offers", element: <Offers /> }, // Todo: Pending
+      { path: "offers", element: <Offers /> },
       { path: "blogs", element: <Blogs /> }, // Todo: Pending
       { path: "search", element: <SearchProducts /> },
       { path: "product/:productId", element: <ProductDetails /> },
