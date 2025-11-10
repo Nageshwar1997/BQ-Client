@@ -113,7 +113,7 @@ const router = createBrowserRouter([
       {
         path: "become-seller",
         element: <PrivateRoute children={<BecomeSeller />} />,
-      }, // Todo: Pending
+      },
       // Services Pages
       { path: "contact", element: <ContactUs /> },
       { path: "help-center-faq", element: <HelpCenterFAQ /> },

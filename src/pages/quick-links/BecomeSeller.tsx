@@ -145,67 +145,87 @@ const BecomeSeller = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="max-w-4xl mx-auto flex flex-col gap-6 p-8"
-    >
-      {Object.entries(becomeSellerFormMapData).map(([sectionKey, fields]) => (
-        <div key={sectionKey} className="flex flex-col gap-6">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-full h-0.5 bg-accent-duo rounded-full" />
-            <div className="w-fit px-5 whitespace-nowrap text-lg text-primary">
-              {sectionKey
-                .replace(/([A-Z])/g, " $1")
-                .replace(/^./, (str) => str.toUpperCase())}
+    <div className="p-6 max-w-5xl mx-auto space-y-10">
+      <header className="max-w-4xl mx-auto text-center space-y-3 sm:space-y-4">
+        <h1 className="text-2xl base:text-3xl sm:text-4xl font-bold tracking-tight bg-clip-text bg-silver-duo text-transparent">
+          Join Beautinique as a Seller
+        </h1>
+        <p className="text-base sm:text-lg text-tertiary">
+          Grow your business with Beautinique! Reach thousands of beauty
+          enthusiasts by showcasing your products on our platform.
+        </p>
+      </header>
+      <hr className="w-full h-px block border-none bg-gradient-line" />
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+        {Object.entries(becomeSellerFormMapData).map(([sectionKey, fields]) => (
+          <div key={sectionKey} className="flex flex-col gap-6">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-full h-0.5 bg-accent-duo rounded-full" />
+              <div className="w-fit px-2 whitespace-nowrap text-lg text-primary">
+                {sectionKey
+                  .replace(/([A-Z])/g, " $1")
+                  .replace(/^./, (str) => str.toUpperCase())}
+              </div>
+              <div className="w-full h-0.5 bg-accent-duo rounded-full -scale-x-100" />
             </div>
-            <div className="w-full h-0.5 bg-accent-duo rounded-full -scale-x-100" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {fields.map((field, index) => (
+                <InputField
+                  key={index}
+                  control={control}
+                  field={field}
+                  errors={errors}
+                  register={register}
+                  containerClassName={
+                    field.label === "Full Name" ? "sm:col-span-2" : ""
+                  }
+                />
+              ))}
+            </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {fields.map((field, index) => (
-              <InputField
-                key={index}
-                control={control}
-                field={field}
-                errors={errors}
-                register={register}
-                containerClassName={
-                  field.label === "Full Name" ? "sm:col-span-2" : ""
-                }
-              />
-            ))}
-          </div>
+        ))}
+        {/* Submit button */}
+        <Checkbox
+          register={register("agreeTerms")}
+          checkboxProps={{ name: "agreeTerms" }}
+          error={errors.agreeTerms?.message}
+          rightText={
+            <>
+              I agree to the{" "}
+              <Link
+                to="/terms-conditions"
+                className="bg-clip-text bg-accent-duo text-transparent"
+              >
+                Terms & Conditions
+              </Link>
+            </>
+          }
+        />
+        <div className="flex items-center gap-4">
+          <Button
+            pattern="secondary"
+            content="Reset"
+            buttonProps={{ type: "button", onClick: () => reset() }}
+          />
+          <Button
+            pattern="primary"
+            content="Submit"
+            buttonProps={{ type: "submit" }}
+          />
         </div>
-      ))}
-      {/* Submit button */}
-      <Checkbox
-        register={register("agreeTerms")}
-        checkboxProps={{ name: "agreeTerms" }}
-        error={errors.agreeTerms?.message}
-        rightText={
-          <>
-            I agree to the{" "}
-            <Link
-              to="/terms-conditions"
-              className="bg-clip-text bg-accent-duo text-transparent"
-            >
-              Terms & Conditions
-            </Link>
-          </>
-        }
-      />
-      <div className="flex items-center gap-4">
-        <Button
-          pattern="secondary"
-          content="Reset"
-          buttonProps={{ type: "button", onClick: () => reset() }}
-        />
-        <Button
-          pattern="primary"
-          content="Submit"
-          buttonProps={{ type: "submit" }}
-        />
-      </div>
-    </form>
+      </form>
+      <hr className="w-full h-px block border-none bg-gradient-line" />
+      <p className="text-tertiary text-center mx-auto mb-6">
+        Can’t find your business category?{" "}
+        <Link
+          to="/contact-us"
+          className="bg-clip-text bg-accent-duo text-transparent"
+        >
+          Contact us
+        </Link>{" "}
+        and we’ll help you.
+      </p>
+    </div>
   );
 };
 
