@@ -104,7 +104,7 @@ const router = createBrowserRouter([
       { path: "teams", element: <Teams /> },
       { path: "press-media", element: <PressMedia /> },
       { path: "awards", element: <Awards /> },
-      { path: "values-and-culture", element: <ValuesAndCulture /> }, // Todo: Pending
+      { path: "values-and-culture", element: <ValuesAndCulture /> },
       { path: "retail-and-e-commerce", element: <RetailAndECommerce /> },
 
       // Quick Link Pages
