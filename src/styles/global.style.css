@@ -13,7 +13,8 @@
   display: none;
 }
 
-button {
+button,
+a {
   outline: none;
 }
 
@@ -49,19 +50,6 @@ select:-webkit-autofill:focus  */
   background-clip: text;
   background-image: var(--accent-duo);
   display: inline;
-}
-
-.border-rounded-corners-gradient {
-  border: solid 1px transparent;
-  border-radius: 16px;
-  background-image: linear-gradient(
-      var(--primary-inverted),
-      var(--primary-inverted)
-    ),
-    linear-gradient(var(--primary-50) 10%, var(--primary-10));
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-  box-shadow: var(--primary-10) -4px 9px 25px -6px;
 }
 
 /* Min Max Slider Style */
