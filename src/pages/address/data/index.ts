@@ -69,7 +69,7 @@ export const addAddressFormMapData: Omit<TAddressForm, "isDefaultAddress">[] = [
     name: "gst",
     label: "GST Number (Optional)",
     placeholder: "Enter GST number",
-    autoComplete: "postal-code",
+    autoComplete: "off",
     type: "string",
   },
   {
