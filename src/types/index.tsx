@@ -79,7 +79,7 @@ export interface IInput extends TBaseInput {
 
 export interface ICheckbox extends TBaseInput {
   labelClassName?: string;
-  rightText?: string;
+  rightText?: string | ReactNode;
   checkboxProps: Omit<InputHTMLAttributes<HTMLInputElement>, "type">;
 }
 

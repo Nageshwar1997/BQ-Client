@@ -343,7 +343,7 @@ export function zodFileOrUrl({
 export const zodEnums = (props: ZodEnumsConfigs & { enums: string[] }) => {
   return z.enum([props.enums[0], ...props.enums.slice(1)], {
     errorMap: () => ({
-      message: `Invalid option. Must be '${props.enums.join(", ")}'.`,
+      message: `${props.showingFieldName} is required. Must be '${props.enums.join(", ")}'.`,
     }),
   });
 };
