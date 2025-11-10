@@ -118,9 +118,25 @@ export default {
           "0%, 100%": { opacity: "1", transform: "scale(1)" },
           "50%": { opacity: "0.4", transform: "scale(1.3)" },
         },
+        fadeInOut: {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        growAndFade: {
+          "0%": { opacity: "0.25", transform: "scale(0)" },
+          "100%": { opacity: "0", transform: "scale(1)" },
+        },
+        "border-spin": {
+          "100%": {
+            transform: "rotate(360deg)",
+          },
+        },
       },
       animation: {
         blink: "blink 2s ease-in-out infinite",
+        "spin-slow": "spin 6s linear infinite",
+        "border-spin": "border-spin 5s linear infinite",
+        fadeIn: "fadeInOut 500ms ease-in-out",
       },
     },
   },
@@ -150,6 +166,15 @@ export default {
         },
         ".opening-card:hover": {
           background: `radial-gradient(67.31% 80.26% at 0% 0%, var(--dept-color-30) 0%, var(--dept-color-0) 100%), linear-gradient(0deg, var(--primary-inverted-10) 0%, var(--primary-inverted-10) 100%), var(--primary-inverted)`,
+        },
+        ".border-rounded-corners-gradient": {
+          border: "solid 1px transparent",
+          borderRadius: "16px",
+          background:
+            "linear-gradient(var(--primary-inverted), var(--primary-inverted)), linear-gradient(var(--primary-50) 10%, var(--primary-10))",
+          backgroundOrigin: "border-box",
+          backgroundClip: "padding-box, border-box",
+          boxShadow: "var(--primary-10) -4px 9px 25px -6px",
         },
       });
     },

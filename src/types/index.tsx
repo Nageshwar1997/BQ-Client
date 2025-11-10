@@ -330,7 +330,8 @@ export interface TMediaCarousel extends ClassName, ICarouselOptions {
 }
 
 export interface IVideo {
-  videoProps?: VideoHTMLAttributes<HTMLVideoElement>;
+  videoProps: VideoHTMLAttributes<HTMLVideoElement>;
+  ref?: RefObject<HTMLVideoElement | null>;
 }
 
 export interface IVideoPlayer extends ClassName, IVideo {}

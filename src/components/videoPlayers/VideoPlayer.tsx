@@ -3,8 +3,12 @@ import Hls from "hls.js";
 import { IVideoPlayer } from "../../types";
 import { convertVideoToPoster } from "../../utils";
 
-const VideoPlayer = ({ className = "", videoProps = {} }: IVideoPlayer) => {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+const VideoPlayer = ({
+  className = "",
+  videoProps = {},
+  ref,
+}: IVideoPlayer) => {
+  const videoRef = useRef<HTMLVideoElement | null>(ref?.current ?? null);
   const [poster, setPoster] = useState<string | undefined>(videoProps.poster);
 
   useEffect(() => {
