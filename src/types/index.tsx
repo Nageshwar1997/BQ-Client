@@ -11,7 +11,12 @@ import {
   TextareaHTMLAttributes,
   VideoHTMLAttributes,
 } from "react";
-import { UseFormRegisterReturn } from "react-hook-form";
+import {
+  Control,
+  FieldErrors,
+  UseFormRegister,
+  UseFormRegisterReturn,
+} from "react-hook-form";
 import z from "zod";
 import {
   ADDRESS_TYPES,
@@ -24,6 +29,7 @@ import {
 import { loginSchema, registerSchema } from "../pages/auth/helpers/auth.schema";
 import { addressSchema } from "../schemas/address";
 import { footerCategories } from "../components/footer/data";
+import { becomeSellerBaseSchema, becomeSellerSchema } from "../schemas/seller";
 
 export interface ClassName {
   className?: string;
@@ -556,4 +562,25 @@ export interface IOpening {
     icon?: FC<IconProps>;
   };
   openings: TRoleOpening[];
+}
+
+export type TBecomeSellerForm = {
+  [K in keyof z.infer<typeof becomeSellerBaseSchema>]: {
+    name: string;
+    label: string;
+    placeholder: string;
+    type: "text" | "email" | "number" | "password" | "select";
+    options?: TDropdownOption[];
+    autoComplete?: string;
+    disabled?: boolean;
+  }[];
+};
+
+export interface IBecomeSellerInput {
+  field: TBecomeSellerForm[keyof TBecomeSellerForm][number];
+  parentKey?: keyof TBecomeSellerForm;
+  control: Control<z.infer<typeof becomeSellerSchema>>;
+  register: UseFormRegister<z.infer<typeof becomeSellerSchema>>;
+  errors: FieldErrors<z.infer<typeof becomeSellerSchema>>;
+  containerClassName?: string;
 }

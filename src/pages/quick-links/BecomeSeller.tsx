@@ -1,326 +1,211 @@
-import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "react-router-dom";
-import * as z from "zod";
+import { useState } from "react";
 import {
-  ALLOWED_BUSINESSES,
-  ALLOWED_COUNTRIES,
-  STATES_AND_UNION_TERRITORIES,
-} from "../../constants";
+  Controller,
+  FieldError,
+  FieldErrors,
+  Path,
+  useForm,
+} from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Button from "../../components/button/Button";
+import { EyeIcon, EyeOffIcon } from "../../icons";
+
 import Input from "../../components/input/Input";
 import Select from "../../components/input/Select";
 import Checkbox from "../../components/input/Checkbox";
-import { becomeSellerSchema } from "../../schemas/seller";
-import { TPasswordField } from "../../types";
-import { useState } from "react";
-import { EyeIcon, EyeOffIcon } from "../../icons";
 
-const BecomeSeller = () => {
+import {
+  becomeSellerBaseSchema,
+  becomeSellerSchema,
+} from "../../schemas/seller";
+
+import { IBecomeSellerInput, TPasswordField } from "../../types";
+import { becomeSellerDefaultValues, becomeSellerFormMapData } from "./data";
+import z from "zod";
+import { Link } from "react-router-dom";
+
+type FormValues = z.infer<typeof becomeSellerBaseSchema>;
+
+function getErrorMessage<
+  T extends keyof FormValues,
+  K extends keyof FormValues[T]
+>(errors: FieldErrors<FormValues>, parentKey: T, fieldName: K) {
+  const parentErrors = errors[parentKey];
+  if (!parentErrors) return undefined;
+
+  const typedParentErrors = parentErrors as FieldErrors<FormValues[T]>;
+  const fieldError = typedParentErrors[fieldName] as FieldError | undefined;
+
+  return fieldError?.message;
+}
+
+const InputField = ({
+  field,
+  parentKey,
+  control,
+  register,
+  errors,
+  containerClassName,
+}: IBecomeSellerInput) => {
   const [showPasswords, setShowPasswords] = useState<
     Record<TPasswordField, boolean>
   >({
     password: false,
     confirmPassword: false,
   });
+  const name = parentKey
+    ? (`${parentKey}.${field.name}` as Path<FormValues>)
+    : (field.name as Path<FormValues>);
+
+  const errorMessage = parentKey
+    ? getErrorMessage(
+        errors,
+        parentKey as keyof FormValues,
+        field.name as keyof FormValues[typeof parentKey] & string
+      )
+    : undefined;
+
+  return field.type === "select" ? (
+    <Controller
+      key={name}
+      name={name}
+      control={control}
+      render={({ field: { value, onChange } }) => (
+        <Select
+          containerClassName={containerClassName}
+          label={field.label}
+          options={field.options?.length ? field.options : []}
+          selectProps={{
+            value: value?.toString(),
+            onChange,
+            placeholder: field.placeholder,
+            disabled: field.disabled,
+          }}
+          optionsClassName="!max-h-60"
+          optionsPosition="bottom"
+          error={errorMessage}
+        />
+      )}
+    />
+  ) : (
+    <Input
+      key={name}
+      label={field.label}
+      inputProps={{
+        name,
+        type:
+          field.type === "password" &&
+          showPasswords[field.name as TPasswordField]
+            ? "text"
+            : field.type,
+        placeholder: field.placeholder,
+        autoComplete: field.autoComplete,
+      }}
+      containerClassName={containerClassName}
+      register={register(name)}
+      error={errorMessage}
+      icons={{
+        ...(field.type === "password" && {
+          right: {
+            icon: showPasswords[field.name as TPasswordField] ? (
+              <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+            ) : (
+              <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+            ),
+            onClick: () =>
+              setShowPasswords((prev) => ({
+                ...prev,
+                [field.name]: !prev[field.name as TPasswordField],
+              })),
+          },
+        }),
+        ...(field.name === "phoneNumber" && {
+          left: { text: "+91" },
+        }),
+      }}
+    />
+  );
+};
+
+const BecomeSeller = () => {
   const {
     control,
     register,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<z.infer<typeof becomeSellerSchema>>({
     resolver: zodResolver(becomeSellerSchema),
+    defaultValues: becomeSellerDefaultValues,
   });
 
   const onSubmit = (data: z.infer<typeof becomeSellerSchema>) => {
-    // TODO: Send data to backend API
     console.log("Seller data:", data);
     alert("Form submitted successfully!");
   };
 
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold mb-6">Become a Seller</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-        <div className="flex items-center gap-4">
-          <div className="w-full h-0.5 bg-accent-duo rounded-full" />
-          <div className="w-fit px-5 whitespace-nowrap text-lg text-primary">
-            Personal Details
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="max-w-4xl mx-auto flex flex-col gap-6 p-8"
+    >
+      {Object.entries(becomeSellerFormMapData).map(([sectionKey, fields]) => (
+        <div key={sectionKey} className="flex flex-col gap-6">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="w-full h-0.5 bg-accent-duo rounded-full" />
+            <div className="w-fit px-5 whitespace-nowrap text-lg text-primary">
+              {sectionKey
+                .replace(/([A-Z])/g, " $1")
+                .replace(/^./, (str) => str.toUpperCase())}
+            </div>
+            <div className="w-full h-0.5 bg-accent-duo rounded-full -scale-x-100" />
           </div>
-          <div className="w-full h-0.5 bg-accent-duo rounded-full -scale-x-100" />
-        </div>
-        <Input
-          label="Full Name"
-          inputProps={{
-            name: "personalDetails.name",
-            type: "text",
-            placeholder: "Enter your full name",
-          }}
-          register={register("personalDetails.name")}
-          error={errors.personalDetails?.name?.message}
-        />
-        <Input
-          label="Personal Email"
-          inputProps={{
-            name: "personalDetails.email",
-            type: "text",
-            placeholder: "Enter your email address",
-          }}
-          register={register("personalDetails.email")}
-          error={errors.personalDetails?.email?.message}
-        />
-        <Input
-          label="Personal Number"
-          inputProps={{
-            name: "personalDetails.phoneNumber",
-            type: "number",
-            placeholder: "Enter your phone number",
-          }}
-          register={register("personalDetails.phoneNumber")}
-          error={errors.personalDetails?.phoneNumber?.message}
-          icons={{ left: { text: "+91" } }}
-        />
-        <Input
-          label="Password"
-          inputProps={{
-            name: "personalDetails.password",
-            type: "text",
-            placeholder: "Enter new password",
-          }}
-          icons={{
-            right: {
-              icon: showPasswords.password ? (
-                <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-              ) : (
-                <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-              ),
-              onClick: () =>
-                setShowPasswords((prev) => ({
-                  ...prev,
-                  password: !prev.password,
-                })),
-            },
-          }}
-          register={register("personalDetails.password")}
-          error={errors.personalDetails?.password?.message}
-        />
-        <Input
-          label="Confirm Password"
-          inputProps={{
-            name: "personalDetails.confirmPassword",
-            type: "text",
-            placeholder: "Enter confirm password",
-          }}
-          icons={{
-            right: {
-              icon: showPasswords.confirmPassword ? (
-                <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-              ) : (
-                <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-              ),
-              onClick: () =>
-                setShowPasswords((prev) => ({
-                  ...prev,
-                  confirmPassword: !prev.confirmPassword,
-                })),
-            },
-          }}
-          register={register("personalDetails.confirmPassword")}
-          error={errors.personalDetails?.confirmPassword?.message}
-        />
-        <div className="flex items-center gap-4">
-          <div className="w-full h-0.5 bg-accent-duo rounded-full" />
-          <div className="w-fit px-5 whitespace-nowrap text-lg text-primary">
-            Business Details
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {fields.map((field, index) => (
+              <InputField
+                key={index}
+                control={control}
+                field={field}
+                errors={errors}
+                register={register}
+                containerClassName={
+                  field.label === "Full Name" ? "sm:col-span-2" : ""
+                }
+              />
+            ))}
           </div>
-          <div className="w-full h-0.5 bg-accent-duo rounded-full -scale-x-100" />
         </div>
-        <Input
-          label="Full Name"
-          inputProps={{
-            name: "businessDetails.name",
-            type: "text",
-            placeholder: "Enter business name",
-          }}
-          register={register("businessDetails.name")}
-          error={errors.businessDetails?.name?.message}
+      ))}
+      {/* Submit button */}
+      <Checkbox
+        register={register("agreeTerms")}
+        checkboxProps={{ name: "agreeTerms" }}
+        error={errors.agreeTerms?.message}
+        rightText={
+          <>
+            I agree to the{" "}
+            <Link
+              to="/terms-conditions"
+              className="bg-clip-text bg-accent-duo text-transparent"
+            >
+              Terms & Conditions
+            </Link>
+          </>
+        }
+      />
+      <div className="flex items-center gap-4">
+        <Button
+          pattern="secondary"
+          content="Reset"
+          buttonProps={{ type: "button", onClick: () => reset() }}
         />
-        <Input
-          label="Business Email"
-          inputProps={{
-            name: "businessDetails.email",
-            type: "text",
-            placeholder: "Enter business email address",
-          }}
-          register={register("businessDetails.email")}
-          error={errors.businessDetails?.email?.message}
+        <Button
+          pattern="primary"
+          content="Submit"
+          buttonProps={{ type: "submit" }}
         />
-        <Input
-          label="Business Contact Number"
-          inputProps={{
-            name: "businessDetails.phoneNumber",
-            type: "number",
-            placeholder: "Enter business contact number",
-          }}
-          register={register("businessDetails.phoneNumber")}
-          error={errors.businessDetails?.phoneNumber?.message}
-          icons={{ left: { text: "+91" } }}
-        />
-        <Controller
-          name={"businessDetails.category"}
-          control={control}
-          render={({ field: { value, onChange } }) => (
-            <Select
-              label={"Business Category"}
-              options={ALLOWED_BUSINESSES.map((name) => ({
-                name,
-                value: name,
-              }))}
-              selectProps={{
-                value: value?.toString(),
-                onChange,
-                placeholder: "Select business category",
-              }}
-              optionsClassName="!max-h-60"
-              optionsPosition="bottom"
-              error={errors.businessDetails?.category?.message}
-            />
-          )}
-        />
-        <div className="flex items-center gap-4">
-          <div className="w-full h-0.5 bg-accent-duo rounded-full" />
-          <div className="w-fit px-5 whitespace-nowrap text-lg text-primary">
-            Business Address
-          </div>
-          <div className="w-full h-0.5 bg-accent-duo rounded-full -scale-x-100" />
-        </div>
-        <Input
-          label="Address"
-          inputProps={{
-            name: "businessAddress.address",
-            type: "text",
-            placeholder: "Enter business address",
-          }}
-          register={register("businessAddress.address")}
-          error={errors.businessAddress?.address?.message}
-        />
-        <Input
-          label="Landmark (Optional)"
-          inputProps={{
-            name: "businessAddress.landmark",
-            type: "text",
-            placeholder: "Enter landmark",
-          }}
-          register={register("businessAddress.landmark")}
-          error={errors.businessAddress?.landmark?.message}
-        />
-        <Input
-          label="City"
-          inputProps={{
-            name: "businessAddress.city",
-            type: "text",
-            placeholder: "Enter city",
-          }}
-          register={register("businessAddress.city")}
-          error={errors.businessAddress?.city?.message}
-        />
-        <Controller
-          name={"businessAddress.state"}
-          control={control}
-          render={({ field: { value, onChange } }) => (
-            <Select
-              label={"State/Province"}
-              options={STATES_AND_UNION_TERRITORIES.map((name) => ({
-                name,
-                value: name,
-              }))}
-              selectProps={{
-                value: value?.toString(),
-                onChange,
-                placeholder: "Select state",
-              }}
-              optionsClassName="!max-h-60"
-              optionsPosition="bottom"
-              error={errors.businessAddress?.state?.message}
-            />
-          )}
-        />
-        <Input
-          label="Pin/Zip Code"
-          inputProps={{
-            name: "businessAddress.pinCode",
-            type: "number",
-            placeholder: "Enter Pin/Zip Code",
-          }}
-          register={register("businessAddress.pinCode")}
-          error={errors.businessAddress?.pinCode?.message}
-        />
-        <Controller
-          name={"businessAddress.country"}
-          control={control}
-          render={({ field: { value, onChange } }) => (
-            <Select
-              label={"Country"}
-              options={ALLOWED_COUNTRIES.map((name) => ({
-                name,
-                value: name,
-              }))}
-              selectProps={{
-                value: value?.toString(),
-                onChange,
-                placeholder: "Select Country",
-                disabled: value === "India",
-              }}
-              optionsClassName="!max-h-60"
-              optionsPosition="bottom"
-              error={errors.businessAddress?.country?.message}
-            />
-          )}
-        />
-        <Input
-          label="PAN Number"
-          inputProps={{
-            name: "businessAddress.pan",
-            type: "text",
-            placeholder: "Enter PAN number",
-          }}
-          register={register("businessAddress.pan")}
-          error={errors.businessAddress?.pan?.message}
-        />
-        <Input
-          label="GST Number"
-          inputProps={{
-            name: "businessAddress.gst",
-            type: "text",
-            placeholder: "Enter GST number",
-          }}
-          register={register("businessAddress.gst")}
-          error={errors.businessAddress?.gst?.message}
-        />
-        <Checkbox
-          register={register("agreeTerms")}
-          checkboxProps={{ name: "agreeTerms" }}
-          error={errors.agreeTerms?.message}
-          rightText={
-            <>
-              I agree to the{" "}
-              <Link
-                to="/terms-conditions"
-                className="bg-clip-text bg-accent-duo text-transparent"
-              >
-                Terms & Conditions
-              </Link>
-            </>
-          }
-        />
-        {/* Submit */}
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          Submit
-        </button>
-      </form>
-    </div>
+      </div>
+    </form>
   );
 };
 

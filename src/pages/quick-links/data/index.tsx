@@ -3,8 +3,9 @@ import {
   ALLOWED_COUNTRIES,
   STATES_AND_UNION_TERRITORIES,
 } from "../../../constants";
+import { TBecomeSellerForm } from "../../../types";
 
-export const becomeSellerFormMapData = {
+export const becomeSellerFormMapData: TBecomeSellerForm = {
   personalDetails: [
     {
       name: "name",
@@ -25,7 +26,6 @@ export const becomeSellerFormMapData = {
       label: "Personal Number",
       placeholder: "Enter your phone number",
       type: "number",
-      prefixText: "+91",
       autoComplete: "tel",
     },
     {
@@ -33,7 +33,6 @@ export const becomeSellerFormMapData = {
       label: "Password",
       placeholder: "Enter new password",
       type: "password",
-      showToggle: true,
       autoComplete: "new-password",
     },
     {
@@ -41,7 +40,6 @@ export const becomeSellerFormMapData = {
       label: "Confirm Password",
       placeholder: "Re-enter your password",
       type: "password",
-      showToggle: true,
       autoComplete: "new-password",
     },
   ],
@@ -65,7 +63,6 @@ export const becomeSellerFormMapData = {
       label: "Business Contact Number",
       placeholder: "Enter business contact number",
       type: "number",
-      prefixText: "+91",
       autoComplete: "tel",
     },
     {
@@ -146,4 +143,26 @@ export const becomeSellerFormMapData = {
       autoComplete: "organization-tax-id",
     },
   ],
+};
+
+export const becomeSellerDefaultValues = {
+  personalDetails: {
+    name: "",
+    email: "",
+    phoneNumber: "",
+    password: "",
+    confirmPassword: "",
+  },
+  businessAddress: {
+    address: "",
+    city: "",
+    state: "",
+    country: "India",
+    gst: "",
+    landmark: "",
+    pan: "",
+    pinCode: "",
+  },
+  businessDetails: { category: "", email: "", name: "", phoneNumber: "" },
+  agreeTerms: false,
 };
