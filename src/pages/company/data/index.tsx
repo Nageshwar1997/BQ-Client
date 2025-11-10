@@ -2405,3 +2405,46 @@ export const OPENINGS_DATA: IOpening[] = [
     ],
   },
 ];
+
+export const valuesSystem = [
+  {
+    title: "Empowerment",
+    description:
+      "We believe beauty is about confidence — empowering individuals to express themselves fearlessly and authentically.",
+  },
+  {
+    title: "Integrity",
+    description:
+      "We build trust through honesty and transparency — from the ingredients we choose to the experiences we create for our community.",
+  },
+  {
+    title: "Innovation",
+    description:
+      "We constantly push boundaries — blending creativity, technology, and artistry to redefine modern beauty.",
+  },
+  {
+    title: "Inclusivity",
+    description:
+      "We celebrate every shade, style, and story — creating products and spaces where everyone feels seen, valued, and beautiful.",
+  },
+  {
+    title: "Creativity",
+    description:
+      "We embrace imagination in everything we do — from product design to storytelling — because beauty thrives on originality.",
+  },
+  {
+    title: "Sustainability",
+    description:
+      "We’re committed to conscious beauty — making choices that care for people and the planet with responsibility and purpose.",
+  },
+  {
+    title: "Collaboration",
+    description:
+      "We believe great ideas bloom when we work together — blending diverse voices and talents to create meaningful impact.",
+  },
+  {
+    title: "Curiosity",
+    description:
+      "We stay curious and open-minded — always learning, exploring trends, and finding new ways to inspire our community.",
+  },
+];

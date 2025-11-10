@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { LeftGradient, RightGradient } from "../../components/Gradients";
-import { OPENINGS_DATA } from "./data/data";
+import { OPENINGS_DATA } from "./data";
 import useHorizontalScrollable from "../../hooks/useHorizontalScrollable";
 import OpeningCard from "./children/OpeningCard";
 import { IOpening } from "../../types";

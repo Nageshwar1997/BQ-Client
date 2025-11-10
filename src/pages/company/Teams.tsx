@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { DEPARTMENT_AND_TEAMS_DATA, TEAMS_DEPARTMENTS } from "./data/data";
+import { DEPARTMENT_AND_TEAMS_DATA, TEAMS_DEPARTMENTS } from "./data";
 import useHorizontalScrollable from "../../hooks/useHorizontalScrollable";
 import { LeftGradient, RightGradient } from "../../components/Gradients";
 import EmployeeCard from "./children/EmployeeCard";

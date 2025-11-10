@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import EmployeeCard from "./children/EmployeeCard";
-import { DEPARTMENT_AND_TEAMS_DATA } from "./data/data";
+import { DEPARTMENT_AND_TEAMS_DATA } from "./data";
 import Button from "../../components/button/Button";
 
 const stats = [
