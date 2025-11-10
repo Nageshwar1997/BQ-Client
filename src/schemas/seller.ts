@@ -22,7 +22,6 @@ export const becomeSellerSchema = z.object({
       blockSingleSpace: true,
       customRegexes: [{ regex: regexes.validEmail, message: "must be valid" }],
     }),
-
     phoneNumber: zodStringRequired({
       field: "phoneNumber",
       showingFieldName: "Phone number",
@@ -31,6 +30,66 @@ export const becomeSellerSchema = z.object({
           regex: regexes.validPhone,
           message:
             "must be a valid Indian number starting with 6, 7, 8, or 9 and be exactly 10 digits long.",
+        },
+      ],
+    }),
+    password: zodStringRequired({
+      field: "password",
+      showingFieldName: "Password",
+      blockSingleSpace: true,
+      min: 6,
+      max: 20,
+      customRegexes: [
+        {
+          regex: regexes.atLeastOneUppercaseLetter,
+          message: "must contain at least one uppercase letter",
+        },
+        {
+          regex: regexes.atLeastOneLowercaseLetter,
+          message: "must contain at least one lowercase letter",
+        },
+        {
+          regex: regexes.atLeastOneDigit,
+          message: "must contain at least one number",
+        },
+        {
+          regex: regexes.atLeastOneSpecialCharacter,
+          message: "must contain at least one special character e.g. @$!%*?&#",
+        },
+        {
+          regex: regexes.password,
+          message:
+            "must contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
+        },
+      ],
+    }),
+    confirmPassword: zodStringRequired({
+      field: "confirmPassword",
+      showingFieldName: "Confirm Password",
+      blockSingleSpace: true,
+      min: 6,
+      max: 20,
+      customRegexes: [
+        {
+          regex: regexes.atLeastOneUppercaseLetter,
+          message: "must contain at least one uppercase letter",
+        },
+        {
+          regex: regexes.atLeastOneLowercaseLetter,
+          message: "must contain at least one lowercase letter",
+        },
+        {
+          regex: regexes.atLeastOneDigit,
+          message: "must contain at least one number",
+        },
+        {
+          regex: regexes.atLeastOneSpecialCharacter,
+          message: "must contain at least one special character e.g. @$!%*?&#",
+        },
+        {
+          regex: regexes.password,
+          message:
+            "must contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
         },
       ],
     }),

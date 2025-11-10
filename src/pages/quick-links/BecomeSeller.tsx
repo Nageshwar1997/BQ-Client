@@ -11,8 +11,17 @@ import Input from "../../components/input/Input";
 import Select from "../../components/input/Select";
 import Checkbox from "../../components/input/Checkbox";
 import { becomeSellerSchema } from "../../schemas/seller";
+import { TPasswordField } from "../../types";
+import { useState } from "react";
+import { EyeIcon, EyeOffIcon } from "../../icons";
 
 const BecomeSeller = () => {
+  const [showPasswords, setShowPasswords] = useState<
+    Record<TPasswordField, boolean>
+  >({
+    password: false,
+    confirmPassword: false,
+  });
   const {
     control,
     register,
@@ -69,6 +78,54 @@ const BecomeSeller = () => {
           register={register("personalDetails.phoneNumber")}
           error={errors.personalDetails?.phoneNumber?.message}
           icons={{ left: { text: "+91" } }}
+        />
+        <Input
+          label="Password"
+          inputProps={{
+            name: "personalDetails.password",
+            type: "text",
+            placeholder: "Enter new password",
+          }}
+          icons={{
+            right: {
+              icon: showPasswords.password ? (
+                <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+              ) : (
+                <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+              ),
+              onClick: () =>
+                setShowPasswords((prev) => ({
+                  ...prev,
+                  password: !prev.password,
+                })),
+            },
+          }}
+          register={register("personalDetails.password")}
+          error={errors.personalDetails?.password?.message}
+        />
+        <Input
+          label="Confirm Password"
+          inputProps={{
+            name: "personalDetails.confirmPassword",
+            type: "text",
+            placeholder: "Enter confirm password",
+          }}
+          icons={{
+            right: {
+              icon: showPasswords.confirmPassword ? (
+                <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+              ) : (
+                <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+              ),
+              onClick: () =>
+                setShowPasswords((prev) => ({
+                  ...prev,
+                  confirmPassword: !prev.confirmPassword,
+                })),
+            },
+          }}
+          register={register("personalDetails.confirmPassword")}
+          error={errors.personalDetails?.confirmPassword?.message}
         />
         <div className="flex items-center gap-4">
           <div className="w-full h-0.5 bg-accent-duo rounded-full" />
