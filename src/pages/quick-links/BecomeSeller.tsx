@@ -196,35 +196,35 @@ const BecomeSeller = () => {
         <Input
           label="Address"
           inputProps={{
-            name: "businessDetails.address.address",
+            name: "businessAddress.address",
             type: "text",
             placeholder: "Enter business address",
           }}
-          register={register("businessDetails.address.address")}
-          error={errors.businessDetails?.address?.address?.message}
+          register={register("businessAddress.address")}
+          error={errors.businessAddress?.address?.message}
         />
         <Input
           label="Landmark (Optional)"
           inputProps={{
-            name: "businessDetails.address.landmark",
+            name: "businessAddress.landmark",
             type: "text",
             placeholder: "Enter landmark",
           }}
-          register={register("businessDetails.address.landmark")}
-          error={errors.businessDetails?.address?.landmark?.message}
+          register={register("businessAddress.landmark")}
+          error={errors.businessAddress?.landmark?.message}
         />
         <Input
           label="City"
           inputProps={{
-            name: "businessDetails.address.city",
+            name: "businessAddress.city",
             type: "text",
             placeholder: "Enter city",
           }}
-          register={register("businessDetails.address.city")}
-          error={errors.businessDetails?.address?.city?.message}
+          register={register("businessAddress.city")}
+          error={errors.businessAddress?.city?.message}
         />
         <Controller
-          name={"businessDetails.address.state"}
+          name={"businessAddress.state"}
           control={control}
           render={({ field: { value, onChange } }) => (
             <Select
@@ -240,22 +240,22 @@ const BecomeSeller = () => {
               }}
               optionsClassName="!max-h-60"
               optionsPosition="bottom"
-              error={errors.businessDetails?.address?.state?.message}
+              error={errors.businessAddress?.state?.message}
             />
           )}
         />
         <Input
           label="Pin/Zip Code"
           inputProps={{
-            name: "businessDetails.address.pinCode",
+            name: "businessAddress.pinCode",
             type: "number",
             placeholder: "Enter Pin/Zip Code",
           }}
-          register={register("businessDetails.address.pinCode")}
-          error={errors.businessDetails?.address?.pinCode?.message}
+          register={register("businessAddress.pinCode")}
+          error={errors.businessAddress?.pinCode?.message}
         />
         <Controller
-          name={"businessDetails.address.country"}
+          name={"businessAddress.country"}
           control={control}
           render={({ field: { value, onChange } }) => (
             <Select
@@ -272,29 +272,29 @@ const BecomeSeller = () => {
               }}
               optionsClassName="!max-h-60"
               optionsPosition="bottom"
-              error={errors.businessDetails?.address?.country?.message}
+              error={errors.businessAddress?.country?.message}
             />
           )}
         />
         <Input
           label="PAN Number"
           inputProps={{
-            name: "businessDetails.address.pan",
+            name: "businessAddress.pan",
             type: "text",
             placeholder: "Enter PAN number",
           }}
-          register={register("businessDetails.address.pan")}
-          error={errors.businessDetails?.address?.pan?.message}
+          register={register("businessAddress.pan")}
+          error={errors.businessAddress?.pan?.message}
         />
         <Input
           label="GST Number"
           inputProps={{
-            name: "businessDetails.address.gst",
+            name: "businessAddress.gst",
             type: "text",
             placeholder: "Enter GST number",
           }}
-          register={register("businessDetails.address.gst")}
-          error={errors.businessDetails?.address?.gst?.message}
+          register={register("businessAddress.gst")}
+          error={errors.businessAddress?.gst?.message}
         />
         <Checkbox
           register={register("agreeTerms")}

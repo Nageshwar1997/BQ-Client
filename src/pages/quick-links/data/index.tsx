@@ -7,21 +7,21 @@ import {
 export const becomeSellerFormMapData = {
   personalDetails: [
     {
-      name: "personalDetails.name",
+      name: "name",
       label: "Full Name",
       placeholder: "Enter your full name",
       type: "text",
       autoComplete: "name",
     },
     {
-      name: "personalDetails.email",
+      name: "email",
       label: "Personal Email",
       placeholder: "Enter your email address",
       type: "email",
       autoComplete: "email",
     },
     {
-      name: "personalDetails.phoneNumber",
+      name: "phoneNumber",
       label: "Personal Number",
       placeholder: "Enter your phone number",
       type: "number",
@@ -29,7 +29,7 @@ export const becomeSellerFormMapData = {
       autoComplete: "tel",
     },
     {
-      name: "personalDetails.password",
+      name: "password",
       label: "Password",
       placeholder: "Enter new password",
       type: "password",
@@ -37,7 +37,7 @@ export const becomeSellerFormMapData = {
       autoComplete: "new-password",
     },
     {
-      name: "personalDetails.confirmPassword",
+      name: "confirmPassword",
       label: "Confirm Password",
       placeholder: "Re-enter your password",
       type: "password",
@@ -47,21 +47,21 @@ export const becomeSellerFormMapData = {
   ],
   businessDetails: [
     {
-      name: "businessDetails.name",
+      name: "name",
       label: "Business Name",
       placeholder: "Enter business name",
       type: "text",
       autoComplete: "organization",
     },
     {
-      name: "businessDetails.email",
+      name: "email",
       label: "Business Email",
       placeholder: "Enter business email address",
       type: "email",
       autoComplete: "email",
     },
     {
-      name: "businessDetails.phoneNumber",
+      name: "phoneNumber",
       label: "Business Contact Number",
       placeholder: "Enter business contact number",
       type: "number",
@@ -69,7 +69,7 @@ export const becomeSellerFormMapData = {
       autoComplete: "tel",
     },
     {
-      name: "businessDetails.category",
+      name: "category",
       label: "Business Category",
       placeholder: "Select business category",
       type: "select",
@@ -82,28 +82,28 @@ export const becomeSellerFormMapData = {
   ],
   businessAddress: [
     {
-      name: "businessDetails.address.address",
+      name: "address",
       label: "Address",
       placeholder: "Enter business address",
       type: "text",
       autoComplete: "street-address",
     },
     {
-      name: "businessDetails.address.landmark",
+      name: "landmark",
       label: "Landmark (Optional)",
       placeholder: "Enter landmark",
       type: "text",
       autoComplete: "address-line2",
     },
     {
-      name: "businessDetails.address.city",
+      name: "city",
       label: "City",
       placeholder: "Enter city",
       type: "text",
       autoComplete: "address-level2",
     },
     {
-      name: "businessDetails.address.state",
+      name: "state",
       label: "State/Province",
       placeholder: "Select state",
       type: "select",
@@ -114,14 +114,14 @@ export const becomeSellerFormMapData = {
       autoComplete: "address-level1",
     },
     {
-      name: "businessDetails.address.pinCode",
+      name: "pinCode",
       label: "Pin/Zip Code",
       placeholder: "Enter pin/zip code",
       type: "number",
       autoComplete: "postal-code",
     },
     {
-      name: "businessDetails.address.country",
+      name: "country",
       label: "Country",
       placeholder: "Select country",
       type: "select",
@@ -132,14 +132,14 @@ export const becomeSellerFormMapData = {
       autoComplete: "country-name",
     },
     {
-      name: "businessDetails.address.pan",
+      name: "pan",
       label: "PAN Number",
       placeholder: "Enter PAN number",
       type: "text",
       autoComplete: "organization-pan-id",
     },
     {
-      name: "businessDetails.address.gst",
+      name: "gst",
       label: "GST Number (Optional)",
       placeholder: "Enter GST number",
       type: "text",
