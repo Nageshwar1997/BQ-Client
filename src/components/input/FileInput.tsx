@@ -1,27 +1,149 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, ReactNode, useState } from "react";
 import { InfoIcon } from "../../icons";
 import MediaModal from "../../pages/product/productDetails/children/MediaModal";
 import MediaCarousel from "../carousels/MediaCarousel";
 import { IFileInput } from "../../types";
 import { ALLOWED_IMAGE_TYPES } from "../../constants";
-const FileInput = ({
-  label = "",
-  icons,
-  className = "",
-  containerClassName = "",
-  errors = [],
-  previews = [],
-  register,
-  handleRemoveImage,
-  fileInputProps = {},
-}: IFileInput) => {
-  const [showImageModal, setShowImageModal] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState<number | null>(null);
 
+const InputWrapper = ({
+  children,
+  icons,
+}: {
+  children: ReactNode;
+  icons?: IFileInput["icons"];
+}) => (
+  <>
+    {/* Left Icon */}
+    {icons?.left?.icon && !icons.right?.icon ? (
+      <span
+        onClick={icons.left.onClick}
+        className="h-full flex justify-center items-center cursor-pointer p-2 overflow-hidden"
+      >
+        {icons.left.icon}
+      </span>
+    ) : !icons?.left?.icon && icons?.left?.text ? (
+      <div className="h-full overflow-hidden">
+        <p className="h-full flex items-center justify-center text-sm text-primary-50 border-r border-r-primary-10 p-3 capitalize">
+          {icons?.left?.text}
+        </p>
+      </div>
+    ) : null}
+    {/* Main Section */}
+    {children}
+    {/* Right Icon */}
+    {!icons?.left && icons?.right ? (
+      <span
+        onClick={icons.right.onClick}
+        className="h-full flex justify-center items-center cursor-pointer p-2 overflow-hidden"
+      >
+        {icons.right.icon}
+      </span>
+    ) : null}
+  </>
+);
+
+const InputWithoutIconClick = ({
+  fileInputProps,
+  className,
+  children,
+  icons,
+}: Pick<IFileInput, "fileInputProps" | "className" | "icons"> & {
+  children: ReactNode;
+}) => (
+  <label
+    htmlFor={fileInputProps.name}
+    className={`w-full h-full flex items-center gap-1 border border-primary-10 bg-smoke-eerie rounded-lg overflow-hidden group ${className}`}
+  >
+    <InputWrapper icons={icons}>{children}</InputWrapper>
+  </label>
+);
+
+const InputWithIconClick = ({
+  fileInputProps,
+  className,
+  children,
+  icons,
+}: Pick<IFileInput, "fileInputProps" | "className" | "icons"> & {
+  children: ReactNode;
+}) => (
+  <div
+    className={`w-full h-full flex items-center gap-1 border border-primary-10 bg-smoke-eerie rounded-lg overflow-hidden group ${className}`}
+  >
+    <InputWrapper icons={icons}>
+      <label htmlFor={fileInputProps.name} className="flex-1 h-full">
+        {children}
+      </label>
+    </InputWrapper>
+  </div>
+);
+
+const CenterContent = ({
+  fileInputProps,
+  icons,
+  register,
+}: Pick<IFileInput, "fileInputProps" | "icons" | "register">) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     fileInputProps.onChange?.(event);
     register?.onChange?.(event);
   };
+  return (
+    <div
+      className={`flex-1 w-full h-full outline-none border-none focus:outline-none focus:border-none bg-transparent font-normal text-sm p-3 flex items-center justify-start cursor-pointer ${
+        icons?.left?.icon && !icons?.right?.icon
+          ? "pl-0"
+          : !icons?.left?.icon && icons?.right?.icon
+          ? "pr-0"
+          : icons?.left?.text
+          ? "pl-2"
+          : ""
+      }`}
+    >
+      <p className="text-primary-50 text-sm line-clamp-1">
+        {fileInputProps?.placeholder}
+      </p>
+      {/* Input */}
+      <input
+        aria-autocomplete="none"
+        {...register}
+        {...fileInputProps}
+        id={fileInputProps.name}
+        disabled={fileInputProps?.disabled}
+        multiple={fileInputProps?.multiple ?? false}
+        accept={fileInputProps?.accept ?? ALLOWED_IMAGE_TYPES.join(", ")}
+        type="file"
+        onChange={handleChange}
+        className="sr-only"
+      />
+    </div>
+  );
+};
+
+const MainSection = ({
+  icons,
+  ...props
+}: Pick<IFileInput, "fileInputProps" | "className" | "icons" | "register">) => {
+  return icons?.left?.onClick || icons?.right?.onClick ? (
+    <InputWithIconClick {...props} icons={icons}>
+      <CenterContent {...props} icons={icons} />
+    </InputWithIconClick>
+  ) : (
+    <InputWithoutIconClick {...props} icons={icons}>
+      <CenterContent {...props} icons={icons} />
+    </InputWithoutIconClick>
+  );
+};
+
+const FileInput = ({
+  label = "",
+  containerClassName = "",
+  errors = [],
+  previews = [],
+  handleRemoveImage,
+  fileInputProps = {},
+  ...props
+}: IFileInput) => {
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState<number | null>(null);
 
   return (
     <div className={`w-full flex flex-col gap-1.5 ${containerClassName}`}>
@@ -34,65 +156,9 @@ const FileInput = ({
             {label}
           </label>
         )}
-        <label
-          htmlFor={fileInputProps.name}
-          className={`w-full h-full flex items-center gap-1 border border-primary-10 bg-smoke-eerie rounded-lg overflow-hidden group ${className}`}
-        >
-          {/* Left Icon */}
-          {icons?.left?.icon && !icons.right?.icon ? (
-            <span
-              onClick={icons.left.onClick}
-              className="h-full flex justify-center items-center cursor-pointer p-2 overflow-hidden"
-            >
-              {icons.left.icon}
-            </span>
-          ) : !icons?.left?.icon && icons?.left?.text ? (
-            <div className="h-full overflow-hidden">
-              <p className="h-full flex items-center justify-center text-sm text-primary-50 border-r border-r-primary-10 p-3 capitalize">
-                {icons?.left?.text}
-              </p>
-            </div>
-          ) : null}
-          <div
-            className={`flex-1 w-full h-full outline-none border-none focus:outline-none focus:border-none bg-transparent font-normal text-sm p-3 flex items-center justify-start cursor-pointer ${
-              icons?.left?.icon && !icons?.right?.icon
-                ? "pl-0"
-                : !icons?.left?.icon && icons?.right?.icon
-                ? "pr-0"
-                : icons?.left?.text
-                ? "pl-2"
-                : ""
-            }`}
-          >
-            <p className="text-primary-50 text-sm line-clamp-1">
-              {fileInputProps?.placeholder}
-            </p>
-            {/* Input */}
-            <input
-              aria-autocomplete="none"
-              {...register}
-              {...fileInputProps}
-              id={fileInputProps.name}
-              disabled={fileInputProps?.readOnly}
-              multiple={fileInputProps?.multiple ?? false}
-              accept={fileInputProps?.accept ?? ALLOWED_IMAGE_TYPES.join(", ")}
-              type="file"
-              onChange={handleChange}
-              className="sr-only"
-            />
-          </div>
-          {/* Right Icon */}
-          {!icons?.left && icons?.right && (
-            <span
-              onClick={icons.right.onClick}
-              className="h-full flex justify-center items-center cursor-pointer p-2 overflow-hidden"
-            >
-              {icons.right.icon}
-            </span>
-          )}
-        </label>
+        <MainSection fileInputProps={fileInputProps} {...props} />
       </div>
-      {!fileInputProps.readOnly && errors && errors.length > 0 && (
+      {!fileInputProps.disabled && errors?.length > 0 && (
         <div className="flex flex-col gap-1">
           {errors?.map((error, index) => (
             <p
@@ -105,7 +171,7 @@ const FileInput = ({
           ))}
         </div>
       )}
-      {previews.length > 0 && (
+      {previews?.length > 0 && (
         <MediaCarousel
           className="border border-primary-10 bg-smoke-eerie rounded-lg p-2 [&>div]:justify-start [&>div>div]:w-14 [&>div>div]:h-14 [&>div>div]:md:w-16 [&>div>div]:md:h-16 [&>div>div]:lg:w-20 [&>div>div]:lg:h-20"
           gradientClassName="!w-9 lg:!w-20"
