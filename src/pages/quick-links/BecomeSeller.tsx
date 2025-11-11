@@ -28,6 +28,8 @@ import DocumentInstructionsModal from "./children/DocumentInstructionsModal";
 import { ALLOWED_IMAGE_TYPES } from "../../constants";
 import FileInput from "../../components/input/FileInput";
 import { useUserStore } from "../../store/user.store";
+import { useCreateSellerRequest } from "../../api/user/user.service";
+import usePathParams from "../../hooks/usePathParams";
 
 type FormValues = z.infer<typeof becomeSellerBaseSchema>;
 type TMapObj = typeof becomeSellerFormMapData; // the object type
@@ -172,7 +174,9 @@ const InputField = ({
 
 const BecomeSeller = () => {
   const { user, isAuthenticated } = useUserStore();
+  const { navigate } = usePathParams();
   const documentFieldsRefs = useRef<{ [key: string]: () => void }>({});
+  const { mutateAsync, isPending } = useCreateSellerRequest();
 
   const {
     control,
@@ -187,8 +191,25 @@ const BecomeSeller = () => {
   });
 
   const onSubmit = (data: z.infer<typeof becomeSellerSchema>) => {
-    console.log("Seller data:", data);
-    alert("Form submitted successfully!");
+    const formData = new FormData();
+    formData.append("agreeTerms", String(data.agreeTerms));
+    formData.append("businessAddress", JSON.stringify(data.businessAddress));
+    formData.append("personalDetails", JSON.stringify(data.personalDetails));
+    formData.append("businessDetails", JSON.stringify(data.businessDetails));
+
+    Object.entries(data.requiredDocuments).forEach(([key, file]) => {
+      if (file && file instanceof File) {
+        formData.append(key, file);
+      }
+    });
+    mutateAsync(formData, {
+      onSuccess: () => {
+        onReset();
+        setTimeout(() => {
+          navigate("/account");
+        }, 500);
+      },
+    });
   };
 
   const setDefaultPersonalDetails = () => {
@@ -280,12 +301,16 @@ const BecomeSeller = () => {
           <Button
             pattern="secondary"
             content="Reset"
-            buttonProps={{ type: "button", onClick: onReset }}
+            buttonProps={{
+              type: "button",
+              onClick: onReset,
+              disabled: isPending,
+            }}
           />
           <Button
             pattern="primary"
             content="Submit"
-            buttonProps={{ type: "submit" }}
+            buttonProps={{ type: "submit", disabled: isPending }}
           />
         </div>
       </form>

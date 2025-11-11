@@ -13,6 +13,7 @@ export const productRoutes = {
 
 export const userRoutes = {
   getUser: { method: "GET", url: "/users/user" },
+  createSeller: { method: "POST", url: "/users/seller/create" },
 };
 
 export const mediaRoutes = {
