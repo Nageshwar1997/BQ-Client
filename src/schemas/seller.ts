@@ -205,13 +205,11 @@ const fileValidation = (field: string, showingFieldName?: string) =>
       maxImageFileSize: 0.2 * MB,
     });
   });
+
 export const requiredDocumentsSchema = z.object({
   gst: fileValidation("gst", "GST Registration Certificate"),
   itr: fileValidation("itr", "Income Tax Proof"),
-  businessAddressProof: fileValidation(
-    "businessAddressProof",
-    "Business Address Proof"
-  ),
+  addressProof: fileValidation("addressProof", "Address Proof"),
 });
 
 export const becomeSellerBaseSchema = z.object({

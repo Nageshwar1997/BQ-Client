@@ -1,6 +1,7 @@
 import {
   ALLOWED_BUSINESSES,
   ALLOWED_COUNTRIES,
+  ALLOWED_IMAGE_TYPES,
   STATES_AND_UNION_TERRITORIES,
 } from "../../../constants";
 import { TBecomeSellerForm } from "../../../types";
@@ -159,7 +160,7 @@ export const becomeSellerFormMapData: TBecomeSellerForm = {
       autoComplete: "off",
     },
     {
-      name: "businessAddressProof",
+      name: "addressProof",
       label: "Business Address Proof (Any 1)",
       placeholder: "Upload Business Address proof",
       type: "file",
@@ -189,8 +190,57 @@ export const becomeSellerDefaultValues = {
   requiredDocuments: {
     gst: undefined,
     itr: undefined,
-    businessAddressProof: undefined,
+    addressProof: undefined,
   },
   businessDetails: { category: "", email: "", name: "", phoneNumber: "" },
   agreeTerms: false,
+};
+
+const commonInstructions = [
+  "Ensure that the document is clear and legible, with all details visible.",
+  `Upload the document in ${ALLOWED_IMAGE_TYPES.map((type) =>
+    type.split("/")[1].toUpperCase()
+  ).join(", ")} format.`,
+  "The maximum file size allowed is 0.5 MB.",
+];
+
+export const BECOME_A_SELLER_DOCUMENT_INSTRUCTIONS = {
+  gst: {
+    title: "GST",
+    instructions: [
+      "The document must be a valid GST Registration Certificate issued by the Government of India.",
+      "The document should include the GSTIN (Goods and Services Tax Identification Number), legal name of the business, and the date of registration.",
+      ...commonInstructions,
+    ],
+    options: [],
+  },
+  itr: {
+    title: "ITR Proof",
+    instructions: [
+      "The document must be a valid Income Tax Return (ITR) acknowledgment or assessment order issued by the Income Tax Department of India.",
+      "The document should include the PAN (Permanent Account Number) of the business or individual, assessment year, and the date of filing.",
+      ...commonInstructions,
+    ],
+    options: [],
+  },
+  addressProof: {
+    title: "Address Proof",
+    instructions: [
+      "The document must be a valid address proof for the business, such as a utility bill, lease agreement, or property tax receipt.",
+      "The document should include the business name, address, and date of issue.",
+      ...commonInstructions,
+    ],
+    options: [
+      "Utility Bill (Electricity, Water, Gas, Internet) not older than 3 months",
+      "Lease or Rent Agreement",
+      "Property Tax Receipt",
+      "Bank Statement showing business address",
+      "Government-issued Business License or Certificate",
+      "Affidavit from a Gazetted Officer (if applicable)",
+      "NOC from the Property Owner (if applicable)",
+      "Certificate of Incorporation (for registered companies)",
+      "Shop and Establishment License",
+      "Municipal Khata Copy",
+    ],
+  },
 };

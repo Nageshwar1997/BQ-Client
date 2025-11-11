@@ -8,7 +8,7 @@ import {
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "../../components/button/Button";
-import { EyeIcon, EyeOffIcon, UploadCloudIcon } from "../../icons";
+import { EyeIcon, EyeOffIcon, InfoIcon } from "../../icons";
 
 import Input from "../../components/input/Input";
 import Select from "../../components/input/Select";
@@ -24,7 +24,7 @@ import { becomeSellerDefaultValues, becomeSellerFormMapData } from "./data";
 import z from "zod";
 import { Link } from "react-router-dom";
 import useQueryParams from "../../hooks/useQueryParams";
-import Modal from "../../components/modal";
+import DocumentInstructionsModal from "./children/DocumentInstructionsModal";
 import { ALLOWED_IMAGE_TYPES } from "../../constants";
 import FileInput from "../../components/input/FileInput";
 
@@ -54,6 +54,7 @@ const InputField = ({
   errors,
   containerClassName,
 }: IBecomeSellerInput) => {
+  const { setParams } = useQueryParams();
   const [showPasswords, setShowPasswords] = useState<
     Record<TPasswordField, boolean>
   >({
@@ -129,8 +130,9 @@ const InputField = ({
           icons={{
             right: {
               icon: (
-                <UploadCloudIcon className="stroke-primary opacity-50 group-hover:opacity-100" />
+                <InfoIcon className="fill-primary opacity-50 hover:opacity-100" />
               ),
+              onClick: () => setParams({ requiredDocument: field.name }),
             },
           }}
         />
@@ -177,7 +179,6 @@ const InputField = ({
 };
 
 const BecomeSeller = () => {
-  const { queryParams, removeParam } = useQueryParams();
   const {
     control,
     register,
@@ -194,28 +195,9 @@ const BecomeSeller = () => {
     alert("Form submitted successfully!");
   };
 
-  // useEffect(() => {
-  //   removeParam("requiredDocuments");
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
   return (
     <div className="p-6 max-w-5xl mx-auto space-y-10">
-      <Modal
-        isOpen={!!queryParams.requiredDocuments}
-        onClose={() => removeParam("requiredDocuments")}
-      >
-        <div className="border border-[red]">
-          <p>GST Registration Certificate</p>
-          <p>Income Tax Proof</p>
-          <p>Business Address Proof (Any 1)</p>
-          <ul>
-            <li>Electricity Bill</li>
-            <li>Rent Receipt</li>
-            <li>Shop Act License</li>
-          </ul>
-        </div>
-      </Modal>
+      <DocumentInstructionsModal />
       <header className="max-w-4xl mx-auto text-center space-y-3 sm:space-y-4">
         <h1 className="text-2xl base:text-3xl sm:text-4xl font-bold tracking-tight bg-clip-text bg-silver-duo text-transparent">
           Join Beautinique as a Seller
