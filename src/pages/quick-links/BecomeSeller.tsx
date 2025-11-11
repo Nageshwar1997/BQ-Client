@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Controller,
   FieldError,
@@ -54,6 +54,7 @@ const InputField = ({
   register,
   errors,
   containerClassName,
+  onResetDocuments,
 }: IBecomeSellerInput) => {
   const { setParams } = useQueryParams();
   const [documents, setDocuments] = useState<{
@@ -74,6 +75,15 @@ const InputField = ({
         field.name as keyof FormValues[typeof parentKey] & string
       )
     : undefined;
+
+  const resetDocuments = () => setDocuments({ file: null, preview: null });
+
+  useEffect(() => {
+    if (onResetDocuments) {
+      onResetDocuments();
+      resetDocuments();
+    }
+  }, [onResetDocuments]);
 
   return field.type === "select" ? (
     <Controller
@@ -162,6 +172,8 @@ const InputField = ({
 
 const BecomeSeller = () => {
   const { user, isAuthenticated } = useUserStore();
+  const documentFieldsRefs = useRef<{ [key: string]: () => void }>({});
+
   const {
     control,
     formState: { errors },
@@ -179,12 +191,22 @@ const BecomeSeller = () => {
     alert("Form submitted successfully!");
   };
 
-  useEffect(() => {
+  const setPersonalDefaultDetails = () => {
     if (isAuthenticated && user) {
       setValue("personalDetails.name", `${user.firstName} ${user.lastName}`);
       setValue("personalDetails.email", user.email);
       setValue("personalDetails.phoneNumber", user.phoneNumber);
     }
+  };
+
+  const onReset = () => {
+    reset();
+    setPersonalDefaultDetails();
+    Object.values(documentFieldsRefs.current).forEach((resetFn) => resetFn());
+  };
+
+  useEffect(() => {
+    setPersonalDefaultDetails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, user]);
 
@@ -227,6 +249,11 @@ const BecomeSeller = () => {
                   containerClassName={
                     field.label === "Full Name" ? "sm:col-span-2" : ""
                   }
+                  onResetDocuments={() => {
+                    documentFieldsRefs.current[
+                      `${sectionKey}.${field.name}`
+                    ]?.();
+                  }}
                 />
               ))}
             </div>
@@ -253,7 +280,7 @@ const BecomeSeller = () => {
           <Button
             pattern="secondary"
             content="Reset"
-            buttonProps={{ type: "button", onClick: () => reset() }}
+            buttonProps={{ type: "button", onClick: onReset }}
           />
           <Button
             pattern="primary"

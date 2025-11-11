@@ -585,4 +585,5 @@ export interface IBecomeSellerInput {
   register: UseFormRegister<z.infer<typeof becomeSellerSchema>>;
   errors: FieldErrors<z.infer<typeof becomeSellerSchema>>;
   containerClassName?: string;
+  onResetDocuments?: () => void;
 }
