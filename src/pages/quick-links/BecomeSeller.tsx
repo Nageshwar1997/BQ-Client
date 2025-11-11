@@ -143,6 +143,9 @@ const InputField = ({
         disabled: field.disabled,
         placeholder: field.placeholder,
         autoComplete: field.autoComplete,
+        className: ["gst", "pan"].includes(field.name)
+          ? "uppercase placeholder:[text-transform:none]"
+          : "",
       }}
       containerClassName={containerClassName}
       register={register(name)}
@@ -181,7 +184,7 @@ const BecomeSeller = () => {
       setValue("personalDetails.email", user.email);
       setValue("personalDetails.phoneNumber", user.phoneNumber);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, user]);
 
   return (

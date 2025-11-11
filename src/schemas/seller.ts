@@ -118,7 +118,7 @@ export const businessDetailsAddressSchema = z.object({
     field: "pan",
     showingFieldName: "PAN Number",
     customRegexes: [{ regex: regexes.validPan, message: "must be valid" }],
-  }),
+  }).toUpperCase(),
   gst: zodStringRequired({
     field: "gst",
     showingFieldName: "GST Number",
@@ -132,7 +132,7 @@ export const businessDetailsAddressSchema = z.object({
         message: "Please provide a valid GST number",
       },
     ],
-  }),
+  }).toUpperCase(),
 });
 
 const fileValidation = (field: string, showingFieldName?: string) =>
