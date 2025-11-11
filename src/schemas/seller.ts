@@ -1,5 +1,10 @@
 import z from "zod";
-import { zodEnums, zodStringOptional, zodStringRequired } from "../utils/zod";
+import {
+  zodEnums,
+  zodFileOrUrl,
+  zodStringOptional,
+  zodStringRequired,
+} from "../utils/zod";
 import {
   ALLOWED_BUSINESSES,
   ALLOWED_COUNTRIES,
@@ -189,10 +194,24 @@ export const businessDetailsAddressSchema = z.object({
   }),
 });
 
+const fileValidation = (field: string, showingFieldName?: string) =>
+  z.unknown().superRefine((file, ctx) => {
+    zodFileOrUrl({ fileOrUrl: file, field, showingFieldName, ctx });
+  });
+export const requiredDocumentsSchema = z.object({
+  gst: fileValidation("gst", "GST Registration Certificate"),
+  itr: fileValidation("itr", "Income Tax Proof"),
+  businessAddressProof: fileValidation(
+    "businessAddressProof",
+    "Business Address Proof"
+  ),
+});
+
 export const becomeSellerBaseSchema = z.object({
   personalDetails: personalDetailsSchema,
   businessDetails: businessDetailsSchema,
   businessAddress: businessDetailsAddressSchema,
+  requiredDocuments: requiredDocumentsSchema,
 });
 
 export const becomeSellerSchema = becomeSellerBaseSchema.extend({

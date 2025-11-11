@@ -569,7 +569,7 @@ export type TBecomeSellerForm = {
     name: string;
     label: string;
     placeholder: string;
-    type: "text" | "email" | "number" | "password" | "select";
+    type: "text" | "email" | "number" | "password" | "select" | "file";
     options?: TDropdownOption[];
     autoComplete?: string;
     disabled?: boolean;

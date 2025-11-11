@@ -143,6 +143,29 @@ export const becomeSellerFormMapData: TBecomeSellerForm = {
       autoComplete: "organization-tax-id",
     },
   ],
+  requiredDocuments: [
+    {
+      name: "gst",
+      label: "GST Registration Certificate",
+      placeholder: "Upload GST certificate",
+      type: "file",
+      autoComplete: "off",
+    },
+    {
+      name: "itr",
+      label: "Income Tax Proof",
+      placeholder: "Upload Income Tax proof",
+      type: "file",
+      autoComplete: "off",
+    },
+    {
+      name: "businessAddressProof",
+      label: "Business Address Proof (Any 1)",
+      placeholder: "Upload Business Address proof",
+      type: "file",
+      autoComplete: "off",
+    },
+  ],
 };
 
 export const becomeSellerDefaultValues = {
@@ -162,6 +185,11 @@ export const becomeSellerDefaultValues = {
     landmark: "",
     pan: "",
     pinCode: "",
+  },
+  requiredDocuments: {
+    gst: undefined,
+    itr: undefined,
+    businessAddressProof: undefined,
   },
   businessDetails: { category: "", email: "", name: "", phoneNumber: "" },
   agreeTerms: false,
