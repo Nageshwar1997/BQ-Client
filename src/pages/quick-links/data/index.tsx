@@ -74,7 +74,7 @@ export const becomeSellerFormMapData: TBecomeSellerForm = {
         name: item,
         value: item,
       })),
-      autoComplete: "organization-title", // category-like autofill
+      autoComplete: "organization-title",
     },
   ],
   businessAddress: [
@@ -137,7 +137,7 @@ export const becomeSellerFormMapData: TBecomeSellerForm = {
     },
     {
       name: "gst",
-      label: "GST Number (Optional)",
+      label: "GST Number",
       placeholder: "Enter GST number",
       type: "text",
       autoComplete: "organization-tax-id",
