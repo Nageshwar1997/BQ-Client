@@ -39,7 +39,7 @@
       height: 24px !important;
     }
   }
-  .gm-control-active{
+  .gm-control-active {
     background: var(--primary-inverted) !important;
   }
 }

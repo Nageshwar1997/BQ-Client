@@ -47,13 +47,13 @@ const StoresGMap = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          console.log("position", position);
           setCenter({
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           });
         },
-        (err) => console.error("Error getting location:", err)
+        (err) => console.error("Error getting location:", err),
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
     }
   }, []);
