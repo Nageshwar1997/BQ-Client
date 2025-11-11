@@ -8,7 +8,7 @@ import {
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "../../components/button/Button";
-import { EyeIcon, EyeOffIcon } from "../../icons";
+import { EyeIcon, EyeOffIcon, UploadCloudIcon } from "../../icons";
 
 import Input from "../../components/input/Input";
 import Select from "../../components/input/Select";
@@ -23,8 +23,15 @@ import { IBecomeSellerInput, TPasswordField } from "../../types";
 import { becomeSellerDefaultValues, becomeSellerFormMapData } from "./data";
 import z from "zod";
 import { Link } from "react-router-dom";
+import useQueryParams from "../../hooks/useQueryParams";
+import Modal from "../../components/modal";
+import { ALLOWED_IMAGE_TYPES } from "../../constants";
+import FileInput from "../../components/input/FileInput";
 
 type FormValues = z.infer<typeof becomeSellerBaseSchema>;
+type TMapObj = typeof becomeSellerFormMapData; // the object type
+type TMapKey = keyof TMapObj; // keys
+type TMapValue = TMapObj[TMapKey]; // values
 
 function getErrorMessage<
   T extends keyof FormValues,
@@ -52,6 +59,13 @@ const InputField = ({
   >({
     password: false,
     confirmPassword: false,
+  });
+  const [documents, setDocuments] = useState<{
+    file: File | null;
+    preview: string | null;
+  }>({
+    file: null,
+    preview: null,
   });
   const name = parentKey
     ? (`${parentKey}.${field.name}` as Path<FormValues>)
@@ -84,6 +98,41 @@ const InputField = ({
           optionsClassName="!max-h-60"
           optionsPosition="bottom"
           error={errorMessage}
+        />
+      )}
+    />
+  ) : field.type === "file" ? (
+    <Controller
+      key={name}
+      name={name}
+      control={control}
+      render={({ field: controlField }) => (
+        <FileInput
+          label={field.label}
+          previews={
+            documents.preview ? [{ type: "image", url: documents.preview }] : []
+          }
+          errors={errorMessage ? [errorMessage] : []}
+          fileInputProps={{
+            name,
+            placeholder: field.placeholder,
+            accept: ALLOWED_IMAGE_TYPES.join(", "),
+            multiple: false,
+            onChange: (e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+              const preview = URL.createObjectURL(file);
+              setDocuments({ file, preview });
+              controlField.onChange(file);
+            },
+          }}
+          icons={{
+            right: {
+              icon: (
+                <UploadCloudIcon className="stroke-primary opacity-50 group-hover:opacity-100" />
+              ),
+            },
+          }}
         />
       )}
     />
@@ -128,6 +177,7 @@ const InputField = ({
 };
 
 const BecomeSeller = () => {
+  const { queryParams, removeParam } = useQueryParams();
   const {
     control,
     register,
@@ -144,8 +194,28 @@ const BecomeSeller = () => {
     alert("Form submitted successfully!");
   };
 
+  // useEffect(() => {
+  //   removeParam("requiredDocuments");
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
   return (
     <div className="p-6 max-w-5xl mx-auto space-y-10">
+      <Modal
+        isOpen={!!queryParams.requiredDocuments}
+        onClose={() => removeParam("requiredDocuments")}
+      >
+        <div className="border border-[red]">
+          <p>GST Registration Certificate</p>
+          <p>Income Tax Proof</p>
+          <p>Business Address Proof (Any 1)</p>
+          <ul>
+            <li>Electricity Bill</li>
+            <li>Rent Receipt</li>
+            <li>Shop Act License</li>
+          </ul>
+        </div>
+      </Modal>
       <header className="max-w-4xl mx-auto text-center space-y-3 sm:space-y-4">
         <h1 className="text-2xl base:text-3xl sm:text-4xl font-bold tracking-tight bg-clip-text bg-silver-duo text-transparent">
           Join Beautinique as a Seller
@@ -157,8 +227,10 @@ const BecomeSeller = () => {
       </header>
       <hr className="w-full h-px block border-none bg-gradient-line" />
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-        {Object.entries(becomeSellerFormMapData).map(([sectionKey, fields]) => (
-          <div key={sectionKey} className="flex flex-col gap-6">
+        {(
+          Object.entries(becomeSellerFormMapData) as [TMapKey, TMapValue][]
+        ).map(([sectionKey, fields]) => (
+          <div key={sectionKey as string} className="flex flex-col gap-6">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-full h-0.5 bg-accent-duo rounded-full" />
               <div className="w-fit px-2 whitespace-nowrap text-lg text-primary">
@@ -175,6 +247,7 @@ const BecomeSeller = () => {
                   control={control}
                   field={field}
                   errors={errors}
+                  parentKey={sectionKey}
                   register={register}
                   containerClassName={
                     field.label === "Full Name" ? "sm:col-span-2" : ""
@@ -184,7 +257,7 @@ const BecomeSeller = () => {
             </div>
           </div>
         ))}
-        {/* Submit button */}
+        {/* Terms & Conditions Checkbox */}
         <Checkbox
           register={register("agreeTerms")}
           checkboxProps={{ name: "agreeTerms" }}

@@ -259,7 +259,11 @@ export function zodFileOrUrl({
   ctx,
   showingFieldName,
   required = true,
+  maxImageFileSize = MAX_IMAGE_FILE_SIZE,
+  maxVideoFileSize = MAX_VIDEO_FILE_SIZE,
 }: {
+  maxVideoFileSize?: number;
+  maxImageFileSize?: number;
   fileOrUrl: unknown;
   field: string;
   showingFieldName?: string;
@@ -312,9 +316,9 @@ export function zodFileOrUrl({
     }
 
     // size check
-    const maxSize = isVideo ? MAX_VIDEO_FILE_SIZE : MAX_IMAGE_FILE_SIZE;
+    const maxSize = isVideo ? maxVideoFileSize : maxImageFileSize;
     if (fileOrUrl.size > maxSize) {
-      const sizeInMB = (fileOrUrl.size / MB).toFixed(1);
+      const sizeInMB = (fileOrUrl.size / MB).toFixed(2);
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: `${

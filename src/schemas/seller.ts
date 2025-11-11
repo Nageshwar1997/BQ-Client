@@ -8,6 +8,7 @@ import {
 import {
   ALLOWED_BUSINESSES,
   ALLOWED_COUNTRIES,
+  MB,
   regexes,
   STATES_AND_UNION_TERRITORIES,
 } from "../constants";
@@ -196,7 +197,13 @@ export const businessDetailsAddressSchema = z.object({
 
 const fileValidation = (field: string, showingFieldName?: string) =>
   z.unknown().superRefine((file, ctx) => {
-    zodFileOrUrl({ fileOrUrl: file, field, showingFieldName, ctx });
+    zodFileOrUrl({
+      fileOrUrl: file,
+      field,
+      showingFieldName,
+      ctx,
+      maxImageFileSize: 0.2 * MB,
+    });
   });
 export const requiredDocumentsSchema = z.object({
   gst: fileValidation("gst", "GST Registration Certificate"),
