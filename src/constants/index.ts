@@ -95,7 +95,7 @@ export const regexes: Record<TRegexes, RegExp> = {
   validGST: /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/i, // Check valid GST number
   validUrl:
     /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/[\w\-._~:/?#[\]@!$&'()*+,;=%]*)?$/i,
-  validPan: /^[A-Z]{5}[0-9]{4}[A-Z]$/,
+  validPan: /^[A-Za-z]{5}[0-9]{4}[A-Za-z]$/,
 };
 
 export const reviewInitialValues = {
