@@ -210,6 +210,7 @@ export const requiredDocumentsSchema = z.object({
   gst: fileValidation("gst", "GST Registration Certificate"),
   itr: fileValidation("itr", "Income Tax Proof"),
   addressProof: fileValidation("addressProof", "Address Proof"),
+  geoTagging: fileValidation("geoTagging", "Geo-Tagging Image"),
 });
 
 export const becomeSellerBaseSchema = z.object({

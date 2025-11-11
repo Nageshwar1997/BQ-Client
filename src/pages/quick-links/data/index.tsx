@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   ALLOWED_BUSINESSES,
   ALLOWED_COUNTRIES,
@@ -166,6 +167,13 @@ export const becomeSellerFormMapData: TBecomeSellerForm = {
       type: "file",
       autoComplete: "off",
     },
+    {
+      name: "geoTagging",
+      label: "Geo-Tagging Image",
+      placeholder: "Upload Shop Image With Geo-Tagging",
+      type: "file",
+      autoComplete: "off",
+    },
   ],
 };
 
@@ -191,6 +199,7 @@ export const becomeSellerDefaultValues = {
     gst: undefined,
     itr: undefined,
     addressProof: undefined,
+    geoTagging: undefined,
   },
   businessDetails: { category: "", email: "", name: "", phoneNumber: "" },
   agreeTerms: false,
@@ -198,10 +207,19 @@ export const becomeSellerDefaultValues = {
 
 const commonInstructions = [
   "Ensure that the document is clear and legible, with all details visible.",
-  `Upload the document in ${ALLOWED_IMAGE_TYPES.map((type) =>
-    type.split("/")[1].toUpperCase()
-  ).join(", ")} format.`,
-  "The maximum file size allowed is 0.5 MB.",
+  <>
+    Upload the document in{" "}
+    <span className="font-medium text-wrap">
+      {ALLOWED_IMAGE_TYPES.map((type) => type.split("/")[1].toUpperCase()).join(
+        ", "
+      )}
+    </span>{" "}
+    format.
+  </>,
+  <>
+    The maximum file size allowed is <span className="font-medium">0.5 MB</span>
+    .
+  </>,
 ];
 
 export const BECOME_A_SELLER_DOCUMENT_INSTRUCTIONS = {
@@ -242,5 +260,37 @@ export const BECOME_A_SELLER_DOCUMENT_INSTRUCTIONS = {
       "Shop and Establishment License",
       "Municipal Khata Copy",
     ],
+  },
+  geoTagging: {
+    title: "Geo-Tagging",
+    instructions: [
+      "The image must clearly show the business location from the outside or nearby surroundings.",
+      "Ensure that the location is accurate and corresponds to the business address provided.",
+      "The image should be well-lit, focused, and free of obstructions.",
+      "Include recognizable landmarks or building signage if possible to verify the location.",
+      <>
+        Use a trusted geo-tagging app such as{" "}
+        <Link
+          to="https://play.google.com/store/apps/details?id=com.gpsmapcamera.geotagginglocationonphoto"
+          target="_blank"
+          className="bg-clip-text bg-accent-duo text-transparent font-medium"
+        >
+          GPS Map Camera
+        </Link>
+        , or{" "}
+        <Link
+          to="https://play.google.com/store/apps/details?id=com.gonext.gpsphotolocation"
+          target="_blank"
+          className="bg-clip-text bg-accent-duo text-transparent font-medium"
+        >
+          GPS Photo
+        </Link>{" "}
+        to embed GPS coordinates in the image.
+      </>,
+
+      "Do not crop or edit the image in a way that removes location context.",
+      ...commonInstructions,
+    ],
+    options: [],
   },
 };
