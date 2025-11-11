@@ -8,7 +8,7 @@ import {
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "../../components/button/Button";
-import { EyeIcon, EyeOffIcon, InfoIcon } from "../../icons";
+import { InfoIcon } from "../../icons";
 
 import Input from "../../components/input/Input";
 import Select from "../../components/input/Select";
@@ -19,7 +19,7 @@ import {
   becomeSellerSchema,
 } from "../../schemas/seller";
 
-import { IBecomeSellerInput, TPasswordField } from "../../types";
+import { IBecomeSellerInput } from "../../types";
 import { becomeSellerDefaultValues, becomeSellerFormMapData } from "./data";
 import z from "zod";
 import { Link } from "react-router-dom";
@@ -55,12 +55,6 @@ const InputField = ({
   containerClassName,
 }: IBecomeSellerInput) => {
   const { setParams } = useQueryParams();
-  const [showPasswords, setShowPasswords] = useState<
-    Record<TPasswordField, boolean>
-  >({
-    password: false,
-    confirmPassword: false,
-  });
   const [documents, setDocuments] = useState<{
     file: File | null;
     preview: string | null;
@@ -144,11 +138,7 @@ const InputField = ({
       label={field.label}
       inputProps={{
         name,
-        type:
-          field.type === "password" &&
-          showPasswords[field.name as TPasswordField]
-            ? "text"
-            : field.type,
+        type: field.type,
         placeholder: field.placeholder,
         autoComplete: field.autoComplete,
       }}
@@ -156,20 +146,6 @@ const InputField = ({
       register={register(name)}
       error={errorMessage}
       icons={{
-        ...(field.type === "password" && {
-          right: {
-            icon: showPasswords[field.name as TPasswordField] ? (
-              <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-            ) : (
-              <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-            ),
-            onClick: () =>
-              setShowPasswords((prev) => ({
-                ...prev,
-                [field.name]: !prev[field.name as TPasswordField],
-              })),
-          },
-        }),
         ...(field.name === "phoneNumber" && {
           left: { text: "+91" },
         }),

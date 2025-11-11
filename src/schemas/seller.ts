@@ -38,66 +38,6 @@ export const personalDetailsSchema = z.object({
       },
     ],
   }),
-  password: zodStringRequired({
-    field: "password",
-    showingFieldName: "Password",
-    blockSingleSpace: true,
-    min: 6,
-    max: 20,
-    customRegexes: [
-      {
-        regex: regexes.atLeastOneUppercaseLetter,
-        message: "must contain at least one uppercase letter",
-      },
-      {
-        regex: regexes.atLeastOneLowercaseLetter,
-        message: "must contain at least one lowercase letter",
-      },
-      {
-        regex: regexes.atLeastOneDigit,
-        message: "must contain at least one number",
-      },
-      {
-        regex: regexes.atLeastOneSpecialCharacter,
-        message: "must contain at least one special character e.g. @$!%*?&#",
-      },
-      {
-        regex: regexes.password,
-        message:
-          "must contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
-      },
-    ],
-  }),
-  confirmPassword: zodStringRequired({
-    field: "confirmPassword",
-    showingFieldName: "Confirm Password",
-    blockSingleSpace: true,
-    min: 6,
-    max: 20,
-    customRegexes: [
-      {
-        regex: regexes.atLeastOneUppercaseLetter,
-        message: "must contain at least one uppercase letter",
-      },
-      {
-        regex: regexes.atLeastOneLowercaseLetter,
-        message: "must contain at least one lowercase letter",
-      },
-      {
-        regex: regexes.atLeastOneDigit,
-        message: "must contain at least one number",
-      },
-      {
-        regex: regexes.atLeastOneSpecialCharacter,
-        message: "must contain at least one special character e.g. @$!%*?&#",
-      },
-      {
-        regex: regexes.password,
-        message:
-          "must contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
-      },
-    ],
-  }),
 });
 
 export const businessDetailsSchema = z.object({

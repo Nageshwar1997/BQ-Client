@@ -30,20 +30,6 @@ export const becomeSellerFormMapData: TBecomeSellerForm = {
       type: "number",
       autoComplete: "tel",
     },
-    {
-      name: "password",
-      label: "Password",
-      placeholder: "Enter new password",
-      type: "password",
-      autoComplete: "new-password",
-    },
-    {
-      name: "confirmPassword",
-      label: "Confirm Password",
-      placeholder: "Re-enter your password",
-      type: "password",
-      autoComplete: "new-password",
-    },
   ],
   businessDetails: [
     {
@@ -182,8 +168,6 @@ export const becomeSellerDefaultValues = {
     name: "",
     email: "",
     phoneNumber: "",
-    password: "",
-    confirmPassword: "",
   },
   businessAddress: {
     address: "",
