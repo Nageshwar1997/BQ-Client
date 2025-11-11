@@ -76,7 +76,7 @@ export const businessDetailsAddressSchema = z.object({
     field: "address",
     showingFieldName: "Address",
     blockMultipleSpaces: true,
-    min: 2,
+    min: 3,
   }),
   landmark: zodStringOptional({
     field: "Landmark",
@@ -117,13 +117,14 @@ export const businessDetailsAddressSchema = z.object({
   pan: zodStringRequired({
     field: "pan",
     showingFieldName: "PAN Number",
+    min: 10,
+    max: 10,
     customRegexes: [{ regex: regexes.validPan, message: "must be valid" }],
   }).toUpperCase(),
   gst: zodStringRequired({
     field: "gst",
     showingFieldName: "GST Number",
     blockSingleSpace: true,
-    nonEmpty: false,
     min: 15,
     max: 15,
     customRegexes: [

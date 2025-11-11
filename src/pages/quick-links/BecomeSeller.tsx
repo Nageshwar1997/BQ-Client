@@ -49,6 +49,9 @@ function getErrorMessage<
   return fieldError?.message;
 }
 
+// =============================
+// InputField Component
+// =============================
 const InputField = ({
   field,
   parentKey,
@@ -56,7 +59,7 @@ const InputField = ({
   register,
   errors,
   containerClassName,
-  onResetDocuments,
+  registerResetFn,
 }: IBecomeSellerInput) => {
   const { setParams } = useQueryParams();
   const [documents, setDocuments] = useState<{
@@ -66,6 +69,7 @@ const InputField = ({
     file: null,
     preview: null,
   });
+
   const name = parentKey
     ? (`${parentKey}.${field.name}` as Path<FormValues>)
     : (field.name as Path<FormValues>);
@@ -78,75 +82,87 @@ const InputField = ({
       )
     : undefined;
 
+  // Local reset logic
   const resetDocuments = () => setDocuments({ file: null, preview: null });
 
+  // Register reset function once
   useEffect(() => {
-    if (onResetDocuments) {
-      onResetDocuments();
-      resetDocuments();
+    if (registerResetFn) {
+      registerResetFn(resetDocuments);
     }
-  }, [onResetDocuments]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  return field.type === "select" ? (
-    <Controller
-      key={name}
-      name={name}
-      control={control}
-      render={({ field: { value, onChange } }) => (
-        <Select
-          containerClassName={containerClassName}
-          label={field.label}
-          options={field.options?.length ? field.options : []}
-          selectProps={{
-            value: value?.toString(),
-            onChange,
-            placeholder: field.placeholder,
-            disabled: field.disabled,
-          }}
-          optionsClassName="!max-h-60"
-          optionsPosition="bottom"
-          error={errorMessage}
-        />
-      )}
-    />
-  ) : field.type === "file" ? (
-    <Controller
-      key={name}
-      name={name}
-      control={control}
-      render={({ field: controlField }) => (
-        <FileInput
-          label={field.label}
-          previews={
-            documents.preview ? [{ type: "image", url: documents.preview }] : []
-          }
-          errors={errorMessage ? [errorMessage] : []}
-          fileInputProps={{
-            name,
-            placeholder: field.placeholder,
-            accept: ALLOWED_IMAGE_TYPES.join(", "),
-            multiple: false,
-            onChange: (e) => {
-              const file = e.target.files?.[0];
-              if (!file) return;
-              const preview = URL.createObjectURL(file);
-              setDocuments({ file, preview });
-              controlField.onChange(file);
-            },
-          }}
-          icons={{
-            right: {
-              icon: (
-                <InfoIcon className="fill-primary opacity-50 hover:opacity-100" />
-              ),
-              onClick: () => setParams({ requiredDocument: field.name }),
-            },
-          }}
-          mediaCarouselClassName="w-fit"
-        />
-      )}
-    />
-  ) : (
+  if (field.type === "select") {
+    return (
+      <Controller
+        key={name}
+        name={name}
+        control={control}
+        render={({ field: { value, onChange } }) => (
+          <Select
+            containerClassName={containerClassName}
+            label={field.label}
+            options={field.options?.length ? field.options : []}
+            selectProps={{
+              value: value?.toString(),
+              onChange,
+              placeholder: field.placeholder,
+              disabled: field.disabled,
+            }}
+            optionsClassName="!max-h-60"
+            optionsPosition="bottom"
+            error={errorMessage}
+          />
+        )}
+      />
+    );
+  }
+
+  if (field.type === "file") {
+    return (
+      <Controller
+        key={name}
+        name={name}
+        control={control}
+        render={({ field: controlField }) => (
+          <FileInput
+            label={field.label}
+            previews={
+              documents.preview
+                ? [{ type: "image", url: documents.preview }]
+                : []
+            }
+            errors={errorMessage ? [errorMessage] : []}
+            fileInputProps={{
+              name,
+              placeholder: field.placeholder,
+              accept: ALLOWED_IMAGE_TYPES.join(", "),
+              multiple: false,
+              onChange: (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                const preview = URL.createObjectURL(file);
+                setDocuments({ file, preview });
+                controlField.onChange(file);
+              },
+            }}
+            icons={{
+              right: {
+                icon: (
+                  <InfoIcon className="fill-primary opacity-50 hover:opacity-100" />
+                ),
+                onClick: () => setParams({ requiredDocument: field.name }),
+              },
+            }}
+            mediaCarouselClassName="w-fit"
+          />
+        )}
+      />
+    );
+  }
+
+  return (
     <Input
       key={name}
       label={field.label}
@@ -172,6 +188,9 @@ const InputField = ({
   );
 };
 
+// =============================
+// BecomeSeller Component
+// =============================
 const BecomeSeller = () => {
   const { user, isAuthenticated } = useUserStore();
   const { navigate } = usePathParams();
@@ -194,7 +213,7 @@ const BecomeSeller = () => {
     const formData = new FormData();
     formData.append("agreeTerms", String(data.agreeTerms));
     formData.append("businessAddress", JSON.stringify(data.businessAddress));
-    formData.append("personalDetails", JSON.stringify(data.personalDetails));
+    // formData.append("personalDetails", JSON.stringify(data.personalDetails));
     formData.append("businessDetails", JSON.stringify(data.businessDetails));
 
     Object.entries(data.requiredDocuments).forEach(([key, file]) => {
@@ -202,6 +221,7 @@ const BecomeSeller = () => {
         formData.append(key, file);
       }
     });
+
     mutateAsync(formData, {
       onSuccess: () => {
         onReset();
@@ -270,10 +290,9 @@ const BecomeSeller = () => {
                   containerClassName={
                     field.label === "Full Name" ? "sm:col-span-2" : ""
                   }
-                  onResetDocuments={() => {
-                    documentFieldsRefs.current[
-                      `${sectionKey}.${field.name}`
-                    ]?.();
+                  registerResetFn={(resetFn) => {
+                    documentFieldsRefs.current[`${sectionKey}.${field.name}`] =
+                      resetFn;
                   }}
                 />
               ))}
