@@ -191,7 +191,7 @@ const BecomeSeller = () => {
     alert("Form submitted successfully!");
   };
 
-  const setPersonalDefaultDetails = () => {
+  const setDefaultPersonalDetails = () => {
     if (isAuthenticated && user) {
       setValue("personalDetails.name", `${user.firstName} ${user.lastName}`);
       setValue("personalDetails.email", user.email);
@@ -201,12 +201,12 @@ const BecomeSeller = () => {
 
   const onReset = () => {
     reset();
-    setPersonalDefaultDetails();
+    setDefaultPersonalDetails();
     Object.values(documentFieldsRefs.current).forEach((resetFn) => resetFn());
   };
 
   useEffect(() => {
-    setPersonalDefaultDetails();
+    setDefaultPersonalDetails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, user]);
 
