@@ -130,6 +130,7 @@ const InputField = ({
               onClick: () => setParams({ requiredDocument: field.name }),
             },
           }}
+          mediaCarouselClassName="w-fit"
         />
       )}
     />

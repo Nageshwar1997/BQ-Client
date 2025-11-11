@@ -72,7 +72,7 @@ const MediaCarouselWithParentMedia = ({
           )}
         </div>
 
-        {needButtonControls && (
+        {needButtonControls && data.length > 1 && (
           <div className="w-full py-2 absolute bottom-0 text-sm text-center flex items-center justify-center gap-5">
             <button
               type="button"
@@ -103,15 +103,19 @@ const MediaCarouselWithParentMedia = ({
           </div>
         )}
       </div>
-      <hr className="h-px mb-4 block border-none bg-gradient-line" />
       {/* Thumbnails */}
-      <MediaCarousel
-        data={data}
-        selected={currentIndex}
-        onClick={setCurrentIndex}
-        handleRemove={handleRemove}
-        thumbnailRefs={thumbnailRefs}
-      />
+      {data.length > 1 && (
+        <>
+          <hr className="h-px mb-4 block border-none bg-gradient-line" />
+          <MediaCarousel
+            data={data}
+            selected={currentIndex}
+            onClick={setCurrentIndex}
+            handleRemove={handleRemove}
+            thumbnailRefs={thumbnailRefs}
+          />
+        </>
+      )}
     </div>
   );
 };

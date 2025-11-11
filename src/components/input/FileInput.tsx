@@ -136,6 +136,8 @@ const MainSection = ({
 const FileInput = ({
   label = "",
   containerClassName = "",
+  mediaModalClassName = "",
+  mediaCarouselClassName = "",
   errors = [],
   previews = [],
   handleRemoveImage,
@@ -173,7 +175,7 @@ const FileInput = ({
       )}
       {previews?.length > 0 && (
         <MediaCarousel
-          className="border border-primary-10 bg-smoke-eerie rounded-lg p-2 [&>div]:justify-start [&>div>div]:w-14 [&>div>div]:h-14 [&>div>div]:md:w-16 [&>div>div]:md:h-16 [&>div>div]:lg:w-20 [&>div>div]:lg:h-20"
+          className={`border border-primary-10 bg-smoke-eerie rounded-lg p-2 [&>div]:justify-start [&>div>div]:w-14 [&>div>div]:h-14 [&>div>div]:md:w-16 [&>div>div]:md:h-16 [&>div>div]:lg:w-20 [&>div>div]:lg:h-20 ${mediaCarouselClassName}`}
           gradientClassName="!w-9 lg:!w-20"
           data={previews}
           onClick={(i) => {
@@ -185,6 +187,7 @@ const FileInput = ({
       )}
       {showImageModal && currentIndex !== null && (
         <MediaModal
+          className={mediaModalClassName}
           currentIndex={currentIndex}
           onClose={setShowImageModal}
           opened={showImageModal}

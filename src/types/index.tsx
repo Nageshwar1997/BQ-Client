@@ -107,6 +107,8 @@ export interface IFileInput extends Omit<TBaseInput, "error"> {
   errors?: string[];
   handleRemoveImage?: (index: number) => void;
   previews?: TMediaOption[];
+  mediaModalClassName?: string;
+  mediaCarouselClassName?: string;
 }
 
 export interface TextItem {
