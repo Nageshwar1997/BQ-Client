@@ -73,7 +73,7 @@ const ReferFriend = () => {
             inputProps={{
               value: referralLink,
               type: "url",
-              readOnly: true,
+              disabled: true,
               className: "!select-none pointer-events-none",
             }}
             containerClassName="max-w-lg"

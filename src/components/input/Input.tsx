@@ -59,7 +59,7 @@ const Input = ({
             {...inputProps}
             {...(needRef && { ref: inputRef })}
             id={inputProps.name}
-            disabled={inputProps?.readOnly}
+            disabled={inputProps?.disabled}
             onChange={handleChange}
             onWheel={(event) =>
               inputProps?.type === "number" ? event.currentTarget.blur() : null
@@ -89,7 +89,7 @@ const Input = ({
           )}
         </div>
       </div>
-      {!inputProps?.readOnly && error && (
+      {!inputProps?.disabled && error && (
         <p className="w-full text-start flex gap-1 items-center text-[11px] leading-tight text-red-500">
           <InfoIcon className="min-w-3 min-h-3 w-3 h-3 md:min-w-4 md:min-h-4 md:w-4 md:h-4 fill-red-500" />
           <span className="leading-none line-clamp-2">{error}</span>
