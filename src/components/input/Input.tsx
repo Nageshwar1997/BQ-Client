@@ -60,11 +60,11 @@ const Input = ({
             {...(needRef && { ref: inputRef })}
             id={inputProps.name}
             disabled={inputProps?.disabled}
-            onChange={handleChange}
+            onChange={!inputProps.disabled ? handleChange : undefined}
             onWheel={(event) =>
               inputProps?.type === "number" ? event.currentTarget.blur() : null
             }
-            className={`flex-1 w-full h-full outline-none border-none focus:outline-none focus:border-none bg-transparent font-normal text-sm p-3 text-primary placeholder:text-primary-50 placeholder:text-sm autofill-effect line-clamp-1 ${
+            className={`flex-1 w-full h-full outline-none border-none focus:outline-none focus:border-none bg-transparent font-normal text-sm p-3 text-primary placeholder:text-primary-50 placeholder:text-sm autofill-effect line-clamp-1 disabled:cursor-not-allowed ${
               icons?.left?.icon && !icons?.right?.icon
                 ? "pl-0"
                 : !icons?.left?.icon && icons?.right?.icon

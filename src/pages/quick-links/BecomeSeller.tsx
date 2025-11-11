@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Controller,
   FieldError,
@@ -27,6 +27,7 @@ import useQueryParams from "../../hooks/useQueryParams";
 import DocumentInstructionsModal from "./children/DocumentInstructionsModal";
 import { ALLOWED_IMAGE_TYPES } from "../../constants";
 import FileInput from "../../components/input/FileInput";
+import { useUserStore } from "../../store/user.store";
 
 type FormValues = z.infer<typeof becomeSellerBaseSchema>;
 type TMapObj = typeof becomeSellerFormMapData; // the object type
@@ -139,6 +140,7 @@ const InputField = ({
       inputProps={{
         name,
         type: field.type,
+        disabled: field.disabled,
         placeholder: field.placeholder,
         autoComplete: field.autoComplete,
       }}
@@ -155,12 +157,14 @@ const InputField = ({
 };
 
 const BecomeSeller = () => {
+  const { user, isAuthenticated } = useUserStore();
   const {
     control,
+    formState: { errors },
+    handleSubmit,
     register,
     reset,
-    handleSubmit,
-    formState: { errors },
+    setValue,
   } = useForm<z.infer<typeof becomeSellerSchema>>({
     resolver: zodResolver(becomeSellerSchema),
     defaultValues: becomeSellerDefaultValues,
@@ -170,6 +174,15 @@ const BecomeSeller = () => {
     console.log("Seller data:", data);
     alert("Form submitted successfully!");
   };
+
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      setValue("personalDetails.name", `${user.firstName} ${user.lastName}`);
+      setValue("personalDetails.email", user.email);
+      setValue("personalDetails.phoneNumber", user.phoneNumber);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, user]);
 
   return (
     <div className="p-6 max-w-5xl mx-auto space-y-10">

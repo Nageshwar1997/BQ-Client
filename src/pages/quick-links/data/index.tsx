@@ -15,6 +15,7 @@ export const becomeSellerFormMapData: TBecomeSellerForm = {
       placeholder: "Enter your full name",
       type: "text",
       autoComplete: "name",
+      disabled: true,
     },
     {
       name: "email",
@@ -22,6 +23,7 @@ export const becomeSellerFormMapData: TBecomeSellerForm = {
       placeholder: "Enter your email address",
       type: "email",
       autoComplete: "email",
+      disabled: true,
     },
     {
       name: "phoneNumber",
@@ -29,6 +31,7 @@ export const becomeSellerFormMapData: TBecomeSellerForm = {
       placeholder: "Enter your phone number",
       type: "number",
       autoComplete: "tel",
+      disabled: true,
     },
   ],
   businessDetails: [
@@ -114,6 +117,7 @@ export const becomeSellerFormMapData: TBecomeSellerForm = {
         name: country,
         value: country,
       })),
+      disabled: true,
       autoComplete: "country-name",
     },
     {
