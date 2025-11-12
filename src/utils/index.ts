@@ -222,9 +222,10 @@ function getPosterFromBlobVideo(
 }
 
 export const formatDate = (
-  date: Date | string | number,
+  date: Date | string | number | undefined | null,
   format: TPossibleTimeFormats = "DD-MM-YYYY"
 ) => {
+  if (!date) return null;
   return dayjs(date).format(format);
 };
 

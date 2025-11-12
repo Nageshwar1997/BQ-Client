@@ -28,6 +28,124 @@ const OrderDetails = () => {
 
   const order: IOrder = useMemo(() => data?.order || {}, [data]);
 
+  const orderSummaryFields = [
+    {
+      field: "Status",
+      value: order.order_result?.order_status,
+      className: `[&>span:nth-child(2)]:${
+        ORDER_STATUS_CLASSES[order.order_result?.order_status]
+      } [&>span:nth-child(1)]:text-primary bg-transparent`,
+    },
+    {
+      field: "Payment Mode",
+      value: order.razorpay_payment_result?.payment_mode,
+    },
+    {
+      field: "Order Receipt",
+      value: order.order_result?.order_receipt?.split("_")?.[2], //LINK - To Remove "order_receipt" text
+    },
+    { field: "Total Price", value: toINRCurrency(order.order_result?.price) },
+    {
+      field: "Discount",
+      value:
+        order.order_result?.discount > 0
+          ? `${order.order_result?.discount?.toFixed(2)}%`
+          : null,
+    },
+    {
+      field: "Delivery Charges",
+      value:
+        order.order_result?.charges > 0
+          ? toINRCurrency(order.order_result?.charges)
+          : null,
+    },
+  ];
+
+  const paymentFields = [
+    { field: "Method", value: order.payment_details?.method },
+    { field: "Wallet", value: order.payment_details?.wallet },
+    { field: "RRN", value: order.payment_details?.upi?.acquirer_data?.rrn },
+    { field: "VPA", value: order.payment_details?.upi?.acquirer_data?.vpa },
+    {
+      field: "TransactionId",
+      value:
+        order.payment_details?.netbanking?.acquirer_data?.bank_transaction_id,
+    },
+    {
+      field: "Authcode",
+      value: order.payment_details?.card?.acquirer_data?.auth_code,
+    },
+    { field: "Name", value: order.payment_details?.card?.card?.name },
+    { field: "Type", value: order.payment_details?.card?.card.type },
+    { field: "Issuer", value: order.payment_details?.card?.card.issuer },
+    {
+      field: "ID",
+      value: order.payment_details?.card?.card.id,
+      className: "[&>span:nth-child(2)]:uppercase",
+    },
+    {
+      field: "Card No.",
+      value: order.payment_details?.card?.card.last4
+        ? `XXXX XXXX XXXX ${order.payment_details.card.card.last4}`
+        : null,
+    },
+    { field: "Card Co.", value: order.payment_details?.card?.card.network },
+    { field: "Bank", value: order.payment_details?.bank },
+    {
+      field: "Phone No.",
+      value:
+        order.payment_details?.contact &&
+        formatPhoneNumber(order.payment_details?.contact),
+    },
+    { field: "Email", value: order.payment_details?.email },
+    { field: "Refund Status", value: order.payment_details?.refund_status },
+    {
+      field: "Tax",
+      value:
+        order.payment_details?.tax && order.payment_details?.tax > 0
+          ? toINRCurrency(order.payment_details.tax)
+          : null,
+    },
+    {
+      field: "Platform Fee",
+      value:
+        order.payment_details?.fee && order.payment_details?.fee > 0
+          ? toINRCurrency(order.payment_details.fee)
+          : null,
+    },
+    {
+      field: "Status",
+      value: order.razorpay_payment_result?.rzp_payment_status,
+    },
+    {
+      field: "Paid On",
+      value: formatDate(order.order_result?.paid_at, "lll"),
+    },
+    {
+      field: order.order_result?.delivered_at
+        ? "Delivered On"
+        : "Exp. Delivery",
+      value: order.order_result?.paid_at
+        ? formatDate(
+            order.order_result?.delivered_at ||
+              new Date(
+                new Date(order.order_result.paid_at).getTime() +
+                  7 * 24 * 60 * 60 * 1000
+              ),
+            "lll"
+          )
+        : null,
+    },
+    {
+      field: "Cancelled On",
+      value: formatDate(order.order_result?.cancelled_at, "lll"),
+    },
+    {
+      field: "Returned On",
+      value: formatDate(order.order_result?.returned_at, "lll"),
+    },
+  ];
+
   return (
     <div className="p-6">
       {order._id ? (
@@ -39,44 +157,32 @@ const OrderDetails = () => {
             <p className="text-tertiary">Order ID: {order._id}</p>
           </header>
           <section className="w-full flex flex-col border shadow-md border-primary-30 rounded-xl opacity-90 pb-2">
-            <div className="py-2 px-4 border-b border-b-primary-30 mb-2">
+            <div className="py-2 px-4 border-b border-b-primary-30 mb-2 flex items-center justify-between">
               <h3 className="w-fit text-lg font-bold bg-clip-text text-transparent bg-accent-duo">
                 Order Summary
               </h3>
+              {order.razorpay_payment_result.rzp_payment_status === "PAID" &&
+                ["CONFIRMED", "DELIVERED"].includes(
+                  order.order_result.order_status
+                ) && (
+                  <Button
+                    content={`${
+                      order.order_result.order_status === "CONFIRMED"
+                        ? "Cancel"
+                        : order.order_result.order_status === "DELIVERED"
+                        ? "Return"
+                        : ""
+                    } Order`}
+                    pattern="tertiary"
+                    className="max-w-fit !rounded-lg !px-x !py-2"
+                    buttonProps={{ disabled: true }}
+                  />
+                )}
             </div>
-            <div className="px-4 grid md:grid-cols-2 gap-3">
-              <div>
-                <Field
-                  field="Status"
-                  value={order.order_result?.order_status}
-                  className={`[&>span:nth-child(2)]:${
-                    ORDER_STATUS_CLASSES[order.order_result?.order_status]
-                  } [&>span:nth-child(1)]:text-primary bg-transparent`}
-                />
-                <Field
-                  field="Payment Mode"
-                  value={order.razorpay_payment_result?.payment_mode}
-                />
-                <Field
-                  field="Order Receipt"
-                  value={order.order_result?.order_receipt}
-                  className="[&>span:nth-child(2)]:uppercase"
-                />
-              </div>
-              <div>
-                <Field
-                  field="Total Price"
-                  value={toINRCurrency(order.order_result?.price)}
-                />
-                <Field
-                  field="Discount"
-                  value={`${order.order_result?.discount?.toFixed(2)}%`}
-                />
-                <Field
-                  field="Delivery Charges"
-                  value={toINRCurrency(order.order_result?.charges)}
-                />
-              </div>
+            <div className="px-4 grid sm:grid-cols-2 gap-0.5 gap-x-3">
+              {orderSummaryFields.map((f) => (
+                <Field key={f.field} {...f} />
+              ))}
             </div>
           </section>
           {order.products?.length > 0 && (
@@ -169,159 +275,10 @@ const OrderDetails = () => {
                 Payment Details
               </h3>
             </div>
-            <div className="px-4 grid md:grid-cols-2 gap-3 text-sm/5">
-              {/* Payment Details */}
-              {order.payment_details && (
-                <div>
-                  {/* Method */}
-                  <Field field="Method" value={order.payment_details.method} />
-                  {/* Wallet */}
-                  <Field field="Wallet" value={order.payment_details.wallet} />
-                  {/* UPI */}
-                  <Field
-                    field="RRN"
-                    value={order.payment_details.upi?.acquirer_data?.rrn}
-                  />
-                  <Field
-                    field="VPA"
-                    value={order.payment_details.upi?.acquirer_data?.vpa}
-                  />
-                  {/* Netbanking */}
-                  <Field
-                    field="TransactionId"
-                    value={
-                      order.payment_details.netbanking?.acquirer_data
-                        .bank_transaction_id
-                    }
-                  />
-                  {/* Card */}
-                  <Field
-                    field="Authcode"
-                    value={order.payment_details.card?.acquirer_data?.auth_code}
-                  />
-                  <Field
-                    field="Name"
-                    value={order.payment_details.card?.card.name}
-                  />
-                  <Field
-                    field="Type"
-                    value={order.payment_details.card?.card.type}
-                  />
-                  <Field
-                    field="Issuer"
-                    value={order.payment_details.card?.card.issuer}
-                  />
-                  <Field
-                    field="ID"
-                    value={order.payment_details.card?.card.id}
-                    className="[&>span:nth-child(2)]:uppercase"
-                  />
-                  <Field
-                    field="Card No."
-                    value={
-                      order.payment_details.card?.card.last4 &&
-                      `XXXX XXXX XXXX ${order.payment_details.card.card.last4}`
-                    }
-                  />
-                  <Field
-                    field="Card Co."
-                    value={order.payment_details.card?.card.network}
-                  />
-                  <Field field="Bank" value={order.payment_details.bank} />
-                  <Field
-                    field="Phone No."
-                    value={formatPhoneNumber(order.payment_details.contact)}
-                  />
-                  <Field
-                    field="Email"
-                    value={formatPhoneNumber(order.payment_details.email)}
-                  />
-                  <Field
-                    field="Refund Status"
-                    value={order.payment_details.refund_status}
-                  />
-                  <Field
-                    field="Tax"
-                    value={
-                      order.payment_details.tax > 0
-                        ? toINRCurrency(order.payment_details.tax)
-                        : null
-                    }
-                  />
-                  <Field
-                    field="Platform Fee"
-                    value={
-                      order.payment_details.fee > 0
-                        ? toINRCurrency(order.payment_details.fee)
-                        : null
-                    }
-                  />
-                </div>
-              )}
-              <div>
-                <Field
-                  field="Status"
-                  value={order.razorpay_payment_result?.rzp_payment_status}
-                />
-                <Field
-                  field="Paid On"
-                  value={
-                    order.order_result.paid_at &&
-                    formatDate(order.order_result.paid_at, "llll")
-                  }
-                />
-                <Field
-                  field={`${
-                    order.order_result.delivered_at
-                      ? "Delivered On"
-                      : "Exp. Delivery"
-                  }`}
-                  value={
-                    order.order_result.delivered_at
-                      ? formatDate(order.order_result.delivered_at, "llll")
-                      : order.order_result.paid_at
-                      ? formatDate(
-                          new Date(
-                            new Date(order.order_result.paid_at).getTime() +
-                              7 * 24 * 60 * 60 * 1000
-                          ),
-                          "llll"
-                        )
-                      : null
-                  }
-                />
-                <Field
-                  field="Cancelled On"
-                  value={
-                    order.order_result.cancelled_at &&
-                    formatDate(order.order_result.cancelled_at, "llll")
-                  }
-                />
-                <Field
-                  field="Returned On"
-                  value={
-                    order.order_result.returned_at &&
-                    formatDate(order.order_result.returned_at, "llll")
-                  }
-                />
-                {order.razorpay_payment_result.rzp_payment_status === "PAID" &&
-                  ["CONFIRMED", "DELIVERED"].includes(
-                    order.order_result.order_status
-                  ) && (
-                    <Button
-                      content={`${
-                        order.order_result.order_status === "CONFIRMED"
-                          ? "Cancel"
-                          : order.order_result.order_status === "DELIVERED"
-                          ? "Return"
-                          : ""
-                      } Order`}
-                      pattern="primary"
-                      className="max-w-[200px] mt-4 !rounded-lg !px-x !py-2"
-                      buttonProps={{ disabled: true }}
-                    />
-                  )}
-              </div>
+            <div className="px-4 grid sm:grid-cols-2 gap-1 gap-x-3 text-sm/5">
+              {paymentFields.map((f) => (
+                <Field key={f.field} {...f} />
+              ))}
             </div>
           </section>
         </div>
