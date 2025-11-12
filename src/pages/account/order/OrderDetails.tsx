@@ -410,9 +410,7 @@ const OrderDetails = () => {
           }
           descriptionText={isError ? "Please try again or refresh page" : ""}
           loadingText="Please Wait..."
-          className={`min-h-[50dvh] ${
-            isLoading ? "px-0 border border-[red]" : ""
-          }`}
+          className={`min-h-[50dvh] ${isLoading ? "px-0" : ""}`}
           type={isLoading ? "loading" : isError ? "error" : "empty"}
         />
       )}
