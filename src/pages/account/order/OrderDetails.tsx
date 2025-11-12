@@ -2,11 +2,25 @@ import { useMemo } from "react";
 import { useGetOrderById } from "../../../api/order/order.service";
 import usePathParams from "../../../hooks/usePathParams";
 import { formatDate, formatPhoneNumber, toINRCurrency } from "../../../utils";
-import { IOrder } from "../../../types";
+import { ClassName, IOrder } from "../../../types";
 import AddressInfo from "../../address/children/AddressInfo";
 import { ORDER_STATUS_CLASSES } from "../../../constants";
 import Button from "../../../components/button/Button";
 import ShowApiStatus from "../../../components/api-status/ShowApiStatus";
+
+const Field = ({
+  field,
+  value,
+  className = "",
+}: { field: string; value?: string | null } & ClassName) => {
+  if (!value) return;
+  return (
+    <p className={className}>
+      <span className="font-medium">{field}: </span>
+      <span className="font-semibold">{value}</span>
+    </p>
+  );
+};
 
 const OrderDetails = () => {
   const { pathParams } = usePathParams();
@@ -32,48 +46,36 @@ const OrderDetails = () => {
             </div>
             <div className="px-4 grid md:grid-cols-2 gap-3">
               <div>
-                <p>
-                  <span className="font-medium">Status: </span>
-                  <span
-                    className={`uppercase font-semibold ${
-                      ORDER_STATUS_CLASSES[order.order_result?.order_status]
-                    } bg-transparent`}
-                  >
-                    {order.order_result?.order_status}
-                  </span>
-                </p>
-                <p>
-                  <span className="font-medium">Payment Mode: </span>
-                  <span className="uppercase font-semibold">
-                    {order.razorpay_payment_result?.payment_mode}
-                  </span>
-                </p>
-                <p>
-                  <span className="font-medium">Order Receipt: </span>
-                  <span className="uppercase font-semibold">
-                    {order.order_result?.order_receipt}
-                  </span>
-                </p>
+                <Field
+                  field="Status"
+                  value={order.order_result?.order_status}
+                  className={`[&>span:nth-child(2)]:${
+                    ORDER_STATUS_CLASSES[order.order_result?.order_status]
+                  } [&>span:nth-child(1)]:text-primary bg-transparent`}
+                />
+                <Field
+                  field="Payment Mode"
+                  value={order.razorpay_payment_result?.payment_mode}
+                />
+                <Field
+                  field="Order Receipt"
+                  value={order.order_result?.order_receipt}
+                  className="[&>span:nth-child(2)]:uppercase"
+                />
               </div>
               <div>
-                <p>
-                  <span className="font-medium">Total Price: </span>
-                  <span className="font-semibold">
-                    {toINRCurrency(order.order_result?.price)}
-                  </span>
-                </p>
-                <p>
-                  <span className="font-medium">Discount: </span>
-                  <span className="font-semibold">
-                    {order.order_result?.discount?.toFixed(2)}%
-                  </span>
-                </p>
-                <p>
-                  <span className="font-medium">Delivery Charges: </span>
-                  <span className="font-semibold">
-                    {toINRCurrency(order.order_result?.charges)}
-                  </span>
-                </p>
+                <Field
+                  field="Total Price"
+                  value={toINRCurrency(order.order_result?.price)}
+                />
+                <Field
+                  field="Discount"
+                  value={`${order.order_result?.discount?.toFixed(2)}%`}
+                />
+                <Field
+                  field="Delivery Charges"
+                  value={toINRCurrency(order.order_result?.charges)}
+                />
               </div>
             </div>
           </section>
@@ -172,215 +174,136 @@ const OrderDetails = () => {
               {order.payment_details && (
                 <div>
                   {/* Method */}
-                  <p>
-                    <span className="font-medium">Method: </span>
-                    <span className="font-semibold">
-                      {order.payment_details.method}
-                    </span>
-                  </p>
+                  <Field field="Method" value={order.payment_details.method} />
                   {/* Wallet */}
-                  {order.payment_details.wallet && (
-                    <p>
-                      <span className="font-medium">Wallet: </span>
-                      <span className="font-semibold capitalize">
-                        {order.payment_details.wallet}
-                      </span>
-                    </p>
-                  )}
+                  <Field field="Wallet" value={order.payment_details.wallet} />
                   {/* UPI */}
-                  {order.payment_details.upi?.acquirer_data && (
-                    <>
-                      <p>
-                        <span className="font-medium">TransactionId : </span>
-                        <span className="font-semibold">
-                          {
-                            order.payment_details.upi?.acquirer_data
-                              .upi_transaction_id
-                          }
-                        </span>
-                      </p>
-                      <p>
-                        <span className="font-medium">RRN: </span>
-                        <span className="font-semibold">
-                          {order.payment_details.upi?.acquirer_data.rrn}
-                        </span>
-                      </p>
-                      <p>
-                        <span className="font-medium">VPA: </span>
-                        <span className="font-semibold">
-                          {order.payment_details.upi?.acquirer_data.vpa}
-                        </span>
-                      </p>
-                    </>
-                  )}
+                  <Field
+                    field="RRN"
+                    value={order.payment_details.upi?.acquirer_data?.rrn}
+                  />
+                  <Field
+                    field="VPA"
+                    value={order.payment_details.upi?.acquirer_data?.vpa}
+                  />
                   {/* Netbanking */}
-                  {order.payment_details.netbanking?.acquirer_data && (
-                    <p>
-                      <span className="font-medium">TransactionId : </span>
-                      <span className="font-semibold">
-                        {
-                          order.payment_details.netbanking?.acquirer_data
-                            .bank_transaction_id
-                        }
-                      </span>
-                    </p>
-                  )}
+                  <Field
+                    field="TransactionId"
+                    value={
+                      order.payment_details.netbanking?.acquirer_data
+                        .bank_transaction_id
+                    }
+                  />
                   {/* Card */}
-                  {order.payment_details.card && (
-                    <>
-                      {order.payment_details.card?.acquirer_data && (
-                        <p>
-                          <span className="font-medium">Authcode: </span>
-                          <span className="font-semibold">
-                            {
-                              order.payment_details.card?.acquirer_data
-                                .auth_code
-                            }
-                          </span>
-                        </p>
-                      )}
-                      {order.payment_details.card.card.name && (
-                        <p>
-                          <span className="font-medium">Name: </span>
-                          <span className="font-semibold">
-                            {order.payment_details.card.card.name}
-                          </span>
-                        </p>
-                      )}
-                      <p>
-                        <span className="font-medium">Type: </span>
-                        <span className="font-semibold uppercase">
-                          {order.payment_details.card.card.type}
-                        </span>
-                      </p>
-                      <p>
-                        <span className="font-medium">Issuer: </span>
-                        <span className="font-semibold">
-                          {order.payment_details.card.card.issuer}
-                        </span>
-                      </p>
-                      <p>
-                        <span className="font-medium">ID: </span>
-                        <span className="font-semibold uppercase">
-                          {order.payment_details.card.card.id}
-                        </span>
-                      </p>
-                      <p>
-                        <span className="font-medium">Number: </span>
-                        <span className="font-semibold">
-                          XXXX XXXX XXXX {order.payment_details.card.card.last4}
-                        </span>
-                      </p>
-                      <p>
-                        <span className="font-medium">Network: </span>
-                        <span className="font-semibold">
-                          {order.payment_details.card.card.network}
-                        </span>
-                      </p>
-                    </>
-                  )}
-                  {order.payment_details.bank && (
-                    <p>
-                      <span className="font-medium">Bank: </span>
-                      <span className="font-semibold">
-                        {order.payment_details.bank}
-                      </span>
-                    </p>
-                  )}
-                  <p>
-                    <span className="font-medium">Phone No.: </span>
-                    <span className="font-semibold">
-                      {formatPhoneNumber(order.payment_details.contact)}
-                    </span>
-                  </p>
-                  <p>
-                    <span className="font-medium">Email: </span>
-                    <span className="font-semibold">
-                      {order.payment_details.email}
-                    </span>
-                  </p>
-                  {order.payment_details.refund_status && (
-                    <p>
-                      <span className="font-medium">Refund Status: </span>
-                      <span className="font-semibold">
-                        {order.payment_details.refund_status}
-                      </span>
-                    </p>
-                  )}
-                  {order.payment_details.tax > 0 && (
-                    <p>
-                      <span className="font-medium">Tax: </span>
-                      <span className="font-semibold">
-                        {toINRCurrency(order.payment_details.tax)}
-                      </span>
-                    </p>
-                  )}
-                  {order.payment_details.fee && (
-                    <p>
-                      <span className="font-medium">Platform Fee: </span>
-                      <span className="font-semibold">
-                        {toINRCurrency(order.payment_details.fee)}
-                      </span>
-                    </p>
-                  )}
+                  <Field
+                    field="Authcode"
+                    value={order.payment_details.card?.acquirer_data?.auth_code}
+                  />
+                  <Field
+                    field="Name"
+                    value={order.payment_details.card?.card.name}
+                  />
+                  <Field
+                    field="Type"
+                    value={order.payment_details.card?.card.type}
+                  />
+                  <Field
+                    field="Issuer"
+                    value={order.payment_details.card?.card.issuer}
+                  />
+                  <Field
+                    field="ID"
+                    value={order.payment_details.card?.card.id}
+                    className="[&>span:nth-child(2)]:uppercase"
+                  />
+                  <Field
+                    field="Card No."
+                    value={
+                      order.payment_details.card?.card.last4 &&
+                      `XXXX XXXX XXXX ${order.payment_details.card.card.last4}`
+                    }
+                  />
+                  <Field
+                    field="Card Co."
+                    value={order.payment_details.card?.card.network}
+                  />
+                  <Field field="Bank" value={order.payment_details.bank} />
+                  <Field
+                    field="Phone No."
+                    value={formatPhoneNumber(order.payment_details.contact)}
+                  />
+                  <Field
+                    field="Email"
+                    value={formatPhoneNumber(order.payment_details.email)}
+                  />
+                  <Field
+                    field="Refund Status"
+                    value={order.payment_details.refund_status}
+                  />
+                  <Field
+                    field="Tax"
+                    value={
+                      order.payment_details.tax > 0
+                        ? toINRCurrency(order.payment_details.tax)
+                        : null
+                    }
+                  />
+                  <Field
+                    field="Platform Fee"
+                    value={
+                      order.payment_details.fee > 0
+                        ? toINRCurrency(order.payment_details.fee)
+                        : null
+                    }
+                  />
                 </div>
               )}
               <div>
-                <p>
-                  <span className="font-medium">Status: </span>
-                  <span className="font-semibold">
-                    {order.razorpay_payment_result?.rzp_payment_status}
-                  </span>
-                </p>
-                {order.order_result.paid_at && (
-                  <>
-                    <p className="">
-                      <span className="font-medium">Paid On: </span>
-                      <span className="font-semibold">
-                        {formatDate(order.order_result.paid_at, "llll")}
-                      </span>
-                    </p>
-                  </>
-                )}
-                {order.order_result.delivered_at ? (
-                  <p className="">
-                    <span className="font-medium">Delivered On: </span>
-                    <span className="font-semibold">
-                      {formatDate(order.order_result.delivered_at, "llll")}
-                    </span>
-                  </p>
-                ) : (
-                  order.order_result.paid_at && (
-                    <p className="">
-                      <span className="font-medium">Expected Delivery: </span>
-                      <span className="font-semibold">
-                        {formatDate(
+                <Field
+                  field="Status"
+                  value={order.razorpay_payment_result?.rzp_payment_status}
+                />
+                <Field
+                  field="Paid On"
+                  value={
+                    order.order_result.paid_at &&
+                    formatDate(order.order_result.paid_at, "llll")
+                  }
+                />
+                <Field
+                  field={`${
+                    order.order_result.delivered_at
+                      ? "Delivered On"
+                      : "Exp. Delivery"
+                  }`}
+                  value={
+                    order.order_result.delivered_at
+                      ? formatDate(order.order_result.delivered_at, "llll")
+                      : order.order_result.paid_at
+                      ? formatDate(
                           new Date(
                             new Date(order.order_result.paid_at).getTime() +
                               7 * 24 * 60 * 60 * 1000
                           ),
                           "llll"
-                        )}
-                      </span>
-                    </p>
-                  )
-                )}
-                {order.order_result.cancelled_at && (
-                  <p className="">
-                    <span className="font-medium">Cancelled On: </span>
-                    <span className="font-semibold">
-                      {formatDate(order.order_result.cancelled_at, "llll")}
-                    </span>
-                  </p>
-                )}
-                {order.order_result.returned_at && (
-                  <p className="">
-                    <span className="font-medium">Returned On: </span>
-                    <span className="font-semibold">
-                      {formatDate(order.order_result.returned_at, "llll")}
-                    </span>
-                  </p>
-                )}
+                        )
+                      : null
+                  }
+                />
+                <Field
+                  field="Cancelled On"
+                  value={
+                    order.order_result.cancelled_at &&
+                    formatDate(order.order_result.cancelled_at, "llll")
+                  }
+                />
+                <Field
+                  field="Returned On"
+                  value={
+                    order.order_result.returned_at &&
+                    formatDate(order.order_result.returned_at, "llll")
+                  }
+                />
                 {order.razorpay_payment_result.rzp_payment_status === "PAID" &&
                   ["CONFIRMED", "DELIVERED"].includes(
                     order.order_result.order_status
