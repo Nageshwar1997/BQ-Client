@@ -4,7 +4,7 @@ import { formatPhoneNumber } from "../../../utils";
 const AddressInfo = ({
   address,
   className = "",
-}: { address: IAddress } & ClassName) => {
+}: { address: Omit<IAddress, "user"> } & ClassName) => {
   return (
     <div className={`${className}`}>
       <h3 className="text-lg font-semibold text-secondary">
