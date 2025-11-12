@@ -81,6 +81,7 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <Account /> }, // Todo: Pending
           { path: "wishlist", element: <Wishlist /> }, // Todo: Pending
+          { path: "become-seller", element: <BecomeSeller /> },
           {
             path: "orders",
             element: <Outlet />,
@@ -110,10 +111,6 @@ const router = createBrowserRouter([
       // Quick Link Pages
       { path: "refer", element: <ReferFriend /> }, // Todo: Refer Part is Pending
       { path: "store-locator", element: <StoreLocator /> },
-      {
-        path: "become-seller",
-        element: <PrivateRoute children={<BecomeSeller />} />,
-      },
       // Services Pages
       { path: "contact", element: <ContactUs /> },
       { path: "help-center-faq", element: <HelpCenterFAQ /> },

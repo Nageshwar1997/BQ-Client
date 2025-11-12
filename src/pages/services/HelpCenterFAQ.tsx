@@ -122,7 +122,7 @@ const HelpCenterFAQ = () => {
           <br />
           <span className="font-semibold">A:</span> Anyone can apply to become a
           seller. Click on the{" "}
-          <Link to="/become-seller">
+          <Link to="/account/become-seller">
             <strong className="bg-clip-text bg-accent-duo text-transparent">
               “Become a Seller”
             </strong>

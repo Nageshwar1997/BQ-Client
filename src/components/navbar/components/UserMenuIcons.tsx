@@ -167,7 +167,7 @@ const UserMenuIcons = ({
         </div>
         <BuildingIcon
           className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6"
-          onClick={() => navigate("/become-seller")}
+          onClick={() => navigate("/account/become-seller")}
         />
         <div className="relative">
           <ShoppingBag
