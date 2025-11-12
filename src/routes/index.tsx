@@ -87,7 +87,7 @@ const router = createBrowserRouter([
             element: <Outlet />,
             children: [
               { index: true, element: <Orders /> },
-              { path: ":orderId", element: <OrderDetails /> }, // Todo: Pending
+              { path: ":orderId", element: <OrderDetails /> }, // Todo: Cancel Order and Return Order Pending
               { path: "return-refund", element: <OrderReturnRefund /> }, // Todo: Pending
               { path: "track", element: <TrackMyOrders /> }, // Todo: Pending
               { path: "payment", element: <Payment /> },
