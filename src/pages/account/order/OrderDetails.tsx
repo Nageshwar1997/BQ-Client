@@ -7,7 +7,6 @@ import AddressInfo from "../../address/children/AddressInfo";
 import { ORDER_STATUS_CLASSES } from "../../../constants";
 import Button from "../../../components/button/Button";
 import ShowApiStatus from "../../../components/api-status/ShowApiStatus";
-// import { format } from "date-fns";
 
 const OrderDetails = () => {
   const { pathParams } = usePathParams();
