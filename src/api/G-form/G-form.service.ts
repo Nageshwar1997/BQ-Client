@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import {
   send_contact_request_and_mail,
   send_job_application_request_and_mail,
-} from "./g-form.api";
+} from "./G-form.api";
 import { toastErrorMessage, toastSuccessMessage } from "../../utils/toasts";
 
 export const useSendContactRequestAndMail = () => {
