@@ -90,6 +90,7 @@ const ProductDetails = () => {
             <div className="w-full lg:w-1/2 lg:sticky top-24">
               <div className="flex flex-col gap-4">
                 <MediaCarouselWithParentMedia
+                  videoProps={{}}
                   data={images}
                   needButtonControls={false}
                   selected={
