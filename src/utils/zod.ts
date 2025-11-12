@@ -257,29 +257,40 @@ export function zodFileOrUrl({
   field,
   index,
   ctx,
+  showingFieldName,
   required = true,
+  maxImageFileSize = MAX_IMAGE_FILE_SIZE,
+  maxVideoFileSize = MAX_VIDEO_FILE_SIZE,
 }: {
+  maxVideoFileSize?: number;
+  maxImageFileSize?: number;
   fileOrUrl: unknown;
   field: string;
+  showingFieldName?: string;
   index?: number;
   ctx: z.RefinementCtx;
   required?: boolean;
 }) {
   let isVideo = false;
   const path: (string | number)[] = index !== undefined ? [index] : [];
-  const name = index !== undefined && index !== null ? index + 1 : field;
+  const name =
+    index !== undefined && index !== null
+      ? index + 1
+      : showingFieldName
+      ? showingFieldName
+      : field;
   const isFileOrUrl =
     typeof fileOrUrl === "string"
-      ? "url"
+      ? "URL "
       : fileOrUrl instanceof File
-      ? "file"
-      : "unknown";
+      ? "File "
+      : "";
 
   if (!fileOrUrl) {
     if (required) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: `Media ${isFileOrUrl} ${name} is required.`,
+        message: `${isFileOrUrl}${name} is required.`,
         path,
       });
     }
@@ -305,9 +316,9 @@ export function zodFileOrUrl({
     }
 
     // size check
-    const maxSize = isVideo ? MAX_VIDEO_FILE_SIZE : MAX_IMAGE_FILE_SIZE;
+    const maxSize = isVideo ? maxVideoFileSize : maxImageFileSize;
     if (fileOrUrl.size > maxSize) {
-      const sizeInMB = (fileOrUrl.size / MB).toFixed(1);
+      const sizeInMB = (fileOrUrl.size / MB).toFixed(2);
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: `${
@@ -343,7 +354,9 @@ export function zodFileOrUrl({
 export const zodEnums = (props: ZodEnumsConfigs & { enums: string[] }) => {
   return z.enum([props.enums[0], ...props.enums.slice(1)], {
     errorMap: () => ({
-      message: `Invalid option. Must be '${props.enums.join(", ")}'.`,
+      message: `${
+        props.showingFieldName
+      } is required. Must be '${props.enums.join(", ")}'.`,
     }),
   });
 };

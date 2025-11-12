@@ -26,7 +26,7 @@ const Select = ({
   useEffect(() => {
     if (isOpen && selectedOptionRef.current) {
       selectedOptionRef.current.scrollIntoView({
-        block: "start",
+        block: "center",
         inline: "nearest",
         behavior: "smooth",
       });
@@ -100,20 +100,20 @@ const Select = ({
             />
             {isOpen && (
               <div
-                className={`absolute left-0 w-full z-[3] rounded-lg border border-primary-10 bg-smoke-eerie shadow-md overflow-hidden py-2 ${
+                className={`absolute left-0 w-full z-[3] rounded-lg border border-primary-10 bg-smoke-eerie shadow-md overflow-hidden ${
                   optionsPosition === "top"
                     ? "bottom-full mb-2"
                     : "top-full mt-2"
                 } ${optionsClassName}`}
               >
-                <ul className="max-h-60 overflow-auto px-1 space-y-0.5">
+                <ul className="max-h-60 overflow-auto px-1 flex flex-col gap-0.5 py-2">
                   {options.map((option) => {
                     const active = selected?.value === option.value;
                     return (
                       <li
                         key={option.value}
                         ref={active ? selectedOptionRef : null}
-                        className={`flex justify-between items-center gap-2 p-2 hover:bg-primary-10 text-tertiary cursor-grab text-sm rounded-[4px] ${
+                        className={`flex justify-between items-center gap-2 p-2 hover:bg-primary-10 text-tertiary cursor-pointer text-sm rounded-[4px] ${
                           active ? "bg-primary-8" : ""
                         }`}
                         onClick={(e) => {

@@ -9,12 +9,20 @@ import {
   cancel_payment,
   create_order,
   get_all_orders,
+  get_order_by_id,
   verify_payment,
 } from "./order.api";
 import useQueryParams from "../../hooks/useQueryParams";
 
 export const useCreateOrder = () => {
-  return useMutation({ mutationFn: create_order });
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["create_order"],
+    mutationFn: create_order,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get_all_orders_infinite"] });
+    },
+  });
 };
 
 export const useGetAllOrders = () => {
@@ -51,6 +59,15 @@ export const useGetAllOrdersInfinite = ({ limit }: { limit: number }) => {
       const hasMore = lastPage.orders.length === limit;
       return hasMore ? allPages.length + 1 : undefined;
     },
+  });
+};
+
+export const useGetOrderById = (orderId: string) => {
+  return useQuery({
+    queryKey: ["get_order_by_id", orderId],
+    queryFn: () => get_order_by_id(orderId),
+    enabled: true,
+    refetchOnWindowFocus: false,
   });
 };
 

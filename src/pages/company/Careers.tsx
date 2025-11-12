@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
 import { LeftGradient, RightGradient } from "../../components/Gradients";
-import { OPENINGS_DATA } from "./data/data";
+import { OPENINGS_DATA } from "./data";
 import useHorizontalScrollable from "../../hooks/useHorizontalScrollable";
 import OpeningCard from "./children/OpeningCard";
 import { IOpening } from "../../types";
+import ShowApiStatus from "../../components/api-status/ShowApiStatus";
 
 const Careers = () => {
   const { containerRef, showGradient } = useHorizontalScrollable();
@@ -25,7 +26,7 @@ const Careers = () => {
 
   return (
     <div className="p-6 mx-auto space-y-10">
-      <header className="text-center space-y-3 sm:space-y-4">
+      <header className="max-w-4xl mx-auto text-center space-y-3 sm:space-y-4">
         <h1 className="text-2xl base:text-3xl sm:text-4xl font-bold tracking-tight bg-clip-text bg-silver-duo text-transparent">
           Join the Future of Beauty
         </h1>
@@ -75,20 +76,28 @@ const Careers = () => {
           </div>
         </div>
       </div>
-      <main className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-center">
-        {openings.map((opening, index) => (
-          <OpeningCard
-            key={index}
-            opening={opening}
-            department={
-              selectedDept.value === "all"
-                ? OPENINGS_DATA.find((d) => d.openings.includes(opening))!
-                    .department
-                : selectedDept
-            }
-          />
-        ))}
-      </main>
+      {openings.length > 0 ? (
+        <main className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-center">
+          {openings.map((opening, index) => (
+            <OpeningCard
+              key={index}
+              opening={opening}
+              department={
+                selectedDept.value === "all"
+                  ? OPENINGS_DATA.find((d) => d.openings.includes(opening))!
+                      .department
+                  : selectedDept
+              }
+            />
+          ))}
+        </main>
+      ) : (
+        <ShowApiStatus
+          headingText="No Vacancies today, but keep an eye out."
+          descriptionText="Your perfect fit might be coming soon!"
+          type="empty"
+        />
+      )}
     </div>
   );
 };

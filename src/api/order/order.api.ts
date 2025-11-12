@@ -54,6 +54,27 @@ export const get_all_orders = async (params: {
   }
 };
 
+export const get_order_by_id = async (orderId: string) => {
+  try {
+    const user_token = getUserToken();
+
+    const { method, url } = orderRoutes.getOrderById;
+    const response = await api.request({
+      method,
+      url: `${url}/${orderId}`,
+      headers: { Authorization: user_token },
+    });
+
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      // If it's an Axios error
+      throw error?.response?.data?.message || "API Error occurred";
+    }
+    throw "Something went wrong!"; // For non-Axios errors
+  }
+};
+
 export const verify_payment = async (data: TQueryParams) => {
   try {
     const user_token = getUserToken();

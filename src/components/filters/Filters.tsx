@@ -127,21 +127,22 @@ function Filters({
           }}
           className="border-b border-b-primary-50 [&>button]:px-0 [&>button]:py-3"
         >
-          <div className="w-full flex items-center gap-2 -mt-2 !px-1">
-            <Checkbox
-              labelClassName="!bg-primary"
-              className="!w-10 !h-5 after:!h-3 after:!w-3"
-              checked={queryParams.inStock === "true"}
-              onChange={(e) => {
+          <Checkbox
+            containerClassName="-mt-2 !px-1"
+            labelClassName="!bg-primary"
+            className="!w-10 !h-5 after:!h-3 after:!w-3"
+            checkboxProps={{
+              checked: queryParams.inStock === "true",
+              onChange: (e) => {
                 if (e.target.checked) {
                   setParams({ inStock: "true" });
                 } else {
                   removeParam("inStock");
                 }
-              }}
-            />
-            <span className="whitespace-nowrap">In stock only</span>
-          </div>
+              },
+            }}
+            rightText="In stock only"
+          />
         </Dropdown>
         {/* Price Filter */}
         <Dropdown

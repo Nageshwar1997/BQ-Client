@@ -59,12 +59,12 @@ const Input = ({
             {...inputProps}
             {...(needRef && { ref: inputRef })}
             id={inputProps.name}
-            disabled={inputProps?.readOnly}
-            onChange={handleChange}
+            disabled={inputProps?.disabled}
+            onChange={!inputProps.disabled ? handleChange : undefined}
             onWheel={(event) =>
               inputProps?.type === "number" ? event.currentTarget.blur() : null
             }
-            className={`flex-1 w-full h-full outline-none border-none focus:outline-none focus:border-none bg-transparent font-normal text-sm p-3 text-primary placeholder:text-primary-50 placeholder:text-sm autofill-effect line-clamp-1 ${
+            className={`flex-1 w-full h-full outline-none border-none focus:outline-none focus:border-none bg-transparent font-normal text-sm p-3 text-primary placeholder:text-primary-50 placeholder:text-sm autofill-effect line-clamp-1 disabled:cursor-not-allowed ${
               icons?.left?.icon && !icons?.right?.icon
                 ? "pl-0"
                 : !icons?.left?.icon && icons?.right?.icon
@@ -89,7 +89,7 @@ const Input = ({
           )}
         </div>
       </div>
-      {!inputProps?.readOnly && error && (
+      {!inputProps?.disabled && error && (
         <p className="w-full text-start flex gap-1 items-center text-[11px] leading-tight text-red-500">
           <InfoIcon className="min-w-3 min-h-3 w-3 h-3 md:min-w-4 md:min-h-4 md:w-4 md:h-4 fill-red-500" />
           <span className="leading-none line-clamp-2">{error}</span>

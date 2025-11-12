@@ -9,9 +9,9 @@ export const new_new: LevelTwoCategoryType = {
   category: "new_arrivals",
   path: "/products/for_you/latest_trends",
   videoUrl:
-    "https://res.cloudinary.com/drbhw0nwt/video/upload/sp_auto/v1739693059/videos/wvq939qkdpzgchfpzk2m.m3u8",
+    "https://res.cloudinary.com/dag2xvurz/video/upload/sp_auto/v1742719904/Beautinique/Home_Videos/1742719884229_SUGAR_Ace_of_Face_Dewy_Foundation_New_Launch_SUGAR_Cosmetics.m3u8",
   thumbnail:
-    "https://www.cosmeticsdesign-asia.com/resizer/v2/DFI3RWMPJJMNBF3E6P4SBJ7HZQ.jpg?auth=474f1eceade4c82457720b986e47fa3a6aea0ea968cc8fa505b74d50fd0353c1&width=1802&height=1013&smart=true",
+    "https://res.cloudinary.com/drbhw0nwt/image/upload/v1742736104/Beautinique/Posters/1742736102775_3_Ace_of_Face_Foundation.webp",
   description: "Discover new beauty arrivals for a fresh, trendy style.",
   subCategories: [
     {
@@ -34,7 +34,9 @@ export const sugar_play: LevelTwoCategoryType = {
   category: "sugar_play",
   path: "/products/for_you/best_sellers",
   videoUrl:
-    "https://res.cloudinary.com/drbhw0nwt/video/upload/sp_auto/v1739693059/videos/wvq939qkdpzgchfpzk2m.m3u8",
+    "https://res.cloudinary.com/dag2xvurz/video/upload/sp_auto/v1742127534/Beautinique/Home_Videos/1742127444038_1_Makeup_Reimagine.m3u8",
+  thumbnail:
+    "https://res.cloudinary.com/drbhw0nwt/image/upload/v1742736002/Beautinique/Posters/1742735999781_1_Makeup_Reimagine.webp",
   description: "Shop beauty products top-rated & loved by enthusiasts.",
   subCategories: [
     {
@@ -57,7 +59,9 @@ export const offers: LevelTwoCategoryType = {
   category: "offers",
   path: "/offers",
   videoUrl:
-    "https://res.cloudinary.com/drbhw0nwt/video/upload/sp_auto/v1739693059/videos/wvq939qkdpzgchfpzk2m.m3u8",
+    "https://res.cloudinary.com/dag2xvurz/video/upload/sp_auto/v1742130156/Beautinique/Home_Videos/1742130132099_3_Glide_Peptide_SPF50_PA%2B%2B_Lip_Treatment_Must-Have_for_Daily_Protection.m3u8",
+  thumbnail:
+    "https://res.cloudinary.com/drbhw0nwt/image/upload/v1742736080/Beautinique/Posters/1742736077422_2_Glide_Peptide_Lip_Treatement.webp",
   description: "Grab discounts on premium cosmetics for a limited time.",
   subCategories: [
     {
@@ -79,8 +83,8 @@ export const blogs: LevelTwoCategoryType = {
   label: "Blogs",
   category: "blogs",
   path: "/blogs",
-  videoUrl:
-    "https://res.cloudinary.com/drbhw0nwt/video/upload/sp_auto/v1739693059/videos/wvq939qkdpzgchfpzk2m.m3u8",
+  videoUrl: "/videos/company/values-culture/Get-Ready-With-BQ.mp4",
+  thumbnail: "/images/navbar/blogs.png",
   description: "Explore top beauty tips, trends, & skincare routines.",
   subCategories: [
     {

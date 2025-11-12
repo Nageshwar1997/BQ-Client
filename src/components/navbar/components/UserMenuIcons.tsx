@@ -165,7 +165,10 @@ const UserMenuIcons = ({
             onClose={() => setIsOpen((prev) => ({ ...prev, user: false }))}
           />
         </div>
-        <BuildingIcon className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
+        <BuildingIcon
+          className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6"
+          onClick={() => navigate("/account/become-seller")}
+        />
         <div className="relative">
           <ShoppingBag
             onClick={() => {

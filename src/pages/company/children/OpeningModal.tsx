@@ -1,12 +1,21 @@
 import { ReactNode } from "react";
+import z from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import Modal from "../../../components/modal";
-import { TRoleOpening } from "../../../types";
+import { IOpening, TRoleOpening } from "../../../types";
 import Button from "../../../components/button/Button";
+import Input from "../../../components/input/Input";
+import { zodStringRequired } from "../../../utils/zod";
+import { useSendJobApplicationRequestAndMail } from "../../../api/G-form/G-form.service";
+import { regexes } from "../../../constants";
 
 interface IOpeningModal {
   isOpen: boolean;
   onClose: () => void;
   opening: TRoleOpening;
+  department: IOpening["department"];
 }
 
 const Section = ({
@@ -36,7 +45,44 @@ const Badge = ({ children }: { children: string | ReactNode }) => (
   </span>
 );
 
-const OpeningModal = ({ opening, isOpen, onClose }: IOpeningModal) => {
+const OpeningModal = ({
+  opening,
+  department,
+  isOpen,
+  onClose,
+}: IOpeningModal) => {
+  const { mutateAsync, isPending } = useSendJobApplicationRequestAndMail();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(
+      z.object({
+        portfolio: zodStringRequired({
+          field: "portfolio",
+          showingFieldName: "Portfolio link",
+          customRegexes: [
+            { regex: regexes.validUrl, message: "must be a valid URL" },
+          ],
+        }),
+      })
+    ),
+  });
+
+  const onSubmit = async (data: { portfolio: string }) => {
+    const bodyData = {
+      department: department.title,
+      role: opening.role,
+      portfolio: data.portfolio,
+      salary: opening.salary,
+      experience: opening.experience,
+    };
+
+    await mutateAsync(bodyData, { onSuccess: () => (reset(), onClose()) });
+  };
+
   return (
     <Modal
       isOpen={isOpen}
@@ -44,7 +90,7 @@ const OpeningModal = ({ opening, isOpen, onClose }: IOpeningModal) => {
       heading={opening.role}
       className="!max-w-xl [&>div>div>h2]:text-start [&>div]:pb-0"
     >
-      <div className="relative">
+      <form onSubmit={handleSubmit(onSubmit)} className="relative">
         <div className="space-y-6">
           {/* Overview */}
           <div className="bg-tertiary-inverted rounded-lg p-4 text-sm space-y-2">
@@ -132,14 +178,25 @@ const OpeningModal = ({ opening, isOpen, onClose }: IOpeningModal) => {
             </Section>
           )}
         </div>
+        <Input
+          label="Portfolio Link"
+          containerClassName="mt-4"
+          register={register("portfolio")}
+          inputProps={{
+            type: "url",
+            name: "portfolio",
+            placeholder: "Your Portfolio Link...",
+          }}
+          error={errors.portfolio?.message}
+        />
         <div className="flex flex-col items-end justify-end sticky bottom-0 inset-x-0 z-10 py-4 h-24 bg-gradient-to-t from-primary-inverted to-transparent">
           <Button
             pattern="primary"
-            content="Apply Now"
-            className="!cursor-not-allowed"
+            content={isPending ? "Applying..." : "Apply Now"}
+            buttonProps={{ type: "submit", disabled: isPending }}
           />
         </div>
-      </div>
+      </form>
     </Modal>
   );
 };

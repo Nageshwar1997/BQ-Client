@@ -93,6 +93,9 @@ export const regexes: Record<TRegexes, RegExp> = {
   onlyLettersAndSpacesAndDots: /^[a-zA-Z\s.]+$/, // Only letters, spaces, and dots
   validPinCode: /^[1-9][0-9]{5}$/, // Check valid pin code
   validGST: /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/i, // Check valid GST number
+  validUrl:
+    /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/[\w\-._~:/?#[\]@!$&'()*+,;=%]*)?$/i,
+  validPan: /^[A-Za-z]{5}[0-9]{4}[A-Za-z]$/,
 };
 
 export const reviewInitialValues = {
@@ -210,4 +213,14 @@ export const BRAND_FEATURE_HIGHLIGHTS = [
     description: "Award nominee for Best Natural Skincare Line 2025.",
     image: "Cosmopolitan-Beauty-Awards.webp",
   },
+];
+
+export const ALLOWED_BUSINESSES = [
+  "Individual",
+  "Freelance Seller",
+  "Small Business",
+  "Home-based Seller",
+  "Retail Store",
+  "Salon",
+  "Wholesale Distributor",
 ];

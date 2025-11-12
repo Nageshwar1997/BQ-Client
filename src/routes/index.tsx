@@ -60,7 +60,7 @@ const router = createBrowserRouter([
     errorElement: <SomethingWentWrong />,
     children: [
       { index: true, element: <Home /> },
-      { path: "offers", element: <Offers /> }, // Todo: Pending
+      { path: "offers", element: <Offers /> },
       { path: "blogs", element: <Blogs /> }, // Todo: Pending
       { path: "search", element: <SearchProducts /> },
       { path: "product/:productId", element: <ProductDetails /> },
@@ -81,12 +81,13 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <Account /> }, // Todo: Pending
           { path: "wishlist", element: <Wishlist /> }, // Todo: Pending
+          { path: "become-seller", element: <BecomeSeller /> },
           {
             path: "orders",
             element: <Outlet />,
             children: [
               { index: true, element: <Orders /> },
-              { path: ":orderId", element: <OrderDetails /> }, // Todo: Pending
+              { path: ":orderId", element: <OrderDetails /> }, // Todo: Cancel Order and Return Order Pending
               { path: "return-refund", element: <OrderReturnRefund /> }, // Todo: Pending
               { path: "track", element: <TrackMyOrders /> }, // Todo: Pending
               { path: "payment", element: <Payment /> },
@@ -95,24 +96,23 @@ const router = createBrowserRouter([
         ],
       },
       // Company Pages
-      { path: "about-us", element: <AboutUs /> }, // Todo: Pending
+      { path: "about-us", element: <AboutUs /> },
       { path: "partner-with-us", element: <PartnerWithUs /> },
-      { path: "careers", element: <Careers /> }, // Todo: Pending
-      { path: "mission-vision", element: <MissionVisionValues /> }, // Todo: Pending
+      { path: "careers", element: <Careers /> },
+      { path: "mission-vision", element: <MissionVisionValues /> },
       { path: "sustainability", element: <Sustainability /> },
       { path: "ethics", element: <Ethics /> },
       { path: "teams", element: <Teams /> },
       { path: "press-media", element: <PressMedia /> },
-      { path: "awards", element: <Awards /> }, // Todo: Pending
-      { path: "values-and-culture", element: <ValuesAndCulture /> }, // Todo: Pending
-      { path: "retail-and-e-commerce", element: <RetailAndECommerce /> }, // Todo: Pending
+      { path: "awards", element: <Awards /> },
+      { path: "values-and-culture", element: <ValuesAndCulture /> },
+      { path: "retail-and-e-commerce", element: <RetailAndECommerce /> },
 
       // Quick Link Pages
       { path: "refer", element: <ReferFriend /> }, // Todo: Refer Part is Pending
-      { path: "store-locator", element: <StoreLocator /> }, // Todo: Pending
-      { path: "become-seller", element: <BecomeSeller /> }, // Todo: Pending
+      { path: "store-locator", element: <StoreLocator /> },
       // Services Pages
-      { path: "contact", element: <ContactUs /> }, // Todo: Pending
+      { path: "contact", element: <ContactUs /> },
       { path: "help-center-faq", element: <HelpCenterFAQ /> },
       { path: "shipping-info", element: <ShippingInfo /> },
       // Legal Policies Pages

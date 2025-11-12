@@ -40,7 +40,7 @@ export const footerCategories = [
       { title: "Wishlist", path: "account/wishlist" },
       { title: "Refer a Friend", path: "refer" },
       { title: "Store Locator", path: "store-locator" },
-      { title: "Become a Seller", path: "become-seller" },
+      { title: "Become a Seller", path: "account/become-seller" },
     ],
   },
   {

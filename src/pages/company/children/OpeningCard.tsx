@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { IOpening, TRoleOpening } from "../../../types";
-import { hexToRgba } from "../../../utils";
 import Button from "../../../components/button/Button";
 import OpeningModal from "./OpeningModal";
 
@@ -17,8 +16,8 @@ const OpeningCard = ({
     <div className="flex max-w-sm mx-auto w-full rounded-xl border border-primary-30 shadow-light-dark-soft overflow-hidden">
       <div
         style={{
-          ["--dept-color-0" as string]: hexToRgba(department.color, 0),
-          ["--dept-color-30" as string]: hexToRgba(department.color, 0.3),
+          ["--dept-color-0" as string]: `${department.color}00`,
+          ["--dept-color-30" as string]: `${department.color}4d`,
         }}
         className="p-6 flex flex-col items-start gap-4 self-stretch justify-between w-full opening-card"
       >
@@ -47,14 +46,18 @@ const OpeningCard = ({
               {opening.type}
             </div>
             <div className="flex items-start content-start gap-1.5 self-stretch flex-wrap">
-              {opening?.tags?.map((tag, index) => (
-                <div
-                  key={`${tag}-${index}`}
-                  className="flex py-0.5 px-1.5 justify-center items-center gap-1.5 rounded bg-tertiary-inverted text-primary text-[10px]/[14px] font-semibold"
-                >
-                  {tag}
-                </div>
+              {opening?.tags?.slice(0, 2).map((tag, index) => (
+                <Fragment key={`${tag}-${index}`}>
+                  <div className="flex py-0.5 px-1.5 rounded bg-tertiary-inverted text-primary text-[10px]/[14px] font-semibold">
+                    {tag}
+                  </div>
+                </Fragment>
               ))}
+              {opening?.tags?.length > 2 && (
+                <div className="h-[18px] w-[18px] flex items-center justify-center rounded-full bg-tertiary-inverted text-primary text-[10px]/[14px] font-semibold">
+                  {opening?.tags?.length - 2}+
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -68,6 +71,7 @@ const OpeningCard = ({
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           opening={opening}
+          department={department}
         />
       </div>
     </div>
