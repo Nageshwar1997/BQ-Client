@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-
 import MediaCarousel from "../../../../components/carousels/MediaCarousel";
 import RatingStars from "../../../../components/ui/RatingStars";
 import {
@@ -13,8 +12,7 @@ import Button from "../../../../components/button/Button";
 import { useUserStore } from "../../../../store/user.store";
 import { useLikeDislikeHelpfulReview } from "../../../../api/reviews/reviews.service";
 import { TBaseLikeDislikeHelpfulReview } from "../../../../api/types";
-import useQueryParams from "../../../../hooks/useQueryParams";
-import useActionStore from "../../../../store/action.store";
+import useRequireAuth from "../../../../hooks/useRequireAuth";
 
 const ReviewCard = ({
   className = "",
@@ -25,7 +23,6 @@ const ReviewCard = ({
   review: FetchedReviewType;
   onMediaClick: (reviewMedia: TMediaOption[], index: number) => void;
 }) => {
-  const { setParams } = useQueryParams();
   const [updateStatus, setUpdateStatus] =
     useState<TBaseLikeDislikeHelpfulReview>({
       liked: false,
@@ -34,8 +31,8 @@ const ReviewCard = ({
     });
 
   const likeDislikeHelpfulQuery = useLikeDislikeHelpfulReview();
-  const { setAction } = useActionStore();
-  const { user, isAuthenticated } = useUserStore();
+  const { user } = useUserStore();
+  const requireAuth = useRequireAuth();
 
   const reviewMedia = useMemo(() => {
     const images: TMediaOption[] =
@@ -67,48 +64,27 @@ const ReviewCard = ({
     );
   };
 
-  // wrapper to ensure authentication
-  const requireAuth = (action: () => void) => {
-    if (!isAuthenticated) {
-      setParams({ login: "true" });
-      setAction(action);
-      return false;
-    }
-    return true;
-  };
-
-  const handleHelpful = () => {
+  /** 🔹 Generic Action Click Handler */
+  const handleActionClick = (key: keyof TBaseLikeDislikeHelpfulReview) => {
     const action = () => {
       setUpdateStatus((prev) => {
-        const newStatus = { ...prev, isHelpful: !prev.isHelpful };
-        handleSubmit("isHelpful", newStatus.isHelpful);
+        const newStatus = { ...prev };
+
+        if (key === "liked") {
+          newStatus.liked = !prev.liked;
+          newStatus.disliked = false; // reset opposite
+        } else if (key === "disliked") {
+          newStatus.disliked = !prev.disliked;
+          newStatus.liked = false; // reset opposite
+        } else if (key === "isHelpful") {
+          newStatus.isHelpful = !prev.isHelpful;
+        }
+
+        handleSubmit(key, newStatus[key]!);
         return newStatus;
       });
     };
-    if (!requireAuth(action)) return;
-    action();
-  };
 
-  const handleLike = () => {
-    const action = () => {
-      setUpdateStatus((prev) => {
-        const newStatus = { ...prev, liked: !prev.liked, disliked: false };
-        handleSubmit("liked", newStatus.liked);
-        return newStatus;
-      });
-    };
-    if (!requireAuth(action)) return;
-    action();
-  };
-
-  const handleDislike = () => {
-    const action = () => {
-      setUpdateStatus((prev) => {
-        const newStatus = { ...prev, disliked: !prev.disliked, liked: false };
-        handleSubmit("disliked", newStatus.disliked);
-        return newStatus;
-      });
-    };
     if (!requireAuth(action)) return;
     action();
   };
@@ -143,7 +119,7 @@ const ReviewCard = ({
             <Button
               content="Helpful"
               pattern="outline"
-              buttonProps={{ onClick: handleHelpful }}
+              buttonProps={{ onClick: () => handleActionClick("isHelpful") }}
               className={`!w-fit !py-0.5 !px-2 !rounded-sm !text-xs/normal !border-none !duration-0 ${
                 updateStatus.isHelpful
                   ? "bg-accent-duo !text-primary-inverted"
@@ -153,7 +129,7 @@ const ReviewCard = ({
             <div className="flex items-center gap-2">
               <ThumbsUpIcon
                 role="button"
-                onClick={handleLike}
+                onClick={() => handleActionClick("liked")}
                 className={`w-4 h-4 cursor-pointer stroke-primary hover:rotate-12 transition-all duration-300 ${
                   updateStatus.liked
                     ? "dark:fill-blue-crayola-c light:fill-picton-blue-c"
@@ -161,7 +137,7 @@ const ReviewCard = ({
                 }`}
               />
               <ThumbsDownIcon
-                onClick={handleDislike}
+                onClick={() => handleActionClick("disliked")}
                 role="button"
                 className={`w-4 h-4 cursor-pointer stroke-primary hover:rotate-12 transition-all duration-300 ${
                   updateStatus.disliked
@@ -185,9 +161,7 @@ const ReviewCard = ({
       {reviewMedia.length > 0 && (
         <MediaCarousel
           data={reviewMedia}
-          onClick={(index) => {
-            onMediaClick(reviewMedia, index);
-          }}
+          onClick={(index) => onMediaClick(reviewMedia, index)}
           className="[&>div]:justify-start [&>div>div]:w-12 [&>div>div]:h-12 [&>div>div>div>svg]:w-4 [&>div>div>div>svg]:h-4"
         />
       )}
