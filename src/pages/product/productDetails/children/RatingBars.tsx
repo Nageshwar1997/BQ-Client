@@ -6,15 +6,17 @@ import { FetchedReviewType } from "../../../../types";
 import { getAvgRating } from "../../../../utils";
 import CustomerReviews from "../CustomerReviews";
 import AddReviewModal from "../../../../components/modal/children/AddReviewModal";
-import { useUserStore } from "../../../../store/user.store";
-import useActionStore from "../../../../store/action.store";
-import useQueryParams from "../../../../hooks/useQueryParams";
+import useRequireAuth from "../../../../hooks/useRequireAuth";
 
 const RatingBars = ({ reviews = [] }: { reviews: FetchedReviewType[] }) => {
-  const { isAuthenticated } = useUserStore();
-  const { setParams } = useQueryParams();
-  const { setAction } = useActionStore();
+  const requireAuth = useRequireAuth();
   const [showAddReviewModal, setShowAddReviewModal] = useState(false);
+
+  const handlePopupToggle = () => {
+    const action = () => setShowAddReviewModal(true); // wrap in a function
+    if (!requireAuth(action)) return; // store action if not logged in
+    action(); // run immediately if logged in
+  };
   return (
     <>
       <div className="w-full pb-8 border-b border-b-primary-50 space-y-4">
@@ -32,16 +34,7 @@ const RatingBars = ({ reviews = [] }: { reviews: FetchedReviewType[] }) => {
               pattern="secondary"
               content="Write a Review"
               className="max-w-44 py-2! lg:py-3 !rounded-md"
-              buttonProps={{
-                onClick: () => {
-                  if (!isAuthenticated) {
-                    setParams({ login: "true" });
-                    setAction(() => setShowAddReviewModal(true));
-                    return;
-                  }
-                  setShowAddReviewModal(true);
-                },
-              }}
+              buttonProps={{ onClick: handlePopupToggle }}
             />
             <div className="flex flex-col gap-0.5 items-center justify-center text-secondary">
               <div className="flex items-center gap-2 text-sm">

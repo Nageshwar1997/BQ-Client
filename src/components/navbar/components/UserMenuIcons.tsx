@@ -17,9 +17,9 @@ import { useUserStore } from "../../../store/user.store";
 import useOutsideClick from "../../../hooks/useOutsideClick";
 import Button from "../../button/Button";
 import useQueryParams from "../../../hooks/useQueryParams";
-import useActionStore from "../../../store/action.store";
 import useCartStore from "../../../store/cart.store";
 import useWishlistStore from "../../../store/wishlist.store";
+import useRequireAuth from "../../../hooks/useRequireAuth";
 
 const UserPopup = ({
   isOpen,
@@ -125,11 +125,15 @@ const UserMenuIcons = ({
     setIsOpen((prev) => ({ ...prev, user: false }));
   });
   const { paths, navigate } = usePathParams();
-  const { setParams } = useQueryParams();
-  const { isAuthenticated } = useUserStore();
-  const { setAction } = useActionStore();
+  const requireAuth = useRequireAuth();
   const { cart } = useCartStore();
   const { wishlist } = useWishlistStore();
+
+  const handleAuthNavigation = (path: string) => {
+    const action = () => navigate(path); // wrap in a function
+    if (!requireAuth(action)) return; // store action if not logged in
+    action(); // run immediately if logged in
+  };
 
   useEffect(() => {
     if (closeOnNavbarLeave) {
@@ -173,14 +177,7 @@ const UserMenuIcons = ({
         />
         <div className="relative">
           <ShoppingBag
-            onClick={() => {
-              if (!isAuthenticated) {
-                setParams({ login: "true" });
-                setAction(() => navigate("/cart"));
-                return;
-              }
-              navigate("/cart");
-            }}
+            onClick={() => handleAuthNavigation("/cart")}
             className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6"
           />
           {cart?.products && cart?.products.length > 0 && (
@@ -192,14 +189,7 @@ const UserMenuIcons = ({
         <div className="relative flex items-center justify-center">
           <HeartIcon
             className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6"
-            onClick={() => {
-              if (!isAuthenticated) {
-                setParams({ login: "true" });
-                setAction(() => navigate("/account/wishlist"));
-                return;
-              }
-              navigate("/account/wishlist");
-            }}
+            onClick={() => handleAuthNavigation("/account/wishlist")}
           />
           {wishlist?.products && wishlist?.products?.length > 0 && (
             <span className="absolute inset-0 flex items-center justify-center font-semibold bg-clip-text text-transparent bg-accent-duo inset-x-0 text-[11px] md:text-[11px] leading-none w-fit mx-auto pointer-events-none">
