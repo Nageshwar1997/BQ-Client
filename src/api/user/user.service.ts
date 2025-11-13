@@ -13,6 +13,8 @@ import {
 } from "./user.api";
 import { getUserToken } from "../../utils";
 import { toastErrorMessage, toastSuccessMessage } from "../../utils/toasts";
+import useQueryParams from "../../hooks/useQueryParams";
+import { useUserStore } from "../../store/user.store";
 
 export const useGetUserDetails = () => {
   const token = getUserToken();
@@ -68,14 +70,21 @@ export const useRemoveProductFromWishlist = () => {
 
 export const useGetUserWishlist = () => {
   const token = getUserToken();
+  const { queryParams } = useQueryParams();
+  const isAuthenticated = useUserStore.getState().isAuthenticated;
 
   return useQuery({
-    queryKey: ["get_user_wishlist", !!token],
+    queryKey: [
+      "get_user_wishlist",
+      !!queryParams.login,
+      isAuthenticated,
+      !!token,
+    ],
     queryFn: get_user_wishlist,
     retry: false,
-    staleTime: Infinity,
-    gcTime: Infinity,
-    enabled: !!token,
+    staleTime: 0.5 * 60 * 1000, // 30 seconds
+    gcTime: 5 * 60 * 1000, // 5 minutes
+    enabled: isAuthenticated,
     placeholderData: keepPreviousData,
   });
 };
