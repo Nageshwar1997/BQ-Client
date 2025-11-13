@@ -8,7 +8,7 @@ import useCartStore from "../../store/cart.store";
 import { useUserCart } from "../../hooks/useUserCart";
 import { useUserStore } from "../../store/user.store";
 import useUserWishlist from "../../hooks/useUserWishlist";
-import useWishlistStore from "../../store/wishlist.strore";
+import useWishlistStore from "../../store/wishlist.store";
 
 const Main = () => {
   const { isAuthenticated } = useUserStore();

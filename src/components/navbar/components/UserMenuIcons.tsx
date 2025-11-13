@@ -19,7 +19,7 @@ import Button from "../../button/Button";
 import useQueryParams from "../../../hooks/useQueryParams";
 import useActionStore from "../../../store/action.store";
 import useCartStore from "../../../store/cart.store";
-import { Link } from "react-router-dom";
+import useWishlistStore from "../../../store/wishlist.store";
 
 const UserPopup = ({
   isOpen,
@@ -129,6 +129,7 @@ const UserMenuIcons = ({
   const { isAuthenticated } = useUserStore();
   const { setAction } = useActionStore();
   const { cart } = useCartStore();
+  const { wishlist } = useWishlistStore();
 
   useEffect(() => {
     if (closeOnNavbarLeave) {
@@ -188,9 +189,26 @@ const UserMenuIcons = ({
             </span>
           )}
         </div>
-        <Link to="/account/wishlist">
-          <HeartIcon className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
-        </Link>
+        <div className="relative flex items-center justify-center">
+          <HeartIcon
+            className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6"
+            onClick={() => {
+              if (!isAuthenticated) {
+                setParams({ login: "true" });
+                setAction(() => navigate("/account/wishlist"));
+                return;
+              }
+              navigate("/account/wishlist");
+            }}
+          />
+          {wishlist?.products && wishlist?.products?.length > 0 && (
+            <span className="absolute inset-0 flex items-center justify-center font-semibold bg-clip-text text-transparent bg-accent-duo inset-x-0 text-[11px] md:text-[11px] leading-none w-fit mx-auto pointer-events-none">
+              {wishlist?.products?.length > 9
+                ? "9+"
+                : wishlist?.products?.length}
+            </span>
+          )}
+        </div>
         <DarkMode />
       </div>
     </>

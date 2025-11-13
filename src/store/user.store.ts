@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { UserStoreType, UserTypes } from "../types";
 import { decryptData, encryptData, removeStorageToken } from "../utils";
 import useCartStore from "./cart.store";
-import useWishlistStore from "./wishlist.strore";
+import useWishlistStore from "./wishlist.store";
 const SESSION_KEY = "user";
 
 export const useUserStore = create<UserStoreType>((set) => {

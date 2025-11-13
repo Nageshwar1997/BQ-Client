@@ -1,4 +1,4 @@
-import useWishlistStore from "../../store/wishlist.strore";
+import useWishlistStore from "../../store/wishlist.store";
 
 const Wishlist = () => {
   const { wishlist } = useWishlistStore();

@@ -6,7 +6,7 @@ import {
   useGetUserWishlist,
   useRemoveProductFromWishlist,
 } from "../api/user/user.service";
-import useWishlistStore from "../store/wishlist.strore";
+import useWishlistStore from "../store/wishlist.store";
 
 export const useUserWishlist = () => {
   const { wishlist, setWishlist, addWishlistProduct, removeWishlistProduct } =
