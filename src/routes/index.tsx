@@ -73,6 +73,7 @@ const router = createBrowserRouter([
         path: "products/:levelOneCategory/:levelTwoCategory/:levelThreeCategory",
         element: <CategoryProducts />,
       },
+      { path: "refer", element: <PrivateRoute children={<ReferFriend />} /> }, // Todo: Refer Part is Pending
       { path: "cart", element: <PrivateRoute children={<Cart />} /> },
       { path: "address", element: <PrivateRoute children={<Address />} /> },
       {
@@ -109,7 +110,6 @@ const router = createBrowserRouter([
       { path: "retail-and-e-commerce", element: <RetailAndECommerce /> },
 
       // Quick Link Pages
-      { path: "refer", element: <ReferFriend /> }, // Todo: Refer Part is Pending
       { path: "store-locator", element: <StoreLocator /> },
       // Services Pages
       { path: "contact", element: <ContactUs /> },
