@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { UserStoreType, UserTypes } from "../types";
 import { decryptData, encryptData, removeStorageToken } from "../utils";
 import useCartStore from "./cart.store";
+import useWishlistStore from "./wishlist.strore";
 const SESSION_KEY = "user";
 
 export const useUserStore = create<UserStoreType>((set) => {
@@ -29,7 +30,9 @@ export const useUserStore = create<UserStoreType>((set) => {
       set({ user: null, isAuthenticated: false });
       // Reset cart on logout
       const { setCart } = useCartStore.getState();
+      const { setWishlist } = useWishlistStore.getState();
       setCart(null);
+      setWishlist(null);
     },
   };
 });
