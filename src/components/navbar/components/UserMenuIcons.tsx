@@ -19,6 +19,7 @@ import Button from "../../button/Button";
 import useQueryParams from "../../../hooks/useQueryParams";
 import useActionStore from "../../../store/action.store";
 import useCartStore from "../../../store/cart.store";
+import { Link } from "react-router-dom";
 
 const UserPopup = ({
   isOpen,
@@ -187,7 +188,9 @@ const UserMenuIcons = ({
             </span>
           )}
         </div>
-        <HeartIcon className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
+        <Link to="/account/wishlist">
+          <HeartIcon className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
+        </Link>
         <DarkMode />
       </div>
     </>

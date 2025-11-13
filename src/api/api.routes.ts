@@ -14,6 +14,9 @@ export const productRoutes = {
 export const userRoutes = {
   getUser: { method: "GET", url: "/users/user" },
   createSeller: { method: "POST", url: "/users/seller/create" },
+  addWishlistProduct: { method: "POST", url: "/users/wishlist/add" },
+  removeWishlistProduct: { method: "DELETE", url: "/users/wishlist/remove" },
+  wishlist: { method: "GET", url: "/users/wishlist" },
 };
 
 export const mediaRoutes = {

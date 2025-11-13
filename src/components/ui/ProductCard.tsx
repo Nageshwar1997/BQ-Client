@@ -1,6 +1,7 @@
 import { FetchedProductType } from "../../types";
 import { getAvgRating, toINRCurrency } from "../../utils";
 import RatingStars from "./RatingStars";
+import WishlistButton from "./WishlistButton";
 
 const ProductCard = ({
   product,
@@ -20,9 +21,12 @@ const ProductCard = ({
           alt="Product"
           className="w-full h-full object-contain aspect-square hover:scale-105 transition-transform duration-500"
         />
-        <span className="w-6 h-6 absolute top-1 right-1 text-[8px] flex flex-col items-center justify-center rounded-full font-semibold dark:bg-green-700 light:bg-green-600 leading-none">
-          {`-${product?.discount.toFixed(0)}%`}
-        </span>
+        <div className="absolute top-0 inset-x-0 p-1 flex items-center justify-between cursor-default">
+          <WishlistButton product={product} />
+          <span className="w-6 h-6 text-[8px] flex flex-col items-center justify-center rounded-full font-semibold dark:bg-green-700 light:bg-green-600 leading-none">
+            {`-${product?.discount.toFixed(0)}%`}
+          </span>
+        </div>
       </div>
       <hr className="h-px block border-none bg-gradient-line" />
       <div className="flex flex-col justify-between gap-1 grow">

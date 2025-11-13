@@ -587,3 +587,8 @@ export interface IBecomeSellerInput {
   containerClassName?: string;
   registerResetFn?: (resetFn: () => void) => void;
 }
+
+export interface IWishlist {
+  _id: string;
+  products: FetchedProductType[];
+}
