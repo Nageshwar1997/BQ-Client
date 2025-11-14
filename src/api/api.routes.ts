@@ -59,3 +59,8 @@ export const orderRoutes = {
   verifyPayment: { method: "PATCH", url: "/orders/verify-payment" },
   cancelPayment: { method: "PATCH", url: "/orders/cancel-payment" },
 };
+
+export const blogROutes = {
+  getAllBlogs: { method: "GET", url: "/blogs/all" },
+  getBlogById: { method: "GET", url: "/blogs/blog" },
+};

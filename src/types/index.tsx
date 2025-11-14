@@ -592,3 +592,17 @@ export interface IWishlist {
   _id: string;
   products: FetchedProductType[];
 }
+
+export interface IBlog {
+  _id: string;
+  mainTitle: string;
+  subTitle: string;
+  author: string;
+  description: string;
+  content: string;
+  tags: string[];
+  publishedDate: Date;
+  smallThumbnail: string;
+  largeThumbnail: string;
+  publisher: Pick<UserTypes, "firstName" | "lastName" | "profilePic">;
+}

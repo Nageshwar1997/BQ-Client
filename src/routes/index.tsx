@@ -48,6 +48,7 @@ import MissionVisionValues from "../pages/company/MissionVisionValues";
 import Awards from "../pages/company/Awards";
 import ValuesAndCulture from "../pages/company/ValuesAndCulture";
 import RetailAndECommerce from "../pages/company/RetailAndECommerce";
+import BlogDetails from "../pages/blogs/BlogDetails";
 
 const router = createBrowserRouter([
   {
@@ -61,7 +62,14 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "offers", element: <Offers /> },
-      { path: "blogs", element: <Blogs /> }, // Todo: Pending
+      {
+        path: "blogs",
+        element: <Outlet />,
+        children: [
+          { index: true, element: <Blogs /> },
+          { path: ":blogId", element: <BlogDetails /> },
+        ],
+      },
       { path: "search", element: <SearchProducts /> },
       { path: "product/:productId", element: <ProductDetails /> },
       { path: "products/:levelOneCategory", element: <CategoryProducts /> },

@@ -66,3 +66,7 @@ select:-webkit-autofill:focus  */
   pointer-events: all;
   @apply range-slider-thumb-base;
 }
+
+/* NOTE -  You can customize the prose styles here */
+/* .custom-prose {
+} */
