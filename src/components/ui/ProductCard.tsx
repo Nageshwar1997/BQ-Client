@@ -36,9 +36,11 @@ const ProductCard = ({
         <div className="text-sm font-medium line-clamp-1 text-secondary opacity-70">
           {product?.brand}
         </div>
-        <div className="text-sm text-tertiary line-clamp-1">
-          {product?.category?.name}
-        </div>
+        {product?.category?.name && (
+          <div className="text-sm text-tertiary line-clamp-1">
+            {product.category.name}
+          </div>
+        )}
         <div className="text-sm font-medium text-tertiary flex items-center gap-3">
           <span className="text-secondary">
             {toINRCurrency(product?.sellingPrice)}

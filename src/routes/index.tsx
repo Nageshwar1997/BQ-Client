@@ -89,7 +89,7 @@ const router = createBrowserRouter([
         element: <PrivateRoute children={<Outlet />} />,
         children: [
           { index: true, element: <Account /> }, // Todo: Pending
-          { path: "wishlist", element: <Wishlist /> }, // Todo: Pending
+          { path: "wishlist", element: <Wishlist /> },
           { path: "become-seller", element: <BecomeSeller /> },
           {
             path: "orders",
