@@ -1,3 +1,11 @@
+import {
+  CareIcon,
+  ChatIcon,
+  HandCoinIcon,
+  ReviewIcon,
+  TruckIcon,
+  UserCircleIcon,
+} from "../icons";
 import { TPasswordField, TRegexes } from "../types";
 
 export * from "./categories";
@@ -223,4 +231,49 @@ export const ALLOWED_BUSINESSES = [
   "Retail Store",
   "Salon",
   "Wholesale Distributor",
+];
+
+export const SIDEBAR_DATA = [
+  {
+    id: 1,
+    label: "Profile",
+    icon: UserCircleIcon,
+    path: "/",
+    className: "stroke-tertiary group-hover:stroke-primary",
+  },
+  {
+    id: 2,
+    label: "Orders",
+    icon: TruckIcon,
+    path: "/orders",
+    className: "stroke-tertiary group-hover:stroke-primary",
+  },
+  {
+    id: 3,
+    label: "Refunds & Returns",
+    icon: HandCoinIcon,
+    path: "/refunds_and_returns",
+    className: "stroke-tertiary group-hover:stroke-primary",
+  },
+  {
+    id: 4,
+    label: "Reviews & Ratings",
+    icon: ReviewIcon,
+    path: "/reviews_and_ratings",
+    className: "stroke-tertiary group-hover:stroke-primary",
+  },
+  {
+    id: 5,
+    label: "Customer Support",
+    icon: CareIcon,
+    path: "/customer_support",
+    className: "fill-tertiary group-hover:fill-primary",
+  },
+  {
+    id: 6,
+    label: "Chat & Messages",
+    icon: ChatIcon,
+    path: "/chat_and_messages",
+    className: "fill-tertiary group-hover:fill-primary",
+  },
 ];
