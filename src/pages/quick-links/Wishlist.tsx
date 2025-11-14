@@ -11,7 +11,13 @@ const Wishlist = () => {
 
   return (
     <div className="px-6 py-12 max-w-7xl mx-auto space-y-16">
-      <header className="text-center space-y-4">
+      <header
+        className={`text-center space-y-4 ${
+          !products.length
+            ? "min-h-[80dvh] flex flex-col items-center justify-center"
+            : ""
+        }`}
+      >
         <h1 className="text-2xl base:text-3xl sm:text-4xl font-bold tracking-tight bg-clip-text bg-silver-duo text-transparent">
           Your Wishlist {products.length === 0 ? "is empty" : ""}
         </h1>
