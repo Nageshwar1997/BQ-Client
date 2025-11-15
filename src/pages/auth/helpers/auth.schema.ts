@@ -10,7 +10,12 @@ import { regexes } from "../../../constants";
 const fileValidation = z
   .union([z.instanceof(File), z.string()])
   .superRefine((file, ctx) => {
-    zodFileOrUrl({ fileOrUrl: file, field: "profilePic", ctx });
+    zodFileOrUrl({
+      fileOrUrl: file,
+      field: "profilePic",
+      ctx,
+      showingFieldName: "Profile Pic",
+    });
   })
   .optional();
 
@@ -206,3 +211,57 @@ export const loginSchema = z
       }
     }
   });
+
+export const updateUserSchema = z.object({
+  profilePic: fileValidation,
+  firstName: zodStringRequired({
+    field: "firstName",
+    showingFieldName: "First Name",
+    blockMultipleSpaces: true,
+    min: 2,
+    max: 50,
+    customRegexes: [
+      {
+        regex: regexes.validName,
+        message:
+          "can only contain letters and only one space is allowed between words",
+      },
+    ],
+  }),
+  lastName: zodStringRequired({
+    field: "lastName",
+    showingFieldName: "Last Name",
+    blockMultipleSpaces: true,
+    min: 2,
+    max: 50,
+    customRegexes: [
+      {
+        regex: regexes.validName,
+        message:
+          "can only contain letters and only one space is allowed between words",
+      },
+    ],
+  }),
+  email: zodStringRequired({
+    field: "email",
+    showingFieldName: "Email",
+    blockSingleSpace: true,
+    customRegexes: [{ regex: regexes.validEmail, message: "must be a valid" }],
+  }).toLowerCase(),
+  phoneNumber: zodStringRequired({
+    field: "phoneNumber",
+    showingFieldName: "Phone number",
+    blockSingleSpace: true,
+    customRegexes: [
+      { regex: regexes.phoneStart, message: "must start with 6, 7, 8, or 9" },
+      {
+        regex: regexes.phoneExactLength,
+        message: "must be exactly 10 digits",
+      },
+      {
+        regex: regexes.validPhone,
+        message: "must be exactly 10 digits and must start with 6, 7, 8, or 9",
+      },
+    ],
+  }),
+});
