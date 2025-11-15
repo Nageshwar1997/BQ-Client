@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import {
   BuildingIcon,
-  GiftCardIcon,
   HeartIcon,
   PercentCircleIcon,
   SearchIcon,
   ShoppingBag,
   TrackIcon,
+  TruckIcon,
   UserCircleIcon,
 } from "../../../icons";
 import DarkMode from "../../DarkMode";
@@ -20,6 +20,7 @@ import useQueryParams from "../../../hooks/useQueryParams";
 import useCartStore from "../../../store/cart.store";
 import useWishlistStore from "../../../store/wishlist.store";
 import useRequireAuth from "../../../hooks/useRequireAuth";
+import { Link } from "react-router-dom";
 
 const UserPopup = ({
   isOpen,
@@ -64,26 +65,38 @@ const UserPopup = ({
           </div>
           <hr className="h-px block border-none bg-gradient-line" />
           <div className="flex flex-col gap-2.5 py-1">
-            <div className="flex items-center gap-2 cursor-pointer">
-              <UserCircleIcon className="w-5 h-5 !stroke-tertiary" />
+            <Link
+              to="/account"
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <UserCircleIcon className="w-5 h-5 stroke-tertiary" />
               <p className="text-sm/none text-tertiary">My Profile</p>
-            </div>
-            <div className="flex items-center gap-2 cursor-pointer">
-              <TrackIcon className="w-5 h-5 !stroke-tertiary" />
+            </Link>
+            <Link
+              to="/account/track"
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <TrackIcon className="w-5 h-5 stroke-tertiary" />
               <p className="text-sm/none text-tertiary">Track Orders</p>
-            </div>
-            <div className="flex items-center gap-2 cursor-pointer">
-              <GiftCardIcon className="w-5 h-5 fill-tertiary" />
-              <p className="text-sm/none text-tertiary">Rewards</p>
-            </div>
-            <div className="flex items-center gap-2 cursor-pointer">
-              <ShoppingBag className="w-5 h-5 !stroke-tertiary" />
+            </Link>
+            <Link
+              to="/account/orders"
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <TruckIcon className="w-5 h-5 stroke-tertiary" />
+              <p className="text-sm/none text-tertiary">Orders</p>
+            </Link>
+            <Link to="/account/cart" className="flex items-center gap-2 cursor-pointer">
+              <ShoppingBag className="w-5 h-5 stroke-tertiary" />
               <p className="text-sm/none text-tertiary">Cart</p>
-            </div>
-            <div className="flex items-center gap-2 cursor-pointer">
-              <PercentCircleIcon className="w-5 h-5 !stroke-tertiary" />
+            </Link>
+            <Link
+              to="/offers"
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <PercentCircleIcon className="w-5 h-5 stroke-tertiary" />
               <p className="text-sm/none text-tertiary">Offers</p>
-            </div>
+            </Link>
           </div>
           <div className="flex justify-between items-center gap-2">
             <Button
