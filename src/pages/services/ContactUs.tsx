@@ -40,7 +40,7 @@ const ContactUs = () => {
       </header>
       <div className="px-4 md:px-8 py-12 space-y-12 max-w-4xl mx-auto">
         <div className="shadow-neumorphic-layered rounded-2xl overflow-hidden">
-          <div className="shadow-light-dark-soft p-8 w-full h-full flex flex-col items-center justify-center">
+          <div className="shadow-light-dark-soft p-6 sm:p-8 w-full h-full flex flex-col items-center justify-center">
             <h2 className="text-2xl font-semibold mb-6 text-primary">
               Send Us a Message
             </h2>
@@ -104,8 +104,8 @@ const ContactUs = () => {
         </div>
         <hr className="w-full h-px block border-none bg-gradient-line" />
         {/* Contact Info */}
-        <div className="shadow-neumorphic-layered rounded-2xl max-h-[536px] overflow-hidden">
-          <div className="h-full shadow-light-dark-soft p-8 flex flex-col justify-center space-y-6">
+        <div className="shadow-neumorphic-layered rounded-2xl">
+          <div className="h-full shadow-light-dark-soft p-6 sm:p-8 flex flex-col justify-center space-y-6">
             <h2 className="text-2xl font-semibold bg-clip-text bg-silver-duo text-transparent text-center">
               Contact Information
             </h2>
