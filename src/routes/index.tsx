@@ -50,6 +50,8 @@ import ValuesAndCulture from "../pages/company/ValuesAndCulture";
 import RetailAndECommerce from "../pages/company/RetailAndECommerce";
 import BlogDetails from "../pages/blogs/BlogDetails";
 import Profile from "../pages/account/profile";
+import MyReviewsAndRating from "../pages/account/reviews-and-ratings";
+import TrackOrder from "../pages/account/order/TrackOrder";
 
 const router = createBrowserRouter([
   {
@@ -97,7 +99,14 @@ const router = createBrowserRouter([
           { index: true, element: <Orders /> },
           { path: ":orderId", element: <OrderDetails /> }, // Todo: Cancel Order and Return Order Pending
           { path: "return-refund", element: <OrderReturnRefund /> }, // Todo: Pending
-          { path: "track", element: <TrackMyOrders /> }, // Todo: Pending
+          {
+            path: "track",
+            element: <Outlet />,
+            children: [
+              { index: true, element: <TrackMyOrders /> }, // Todo: Pending
+              { path: ":orderId", element: <TrackOrder /> }, // Todo: Pending
+            ],
+          },
           { path: "payment", element: <Payment /> },
         ],
       },
@@ -108,8 +117,27 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <Profile />,
-            // children: [],
           }, // Todo: Pending
+          { path: "contact", element: <ContactUs /> },
+          { path: "cart", element: <Cart /> },
+          { path: "reviews-and-ratings", element: <MyReviewsAndRating /> },
+          {
+            path: "track",
+            element: <Outlet />,
+            children: [
+              { index: true, element: <TrackMyOrders /> }, // Todo: Pending
+              { path: ":orderId", element: <TrackOrder /> }, // Todo: Pending
+            ],
+          },
+          {
+            path: "orders",
+            element: <PrivateRoute children={<Outlet />} />,
+            children: [
+              { index: true, element: <Orders /> },
+              { path: ":orderId", element: <OrderDetails /> }, // Todo: Cancel Order and Return Order Pending
+              { path: "return-refund", element: <OrderReturnRefund /> }, // Todo: Pending
+            ],
+          },
         ],
       },
       // Company Pages
