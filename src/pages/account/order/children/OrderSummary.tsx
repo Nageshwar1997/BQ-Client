@@ -4,12 +4,16 @@ import { ORDER_STATUS_CLASSES } from "../../../../constants";
 import { ClassName, IOrder } from "../../../../types";
 import { toINRCurrency } from "../../../../utils";
 import OrderKeyValue from "./OrderKeyValue";
+import { DeleteIcon, TrackIcon } from "../../../../icons";
+import usePathParams from "../../../../hooks/usePathParams";
+import { Link } from "react-router-dom";
 
 interface Props extends ClassName {
   order: IOrder;
 }
 
 const OrderSummary = ({ order, className = "" }: Props) => {
+  const { paths } = usePathParams();
   const orderSummaryFields = useMemo(
     () => [
       {
@@ -36,7 +40,7 @@ const OrderSummary = ({ order, className = "" }: Props) => {
             : null,
       },
       {
-        field: "Delivery Charges",
+        field: "Del. Charges",
         value:
           order.order_result?.charges > 0
             ? toINRCurrency(order.order_result?.charges)
@@ -46,31 +50,67 @@ const OrderSummary = ({ order, className = "" }: Props) => {
     [order]
   );
 
+  const isAccountPage = paths.includes("account");
+
   return (
     <section
       className={`w-full flex flex-col border shadow-md border-primary-30 rounded-xl opacity-90 pb-2 ${className}`}
     >
-      <div className="py-2 px-4 border-b border-b-primary-30 mb-2 flex items-center justify-between">
+      <div className="py-2 px-4 border-b border-b-primary-30 mb-2 flex flex-col base:flex-row gap-3 sm:gap-4 items-center justify-between">
         <h3 className="w-fit text-lg font-bold bg-clip-text text-transparent bg-accent-duo">
           Order Summary
         </h3>
-        {order.razorpay_payment_result.rzp_payment_status === "PAID" &&
-          ["CONFIRMED", "DELIVERED"].includes(
-            order.order_result.order_status
-          ) && (
-            <Button
-              content={`${
-                order.order_result.order_status === "CONFIRMED"
-                  ? "Cancel"
-                  : order.order_result.order_status === "DELIVERED"
-                  ? "Return"
-                  : ""
-              } Order`}
-              pattern="tertiary"
-              className="max-w-fit !rounded-lg !px-x !py-2"
-              buttonProps={{ disabled: true }}
-            />
+        <div className="flex gap-4">
+          {order.razorpay_payment_result.rzp_payment_status === "PAID" && (
+            <>
+              {["CONFIRMED", "DELIVERED"].includes(
+                order.order_result.order_status
+              ) && (
+                <Button
+                  content={`${
+                    order.order_result.order_status === "CONFIRMED"
+                      ? "Cancel"
+                      : order.order_result.order_status === "DELIVERED"
+                      ? "Return"
+                      : ""
+                  }`}
+                  pattern="secondary"
+                  rightIcon={
+                    <DeleteIcon
+                      className="w-4 h-4 stroke-secondary-inverted"
+                      strokeWidth="2.5"
+                    />
+                  }
+                  className="min-w-[86px] max-w-fit !rounded-lg !px-x !py-2"
+                  buttonProps={{ disabled: true }}
+                />
+              )}
+              {["CONFIRMED"].includes(order.order_result.order_status) && (
+                <Link
+                  to={`/${isAccountPage ? "account" : "orders"}/track/${
+                    order._id
+                  }`}
+                >
+                  <Button
+                    content={`${
+                      order.order_result.order_status === "CONFIRMED"
+                        ? "Track"
+                        : ""
+                    }`}
+                    rightIcon={
+                      <TrackIcon
+                        className="w-4 h-4 stroke-white"
+                        strokeWidth="2.5"
+                      />
+                    }
+                    pattern="primary"
+                    className="min-w-[86px] max-w-fit !rounded-lg !px-x !py-2"
+                  />
+                </Link>
+              )}
+            </>
           )}
+        </div>
       </div>
       <div className="px-4 grid sm:grid-cols-2 gap-0.5 gap-x-3">
         {orderSummaryFields.map((f, i) => (

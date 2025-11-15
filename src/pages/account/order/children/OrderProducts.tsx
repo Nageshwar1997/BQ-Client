@@ -1,3 +1,4 @@
+import usePathParams from "../../../../hooks/usePathParams";
 import { ClassName, IOrder } from "../../../../types";
 import { toINRCurrency } from "../../../../utils";
 
@@ -6,6 +7,8 @@ interface Props extends ClassName {
 }
 
 const OrderProducts = ({ products = [], className = "" }: Props) => {
+  const { paths } = usePathParams();
+  const isAccountPage = paths?.includes("account");
   if (!products?.length) return null;
   return (
     <section
@@ -20,9 +23,15 @@ const OrderProducts = ({ products = [], className = "" }: Props) => {
         {products?.map((item) => (
           <div
             key={item._id}
-            className="p-2 flex gap-4 border shadow-md border-primary-30 rounded-lg opacity-90 items-stretch"
+            className={`p-2 flex ${
+              isAccountPage ? "flex-col base:flex-row" : ""
+            } gap-4 border shadow-md border-primary-30 rounded-lg opacity-90 items-stretch`}
           >
-            <div className="w-24 rounded-sm shadow overflow-hidden">
+            <div
+              className={`w-24 rounded-sm shadow overflow-hidden ${
+                isAccountPage ? "w-32 base:w-24 mx-auto" : ""
+              }`}
+            >
               <img
                 src={
                   item?.shade?.images?.[0] || item?.product?.commonImages?.[0]
@@ -32,19 +41,19 @@ const OrderProducts = ({ products = [], className = "" }: Props) => {
               />
             </div>
             <div className="flex-1 grow flex flex-col justify-between">
-              <h3 className="text-base font-medium text-primary opacity-90 hover:opacity-100 line-clamp-1">
+              <h3 className="text-sm sm:text-base font-medium text-primary opacity-90 hover:opacity-100 line-clamp-1">
                 {item?.product?.title}
               </h3>
               {item?.shade && (
                 <p className="text-[13px] text-tertiary">
-                  Shade: {item?.shade?.shadeName}
+                  {item?.shade?.shadeName}
                 </p>
               )}
               <p className="text-[13px] text-tertiary">
                 {item?.product?.brand}
               </p>
               <p className="text-[13px] text-secondary">
-                Quantity: {item.quantity}
+                Qty.: {item.quantity}
               </p>
               <p className="text-sm font-medium text-primary">
                 Price: {toINRCurrency(item?.product?.sellingPrice)}
