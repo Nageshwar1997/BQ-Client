@@ -8,7 +8,7 @@ const Sidebar = () => {
   const { user } = useUserStore();
 
   return (
-    <div className="max-w-20 lg:max-w-[250px] w-full max-h-[calc(100dvh-64px)] lg:max-h-[calc(100dvh-100px)] grow bg-tertiary-inverted text-tertiary rounded-br-lg shadow-lg shadow-secondary-inverted sticky top-16 lg:top-[100px]">
+    <div className="max-w-20 lg:max-w-[250px] w-full max-h-[calc(100dvh-64px)] lg:max-h-[calc(100dvh-100px)] grow bg-secondary-inverted text-tertiary sticky top-16 lg:top-[100px]">
       <div className="w-full h-full flex flex-col gap-3">
         {/* Profile Section */}
         <div className="w-full flex flex-col lg:flex-row justify-center items-center gap-1 px-2 py-3">
@@ -41,7 +41,7 @@ const Sidebar = () => {
                 return (
                   <div
                     key={index}
-                    onClick={() => navigate(item.path)}
+                    onClick={() => navigate(`${item.path}`)}
                     className="w-fit lg:w-full flex items-center justify-between gap-2 group cursor-pointer p-2 border border-primary-10 rounded-lg hover:bg-primary-inverted-10 shadow-lg hover:shadow-primary-inverted-50 light:hover:shadow-primary-50 hover:scale-[1.02] duration-300"
                   >
                     <div className="flex items-center gap-2">

@@ -49,6 +49,7 @@ import Awards from "../pages/company/Awards";
 import ValuesAndCulture from "../pages/company/ValuesAndCulture";
 import RetailAndECommerce from "../pages/company/RetailAndECommerce";
 import BlogDetails from "../pages/blogs/BlogDetails";
+import Profile from "../pages/account/profile";
 
 const router = createBrowserRouter([
   {
@@ -84,24 +85,31 @@ const router = createBrowserRouter([
       { path: "refer", element: <PrivateRoute children={<ReferFriend />} /> }, // Todo: Refer Part is Pending
       { path: "cart", element: <PrivateRoute children={<Cart />} /> },
       { path: "address", element: <PrivateRoute children={<Address />} /> },
+      { path: "wishlist", element: <PrivateRoute children={<Wishlist />} /> },
       {
-        path: "account",
+        path: "become-seller",
+        element: <PrivateRoute children={<BecomeSeller />} />,
+      },
+      {
+        path: "orders",
         element: <PrivateRoute children={<Outlet />} />,
         children: [
-          { index: true, element: <Account /> }, // Todo: Pending
-          { path: "wishlist", element: <Wishlist /> },
-          { path: "become-seller", element: <BecomeSeller /> },
+          { index: true, element: <Orders /> },
+          { path: ":orderId", element: <OrderDetails /> }, // Todo: Cancel Order and Return Order Pending
+          { path: "return-refund", element: <OrderReturnRefund /> }, // Todo: Pending
+          { path: "track", element: <TrackMyOrders /> }, // Todo: Pending
+          { path: "payment", element: <Payment /> },
+        ],
+      },
+      {
+        path: "account",
+        element: <PrivateRoute children={<Account />} />,
+        children: [
           {
-            path: "orders",
-            element: <Outlet />,
-            children: [
-              { index: true, element: <Orders /> },
-              { path: ":orderId", element: <OrderDetails /> }, // Todo: Cancel Order and Return Order Pending
-              { path: "return-refund", element: <OrderReturnRefund /> }, // Todo: Pending
-              { path: "track", element: <TrackMyOrders /> }, // Todo: Pending
-              { path: "payment", element: <Payment /> },
-            ],
-          },
+            index: true,
+            element: <Profile />,
+            // children: [],
+          }, // Todo: Pending
         ],
       },
       // Company Pages

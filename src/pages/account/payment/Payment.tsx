@@ -92,7 +92,7 @@ const Payment = () => {
           try {
             await verifyPayment(
               { ...response, orderDBId: createdOrder.orderId },
-              { onSuccess: () => navigate("/account/orders") }
+              { onSuccess: () => navigate("/orders") }
             );
           } catch (err) {
             console.error("Payment verification failed:", err);

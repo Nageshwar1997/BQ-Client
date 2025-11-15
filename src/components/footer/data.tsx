@@ -36,13 +36,13 @@ export const footerCategories = [
     title: "Quick Links",
     options: [
       { title: "My Account", path: "account", private: true },
-      { title: "Order History", path: "account/orders", private: true },
-      { title: "Wishlist", path: "account/wishlist", private: true },
+      { title: "Order History", path: "orders", private: true },
+      { title: "Wishlist", path: "wishlist", private: true },
       { title: "Refer a Friend", path: "refer", private: true },
       { title: "Store Locator", path: "store-locator" },
       {
         title: "Become a Seller",
-        path: "account/become-seller",
+        path: "become-seller",
         private: true,
       },
     ],
@@ -66,10 +66,10 @@ export const footerCategories = [
       { title: "Shipping Info", path: "shipping-info" },
       {
         title: "Returns & Refunds",
-        path: "account/orders/return-refund",
+        path: "orders/return-refund",
         private: true,
       },
-      { title: "Track My Order", path: "account/orders/track", private: true },
+      { title: "Track My Order", path: "orders/track", private: true },
     ],
   },
   {

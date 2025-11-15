@@ -133,7 +133,7 @@ const Navbar = () => {
         isNavbarAtTop || isNavbarHovered || nonTransparent
           ? "bg-tertiary-inverted shadow-lg shadow-primary-inverted-50"
           : "bg-transparent"
-      } ${paths.includes("account") ? "lg:-top-0" : ""}`}
+      } ${paths.includes("account") ? "lg:!-top-0" : ""}`}
       onMouseEnter={() => setIsNavbarHovered(true)}
       onMouseLeave={() => setIsNavbarHovered(false)}
     >

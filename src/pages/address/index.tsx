@@ -190,7 +190,7 @@ const Address = () => {
                     (!selectedAddress.billing || !selectedAddress.shipping) &&
                     !selectedAddress.both,
                   onClick: () => {
-                    navigate("/account/orders/payment", {
+                    navigate("/orders/payment", {
                       state: {
                         addresses: {
                           ...(prefillData.billing?.address && {

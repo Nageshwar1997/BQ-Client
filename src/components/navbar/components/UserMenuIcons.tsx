@@ -173,7 +173,7 @@ const UserMenuIcons = ({
         </div>
         <BuildingIcon
           className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6"
-          onClick={() => navigate("/account/become-seller")}
+          onClick={() => navigate("/become-seller")}
         />
         <div className="relative">
           <ShoppingBag
@@ -189,7 +189,7 @@ const UserMenuIcons = ({
         <div className="relative flex items-center justify-center">
           <HeartIcon
             className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6"
-            onClick={() => handleAuthNavigation("/account/wishlist")}
+            onClick={() => handleAuthNavigation("/wishlist")}
           />
           {wishlist?.products && wishlist?.products?.length > 0 && (
             <span className="absolute inset-0 flex items-center justify-center font-semibold bg-clip-text text-transparent bg-accent-duo inset-x-0 text-[11px] md:text-[11px] leading-none w-fit mx-auto pointer-events-none">
