@@ -38,14 +38,14 @@ const Input = ({
           className={`w-full h-full flex items-center gap-1 border border-primary-10 bg-smoke-eerie rounded-lg overflow-hidden ${className}`}
         >
           {/* Left Icon */}
-          {icons?.left?.icon && !icons.right?.icon ? (
+          {icons?.left?.icon ? (
             <span
               onClick={icons.left.onClick}
-              className="h-full flex justify-center items-center cursor-pointer p-2 overflow-hidden"
+              className="h-full flex justify-center items-center cursor-pointer p-2 overflow-hidden group"
             >
               {icons.left.icon}
             </span>
-          ) : !icons?.left?.icon && icons?.left?.text ? (
+          ) : icons?.left?.text ? (
             <div className="h-full overflow-hidden">
               <p className="h-full flex items-center justify-center text-sm text-primary-50 border-r border-r-primary-10 p-3 capitalize">
                 {icons?.left?.text}
@@ -65,9 +65,9 @@ const Input = ({
               inputProps?.type === "number" ? event.currentTarget.blur() : null
             }
             className={`flex-1 w-full h-full outline-none border-none focus:outline-none focus:border-none bg-transparent font-normal text-sm p-3 text-primary placeholder:text-primary-50 placeholder:text-sm autofill-effect line-clamp-1 disabled:cursor-not-allowed ${
-              icons?.left?.icon && !icons?.right?.icon
+              icons?.left?.icon
                 ? "pl-0"
-                : !icons?.left?.icon && icons?.right?.icon
+                : icons?.right?.icon
                 ? "pr-0"
                 : icons?.left?.text
                 ? "pl-2"
@@ -79,10 +79,10 @@ const Input = ({
             } ${inputProps?.className || ""}`}
           />
           {/* Right Icon */}
-          {!icons?.left && icons?.right && (
+          {icons?.right && (
             <span
               onClick={icons.right.onClick}
-              className="h-full flex justify-center items-center cursor-pointer p-2 overflow-hidden"
+              className="h-full flex justify-center items-center cursor-pointer p-2 overflow-hidden group"
             >
               {icons.right.icon}
             </span>
