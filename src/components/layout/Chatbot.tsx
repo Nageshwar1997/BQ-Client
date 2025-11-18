@@ -1,11 +1,15 @@
 import { useState, useRef, useEffect } from "react";
+import { io, Socket } from "socket.io-client";
 import { ChatIcon, CloseIcon, NavigationIcon } from "../../icons";
+import { envs } from "../../envs/index.env";
 
 interface Message {
   id: number;
   type: "user" | "bot";
   text: string;
 }
+
+let socket: Socket;
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +18,25 @@ const Chatbot = () => {
   const [typing, setTyping] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  // Initialize socket connection
+  useEffect(() => {
+    socket = io(envs.BACKEND_URL); // Replace with your backend URL
+
+    socket.on("bot-message", (text: string) => {
+      const botMessage: Message = {
+        id: Date.now(),
+        type: "bot",
+        text,
+      };
+      setMessages((prev) => [...prev, botMessage]);
+      setTyping(false);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   // Scroll to bottom when new message appears
   useEffect(() => {
@@ -33,16 +56,8 @@ const Chatbot = () => {
     setInput("");
     setTyping(true);
 
-    // Simulate bot response
-    setTimeout(() => {
-      const botMessage: Message = {
-        id: Date.now() + 1,
-        type: "bot",
-        text: `Thanks for reaching out! We love helping with beauty tips 💄✨`,
-      };
-      setMessages((prev) => [...prev, botMessage]);
-      setTyping(false);
-    }, 1200);
+    // Send message to backend via socket
+    socket.emit("user-message", input);
   };
 
   return (
