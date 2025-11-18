@@ -9,6 +9,7 @@ import { useUserCart } from "../../hooks/useUserCart";
 import { useUserStore } from "../../store/user.store";
 import useUserWishlist from "../../hooks/useUserWishlist";
 import useWishlistStore from "../../store/wishlist.store";
+import Chatbot from "../../components/layout/Chatbot";
 
 const Main = () => {
   const { isAuthenticated } = useUserStore();
@@ -39,6 +40,7 @@ const Main = () => {
         <Outlet />
       </main>
       <Footer />
+      <Chatbot />
     </Fragment>
   );
 };
