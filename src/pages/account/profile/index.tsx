@@ -78,8 +78,8 @@ const Profile = () => {
               {profilePic || user?.profilePic ? (
                 <img
                   src={
-                    profilePic instanceof File
-                      ? URL.createObjectURL(profilePic)
+                    profilePic instanceof FileList
+                      ? URL.createObjectURL(profilePic?.[0])
                       : user?.profilePic
                   }
                   alt="Profile Pic"

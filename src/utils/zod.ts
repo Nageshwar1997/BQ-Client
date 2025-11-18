@@ -13,6 +13,7 @@ import {
   ZodRequiredNumberConfigs,
   ZodRequiredStringConfigs,
   ZodOptionalStringConfigs,
+  ZodFileConfigs,
 } from "../types/zod";
 
 export const getZodStringMessages = (
@@ -261,16 +262,7 @@ export function zodFileOrUrl({
   required = true,
   maxImageFileSize = MAX_IMAGE_FILE_SIZE,
   maxVideoFileSize = MAX_VIDEO_FILE_SIZE,
-}: {
-  maxVideoFileSize?: number;
-  maxImageFileSize?: number;
-  fileOrUrl: unknown;
-  field: string;
-  showingFieldName?: string;
-  index?: number;
-  ctx: z.RefinementCtx;
-  required?: boolean;
-}) {
+}: ZodFileConfigs) {
   let isVideo = false;
   const path: (string | number)[] = index !== undefined ? [index] : [];
   const name =
@@ -360,3 +352,14 @@ export const zodEnums = (props: ZodEnumsConfigs & { enums: string[] }) => {
     }),
   });
 };
+
+export const fileValidation = (
+  props: Omit<ZodFileConfigs, "ctx" | "fileOrUrl">
+) =>
+  z.unknown().superRefine((file, ctx) => {
+    zodFileOrUrl({
+      ...props,
+      fileOrUrl: file,
+      ctx,
+    });
+  });

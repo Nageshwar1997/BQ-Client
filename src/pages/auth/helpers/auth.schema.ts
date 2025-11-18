@@ -1,26 +1,17 @@
 import z from "zod";
 import {
+  fileValidation,
   zodEnums,
-  zodFileOrUrl,
   zodStringOptional,
   zodStringRequired,
 } from "../../../utils/zod";
 import { regexes } from "../../../constants";
 
-const fileValidation = z
-  .union([z.instanceof(File), z.string()])
-  .superRefine((file, ctx) => {
-    zodFileOrUrl({
-      fileOrUrl: file,
-      field: "profilePic",
-      ctx,
-      showingFieldName: "Profile Pic",
-    });
-  })
-  .optional();
-
 export const registerSchema = z.object({
-  profilePic: fileValidation,
+  profilePic: fileValidation({
+    field: "profilePic",
+    showingFieldName: "Profile Pic",
+  }),
   firstName: zodStringRequired({
     field: "firstName",
     showingFieldName: "First Name",
@@ -213,7 +204,10 @@ export const loginSchema = z
   });
 
 export const updateUserSchema = z.object({
-  profilePic: fileValidation,
+  profilePic: fileValidation({
+    field: "profilePic",
+    showingFieldName: "Profile Pic",
+  }),
   firstName: zodStringRequired({
     field: "firstName",
     showingFieldName: "First Name",
