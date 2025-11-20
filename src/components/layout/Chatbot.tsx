@@ -1,18 +1,19 @@
 import { useState, useRef, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid"; // for userId
-import { BotIcon, CloseIcon, NavigationIcon } from "../../icons";
+import { BotIcon, CloseIcon, DropdownIcon, NavigationIcon } from "../../icons";
 import Button from "../button/Button";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import Input from "../input/Input";
 import MarkdownDisplay from "./MarkdownDisplay";
 import { TChatMessage } from "../../types";
 import { useProductSocket } from "../../hooks/useSockets";
-
-const userId = localStorage.getItem("chat_userId") || uuidv4();
-localStorage.setItem("chat_userId", userId);
+import useRequireAuth from "../../hooks/useRequireAuth";
+import useQueryParams from "../../hooks/useQueryParams";
 
 const Chatbot = () => {
+  const { queryParams } = useQueryParams();
   const { socket, userId } = useProductSocket();
+  const requireAuth = useRequireAuth();
+  const [context, setContext] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<TChatMessage[]>([]);
   const [input, setInput] = useState("");
@@ -108,7 +109,10 @@ const Chatbot = () => {
   };
 
   return (
-    <div ref={outsideClickContainerRef} className="fixed bottom-3 right-3 z-50">
+    <div
+      ref={queryParams.login ? null : outsideClickContainerRef}
+      className="fixed bottom-3 right-3 z-50"
+    >
       {!isOpen ? (
         <Button
           content={<BotIcon className="stroke-white w-full h-full" />}
@@ -119,49 +123,112 @@ const Chatbot = () => {
       ) : (
         <div className="bg-primary-inverted rounded-xl shadow-xl flex flex-col w-80 sm:w-96 h-[70dvh] overflow-hidden">
           <div className="bg-accent-duo text-white flex items-center justify-between p-4">
-            <BotIcon stroke="white" className="md:w-7 md:h-7 lg:w-8 lg:h-8" />
+            <DropdownIcon
+              stroke="white"
+              className="w-8 h-8 rotate-90 border border-[red]"
+              onClick={() => {
+                setContext(null);
+                setInput("");
+                setMessages([]);
+                setSuggestedQuestions([]);
+                setTyping(false);
+              }}
+            />
             <h2 className="font-bold text-lg">BQ Chatbot</h2>
-            <CloseIcon stroke="white" onClick={() => setIsOpen(false)} />
+            <CloseIcon
+              stroke="white"
+              strokeWidth="3"
+              onClick={() => setIsOpen(false)}
+            />
           </div>
-
           <div className="flex-1 p-4 overflow-y-auto space-y-3">
-            {messages.map((msg) => (
-              <div
-                key={msg.id}
-                className={`p-2 rounded max-w-[75%] w-fit animate-slide-in text-sm/5 ${
-                  msg.type === "user"
-                    ? "bg-secondary-inverted text-tertiary ml-auto"
-                    : msg.type === "bot"
-                    ? "bg-tertiary-inverted text-primary"
-                    : "bg-red-100 text-red-900"
-                }`}
-              >
-                <MarkdownDisplay text={msg.text} />
-              </div>
-            ))}
-
-            {typing && (
-              <div className="bg-tertiary-inverted text-primary text-sm/5 p-2 rounded-lg w-fit animate-pulse">
-                Thinking...
-              </div>
-            )}
-
-            {/* Suggested Questions */}
-            {suggestedQuestions.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-2">
-                {suggestedQuestions.map((q, i) => (
-                  <Button
-                    key={i}
-                    pattern="outline"
-                    content={q}
-                    className="bg-tertiary-inverted-50 text-tertiary !text-[13px]/4 !p-2 max-w-[75%] !rounded !border-tertiary-30 [&_span]:text-start [&_span]:break-words transition-none"
-                    buttonProps={{ onClick: () => handleSuggestionClick(q) }}
-                  />
+            {context ? (
+              <>
+                {messages.map((msg) => (
+                  <div
+                    key={msg.id}
+                    className={`p-2 rounded max-w-[75%] w-fit animate-slide-in text-sm/5 ${
+                      msg.type === "user"
+                        ? "bg-secondary-inverted text-tertiary ml-auto"
+                        : msg.type === "bot"
+                        ? "bg-tertiary-inverted text-primary"
+                        : "bg-red-100 text-red-900"
+                    }`}
+                  >
+                    <MarkdownDisplay text={msg.text} />
+                  </div>
                 ))}
+
+                {typing && (
+                  <div className="bg-tertiary-inverted text-primary text-sm/5 p-2 rounded-lg w-fit animate-pulse">
+                    Thinking...
+                  </div>
+                )}
+
+                {/* Suggested Questions */}
+                {suggestedQuestions.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {suggestedQuestions.map((q, i) => (
+                      <Button
+                        key={i}
+                        pattern="outline"
+                        content={q}
+                        className="bg-tertiary-inverted-50 text-tertiary !text-[13px]/4 !p-2 max-w-[75%] !rounded !border-tertiary-30 [&_span]:text-start [&_span]:break-words transition-none"
+                        buttonProps={{
+                          onClick: () => handleSuggestionClick(q),
+                        }}
+                      />
+                    ))}
+                  </div>
+                )}
+
+                <div ref={messagesEndRef} />
+              </>
+            ) : (
+              <div className="flex flex-col items-center justify-center gap-4">
+                <p className="text-primary md:text-lg max-w-xs text-center font-semibold text-shadow-sm">
+                  What would you like to ask our chatbot?
+                </p>
+                <hr className="w-full h-px block border-none bg-gradient-line" />
+
+                <div className="space-y-3">
+                  {[
+                    {
+                      name: "products",
+                      description:
+                        "Ask about our products, their features, and details.",
+                    },
+                    {
+                      name: "orders",
+                      description:
+                        "Check your order status or track your deliveries.",
+                    },
+                  ].map((ctx, idx) => {
+                    return (
+                      <button
+                        key={idx}
+                        className="border border-primary-30 bg-primary-10 rounded-lg p-2"
+                        onClick={() => {
+                          const action = () => setContext(ctx.name); // wrap in a function
+                          if (ctx.name === "orders") {
+                            if (!requireAuth(action)) return; // store action if not logged in
+                            action();
+                          }
+                          action();
+                        }}
+                      >
+                        <p className="text-sm md:text-base bg-clip-text bg-silver-duo text-transparent font-medium capitalize">
+                          {ctx.name}:
+                        </p>
+                        <p className="text-xs md:text-sm mt-1  text-silver-jet-2">
+                          {ctx.description}
+                        </p>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             )}
-
-            <div ref={messagesEndRef} />
           </div>
 
           <div className="p-3 border-t flex items-center gap-2">
@@ -173,12 +240,16 @@ const Chatbot = () => {
                 onChange: (e) => setInput(e.target.value),
                 placeholder: "Ask about products...",
                 onKeyDown: (e) => e.key === "Enter" && handleSend(),
+                disabled: typing || !context,
               }}
               className="!rounded-full"
               containerClassName="[&>div]:h-10"
             />
             <Button
-              buttonProps={{ onClick: () => handleSend() }}
+              buttonProps={{
+                onClick: () => handleSend(),
+                disabled: typing || !context,
+              }}
               className="!w-10 !h-10 !rounded-full !p-2"
               pattern="primary"
               content={
