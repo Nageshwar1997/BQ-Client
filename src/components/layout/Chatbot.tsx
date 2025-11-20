@@ -18,6 +18,7 @@ const Chatbot = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
+  const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>([]);
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
@@ -25,44 +26,29 @@ const Chatbot = () => {
     socket = io("http://localhost:8080/products"); // connect to products namespace
 
     // Streamed chunks from AI
-    socket.on(
-      "receive_message_chunk",
-      (data: { success: boolean; chunk: string }) => {
-        if (!data.success) {
-          setTyping(false);
-          return;
-        }
-
+    socket.on("receive_message_chunk", ({ success, chunk }) => {
+      if (success) {
         // Append chunk to last bot message or create new
         setMessages((prev) => {
-          const lastMessage = prev[prev.length - 1];
-          if (lastMessage?.type === "bot") {
-            // append chunk to existing bot message
+          const last = prev[prev.length - 1];
+          if (last?.type === "bot") {
             const updated = [...prev];
             updated[updated.length - 1] = {
-              ...lastMessage,
-              text: lastMessage.text + data.chunk,
+              ...last,
+              text: last.text + chunk,
             };
             return updated;
-          } else {
-            // no previous bot message, create new
-            return [
-              ...prev,
-              {
-                id: Date.now(),
-                type: "bot",
-                text: data.chunk,
-              },
-            ];
           }
+          return [...prev, { id: Date.now(), type: "bot", text: chunk }];
         });
       }
-    );
+    });
+
+    // Error messages
     socket.on(
       "receive_message",
       (data: { success: boolean; error: string }) => {
         setTyping(false);
-        // Directly add message (error or normal) to messages
         setMessages((prev) => [
           ...prev,
           { id: Date.now(), type: "error", text: data.error },
@@ -70,11 +56,24 @@ const Chatbot = () => {
       }
     );
 
-    // Optional: final full response (could be used for validation / marking complete)
+    // Full response + suggested questions
+    // Full response + suggested questions
     socket.on(
       "receive_message_complete",
-      (/* data: { success: boolean; fullResponse: string } */) => {
+      ({ fullResponse, suggestedQuestions }) => {
         setTyping(false);
+
+        // Replace the streaming text with final clean answer
+        setMessages((prev) => {
+          const updated = [...prev];
+          updated[updated.length - 1] = {
+            ...updated[updated.length - 1],
+            text: fullResponse,
+          };
+          return updated;
+        });
+
+        setSuggestedQuestions(suggestedQuestions);
       }
     );
 
@@ -83,26 +82,32 @@ const Chatbot = () => {
     };
   }, []);
 
-  // Scroll to bottom when new message appears
+  // Scroll to bottom when messages or typing changes
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, typing]);
+  }, [messages, typing, suggestedQuestions]);
 
-  const handleSend = () => {
-    // if (!input.trim()) return;
+  const handleSend = (msgText?: string) => {
+    const textToSend = msgText || input;
+    if (!textToSend.trim()) return;
 
     const userMessage: Message = {
       id: Date.now(),
       type: "user",
-      text: input,
+      text: textToSend,
     };
 
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setTyping(true);
+    setSuggestedQuestions([]); // reset suggestions on new message
 
-    // Send message to /products backend
-    socket.emit("send_message", { message: input, userId });
+    // Send message to backend
+    socket.emit("send_message", { message: textToSend, userId });
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    handleSend(suggestion);
   };
 
   return (
@@ -137,17 +142,36 @@ const Chatbot = () => {
               className={`p-2 rounded-lg max-w-[75%] animate-slide-in ${
                 msg.type === "user"
                   ? "bg-pink-100 text-pink-800 ml-auto"
-                  : "bg-gray-100 text-gray-800"
+                  : msg.type === "bot"
+                  ? "bg-gray-100 text-gray-800"
+                  : "bg-red-100 text-red-800"
               }`}
             >
               {msg.text}
             </div>
           ))}
+
           {typing && (
             <div className="bg-gray-100 text-gray-800 p-2 rounded-lg max-w-[40%] animate-pulse">
               Typing...
             </div>
           )}
+
+          {/* Suggested Questions */}
+          {suggestedQuestions.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-2">
+              {suggestedQuestions.map((q, i) => (
+                <button
+                  key={i}
+                  onClick={() => handleSuggestionClick(q)}
+                  className="bg-pink-100 text-pink-800 px-3 py-1 rounded-full text-sm hover:bg-pink-200 transition"
+                >
+                  {q}
+                </button>
+              ))}
+            </div>
+          )}
+
           <div ref={messagesEndRef} />
         </div>
 
@@ -161,7 +185,7 @@ const Chatbot = () => {
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
           />
           <button
-            onClick={handleSend}
+            onClick={() => handleSend()}
             className=" bg-pink-500 w-10 h-10 flex items-center justify-center p-2 rounded-full hover:bg-pink-600 transition-colors"
           >
             <NavigationIcon className="rotate-45 mr-1 stroke-white" />
