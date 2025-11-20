@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { io, Socket } from "socket.io-client";
-import { ChatIcon, CloseIcon, NavigationIcon } from "../../icons";
+import { BotIcon, CloseIcon, NavigationIcon } from "../../icons";
 import { v4 as uuidv4 } from "uuid"; // for userId
+import Button from "../button/Button";
+import useOutsideClick from "../../hooks/useOutsideClick";
 
 interface Message {
   id: number;
@@ -20,6 +22,12 @@ const Chatbot = () => {
   const [typing, setTyping] = useState(false);
   const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>([]);
 
+  const outsideClickContainerRef = useOutsideClick<HTMLDivElement>(
+    () => setIsOpen(false),
+    {
+      enabled: isOpen,
+    }
+  );
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -111,87 +119,80 @@ const Chatbot = () => {
   };
 
   return (
-    <div className="fixed bottom-5 left-5 z-50 flex flex-col items-end">
-      {!isOpen && (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="bg-rose-c p-2 md:p-3 lg:p-4 rounded-full shadow-lg hover:scale-110 transform transition-transform duration-300 absolute bottom-0 left-0"
-        >
-          <ChatIcon className="fill-white md:w-7 md:h-7 lg:w-8 lg:h-8" />
-        </button>
-      )}
+    <div ref={outsideClickContainerRef} className="fixed bottom-3 right-3 z-50">
+      {!isOpen ? (
+        <Button
+          content={<BotIcon className="stroke-white w-full h-full" />}
+          className="!rounded-full !p-3"
+          pattern="primary"
+          buttonProps={{ onClick: () => setIsOpen(true) }}
+        />
+      ) : (
+        <div className="bg-white rounded-xl shadow-xl flex flex-col w-80 sm:w-96 h-[70dvh] overflow-hidden">
+          <div className="bg-pink-500 text-white flex items-center justify-between p-4">
+            <BotIcon className="stroke-white md:w-7 md:h-7 lg:w-8 lg:h-8" />
+            <h2 className="font-bold text-lg">BQ Chatbot</h2>
+            <CloseIcon stroke="white" onClick={() => setIsOpen(false)} />
+          </div>
 
-      <div
-        className={`bg-white rounded-xl shadow-xl flex flex-col overflow-hidden transform transition-all duration-500 ${
-          isOpen
-            ? "scale-100 opacity-100 w-80 h-96"
-            : "scale-0 opacity-0 w-0 h-0"
-        }`}
-      >
-        <div className="bg-pink-500 text-white flex items-center justify-between p-4">
-          <h2 className="font-bold text-lg">Beautinique Product Assistant</h2>
-          <button onClick={() => setIsOpen(false)}>
-            <CloseIcon stroke="white" />
-          </button>
-        </div>
+          <div className="flex-1 p-4 overflow-y-auto space-y-3">
+            {messages.map((msg) => (
+              <div
+                key={msg.id}
+                className={`p-2 rounded-lg max-w-[75%] animate-slide-in ${
+                  msg.type === "user"
+                    ? "bg-pink-100 text-pink-800 ml-auto"
+                    : msg.type === "bot"
+                    ? "bg-gray-100 text-gray-800"
+                    : "bg-red-100 text-red-800"
+                }`}
+              >
+                {msg.text}
+              </div>
+            ))}
 
-        <div className="flex-1 p-4 overflow-y-auto space-y-3">
-          {messages.map((msg) => (
-            <div
-              key={msg.id}
-              className={`p-2 rounded-lg max-w-[75%] animate-slide-in ${
-                msg.type === "user"
-                  ? "bg-pink-100 text-pink-800 ml-auto"
-                  : msg.type === "bot"
-                  ? "bg-gray-100 text-gray-800"
-                  : "bg-red-100 text-red-800"
-              }`}
+            {typing && (
+              <div className="bg-gray-100 text-gray-800 p-2 rounded-lg max-w-[40%] animate-pulse">
+                Typing...
+              </div>
+            )}
+
+            {/* Suggested Questions */}
+            {suggestedQuestions.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-2">
+                {suggestedQuestions.map((q, i) => (
+                  <button
+                    key={i}
+                    onClick={() => handleSuggestionClick(q)}
+                    className="bg-pink-100 text-pink-800 px-3 py-1 rounded-full text-sm hover:bg-pink-200 transition"
+                  >
+                    {q}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            <div ref={messagesEndRef} />
+          </div>
+
+          <div className="p-3 border-t border-gray-200 flex items-center gap-2">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Ask about products..."
+              className="flex-1 border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-300 text-primary"
+              onKeyDown={(e) => e.key === "Enter" && handleSend()}
+            />
+            <button
+              onClick={() => handleSend()}
+              className=" bg-pink-500 w-10 h-10 flex items-center justify-center p-2 rounded-full hover:bg-pink-600 transition-colors"
             >
-              {msg.text}
-            </div>
-          ))}
-
-          {typing && (
-            <div className="bg-gray-100 text-gray-800 p-2 rounded-lg max-w-[40%] animate-pulse">
-              Typing...
-            </div>
-          )}
-
-          {/* Suggested Questions */}
-          {suggestedQuestions.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-2">
-              {suggestedQuestions.map((q, i) => (
-                <button
-                  key={i}
-                  onClick={() => handleSuggestionClick(q)}
-                  className="bg-pink-100 text-pink-800 px-3 py-1 rounded-full text-sm hover:bg-pink-200 transition"
-                >
-                  {q}
-                </button>
-              ))}
-            </div>
-          )}
-
-          <div ref={messagesEndRef} />
+              <NavigationIcon className="rotate-45 mr-1 stroke-white" />
+            </button>
+          </div>
         </div>
-
-        <div className="p-3 border-t border-gray-200 flex items-center gap-2">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask about products..."
-            className="flex-1 border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-300 text-primary"
-            onKeyDown={(e) => e.key === "Enter" && handleSend()}
-          />
-          <button
-            onClick={() => handleSend()}
-            className=" bg-pink-500 w-10 h-10 flex items-center justify-center p-2 rounded-full hover:bg-pink-600 transition-colors"
-          >
-            <NavigationIcon className="rotate-45 mr-1 stroke-white" />
-          </button>
-        </div>
-      </div>
+      )}
     </div>
   );
 };
