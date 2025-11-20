@@ -4,6 +4,7 @@ import { BotIcon, CloseIcon, NavigationIcon } from "../../icons";
 import { v4 as uuidv4 } from "uuid"; // for userId
 import Button from "../button/Button";
 import useOutsideClick from "../../hooks/useOutsideClick";
+import Input from "../input/Input";
 
 interface Message {
   id: number;
@@ -119,7 +120,10 @@ const Chatbot = () => {
   };
 
   return (
-    <div ref={outsideClickContainerRef} className="fixed bottom-3 right-3 z-50">
+    <div
+      ref={outsideClickContainerRef}
+      className="fixed bottom-3 right-3 z-50"
+    >
       {!isOpen ? (
         <Button
           content={<BotIcon className="stroke-white w-full h-full" />}
@@ -128,9 +132,9 @@ const Chatbot = () => {
           buttonProps={{ onClick: () => setIsOpen(true) }}
         />
       ) : (
-        <div className="bg-white rounded-xl shadow-xl flex flex-col w-80 sm:w-96 h-[70dvh] overflow-hidden">
-          <div className="bg-pink-500 text-white flex items-center justify-between p-4">
-            <BotIcon className="stroke-white md:w-7 md:h-7 lg:w-8 lg:h-8" />
+        <div className="bg-primary-inverted rounded-xl shadow-xl flex flex-col w-80 sm:w-96 h-[70dvh] overflow-hidden">
+          <div className="bg-accent-duo text-white flex items-center justify-between p-4">
+            <BotIcon stroke="white" className="md:w-7 md:h-7 lg:w-8 lg:h-8" />
             <h2 className="font-bold text-lg">BQ Chatbot</h2>
             <CloseIcon stroke="white" onClick={() => setIsOpen(false)} />
           </div>
@@ -139,12 +143,10 @@ const Chatbot = () => {
             {messages.map((msg) => (
               <div
                 key={msg.id}
-                className={`p-2 rounded-lg max-w-[75%] animate-slide-in ${
+                className={`p-2 rounded max-w-[75%] w-fit animate-slide-in text-sm/5 ${
                   msg.type === "user"
-                    ? "bg-pink-100 text-pink-800 ml-auto"
-                    : msg.type === "bot"
-                    ? "bg-gray-100 text-gray-800"
-                    : "bg-red-100 text-red-800"
+                    ? "bg-secondary-inverted text-tertiary ml-auto"
+                    : "bg-tertiary-inverted text-primary"
                 }`}
               >
                 {msg.text}
@@ -152,8 +154,8 @@ const Chatbot = () => {
             ))}
 
             {typing && (
-              <div className="bg-gray-100 text-gray-800 p-2 rounded-lg max-w-[40%] animate-pulse">
-                Typing...
+              <div className="bg-tertiary-inverted text-primary text-sm/5 p-2 rounded-lg w-fit animate-pulse">
+                Thinking...
               </div>
             )}
 
@@ -161,13 +163,13 @@ const Chatbot = () => {
             {suggestedQuestions.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-2">
                 {suggestedQuestions.map((q, i) => (
-                  <button
+                  <Button
                     key={i}
-                    onClick={() => handleSuggestionClick(q)}
-                    className="bg-pink-100 text-pink-800 px-3 py-1 rounded-full text-sm hover:bg-pink-200 transition"
-                  >
-                    {q}
-                  </button>
+                    pattern="outline"
+                    content={q}
+                    className="bg-tertiary-inverted-50 text-tertiary !text-[13px]/4 !p-2 max-w-[75%] !rounded !border-tertiary-30 [&_span]:text-start [&_span]:break-words transition-none"
+                    buttonProps={{ onClick: () => handleSuggestionClick(q) }}
+                  />
                 ))}
               </div>
             )}
@@ -175,21 +177,27 @@ const Chatbot = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          <div className="p-3 border-t border-gray-200 flex items-center gap-2">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask about products..."
-              className="flex-1 border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-300 text-primary"
-              onKeyDown={(e) => e.key === "Enter" && handleSend()}
+          <div className="p-3 border-t border- flex items-center gap-2">
+            <Input
+              needRef={true}
+              inputProps={{
+                type: "text",
+                value: input,
+                onChange: (e) => setInput(e.target.value),
+                placeholder: "Ask about products...",
+                onKeyDown: (e) => e.key === "Enter" && handleSend(),
+              }}
+              className="!rounded-full"
+              containerClassName="[&>div]:h-10"
             />
-            <button
-              onClick={() => handleSend()}
-              className=" bg-pink-500 w-10 h-10 flex items-center justify-center p-2 rounded-full hover:bg-pink-600 transition-colors"
-            >
-              <NavigationIcon className="rotate-45 mr-1 stroke-white" />
-            </button>
+            <Button
+              buttonProps={{ onClick: () => handleSend() }}
+              className="!w-10 !h-10 !rounded-full !p-2"
+              pattern="primary"
+              content={
+                <NavigationIcon className="rotate-45 mr-1 stroke-white" />
+              }
+            />
           </div>
         </div>
       )}
