@@ -1,15 +1,17 @@
 import { useState, useRef, useEffect } from "react";
 import { io, Socket } from "socket.io-client";
 import { ChatIcon, CloseIcon, NavigationIcon } from "../../icons";
-import { envs } from "../../envs/index.env";
+import { v4 as uuidv4 } from "uuid"; // for userId
 
 interface Message {
   id: number;
-  type: "user" | "bot";
+  type: "user" | "bot" | "error";
   text: string;
 }
 
 let socket: Socket;
+const userId = localStorage.getItem("chat_userId") || uuidv4();
+localStorage.setItem("chat_userId", userId);
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,19 +21,62 @@ const Chatbot = () => {
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  // Initialize socket connection
   useEffect(() => {
-    socket = io(envs.BACKEND_URL); // Replace with your backend URL
+    socket = io("http://localhost:8080/products"); // connect to products namespace
 
-    socket.on("bot-message", (text: string) => {
-      const botMessage: Message = {
-        id: Date.now(),
-        type: "bot",
-        text,
-      };
-      setMessages((prev) => [...prev, botMessage]);
-      setTyping(false);
-    });
+    // Streamed chunks from AI
+    socket.on(
+      "receive_message_chunk",
+      (data: { success: boolean; chunk: string }) => {
+        if (!data.success) {
+          setTyping(false);
+          return;
+        }
+
+        // Append chunk to last bot message or create new
+        setMessages((prev) => {
+          const lastMessage = prev[prev.length - 1];
+          if (lastMessage?.type === "bot") {
+            // append chunk to existing bot message
+            const updated = [...prev];
+            updated[updated.length - 1] = {
+              ...lastMessage,
+              text: lastMessage.text + data.chunk,
+            };
+            return updated;
+          } else {
+            // no previous bot message, create new
+            return [
+              ...prev,
+              {
+                id: Date.now(),
+                type: "bot",
+                text: data.chunk,
+              },
+            ];
+          }
+        });
+      }
+    );
+    socket.on(
+      "receive_message",
+      (data: { success: boolean; error: string }) => {
+        setTyping(false);
+        // Directly add message (error or normal) to messages
+        setMessages((prev) => [
+          ...prev,
+          { id: Date.now(), type: "error", text: data.error },
+        ]);
+      }
+    );
+
+    // Optional: final full response (could be used for validation / marking complete)
+    socket.on(
+      "receive_message_complete",
+      (/* data: { success: boolean; fullResponse: string } */) => {
+        setTyping(false);
+      }
+    );
 
     return () => {
       socket.disconnect();
@@ -44,7 +89,7 @@ const Chatbot = () => {
   }, [messages, typing]);
 
   const handleSend = () => {
-    if (!input.trim()) return;
+    // if (!input.trim()) return;
 
     const userMessage: Message = {
       id: Date.now(),
@@ -56,13 +101,12 @@ const Chatbot = () => {
     setInput("");
     setTyping(true);
 
-    // Send message to backend via socket
-    socket.emit("user-message", input);
+    // Send message to /products backend
+    socket.emit("send_message", { message: input, userId });
   };
 
   return (
     <div className="fixed bottom-5 left-5 z-50 flex flex-col items-end">
-      {/* Chat Button */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
@@ -72,7 +116,6 @@ const Chatbot = () => {
         </button>
       )}
 
-      {/* Chat Window */}
       <div
         className={`bg-white rounded-xl shadow-xl flex flex-col overflow-hidden transform transition-all duration-500 ${
           isOpen
@@ -80,15 +123,13 @@ const Chatbot = () => {
             : "scale-0 opacity-0 w-0 h-0"
         }`}
       >
-        {/* Header */}
         <div className="bg-pink-500 text-white flex items-center justify-between p-4">
-          <h2 className="font-bold text-lg">Beautinique Assistant</h2>
+          <h2 className="font-bold text-lg">Beautinique Product Assistant</h2>
           <button onClick={() => setIsOpen(false)}>
             <CloseIcon stroke="white" />
           </button>
         </div>
 
-        {/* Messages */}
         <div className="flex-1 p-4 overflow-y-auto space-y-3">
           {messages.map((msg) => (
             <div
@@ -110,19 +151,18 @@ const Chatbot = () => {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Input */}
         <div className="p-3 border-t border-gray-200 flex items-center gap-2">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Type your message..."
-            className="flex-1 border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-300"
+            placeholder="Ask about products..."
+            className="flex-1 border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-300 text-primary"
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
           />
           <button
             onClick={handleSend}
-            className=" bg-pink-500 w-10 h-10 flex items-center justify-center text-white p-2 rounded-full hover:bg-pink-600 transition-colors"
+            className=" bg-pink-500 w-10 h-10 flex items-center justify-center p-2 rounded-full hover:bg-pink-600 transition-colors"
           >
             <NavigationIcon className="rotate-45 mr-1 stroke-white" />
           </button>
