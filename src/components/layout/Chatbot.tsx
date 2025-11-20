@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import { io, Socket } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid"; // for userId
 import { BotIcon, CloseIcon, NavigationIcon } from "../../icons";
 import Button from "../button/Button";
@@ -7,13 +6,13 @@ import useOutsideClick from "../../hooks/useOutsideClick";
 import Input from "../input/Input";
 import MarkdownDisplay from "./MarkdownDisplay";
 import { TChatMessage } from "../../types";
-import { envs } from "../../envs/index.env";
+import { useProductSocket } from "../../hooks/useSockets";
 
-let socket: Socket;
 const userId = localStorage.getItem("chat_userId") || uuidv4();
 localStorage.setItem("chat_userId", userId);
 
 const Chatbot = () => {
+  const { socket, userId } = useProductSocket();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<TChatMessage[]>([]);
   const [input, setInput] = useState("");
@@ -26,87 +25,82 @@ const Chatbot = () => {
   );
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
+  // Socket event listeners
   useEffect(() => {
-    socket = io(`${envs.BACKEND_URL}/products`); // connect to products namespace
+    if (!socket) return;
 
     // Streamed chunks from AI
-    socket.on("receive_message_chunk", ({ success, chunk }) => {
-      if (success) {
-        // Append chunk to last bot message or create new
-        setMessages((prev) => {
-          const last = prev[prev.length - 1];
-          if (last?.type === "bot") {
-            const updated = [...prev];
-            updated[updated.length - 1] = {
-              ...last,
-              text: last.text + chunk,
-            };
-            return updated;
-          }
-          return [...prev, { id: Date.now(), type: "bot", text: chunk }];
-        });
-      }
-    });
+    const handleChunk = ({ chunk }: { chunk: string }) => {
+      setMessages((prev) => {
+        const last = prev[prev.length - 1];
+        if (last?.type === "bot") {
+          const updated = [...prev];
+          updated[prev.length - 1] = { ...last, text: last.text + chunk };
+          return updated;
+        }
+        return [...prev, { id: Date.now(), type: "bot", text: chunk }];
+      });
+    };
+
+    // Full AI response + suggested questions
+    const handleComplete = ({
+      fullResponse,
+      suggestedQuestions,
+    }: {
+      fullResponse: string;
+      suggestedQuestions: string[];
+    }) => {
+      setTyping(false);
+      setMessages((prev) => {
+        const updated = [...prev];
+        updated[updated.length - 1] = {
+          ...updated[updated.length - 1],
+          text: fullResponse,
+        };
+        return updated;
+      });
+      setSuggestedQuestions(suggestedQuestions);
+    };
 
     // Error messages
-    socket.on(
-      "receive_message",
-      (data: { success: boolean; error: string }) => {
-        setTyping(false);
-        setMessages((prev) => [
-          ...prev,
-          { id: Date.now(), type: "error", text: data.error },
-        ]);
-      }
-    );
+    const handleError = ({ error }: { error: string }) => {
+      setTyping(false);
+      setMessages((prev) => [
+        ...prev,
+        { id: Date.now(), type: "error", text: error },
+      ]);
+    };
 
-    // Full response + suggested questions
-    socket.on(
-      "receive_message_complete",
-      ({ fullResponse, suggestedQuestions }) => {
-        setTyping(false);
-
-        // Replace the streaming text with final clean answer
-        setMessages((prev) => {
-          const updated = [...prev];
-          updated[updated.length - 1] = {
-            ...updated[updated.length - 1],
-            text: fullResponse,
-          };
-          return updated;
-        });
-
-        setSuggestedQuestions(suggestedQuestions);
-      }
-    );
+    socket.on("receive_message_chunk", handleChunk);
+    socket.on("receive_message_complete", handleComplete);
+    socket.on("receive_message", handleError);
 
     return () => {
-      socket.disconnect();
+      socket.off("receive_message_chunk", handleChunk);
+      socket.off("receive_message_complete", handleComplete);
+      socket.off("receive_message", handleError);
     };
-  }, []);
+  }, [socket]);
 
-  // Scroll to bottom when messages or typing changes
+  // Scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, typing, suggestedQuestions]);
 
+  // Send message
   const handleSend = (msgText?: string) => {
     const textToSend = msgText || input;
     if (!textToSend.trim()) return;
 
-    const userMessage: TChatMessage = {
-      id: Date.now(),
-      type: "user",
-      text: textToSend,
-    };
-
-    setMessages((prev) => [...prev, userMessage]);
+    setMessages((prev) => [
+      ...prev,
+      { id: Date.now(), type: "user", text: textToSend },
+    ]);
     setInput("");
     setTyping(true);
-    setSuggestedQuestions([]); // reset suggestions on new message
+    setSuggestedQuestions([]);
 
-    // Send message to backend
-    socket.emit("send_message", { message: textToSend, userId });
+    socket?.emit("send_message", { message: textToSend, userId });
   };
 
   const handleSuggestionClick = (suggestion: string) => {
@@ -137,7 +131,9 @@ const Chatbot = () => {
                 className={`p-2 rounded max-w-[75%] w-fit animate-slide-in text-sm/5 ${
                   msg.type === "user"
                     ? "bg-secondary-inverted text-tertiary ml-auto"
-                    : "bg-tertiary-inverted text-primary"
+                    : msg.type === "bot"
+                    ? "bg-tertiary-inverted text-primary"
+                    : "bg-red-100 text-red-900"
                 }`}
               >
                 <MarkdownDisplay text={msg.text} />
@@ -168,7 +164,7 @@ const Chatbot = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          <div className="p-3 border-t border- flex items-center gap-2">
+          <div className="p-3 border-t flex items-center gap-2">
             <Input
               needRef={true}
               inputProps={{
