@@ -1,29 +1,21 @@
 import { useState, useRef, useEffect } from "react";
 import { io, Socket } from "socket.io-client";
-import ReactMarkdown from "react-markdown";
-import { BotIcon, CloseIcon, NavigationIcon } from "../../icons";
 import { v4 as uuidv4 } from "uuid"; // for userId
+import { BotIcon, CloseIcon, NavigationIcon } from "../../icons";
 import Button from "../button/Button";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import Input from "../input/Input";
-
-interface Message {
-  id: number;
-  type: "user" | "bot" | "error";
-  text: string;
-}
+import MarkdownDisplay from "./MarkdownDisplay";
+import { TChatMessage } from "../../types";
+import { envs } from "../../envs/index.env";
 
 let socket: Socket;
 const userId = localStorage.getItem("chat_userId") || uuidv4();
 localStorage.setItem("chat_userId", userId);
 
-const MarkdownDisplay = ({ text }: { text: string }) => {
-  return <ReactMarkdown>{text}</ReactMarkdown>;
-};
-
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<TChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
   const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>([]);
@@ -35,7 +27,7 @@ const Chatbot = () => {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    socket = io("http://localhost:8080/products"); // connect to products namespace
+    socket = io(`${envs.BACKEND_URL}/products`); // connect to products namespace
 
     // Streamed chunks from AI
     socket.on("receive_message_chunk", ({ success, chunk }) => {
@@ -68,7 +60,6 @@ const Chatbot = () => {
       }
     );
 
-    // Full response + suggested questions
     // Full response + suggested questions
     socket.on(
       "receive_message_complete",
@@ -103,7 +94,7 @@ const Chatbot = () => {
     const textToSend = msgText || input;
     if (!textToSend.trim()) return;
 
-    const userMessage: Message = {
+    const userMessage: TChatMessage = {
       id: Date.now(),
       type: "user",
       text: textToSend,
