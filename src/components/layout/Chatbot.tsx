@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { io, Socket } from "socket.io-client";
+import ReactMarkdown from "react-markdown";
 import { BotIcon, CloseIcon, NavigationIcon } from "../../icons";
 import { v4 as uuidv4 } from "uuid"; // for userId
 import Button from "../button/Button";
@@ -16,6 +17,10 @@ let socket: Socket;
 const userId = localStorage.getItem("chat_userId") || uuidv4();
 localStorage.setItem("chat_userId", userId);
 
+const MarkdownDisplay = ({ text }: { text: string }) => {
+  return <ReactMarkdown>{text}</ReactMarkdown>;
+};
+
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -25,9 +30,7 @@ const Chatbot = () => {
 
   const outsideClickContainerRef = useOutsideClick<HTMLDivElement>(
     () => setIsOpen(false),
-    {
-      enabled: isOpen,
-    }
+    { enabled: isOpen }
   );
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
@@ -120,10 +123,7 @@ const Chatbot = () => {
   };
 
   return (
-    <div
-      ref={outsideClickContainerRef}
-      className="fixed bottom-3 right-3 z-50"
-    >
+    <div ref={outsideClickContainerRef} className="fixed bottom-3 right-3 z-50">
       {!isOpen ? (
         <Button
           content={<BotIcon className="stroke-white w-full h-full" />}
@@ -149,7 +149,7 @@ const Chatbot = () => {
                     : "bg-tertiary-inverted text-primary"
                 }`}
               >
-                {msg.text}
+                <MarkdownDisplay text={msg.text} />
               </div>
             ))}
 
