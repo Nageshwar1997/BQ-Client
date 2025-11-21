@@ -9,6 +9,25 @@ import { useProductSocket } from "../../hooks/useSockets";
 import useRequireAuth from "../../hooks/useRequireAuth";
 import useQueryParams from "../../hooks/useQueryParams";
 
+const welcomeMessages: Record<string, string> = {
+  products: "Welcome! Sir/Ma'am 👋 You can ask me anything about our products.",
+  orders:
+    "Hello! Sir/Ma'am 👋 I can help you check your orders and deliveries.",
+};
+
+const defaultSuggestedQuestions: Record<string, string[]> = {
+  products: [
+    "What are the best-selling products?",
+    "Do you have any discounts currently?",
+    "Tell me about the features of Product X",
+  ],
+  orders: [
+    "Check my order status",
+    "Track my recent delivery",
+    "Cancel my order",
+  ],
+};
+
 const Chatbot = () => {
   const { queryParams } = useQueryParams();
   const { socket, userId } = useProductSocket();
@@ -147,7 +166,7 @@ const Chatbot = () => {
                 {messages.map((msg) => (
                   <div
                     key={msg.id}
-                    className={`p-2 rounded max-w-[75%] w-fit animate-slide-in text-sm/5 ${
+                    className={`p-2 rounded max-w-[80%] w-fit animate-slide-in text-sm/5 ${
                       msg.type === "user"
                         ? "bg-secondary-inverted text-tertiary ml-auto"
                         : msg.type === "bot"
@@ -173,7 +192,7 @@ const Chatbot = () => {
                         key={i}
                         pattern="outline"
                         content={q}
-                        className="bg-tertiary-inverted-50 text-tertiary !text-[13px]/4 !p-2 max-w-[75%] !rounded !border-tertiary-30 [&_span]:text-start [&_span]:break-words transition-none"
+                        className="bg-tertiary-inverted-50 text-tertiary !text-[13px]/4 !p-2 max-w-[80%] !rounded !border-tertiary-30 [&_span]:text-start [&_span]:break-words transition-none !justify-start"
                         buttonProps={{
                           onClick: () => handleSuggestionClick(q),
                         }}
@@ -190,7 +209,6 @@ const Chatbot = () => {
                   What would you like to ask our chatbot?
                 </p>
                 <hr className="w-full h-px block border-none bg-gradient-line" />
-
                 <div className="space-y-3">
                   {[
                     {
@@ -209,12 +227,28 @@ const Chatbot = () => {
                         key={idx}
                         className="border border-primary-30 bg-primary-10 rounded-lg p-2"
                         onClick={() => {
-                          const action = () => setContext(ctx.name); // wrap in a function
+                          const action = () => {
+                            setContext(ctx.name);
+                            // Show welcome message
+                            setMessages([
+                              {
+                                id: Date.now(),
+                                type: "bot",
+                                text: welcomeMessages[ctx.name],
+                              },
+                            ]);
+                            // Set default suggested questions
+                            setSuggestedQuestions(
+                              defaultSuggestedQuestions[ctx.name]
+                            );
+                          };
+
                           if (ctx.name === "orders") {
-                            if (!requireAuth(action)) return; // store action if not logged in
+                            if (!requireAuth(action)) return;
+                            action();
+                          } else {
                             action();
                           }
-                          action();
                         }}
                       >
                         <p className="text-sm md:text-base bg-clip-text bg-silver-duo text-transparent font-medium capitalize">
@@ -235,6 +269,8 @@ const Chatbot = () => {
             <Input
               needRef={true}
               inputProps={{
+                id: "chat-input",
+                name: "chat-input",
                 type: "text",
                 value: input,
                 onChange: (e) => setInput(e.target.value),
