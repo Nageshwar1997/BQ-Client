@@ -13,4 +13,19 @@ export default defineConfig({
     }),
   ],
   server: { port: 3001 },
+  build: {
+    rollupOptions: {
+      output: {
+        // Use manualChunks to split code into multiple chunks
+        manualChunks(id) {
+          // If it's from node_modules, place it in a vendor chunk
+          if (id.includes("node_modules")) {
+            return "vendor";
+          }
+        },
+      },
+    },
+    // Optionally, adjust the chunk size warning limit (set to 1 MB here)
+    chunkSizeWarningLimit: 1000, // 1 MB
+  },
 });
