@@ -68,7 +68,7 @@ const Register = () => {
     formData.append("phoneNumber", bodyData.phoneNumber);
 
     const file = bodyData.profilePic;
-    if (file) {
+    if (file instanceof File) {
       formData.append("profilePic", file);
     }
     mutateAsync(formData, {

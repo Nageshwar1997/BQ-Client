@@ -53,7 +53,14 @@ export const addReviewSchema = z.object({
         });
       } else {
         files.forEach((file, index) => {
-          zodFileOrUrl({ fileOrUrl: file, field: "media", ctx, index });
+          zodFileOrUrl({
+            field: "media",
+            ctx,
+            fileOrUrl: file,
+            index,
+            showingFieldName: "Image/Video",
+            required: false,
+          });
         });
       }
     })
