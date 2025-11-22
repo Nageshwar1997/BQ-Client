@@ -1,3 +1,5 @@
+import { RefinementCtx } from "zod";
+
 export interface ZodCommonConfigs {
   field: string;
   parentField?: string;
@@ -37,3 +39,12 @@ export type ZodOptionalNumberConfigs = ZodNumberConfigs; // Optional
 
 // Enums
 export type ZodEnumsConfigs = ZodCommonConfigs;
+
+export interface ZodFileConfigs extends ZodCommonConfigs {
+  maxVideoFileSize?: number;
+  maxImageFileSize?: number;
+  fileOrUrl: unknown;
+  index?: number;
+  ctx: RefinementCtx;
+  required?: boolean;
+}

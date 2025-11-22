@@ -19,6 +19,7 @@ import ReviewsMedia from "./children/ReviewsMedia";
 import useCartStore from "../../../store/cart.store";
 import usePathParams from "../../../hooks/usePathParams";
 import { useUserCart } from "../../../hooks/useUserCart";
+import WishlistButton from "../../../components/ui/WishlistButton";
 
 const ProductDetails = () => {
   const { pathParams, navigate } = usePathParams();
@@ -89,16 +90,22 @@ const ProductDetails = () => {
           <Fragment>
             <div className="w-full lg:w-1/2 lg:sticky top-24">
               <div className="flex flex-col gap-4">
-                <MediaCarouselWithParentMedia
-                  videoProps={{}}
-                  data={images}
-                  needButtonControls={false}
-                  selected={
-                    selectedShadeIdx !== null
-                      ? product.commonImages.length + selectedShadeIdx
-                      : undefined
-                  }
-                />
+                <div className="relative">
+                  <MediaCarouselWithParentMedia
+                    videoProps={{}}
+                    data={images}
+                    needButtonControls={false}
+                    selected={
+                      selectedShadeIdx !== null
+                        ? product.commonImages.length + selectedShadeIdx
+                        : undefined
+                    }
+                  />
+                  <WishlistButton
+                    product={product}
+                    className="absolute top-0 left-0 w-8 h-8 md:w-10 md:h-10"
+                  />
+                </div>
                 <div className="w-full hidden lg:block">
                   <hr className="w-full h-px block border-none bg-gradient-line mb-4" />
                   <ProductDescriptionAndInfo product={product} />

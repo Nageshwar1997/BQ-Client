@@ -123,8 +123,8 @@ const Navbar = () => {
     };
   }, [isMobileNavbarOpened]);
 
-  const nonTransparent = ["product", "cart", "offers", "blogs"].some((val) =>
-    paths.includes(val)
+  const nonTransparent = ["product", "cart", "offers", "blogs", "account"].some(
+    (val) => paths.includes(val)
   );
 
   return (
@@ -133,7 +133,7 @@ const Navbar = () => {
         isNavbarAtTop || isNavbarHovered || nonTransparent
           ? "bg-tertiary-inverted shadow-lg shadow-primary-inverted-50"
           : "bg-transparent"
-      }`}
+      } ${paths.includes("account") ? "lg:!-top-0" : ""}`}
       onMouseEnter={() => setIsNavbarHovered(true)}
       onMouseLeave={() => setIsNavbarHovered(false)}
     >

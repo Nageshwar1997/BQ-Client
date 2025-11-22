@@ -35,12 +35,16 @@ export const footerCategories = [
   {
     title: "Quick Links",
     options: [
-      { title: "My Account", path: "account" },
-      { title: "Order History", path: "account/orders" },
-      { title: "Wishlist", path: "account/wishlist" },
-      { title: "Refer a Friend", path: "refer" },
+      { title: "My Account", path: "account", private: true },
+      { title: "Order History", path: "orders", private: true },
+      { title: "Wishlist", path: "wishlist", private: true },
+      { title: "Refer a Friend", path: "refer", private: true },
       { title: "Store Locator", path: "store-locator" },
-      { title: "Become a Seller", path: "account/become-seller" },
+      {
+        title: "Become a Seller",
+        path: "become-seller",
+        private: true,
+      },
     ],
   },
   {
@@ -60,8 +64,12 @@ export const footerCategories = [
       { title: "Contact Us", path: "contact" },
       { title: "Help Center/FAQ", path: "help-center-faq" },
       { title: "Shipping Info", path: "shipping-info" },
-      { title: "Returns & Refunds", path: "account/orders/return-refund" },
-      { title: "Track My Order", path: "account/orders/track" },
+      {
+        title: "Returns & Refunds",
+        path: "orders/return-refund",
+        private: true,
+      },
+      { title: "Track My Order", path: "orders/track", private: true },
     ],
   },
   {

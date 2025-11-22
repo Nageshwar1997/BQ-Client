@@ -59,7 +59,7 @@ const CategoryProducts = () => {
         populateFields: { category: ["name"], reviews: ["rating"] },
       },
       queryParams: {
-        ...(queryParams && queryParams),
+        ...(queryParams.login !== "true" && queryParams),
         ...(levelOneCategory && { category_1: levelOneCategory }),
         ...(levelTwoCategory && { category_2: levelTwoCategory }),
         ...(levelThreeCategory && { category_3: levelThreeCategory }),

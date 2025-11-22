@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import {
   BuildingIcon,
-  GiftCardIcon,
   HeartIcon,
   PercentCircleIcon,
   SearchIcon,
   ShoppingBag,
   TrackIcon,
+  TruckIcon,
   UserCircleIcon,
 } from "../../../icons";
 import DarkMode from "../../DarkMode";
@@ -17,8 +17,10 @@ import { useUserStore } from "../../../store/user.store";
 import useOutsideClick from "../../../hooks/useOutsideClick";
 import Button from "../../button/Button";
 import useQueryParams from "../../../hooks/useQueryParams";
-import useActionStore from "../../../store/action.store";
 import useCartStore from "../../../store/cart.store";
+import useWishlistStore from "../../../store/wishlist.store";
+import useRequireAuth from "../../../hooks/useRequireAuth";
+import { Link } from "react-router-dom";
 
 const UserPopup = ({
   isOpen,
@@ -63,26 +65,38 @@ const UserPopup = ({
           </div>
           <hr className="h-px block border-none bg-gradient-line" />
           <div className="flex flex-col gap-2.5 py-1">
-            <div className="flex items-center gap-2 cursor-pointer">
-              <UserCircleIcon className="w-5 h-5 !stroke-tertiary" />
+            <Link
+              to="/account"
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <UserCircleIcon className="w-5 h-5 stroke-tertiary" />
               <p className="text-sm/none text-tertiary">My Profile</p>
-            </div>
-            <div className="flex items-center gap-2 cursor-pointer">
-              <TrackIcon className="w-5 h-5 !stroke-tertiary" />
+            </Link>
+            <Link
+              to="/account/track"
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <TrackIcon className="w-5 h-5 stroke-tertiary" />
               <p className="text-sm/none text-tertiary">Track Orders</p>
-            </div>
-            <div className="flex items-center gap-2 cursor-pointer">
-              <GiftCardIcon className="w-5 h-5 fill-tertiary" />
-              <p className="text-sm/none text-tertiary">Rewards</p>
-            </div>
-            <div className="flex items-center gap-2 cursor-pointer">
-              <ShoppingBag className="w-5 h-5 !stroke-tertiary" />
+            </Link>
+            <Link
+              to="/account/orders"
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <TruckIcon className="w-5 h-5 stroke-tertiary" />
+              <p className="text-sm/none text-tertiary">Orders</p>
+            </Link>
+            <Link to="/account/cart" className="flex items-center gap-2 cursor-pointer">
+              <ShoppingBag className="w-5 h-5 stroke-tertiary" />
               <p className="text-sm/none text-tertiary">Cart</p>
-            </div>
-            <div className="flex items-center gap-2 cursor-pointer">
-              <PercentCircleIcon className="w-5 h-5 !stroke-tertiary" />
+            </Link>
+            <Link
+              to="/offers"
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <PercentCircleIcon className="w-5 h-5 stroke-tertiary" />
               <p className="text-sm/none text-tertiary">Offers</p>
-            </div>
+            </Link>
           </div>
           <div className="flex justify-between items-center gap-2">
             <Button
@@ -124,10 +138,15 @@ const UserMenuIcons = ({
     setIsOpen((prev) => ({ ...prev, user: false }));
   });
   const { paths, navigate } = usePathParams();
-  const { setParams } = useQueryParams();
-  const { isAuthenticated } = useUserStore();
-  const { setAction } = useActionStore();
+  const requireAuth = useRequireAuth();
   const { cart } = useCartStore();
+  const { wishlist } = useWishlistStore();
+
+  const handleAuthNavigation = (path: string) => {
+    const action = () => navigate(path); // wrap in a function
+    if (!requireAuth(action)) return; // store action if not logged in
+    action(); // run immediately if logged in
+  };
 
   useEffect(() => {
     if (closeOnNavbarLeave) {
@@ -167,18 +186,11 @@ const UserMenuIcons = ({
         </div>
         <BuildingIcon
           className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6"
-          onClick={() => navigate("/account/become-seller")}
+          onClick={() => navigate("/become-seller")}
         />
         <div className="relative">
           <ShoppingBag
-            onClick={() => {
-              if (!isAuthenticated) {
-                setParams({ login: "true" });
-                setAction(() => navigate("/cart"));
-                return;
-              }
-              navigate("/cart");
-            }}
+            onClick={() => handleAuthNavigation("/cart")}
             className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6"
           />
           {cart?.products && cart?.products.length > 0 && (
@@ -187,7 +199,19 @@ const UserMenuIcons = ({
             </span>
           )}
         </div>
-        <HeartIcon className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6" />
+        <div className="relative flex items-center justify-center">
+          <HeartIcon
+            className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6"
+            onClick={() => handleAuthNavigation("/wishlist")}
+          />
+          {wishlist?.products && wishlist?.products?.length > 0 && (
+            <span className="absolute inset-0 flex items-center justify-center font-semibold bg-clip-text text-transparent bg-accent-duo inset-x-0 text-[11px] md:text-[11px] leading-none w-fit mx-auto pointer-events-none">
+              {wishlist?.products?.length > 9
+                ? "9+"
+                : wishlist?.products?.length}
+            </span>
+          )}
+        </div>
         <DarkMode />
       </div>
     </>

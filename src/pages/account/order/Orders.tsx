@@ -11,13 +11,14 @@ import { Link } from "react-router-dom";
 import LoadingPage from "../../../components/loaders/LoadingPage";
 import ShowError from "../../../components/errors/ShowError";
 import EmptyData from "../../../components/empty-data/EmptyData";
+import usePathParams from "../../../hooks/usePathParams";
 
 const Orders = () => {
-  const { data, fetchNextPage, hasNextPage, isLoading, isError } =
-    useGetAllOrdersInfinite({
-      limit: 10,
-    });
   const { queryParams, setParams, removeParam } = useQueryParams();
+  const { data, fetchNextPage, hasNextPage, isLoading, isError } =
+    useGetAllOrdersInfinite({ limit: 10, queryParams });
+  const { pathname } = usePathParams();
+
   const { ref, inView } = useInView();
 
   const orders: IOrder[] = useMemo(
@@ -48,7 +49,7 @@ const Orders = () => {
           closeOnOptionClick={true}
           closeOnOutsideClick={true}
           showShadow={true}
-          className="!w-[180px] ml-auto [&>button]:border [&>button]:border-primary-30 [&>button]:rounded-md [&>div]:rounded-md sticky top-[65px]"
+          className="!w-[180px] ml-auto [&>button]:border [&>button]:border-primary-30 [&>button]:rounded-md [&>div]:rounded-md sticky top-[65px] [&>button]:bg-transparent"
         >
           <DropdownOptions
             options={ORDER_STATUS_OPTIONS}
@@ -74,7 +75,9 @@ const Orders = () => {
         {isLoading ? (
           <LoadingPage
             text="Loading Orders..."
-            className="!static min-h-[75dvh]"
+            className={`${
+              pathname === "/orders" ? "!static min-h-[75dvh]" : ""
+            }`}
           />
         ) : isError ? (
           <ShowError

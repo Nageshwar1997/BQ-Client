@@ -77,7 +77,7 @@ const HelpCenterFAQ = () => {
           <br />
           <span className="font-semibold">A:</span> Yes, returns and exchanges
           are accepted as per our{" "}
-          <Link to="/account/orders/return-refund">
+          <Link to="/orders/return-refund">
             <strong className="bg-clip-text bg-accent-duo text-transparent">
               Returns & Refunds
             </strong>
@@ -122,7 +122,7 @@ const HelpCenterFAQ = () => {
           <br />
           <span className="font-semibold">A:</span> Anyone can apply to become a
           seller. Click on the{" "}
-          <Link to="/account/become-seller">
+          <Link to="/become-seller">
             <strong className="bg-clip-text bg-accent-duo text-transparent">
               “Become a Seller”
             </strong>

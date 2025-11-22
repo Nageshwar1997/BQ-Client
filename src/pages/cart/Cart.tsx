@@ -9,7 +9,7 @@ import usePathParams from "../../hooks/usePathParams";
 import ShowApiStatus from "../../components/errors/ShowError";
 
 const Cart = () => {
-  const { navigate } = usePathParams();
+  const { navigate, paths } = usePathParams();
   const { products, loading, error } = useUserCart();
 
   // subtotal calculation
@@ -31,8 +31,14 @@ const Cart = () => {
     );
   }, [products]);
 
+  const isAccountPage = paths.includes("account")
+
   return (
-    <div className="bg-primary-inverted p-4 lg:p-8">
+    <div
+      className={`w-full h-full p-4 lg:p-8 ${
+        isAccountPage ? "bg-transparent" : "bg-primary-inverted "
+      }`}
+    >
       {loading ? (
         <CartSkeleton />
       ) : error ? (
@@ -42,9 +48,9 @@ const Cart = () => {
           className="w-full h-full mx-auto [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase [&>p]:text-xs [&>p]:base:text-sm [&>p]:sm:text-base [&>p]:md:text-lg"
         />
       ) : products?.length > 0 ? (
-        <div className="flex flex-col lg:flex-row gap-4">
+        <div className="flex flex-col lg:flex-row gap-6">
           {/* Left - Cart Items */}
-          <div className="flex-1 p-6">
+          <div className="flex-1">
             <h2 className="text-2xl font-semibold text-secondary mb-6">
               Your Cart
             </h2>
@@ -55,7 +61,11 @@ const Cart = () => {
             </div>
           </div>
           {/* Right - Order Summary */}
-          <div className="p-6 h-fit lg:sticky top-16">
+          <div
+            className={`h-fit lg:sticky ${
+              isAccountPage ? "top-[100px]" : "top-16"
+            }`}
+          >
             <h2 className="text-2xl font-semibold text-secondary mb-6">
               Order Summary
             </h2>

@@ -22,7 +22,7 @@ const OrderDetails = () => {
             <h3 className="w-fit text-2xl font-bold bg-clip-text text-transparent bg-silver-duo">
               Order Details
             </h3>
-            <p className="text-tertiary">Order ID: {order._id}</p>
+            <p className="text-tertiary text-sm md:text-base line-clamp-1 break-all">Order ID: {order._id}</p>
           </header>
           <OrderSummary order={order} />
           <OrderProducts products={order.products} />
@@ -36,7 +36,7 @@ const OrderDetails = () => {
           }
           descriptionText={isError ? "Please try again or refresh page" : ""}
           loadingText="Please Wait..."
-          className={`min-h-[50dvh] ${isLoading ? "px-0" : ""}`}
+          className={`min-h-[50dvh] ${isLoading ? "[&>div]:!fixed" : "px-0"}`}
           type={isLoading ? "loading" : isError ? "error" : "empty"}
         />
       )}

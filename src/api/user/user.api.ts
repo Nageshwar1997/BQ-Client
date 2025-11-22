@@ -45,3 +45,60 @@ export const create_seller_request = async (data: FormData) => {
     throw "Something went wrong!"; // For non-Axios errors
   }
 };
+
+export const get_user_wishlist = async () => {
+  try {
+    const user_token = getUserToken();
+    const { method, url } = userRoutes.wishlist;
+    const response = await api.request({
+      method,
+      url,
+      headers: { Authorization: user_token },
+    });
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      // If it's an Axios error
+      throw error?.response?.data?.message || "API Error occurred";
+    }
+    throw "Something went wrong!"; // For non-Axios errors
+  }
+};
+
+export const add_wishlist_product = async (productId: string) => {
+  try {
+    const user_token = getUserToken();
+    const { method, url } = userRoutes.addWishlistProduct;
+    const response = await api.request({
+      method,
+      url: `${url}/${productId}`,
+      headers: { Authorization: user_token },
+    });
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      // If it's an Axios error
+      throw error?.response?.data?.message || "API Error occurred";
+    }
+    throw "Something went wrong!"; // For non-Axios errors
+  }
+};
+
+export const remove_wishlist_product = async (productId: string) => {
+  try {
+    const user_token = getUserToken();
+    const { method, url } = userRoutes.removeWishlistProduct;
+    const response = await api.request({
+      method,
+      url: `${url}/${productId}`,
+      headers: { Authorization: user_token },
+    });
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      // If it's an Axios error
+      throw error?.response?.data?.message || "API Error occurred";
+    }
+    throw "Something went wrong!"; // For non-Axios errors
+  }
+};

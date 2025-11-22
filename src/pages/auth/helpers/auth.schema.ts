@@ -1,21 +1,17 @@
 import z from "zod";
 import {
+  fileValidation,
   zodEnums,
-  zodFileOrUrl,
   zodStringOptional,
   zodStringRequired,
 } from "../../../utils/zod";
 import { regexes } from "../../../constants";
 
-const fileValidation = z
-  .union([z.instanceof(File), z.string()])
-  .superRefine((file, ctx) => {
-    zodFileOrUrl({ fileOrUrl: file, field: "profilePic", ctx });
-  })
-  .optional();
-
 export const registerSchema = z.object({
-  profilePic: fileValidation,
+  profilePic: fileValidation({
+    field: "profilePic",
+    showingFieldName: "Profile Pic",
+  }),
   firstName: zodStringRequired({
     field: "firstName",
     showingFieldName: "First Name",
@@ -206,3 +202,60 @@ export const loginSchema = z
       }
     }
   });
+
+export const updateUserSchema = z.object({
+  profilePic: fileValidation({
+    field: "profilePic",
+    showingFieldName: "Profile Pic",
+  }),
+  firstName: zodStringRequired({
+    field: "firstName",
+    showingFieldName: "First Name",
+    blockMultipleSpaces: true,
+    min: 2,
+    max: 50,
+    customRegexes: [
+      {
+        regex: regexes.validName,
+        message:
+          "can only contain letters and only one space is allowed between words",
+      },
+    ],
+  }),
+  lastName: zodStringRequired({
+    field: "lastName",
+    showingFieldName: "Last Name",
+    blockMultipleSpaces: true,
+    min: 2,
+    max: 50,
+    customRegexes: [
+      {
+        regex: regexes.validName,
+        message:
+          "can only contain letters and only one space is allowed between words",
+      },
+    ],
+  }),
+  email: zodStringRequired({
+    field: "email",
+    showingFieldName: "Email",
+    blockSingleSpace: true,
+    customRegexes: [{ regex: regexes.validEmail, message: "must be a valid" }],
+  }).toLowerCase(),
+  phoneNumber: zodStringRequired({
+    field: "phoneNumber",
+    showingFieldName: "Phone number",
+    blockSingleSpace: true,
+    customRegexes: [
+      { regex: regexes.phoneStart, message: "must start with 6, 7, 8, or 9" },
+      {
+        regex: regexes.phoneExactLength,
+        message: "must be exactly 10 digits",
+      },
+      {
+        regex: regexes.validPhone,
+        message: "must be exactly 10 digits and must start with 6, 7, 8, or 9",
+      },
+    ],
+  }),
+});

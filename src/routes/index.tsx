@@ -48,6 +48,10 @@ import MissionVisionValues from "../pages/company/MissionVisionValues";
 import Awards from "../pages/company/Awards";
 import ValuesAndCulture from "../pages/company/ValuesAndCulture";
 import RetailAndECommerce from "../pages/company/RetailAndECommerce";
+import BlogDetails from "../pages/blogs/BlogDetails";
+import Profile from "../pages/account/profile";
+import MyReviewsAndRating from "../pages/account/reviews-and-ratings";
+import TrackOrder from "../pages/account/order/TrackOrder";
 
 const router = createBrowserRouter([
   {
@@ -61,7 +65,14 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "offers", element: <Offers /> },
-      { path: "blogs", element: <Blogs /> }, // Todo: Pending
+      {
+        path: "blogs",
+        element: <Outlet />,
+        children: [
+          { index: true, element: <Blogs /> },
+          { path: ":blogId", element: <BlogDetails /> },
+        ],
+      },
       { path: "search", element: <SearchProducts /> },
       { path: "product/:productId", element: <ProductDetails /> },
       { path: "products/:levelOneCategory", element: <CategoryProducts /> },
@@ -73,24 +84,58 @@ const router = createBrowserRouter([
         path: "products/:levelOneCategory/:levelTwoCategory/:levelThreeCategory",
         element: <CategoryProducts />,
       },
+      { path: "refer", element: <PrivateRoute children={<ReferFriend />} /> }, // Todo: Refer Part is Pending
       { path: "cart", element: <PrivateRoute children={<Cart />} /> },
       { path: "address", element: <PrivateRoute children={<Address />} /> },
+      { path: "wishlist", element: <PrivateRoute children={<Wishlist />} /> },
       {
-        path: "account",
+        path: "become-seller",
+        element: <PrivateRoute children={<BecomeSeller />} />,
+      },
+      {
+        path: "orders",
         element: <PrivateRoute children={<Outlet />} />,
         children: [
-          { index: true, element: <Account /> }, // Todo: Pending
-          { path: "wishlist", element: <Wishlist /> }, // Todo: Pending
-          { path: "become-seller", element: <BecomeSeller /> },
+          { index: true, element: <Orders /> },
+          { path: ":orderId", element: <OrderDetails /> }, // Todo: Cancel Order and Return Order Pending
+          { path: "return-refund", element: <OrderReturnRefund /> }, // Todo: Pending
+          {
+            path: "track",
+            element: <Outlet />,
+            children: [
+              { index: true, element: <TrackMyOrders /> }, // Todo: Pending
+              { path: ":orderId", element: <TrackOrder /> }, // Todo: Pending
+            ],
+          },
+          { path: "payment", element: <Payment /> },
+        ],
+      },
+      {
+        path: "account",
+        element: <PrivateRoute children={<Account />} />,
+        children: [
+          {
+            index: true,
+            element: <Profile />,
+          }, // Todo: Pending
+          { path: "contact", element: <ContactUs /> },
+          { path: "cart", element: <Cart /> },
+          { path: "reviews-and-ratings", element: <MyReviewsAndRating /> },
+          {
+            path: "track",
+            element: <Outlet />,
+            children: [
+              { index: true, element: <TrackMyOrders /> }, // Todo: Pending
+              { path: ":orderId", element: <TrackOrder /> }, // Todo: Pending
+            ],
+          },
           {
             path: "orders",
-            element: <Outlet />,
+            element: <PrivateRoute children={<Outlet />} />,
             children: [
               { index: true, element: <Orders /> },
               { path: ":orderId", element: <OrderDetails /> }, // Todo: Cancel Order and Return Order Pending
               { path: "return-refund", element: <OrderReturnRefund /> }, // Todo: Pending
-              { path: "track", element: <TrackMyOrders /> }, // Todo: Pending
-              { path: "payment", element: <Payment /> },
             ],
           },
         ],
@@ -109,7 +154,6 @@ const router = createBrowserRouter([
       { path: "retail-and-e-commerce", element: <RetailAndECommerce /> },
 
       // Quick Link Pages
-      { path: "refer", element: <ReferFriend /> }, // Todo: Refer Part is Pending
       { path: "store-locator", element: <StoreLocator /> },
       // Services Pages
       { path: "contact", element: <ContactUs /> },

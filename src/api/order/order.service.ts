@@ -13,6 +13,7 @@ import {
   verify_payment,
 } from "./order.api";
 import useQueryParams from "../../hooks/useQueryParams";
+import { TQueryParams } from "../types";
 
 export const useCreateOrder = () => {
   const queryClient = useQueryClient();
@@ -38,9 +39,13 @@ export const useGetAllOrders = () => {
   });
 };
 
-export const useGetAllOrdersInfinite = ({ limit }: { limit: number }) => {
-  const { queryParams } = useQueryParams();
-
+export const useGetAllOrdersInfinite = ({
+  limit,
+  queryParams,
+}: {
+  limit: number;
+  queryParams: TQueryParams;
+}) => {
   return useInfiniteQuery({
     queryKey: ["get_all_orders_infinite", queryParams],
     initialPageParam: 1,

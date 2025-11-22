@@ -1,7 +1,7 @@
 import z from "zod";
 import {
   zodEnums,
-  zodFileOrUrl,
+  fileValidation,
   zodStringOptional,
   zodStringRequired,
 } from "../utils/zod";
@@ -136,22 +136,31 @@ export const businessDetailsAddressSchema = z.object({
   }).toUpperCase(),
 });
 
-const fileValidation = (field: string, showingFieldName?: string) =>
-  z.unknown().superRefine((file, ctx) => {
-    zodFileOrUrl({
-      fileOrUrl: file,
-      field,
-      showingFieldName,
-      ctx,
-      maxImageFileSize: 0.2 * MB,
-    });
-  });
-
 export const requiredDocumentsSchema = z.object({
-  gst: fileValidation("gst", "GST Registration Certificate"),
-  itr: fileValidation("itr", "Income Tax Proof"),
-  addressProof: fileValidation("addressProof", "Address Proof"),
-  geoTagging: fileValidation("geoTagging", "Geo-Tagging Image"),
+  gst: fileValidation({
+    field: "gst",
+    showingFieldName: "GST Registration Certificate",
+    required: true,
+    maxImageFileSize: 0.2 * MB,
+  }),
+  itr: fileValidation({
+    field: "itr",
+    showingFieldName: "Income Tax Proof",
+    required: true,
+    maxImageFileSize: 0.2 * MB,
+  }),
+  addressProof: fileValidation({
+    field: "addressProof",
+    showingFieldName: "Address Proof",
+    required: true,
+    maxImageFileSize: 0.2 * MB,
+  }),
+  geoTagging: fileValidation({
+    field: "geoTagging",
+    showingFieldName: "Geo-Tagging Image",
+    required: true,
+    maxImageFileSize: 0.2 * MB,
+  }),
 });
 
 export const becomeSellerBaseSchema = z.object({

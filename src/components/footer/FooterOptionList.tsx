@@ -1,11 +1,21 @@
-import { Link } from "react-router-dom";
+import useRequireAuth from "../../hooks/useRequireAuth";
 import { IFooterOptionList } from "../../types";
+import usePathParams from "../../hooks/usePathParams";
 
 const FooterOptionList = ({
   isFirst = false,
   title,
   options,
 }: IFooterOptionList) => {
+  const requireAuth = useRequireAuth();
+  const { navigate } = usePathParams();
+
+  const handleNavigate = (path: string, isPrivateRoute?: boolean) => {
+    const action = () => navigate(path); // wrap in a function
+    if (isPrivateRoute && !requireAuth(action)) return; // store action if not logged in
+    action(); // run immediately if logged in
+  };
+
   return (
     <div
       className={`space-y-2 text-sm lg:text-base ${
@@ -25,9 +35,13 @@ const FooterOptionList = ({
         } gap-2`}
       >
         {options.map((link, i) => (
-          <Link key={i} to={link.path} className="text-nowrap cursor-pointer">
+          <button
+            key={i}
+            onClick={() => handleNavigate(link.path, link.private)}
+            className="text-nowrap cursor-pointer"
+          >
             {link.title}
-          </Link>
+          </button>
         ))}
       </div>
     </div>

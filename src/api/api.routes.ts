@@ -14,6 +14,9 @@ export const productRoutes = {
 export const userRoutes = {
   getUser: { method: "GET", url: "/users/user" },
   createSeller: { method: "POST", url: "/users/seller/create" },
+  addWishlistProduct: { method: "POST", url: "/users/wishlist/add" },
+  removeWishlistProduct: { method: "DELETE", url: "/users/wishlist/remove" },
+  wishlist: { method: "GET", url: "/users/wishlist" },
 };
 
 export const mediaRoutes = {
@@ -55,4 +58,9 @@ export const orderRoutes = {
   getOrderById: { method: "GET", url: "/orders" },
   verifyPayment: { method: "PATCH", url: "/orders/verify-payment" },
   cancelPayment: { method: "PATCH", url: "/orders/cancel-payment" },
+};
+
+export const blogROutes = {
+  getAllBlogs: { method: "GET", url: "/blogs/all" },
+  getBlogById: { method: "GET", url: "/blogs/blog" },
 };
