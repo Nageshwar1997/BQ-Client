@@ -321,7 +321,7 @@ export const CHAT_DEFAULT_DATA: TChatData[] = [
     suggestions: [
       "What are the best-selling products?",
       "Do you have any discounts currently?",
-      "Tell me about the features of Product X",
+      "Tell me about my recent order.",
     ],
   },
 ];
