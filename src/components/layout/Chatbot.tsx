@@ -4,42 +4,23 @@ import Button from "../button/Button";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import Input from "../input/Input";
 import MarkdownDisplay from "./MarkdownDisplay";
-import { TChatContext, TChatMessage } from "../../types";
+import { TChatData, TChatMessage } from "../../types";
 import { useSocket } from "../../hooks/useSocket";
 import useRequireAuth from "../../hooks/useRequireAuth";
 import useQueryParams from "../../hooks/useQueryParams";
-
-const welcomeMessages: Record<string, string> = {
-  products: "Welcome! Sir/Ma'am 👋 You can ask me anything about our products.",
-  orders:
-    "Hello! Sir/Ma'am 👋 I can help you check your orders and deliveries.",
-};
-
-const defaultSuggestedQuestions: Record<string, string[]> = {
-  products: [
-    "What are the best-selling products?",
-    "Do you have any discounts currently?",
-    "Tell me about the features of Product X",
-  ],
-  orders: [
-    "Check my order status",
-    "Track my recent delivery",
-    "Cancel my order",
-  ],
-};
+import { CHAT_DEFAULT_DATA } from "../../constants";
 
 const Chatbot = () => {
   const { queryParams } = useQueryParams();
-  const [context, setContext] = useState<TChatContext | null>(null);
+  const [context, setContext] = useState<TChatData["context"] | null>(null);
   const { socket, connected, userId } = useSocket(context);
   const requireAuth = useRequireAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<TChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
-  const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>([]);
 
-  const outsideClickContainerRef = useOutsideClick<HTMLDivElement>(
+  const outsideClickRef = useOutsideClick<HTMLDivElement>(
     () => setIsOpen(false),
     { enabled: isOpen }
   );
@@ -49,20 +30,22 @@ const Chatbot = () => {
   useEffect(() => {
     if (!socket) return;
 
-    // Streamed chunks from AI
+    // Streamed toke/chunks from AI
     const handleChunk = ({ chunk }: { chunk: string }) => {
       setMessages((prev) => {
         const last = prev[prev.length - 1];
+
+        // If last is bot → append chunk
         if (last?.type === "bot") {
-          const updated = [...prev];
-          updated[prev.length - 1] = { ...last, text: last.text + chunk };
-          return updated;
+          return [...prev.slice(0, -1), { ...last, text: last.text + chunk }];
         }
+
+        // First chunk from bot
         return [...prev, { id: Date.now(), type: "bot", text: chunk }];
       });
     };
 
-    // Full AI response + suggested questions
+    // Final AI response + suggested questions
     const handleComplete = ({
       fullResponse,
       suggestedQuestions,
@@ -73,13 +56,15 @@ const Chatbot = () => {
       setTyping(false);
       setMessages((prev) => {
         const updated = [...prev];
+        const last = updated[updated.length - 1];
+
         updated[updated.length - 1] = {
-          ...updated[updated.length - 1],
+          ...last,
           text: fullResponse,
+          suggestedQuestions,
         };
         return updated;
       });
-      setSuggestedQuestions(suggestedQuestions);
     };
 
     // Error messages
@@ -104,12 +89,12 @@ const Chatbot = () => {
     };
   }, [socket]);
 
-  // Scroll to bottom
+  // Auto scroll down
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, typing, suggestedQuestions]);
+  }, [messages, typing]);
 
-  // Send message
+  // SEND MESSAGE
   const handleSend = (msgText?: string) => {
     const textToSend = msgText || input;
     if (!textToSend.trim() || !socket) return;
@@ -120,7 +105,6 @@ const Chatbot = () => {
     ]);
     setInput("");
     setTyping(true);
-    setSuggestedQuestions([]);
 
     if (connected) {
       socket.emit("send_message", { message: textToSend, userId });
@@ -140,7 +124,7 @@ const Chatbot = () => {
 
   return (
     <div
-      ref={queryParams.login ? null : outsideClickContainerRef}
+      ref={queryParams.login ? null : outsideClickRef}
       className="fixed bottom-3 right-3 z-50"
     >
       {!isOpen ? (
@@ -152,15 +136,15 @@ const Chatbot = () => {
         />
       ) : (
         <div className="bg-primary-inverted rounded-xl shadow-xl flex flex-col w-80 sm:w-96 h-[70dvh] overflow-hidden">
+          {/* HEADER */}
           <div className="bg-accent-duo text-white flex items-center justify-between p-4">
             <DropdownIcon
               stroke="white"
-              className="w-8 h-8 rotate-90 border border-[red]"
+              className="w-8 h-8 rotate-90"
               onClick={() => {
                 setContext(null);
                 setInput("");
                 setMessages([]);
-                setSuggestedQuestions([]);
                 setTyping(false);
               }}
             />
@@ -171,21 +155,39 @@ const Chatbot = () => {
               onClick={() => setIsOpen(false)}
             />
           </div>
+          {/* BODY */}
           <div className="flex-1 p-4 overflow-y-auto space-y-3">
             {context ? (
               <>
                 {messages.map((msg) => (
-                  <div
-                    key={msg.id}
-                    className={`p-2 rounded max-w-[80%] w-fit animate-slide-in text-sm/5 ${
-                      msg.type === "user"
-                        ? "bg-secondary-inverted text-tertiary ml-auto"
-                        : msg.type === "bot"
-                        ? "bg-tertiary-inverted text-primary"
-                        : "bg-red-100 text-red-900"
-                    }`}
-                  >
-                    <MarkdownDisplay text={msg.text} />
+                  <div key={msg.id} className="space-y-1">
+                    <div
+                      className={`p-2 rounded max-w-[80%] w-fit animate-slide-in text-sm/5 ${
+                        msg.type === "user"
+                          ? "bg-tertiary-inverted-30 text-primary ml-auto"
+                          : msg.type === "bot"
+                          ? "bg-tertiary-inverted-50 text-primary"
+                          : "bg-red-100 text-red-900"
+                      }`}
+                    >
+                      <MarkdownDisplay text={msg.text} />
+                    </div>
+                    {msg.suggestedQuestions &&
+                      msg.suggestedQuestions.length > 0 && (
+                        <div className="flex flex-wrap gap-2">
+                          {msg.suggestedQuestions.map((q, i) => (
+                            <Button
+                              key={i}
+                              pattern="outline"
+                              content={q}
+                              className="bg-tertiary-inverted-50 text-tertiary !text-[13px]/4 !p-2 max-w-[80%] !rounded !border-tertiary-30 [&_span]:text-start [&_span]:break-words transition-none !justify-start"
+                              buttonProps={{
+                                onClick: () => handleSuggestionClick(q),
+                              }}
+                            />
+                          ))}
+                        </div>
+                      )}
                   </div>
                 ))}
 
@@ -195,66 +197,35 @@ const Chatbot = () => {
                   </div>
                 )}
 
-                {/* Suggested Questions */}
-                {suggestedQuestions.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {suggestedQuestions.map((q, i) => (
-                      <Button
-                        key={i}
-                        pattern="outline"
-                        content={q}
-                        className="bg-tertiary-inverted-50 text-tertiary !text-[13px]/4 !p-2 max-w-[80%] !rounded !border-tertiary-30 [&_span]:text-start [&_span]:break-words transition-none !justify-start"
-                        buttonProps={{
-                          onClick: () => handleSuggestionClick(q),
-                        }}
-                      />
-                    ))}
-                  </div>
-                )}
-
                 <div ref={messagesEndRef} />
               </>
             ) : (
+              // CONTEXT SELECTION
               <div className="flex flex-col items-center justify-center gap-4">
                 <p className="text-primary md:text-lg max-w-xs text-center font-semibold text-shadow-sm">
                   What would you like to ask our chatbot?
                 </p>
                 <hr className="w-full h-px block border-none bg-gradient-line" />
                 <div className="space-y-3">
-                  {[
-                    {
-                      name: "products",
-                      description:
-                        "Ask about our products, their features, and details.",
-                    },
-                    {
-                      name: "orders",
-                      description:
-                        "Check your order status or track your deliveries.",
-                    },
-                  ].map((ctx, idx) => {
+                  {CHAT_DEFAULT_DATA.map((item) => {
                     return (
                       <button
-                        key={idx}
-                        className="border border-primary-30 bg-primary-10 rounded-lg p-2"
+                        key={item.context}
+                        className="w-full border border-primary-30 bg-primary-10 rounded-lg p-2 flex flex-col justify-start text-start"
                         onClick={() => {
                           const action = () => {
-                            setContext(ctx.name as TChatContext);
-                            // Show welcome message
+                            setContext(item.context);
                             setMessages([
                               {
                                 id: Date.now(),
                                 type: "bot",
-                                text: welcomeMessages[ctx.name],
+                                text: item.message,
+                                suggestedQuestions: item.suggestions,
                               },
                             ]);
-                            // Set default suggested questions
-                            setSuggestedQuestions(
-                              defaultSuggestedQuestions[ctx.name]
-                            );
                           };
 
-                          if (ctx.name === "orders") {
+                          if (item.context === "orders") {
                             if (!requireAuth(action)) return;
                             action();
                           } else {
@@ -263,10 +234,10 @@ const Chatbot = () => {
                         }}
                       >
                         <p className="text-sm md:text-base bg-clip-text bg-silver-duo text-transparent font-medium capitalize">
-                          {ctx.name}:
+                          {item.context}:
                         </p>
                         <p className="text-xs md:text-sm mt-1  text-silver-jet-2">
-                          {ctx.description}
+                          {item.description}
                         </p>
                       </button>
                     );
@@ -275,7 +246,7 @@ const Chatbot = () => {
               </div>
             )}
           </div>
-
+          {/* INPUT */}
           <div className="p-3 border-t flex items-center gap-2">
             <Input
               needRef={true}

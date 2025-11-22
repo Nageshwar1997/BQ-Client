@@ -611,6 +611,12 @@ export type TChatMessage = {
   id: number;
   type: "user" | "bot" | "error";
   text: string;
+  suggestedQuestions?: string[];
 };
 
-export type TChatContext = "products" | "orders";
+export type TChatData = {
+  context: "products" | "orders";
+  description: string;
+  message: string;
+  suggestions: string[];
+};

@@ -20,51 +20,53 @@ const OrderProducts = ({ products = [], className = "" }: Props) => {
         </h3>
       </div>
       <div className="space-y-4 py-2 px-4">
-        {products?.map((item) => (
-          <div
-            key={item._id}
-            className={`p-2 flex ${
-              isAccountPage ? "flex-col base:flex-row" : ""
-            } gap-4 border shadow-md border-primary-30 rounded-lg opacity-90 items-stretch`}
-          >
+        {products?.map((item, index) => {
+          return (
             <div
-              className={`w-24 rounded-sm shadow overflow-hidden ${
-                isAccountPage ? "w-32 base:w-24 mx-auto" : ""
-              }`}
+              key={index}
+              className={`p-2 flex ${
+                isAccountPage ? "flex-col base:flex-row" : ""
+              } gap-4 border shadow-md border-primary-30 rounded-lg opacity-90 items-stretch`}
             >
-              <img
-                src={
-                  item?.shade?.images?.[0] || item?.product?.commonImages?.[0]
-                }
-                alt={item?.shade?.shadeName || item?.product?.title}
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-in-out"
-              />
-            </div>
-            <div className="flex-1 grow flex flex-col justify-between">
-              <h3 className="text-sm sm:text-base font-medium text-primary opacity-90 hover:opacity-100 line-clamp-1">
-                {item?.product?.title}
-              </h3>
-              {item?.shade && (
+              <div
+                className={`w-24 rounded-sm shadow overflow-hidden ${
+                  isAccountPage ? "w-32 base:w-24 mx-auto" : ""
+                }`}
+              >
+                <img
+                  src={
+                    item?.shade?.images?.[0] || item?.product?.commonImages?.[0]
+                  }
+                  alt={item?.shade?.shadeName || item?.product?.title}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-in-out"
+                />
+              </div>
+              <div className="flex-1 grow flex flex-col justify-between">
+                <h3 className="text-sm sm:text-base font-medium text-primary opacity-90 hover:opacity-100 line-clamp-1">
+                  {item?.product?.title}
+                </h3>
+                {item?.shade && (
+                  <p className="text-[13px] text-tertiary">
+                    {item?.shade?.shadeName}
+                  </p>
+                )}
                 <p className="text-[13px] text-tertiary">
-                  {item?.shade?.shadeName}
+                  {item?.product?.brand}
                 </p>
-              )}
-              <p className="text-[13px] text-tertiary">
-                {item?.product?.brand}
-              </p>
-              <p className="text-[13px] text-secondary">
-                Qty.: {item.quantity}
-              </p>
-              <p className="text-sm font-medium text-primary">
-                Price: {toINRCurrency(item?.product?.sellingPrice)}
-              </p>
-              <p className="text-sm font-semibold text-primary">
-                Total:{" "}
-                {toINRCurrency(item?.product?.sellingPrice * item.quantity)}
-              </p>
+                <p className="text-[13px] text-secondary">
+                  Qty.: {item.quantity}
+                </p>
+                <p className="text-sm font-medium text-primary">
+                  Price: {toINRCurrency(item?.product?.sellingPrice)}
+                </p>
+                <p className="text-sm font-semibold text-primary">
+                  Total:{" "}
+                  {toINRCurrency(item?.product?.sellingPrice * item.quantity)}
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );
