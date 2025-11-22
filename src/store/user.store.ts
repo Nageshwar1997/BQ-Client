@@ -20,7 +20,6 @@ export const useUserStore = create<UserStoreType>((set) => {
     setUser: (user) => {
       const encryptedUser = encryptData(user);
 
-      sessionStorage.setItem("chat_userId", user._id);
       sessionStorage.setItem(SESSION_KEY, encryptedUser);
       set({ user, isAuthenticated: true });
     },

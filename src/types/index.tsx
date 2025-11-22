@@ -612,3 +612,5 @@ export type TChatMessage = {
   type: "user" | "bot" | "error";
   text: string;
 };
+
+export type TChatContext = "products" | "orders";

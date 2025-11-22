@@ -4,8 +4,8 @@ import Button from "../button/Button";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import Input from "../input/Input";
 import MarkdownDisplay from "./MarkdownDisplay";
-import { TChatMessage } from "../../types";
-import { useProductSocket } from "../../hooks/useSockets";
+import { TChatContext, TChatMessage } from "../../types";
+import { useSocket } from "../../hooks/useSocket";
 import useRequireAuth from "../../hooks/useRequireAuth";
 import useQueryParams from "../../hooks/useQueryParams";
 
@@ -30,9 +30,9 @@ const defaultSuggestedQuestions: Record<string, string[]> = {
 
 const Chatbot = () => {
   const { queryParams } = useQueryParams();
-  const { socket, userId } = useProductSocket();
+  const [context, setContext] = useState<TChatContext | null>(null);
+  const { socket, connected, userId } = useSocket(context);
   const requireAuth = useRequireAuth();
-  const [context, setContext] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<TChatMessage[]>([]);
   const [input, setInput] = useState("");
@@ -91,10 +91,12 @@ const Chatbot = () => {
       ]);
     };
 
+    // Attach listeners
     socket.on("receive_message_chunk", handleChunk);
     socket.on("receive_message_complete", handleComplete);
     socket.on("receive_message", handleError);
 
+    // Cleanup on unmount or socket change
     return () => {
       socket.off("receive_message_chunk", handleChunk);
       socket.off("receive_message_complete", handleComplete);
@@ -110,7 +112,7 @@ const Chatbot = () => {
   // Send message
   const handleSend = (msgText?: string) => {
     const textToSend = msgText || input;
-    if (!textToSend.trim()) return;
+    if (!textToSend.trim() || !socket) return;
 
     setMessages((prev) => [
       ...prev,
@@ -120,7 +122,16 @@ const Chatbot = () => {
     setTyping(true);
     setSuggestedQuestions([]);
 
-    socket?.emit("send_message", { message: textToSend, userId });
+    if (connected) {
+      socket.emit("send_message", { message: textToSend, userId });
+    } else {
+      // Wait for connection before sending
+      const onConnect = () => {
+        socket.emit("send_message", { message: textToSend, userId });
+        socket.off("connect", onConnect);
+      };
+      socket.on("connect", onConnect);
+    }
   };
 
   const handleSuggestionClick = (suggestion: string) => {
@@ -228,7 +239,7 @@ const Chatbot = () => {
                         className="border border-primary-30 bg-primary-10 rounded-lg p-2"
                         onClick={() => {
                           const action = () => {
-                            setContext(ctx.name);
+                            setContext(ctx.name as TChatContext);
                             // Show welcome message
                             setMessages([
                               {
