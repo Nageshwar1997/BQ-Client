@@ -135,7 +135,7 @@ const Chatbot = () => {
           buttonProps={{ onClick: () => setIsOpen(true) }}
         />
       ) : (
-        <div className="bg-primary-inverted rounded-xl shadow-xl flex flex-col w-80 sm:w-96 h-[70dvh] overflow-hidden">
+        <div className="bg-primary-inverted rounded-xl shadow-light-dark-soft flex flex-col w-80 sm:w-96 h-[70dvh] overflow-hidden border border-primary-30">
           {/* HEADER */}
           <div className="bg-accent-duo text-white flex items-center justify-between p-4">
             <DropdownIcon
