@@ -9,7 +9,7 @@ import {
   TruckIcon,
   UserCircleIcon,
 } from "../icons";
-import { TPasswordField, TRegexes } from "../types";
+import { TChatData, TPasswordField, TRegexes } from "../types";
 
 export * from "./categories";
 export const DEFAULT_FILTER = { name: "All", value: "all", default: true };
@@ -298,5 +298,30 @@ export const SIDEBAR_DATA = [
     label: "Logout",
     icon: LogoutIcon,
     className: "stroke-tertiary group-hover:stroke-primary",
+  },
+];
+
+export const CHAT_DEFAULT_DATA: TChatData[] = [
+  {
+    context: "products",
+    description: "Ask about our products, their features, and details.",
+    message:
+      "Hello! Sir/Ma'am 👋 I can help you check your orders and deliveries.",
+    suggestions: [
+      "Check my order status",
+      "Track my recent delivery",
+      "Cancel my order",
+    ],
+  },
+  {
+    context: "orders",
+    description: "Check your order status or track your deliveries.",
+    message:
+      "Welcome! Sir/Ma'am 👋 You can ask me anything about our products.",
+    suggestions: [
+      "What are the best-selling products?",
+      "Do you have any discounts currently?",
+      "Tell me about the features of Product X",
+    ],
   },
 ];

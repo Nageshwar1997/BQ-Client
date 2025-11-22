@@ -606,3 +606,17 @@ export interface IBlog {
   largeThumbnail: string;
   publisher: Pick<UserTypes, "firstName" | "lastName" | "profilePic">;
 }
+
+export type TChatMessage = {
+  id: number;
+  type: "user" | "bot" | "error";
+  text: string;
+  suggestedQuestions?: string[];
+};
+
+export type TChatData = {
+  context: "products" | "orders";
+  description: string;
+  message: string;
+  suggestions: string[];
+};

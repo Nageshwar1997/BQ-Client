@@ -20,9 +20,9 @@ const OrderProducts = ({ products = [], className = "" }: Props) => {
         </h3>
       </div>
       <div className="space-y-4 py-2 px-4">
-        {products?.map((item) => (
+        {products?.map((item, index) => (
           <div
-            key={item._id}
+            key={index}
             className={`p-2 flex ${
               isAccountPage ? "flex-col base:flex-row" : ""
             } gap-4 border shadow-md border-primary-30 rounded-lg opacity-90 items-stretch`}

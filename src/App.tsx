@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
 import router from "./routes";
 import useThemeStore from "./store/theme.store";
+import { envs } from "./envs/index.env";
 
 function App() {
   const { theme } = useThemeStore();
@@ -23,7 +24,13 @@ function App() {
         </div>
       </div>
       {/* React Query Devtools */}
-      <ReactQueryDevtools initialIsOpen={false} />
+      {envs.NODE_ENV === "development" && (
+        <ReactQueryDevtools
+          initialIsOpen={false}
+          position="bottom"
+          buttonPosition="bottom-left"
+        />
+      )}
     </QueryClientProvider>
   );
 }
