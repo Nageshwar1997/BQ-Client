@@ -308,9 +308,9 @@ export const CHAT_DEFAULT_DATA: TChatData[] = [
     message:
       "Hello! Sir/Ma'am 👋 I can help you check your orders and deliveries.",
     suggestions: [
-      "Check my order status",
-      "Track my recent delivery",
-      "Cancel my order",
+      "Can you recommend products based on my skin type?",
+      "Which products are popular right now?",
+      "Can you help me find a product within my budget?",
     ],
   },
   {
@@ -319,9 +319,9 @@ export const CHAT_DEFAULT_DATA: TChatData[] = [
     message:
       "Welcome! Sir/Ma'am 👋 You can ask me anything about our products.",
     suggestions: [
-      "What are the best-selling products?",
-      "Do you have any discounts currently?",
-      "Tell me about my recent order.",
+      "Where is my current order right now?",
+      "Can you show me all my past orders?",
+      "Can you help me track my recent order?",
     ],
   },
 ];
