@@ -69,7 +69,7 @@ export const footerCategories = [
         path: "orders/return-refund",
         private: true,
       },
-      { title: "Track My Order", path: "orders/track", private: true },
+      { title: "Track My Orders", path: "orders/track", private: true },
     ],
   },
   {
