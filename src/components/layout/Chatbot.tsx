@@ -140,7 +140,7 @@ const Chatbot = () => {
           <div className="bg-accent-duo text-white flex items-center justify-between p-4">
             <DropdownIcon
               stroke="white"
-              className="w-8 h-8 rotate-90"
+              className="w-8 h-8 rotate-90 cursor-pointer"
               onClick={() => {
                 setContext(null);
                 setInput("");
@@ -152,7 +152,8 @@ const Chatbot = () => {
             <CloseIcon
               stroke="white"
               strokeWidth="3"
-              onClick={() => setIsOpen(false)}
+                onClick={() => setIsOpen(false)}
+                className="cursor-pointer"
             />
           </div>
           {/* BODY */}
