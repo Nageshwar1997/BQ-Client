@@ -6,6 +6,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import {
+  cancel_order,
   cancel_payment,
   create_order,
   get_all_orders,
@@ -87,5 +88,19 @@ export const useVerifyPayment = () => {
 };
 
 export const useCancelPayment = () => {
-  return useMutation({ mutationFn: cancel_payment });
+  return useMutation({
+    mutationKey: ["cancel_payment"],
+    mutationFn: cancel_payment,
+  });
+};
+
+export const useCancelOrder = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["cancel_order"],
+    mutationFn: cancel_order,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get_all_orders_infinite"] });
+    },
+  });
 };

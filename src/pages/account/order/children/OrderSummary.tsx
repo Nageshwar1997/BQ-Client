@@ -7,6 +7,11 @@ import OrderKeyValue from "./OrderKeyValue";
 import { DeleteIcon, TrackIcon } from "../../../../icons";
 import usePathParams from "../../../../hooks/usePathParams";
 import { Link } from "react-router-dom";
+import { useCancelOrder } from "../../../../api/order/order.service";
+import {
+  toastErrorMessage,
+  toastSuccessMessage,
+} from "../../../../utils/toasts";
 
 interface Props extends ClassName {
   order: IOrder;
@@ -14,6 +19,10 @@ interface Props extends ClassName {
 
 const OrderSummary = ({ order, className = "" }: Props) => {
   const { paths } = usePathParams();
+
+  const { mutateAsync: cancelOrder, isPending: isCancelPending } =
+    useCancelOrder();
+
   const orderSummaryFields = useMemo(
     () => [
       {
@@ -52,6 +61,13 @@ const OrderSummary = ({ order, className = "" }: Props) => {
 
   const isAccountPage = paths.includes("account");
 
+  const handleCancelOrder = async () => {
+    await cancelOrder(order._id, {
+      onSuccess: () => toastSuccessMessage("Order cancelled successfully"),
+      onError: (error) => toastErrorMessage(error),
+    });
+  };
+
   return (
     <section
       className={`w-full flex flex-col border shadow-md border-primary-30 rounded-xl opacity-90 pb-2 ${className}`}
@@ -82,7 +98,10 @@ const OrderSummary = ({ order, className = "" }: Props) => {
                     />
                   }
                   className="min-w-[86px] max-w-fit !rounded-lg !px-x !py-2"
-                  buttonProps={{ disabled: true }}
+                  buttonProps={{
+                    onClick: handleCancelOrder,
+                    disabled: isCancelPending,
+                  }}
                 />
               )}
               {["CONFIRMED"].includes(order.order_result.order_status) && (

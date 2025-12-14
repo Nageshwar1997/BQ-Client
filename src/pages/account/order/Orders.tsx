@@ -99,6 +99,7 @@ const Orders = () => {
                 <div className="text-sm flex flex-col md:flex-row md:justify-between items-center mb-4 gap-3">
                   <i className="font-semibold text-tertiary break-words">
                     Order ID: {order._id}
+                    Test : {order.razorpay_payment_result.rzp_order_id}
                   </i>
                   <span
                     className={`w-fit px-3 py-1 rounded-full font-medium text-center ${
