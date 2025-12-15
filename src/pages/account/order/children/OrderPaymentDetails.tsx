@@ -29,20 +29,20 @@ const OrderPaymentDetails = ({ order, className = "" }: Props) => {
       value: payment?.card?.acquirer_data?.auth_code,
     },
     { field: "Name", value: payment?.card?.card?.name },
-    { field: "Type", value: payment?.card?.card.type },
-    { field: "Issuer", value: payment?.card?.card.issuer },
+    { field: "Type", value: payment?.card?.card?.type },
+    { field: "Issuer", value: payment?.card?.card?.issuer },
     {
       field: "ID",
-      value: payment?.card?.card.id,
+      value: payment?.card?.card?.id,
       className: "[&>span:nth-child(2)]:uppercase",
     },
     {
       field: "Card No.",
-      value: payment?.card?.card.last4
+      value: payment?.card?.card?.last4
         ? `XXXX XXXX XXXX ${payment?.card.card.last4}`
         : null,
     },
-    { field: "Card Co.", value: payment?.card?.card.network },
+    { field: "Card Co.", value: payment?.card?.card?.network },
     { field: "Bank", value: payment?.bank },
     {
       field: "Phone No.",
