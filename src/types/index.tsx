@@ -475,8 +475,8 @@ export interface IOrder {
     billing?: Omit<IAddress, "user"> | null;
     both?: Omit<IAddress, "user"> | null;
   };
+  payment_mode: (typeof ALLOWED_PAYMENT_MODE)[number];
   razorpay_payment_result: {
-    payment_mode: (typeof ALLOWED_PAYMENT_MODE)[number];
     currency: (typeof ALLOWED_CURRENCIES)[number];
     rzp_order_id: string;
     rzp_payment_id: string;

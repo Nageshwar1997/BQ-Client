@@ -34,7 +34,7 @@ const OrderSummary = ({ order, className = "" }: Props) => {
       },
       {
         field: "Payment Mode",
-        value: order.razorpay_payment_result?.payment_mode,
+        value: order?.payment_mode,
       },
       {
         field: "Order Receipt",
