@@ -48,7 +48,10 @@ const Payment = () => {
   useEffect(() => {
     const handleBeforeUnload = async (e: BeforeUnloadEvent) => {
       if (createdOrderData?.orderId) {
-        cancelPayment({ orderId: createdOrderData?.orderId });
+        cancelPayment({
+          orderId: createdOrderData?.orderId,
+          flag: "tab_closed",
+        });
       }
       e.preventDefault();
     };
@@ -109,7 +112,10 @@ const Payment = () => {
         modal: {
           ondismiss: async () => {
             if (createdOrder.orderId) {
-              await cancelPayment({ orderId: createdOrder.orderId });
+              await cancelPayment({
+                orderId: createdOrder.orderId,
+                flag: "modal_closed",
+              });
             }
           },
         },

@@ -318,6 +318,7 @@ export const hexToRgba = (hex: string, alphaOverride?: number) => {
 export const getOrderTrackStatus = (status: (typeof ORDER_STATUS)[number]) => {
   switch (status) {
     case "PENDING":
+    case "PROCESSING":
       return [
         "PENDING",
         "PROCESSING",

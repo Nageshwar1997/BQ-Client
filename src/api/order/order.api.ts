@@ -80,10 +80,12 @@ export const cancel_payment = async (data: TQueryParams) => {
     const user_token = getUserToken();
 
     const { method, url } = orderRoutes.cancelPayment;
+    const { orderId, ...restData } = data || {};
     const response = await api.request({
       method,
-      url: `${url}/${data.orderId}`,
+      url: `${url}/${orderId}`,
       headers: { Authorization: user_token },
+      data: restData,
     });
     return response.data;
   } catch (error) {
