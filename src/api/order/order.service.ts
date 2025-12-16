@@ -11,7 +11,6 @@ import {
   create_order,
   get_all_orders,
   get_order_by_id,
-  verify_payment,
 } from "./order.api";
 import useQueryParams from "../../hooks/useQueryParams";
 import { TQueryParams } from "../types";
@@ -45,7 +44,7 @@ export const useGetAllOrdersInfinite = ({
   queryParams,
 }: {
   limit: number;
-  queryParams: TQueryParams;
+  queryParams?: TQueryParams;
 }) => {
   return useInfiniteQuery({
     queryKey: ["get_all_orders_infinite", queryParams],

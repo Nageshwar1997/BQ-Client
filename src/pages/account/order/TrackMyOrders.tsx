@@ -13,10 +13,7 @@ import { Link } from "react-router-dom";
 
 const TrackMyOrders = () => {
   const { data, fetchNextPage, hasNextPage, isLoading, isError } =
-    useGetAllOrdersInfinite({
-      limit: 10,
-      queryParams: { order_status: "confirmed" },
-    });
+    useGetAllOrdersInfinite({ limit: 10 });
   const { pathname } = usePathParams();
   const { ref, inView } = useInView();
   const orders: IOrder[] = useMemo(

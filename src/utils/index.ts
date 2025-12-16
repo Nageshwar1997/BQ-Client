@@ -8,6 +8,7 @@ import {
 } from "../components/navbar/data";
 import { envs } from "../envs/index.env";
 import { FetchedReviewType, TPossibleTimeFormats } from "../types";
+import { ORDER_STATUS } from "../constants";
 const TOKEN_KEY = "user_token";
 const SECRET_KEY = envs.ENCRYPTION_SECRET_KEY;
 
@@ -312,4 +313,55 @@ export const hexToRgba = (hex: string, alphaOverride?: number) => {
   }
 
   return `rgba(${r}, ${g}, ${b}, ${a})`;
+};
+
+export const getOrderTrackStatus = (status: (typeof ORDER_STATUS)[number]) => {
+  switch (status) {
+    case "PENDING":
+      return [
+        "PENDING",
+        "PROCESSING",
+        "PROCESSED",
+        "CONFIRMED",
+        "SHIPPED",
+        "DELIVERED",
+      ];
+    case "FAILED":
+      return ["PENDING", "PROCESSING", "FAILED"];
+    case "CONFIRMED":
+    case "DELIVERED":
+      return [
+        "PENDING",
+        "PROCESSING",
+        "PROCESSED",
+        "CONFIRMED",
+        "SHIPPED",
+        "DELIVERED",
+      ];
+    case "CANCELLED":
+      return [
+        "PENDING",
+        "PENDING",
+        "PROCESSING",
+        "PROCESSED",
+        "CONFIRMED",
+        "SHIPPED",
+        "DELIVERED",
+        "CANCELLED",
+      ];
+    case "RETURNED":
+      return [
+        "PENDING",
+        "PENDING",
+        "PROCESSING",
+        "PROCESSED",
+        "CONFIRMED",
+        "SHIPPED",
+        "DELIVERED",
+        "CANCELLED",
+        "RETURNED",
+      ];
+    default:
+      return ORDER_STATUS;
+  }
 };

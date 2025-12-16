@@ -27,7 +27,7 @@ export const create_order = async (addresses: TQueryParams) => {
 };
 
 export const get_all_orders = async (params: {
-  queryParams: TQueryParams;
+  queryParams?: TQueryParams;
   pageParams?: TPageParams;
 }) => {
   try {

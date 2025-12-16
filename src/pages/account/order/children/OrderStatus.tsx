@@ -1,11 +1,12 @@
-import { ORDER_STATUS } from "../../../../constants";
 import { ClassName } from "../../../../types";
+import { getOrderTrackStatus } from "../../../../utils";
 interface Props extends ClassName {
   currentStatus: string;
 }
 
 const OrderStatus = ({ currentStatus, className = "" }: Props) => {
-  const stepIndex = ORDER_STATUS.indexOf(currentStatus);
+  const optimizedStatuses = getOrderTrackStatus(currentStatus);
+  const stepIndex = optimizedStatuses.indexOf(currentStatus);
 
   return (
     <section
@@ -16,25 +17,32 @@ const OrderStatus = ({ currentStatus, className = "" }: Props) => {
           Order Tracking Status
         </h3>
       </div>
-      <div className="px-4 flex flex-col gap-2">
-        {ORDER_STATUS.map((step, index) => (
+      <div className="px-4 flex flex-col">
+        {optimizedStatuses.map((step, index) => (
           <div key={step} className="flex flex-col gap-1">
             <div className="flex items-start gap-3">
-              <div
-                className={`w-4 h-4 rounded-full mt-1 ${
-                  index <= stepIndex
-                    ? "bg-green-500 border-green-500"
-                    : "bg-gray-300 border-gray-400"
-                } border`}
-              ></div>
+              <div className="flex flex-col items-center">
+                <div
+                  className={`w-4 h-4 rounded-full ${
+                    index <= stepIndex ? "bg-jade-c" : "bg-secondary-50"
+                  }`}
+                />
+                {index !== optimizedStatuses.length - 1 && (
+                  <div
+                    className={`w-px h-4 ${
+                      index < stepIndex
+                        ? "border-jade-c"
+                        : "border-secondary-50"
+                    } border`}
+                  />
+                )}
+              </div>
               <p
-                className={`text-sm sm:text-base ${
-                  index <= stepIndex
-                    ? "text-green-700 font-semibold"
-                    : "text-gray-600"
+                className={`text-xs/none font-medium mt-0.5 ${
+                  index <= stepIndex ? "text-jade-c" : "text-secondary-50"
                 }`}
               >
-                {step.replace(/_/g, " ")}
+                {step}
               </p>
             </div>
           </div>

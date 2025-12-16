@@ -60,6 +60,7 @@ const OrderSummary = ({ order, className = "" }: Props) => {
   );
 
   const isAccountPage = paths.includes("account");
+  const isTrackPage = paths.includes("track");
 
   const handleCancelOrder = async () => {
     await cancelOrder(order._id, {
@@ -72,62 +73,56 @@ const OrderSummary = ({ order, className = "" }: Props) => {
     <section
       className={`w-full flex flex-col border shadow-md border-primary-30 rounded-xl opacity-90 pb-2 ${className}`}
     >
-      <div className="py-2 px-4 border-b border-b-primary-30 mb-2 flex flex-col base:flex-row gap-3 sm:gap-4 items-center justify-between">
+      <div
+        className={`py-2 px-4 border-b border-b-primary-30 mb-2 flex gap-3 sm:gap-4 items-center justify-between ${
+          !isTrackPage ? "flex-col base:flex-row" : ""
+        }`}
+      >
         <h3 className="w-fit text-lg font-bold bg-clip-text text-transparent bg-accent-duo">
           Order Summary
         </h3>
-        <div className="flex gap-4">
-          {order.razorpay_payment_result.rzp_payment_status === "PAID" && (
-            <>
-              {["CONFIRMED", "DELIVERED"].includes(
-                order.order_result.order_status
-              ) && (
-                <Button
-                  content={`${
-                    order.order_result.order_status === "CONFIRMED"
-                      ? "Cancel"
-                      : order.order_result.order_status === "DELIVERED"
-                      ? "Return"
-                      : ""
-                  }`}
-                  pattern="secondary"
-                  rightIcon={
-                    <DeleteIcon
-                      className="w-4 h-4 stroke-secondary-inverted"
-                      strokeWidth="2.5"
-                    />
-                  }
-                  className="min-w-[86px] max-w-fit !rounded-lg !px-x !py-2"
-                  buttonProps={{
-                    onClick: handleCancelOrder,
-                    disabled: isCancelPending,
-                  }}
+        <div className="flex gap-3 md:gap-4">
+          {["CONFIRMED", "DELIVERED"].includes(
+            order.order_result.order_status
+          ) && (
+            <Button
+              content={`${
+                order.order_result.order_status === "CONFIRMED"
+                  ? "Cancel"
+                  : order.order_result.order_status === "DELIVERED"
+                  ? "Return"
+                  : ""
+              }`}
+              pattern="secondary"
+              rightIcon={
+                <DeleteIcon
+                  className="w-4 h-4 stroke-secondary-inverted"
+                  strokeWidth="2.5"
                 />
-              )}
-              {["CONFIRMED"].includes(order.order_result.order_status) && (
-                <Link
-                  to={`/${isAccountPage ? "account" : "orders"}/track/${
-                    order._id
-                  }`}
-                >
-                  <Button
-                    content={`${
-                      order.order_result.order_status === "CONFIRMED"
-                        ? "Track"
-                        : ""
-                    }`}
-                    rightIcon={
-                      <TrackIcon
-                        className="w-4 h-4 stroke-white"
-                        strokeWidth="2.5"
-                      />
-                    }
-                    pattern="primary"
-                    className="min-w-[86px] max-w-fit !rounded-lg !px-x !py-2"
+              }
+              className="min-w-[86px] max-w-fit !rounded-lg !px-x !py-2"
+              buttonProps={{
+                onClick: handleCancelOrder,
+                disabled: isCancelPending,
+              }}
+            />
+          )}
+          {!isTrackPage && (
+            <Link
+              to={`/${isAccountPage ? "account" : "orders"}/track/${order._id}`}
+            >
+              <Button
+                content="Track"
+                rightIcon={
+                  <TrackIcon
+                    className="w-4 h-4 stroke-white"
+                    strokeWidth="2.5"
                   />
-                </Link>
-              )}
-            </>
+                }
+                pattern="primary"
+                className="min-w-[86px] max-w-fit !rounded-lg !px-x !py-2"
+              />
+            </Link>
           )}
         </div>
       </div>

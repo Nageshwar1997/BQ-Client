@@ -32,14 +32,7 @@ const OrderDetails = () => {
           {isTrackPage && (
             <OrderStatus currentStatus={order.order_result.order_status} />
           )}
-          <OrderSummary
-            order={order}
-            className={
-              isTrackPage
-                ? "[&>div:first-child>div]:hidden [&>div:first-child]:items-start"
-                : ""
-            }
-          />
+          <OrderSummary order={order} />
           <OrderProducts products={order.products} />
           <OrderAddresses addresses={order.addresses} />
           <OrderPaymentDetails order={order} />
