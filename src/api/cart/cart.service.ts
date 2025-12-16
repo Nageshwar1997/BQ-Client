@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-query";
 import {
   add_product_to_cart,
+  clear_cart,
   get_user_cart,
   remove_product_from_cart,
   update_product_quantity_in_cart,
@@ -13,6 +14,7 @@ import {
 import { toastErrorMessage, toastSuccessMessage } from "../../utils/toasts";
 import useQueryParams from "../../hooks/useQueryParams";
 import { useUserStore } from "../../store/user.store";
+import usePathParams from "../../hooks/usePathParams";
 
 export const useAddProductToCart = () => {
   const queryClient = useQueryClient();
@@ -67,5 +69,24 @@ export const useGetUserCart = () => {
     staleTime: 0.5 * 60 * 1000, // 30 seconds
     gcTime: 5 * 60 * 1000, // 5 minutes
     retry: false,
+  });
+};
+
+export const useClearCart = () => {
+  const queryClient = useQueryClient();
+  const { navigate, paths } = usePathParams();
+
+  return useMutation({
+    mutationKey: ["clear_cart"],
+    mutationFn: clear_cart,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get_user_cart"] });
+
+      if (paths.includes("account")) {
+        navigate(`/account/orders`);
+      } else {
+        navigate(`/orders`);
+      }
+    },
   });
 };

@@ -77,16 +77,6 @@ export const useGetOrderById = (orderId: string) => {
   });
 };
 
-export const useVerifyPayment = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: verify_payment,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["get_user_cart"] });
-    },
-  });
-};
-
 export const useCancelPayment = () => {
   return useMutation({
     mutationKey: ["cancel_payment"],

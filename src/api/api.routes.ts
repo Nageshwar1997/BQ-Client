@@ -43,6 +43,7 @@ export const cartRoutes = {
   },
   removeProductFromCart: { method: "DELETE", url: "/cart-products/remove" },
   getUserCart: { method: "GET", url: "/carts/cart" },
+  clearCart: { method: "PATCH", url: "/carts/clear" },
 };
 
 export const addressRoutes = {
@@ -56,7 +57,6 @@ export const orderRoutes = {
   createOrder: { method: "POST", url: "/orders/create" },
   getAllOrder: { method: "GET", url: "/orders" },
   getOrderById: { method: "GET", url: "/orders" },
-  verifyPayment: { method: "PATCH", url: "/orders/verify-payment" },
   cancelPayment: { method: "PATCH", url: "/orders/cancel-payment" },
   cancelOrder: { method: "PATCH", url: "/orders/cancel" },
 };

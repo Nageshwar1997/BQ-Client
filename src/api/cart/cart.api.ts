@@ -85,3 +85,23 @@ export const get_user_cart = async () => {
     throw "Something went wrong!"; // For non-Axios errors
   }
 };
+
+export const clear_cart = async () => {
+  try {
+    const user_token = getUserToken();
+
+    const { method, url } = cartRoutes.clearCart;
+    const response = await api.request({
+      method,
+      url,
+      headers: { Authorization: user_token },
+    });
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      // If it's an Axios error
+      throw error?.response?.data?.message || "API Error occurred";
+    }
+    throw "Something went wrong!"; // For non-Axios errors
+  }
+};
