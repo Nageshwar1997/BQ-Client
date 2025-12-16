@@ -38,7 +38,7 @@ const OrderStatus = ({ currentStatus, className = "" }: Props) => {
                 )}
               </div>
               <p
-                className={`text-xs/none font-medium mt-0.5 ${
+                className={`text-sm/none font-medium mt-0.5 ${
                   index <= stepIndex ? "text-jade-c" : "text-secondary-50"
                 }`}
               >
