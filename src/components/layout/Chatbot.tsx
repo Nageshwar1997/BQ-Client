@@ -9,9 +9,11 @@ import { useSocket } from "../../hooks/useSocket";
 import useRequireAuth from "../../hooks/useRequireAuth";
 import useQueryParams from "../../hooks/useQueryParams";
 import { CHAT_DEFAULT_DATA } from "../../constants";
+import usePathParams from "../../hooks/usePathParams";
 
 const Chatbot = () => {
   const { queryParams } = useQueryParams();
+  const { paths } = usePathParams();
   const [context, setContext] = useState<TChatData["context"] | null>(null);
   const { socket, connected, userId } = useSocket(context);
   const requireAuth = useRequireAuth();
@@ -122,15 +124,20 @@ const Chatbot = () => {
     handleSend(suggestion);
   };
 
+  const isAccountPage = paths.includes("account");
   return (
     <div
       ref={queryParams.login ? null : outsideClickRef}
-      className="fixed bottom-3 right-3 z-50"
+      className={`fixed right-3 ${
+        isAccountPage ? "bottom-16 sm:bottom-3" : "bottom-3"
+      } z-50`}
     >
       {!isOpen ? (
         <Button
-          content={<BotIcon className="stroke-white w-full h-full" />}
-          className="!rounded-full !p-3"
+          content={
+            <BotIcon className="stroke-white w-4 md:w-6 lg:w-8 h-4 md:h-6 lg:h-8" />
+          }
+          className="!rounded-full !p-2 md:!p-2.5 lg:!p-3"
           pattern="primary"
           buttonProps={{ onClick: () => setIsOpen(true) }}
         />
@@ -152,8 +159,8 @@ const Chatbot = () => {
             <CloseIcon
               stroke="white"
               strokeWidth="3"
-                onClick={() => setIsOpen(false)}
-                className="cursor-pointer"
+              onClick={() => setIsOpen(false)}
+              className="cursor-pointer"
             />
           </div>
           {/* BODY */}
