@@ -29,9 +29,7 @@ const OrderDetails = () => {
               Order ID: {order._id}
             </p>
           </header>
-          {isTrackPage && (
-            <OrderStatus currentStatus={order.order_result.order_status} />
-          )}
+          {isTrackPage && <OrderStatus currentStatus={order.status} />}
           <OrderSummary order={order} />
           <OrderProducts products={order.products} />
           <OrderAddresses addresses={order.addresses} />

@@ -186,10 +186,17 @@ export const RAZORPAY_PAYMENT_METHODS = [
 
 export const RAZORPAY_PAYMENT_STATUS = [
   "UNPAID",
+  "CAPTURED",
   "PAID",
   "FAILED",
   "REFUNDED",
-  "CANCELLED",
+];
+
+export const RAZORPAY_REFUND_PAYMENT_STATUS = [
+  "REQUESTED",
+  "APPROVED",
+  "REFUNDED",
+  "FAILED",
 ];
 
 export const ORDER_STATUS_CLASSES: Record<

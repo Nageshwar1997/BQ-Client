@@ -27,33 +27,31 @@ const OrderSummary = ({ order, className = "" }: Props) => {
     () => [
       {
         field: "Status",
-        value: order.order_result?.order_status,
+        value: order.status,
         className: `[&>span:nth-child(2)]:${
-          ORDER_STATUS_CLASSES[order.order_result?.order_status]
+          ORDER_STATUS_CLASSES[order.status]
         } [&>span:nth-child(1)]:text-primary bg-transparent`,
       },
       {
         field: "Payment Mode",
-        value: order?.payment_mode,
+        value: order?.payment.mode,
       },
       {
         field: "Order Receipt",
-        value: order.order_result?.order_receipt?.split("_")?.[2], //LINK - To Remove "order_receipt" text
+        value: order.payment.rzp_order_receipt?.split("_")?.[2], //LINK - To Remove "order_receipt" text
       },
-      { field: "Total Price", value: toINRCurrency(order.order_result?.price) },
+      {
+        field: "Payment Receipt",
+        value: order.payment.rzp_payment_receipt?.split("_")?.[2], //LINK - To Remove "order_receipt" text
+      },
+      { field: "Total Price", value: toINRCurrency(order.payment.amount) },
       {
         field: "Discount",
-        value:
-          order.order_result?.discount > 0
-            ? `${order.order_result?.discount?.toFixed(2)}%`
-            : null,
+        value: order?.discount > 0 ? `${order?.discount?.toFixed(2)}%` : null,
       },
       {
         field: "Del. Charges",
-        value:
-          order.order_result?.charges > 0
-            ? toINRCurrency(order.order_result?.charges)
-            : null,
+        value: order?.charges > 0 ? toINRCurrency(order.charges) : null,
       },
     ],
     [order]
@@ -82,14 +80,12 @@ const OrderSummary = ({ order, className = "" }: Props) => {
           Order Summary
         </h3>
         <div className="flex gap-3 md:gap-4">
-          {["CONFIRMED", "DELIVERED"].includes(
-            order.order_result.order_status
-          ) && (
+          {["CONFIRMED", "DELIVERED"].includes(order.status) && (
             <Button
               content={`${
-                order.order_result.order_status === "CONFIRMED"
+                order.status === "CONFIRMED"
                   ? "Cancel"
-                  : order.order_result.order_status === "DELIVERED"
+                  : order.status === "DELIVERED"
                   ? "Return"
                   : ""
               }`}
