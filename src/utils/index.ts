@@ -340,19 +340,9 @@ export const getOrderTrackStatus = (status: (typeof ORDER_STATUS)[number]) => {
         "DELIVERED",
       ];
     case "CANCELLED":
-      return [
-        "PENDING",
-        "PENDING",
-        "PROCESSING",
-        "PROCESSED",
-        "CONFIRMED",
-        "SHIPPED",
-        "DELIVERED",
-        "CANCELLED",
-      ];
+      return ["PENDING", "PROCESSING", "PROCESSED", "CONFIRMED", "CANCELLED"];
     case "RETURNED":
       return [
-        "PENDING",
         "PENDING",
         "PROCESSING",
         "PROCESSED",

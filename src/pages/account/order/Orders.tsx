@@ -182,13 +182,13 @@ const Orders = () => {
                     <p>Paid on: {formatDate(order.payment.paid_at, "LLL")}</p>
                   )}
                   {order.cancelled_at && (
-                    <p>Paid on: {formatDate(order.cancelled_at, "LLL")}</p>
+                    <p>Cancelled on: {formatDate(order.cancelled_at, "LLL")}</p>
                   )}
                   {order.delivered_at && (
-                    <p>Paid on: {formatDate(order.delivered_at, "LLL")}</p>
+                    <p>Delivered on: {formatDate(order.delivered_at, "LLL")}</p>
                   )}
                   {order.returned_at && (
-                    <p>Paid on: {formatDate(order.returned_at, "LLL")}</p>
+                    <p>Returned on: {formatDate(order.returned_at, "LLL")}</p>
                   )}
                   {order.refund_status && (
                     <p>Refund status: {order.refund_status}</p>
@@ -199,7 +199,7 @@ const Orders = () => {
           })
         ) : (
           <EmptyData
-            content={"No products found"}
+            content={"No orders found"}
             className="h-[50dvh] !justify-start [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase pt-[150px] gap-5"
           />
         )}

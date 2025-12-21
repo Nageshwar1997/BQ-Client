@@ -18,10 +18,10 @@ interface Props extends ClassName {
 }
 
 const OrderSummary = ({ order, className = "" }: Props) => {
-  const { paths } = usePathParams();
+  const { paths, pathParams } = usePathParams();
 
   const { mutateAsync: cancelOrder, isPending: isCancelPending } =
-    useCancelOrder();
+    useCancelOrder(pathParams.orderId!);
 
   const orderSummaryFields = useMemo(
     () => [

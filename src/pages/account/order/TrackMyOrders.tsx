@@ -167,7 +167,7 @@ const TrackMyOrders = () => {
           })
         ) : (
           <EmptyData
-            content={"No products found"}
+            content={"No orders found"}
             className="h-[50dvh] !justify-start [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase pt-[150px] gap-5"
           />
         )}

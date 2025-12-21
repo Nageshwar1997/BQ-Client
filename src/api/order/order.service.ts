@@ -56,10 +56,8 @@ export const useGetAllOrdersInfinite = ({
       });
     },
     placeholderData: keepPreviousData,
-    staleTime: Infinity, // 30 seconds
-    gcTime: Infinity, // 5 minutes
     enabled: true,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     getNextPageParam: (lastPage, allPages) => {
       const hasMore = lastPage.orders.length === limit;
       return hasMore ? allPages.length + 1 : undefined;
@@ -73,6 +71,7 @@ export const useGetOrderById = (orderId: string) => {
     queryFn: () => get_order_by_id(orderId),
     enabled: true,
     refetchOnWindowFocus: false,
+    placeholderData: keepPreviousData,
   });
 };
 
@@ -83,13 +82,13 @@ export const useCancelPayment = () => {
   });
 };
 
-export const useCancelOrder = () => {
+export const useCancelOrder = (orderId: string) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationKey: ["cancel_order"],
+    mutationKey: ["cancel_order", orderId],
     mutationFn: cancel_order,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["get_all_orders_infinite"] });
+      queryClient.invalidateQueries({ queryKey: ["get_order_by_id", orderId] });
     },
   });
 };

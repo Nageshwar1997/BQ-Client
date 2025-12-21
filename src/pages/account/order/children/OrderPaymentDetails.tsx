@@ -70,15 +70,16 @@ const OrderPaymentDetails = ({ order, className = "" }: Props) => {
     { field: "Paid On", value: formatDate(payment?.paid_at, "lll") },
     {
       field: order?.delivered_at ? "Delivered On" : "Exp. Delivery",
-      value: payment?.paid_at
-        ? formatDate(
-            order?.delivered_at ||
-              new Date(
-                new Date(payment.paid_at).getTime() + 7 * 24 * 60 * 60 * 1000
-              ),
-            "lll"
-          )
-        : null,
+      value:
+        payment?.paid_at && !order.cancelled_at
+          ? formatDate(
+              order?.delivered_at ||
+                new Date(
+                  new Date(payment.paid_at).getTime() + 7 * 24 * 60 * 60 * 1000
+                ),
+              "lll"
+            )
+          : null,
     },
     { field: "Cancelled On", value: formatDate(order?.cancelled_at, "lll") },
     { field: "Returned On", value: formatDate(order?.returned_at, "lll") },
