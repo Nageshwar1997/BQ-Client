@@ -57,8 +57,8 @@ export const orderRoutes = {
   createOrder: { method: "POST", url: "/orders/create" },
   getAllOrder: { method: "GET", url: "/orders" },
   getOrderById: { method: "GET", url: "/orders" },
-  cancelPayment: { method: "PATCH", url: "/orders/cancel-payment" },
   cancelOrder: { method: "PATCH", url: "/orders/cancel" },
+  cancelPayment: { method: "PATCH", url: "/orders/cancel-payment" },
 };
 
 export const blogROutes = {
