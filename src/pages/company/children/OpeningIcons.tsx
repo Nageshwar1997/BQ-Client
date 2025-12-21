@@ -18,7 +18,7 @@ export const LeadershipOpeningIcon = (props: IconProps) => (
             width: "100%",
             height: "100%",
           }}
-        ></div>
+        />
       </foreignObject>
       <g
         filter="url(#filter0_d_1870_219341)"

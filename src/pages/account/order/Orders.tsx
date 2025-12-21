@@ -102,11 +102,11 @@ const Orders = () => {
                   </i>
                   <span
                     className={`w-fit px-3 py-1 rounded-full font-medium text-center ${
-                      ORDER_STATUS_CLASSES[order.order_result.order_status] ||
+                      ORDER_STATUS_CLASSES[order.status] ||
                       "bg-gray-100 text-gray-800"
                     } capitalize`}
                   >
-                    {order.order_result.order_status?.toLocaleLowerCase()}
+                    {order.status?.toLocaleLowerCase()}
                   </span>
                   <span className="text-tertiary">
                     {formatDate(order.createdAt, "LLLL")}
@@ -164,51 +164,34 @@ const Orders = () => {
                 </div>
                 <div className="text-sm text-tertiary">
                   <p>
-                    {order.razorpay_payment_result.rzp_payment_status === "PAID"
+                    {order.payment.status === "PAID"
                       ? "Paid amount"
-                      : order.razorpay_payment_result.rzp_payment_status ===
-                        "UNPAID"
+                      : order.payment.status === "UNPAID"
                       ? "Payable amount"
-                      : order.razorpay_payment_result.rzp_payment_status ===
-                        "FAILED"
+                      : order.payment.status === "FAILED"
                       ? "Unpaid amount"
-                      : order.razorpay_payment_result.rzp_payment_status ===
-                        "REFUNDED"
+                      : order.payment.status === "REFUNDED"
                       ? "Refunded amount"
-                      : order.razorpay_payment_result.rzp_payment_status ===
-                        "CANCELLED"
-                      ? "Cancelled amount"
                       : ""}
-                    : {toINRCurrency(order.order_result.price)}
+                    : {toINRCurrency(order.payment.amount)}
                   </p>
-                  {order.order_result.charges && (
-                    <p>Charges: {toINRCurrency(order.order_result.charges)}</p>
+                  {order.charges && (
+                    <p>Charges: {toINRCurrency(order.charges)}</p>
                   )}
-                  {order.order_result.paid_at && (
-                    <p>
-                      Paid on: {formatDate(order.order_result.paid_at, "LLL")}
-                    </p>
+                  {order.payment.paid_at && (
+                    <p>Paid on: {formatDate(order.payment.paid_at, "LLL")}</p>
                   )}
-                  {order.order_result.cancelled_at && (
-                    <p>
-                      Paid on:{" "}
-                      {formatDate(order.order_result.cancelled_at, "LLL")}
-                    </p>
+                  {order.cancelled_at && (
+                    <p>Cancelled on: {formatDate(order.cancelled_at, "LLL")}</p>
                   )}
-                  {order.order_result.delivered_at && (
-                    <p>
-                      Paid on:{" "}
-                      {formatDate(order.order_result.delivered_at, "LLL")}
-                    </p>
+                  {order.delivered_at && (
+                    <p>Delivered on: {formatDate(order.delivered_at, "LLL")}</p>
                   )}
-                  {order.order_result.returned_at && (
-                    <p>
-                      Paid on:{" "}
-                      {formatDate(order.order_result.returned_at, "LLL")}
-                    </p>
+                  {order.returned_at && (
+                    <p>Returned on: {formatDate(order.returned_at, "LLL")}</p>
                   )}
-                  {order.payment_details?.refund_status && (
-                    <p>Refund status: {order.payment_details.refund_status}</p>
+                  {order.refund_status && (
+                    <p>Refund status: {order.refund_status}</p>
                   )}
                 </div>
               </Link>
@@ -216,7 +199,7 @@ const Orders = () => {
           })
         ) : (
           <EmptyData
-            content={"No products found"}
+            content={"No orders found"}
             className="h-[50dvh] !justify-start [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase pt-[150px] gap-5"
           />
         )}

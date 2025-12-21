@@ -103,8 +103,8 @@ const router = createBrowserRouter([
             path: "track",
             element: <Outlet />,
             children: [
-              { index: true, element: <TrackMyOrders /> }, // Todo: Pending
-              { path: ":orderId", element: <TrackOrder /> }, // Todo: Pending
+              { index: true, element: <TrackMyOrders /> },
+              { path: ":orderId", element: <TrackOrder /> },
             ],
           },
           { path: "payment", element: <Payment /> },
@@ -125,8 +125,8 @@ const router = createBrowserRouter([
             path: "track",
             element: <Outlet />,
             children: [
-              { index: true, element: <TrackMyOrders /> }, // Todo: Pending
-              { path: ":orderId", element: <TrackOrder /> }, // Todo: Pending
+              { index: true, element: <TrackMyOrders /> },
+              { path: ":orderId", element: <TrackOrder /> },
             ],
           },
           {

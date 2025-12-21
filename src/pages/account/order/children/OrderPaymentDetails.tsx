@@ -11,45 +11,48 @@ interface Props extends ClassName {
 }
 
 const OrderPaymentDetails = ({ order, className = "" }: Props) => {
-  const payment = order?.payment_details;
-  const result = order?.order_result;
-  const razorpay = order?.razorpay_payment_result;
+  const payment = order?.payment;
+  const transaction = order?.transaction;
 
   const paymentFields = [
     { field: "Method", value: payment?.method },
-    { field: "Wallet", value: payment?.wallet },
-    { field: "RRN", value: payment?.upi?.acquirer_data?.rrn },
-    { field: "VPA", value: payment?.upi?.acquirer_data?.vpa },
+    { field: "Wallet", value: transaction?.wallet },
+    { field: "RRN", value: transaction?.upi_rrn },
+    { field: "VPA", value: transaction?.upi_vpa },
+    { field: "Flow", value: transaction?.upi_flow },
     {
       field: "TransactionId",
-      value: payment?.netbanking?.acquirer_data?.bank_transaction_id,
+      value:
+        transaction?.upi_transaction_id ||
+        transaction?.netbanking_bank_transaction_id,
+      className: "[&>span:nth-child(2)]:break-words",
     },
     {
       field: "Authcode",
-      value: payment?.card?.acquirer_data?.auth_code,
+      value: transaction?.card_auth_code,
     },
-    { field: "Name", value: payment?.card?.card?.name },
-    { field: "Type", value: payment?.card?.card.type },
-    { field: "Issuer", value: payment?.card?.card.issuer },
+    { field: "Name", value: transaction?.card_name },
+    { field: "Type", value: transaction?.card_type },
+    { field: "Issuer", value: transaction?.card_issuer },
     {
       field: "ID",
-      value: payment?.card?.card.id,
+      value: transaction?.card_id,
       className: "[&>span:nth-child(2)]:uppercase",
     },
     {
       field: "Card No.",
-      value: payment?.card?.card.last4
-        ? `XXXX XXXX XXXX ${payment?.card.card.last4}`
+      value: transaction?.card_last4
+        ? `XXXX XXXX XXXX ${transaction?.card_last4}`
         : null,
     },
-    { field: "Card Co.", value: payment?.card?.card.network },
-    { field: "Bank", value: payment?.bank },
+    { field: "Card Co.", value: transaction?.card_network },
+    { field: "Bank", value: transaction?.netbanking_bank },
     {
       field: "Phone No.",
-      value: payment?.contact && formatPhoneNumber(payment?.contact),
+      value: payment?.contact && formatPhoneNumber(payment.contact),
     },
     { field: "Email", value: payment?.email },
-    { field: "Refund Status", value: payment?.refund_status },
+    { field: "Refund Status", value: order.refund_status },
     {
       field: "Tax",
       value:
@@ -62,26 +65,29 @@ const OrderPaymentDetails = ({ order, className = "" }: Props) => {
     },
     {
       field: "Status",
-      value:
-        razorpay?.rzp_payment_status === "CANCELLED"
-          ? "PAYMENT CANCELLED"
-          : razorpay?.rzp_payment_status,
+      value: payment?.status === "FAILED" ? "PAYMENT FAILED" : payment.status,
     },
-    { field: "Paid On", value: formatDate(result?.paid_at, "lll") },
+    { field: "Paid On", value: formatDate(payment?.paid_at, "lll") },
     {
-      field: result?.delivered_at ? "Delivered On" : "Exp. Delivery",
-      value: result?.paid_at
-        ? formatDate(
-            result?.delivered_at ||
-              new Date(
-                new Date(result.paid_at).getTime() + 7 * 24 * 60 * 60 * 1000
-              ),
-            "lll"
-          )
-        : null,
+      field: order?.delivered_at ? "Delivered On" : "Exp. Delivery",
+      value:
+        payment?.paid_at && !order.cancelled_at
+          ? formatDate(
+              order?.delivered_at ||
+                new Date(
+                  new Date(payment.paid_at).getTime() + 7 * 24 * 60 * 60 * 1000
+                ),
+              "lll"
+            )
+          : null,
     },
-    { field: "Cancelled On", value: formatDate(result?.cancelled_at, "lll") },
-    { field: "Returned On", value: formatDate(result?.returned_at, "lll") },
+    { field: "Cancelled On", value: formatDate(order?.cancelled_at, "lll") },
+    { field: "Returned On", value: formatDate(order?.returned_at, "lll") },
+    {
+      field: "Message",
+      value: order?.message,
+      className: "[&>span:nth-child(2)]:text-rose-c",
+    },
   ];
 
   return (

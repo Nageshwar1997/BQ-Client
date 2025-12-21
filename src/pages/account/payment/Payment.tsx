@@ -4,8 +4,8 @@ import { toINRCurrency } from "../../../utils";
 import {
   useCancelPayment,
   useCreateOrder,
-  useVerifyPayment,
 } from "../../../api/order/order.service";
+import { useClearCart } from "../../../api/cart/cart.service";
 import { toastErrorMessage } from "../../../utils/toasts";
 import { envs } from "../../../envs/index.env";
 import { useUserStore } from "../../../store/user.store";
@@ -22,11 +22,11 @@ const Payment = () => {
     data: createdOrderData = {},
     isPending: isOrderPending,
   } = useCreateOrder();
-  const { mutateAsync: verifyPayment } = useVerifyPayment();
+  const { mutateAsync: clearCart } = useClearCart();
   const { mutateAsync: cancelPayment } = useCancelPayment();
   const { user } = useUserStore();
   const { cart } = useCartStore();
-  const { state, navigate } = usePathParams();
+  const { state } = usePathParams();
 
   const baseAddresses = state?.addresses;
 
@@ -48,7 +48,10 @@ const Payment = () => {
   useEffect(() => {
     const handleBeforeUnload = async (e: BeforeUnloadEvent) => {
       if (createdOrderData?.orderId) {
-        cancelPayment({ orderId: createdOrderData?.orderId });
+        cancelPayment({
+          orderId: createdOrderData?.orderId,
+          flag: "tab_closed",
+        });
       }
       e.preventDefault();
     };
@@ -89,14 +92,15 @@ const Payment = () => {
         image: "/images/logo/BQ_gradient_logo.webp",
         order_id: createdOrder.razorpayOrder.id,
         handler: async (response: Record<string, string>) => {
+          if (envs.NODE_ENV === "development") {
+            console.log("Response", response);
+          }
+
           try {
-            await verifyPayment(
-              { ...response, orderDBId: createdOrder.orderId },
-              { onSuccess: () => navigate("/orders") }
-            );
+            await clearCart();
           } catch (err) {
-            console.error("Payment verification failed:", err);
-            toast.error("Payment verification failed!");
+            console.error("Error clearing cart", err);
+            toast.error("Unable to clear cart!");
           }
         },
         prefill: {
@@ -108,7 +112,10 @@ const Payment = () => {
         modal: {
           ondismiss: async () => {
             if (createdOrder.orderId) {
-              await cancelPayment({ orderId: createdOrder.orderId });
+              await cancelPayment({
+                orderId: createdOrder.orderId,
+                flag: "modal_closed",
+              });
             }
           },
         },

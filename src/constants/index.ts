@@ -41,6 +41,7 @@ export const REVIEWS_OPTIONS = [
 export const ORDER_STATUS_OPTIONS = [
   { name: "All", value: "", disabled: false },
   { name: "Pending", value: "pending", disabled: false },
+  { name: "Failed", value: "failed", disabled: false },
   { name: "Confirmed", value: "confirmed", disabled: false },
   { name: "Delivered", value: "delivered", disabled: false },
   { name: "Cancelled", value: "cancelled", disabled: false },
@@ -163,6 +164,8 @@ export const ALLOWED_PAYMENT_MODE = ["ONLINE"];
 
 export const ORDER_STATUS = [
   "PENDING",
+  "PROCESSING",
+  "FAILED",
   "CONFIRMED",
   "DELIVERED",
   "CANCELLED",
@@ -183,10 +186,17 @@ export const RAZORPAY_PAYMENT_METHODS = [
 
 export const RAZORPAY_PAYMENT_STATUS = [
   "UNPAID",
+  "CAPTURED",
   "PAID",
   "FAILED",
   "REFUNDED",
-  "CANCELLED",
+];
+
+export const RAZORPAY_REFUND_PAYMENT_STATUS = [
+  "REQUESTED",
+  "APPROVED",
+  "REFUNDED",
+  "FAILED",
 ];
 
 export const ORDER_STATUS_CLASSES: Record<
@@ -194,9 +204,11 @@ export const ORDER_STATUS_CLASSES: Record<
   string
 > = {
   PENDING: "bg-yellow-100 text-yellow-800",
+  PROCESSING: "bg-violet-100 text-violet-800",
+  FAILED: "bg-red-100 text-red-800",
   CONFIRMED: "bg-blue-100 text-blue-800",
   DELIVERED: "bg-green-100 text-green-800",
-  CANCELLED: "bg-red-100 text-red-800",
+  CANCELLED: "bg-red-200 text-red-900",
   RETURNED: "bg-purple-100 text-purple-800",
 };
 

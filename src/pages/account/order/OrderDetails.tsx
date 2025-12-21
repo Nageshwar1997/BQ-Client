@@ -7,12 +7,15 @@ import OrderSummary from "./children/OrderSummary";
 import OrderProducts from "./children/OrderProducts";
 import OrderAddresses from "./children/OrderAddresses";
 import OrderPaymentDetails from "./children/OrderPaymentDetails";
+import OrderStatus from "./children/OrderStatus";
 
 const OrderDetails = () => {
-  const { pathParams } = usePathParams();
+  const { pathParams, paths } = usePathParams();
   const { data, isLoading, isError } = useGetOrderById(pathParams.orderId!);
 
   const order: IOrder = useMemo(() => data?.order || {}, [data]);
+
+  const isTrackPage = paths.includes("track");
 
   return (
     <div className="p-6">
@@ -20,10 +23,13 @@ const OrderDetails = () => {
         <div className="space-y-8">
           <header className="border-b pb-4">
             <h3 className="w-fit text-2xl font-bold bg-clip-text text-transparent bg-silver-duo">
-              Order Details
+              {isTrackPage ? "Track Order" : "Order Details"}
             </h3>
-            <p className="text-tertiary text-sm md:text-base line-clamp-1 break-all">Order ID: {order._id}</p>
+            <p className="text-tertiary text-sm md:text-base line-clamp-1 break-all">
+              Order ID: {order._id}
+            </p>
           </header>
+          {isTrackPage && <OrderStatus currentStatus={order.status} />}
           <OrderSummary order={order} />
           <OrderProducts products={order.products} />
           <OrderAddresses addresses={order.addresses} />

@@ -1,5 +1,7 @@
+import OrderDetails from "./OrderDetails";
+
 const TrackOrder = () => {
-  return <div>TrackOrder</div>;
+  return <OrderDetails />;
 };
 
 export default TrackOrder;

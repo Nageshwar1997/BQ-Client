@@ -27,7 +27,7 @@ export const create_order = async (addresses: TQueryParams) => {
 };
 
 export const get_all_orders = async (params: {
-  queryParams: TQueryParams;
+  queryParams?: TQueryParams;
   pageParams?: TPageParams;
 }) => {
   try {
@@ -75,16 +75,17 @@ export const get_order_by_id = async (orderId: string) => {
   }
 };
 
-export const verify_payment = async (data: TQueryParams) => {
+export const cancel_payment = async (data: TQueryParams) => {
   try {
     const user_token = getUserToken();
 
-    const { method, url } = orderRoutes.verifyPayment;
+    const { method, url } = orderRoutes.cancelPayment;
+    const { orderId, ...restData } = data || {};
     const response = await api.request({
       method,
-      url,
-      data,
+      url: `${url}/${orderId}`,
       headers: { Authorization: user_token },
+      data: restData,
     });
     return response.data;
   } catch (error) {
@@ -96,16 +97,17 @@ export const verify_payment = async (data: TQueryParams) => {
   }
 };
 
-export const cancel_payment = async (data: TQueryParams) => {
+export const cancel_order = async (orderId: string) => {
   try {
     const user_token = getUserToken();
 
-    const { method, url } = orderRoutes.cancelPayment;
+    const { method, url } = orderRoutes.cancelOrder;
     const response = await api.request({
       method,
-      url: `${url}/${data.orderId}`,
+      url: `${url}/${orderId}`,
       headers: { Authorization: user_token },
     });
+
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {

@@ -31,7 +31,7 @@ const Cart = () => {
     );
   }, [products]);
 
-  const isAccountPage = paths.includes("account")
+  const isAccountPage = paths.includes("account");
 
   return (
     <div

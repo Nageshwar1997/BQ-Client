@@ -80,6 +80,7 @@ export default {
         "white-smoke-night": "var(--white-smoke-night)",
         "white-smoke-night-inverted": "var(--white-smoke-night-inverted)",
         "silver-jet": "var(--silver-jet)",
+        "jade-c": "var(--jade-c)",
       },
       backgroundImage: {
         "accent-duo": "var(--accent-duo)",

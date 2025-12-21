@@ -6,11 +6,11 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import {
+  cancel_order,
   cancel_payment,
   create_order,
   get_all_orders,
   get_order_by_id,
-  verify_payment,
 } from "./order.api";
 import useQueryParams from "../../hooks/useQueryParams";
 import { TQueryParams } from "../types";
@@ -44,7 +44,7 @@ export const useGetAllOrdersInfinite = ({
   queryParams,
 }: {
   limit: number;
-  queryParams: TQueryParams;
+  queryParams?: TQueryParams;
 }) => {
   return useInfiniteQuery({
     queryKey: ["get_all_orders_infinite", queryParams],
@@ -56,10 +56,8 @@ export const useGetAllOrdersInfinite = ({
       });
     },
     placeholderData: keepPreviousData,
-    staleTime: Infinity, // 30 seconds
-    gcTime: Infinity, // 5 minutes
     enabled: true,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     getNextPageParam: (lastPage, allPages) => {
       const hasMore = lastPage.orders.length === limit;
       return hasMore ? allPages.length + 1 : undefined;
@@ -73,19 +71,24 @@ export const useGetOrderById = (orderId: string) => {
     queryFn: () => get_order_by_id(orderId),
     enabled: true,
     refetchOnWindowFocus: false,
-  });
-};
-
-export const useVerifyPayment = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: verify_payment,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["get_user_cart"] });
-    },
+    placeholderData: keepPreviousData,
   });
 };
 
 export const useCancelPayment = () => {
-  return useMutation({ mutationFn: cancel_payment });
+  return useMutation({
+    mutationKey: ["cancel_payment"],
+    mutationFn: cancel_payment,
+  });
+};
+
+export const useCancelOrder = (orderId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["cancel_order", orderId],
+    mutationFn: cancel_order,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get_order_by_id", orderId] });
+    },
+  });
 };
