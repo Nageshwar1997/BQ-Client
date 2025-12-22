@@ -1,4 +1,6 @@
-import { useEffect, useMemo } from "react";
+import { 
+// useEffect, 
+useMemo } from "react";
 import toast from "react-hot-toast";
 import { toINRCurrency } from "../../../utils";
 import {
@@ -19,7 +21,7 @@ import useCartStore from "../../../store/cart.store";
 const Payment = () => {
   const {
     mutateAsync: createOrder,
-    data: createdOrderData = {},
+    // data: createdOrderData = {},
     isPending: isOrderPending,
   } = useCreateOrder();
   const { mutateAsync: clearCart } = useClearCart();
