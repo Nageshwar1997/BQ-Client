@@ -86,7 +86,10 @@ const UserPopup = ({
               <TruckIcon className="w-5 h-5 stroke-tertiary" />
               <p className="text-sm/none text-tertiary">Orders</p>
             </Link>
-            <Link to="/account/cart" className="flex items-center gap-2 cursor-pointer">
+            <Link
+              to="/account/cart"
+              className="flex items-center gap-2 cursor-pointer"
+            >
               <ShoppingBag className="w-5 h-5 stroke-tertiary" />
               <p className="text-sm/none text-tertiary">Cart</p>
             </Link>

@@ -187,7 +187,7 @@ const ValuesAndCulture = () => {
       <hr className="w-full h-px block border-none bg-gradient-line" />
       <CustomCursorVideoSection
         videoUrl="/videos/company/values-culture/Get-Ready-With-BQ.mp4"
-        title="Get Ready With BQ"
+        title="Why Beautinique is Different"
       />
       <hr className="w-full h-px block border-none bg-gradient-line" />
       <div className="relative w-full rounded-2xl lg:rounded-3xl shadow-lg border border-secondary-30 shadow-primary-10 overflow-hidden">

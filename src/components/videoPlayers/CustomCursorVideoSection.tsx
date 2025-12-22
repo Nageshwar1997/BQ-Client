@@ -14,7 +14,7 @@ const CustomCursorVideoSection = ({
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const cursorRef = useRef<HTMLImageElement>(null);
   const [videoClicked, setVideoClicked] = useState(false);
-  const [showCustomCursor, setShowCustomCursor] = useState<boolean>(false);
+  const [showCustomCursor, setShowCustomCursor] = useState<boolean>(true);
 
   const handleVideoClick = () => {
     setVideoClicked(!videoClicked);
@@ -72,53 +72,64 @@ const CustomCursorVideoSection = ({
   useEffect(() => {
     if (!showCustomCursor) return;
 
-    const moveImage = (e: MouseEvent) => {
-      if (cursorRef.current && videoRef.current) {
-        const rect = videoRef.current.getBoundingClientRect();
+    const container = videoContainerRef.current;
+    if (!container) return;
 
-        const x = e.clientX - rect.left - 20;
-        const y = e.clientY - rect.top - 10;
-        cursorRef.current.style.left = `${x}px`;
-        cursorRef.current.style.top = `${y}px`;
-      }
+    const moveCursor = (e: MouseEvent) => {
+      if (!cursorRef.current) return;
+
+      const rect = container.getBoundingClientRect();
+
+      const x = e.clientX - rect.left - 20;
+      const y = e.clientY - rect.top - 10;
+      cursorRef.current.style.transform = `translate(${x}px, ${y}px)`;
     };
 
-    document.addEventListener("mousemove", moveImage);
+    container.addEventListener("mousemove", moveCursor);
+
     return () => {
-      document.removeEventListener("mousemove", moveImage);
+      container.removeEventListener("mousemove", moveCursor);
     };
   }, [showCustomCursor]);
 
   // hide custom cursor if idle for 5 seconds
   useEffect(() => {
-    let timeout: number | null = null;
+    const container = videoContainerRef.current;
+    if (!container) return;
 
-    const handleIdleCustomCursor = () => {
-      if (timeout) {
-        clearTimeout(timeout);
-      }
+    let timeout: number;
 
-      if (!showCustomCursor) {
-        setShowCustomCursor(true);
-      }
+    const handleMouseMove = () => {
+      // 🔥 cursor revive
+      setShowCustomCursor(true);
+
+      clearTimeout(timeout);
 
       timeout = setTimeout(() => {
-        timeout = null;
         setShowCustomCursor(false);
       }, 5000);
     };
 
-    document.addEventListener("mousemove", handleIdleCustomCursor);
-    return () => {
-      document.removeEventListener("mousemove", handleIdleCustomCursor);
+    const handleMouseLeave = () => {
+      clearTimeout(timeout);
+      setShowCustomCursor(false);
     };
-  }, [showCustomCursor]);
+
+    container.addEventListener("mousemove", handleMouseMove);
+    container.addEventListener("mouseleave", handleMouseLeave);
+
+    return () => {
+      container.removeEventListener("mousemove", handleMouseMove);
+      container.removeEventListener("mouseleave", handleMouseLeave);
+      clearTimeout(timeout);
+    };
+  }, []);
 
   return (
     <div className={`w-full flex flex-col gap-8 ${className}`}>
       {title && (
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight bg-clip-text bg-silver-duo text-transparent text-center md:mb-4">
-          Why Beautinique is Different
+          {title}
         </h1>
       )}
       {/* Video Section */}
@@ -129,28 +140,31 @@ const CustomCursorVideoSection = ({
       >
         <div className="flex p-2.5 w-full h-full flex-col items-start self-stretch relative bg-tertiary-inverted border border-tertiary-10 rounded-3xl">
           <VideoPlayer
-            className="rounded-xl overflow-hidden"
+            className="rounded-xl overflow-hidden cursor-none"
             ref={videoRef}
             videoProps={{
-              onMouseEnter: () => setShowCustomCursor(true),
               playsInline: true,
               autoPlay: true,
               loop: true,
               src: videoUrl,
             }}
           />
-          {showCustomCursor && (
-            <img
-              ref={cursorRef}
-              src={
-                videoClicked
-                  ? "/icons/close-video-circle.svg"
-                  : "/icons/watch-video-circle.svg"
-              }
-              alt="Circle Image"
-              className="absolute w-16 h-16 pointer-events-none z-[1] transition-transform animate-spin-slow"
-            />
-          )}
+          <div
+            ref={cursorRef}
+            className="absolute pointer-events-none z-[1] will-change-transform"
+          >
+            {showCustomCursor && (
+              <img
+                src={
+                  videoClicked
+                    ? "/icons/close-video-circle.svg"
+                    : "/icons/watch-video-circle.svg"
+                }
+                alt="Circle Image"
+                className="w-16 h-16 transition-transform animate-spin-slow"
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>

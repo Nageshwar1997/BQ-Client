@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import Button from "../../components/button/Button";
+import CustomCursorVideoSection from "../../components/videoPlayers/CustomCursorVideoSection";
 
 const AboutUs = () => {
   return (
-    <div className="px-6 py-12 max-w-5xl mx-auto space-y-16">
+    <div className="px-6 py-12 max-w-5xl mx-auto space-y-10">
       {/* Header */}
       <header className="text-center space-y-4">
         <h1 className="text-2xl base:text-3xl sm:text-4xl font-bold tracking-tight bg-clip-text bg-silver-duo text-transparent">
@@ -21,6 +22,16 @@ const AboutUs = () => {
           creativity, and conscious choices that make the world more radiant.
         </p>
       </header>
+      <hr className="w-full h-px block border-none bg-gradient-line" />
+
+      {/* <h1 className="text-2xl base:text-3xl sm:text-4xl font-bold tracking-tight bg-clip-text bg-silver-duo text-transparent text-center mb-10">
+          
+        </h1> */}
+      <CustomCursorVideoSection
+        title="Get Ready With BQ"
+        videoUrl="/videos/home/Brush-Slow-Mo.mp4"
+        className="[&>h1]:text-2xl [&>h1]:base:text-3xl [&>h1]:sm:text-4xl !gap-4"
+      />
 
       {/* Mission, Vision, Values */}
       <div className="grid md:grid-cols-2 gap-10">
