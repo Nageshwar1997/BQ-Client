@@ -44,7 +44,7 @@ const Payment = () => {
 
   const shipping = subtotal > 499 ? 0 : 40;
   const total = subtotal + shipping;
-
+/*
   useEffect(() => {
     const handleBeforeUnload = async (e: BeforeUnloadEvent) => {
       if (createdOrderData?.orderId) {
@@ -59,7 +59,7 @@ const Payment = () => {
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [createdOrderData?.orderId, cancelPayment]);
-
+*/
   const handlePayment = async () => {
     if (
       (!baseAddresses?.billing || !baseAddresses?.shipping) &&
