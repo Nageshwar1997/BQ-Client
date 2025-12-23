@@ -55,7 +55,6 @@ export const useGetAllOrdersInfinite = ({
         queryParams,
       });
     },
-    placeholderData: keepPreviousData,
     enabled: true,
     refetchOnWindowFocus: true,
     getNextPageParam: (lastPage, allPages) => {
@@ -71,7 +70,6 @@ export const useGetOrderById = (orderId: string) => {
     queryFn: () => get_order_by_id(orderId),
     enabled: true,
     refetchOnWindowFocus: false,
-    placeholderData: keepPreviousData,
   });
 };
 
