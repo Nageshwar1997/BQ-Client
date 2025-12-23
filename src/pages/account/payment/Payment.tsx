@@ -1,6 +1,4 @@
-import { 
-// useEffect, 
-useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import toast from "react-hot-toast";
 import { toINRCurrency } from "../../../utils";
 import {
@@ -21,7 +19,7 @@ import useCartStore from "../../../store/cart.store";
 const Payment = () => {
   const {
     mutateAsync: createOrder,
-    // data: createdOrderData = {},
+    data: createdOrderData = {},
     isPending: isOrderPending,
   } = useCreateOrder();
   const { mutateAsync: clearCart } = useClearCart();
@@ -46,22 +44,21 @@ const Payment = () => {
 
   const shipping = subtotal > 499 ? 0 : 40;
   const total = subtotal + shipping;
-/*
+
   useEffect(() => {
-    const handleBeforeUnload = async (e: BeforeUnloadEvent) => {
-      if (createdOrderData?.orderId) {
-        cancelPayment({
-          orderId: createdOrderData?.orderId,
-          flag: "tab_closed",
-        });
-      }
-      e.preventDefault();
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (!createdOrderData?.orderId) return;
+      cancelPayment({
+        orderId: createdOrderData.orderId,
+        flag: "tab_closed",
+      });
+      e.returnValue = ""; // important for some browsers
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [createdOrderData?.orderId, cancelPayment]);
-*/
+
   const handlePayment = async () => {
     if (
       (!baseAddresses?.billing || !baseAddresses?.shipping) &&
