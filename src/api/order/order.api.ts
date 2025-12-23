@@ -97,15 +97,17 @@ export const cancel_payment = async (data: TQueryParams) => {
   }
 };
 
-export const cancel_order = async (orderId: string) => {
+export const cancel_order = async (data: TQueryParams) => {
   try {
     const user_token = getUserToken();
+    const { orderId, ...restData } = data;
 
     const { method, url } = orderRoutes.cancelOrder;
     const response = await api.request({
       method,
       url: `${url}/${orderId}`,
       headers: { Authorization: user_token },
+      data: restData,
     });
 
     return response.data;

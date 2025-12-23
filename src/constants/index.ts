@@ -337,3 +337,15 @@ export const CHAT_DEFAULT_DATA: TChatData[] = [
     ],
   },
 ];
+
+export const ORDER_CANCEL_REASONS = [
+  "Changed my mind",
+  "Ordered by mistake",
+  "Found a better price elsewhere",
+  "Product didn't meet my expectations",
+  "Delivery would take too long",
+  "Found a better alternative",
+  "Issue with payment",
+  "Bought the wrong product",
+  "Other",
+];

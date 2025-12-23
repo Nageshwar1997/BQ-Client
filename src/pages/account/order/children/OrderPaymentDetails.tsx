@@ -84,8 +84,8 @@ const OrderPaymentDetails = ({ order, className = "" }: Props) => {
     { field: "Cancelled On", value: formatDate(order?.cancelled_at, "lll") },
     { field: "Returned On", value: formatDate(order?.returned_at, "lll") },
     {
-      field: "Message",
-      value: order?.message,
+      field: "Reason",
+      value: order?.reason,
       className: "[&>span:nth-child(2)]:text-rose-c",
     },
   ];

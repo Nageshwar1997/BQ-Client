@@ -7,8 +7,8 @@ import {
   highlightedCategoryOptions,
 } from "../components/navbar/data";
 import { envs } from "../envs/index.env";
-import { FetchedReviewType, TPossibleTimeFormats } from "../types";
-import { ORDER_STATUS } from "../constants";
+import { FetchedReviewType, IOrder, TPossibleTimeFormats } from "../types";
+import { ORDER_STATUS, ORDER_STATUS_CLASSES } from "../constants";
 const TOKEN_KEY = "user_token";
 const SECRET_KEY = envs.ENCRYPTION_SECRET_KEY;
 
@@ -355,4 +355,37 @@ export const getOrderTrackStatus = (status: (typeof ORDER_STATUS)[number]) => {
     default:
       return ORDER_STATUS;
   }
+};
+
+export const getOrderSummaryFields = (order: IOrder) => {
+  return [
+    {
+      field: "Status",
+      value: order.status,
+      className: `[&>span:nth-child(2)]:${
+        ORDER_STATUS_CLASSES[order.status]
+      } [&>span:nth-child(1)]:text-primary bg-transparent`,
+    },
+    {
+      field: "Payment Mode",
+      value: order?.payment.mode,
+    },
+    {
+      field: "Order Receipt",
+      value: order.payment.rzp_order_receipt?.replace("order_receipt_", ""), //LINK - To Remove "order_receipt" text
+    },
+    {
+      field: "Payment Receipt",
+      value: order.payment.rzp_payment_receipt?.replace("payment_receipt_", ""), //LINK - To Remove "payment_receipt" text
+    },
+    { field: "Total Price", value: toINRCurrency(order.payment.amount) },
+    {
+      field: "Discount",
+      value: order?.discount > 0 ? `${order?.discount?.toFixed(2)}%` : null,
+    },
+    {
+      field: "Del. Charges",
+      value: order?.charges > 0 ? toINRCurrency(order.charges) : null,
+    },
+  ];
 };
