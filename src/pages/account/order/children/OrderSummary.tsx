@@ -38,11 +38,14 @@ const OrderSummary = ({ order, className = "" }: Props) => {
       },
       {
         field: "Order Receipt",
-        value: order.payment.rzp_order_receipt?.split("_")?.[2], //LINK - To Remove "order_receipt" text
+        value: order.payment.rzp_order_receipt?.replace("order_receipt_", ""), //LINK - To Remove "order_receipt" text
       },
       {
         field: "Payment Receipt",
-        value: order.payment.rzp_payment_receipt?.split("_")?.[2], //LINK - To Remove "order_receipt" text
+        value: order.payment.rzp_payment_receipt?.replace(
+          "payment_receipt_",
+          ""
+        ), //LINK - To Remove "payment_receipt" text
       },
       { field: "Total Price", value: toINRCurrency(order.payment.amount) },
       {
