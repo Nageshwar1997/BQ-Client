@@ -30,10 +30,10 @@ const UserPopup = ({
   onClose: () => void;
 }) => {
   const { navigate } = usePathParams();
-  const { setParams } = useQueryParams();
+  const { setParams, queryParams } = useQueryParams();
   const { user, isAuthenticated, logout } = useUserStore();
 
-  if (!isOpen) return null;
+  if (!isOpen || queryParams.login === "true") return null;
 
   return (
     <div

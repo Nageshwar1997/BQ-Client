@@ -175,10 +175,16 @@ export interface HorizontalScrollType {
 
 export type IconProps = SVGProps<SVGSVGElement>;
 
+export enum EAuthProviders {
+  GOOGLE = "GOOGLE",
+  FACEBOOK = "FACEBOOK",
+}
+
 export interface UserTypes
   extends Pick<TRegister, "firstName" | "lastName" | "email" | "phoneNumber">,
     ITimeStamp {
   profilePic: string;
+  provider: EAuthProviders;
 }
 
 export interface UserStoreType {

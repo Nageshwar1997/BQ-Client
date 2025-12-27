@@ -52,6 +52,7 @@ import BlogDetails from "../pages/blogs/BlogDetails";
 import Profile from "../pages/account/profile";
 import MyReviewsAndRating from "../pages/account/reviews-and-ratings";
 import TrackOrder from "../pages/account/order/TrackOrder";
+import OAuthSuccess from "../pages/auth/OAuthSuccess";
 
 const router = createBrowserRouter([
   {
@@ -169,6 +170,7 @@ const router = createBrowserRouter([
   },
   { path: "register", element: <AuthRedirect children={<Register />} /> },
   { path: "login", element: <AuthRedirect children={<Login />} /> },
+  { path: "oauth-success", element: <OAuthSuccess /> },
   { path: "*", element: <NotFound /> },
 ]);
 

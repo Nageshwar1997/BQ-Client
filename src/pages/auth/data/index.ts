@@ -1,3 +1,4 @@
+import { envs } from "../../../envs/index.env";
 import {
   TextItem,
   RegisterInputMapDataProps,
@@ -22,18 +23,22 @@ export const socialMediaAccounts = [
   {
     name: "Google",
     url: "https://ctruh-data.s3.ap-south-1.amazonaws.com/public/images/login/google.webp",
+    handle: `${envs.BACKEND_URL}/api/auth/google`,
   },
   {
     name: "Facebook",
     url: "https://ctruh-data.s3.ap-south-1.amazonaws.com/public/images/login/facebook.webp",
+    handle: `${envs.BACKEND_URL}/api/auth/google`,
   },
   {
     name: "Github",
     url: "https://ctruh-data.s3.ap-south-1.amazonaws.com/public/images/login/github_logo.webp",
+    handle: `${envs.BACKEND_URL}/api/auth/google`,
   },
   {
     name: "Linkedin",
     url: "https://ctruh-data.s3.ap-south-1.amazonaws.com/public/images/login/linkedin.webp",
+    handle: `${envs.BACKEND_URL}/api/auth/google`,
   },
 ];
 
