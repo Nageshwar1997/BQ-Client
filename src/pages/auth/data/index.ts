@@ -38,7 +38,7 @@ export const socialMediaAccounts = [
   {
     name: "Linkedin",
     url: "https://ctruh-data.s3.ap-south-1.amazonaws.com/public/images/login/linkedin.webp",
-    handle: `${envs.BACKEND_URL}/api/auth/google`,
+    handle: `${envs.BACKEND_URL}/api/auth/linkedin`,
   },
 ];
 
