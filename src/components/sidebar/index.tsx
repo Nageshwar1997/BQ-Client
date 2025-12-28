@@ -30,7 +30,7 @@ const Sidebar = () => {
             {user?.profilePic ? (
               <img
                 src={user?.profilePic}
-                alt="Logo"
+                alt={`${user?.firstName} ${user?.lastName}`}
                 className="object-cover w-full h-full rounded-full"
                 draggable={false}
               />

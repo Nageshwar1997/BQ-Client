@@ -12,7 +12,16 @@ export default defineConfig({
       brotliSize: true,
     }),
   ],
-  server: { port: 3001 },
+  server: {
+    port: 3001,
+    proxy: {
+      "/api/image": {
+        target: "https://lh3.googleusercontent.com",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/image/, ""),
+      },
+    },
+  },
   build: {
     rollupOptions: {
       output: {
