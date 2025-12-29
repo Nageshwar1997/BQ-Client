@@ -55,12 +55,7 @@ const CancelOrderConfirmationModal = ({ orderId }: { orderId: string }) => {
   return (
     <ConfirmModal
       type="custom"
-      title="Delete Address"
-      description="Are you sure you want to delete this address? This action cannot be undone."
-      modalProps={{
-        isOpen: !!queryParams.confirm,
-        onClose: handleClose,
-      }}
+      modalProps={{ isOpen: !!queryParams.confirm, onClose: handleClose }}
     >
       <form
         className="flex flex-col items-center justify-center gap-6 !z-[100]"
