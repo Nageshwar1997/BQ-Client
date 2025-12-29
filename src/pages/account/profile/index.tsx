@@ -47,7 +47,12 @@ const Profile = () => {
     },
   });
 
-  const profilePic = watch("profilePic");
+  const profilePicList = watch("profilePic");
+
+  const profilePic =
+    profilePicList instanceof FileList && profilePicList?.[0]
+      ? profilePicList[0]
+      : null;
 
   const onSubmit = (data: z.infer<typeof updateUserSchema>) => {
     console.log("DATA", data);
@@ -78,15 +83,15 @@ const Profile = () => {
               {profilePic || user?.profilePic ? (
                 <img
                   src={
-                    profilePic instanceof FileList
-                      ? URL.createObjectURL(profilePic?.[0])
+                    profilePic
+                      ? URL.createObjectURL(profilePic)
                       : user?.profilePic
                   }
                   alt="Profile Pic"
                   className="w-full max-h-40 aspect-square object-cover"
                 />
               ) : (
-                <UserCircleIcon className="stroke-tertiary w-full h-full" />
+                <UserCircleIcon className="stroke-tertiary w-full h-full p-5" />
               )}
 
               <div className="absolute bottom-0 right-0 p-1 bg-tertiary rounded-tl-lg">
