@@ -28,17 +28,17 @@ export const socialMediaAccounts = [
   {
     name: "Facebook",
     url: "https://ctruh-data.s3.ap-south-1.amazonaws.com/public/images/login/facebook.webp",
-    handle: `${envs.BACKEND_URL}/api/auth/google`,
+    handle: `${envs.BACKEND_URL}/api/auth/facebook`,
   },
   {
     name: "Github",
     url: "https://ctruh-data.s3.ap-south-1.amazonaws.com/public/images/login/github_logo.webp",
-    handle: `${envs.BACKEND_URL}/api/auth/google`,
+    handle: `${envs.BACKEND_URL}/api/auth/github`,
   },
   {
     name: "Linkedin",
     url: "https://ctruh-data.s3.ap-south-1.amazonaws.com/public/images/login/linkedin.webp",
-    handle: `${envs.BACKEND_URL}/api/auth/google`,
+    handle: `${envs.BACKEND_URL}/api/auth/linkedin`,
   },
 ];
 
