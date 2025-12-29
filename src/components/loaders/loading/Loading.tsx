@@ -15,7 +15,7 @@ const Loading = ({
       <div className="loading-text">
         {content.split("").map((char, index) => (
           <span key={index} style={{ animationDelay: `${index * 0.1}s` }}>
-            {char}
+            {char === " " ? "\u00A0" : char}
           </span>
         ))}
       </div>

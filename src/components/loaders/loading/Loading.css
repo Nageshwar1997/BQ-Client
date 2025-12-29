@@ -53,9 +53,8 @@
 /* 🔹 Loading Text Container */
 .loading-text {
   font-size: 3vmin; /* Scales with screen size */
-  text-transform: uppercase;
   display: flex;
-  gap: 0.5vmin;
+  gap: 0.2vmin;
   position: absolute;
   bottom: -30%;
   left: 50%;

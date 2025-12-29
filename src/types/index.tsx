@@ -175,10 +175,13 @@ export interface HorizontalScrollType {
 
 export type IconProps = SVGProps<SVGSVGElement>;
 
+export type TAuthProvider = "GOOGLE" | "MANUAL" | "LINKEDIN" | "GITHUB";
+
 export interface UserTypes
   extends Pick<TRegister, "firstName" | "lastName" | "email" | "phoneNumber">,
     ITimeStamp {
   profilePic: string;
+  providers: TAuthProvider[];
 }
 
 export interface UserStoreType {

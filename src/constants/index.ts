@@ -12,6 +12,9 @@ import {
 import { TChatData, TPasswordField, TRegexes } from "../types";
 
 export * from "./categories";
+
+export const AUTH_PROVIDERS = ["MANUAL", "GOOGLE"];
+
 export const DEFAULT_FILTER = { name: "All", value: "all", default: true };
 export const SORT_BY_OPTIONS = [
   { label: "Featured", value: "featured", disabled: false },

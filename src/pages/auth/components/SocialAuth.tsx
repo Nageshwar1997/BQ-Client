@@ -1,12 +1,15 @@
+import { Link } from "react-router-dom";
 import { socialMediaAccounts } from "../data";
+import { envs } from "../../../envs/index.env";
 
 const SocialAuth = () => {
   return (
     <div className="flex items-center justify-center gap-4">
       {socialMediaAccounts.map((item, index) => (
-        <div
+        <Link
+          to={`${envs.BACKEND_URL}/api/auth/${item.name}`}
           key={index}
-          className="h-12 w-12 p-2.5 rounded-2xl border border-primary-8 bg-seasalt-black backdrop-blur mb-2.5 shadow-neumorphic-layered cursor-not-allowed pointer-events-none"
+          className="h-12 w-12 p-2.5 rounded-2xl border border-primary-8 bg-seasalt-black backdrop-blur mb-2.5 shadow-neumorphic-layered"
         >
           <img
             src={item.url}
@@ -14,7 +17,7 @@ const SocialAuth = () => {
             className="w-full h-full p-0.5 object-cover"
             title={item.name}
           />
-        </div>
+        </Link>
       ))}
     </div>
   );

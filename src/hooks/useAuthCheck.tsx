@@ -7,14 +7,14 @@ import { useUserCart } from "./useUserCart";
 import useWishlistStore from "../store/wishlist.store";
 import useUserWishlist from "./useUserWishlist";
 
-export const useAuthCheck = () => {
+export const useAuthCheck = (readyToCall?: boolean) => {
   const { setUser, user, logout } = useUserStore();
   const { setCart } = useCartStore();
   const { cart: cartData } = useUserCart();
   const { setWishlist } = useWishlistStore();
   const { wishlist: wishlistData } = useUserWishlist();
 
-  const { data, isLoading, isError } = useGetUserDetails();
+  const { data, isLoading, isError } = useGetUserDetails(readyToCall);
 
   useEffect(() => {
     try {

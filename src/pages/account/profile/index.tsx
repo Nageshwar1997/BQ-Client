@@ -47,7 +47,12 @@ const Profile = () => {
     },
   });
 
-  const profilePic = watch("profilePic");
+  const profilePicList = watch("profilePic");
+
+  const profilePic =
+    profilePicList instanceof FileList && profilePicList?.[0]
+      ? profilePicList[0]
+      : null;
 
   const onSubmit = (data: z.infer<typeof updateUserSchema>) => {
     console.log("DATA", data);
@@ -78,15 +83,15 @@ const Profile = () => {
               {profilePic || user?.profilePic ? (
                 <img
                   src={
-                    profilePic instanceof FileList
-                      ? URL.createObjectURL(profilePic?.[0])
+                    profilePic
+                      ? URL.createObjectURL(profilePic)
                       : user?.profilePic
                   }
                   alt="Profile Pic"
                   className="w-full max-h-40 aspect-square object-cover"
                 />
               ) : (
-                <UserCircleIcon className="stroke-tertiary w-full h-full" />
+                <UserCircleIcon className="stroke-tertiary w-full h-full p-5" />
               )}
 
               <div className="absolute bottom-0 right-0 p-1 bg-tertiary rounded-tl-lg">
@@ -115,7 +120,11 @@ const Profile = () => {
 
           <Button
             pattern="outline"
-            content="Change Password"
+            content={
+              user?.providers?.includes("MANUAL")
+                ? "Change Password"
+                : "Create Password"
+            }
             className="group cursor-pointer flex flex-col items-center justify-center gap-3 max-w-40 max-h-40 border border-tertiary-50 overflow-hidden rounded-lg"
             leftIcon={
               <RefreshIcon className="w-7 h-7 sm:w-10 sm:h-10 stroke-primary" />
@@ -142,10 +151,7 @@ const Profile = () => {
                 ),
                 onClick: () => {
                   focusRef.current = "firstName";
-                  setEditableInputs((prev) => ({
-                    ...prev,
-                    firstName: true,
-                  }));
+                  setEditableInputs((prev) => ({ ...prev, firstName: true }));
                 },
               },
             }}
@@ -168,10 +174,7 @@ const Profile = () => {
                 ),
                 onClick: () => {
                   focusRef.current = "lastName";
-                  setEditableInputs((prev) => ({
-                    ...prev,
-                    lastName: true,
-                  }));
+                  setEditableInputs((prev) => ({ ...prev, lastName: true }));
                 },
               },
             }}
@@ -191,18 +194,17 @@ const Profile = () => {
               disabled: !editableInputs.email,
             }}
             icons={{
-              right: {
-                icon: (
-                  <EditIcon className="w-5 h-5 stroke-primary opacity-50 group-hover:opacity-100" />
-                ),
-                onClick: () => {
-                  focusRef.current = "email";
-                  setEditableInputs((prev) => ({
-                    ...prev,
-                    email: true,
-                  }));
+              ...(!user?.providers?.filter((p) => p !== "MANUAL").length && {
+                right: {
+                  icon: (
+                    <EditIcon className="w-5 h-5 stroke-primary opacity-50 group-hover:opacity-100" />
+                  ),
+                  onClick: () => {
+                    focusRef.current = "email";
+                    setEditableInputs((prev) => ({ ...prev, email: true }));
+                  },
                 },
-              },
+              }),
             }}
           />
 
@@ -224,10 +226,7 @@ const Profile = () => {
                 ),
                 onClick: () => {
                   focusRef.current = "phoneNumber";
-                  setEditableInputs((prev) => ({
-                    ...prev,
-                    phoneNumber: true,
-                  }));
+                  setEditableInputs((prev) => ({ ...prev, phoneNumber: true }));
                 },
               },
               left: { text: "+91" },

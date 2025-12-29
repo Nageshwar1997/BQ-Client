@@ -11,6 +11,7 @@ export const registerSchema = z.object({
   profilePic: fileValidation({
     field: "profilePic",
     showingFieldName: "Profile Pic",
+    required: false,
   }),
   firstName: zodStringRequired({
     field: "firstName",

@@ -16,7 +16,7 @@ import { toastErrorMessage, toastSuccessMessage } from "../../utils/toasts";
 import useQueryParams from "../../hooks/useQueryParams";
 import { useUserStore } from "../../store/user.store";
 
-export const useGetUserDetails = () => {
+export const useGetUserDetails = (enabled: boolean = true) => {
   const token = getUserToken();
 
   return useQuery({
@@ -25,7 +25,7 @@ export const useGetUserDetails = () => {
     retry: false,
     staleTime: Infinity,
     gcTime: Infinity,
-    enabled: !!token,
+    enabled,
     placeholderData: keepPreviousData,
   });
 };
