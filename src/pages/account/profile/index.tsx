@@ -120,7 +120,11 @@ const Profile = () => {
 
           <Button
             pattern="outline"
-            content="Change Password"
+            content={
+              user?.providers?.includes("MANUAL")
+                ? "Change Password"
+                : "Set Password"
+            }
             className="group cursor-pointer flex flex-col items-center justify-center gap-3 max-w-40 max-h-40 border border-tertiary-50 overflow-hidden rounded-lg"
             leftIcon={
               <RefreshIcon className="w-7 h-7 sm:w-10 sm:h-10 stroke-primary" />
