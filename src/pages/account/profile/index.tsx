@@ -151,10 +151,7 @@ const Profile = () => {
                 ),
                 onClick: () => {
                   focusRef.current = "firstName";
-                  setEditableInputs((prev) => ({
-                    ...prev,
-                    firstName: true,
-                  }));
+                  setEditableInputs((prev) => ({ ...prev, firstName: true }));
                 },
               },
             }}
@@ -177,10 +174,7 @@ const Profile = () => {
                 ),
                 onClick: () => {
                   focusRef.current = "lastName";
-                  setEditableInputs((prev) => ({
-                    ...prev,
-                    lastName: true,
-                  }));
+                  setEditableInputs((prev) => ({ ...prev, lastName: true }));
                 },
               },
             }}
@@ -200,18 +194,17 @@ const Profile = () => {
               disabled: !editableInputs.email,
             }}
             icons={{
-              right: {
-                icon: (
-                  <EditIcon className="w-5 h-5 stroke-primary opacity-50 group-hover:opacity-100" />
-                ),
-                onClick: () => {
-                  focusRef.current = "email";
-                  setEditableInputs((prev) => ({
-                    ...prev,
-                    email: true,
-                  }));
+              ...(!user?.providers?.filter((p) => p !== "MANUAL").length && {
+                right: {
+                  icon: (
+                    <EditIcon className="w-5 h-5 stroke-primary opacity-50 group-hover:opacity-100" />
+                  ),
+                  onClick: () => {
+                    focusRef.current = "email";
+                    setEditableInputs((prev) => ({ ...prev, email: true }));
+                  },
                 },
-              },
+              }),
             }}
           />
 
@@ -233,10 +226,7 @@ const Profile = () => {
                 ),
                 onClick: () => {
                   focusRef.current = "phoneNumber";
-                  setEditableInputs((prev) => ({
-                    ...prev,
-                    phoneNumber: true,
-                  }));
+                  setEditableInputs((prev) => ({ ...prev, phoneNumber: true }));
                 },
               },
               left: { text: "+91" },
