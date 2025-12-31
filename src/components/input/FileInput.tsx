@@ -106,7 +106,7 @@ const CenterContent = ({
         aria-autocomplete="none"
         {...register}
         {...fileInputProps}
-        id={fileInputProps.name}
+        id={fileInputProps.id || fileInputProps.name}
         disabled={fileInputProps?.disabled}
         multiple={fileInputProps?.multiple ?? false}
         accept={fileInputProps?.accept ?? ALLOWED_IMAGE_TYPES.join(", ")}

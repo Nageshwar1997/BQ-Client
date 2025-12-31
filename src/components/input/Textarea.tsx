@@ -44,7 +44,7 @@ const Textarea = ({
             {...register}
             {...textAreaProps}
             {...(needRef && { ref: inputRef })}
-            id={textAreaProps.name}
+            id={textAreaProps.id || textAreaProps.name}
             disabled={textAreaProps.disabled}
             onChange={handleChange}
             className="flex-1 w-full h-full outline-none border-none focus:outline-none focus:border-none bg-transparent font-normal text-sm text-primary placeholder:text-primary-50 placeholder:text-sm resize-none autofill-effect"

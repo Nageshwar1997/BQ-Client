@@ -161,6 +161,7 @@ const AddressForm = ({
                   label={label}
                   options={options}
                   selectProps={{
+                    name,
                     value: value?.toString(),
                     onChange,
                     placeholder,

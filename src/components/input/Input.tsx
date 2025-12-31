@@ -15,7 +15,8 @@ const Input = ({
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    inputProps?.onChange?.(event);
+    if (inputProps?.disabled) return;
+    inputProps.onChange?.(event);
     register?.onChange?.(event);
   };
 

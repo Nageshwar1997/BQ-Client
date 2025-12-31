@@ -105,6 +105,7 @@ const InputField = ({
             label={field.label}
             options={field.options?.length ? field.options : []}
             selectProps={{
+              name,
               value: value?.toString(),
               onChange,
               placeholder: field.placeholder,
@@ -136,6 +137,7 @@ const InputField = ({
             errors={errorMessage ? [errorMessage] : []}
             fileInputProps={{
               name,
+              id: name,
               placeholder: field.placeholder,
               accept: ALLOWED_IMAGE_TYPES.join(", "),
               multiple: false,
@@ -168,6 +170,7 @@ const InputField = ({
       label={field.label}
       inputProps={{
         name,
+        id: name,
         type: field.type,
         disabled: field.disabled,
         placeholder: field.placeholder,

@@ -71,6 +71,7 @@ const ReferFriend = () => {
         <div className="flex flex-col sm:flex-row justify-center items-center gap-3">
           <Input
             inputProps={{
+              name: "referral-link",
               value: referralLink,
               type: "url",
               disabled: true,

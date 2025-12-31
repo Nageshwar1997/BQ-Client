@@ -67,7 +67,12 @@ const Select = ({
             </div>
           ) : null}
           {/* Hidden */}
-          <select ref={selectRef} {...selectProps} className="sr-only">
+          <select
+            ref={selectRef}
+            {...selectProps}
+            id={selectProps.name}
+            className="sr-only"
+          >
             {options.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.name}

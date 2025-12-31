@@ -132,6 +132,7 @@ function Filters({
             labelClassName="!bg-primary"
             className="!w-10 !h-5 after:!h-3 after:!w-3"
             checkboxProps={{
+              name: "inStock",
               checked: queryParams.inStock === "true",
               onChange: (e) => {
                 if (e.target.checked) {
