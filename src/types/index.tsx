@@ -50,12 +50,16 @@ export type TAuthAction = {
   clearAction: () => void;
 };
 
-export interface ProfilePicInputProps extends ClassName {
+export interface ProfilePicInputProps
+  extends ClassName,
+    Pick<TBaseInput, "className" | "error"> {
+  fileInputProps: Omit<
+    InputHTMLAttributes<HTMLInputElement>,
+    "type" | "value"
+  > & {
+    onChange?: (file: File | null) => void;
+  };
   previewUrl?: string;
-  previewImage?: string;
-  name?: string;
-  errorText?: string;
-  onChange: (file: File | null) => void;
 }
 
 export type TFile = "image" | "video";

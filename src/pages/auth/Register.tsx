@@ -21,9 +21,11 @@ import {
   useRegisterUserSendOtp,
   useRegisterUserVerifyOtp,
 } from "../../api/auth/auth.service";
-import LoadingPage from "../../components/loaders/LoadingPage";
+import usePathParams from "../../hooks/usePathParams";
 import DarkMode from "../../components/DarkMode";
 import { PASSWORD_FIELDS } from "../../constants";
+import { useUserStore } from "../../store/user.store";
+import { saveLocalToken, saveSessionToken } from "../../utils";
 
 const ResendRegisterOtp = ({ email }: { email: string }) => {
   const [counter, setCounter] = useState(60);
@@ -81,7 +83,9 @@ const RegisterForm = ({
   otpToken: string;
   email: string;
 }) => {
-  const { mutateAsync } = useRegisterUserVerifyOtp();
+  const { mutateAsync, isPending } = useRegisterUserVerifyOtp();
+  const { navigate } = usePathParams();
+  const { setUser } = useUserStore();
 
   const [showPasswords, setShowPasswords] = useState<
     Record<TPasswordField, boolean>
@@ -136,89 +140,117 @@ const RegisterForm = ({
     if (file instanceof File) {
       formData.append("profilePic", file);
     }
-    await mutateAsync({ otpToken, data: formData });
+    await mutateAsync(
+      { otpToken, data: formData },
+      {
+        onSuccess: (data) => {
+          console.log("data", data);
+          if (data.user) {
+            setUser(data.user);
+          }
+          if (bodyData.remember) {
+            saveLocalToken(data?.token);
+          } else {
+            saveSessionToken(data?.token);
+          }
+
+          setTimeout(() => navigate("/"), 500);
+        },
+      }
+    );
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <UploadProfile
-        name="profilePic"
-        className="!h-56"
-        errorText={errors?.profilePic?.message}
-        previewImage={
-          profilePic instanceof File ? URL.createObjectURL(profilePic) : ""
-        }
-        onChange={(file) => {
-          if (file) {
-            setValue("profilePic", file, {
-              shouldValidate: true,
-            });
+    <>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <UploadProfile
+          className="!h-56"
+          error={errors?.profilePic?.message}
+          fileInputProps={{
+            name: "profilePic",
+            id: "profilePic",
+            onChange: (file) => {
+              if (file) {
+                setValue("profilePic", file, {
+                  shouldValidate: true,
+                });
+              }
+            },
+          }}
+          previewUrl={
+            profilePic instanceof File ? URL.createObjectURL(profilePic) : ""
           }
-        }}
-      />
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-5 lg:gap-y-6">
-        {registerInputMapData?.map((input, index) => (
-          <div
-            key={index}
-            className={`${
-              ![
-                "firstName",
-                "lastName",
-                ...PASSWORD_FIELDS.filter((f) => f !== "otp"),
-              ].includes(input.name)
-                ? "lg:col-span-2"
-                : ""
-            }`}
-          >
-            <Input
-              inputProps={{
-                name: input.name,
-                placeholder: input.placeholder,
-                autoComplete: input.autoComplete,
-                type: PASSWORD_FIELDS.includes(input.name as TPasswordField)
-                  ? showPasswords[input.name as TPasswordField]
-                    ? "text"
-                    : input.type
-                  : input.type,
-              }}
-              label={input.label}
-              register={register(input.name)}
-              error={errors[input.name]?.message}
-              icons={{
-                ...(input.name === "phoneNumber" && { left: { text: "+91" } }),
-                ...(PASSWORD_FIELDS.includes(input.name as TPasswordField) && {
-                  right: {
-                    icon:
-                      PASSWORD_FIELDS.includes(input.name as TPasswordField) &&
-                      (showPasswords[input.name as TPasswordField] ? (
-                        <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-                      ) : (
-                        <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-                      )),
-                    onClick: () =>
-                      togglePasswordVisibility(input.name as TPasswordField),
-                  },
-                }),
-              }}
-            />
-          </div>
-        ))}
-      </div>
-      <ResendRegisterOtp email={email} />
-      <div className="space-y-3">
-        <Checkbox
-          register={register("remember")}
-          checkboxProps={{ name: "remember" }}
-          rightText="Remember me"
         />
-        <Button
-          pattern="primary"
-          buttonProps={{ type: "submit" }}
-          content="Register"
-          className="!text-base"
-        />
-      </div>
-    </form>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-5 lg:gap-y-6">
+          {registerInputMapData?.map((input, index) => (
+            <div
+              key={index}
+              className={`${
+                ![
+                  "firstName",
+                  "lastName",
+                  ...PASSWORD_FIELDS.filter((f) => f !== "otp"),
+                ].includes(input.name)
+                  ? "lg:col-span-2"
+                  : ""
+              }`}
+            >
+              <Input
+                inputProps={{
+                  name: input.name,
+                  placeholder: input.placeholder,
+                  autoComplete: input.autoComplete,
+                  type: PASSWORD_FIELDS.includes(input.name as TPasswordField)
+                    ? showPasswords[input.name as TPasswordField]
+                      ? "text"
+                      : input.type
+                    : input.type,
+                }}
+                label={input.label}
+                register={register(input.name)}
+                error={errors[input.name]?.message}
+                icons={{
+                  ...(input.name === "phoneNumber" && {
+                    left: { text: "+91" },
+                  }),
+                  ...(PASSWORD_FIELDS.includes(
+                    input.name as TPasswordField
+                  ) && {
+                    right: {
+                      icon:
+                        PASSWORD_FIELDS.includes(
+                          input.name as TPasswordField
+                        ) &&
+                        (showPasswords[input.name as TPasswordField] ? (
+                          <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                        ) : (
+                          <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                        )),
+                      onClick: () =>
+                        togglePasswordVisibility(input.name as TPasswordField),
+                    },
+                  }),
+                }}
+              />
+            </div>
+          ))}
+        </div>
+        <ResendRegisterOtp email={email} />
+        <div className="space-y-3">
+          <Checkbox
+            register={register("remember")}
+            checkboxProps={{ name: "remember" }}
+            rightText="Remember me"
+          />
+          <Button
+            pattern="primary"
+            buttonProps={{ type: "submit", disabled: isPending }}
+            content="Register"
+            className="!text-base"
+          />
+        </div>
+      </form>
+    </>
   );
 };
 
@@ -245,7 +277,6 @@ const Register = () => {
 
   return (
     <div className="w-full min-h-dvh max-h-dvh h-full p-4 flex gap-4">
-      {isPending && <LoadingPage text="Please wait" />}
       <AuthRobot />
       <DarkMode className="border absolute top-5 right-5 h-fit p-2 md:p-3 rounded-full bg-secondary-inverted [&_path]:!stroke-secondary z-10" />
       <div
@@ -283,6 +314,7 @@ const Register = () => {
                         placeholder: "Enter email address",
                         autoComplete: "email",
                         type: "text",
+                        disabled: isPending,
                       }}
                       label="Email"
                       register={register("email")}
@@ -290,8 +322,8 @@ const Register = () => {
                     />
                     <Button
                       pattern="primary"
-                      buttonProps={{ type: "submit" }}
-                      content="Send OTP"
+                      buttonProps={{ type: "submit", disabled: isPending }}
+                      content={isPending ? "Please wait" : "Send Otp"}
                     />
                     <div className="flex items-center justify-start gap-2">
                       <p className="bg-clip-text text-transparent bg-silver-duo text-xs md:text-sm">
@@ -304,7 +336,7 @@ const Register = () => {
                         Login
                       </Link>
                     </div>
-                    <p className="text-xs">
+                    <p className="text-xs text-tertiary">
                       Your entry or registration on the site means acceptance of
                       the{" "}
                       <Link
