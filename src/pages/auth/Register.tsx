@@ -205,6 +205,7 @@ const RegisterForm = ({
                       ? "text"
                       : input.type
                     : input.type,
+                  disabled: input.name === "email" || isPending,
                 }}
                 label={input.label}
                 register={register(input.name)}
