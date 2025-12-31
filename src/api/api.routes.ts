@@ -1,5 +1,6 @@
 export const authRoutes = {
   register_send_otp: { method: "POST", url: "/auth/register/send-otp" },
+  register_resend_otp: { method: "POST", url: "/auth/register/resend-otp" },
   register_verify_otp: { method: "POST", url: "/auth/register/verify-otp" },
   login: { method: "POST", url: "/auth/login" },
 };

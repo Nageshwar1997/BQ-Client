@@ -18,6 +18,7 @@ import useVerticalScrollable from "../../hooks/useVerticalScrollable";
 import { BottomGradient, TopGradient } from "../../components/Gradients";
 import { registerOtpSchema, registerSchema } from "./helpers/auth.schema";
 import {
+  useRegisterUserResendOtp,
   useRegisterUserSendOtp,
   useRegisterUserVerifyOtp,
 } from "../../api/auth/auth.service";
@@ -27,7 +28,7 @@ import { PASSWORD_FIELDS } from "../../constants";
 import { useUserStore } from "../../store/user.store";
 import { saveLocalToken, saveSessionToken } from "../../utils";
 
-const ResendRegisterOtp = ({ email }: { email: string }) => {
+const ResendRegisterOtp = ({ onResend }: { onResend?: () => void }) => {
   const [counter, setCounter] = useState(60);
 
   useEffect(() => {
@@ -40,12 +41,10 @@ const ResendRegisterOtp = ({ email }: { email: string }) => {
     return () => clearInterval(timer);
   }, [counter]);
 
-  const handleResend = () => {
+  const handleResend = async () => {
     if (counter > 0) return;
 
-    // 🔥 call resend OTP API here
-    console.log("Resending OTP to:", email);
-
+    onResend?.();
     setCounter(60); // reset timer after resend
   };
 
@@ -83,7 +82,11 @@ const RegisterForm = ({
   otpToken: string;
   email: string;
 }) => {
-  const { mutateAsync, isPending } = useRegisterUserVerifyOtp();
+  const { mutateAsync: verifyOtpAsync, isPending: isVerifyingOtp } =
+    useRegisterUserVerifyOtp();
+  const { mutateAsync: resendOtpAsync, isPending: isResendingOtp } =
+    useRegisterUserResendOtp();
+
   const { navigate } = usePathParams();
   const { setUser } = useUserStore();
 
@@ -140,7 +143,7 @@ const RegisterForm = ({
     if (file instanceof File) {
       formData.append("profilePic", file);
     }
-    await mutateAsync(
+    await verifyOtpAsync(
       { otpToken, data: formData },
       {
         onSuccess: (data) => {
@@ -159,6 +162,12 @@ const RegisterForm = ({
       }
     );
   };
+
+  const handleResend = async () => {
+    await resendOtpAsync({ otpToken, email });
+  };
+
+  const isPending = isVerifyingOtp || isResendingOtp;
 
   return (
     <>
@@ -236,7 +245,7 @@ const RegisterForm = ({
             </div>
           ))}
         </div>
-        <ResendRegisterOtp email={email} />
+        <ResendRegisterOtp onResend={!isPending ? handleResend : undefined} />
         <div className="space-y-3">
           <Checkbox
             register={register("remember")}
