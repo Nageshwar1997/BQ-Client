@@ -30,7 +30,13 @@ export const useRegisterUserResendOtp = () => {
     mutationKey: ["register_user_resend_otp"],
     mutationFn: register_user_resend_otp,
     onSuccess: (data) => toastSuccessMessage(data?.message),
-    onError: (error) => toastErrorMessage(error),
+    onError: (error) => {
+      if (typeof error === "string") {
+        toastErrorMessage((error as string).replace(" Go Back", ""));
+      } else {
+        toastErrorMessage(error);
+      }
+    },
   });
 };
 

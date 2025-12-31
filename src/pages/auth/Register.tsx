@@ -29,7 +29,7 @@ import { useUserStore } from "../../store/user.store";
 import { saveLocalToken, saveSessionToken } from "../../utils";
 
 const ResendRegisterOtp = ({ onResend }: { onResend?: () => void }) => {
-  const [counter, setCounter] = useState(60);
+  const [counter, setCounter] = useState(10);
 
   useEffect(() => {
     if (counter <= 0) return;
@@ -45,7 +45,7 @@ const ResendRegisterOtp = ({ onResend }: { onResend?: () => void }) => {
     if (counter > 0) return;
 
     onResend?.();
-    setCounter(60); // reset timer after resend
+    setCounter(10); // reset timer after resend
   };
 
   return (
@@ -78,9 +78,11 @@ const ResendRegisterOtp = ({ onResend }: { onResend?: () => void }) => {
 const RegisterForm = ({
   otpToken = "",
   email = "",
+  onReset,
 }: {
   otpToken: string;
   email: string;
+  onReset?: () => void;
 }) => {
   const { mutateAsync: verifyOtpAsync, isPending: isVerifyingOtp } =
     useRegisterUserVerifyOtp();
@@ -164,7 +166,19 @@ const RegisterForm = ({
   };
 
   const handleResend = async () => {
-    await resendOtpAsync({ otpToken, email });
+    await resendOtpAsync(
+      { otpToken, email },
+      {
+        onError: (error) => {
+          if (
+            typeof error === "string" &&
+            (error as string).includes("Go Back")
+          ) {
+            onReset?.();
+          }
+        },
+      }
+    );
   };
 
   const isPending = isVerifyingOtp || isResendingOtp;
@@ -267,7 +281,7 @@ const RegisterForm = ({
 const Register = () => {
   const { showGradient, containerRef } = useVerticalScrollable();
 
-  const { mutateAsync, isPending, data } = useRegisterUserSendOtp();
+  const { mutateAsync, isPending, data, reset } = useRegisterUserSendOtp();
 
   const {
     watch,
@@ -282,6 +296,10 @@ const Register = () => {
   const onSubmit = async (bodyData: z.infer<typeof registerOtpSchema>) => {
     await mutateAsync(bodyData.email);
   };
+
+  // const onBack = () => {
+  //   reset();
+  // };
 
   const email = watch("email");
 
@@ -312,7 +330,11 @@ const Register = () => {
               {/* Register Form */}
               <div className="shadow-light-dark-soft bg-platinum-black p-4 base:p-6 md:px-8 rounded-3xl">
                 {data?.otpToken && email ? (
-                  <RegisterForm otpToken={data?.otpToken} email={email} />
+                  <RegisterForm
+                    otpToken={data?.otpToken}
+                    email={email}
+                    onReset={reset}
+                  />
                 ) : (
                   <form
                     onSubmit={handleSubmit(onSubmit)}
