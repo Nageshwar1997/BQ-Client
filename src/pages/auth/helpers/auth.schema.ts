@@ -7,11 +7,33 @@ import {
 } from "../../../utils/zod";
 import { regexes } from "../../../constants";
 
+export const registerOtpSchema = z.object({
+  email: zodStringRequired({
+    field: "email",
+    showingFieldName: "Email",
+    blockSingleSpace: true,
+    customRegexes: [{ regex: regexes.validEmail, message: "must be a valid" }],
+  }).toLowerCase(),
+});
+
 export const registerSchema = z.object({
   profilePic: fileValidation({
     field: "profilePic",
     showingFieldName: "Profile Pic",
     required: false,
+  }),
+  otp: zodStringRequired({
+    field: "otp",
+    showingFieldName: "OTP",
+    blockSingleSpace: true,
+    min: 6,
+    max: 6,
+    customRegexes: [
+      {
+        regex: regexes.validOTP,
+        message: "must be a valid 6 digit number. It can contain only digits",
+      },
+    ],
   }),
   firstName: zodStringRequired({
     field: "firstName",
@@ -133,12 +155,7 @@ export const loginSchema = z
     email: zodStringOptional({
       field: "email",
       showingFieldName: "Email",
-      customRegexes: [
-        {
-          regex: regexes.validEmail,
-          message: "must be valid",
-        },
-      ],
+      customRegexes: [{ regex: regexes.validEmail, message: "must be valid" }],
     }).transform((val) => val?.toLowerCase()),
     phoneNumber: zodStringOptional({
       field: "phoneNumber",

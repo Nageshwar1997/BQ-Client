@@ -1,12 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
-import { login_user, register_user } from "./auth.api";
+import {
+  login_user,
+  register_user_send_otp,
+  register_user_verify_otp,
+} from "./auth.api";
 import { toastErrorMessage, toastSuccessMessage } from "../../utils/toasts";
-import { LoginFormInputProps } from "../../types";
 
 export const useLoginUser = () => {
   return useMutation({
-    mutationFn: (bodyData: Partial<LoginFormInputProps>) =>
-      login_user(bodyData),
+    mutationFn: login_user,
     onSuccess: (data) => {
       toastSuccessMessage(data?.message || "Login successful!");
     },
@@ -18,13 +20,27 @@ export const useLoginUser = () => {
   });
 };
 
-export const useRegisterUser = () => {
+export const useRegisterUserSendOtp = () => {
   return useMutation({
-    mutationFn: (bodyData: FormData) => register_user(bodyData),
+    mutationFn: register_user_send_otp,
     onSuccess: (data) => {
       toastSuccessMessage(data?.message || "Registration successful!");
     },
-    onError: (error: unknown) => {
+    onError: (error) => {
+      toastErrorMessage(
+        typeof error === "string" ? error : "Something went wrong!"
+      );
+    },
+  });
+};
+
+export const useRegisterUserVerifyOtp = () => {
+  return useMutation({
+    mutationFn: register_user_verify_otp,
+    onSuccess: (data) => {
+      toastSuccessMessage(data?.message || "Registration successful!");
+    },
+    onError: (error) => {
       toastErrorMessage(
         typeof error === "string" ? error : "Something went wrong!"
       );

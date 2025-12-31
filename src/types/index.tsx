@@ -128,7 +128,7 @@ export type TLogin = z.infer<typeof loginSchema>;
 
 export type TPasswordField = keyof Pick<
   TRegister,
-  "password" | "confirmPassword"
+  "password" | "confirmPassword" | "otp"
 >;
 
 export interface RegisterInputMapDataProps {
@@ -385,6 +385,7 @@ export type TRegexes =
   | "validName"
   | "password"
   | "validEmail"
+  | "validOTP"
   | "validPinCode"
   | "validGST"
   | "validUrl"

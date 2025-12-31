@@ -80,6 +80,7 @@ export const ALLOWED_IMAGE_TYPES = [
 export const PASSWORD_FIELDS: TPasswordField[] = [
   "password",
   "confirmPassword",
+  "otp",
 ] as const;
 
 export const ALLOWED_VIDEO_TYPES = ["video/mp4", "video/webm"];
@@ -107,6 +108,7 @@ export const regexes: Record<TRegexes, RegExp> = {
   onlyLettersAndSpaces: /^[a-zA-Z\s]+$/, // All characters are letters and spaces
   onlyLettersAndSpacesAndDots: /^[a-zA-Z\s.]+$/, // Only letters, spaces, and dots
   validPinCode: /^[1-9][0-9]{5}$/, // Check valid pin code
+  validOTP: /^[0-9]{6}$/,
   validGST: /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/i, // Check valid GST number
   validUrl:
     /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/[\w\-._~:/?#[\]@!$&'()*+,;=%]*)?$/i,

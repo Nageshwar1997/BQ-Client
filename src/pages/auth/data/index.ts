@@ -76,6 +76,13 @@ export const registerInputMapData: RegisterInputMapDataProps[] = [
     autoComplete: "current-password",
     placeholder: "Reenter password",
   },
+  {
+    label: "OTP",
+    name: "otp",
+    type: "password",
+    autoComplete: "current-password",
+    placeholder: "Enter your OTP",
+  },
 ];
 
 export const loginInputMapData: LoginInputMapDataProps[] = [
