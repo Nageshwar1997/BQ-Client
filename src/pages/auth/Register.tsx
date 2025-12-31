@@ -29,7 +29,7 @@ import { useUserStore } from "../../store/user.store";
 import { saveLocalToken, saveSessionToken } from "../../utils";
 
 const ResendRegisterOtp = ({ onResend }: { onResend?: () => void }) => {
-  const [counter, setCounter] = useState(10);
+  const [counter, setCounter] = useState(60);
 
   useEffect(() => {
     if (counter <= 0) return;
@@ -45,7 +45,7 @@ const ResendRegisterOtp = ({ onResend }: { onResend?: () => void }) => {
     if (counter > 0) return;
 
     onResend?.();
-    setCounter(10); // reset timer after resend
+    setCounter(60); // reset timer after resend
   };
 
   return (
@@ -266,12 +266,22 @@ const RegisterForm = ({
             checkboxProps={{ name: "remember" }}
             rightText="Remember me"
           />
-          <Button
-            pattern="primary"
-            buttonProps={{ type: "submit", disabled: isPending }}
-            content="Register"
-            className="!text-base"
-          />
+          <div className="flex gap-4">
+            <Button
+              pattern="secondary"
+              buttonProps={{
+                type: "button",
+                disabled: isPending,
+                onClick: onReset,
+              }}
+              content="Go Back"
+            />
+            <Button
+              pattern="primary"
+              buttonProps={{ type: "submit", disabled: isPending }}
+              content={isPending ? "Registering..." : "Register"}
+            />
+          </div>
         </div>
       </form>
     </>
@@ -326,9 +336,8 @@ const Register = () => {
             />
             <SocialAuth />
             <div className="w-full max-w-[400px] lg:max-w-[500px] sm:w-[90%] lg:w-[500px] border-gradient p-px rounded-3xl mx-auto">
-              {/* Send OTP Form */}
-              {/* Register Form */}
               <div className="shadow-light-dark-soft bg-platinum-black p-4 base:p-6 md:px-8 rounded-3xl">
+                {/* Register Form */}
                 {data?.otpToken && email ? (
                   <RegisterForm
                     otpToken={data?.otpToken}
@@ -336,6 +345,7 @@ const Register = () => {
                     onReset={reset}
                   />
                 ) : (
+                  // Send OTP Form
                   <form
                     onSubmit={handleSubmit(onSubmit)}
                     className="space-y-6 py-4"
@@ -355,7 +365,7 @@ const Register = () => {
                     <Button
                       pattern="primary"
                       buttonProps={{ type: "submit", disabled: isPending }}
-                      content={isPending ? "Please wait" : "Send Otp"}
+                      content={isPending ? "Sending..." : "Send Otp"}
                     />
                     <div className="flex items-center justify-start gap-2">
                       <p className="bg-clip-text text-transparent bg-silver-duo text-xs md:text-sm">
