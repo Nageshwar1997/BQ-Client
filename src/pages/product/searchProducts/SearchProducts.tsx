@@ -87,9 +87,7 @@ const SearchProducts = () => {
   return (
     <div className="lg:-mt-16 flex flex-col">
       <img
-        src={
-          "https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153544_Sugar-Elite.webp"
-        }
+        src="https://res.cloudinary.com/drbhw0nwt/image/upload/f_auto,q_auto/v1751652153/Beautinique/Category_Images/7-4-2025_1751652153544_Sugar-Elite.webp"
         alt={"Category"}
       />
       <div className="grow flex flex-col">

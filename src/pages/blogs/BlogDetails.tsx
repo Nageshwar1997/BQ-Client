@@ -60,6 +60,8 @@ const BlogDetails = () => {
             <img
               src={blog.publisher.profilePic}
               alt="Author"
+              crossOrigin="anonymous"
+              referrerPolicy="no-referrer"
               className="w-full h-full rounded-full object-cover aspect-square"
             />
           ) : (
