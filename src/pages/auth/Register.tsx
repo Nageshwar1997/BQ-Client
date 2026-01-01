@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import z from "zod";
@@ -27,53 +27,7 @@ import DarkMode from "../../components/DarkMode";
 import { PASSWORD_FIELDS } from "../../constants";
 import { useUserStore } from "../../store/user.store";
 import { saveLocalToken, saveSessionToken } from "../../utils";
-
-const ResendRegisterOtp = ({ onResend }: { onResend?: () => void }) => {
-  const [counter, setCounter] = useState(60);
-
-  useEffect(() => {
-    if (counter <= 0) return;
-
-    const timer = setInterval(() => {
-      setCounter((prev) => prev - 1);
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [counter]);
-
-  const handleResend = async () => {
-    if (counter > 0) return;
-
-    onResend?.();
-    setCounter(60); // reset timer after resend
-  };
-
-  return (
-    <p className="space-x-2">
-      <span className="bg-clip-text text-transparent bg-silver-duo text-xs md:text-sm">
-        Not received OTP?
-      </span>
-
-      {counter > 0 ? (
-        <span className="text-xs md:text-sm text-muted">
-          <span className="bg-clip-text text-transparent bg-silver-duo">
-            Resend in
-          </span>{" "}
-          <strong className="bg-clip-text text-transparent bg-accent-duo">
-            {counter}s
-          </strong>
-        </span>
-      ) : (
-        <button
-          onClick={handleResend}
-          className="bg-clip-text text-transparent bg-accent-duo hover:font-medium text-sm md:text-base"
-        >
-          Resend
-        </button>
-      )}
-    </p>
-  );
-};
+import ResendOtp from "../../components/ResendOtp";
 
 const RegisterForm = ({
   otpToken = "",
@@ -259,7 +213,7 @@ const RegisterForm = ({
             </div>
           ))}
         </div>
-        <ResendRegisterOtp onResend={!isPending ? handleResend : undefined} />
+        <ResendOtp onResend={!isPending ? handleResend : undefined} />
         <div className="space-y-3">
           <Checkbox
             register={register("remember")}
@@ -306,10 +260,6 @@ const Register = () => {
   const onSubmit = async (bodyData: z.infer<typeof registerOtpSchema>) => {
     await mutateAsync(bodyData.email);
   };
-
-  // const onBack = () => {
-  //   reset();
-  // };
 
   const email = watch("email");
 
