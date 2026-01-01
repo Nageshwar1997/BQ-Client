@@ -88,8 +88,6 @@ const Profile = () => {
                       : user?.profilePic
                   }
                   alt="Profile Pic"
-                  crossOrigin="anonymous"
-                  referrerPolicy="no-referrer"
                   className="w-full max-h-40 aspect-square object-cover"
                 />
               ) : (

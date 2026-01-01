@@ -53,8 +53,6 @@ const UserPopup = ({
                 <img
                   src={user.profilePic}
                   alt={user.firstName}
-                  crossOrigin="anonymous"
-                  referrerPolicy="no-referrer"
                   className="w-full h-full border-2 border-secondary rounded-full object-cover aspect-square"
                 />
               ) : (

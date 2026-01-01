@@ -33,8 +33,6 @@ const Sidebar = () => {
                 alt={`${user?.firstName} ${user?.lastName}`}
                 className="object-cover w-full h-full rounded-full"
                 draggable={false}
-                crossOrigin="anonymous"
-                referrerPolicy="no-referrer"
               />
             ) : (
               <UserCircleIcon className="stroke-secondary w-full h-full" />
