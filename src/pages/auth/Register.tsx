@@ -204,7 +204,7 @@ const RegisterForm = ({
             register={register("profilePic")}
             fileInputProps={{ name: "profilePic" }}
           />
-          <div className="space-y-6 flex-1 border">
+          <div className="space-y-6 flex-1">
             {registerInputMapData?.slice(0, 2).map((input, index) => (
               <RegisterInput
                 key={index}
