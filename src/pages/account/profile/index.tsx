@@ -12,6 +12,7 @@ import { UserTypes } from "../../../types";
 import { deepEqual, getFileFromFileList } from "../../../utils";
 import { useUpdateUser } from "../../../api/user/user.service";
 import { toastErrorMessage } from "../../../utils/toasts";
+import { UPDATE_PROFILE_FIELDS } from "../../../constants";
 
 const Profile = () => {
   const { mutateAsync, isPending } = useUpdateUser();
@@ -28,8 +29,8 @@ const Profile = () => {
 
   // This stores which input should focus
   const focusRef = useRef<keyof typeof editableInputs | null>(null);
-
   const { user, setUser } = useUserStore();
+
   const {
     watch,
     register,
@@ -54,9 +55,7 @@ const Profile = () => {
 
   const handleReset = () => {
     reset();
-    if (profilePicURL) {
-      URL.revokeObjectURL(profilePicURL);
-    }
+    if (profilePicURL) URL.revokeObjectURL(profilePicURL);
   };
 
   const onSubmit = async (data: z.infer<typeof updateUserSchema>) => {
@@ -64,7 +63,7 @@ const Profile = () => {
       Pick<UserTypes, "firstName" | "lastName" | "email" | "phoneNumber">
     >;
 
-    const apiData: Partial<TempUser> = {
+    const apiData: TempUser = {
       firstName: user?.firstName,
       lastName: user?.lastName,
       email: user?.email,
@@ -93,14 +92,10 @@ const Profile = () => {
 
     const formData = new FormData();
     Object.entries(changedFields).forEach(([key, value]) => {
-      if (value) {
-        formData.append(key, value);
-      }
+      if (value) formData.append(key, value);
     });
 
-    if (profilePicFile) {
-      formData.append("profilePic", profilePicFile);
-    }
+    if (profilePicFile) formData.append("profilePic", profilePicFile);
 
     await mutateAsync(formData, { onSuccess: (data) => setUser(data.user) });
   };
@@ -126,9 +121,7 @@ const Profile = () => {
             src={profilePicURL || user?.profilePic}
             error={errors.profilePic?.message}
             register={register("profilePic")}
-            fileInputProps={{
-              name: "profilePic",
-            }}
+            fileInputProps={{ name: "profilePic" }}
           />
           <Button
             pattern="outline"
@@ -143,122 +136,60 @@ const Profile = () => {
             }
           />
         </div>
-
-        {/* FIRST + LAST NAME */}
-        <div className="flex flex-col sm:flex-row gap-x-4 gap-y-6">
-          <Input
-            label="First Name"
-            register={register("firstName")}
-            needRef={focusRef.current === "firstName"}
-            error={errors.firstName?.message}
-            inputProps={{
-              name: "firstName",
-              placeholder: "Enter first name",
-              disabled: !editableInputs.firstName,
-            }}
-            icons={{
-              right: {
-                icon: (
-                  <EditIcon className="w-5 h-5 stroke-primary opacity-50 group-hover:opacity-100" />
-                ),
-                onClick: () => {
-                  focusRef.current = "firstName";
-                  setEditableInputs((prev) => ({ ...prev, firstName: true }));
-                },
-              },
-            }}
-          />
-
-          <Input
-            label="Last Name"
-            register={register("lastName")}
-            needRef={focusRef.current === "lastName"}
-            error={errors.lastName?.message}
-            inputProps={{
-              name: "lastName",
-              placeholder: "Enter last name",
-              disabled: !editableInputs.lastName,
-            }}
-            icons={{
-              right: {
-                icon: (
-                  <EditIcon className="w-5 h-5 stroke-primary opacity-50 group-hover:opacity-100" />
-                ),
-                onClick: () => {
-                  focusRef.current = "lastName";
-                  setEditableInputs((prev) => ({ ...prev, lastName: true }));
-                },
-              },
-            }}
-          />
-        </div>
-
-        {/* EMAIL + PHONE */}
-        <div className="flex flex-col sm:flex-row gap-x-4 gap-y-6">
-          <Input
-            label="Email"
-            register={register("email")}
-            needRef={focusRef.current === "email"}
-            error={errors.email?.message}
-            inputProps={{
-              name: "email",
-              placeholder: "Enter email address",
-              disabled: !editableInputs.email,
-            }}
-            icons={{
-              ...(!user?.providers?.filter((p) => p !== "MANUAL").length && {
-                right: {
-                  icon: (
-                    <EditIcon className="w-5 h-5 stroke-primary opacity-50 group-hover:opacity-100" />
-                  ),
-                  onClick: () => {
-                    focusRef.current = "email";
-                    setEditableInputs((prev) => ({ ...prev, email: true }));
-                  },
-                },
-              }),
-            }}
-          />
-
-          <Input
-            label="Phone Number"
-            register={register("phoneNumber")}
-            needRef={focusRef.current === "phoneNumber"}
-            error={errors.phoneNumber?.message}
-            inputProps={{
-              name: "phoneNumber",
-              placeholder: "Enter phone number",
-              type: "number",
-              disabled: !editableInputs.phoneNumber,
-            }}
-            icons={{
-              right: {
-                icon: (
-                  <EditIcon className="w-5 h-5 stroke-primary opacity-50 group-hover:opacity-100" />
-                ),
-                onClick: () => {
-                  focusRef.current = "phoneNumber";
-                  setEditableInputs((prev) => ({ ...prev, phoneNumber: true }));
-                },
-              },
-              left: { text: "+91" },
-            }}
-          />
+        <div className="grid sm:grid-cols-2 gap-x-4 gap-y-6">
+          {UPDATE_PROFILE_FIELDS.map((field) => {
+            const isEditable =
+              field.name === "email"
+                ? !user?.providers?.filter((p) => p !== "MANUAL").length
+                : true;
+            return (
+              <Input
+                key={field.name}
+                label={field.label}
+                register={register(field.name)}
+                needRef={focusRef.current === field.name}
+                error={errors[field.name]?.message}
+                inputProps={{
+                  type: field.type,
+                  name: field.name,
+                  placeholder: field.placeholder,
+                  disabled: !editableInputs[field.name],
+                }}
+                icons={{
+                  ...(isEditable && {
+                    right: {
+                      icon: (
+                        <EditIcon className="w-5 h-5 stroke-primary opacity-50 group-hover:opacity-100" />
+                      ),
+                      onClick: () => {
+                        focusRef.current = field.name;
+                        setEditableInputs((prev) => ({
+                          ...prev,
+                          [field.name]: true,
+                        }));
+                      },
+                    },
+                  }),
+                  ...(field.name === "phoneNumber" && {
+                    left: { text: "+91" },
+                  }),
+                }}
+              />
+            );
+          })}
         </div>
 
         <hr className="w-full h-px block border-none bg-gradient-line my-4" />
 
-        <div className="flex gap-4">
+        <div className="flex gap-4 [&>button]:rounded-lg">
           <Button
             pattern="secondary"
             content="Reset"
-            className="rounded-lg"
             buttonProps={{ type: "button", onClick: handleReset }}
           />
           <Button
             pattern="primary"
             content="Update"
-            className="rounded-lg"
             buttonProps={{ type: "submit", disabled: isPending || !isDirty }}
           />
         </div>
