@@ -202,7 +202,7 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
               </p>
               <Link
                 to={"/register"}
-                className={`bg-clip-text text-transparent bg-accent-duo hover:font-extrabold text-sm md:text-base`}
+                className={`bg-clip-text text-transparent bg-accent-duo hover:font-medium text-sm md:text-base`}
               >
                 Register
               </Link>
