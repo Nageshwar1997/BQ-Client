@@ -14,8 +14,15 @@ import {
 import Button from "../../../components/button/Button";
 import FileInput from "../../../components/input/FileInput";
 import { useRef, useState } from "react";
+import { UserTypes } from "../../../types";
+import { deepEqual } from "../../../utils";
+import { useUpdateUser } from "../../../api/user/user.service";
+import { toastErrorMessage } from "../../../utils/toasts";
+import { ALLOWED_IMAGE_TYPES } from "../../../constants";
 
 const Profile = () => {
+  const { mutateAsync, isPending } = useUpdateUser();
+
   const [editableInputs, setEditableInputs] = useState<
     Record<keyof z.infer<typeof updateUserSchema>, boolean>
   >({
@@ -26,15 +33,15 @@ const Profile = () => {
     lastName: false,
   });
 
-  // 👇 This stores which input should focus
+  // This stores which input should focus
   const focusRef = useRef<keyof typeof editableInputs | null>(null);
 
-  const { user } = useUserStore();
+  const { user, setUser } = useUserStore();
   const {
     watch,
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
     reset,
   } = useForm<z.infer<typeof updateUserSchema>>({
     resolver: zodResolver(updateUserSchema),
@@ -54,8 +61,59 @@ const Profile = () => {
       ? profilePicList[0]
       : null;
 
-  const onSubmit = (data: z.infer<typeof updateUserSchema>) => {
-    console.log("DATA", data);
+  const profilePicURL = profilePic ? URL.createObjectURL(profilePic) : null;
+
+  const handleReset = () => {
+    reset();
+    if (profilePicURL) {
+      URL.revokeObjectURL(profilePicURL);
+    }
+  };
+
+  const onSubmit = async (data: z.infer<typeof updateUserSchema>) => {
+    type TempUser = Partial<
+      Pick<UserTypes, "firstName" | "lastName" | "email" | "phoneNumber">
+    >;
+
+    const apiData: Partial<TempUser> = {
+      firstName: user?.firstName,
+      lastName: user?.lastName,
+      email: user?.email,
+      phoneNumber: user?.phoneNumber,
+    };
+
+    const updatedData: TempUser = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      phoneNumber: data.phoneNumber,
+    };
+
+    const changedFields: TempUser = {};
+    Object.keys(updatedData).forEach((key) => {
+      const typedKey = key as keyof TempUser;
+      if (!deepEqual(updatedData[typedKey], apiData[typedKey])) {
+        (changedFields[typedKey] as unknown) = updatedData[typedKey];
+      }
+    });
+
+    if (!Object.keys(changedFields).length) {
+      toastErrorMessage("No changes made to update profile!");
+      return;
+    }
+
+    const formData = new FormData();
+    Object.entries(changedFields).forEach(([key, value]) => {
+      if (value) {
+        formData.append(key, value);
+      }
+    });
+
+    if (profilePic) {
+      formData.append("profilePic", profilePic);
+    }
+
+    await mutateAsync(formData, { onSuccess: (data) => setUser(data.user) });
   };
 
   return (
@@ -80,13 +138,9 @@ const Profile = () => {
             className="flex flex-col max-w-40 w-full group cursor-pointer"
           >
             <div className="w-full h-full relative border border-tertiary-50 overflow-hidden rounded-lg">
-              {profilePic || user?.profilePic ? (
+              {profilePicURL || user?.profilePic ? (
                 <img
-                  src={
-                    profilePic
-                      ? URL.createObjectURL(profilePic)
-                      : user?.profilePic
-                  }
+                  src={profilePicURL ? profilePicURL : user?.profilePic}
                   alt="Profile Pic"
                   className="w-full max-h-40 aspect-square object-cover"
                 />
@@ -113,11 +167,11 @@ const Profile = () => {
               fileInputProps={{
                 name: "profilePic",
                 multiple: false,
+                accept: ALLOWED_IMAGE_TYPES.join(", "),
               }}
               containerClassName="hidden"
             />
           </label>
-
           <Button
             pattern="outline"
             content={
@@ -241,13 +295,13 @@ const Profile = () => {
             pattern="secondary"
             content="Reset"
             className="rounded-lg"
-            buttonProps={{ type: "button", onClick: () => reset() }}
+            buttonProps={{ type: "button", onClick: handleReset }}
           />
           <Button
             pattern="primary"
             content="Update"
             className="rounded-lg"
-            buttonProps={{ type: "submit" }}
+            buttonProps={{ type: "submit", disabled: isPending || !isDirty }}
           />
         </div>
       </form>

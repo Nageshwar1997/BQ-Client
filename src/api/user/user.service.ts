@@ -10,6 +10,7 @@ import {
   get_user_details,
   get_user_wishlist,
   remove_wishlist_product,
+  update_user_details,
 } from "./user.api";
 import { getUserToken } from "../../utils";
 import { toastErrorMessage, toastSuccessMessage } from "../../utils/toasts";
@@ -27,6 +28,16 @@ export const useGetUserDetails = (enabled: boolean = true) => {
     gcTime: Infinity,
     enabled,
     placeholderData: keepPreviousData,
+  });
+};
+
+export const useUpdateUser = () => {
+  return useMutation({
+    mutationKey: ["update_user_details"],
+    mutationFn: update_user_details,
+    onSuccess: (data) =>
+      toastSuccessMessage(data?.message || "Login successful!"),
+    onError: (error) => toastErrorMessage(error),
   });
 };
 
