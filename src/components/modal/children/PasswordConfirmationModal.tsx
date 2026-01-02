@@ -1,22 +1,47 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { updatePasswordFields } from "../../../constants";
+import { changePasswordFields, updatePasswordFields } from "../../../constants";
 import useQueryParams from "../../../hooks/useQueryParams";
-import { updatePasswordSchema } from "../../../pages/auth/helpers/auth.schema";
+import {
+  changePasswordSchema,
+  updatePasswordSchema,
+} from "../../../pages/auth/helpers/auth.schema";
 import Button from "../../button/Button";
 import Input from "../../input/Input";
 import ConfirmModal from "./ConfirmModal";
-import { useForm } from "react-hook-form";
+import { FieldErrors, useForm } from "react-hook-form";
 import z from "zod";
 import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "../../../icons";
-import { useChangePassword } from "../../../api/user/user.service";
+import {
+  useChangePassword,
+  useUpdatePassword,
+} from "../../../api/user/user.service";
+import { useUserStore } from "../../../store/user.store";
+
+const baseDefaultValues = { newPassword: "", confirmPassword: "" };
 
 const PasswordConfirmationModal = () => {
   const { queryParams, removeParam } = useQueryParams();
-  const { mutateAsync, isPending } = useChangePassword();
+  const { setUser } = useUserStore();
+
+  const {
+    mutateAsync: changePasswordAsync,
+    isPending: isChangePasswordPending,
+  } = useChangePassword();
+
+  const {
+    mutateAsync: updatePasswordAsync,
+    isPending: isUpdatePasswordPending,
+  } = useUpdatePassword();
+
+  const isChangePassword = queryParams.confirm === "change-password";
 
   const [showPasswords, setShowPasswords] = useState<
-    Record<keyof z.infer<typeof updatePasswordSchema>, boolean>
+    Record<
+      keyof (z.infer<typeof changePasswordSchema> &
+        z.infer<typeof updatePasswordSchema>),
+      boolean
+    >
   >({
     confirmPassword: false,
     newPassword: false,
@@ -24,7 +49,8 @@ const PasswordConfirmationModal = () => {
   });
 
   const togglePasswordVisibility = (
-    field: keyof z.infer<typeof updatePasswordSchema>
+    field: keyof (z.infer<typeof changePasswordSchema> &
+      z.infer<typeof updatePasswordSchema>)
   ) => {
     setShowPasswords((prevState) => ({
       ...prevState,
@@ -37,13 +63,15 @@ const PasswordConfirmationModal = () => {
     handleSubmit,
     formState: { errors, isDirty },
     reset,
-  } = useForm<z.infer<typeof updatePasswordSchema>>({
-    resolver: zodResolver(updatePasswordSchema),
-    defaultValues: {
-      oldPassword: "",
-      confirmPassword: "",
-      newPassword: "",
-    },
+  } = useForm<
+    z.infer<typeof changePasswordSchema> | z.infer<typeof updatePasswordSchema>
+  >({
+    resolver: zodResolver(
+      isChangePassword ? changePasswordSchema : updatePasswordSchema
+    ),
+    defaultValues: isChangePassword
+      ? { ...baseDefaultValues, oldPassword: "" }
+      : baseDefaultValues,
   });
 
   const handleClose = () => {
@@ -51,9 +79,22 @@ const PasswordConfirmationModal = () => {
     reset();
   };
 
-  const onSubmit = async (data: z.infer<typeof updatePasswordSchema>) => {
-    await mutateAsync(data);
+  const onSubmit = async (
+    data:
+      | z.infer<typeof changePasswordSchema>
+      | z.infer<typeof updatePasswordSchema>
+  ) => {
+    if (isChangePassword) {
+      await changePasswordAsync(data);
+    } else {
+      await updatePasswordAsync(data, {
+        onSuccess: (data) => setUser(data.user),
+      });
+    }
+    handleClose();
   };
+
+  const isPending = isChangePasswordPending || isUpdatePasswordPending;
 
   return (
     <ConfirmModal
@@ -69,32 +110,67 @@ const PasswordConfirmationModal = () => {
             Enter your passwords
           </h4>
           <hr className="w-full h-px block border-none bg-gradient-line" />
-          {updatePasswordFields.map((field) => {
-            return (
-              <Input
-                key={field.name}
-                label={field.label}
-                register={register(field.name)}
-                error={errors[field.name]?.message}
-                inputProps={{
-                  name: field.name,
-                  disabled: isPending,
-                  type: showPasswords[field.name] ? "text" : field.type,
-                  placeholder: field.placeholder,
-                }}
-                icons={{
-                  right: {
-                    icon: showPasswords[field.name] ? (
-                      <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-                    ) : (
-                      <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-                    ),
-                    onClick: () => togglePasswordVisibility(field.name),
-                  },
-                }}
-              />
-            );
-          })}
+          {isChangePassword
+            ? changePasswordFields.map((field) => (
+                <Input
+                  key={field.name}
+                  label={field.label}
+                  register={register(field.name)}
+                  error={
+                    (
+                      errors as FieldErrors<
+                        z.infer<typeof changePasswordSchema>
+                      >
+                    )[field.name]?.message
+                  }
+                  inputProps={{
+                    name: field.name,
+                    disabled: isPending,
+                    type: showPasswords[field.name] ? "text" : field.type,
+                    placeholder: field.placeholder,
+                  }}
+                  icons={{
+                    right: {
+                      icon: showPasswords[field.name] ? (
+                        <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                      ) : (
+                        <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                      ),
+                      onClick: () => togglePasswordVisibility(field.name),
+                    },
+                  }}
+                />
+              ))
+            : updatePasswordFields.map((field) => (
+                <Input
+                  key={field.name}
+                  label={field.label}
+                  register={register(field.name)}
+                  error={
+                    (
+                      errors as FieldErrors<
+                        z.infer<typeof changePasswordSchema>
+                      >
+                    )[field.name]?.message
+                  }
+                  inputProps={{
+                    name: field.name,
+                    disabled: isPending,
+                    type: showPasswords[field.name] ? "text" : field.type,
+                    placeholder: field.placeholder,
+                  }}
+                  icons={{
+                    right: {
+                      icon: showPasswords[field.name] ? (
+                        <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                      ) : (
+                        <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                      ),
+                      onClick: () => togglePasswordVisibility(field.name),
+                    },
+                  }}
+                />
+              ))}
         </div>
         <div className="w-full flex items-center justify-center gap-4">
           <Button

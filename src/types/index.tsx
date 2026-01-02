@@ -27,7 +27,12 @@ import {
   RAZORPAY_PAYMENT_STATUS,
   RAZORPAY_REFUND_PAYMENT_STATUS,
 } from "../constants";
-import { loginSchema, registerSchema } from "../pages/auth/helpers/auth.schema";
+import {
+  changePasswordSchema,
+  loginSchema,
+  registerSchema,
+  updatePasswordSchema,
+} from "../pages/auth/helpers/auth.schema";
 import { addressSchema } from "../schemas/address";
 import { footerCategories } from "../components/footer/data";
 import { becomeSellerBaseSchema, becomeSellerSchema } from "../schemas/seller";
@@ -629,3 +634,10 @@ export type TChatData = {
   message: string;
   suggestions: string[];
 };
+
+export interface IChangePassword
+  extends Omit<RegisterInputMapDataProps, "name"> {
+  name: keyof z.infer<
+    typeof updatePasswordSchema & typeof changePasswordSchema
+  >;
+}

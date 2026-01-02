@@ -10,16 +10,8 @@ import {
   TruckIcon,
   UserCircleIcon,
 } from "../icons";
-import {
-  RegisterInputMapDataProps,
-  TChatData,
-  TPasswordField,
-  TRegexes,
-} from "../types";
-import {
-  updatePasswordSchema,
-  updateUserSchema,
-} from "../pages/auth/helpers/auth.schema";
+import { IChangePassword, TChatData, TPasswordField, TRegexes } from "../types";
+import { updateUserSchema } from "../pages/auth/helpers/auth.schema";
 
 export * from "./categories";
 
@@ -381,16 +373,7 @@ export const UPDATE_PROFILE_FIELDS: {
   },
 ];
 
-export const updatePasswordFields: (Omit<RegisterInputMapDataProps, "name"> & {
-  name: keyof z.infer<typeof updatePasswordSchema>;
-})[] = [
-  {
-    name: "oldPassword",
-    label: "Current Password",
-    type: "password",
-    autoComplete: "current-password",
-    placeholder: "Enter current password",
-  },
+export const updatePasswordFields: IChangePassword[] = [
   {
     name: "newPassword",
     label: "New Password",
@@ -405,4 +388,15 @@ export const updatePasswordFields: (Omit<RegisterInputMapDataProps, "name"> & {
     autoComplete: "current-password",
     placeholder: "Confirm new password",
   },
+];
+
+export const changePasswordFields: IChangePassword[] = [
+  {
+    name: "oldPassword",
+    label: "Current Password",
+    type: "password",
+    autoComplete: "current-password",
+    placeholder: "Enter current password",
+  },
+  ...updatePasswordFields,
 ];

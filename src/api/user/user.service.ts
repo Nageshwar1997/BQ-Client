@@ -11,6 +11,7 @@ import {
   get_user_details,
   get_user_wishlist,
   remove_wishlist_product,
+  update_password,
   update_user_details,
 } from "./user.api";
 import { getUserToken } from "../../utils";
@@ -48,6 +49,19 @@ export const useChangePassword = () => {
     mutationFn: change_password,
     onSuccess: (data) =>
       toastSuccessMessage(data?.message || "Password changed successfully!"),
+    onError: (error) => toastErrorMessage(error),
+  });
+};
+
+export const useUpdatePassword = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["update_password"],
+    mutationFn: update_password,
+    onSuccess: (data) => {
+      toastSuccessMessage(data?.message || "Password updated successfully!");
+      queryClient.invalidateQueries({ queryKey: ["get_user_details"] });
+    },
     onError: (error) => toastErrorMessage(error),
   });
 };

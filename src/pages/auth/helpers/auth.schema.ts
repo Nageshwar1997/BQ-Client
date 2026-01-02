@@ -232,22 +232,37 @@ export const updateUserSchema = z.object({
   }),
 });
 
-export const updatePasswordSchema = z
-  .object({
+const baseNewConfirmSchema = z.object({
+  newPassword: zodStringRequired({
+    ...commonPasswordFields,
+    field: "newPassword",
+    showingFieldName: "New password",
+  }),
+  confirmPassword: zodStringRequired({
+    ...commonPasswordFields,
+    field: "confirmPassword",
+    showingFieldName: "Confirm password",
+  }),
+});
+
+export const updatePasswordSchema = baseNewConfirmSchema.superRefine(
+  (data, ctx) => {
+    if (data.newPassword !== data.confirmPassword) {
+      ctx.addIssue({
+        path: ["confirmPassword"],
+        code: z.ZodIssueCode.custom,
+        message: "Confirm password does not match new password",
+      });
+    }
+  }
+);
+
+export const changePasswordSchema = baseNewConfirmSchema
+  .extend({
     oldPassword: zodStringRequired({
       ...commonPasswordFields,
       field: "oldPassword",
       showingFieldName: "Current password",
-    }),
-    newPassword: zodStringRequired({
-      ...commonPasswordFields,
-      field: "newPassword",
-      showingFieldName: "New password",
-    }),
-    confirmPassword: zodStringRequired({
-      ...commonPasswordFields,
-      field: "confirmPassword",
-      showingFieldName: "Confirm password",
     }),
   })
   .superRefine((data, ctx) => {

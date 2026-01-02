@@ -21,6 +21,7 @@ export const userRoutes = {
   removeWishlistProduct: { method: "DELETE", url: "/users/wishlist/remove" },
   wishlist: { method: "GET", url: "/users/wishlist" },
   changePassword: { method: "PATCH", url: "/users/user/change-password" },
+  updatePassword: { method: "PATCH", url: "/users/user/update-password" },
 };
 
 export const mediaRoutes = {

@@ -103,8 +103,11 @@ const Profile = () => {
     await mutateAsync(formData, { onSuccess: (data) => setUser(data.user) });
   };
 
-  const isSocialAuthOnly = !user?.providers?.filter((p) => p !== "MANUAL")
-    .length;
+  const isSocialAuthOnly = user?.providers?.filter(
+    (p) => p !== "MANUAL"
+  )?.length;
+
+  const isManualExist = user?.providers?.includes("MANUAL");
 
   return (
     <>
@@ -142,9 +145,10 @@ const Profile = () => {
                 type: "button",
                 onClick: () =>
                   setParams({
-                    confirm: isSocialAuthOnly
-                      ? "update-password"
-                      : "change-password",
+                    confirm:
+                      isSocialAuthOnly && !isManualExist
+                        ? "update-password"
+                        : "change-password",
                   }),
               }}
             />
@@ -152,7 +156,9 @@ const Profile = () => {
           <div className="grid sm:grid-cols-2 gap-x-4 gap-y-6">
             {UPDATE_PROFILE_FIELDS.map((field) => {
               const isEditable =
-                field.name === "email" ? isSocialAuthOnly : true;
+                field.name === "email"
+                  ? !isSocialAuthOnly && isManualExist
+                  : true;
               return (
                 <Input
                   key={field.name}
