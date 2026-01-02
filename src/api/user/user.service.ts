@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-query";
 import {
   add_wishlist_product,
+  change_password,
   create_seller_request,
   get_user_details,
   get_user_wishlist,
@@ -36,7 +37,17 @@ export const useUpdateUser = () => {
     mutationKey: ["update_user_details"],
     mutationFn: update_user_details,
     onSuccess: (data) =>
-      toastSuccessMessage(data?.message || "Login successful!"),
+      toastSuccessMessage(data?.message || "User details updated!"),
+    onError: (error) => toastErrorMessage(error),
+  });
+};
+
+export const useChangePassword = () => {
+  return useMutation({
+    mutationKey: ["change_password"],
+    mutationFn: change_password,
+    onSuccess: (data) =>
+      toastSuccessMessage(data?.message || "Password changed successfully!"),
     onError: (error) => toastErrorMessage(error),
   });
 };
@@ -46,7 +57,7 @@ export const useCreateSellerRequest = () => {
     mutationKey: ["create_seller_request"],
     mutationFn: create_seller_request,
     onSuccess: (data) =>
-      toastSuccessMessage(data?.message || "Login successful!"),
+      toastSuccessMessage(data?.message || "Request sent successfully!"),
     onError: (error) => toastErrorMessage(error),
   });
 };
@@ -58,7 +69,7 @@ export const useAddProductToWishlist = () => {
     mutationKey: ["add_wishlist_product"],
     mutationFn: add_wishlist_product,
     onSuccess: (data) => {
-      toastSuccessMessage(data?.message || "Login successful!");
+      toastSuccessMessage(data?.message || "Added to wishlist!");
       queryClient.invalidateQueries({ queryKey: ["get_user_wishlist"] });
     },
     onError: (error) => toastErrorMessage(error),
@@ -72,7 +83,7 @@ export const useRemoveProductFromWishlist = () => {
     mutationKey: ["remove_wishlist_product"],
     mutationFn: remove_wishlist_product,
     onSuccess: (data) => {
-      toastSuccessMessage(data?.message || "Login successful!");
+      toastSuccessMessage(data?.message || "Removed from wishlist!");
       queryClient.invalidateQueries({ queryKey: ["get_user_wishlist"] });
     },
     onError: (error) => toastErrorMessage(error),

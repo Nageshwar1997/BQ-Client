@@ -20,6 +20,7 @@ export const userRoutes = {
   addWishlistProduct: { method: "POST", url: "/users/wishlist/add" },
   removeWishlistProduct: { method: "DELETE", url: "/users/wishlist/remove" },
   wishlist: { method: "GET", url: "/users/wishlist" },
+  changePassword: { method: "PATCH", url: "/users/user/change-password" },
 };
 
 export const mediaRoutes = {

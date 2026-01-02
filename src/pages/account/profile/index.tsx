@@ -13,8 +13,11 @@ import { deepEqual, getFileFromFileList } from "../../../utils";
 import { useUpdateUser } from "../../../api/user/user.service";
 import { toastErrorMessage } from "../../../utils/toasts";
 import { UPDATE_PROFILE_FIELDS } from "../../../constants";
+import PasswordConfirmationModal from "../../../components/modal/children/PasswordConfirmationModal";
+import useQueryParams from "../../../hooks/useQueryParams";
 
 const Profile = () => {
+  const { setParams } = useQueryParams();
   const { mutateAsync, isPending } = useUpdateUser();
 
   const [editableInputs, setEditableInputs] = useState<
@@ -100,101 +103,110 @@ const Profile = () => {
     await mutateAsync(formData, { onSuccess: (data) => setUser(data.user) });
   };
 
+  const isSocialAuthOnly = !user?.providers?.filter((p) => p !== "MANUAL")
+    .length;
+
   return (
-    <div className="p-6 space-y-10">
-      <header className="text-center space-y-3 sm:space-y-4">
-        <h1 className="text-2xl base:text-3xl sm:text-4xl font-bold tracking-tight bg-clip-text bg-silver-duo text-transparent capitalize">
-          Welcome back {user?.firstName} {user?.lastName}
-        </h1>
-        <p className="text-base sm:text-lg text-tertiary max-w-2xl mx-auto">
-          This is your profile page. You can view and edit your personal
-          information, and more from here.
-        </p>
-      </header>
+    <>
+      <PasswordConfirmationModal />
+      <div className="p-6 space-y-10">
+        <header className="text-center space-y-3 sm:space-y-4">
+          <h1 className="text-2xl base:text-3xl sm:text-4xl font-bold tracking-tight bg-clip-text bg-silver-duo text-transparent capitalize">
+            Welcome back {user?.firstName} {user?.lastName}
+          </h1>
+          <p className="text-base sm:text-lg text-tertiary max-w-2xl mx-auto">
+            This is your profile page. You can view and edit your personal
+            information, and more from here.
+          </p>
+        </header>
 
-      <hr className="w-full h-px block border-none bg-gradient-line" />
+        <hr className="w-full h-px block border-none bg-gradient-line" />
 
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-        {/* PROFILE PIC + CHANGE PASSWORD */}
-        <div className="flex justify-between gap-6 mb-2">
-          <ProfilePicInput
-            src={profilePicURL || user?.profilePic}
-            error={errors.profilePic?.message}
-            register={register("profilePic")}
-            fileInputProps={{ name: "profilePic" }}
-          />
-          <Button
-            pattern="outline"
-            content={
-              user?.providers?.includes("MANUAL")
-                ? "Change Password"
-                : "Create Password"
-            }
-            className="group cursor-pointer flex flex-col items-center justify-center gap-3 max-w-40 max-h-40 border border-tertiary-50 overflow-hidden rounded-lg"
-            leftIcon={
-              <RefreshIcon className="w-7 h-7 sm:w-10 sm:h-10 stroke-primary" />
-            }
-          />
-        </div>
-        <div className="grid sm:grid-cols-2 gap-x-4 gap-y-6">
-          {UPDATE_PROFILE_FIELDS.map((field) => {
-            const isEditable =
-              field.name === "email"
-                ? !user?.providers?.filter((p) => p !== "MANUAL").length
-                : true;
-            return (
-              <Input
-                key={field.name}
-                label={field.label}
-                register={register(field.name)}
-                needRef={focusRef.current === field.name}
-                error={errors[field.name]?.message}
-                inputProps={{
-                  type: field.type,
-                  name: field.name,
-                  placeholder: field.placeholder,
-                  disabled: !editableInputs[field.name],
-                }}
-                icons={{
-                  ...(isEditable && {
-                    right: {
-                      icon: (
-                        <EditIcon className="w-5 h-5 stroke-primary opacity-50 group-hover:opacity-100" />
-                      ),
-                      onClick: () => {
-                        focusRef.current = field.name;
-                        setEditableInputs((prev) => ({
-                          ...prev,
-                          [field.name]: true,
-                        }));
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+          {/* PROFILE PIC + CHANGE PASSWORD */}
+          <div className="flex justify-between gap-6 mb-2">
+            <ProfilePicInput
+              src={profilePicURL || user?.profilePic}
+              error={errors.profilePic?.message}
+              register={register("profilePic")}
+              fileInputProps={{ name: "profilePic" }}
+            />
+            <Button
+              pattern="outline"
+              content="Update Password"
+              className="group cursor-pointer flex flex-col items-center justify-center gap-3 max-w-40 max-h-40 border border-tertiary-50 overflow-hidden rounded-lg"
+              leftIcon={
+                <RefreshIcon className="w-7 h-7 sm:w-10 sm:h-10 stroke-primary" />
+              }
+              buttonProps={{
+                type: "button",
+                onClick: () =>
+                  setParams({
+                    confirm: isSocialAuthOnly
+                      ? "update-password"
+                      : "change-password",
+                  }),
+              }}
+            />
+          </div>
+          <div className="grid sm:grid-cols-2 gap-x-4 gap-y-6">
+            {UPDATE_PROFILE_FIELDS.map((field) => {
+              const isEditable =
+                field.name === "email" ? isSocialAuthOnly : true;
+              return (
+                <Input
+                  key={field.name}
+                  label={field.label}
+                  register={register(field.name)}
+                  needRef={focusRef.current === field.name}
+                  error={errors[field.name]?.message}
+                  inputProps={{
+                    type: field.type,
+                    name: field.name,
+                    placeholder: field.placeholder,
+                    disabled: !editableInputs[field.name],
+                  }}
+                  icons={{
+                    ...(isEditable && {
+                      right: {
+                        icon: (
+                          <EditIcon className="w-5 h-5 stroke-primary opacity-50 group-hover:opacity-100" />
+                        ),
+                        onClick: () => {
+                          focusRef.current = field.name;
+                          setEditableInputs((prev) => ({
+                            ...prev,
+                            [field.name]: true,
+                          }));
+                        },
                       },
-                    },
-                  }),
-                  ...(field.name === "phoneNumber" && {
-                    left: { text: "+91" },
-                  }),
-                }}
-              />
-            );
-          })}
-        </div>
+                    }),
+                    ...(field.name === "phoneNumber" && {
+                      left: { text: "+91" },
+                    }),
+                  }}
+                />
+              );
+            })}
+          </div>
 
-        <hr className="w-full h-px block border-none bg-gradient-line my-4" />
+          <hr className="w-full h-px block border-none bg-gradient-line my-4" />
 
-        <div className="flex gap-4 [&>button]:rounded-lg">
-          <Button
-            pattern="secondary"
-            content="Reset"
-            buttonProps={{ type: "button", onClick: handleReset }}
-          />
-          <Button
-            pattern="primary"
-            content="Update"
-            buttonProps={{ type: "submit", disabled: isPending || !isDirty }}
-          />
-        </div>
-      </form>
-    </div>
+          <div className="flex gap-4 [&>button]:rounded-lg">
+            <Button
+              pattern="secondary"
+              content="Reset"
+              buttonProps={{ type: "button", onClick: handleReset }}
+            />
+            <Button
+              pattern="primary"
+              content="Update"
+              buttonProps={{ type: "submit", disabled: isPending || !isDirty }}
+            />
+          </div>
+        </form>
+      </div>
+    </>
   );
 };
 

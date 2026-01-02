@@ -7,6 +7,35 @@ import {
 } from "../../../utils/zod";
 import { regexes } from "../../../constants";
 
+const commonPasswordFields = {
+  blockSingleSpace: true,
+  min: 6,
+  max: 20,
+  customRegexes: [
+    {
+      regex: regexes.atLeastOneUppercaseLetter,
+      message: "must contain at least one uppercase letter",
+    },
+    {
+      regex: regexes.atLeastOneLowercaseLetter,
+      message: "must contain at least one lowercase letter",
+    },
+    {
+      regex: regexes.atLeastOneDigit,
+      message: "must contain at least one number",
+    },
+    {
+      regex: regexes.atLeastOneSpecialCharacter,
+      message: "must contain at least one special character e.g. @$!%*?&#",
+    },
+    {
+      regex: regexes.password,
+      message:
+        "must contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
+    },
+  ],
+};
+
 export const registerOtpSchema = z.object({
   email: zodStringRequired({
     field: "email",
@@ -83,64 +112,14 @@ export const registerSchema = z.object({
     ],
   }),
   password: zodStringRequired({
+    ...commonPasswordFields,
     field: "password",
     showingFieldName: "Password",
-    blockSingleSpace: true,
-    min: 6,
-    max: 20,
-    customRegexes: [
-      {
-        regex: regexes.atLeastOneUppercaseLetter,
-        message: "must contain at least one uppercase letter",
-      },
-      {
-        regex: regexes.atLeastOneLowercaseLetter,
-        message: "must contain at least one lowercase letter",
-      },
-      {
-        regex: regexes.atLeastOneDigit,
-        message: "must contain at least one number",
-      },
-      {
-        regex: regexes.atLeastOneSpecialCharacter,
-        message: "must contain at least one special character e.g. @$!%*?&#",
-      },
-      {
-        regex: regexes.password,
-        message:
-          "must contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
-      },
-    ],
   }),
   confirmPassword: zodStringRequired({
+    ...commonPasswordFields,
     field: "confirmPassword",
     showingFieldName: "Confirm Password",
-    blockSingleSpace: true,
-    min: 6,
-    max: 20,
-    customRegexes: [
-      {
-        regex: regexes.atLeastOneUppercaseLetter,
-        message: "must contain at least one uppercase letter",
-      },
-      {
-        regex: regexes.atLeastOneLowercaseLetter,
-        message: "must contain at least one lowercase letter",
-      },
-      {
-        regex: regexes.atLeastOneDigit,
-        message: "must contain at least one number",
-      },
-      {
-        regex: regexes.atLeastOneSpecialCharacter,
-        message: "must contain at least one special character e.g. @$!%*?&#",
-      },
-      {
-        regex: regexes.password,
-        message:
-          "must contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
-      },
-    ],
   }),
   remember: z.boolean().optional().default(false),
 });
@@ -169,34 +148,9 @@ export const loginSchema = z
       ],
     }),
     password: zodStringRequired({
+      ...commonPasswordFields,
       field: "password",
       showingFieldName: "Password",
-      blockSingleSpace: true,
-      min: 6,
-      max: 20,
-      customRegexes: [
-        {
-          regex: regexes.atLeastOneUppercaseLetter,
-          message: "must contain at least one uppercase letter",
-        },
-        {
-          regex: regexes.atLeastOneLowercaseLetter,
-          message: "must contain at least one lowercase letter",
-        },
-        {
-          regex: regexes.atLeastOneDigit,
-          message: "must contain at least one number",
-        },
-        {
-          regex: regexes.atLeastOneSpecialCharacter,
-          message: "must contain at least one special character e.g. @$!%*?&#",
-        },
-        {
-          regex: regexes.password,
-          message:
-            "must contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
-        },
-      ],
     }),
     remember: z.boolean().optional().default(false),
   })
@@ -277,3 +231,52 @@ export const updateUserSchema = z.object({
     ],
   }),
 });
+
+export const updatePasswordSchema = z
+  .object({
+    oldPassword: zodStringRequired({
+      ...commonPasswordFields,
+      field: "oldPassword",
+      showingFieldName: "Current password",
+    }),
+    newPassword: zodStringRequired({
+      ...commonPasswordFields,
+      field: "newPassword",
+      showingFieldName: "New password",
+    }),
+    confirmPassword: zodStringRequired({
+      ...commonPasswordFields,
+      field: "confirmPassword",
+      showingFieldName: "Confirm password",
+    }),
+  })
+  .superRefine((data, ctx) => {
+    const { oldPassword, newPassword, confirmPassword } = data;
+
+    // Old & New must not be same
+    if (oldPassword === newPassword) {
+      ctx.addIssue({
+        path: ["newPassword"],
+        code: z.ZodIssueCode.custom,
+        message: "New password must be different from current password",
+      });
+    }
+
+    // Old & Confirm must not be same
+    if (oldPassword === confirmPassword) {
+      ctx.addIssue({
+        path: ["confirmPassword"],
+        code: z.ZodIssueCode.custom,
+        message: "Confirm password must be different from current password",
+      });
+    }
+
+    // New & Confirm must match
+    if (newPassword !== confirmPassword) {
+      ctx.addIssue({
+        path: ["confirmPassword"],
+        code: z.ZodIssueCode.custom,
+        message: "Confirm password does not match new password",
+      });
+    }
+  });
