@@ -35,6 +35,20 @@ export const socialMediaAccounts = [
 
 export const registerInputMapData: RegisterInputMapDataProps[] = [
   {
+    name: "email",
+    label: "Email",
+    type: "text",
+    autoComplete: "email",
+    placeholder: "Enter email address",
+  },
+  {
+    label: "OTP",
+    name: "otp",
+    type: "number",
+    autoComplete: "tel",
+    placeholder: "Enter your OTP",
+  },
+  {
     name: "firstName",
     label: "First Name",
     type: "text",
@@ -47,13 +61,6 @@ export const registerInputMapData: RegisterInputMapDataProps[] = [
     type: "text",
     autoComplete: "given-name",
     placeholder: "Enter last name",
-  },
-  {
-    name: "email",
-    label: "Email",
-    type: "text",
-    autoComplete: "email",
-    placeholder: "Enter email address",
   },
   {
     name: "phoneNumber",

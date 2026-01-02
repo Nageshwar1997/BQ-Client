@@ -58,7 +58,7 @@ const CancelOrderConfirmationModal = ({ orderId }: { orderId: string }) => {
       modalProps={{ isOpen: !!queryParams.confirm, onClose: handleClose }}
     >
       <form
-        className="flex flex-col items-center justify-center gap-6 !z-[100]"
+        className="flex flex-col items-center justify-center gap-6"
         onSubmit={handleSubmit(handleCancelOrder)}
       >
         <div className="flex flex-col gap-2 text-center">

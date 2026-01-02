@@ -9,7 +9,7 @@ import {
   TruckIcon,
   UserCircleIcon,
 } from "../icons";
-import { TChatData, TPasswordField, TRegexes } from "../types";
+import { IChangePassword, TChatData, TPasswordField, TRegexes } from "../types";
 
 export * from "./categories";
 
@@ -107,6 +107,7 @@ export const regexes: Record<TRegexes, RegExp> = {
   onlyLettersAndSpaces: /^[a-zA-Z\s]+$/, // All characters are letters and spaces
   onlyLettersAndSpacesAndDots: /^[a-zA-Z\s.]+$/, // Only letters, spaces, and dots
   validPinCode: /^[1-9][0-9]{5}$/, // Check valid pin code
+  validOTP: /^[0-9]{6}$/,
   validGST: /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/i, // Check valid GST number
   validUrl:
     /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/[\w\-._~:/?#[\]@!$&'()*+,;=%]*)?$/i,
@@ -351,4 +352,63 @@ export const ORDER_CANCEL_REASONS = [
   "Issue with payment",
   "Bought the wrong product",
   "Other",
+];
+
+export const UPDATE_PROFILE_FIELDS = [
+  {
+    name: "firstName",
+    label: "First Name",
+    placeholder: "Enter first name",
+    type: "text",
+    autoComplete: "given-name",
+  },
+  {
+    name: "lastName",
+    label: "Last Name",
+    placeholder: "Enter last name",
+    type: "text",
+    autoComplete: "given-name",
+  },
+  {
+    name: "email",
+    label: "Email",
+    placeholder: "Enter email address",
+    type: "text",
+    autoComplete: "email",
+  },
+  {
+    name: "phoneNumber",
+    label: "Phone Number",
+    placeholder: "Enter phone number",
+    type: "number",
+    autoComplete: "tel",
+  },
+];
+
+export const updatePasswordFields: IChangePassword[] = [
+  {
+    name: "newPassword",
+    label: "New Password",
+    type: "password",
+    autoComplete: "current-password",
+    placeholder: "Enter new password",
+  },
+  {
+    name: "confirmPassword",
+    label: "Confirm Password",
+    type: "password",
+    autoComplete: "current-password",
+    placeholder: "Confirm new password",
+  },
+];
+
+export const changePasswordFields: IChangePassword[] = [
+  {
+    name: "oldPassword" as IChangePassword["name"],
+    label: "Current Password",
+    type: "password",
+    autoComplete: "current-password",
+    placeholder: "Enter current password",
+  },
+  ...updatePasswordFields,
 ];

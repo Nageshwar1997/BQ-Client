@@ -389,3 +389,17 @@ export const getOrderSummaryFields = (order: IOrder) => {
     },
   ];
 };
+
+export const getFileFromFileList = (list: unknown) => {
+  if (list instanceof File) {
+    return list;
+  } else if (list instanceof FileList && list?.[0]) {
+    return list[0];
+  } else if (typeof list === "string") {
+    return list;
+  } else if (Array.isArray(list)) {
+    return list[0];
+  } else {
+    return null;
+  }
+};

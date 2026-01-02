@@ -22,6 +22,7 @@ const Checkbox = ({
             className="sr-only peer outline-none"
             {...register}
             {...checkboxProps}
+            id={checkboxProps?.id || checkboxProps?.name}
           />
           <div
             className={`w-10 md:w-11 h-5 md:h-6 rounded-full peer-checked:after:translate-x-5 after:content-[''] after:absolute after:top-1 after:left-1 after:bg-silver-jet-2 after:peer-checked:bg-white after:border after:border-primary-10 after:rounded-full after:h-3 after:w-3 after:md:h-4 after:md:w-4 after:transition-all peer-checked:bg-accent-duo ${className}`}
@@ -33,7 +34,7 @@ const Checkbox = ({
           </span>
         )}
       </div>
-      {!checkboxProps?.disabled && error && (
+      {error && (
         <p className="w-full text-start flex gap-1 items-center text-[11px] leading-tight text-red-500">
           <InfoIcon className="min-w-3 min-h-3 w-3 h-3 md:min-w-4 md:min-h-4 md:w-4 md:h-4 fill-red-500" />
           <span className="leading-none line-clamp-2">{error}</span>

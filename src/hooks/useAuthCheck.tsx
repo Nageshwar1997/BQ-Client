@@ -8,7 +8,7 @@ import useWishlistStore from "../store/wishlist.store";
 import useUserWishlist from "./useUserWishlist";
 
 export const useAuthCheck = (readyToCall?: boolean) => {
-  const { setUser, user, logout } = useUserStore();
+  const { setUser, logout } = useUserStore();
   const { setCart } = useCartStore();
   const { cart: cartData } = useUserCart();
   const { setWishlist } = useWishlistStore();
@@ -21,7 +21,7 @@ export const useAuthCheck = (readyToCall?: boolean) => {
       if (!getUserToken()) return;
 
       if (data?.user) {
-        if (!user) setUser(data.user);
+        setUser(data.user);
         if (cartData) setCart(cartData);
         if (wishlistData) setWishlist(wishlistData);
       }

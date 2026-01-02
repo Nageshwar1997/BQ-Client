@@ -1,5 +1,7 @@
 export const authRoutes = {
-  register: { method: "POST", url: "/auth/register" },
+  register_send_otp: { method: "POST", url: "/auth/register/send-otp" },
+  register_resend_otp: { method: "POST", url: "/auth/register/resend-otp" },
+  register_verify_otp: { method: "POST", url: "/auth/register/verify-otp" },
   login: { method: "POST", url: "/auth/login" },
 };
 
@@ -13,10 +15,23 @@ export const productRoutes = {
 
 export const userRoutes = {
   getUser: { method: "GET", url: "/users/user" },
+  updateUser: { method: "PATCH", url: "/users/user/update" },
   createSeller: { method: "POST", url: "/users/seller/create" },
   addWishlistProduct: { method: "POST", url: "/users/wishlist/add" },
   removeWishlistProduct: { method: "DELETE", url: "/users/wishlist/remove" },
   wishlist: { method: "GET", url: "/users/wishlist" },
+  changePassword: { method: "PATCH", url: "/users/user/change-password" },
+  updatePassword: { method: "PATCH", url: "/users/user/update-password" },
+  resetPasswordSendLink: {
+    method: "PATCH",
+    url: "/users/user/send-reset-password-link",
+  },
+  resetPassword: { method: "PATCH", url: "/users/user/reset-password" },
+  checkResetPasswordTokenValidity: {
+    method: "GET",
+    url: "/users/user/check-token-validity",
+  },
+  forgotPassword: { method: "POST", url: "/users/user/forgot-password" },
 };
 
 export const mediaRoutes = {

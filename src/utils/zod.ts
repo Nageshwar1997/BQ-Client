@@ -14,6 +14,8 @@ import {
   ZodRequiredStringConfigs,
   ZodOptionalStringConfigs,
   ZodFileConfigs,
+  ZodSingleFileConfigs,
+  ZodMultipleFileConfigs,
 } from "../types/zod";
 
 export const getZodStringMessages = (
@@ -343,6 +345,129 @@ export function zodFileOrUrl({
   }
 }
 
+export const singleFileOrUrlValidation = ({
+  field,
+  showingFieldName,
+  required = true,
+  showingParentFieldName,
+  parentField,
+  maxImageFileSize = MAX_IMAGE_FILE_SIZE,
+  maxVideoFileSize = MAX_VIDEO_FILE_SIZE,
+}: ZodSingleFileConfigs) => {
+  return z
+    .unknown()
+    .optional()
+    .superRefine((value, ctx) => {
+      const readableField = showingFieldName ?? field;
+      const readableParent = showingParentFieldName ?? parentField;
+
+      const name = readableParent
+        ? `${readableParent}${
+            readableParent.includes("[") ? " " : ": "
+          }${readableField}`
+        : readableField;
+
+      let fileOrUrl = value;
+
+      console.log("fileOrUrl", fileOrUrl);
+
+      // ✅ Normalize FileList → single File
+      if (typeof FileList !== "undefined" && value instanceof FileList) {
+        if (value.length > 1) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: `${name} allows only one file`,
+          });
+          return;
+        }
+        fileOrUrl = value[0];
+      }
+
+      // 🔁 reuse existing validator
+      zodFileOrUrl({
+        fileOrUrl,
+        field,
+        ctx,
+        showingFieldName: name,
+        required,
+        maxImageFileSize,
+        maxVideoFileSize,
+      });
+    });
+};
+
+export const multipleFilesOrUrlsValidation = ({
+  field,
+  showingFieldName,
+  required = true,
+  maxImages,
+  maxVideos,
+  showingParentFieldName,
+  parentField,
+  maxImageFileSize = MAX_IMAGE_FILE_SIZE,
+  maxVideoFileSize = MAX_VIDEO_FILE_SIZE,
+}: ZodMultipleFileConfigs) => {
+  return z
+    .array(z.union([z.instanceof(File), z.string()]))
+    .optional()
+    .default([])
+    .superRefine((files, ctx) => {
+      const readableField = showingFieldName ?? field;
+      const readableParent = showingParentFieldName ?? parentField;
+
+      const nestedField = readableParent
+        ? `${readableParent}${
+            readableParent.includes("[") ? " " : ": "
+          }${readableField}`
+        : readableField;
+      const name = nestedField;
+
+      if (required && files.length === 0) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `${name} is required.`,
+        });
+        return;
+      }
+
+      let imageCount = 0;
+      let videoCount = 0;
+
+      files.forEach((item, index) => {
+        if (item instanceof File) {
+          if (ALLOWED_IMAGE_TYPES.includes(item.type)) imageCount++;
+          else if (ALLOWED_VIDEO_TYPES.includes(item.type)) videoCount++;
+        }
+
+        // 🔁 reuse single file/url validator
+        zodFileOrUrl({
+          fileOrUrl: item,
+          field,
+          index,
+          ctx,
+          showingFieldName: name,
+          required,
+          maxImageFileSize,
+          maxVideoFileSize,
+        });
+      });
+
+      if (maxImages !== undefined && imageCount > maxImages) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `You can upload a maximum of ${maxImages} images`,
+        });
+      }
+
+      if (maxVideos !== undefined && videoCount > maxVideos) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `You can upload a maximum of ${maxVideos} videos`,
+        });
+      }
+    });
+};
+
 export const zodEnums = (props: ZodEnumsConfigs & { enums: string[] }) => {
   return z.enum([props.enums[0], ...props.enums.slice(1)], {
     errorMap: () => ({
@@ -352,14 +477,3 @@ export const zodEnums = (props: ZodEnumsConfigs & { enums: string[] }) => {
     }),
   });
 };
-
-export const fileValidation = (
-  props: Omit<ZodFileConfigs, "ctx" | "fileOrUrl">
-) =>
-  z.unknown().superRefine((file, ctx) => {
-    zodFileOrUrl({
-      ...props,
-      fileOrUrl: file,
-      ctx,
-    });
-  });

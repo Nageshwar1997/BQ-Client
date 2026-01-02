@@ -183,8 +183,8 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
                   rightText="Remember"
                 />
                 <Link
-                  to={"/forgot-password"}
-                  className={`bg-clip-text text-transparent bg-accent-duo text-[10px] sm:text-[13px] md:text-sm mr-2 hover:underline whitespace-nowrap`}
+                  to="/forgot-password"
+                  className="bg-clip-text text-transparent bg-accent-duo text-[10px] sm:text-[13px] md:text-sm mr-2 hover:underline whitespace-nowrap"
                 >
                   Forgot Password?
                 </Link>
@@ -202,7 +202,7 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
               </p>
               <Link
                 to={"/register"}
-                className={`bg-clip-text text-transparent bg-accent-duo hover:font-extrabold text-sm md:text-base`}
+                className={`bg-clip-text text-transparent bg-accent-duo hover:font-medium text-sm md:text-base`}
               >
                 Register
               </Link>

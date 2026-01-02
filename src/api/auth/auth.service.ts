@@ -1,33 +1,50 @@
 import { useMutation } from "@tanstack/react-query";
-import { login_user, register_user } from "./auth.api";
+import {
+  login_user,
+  register_user_resend_otp,
+  register_user_send_otp,
+  register_user_verify_otp,
+} from "./auth.api";
 import { toastErrorMessage, toastSuccessMessage } from "../../utils/toasts";
-import { LoginFormInputProps } from "../../types";
 
 export const useLoginUser = () => {
   return useMutation({
-    mutationFn: (bodyData: Partial<LoginFormInputProps>) =>
-      login_user(bodyData),
-    onSuccess: (data) => {
-      toastSuccessMessage(data?.message || "Login successful!");
-    },
-    onError: (error: unknown) => {
-      toastErrorMessage(
-        typeof error === "string" ? error : "Something went wrong!"
-      );
+    mutationKey: ["login_user"],
+    mutationFn: login_user,
+    onSuccess: (data) => toastSuccessMessage(data?.message),
+    onError: (error) => toastErrorMessage(error),
+  });
+};
+
+export const useRegisterUserSendOtp = () => {
+  return useMutation({
+    mutationKey: ["register_user_send_otp"],
+    mutationFn: register_user_send_otp,
+    onSuccess: (data) => toastSuccessMessage(data?.message),
+    onError: (error) => toastErrorMessage(error),
+  });
+};
+
+export const useRegisterUserResendOtp = () => {
+  return useMutation({
+    mutationKey: ["register_user_resend_otp"],
+    mutationFn: register_user_resend_otp,
+    onSuccess: (data) => toastSuccessMessage(data?.message),
+    onError: (error) => {
+      if (typeof error === "string") {
+        toastErrorMessage((error as string).replace(" Go Back", ""));
+      } else {
+        toastErrorMessage(error);
+      }
     },
   });
 };
 
-export const useRegisterUser = () => {
+export const useRegisterUserVerifyOtp = () => {
   return useMutation({
-    mutationFn: (bodyData: FormData) => register_user(bodyData),
-    onSuccess: (data) => {
-      toastSuccessMessage(data?.message || "Registration successful!");
-    },
-    onError: (error: unknown) => {
-      toastErrorMessage(
-        typeof error === "string" ? error : "Something went wrong!"
-      );
-    },
+    mutationKey: ["register_user_verify_otp"],
+    mutationFn: register_user_verify_otp,
+    onSuccess: (data) => toastSuccessMessage(data?.message),
+    onError: (error) => toastErrorMessage(error),
   });
 };

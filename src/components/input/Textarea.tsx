@@ -44,14 +44,14 @@ const Textarea = ({
             {...register}
             {...textAreaProps}
             {...(needRef && { ref: inputRef })}
-            id={textAreaProps.name}
+            id={textAreaProps.id || textAreaProps.name}
             disabled={textAreaProps.disabled}
             onChange={handleChange}
             className="flex-1 w-full h-full outline-none border-none focus:outline-none focus:border-none bg-transparent font-normal text-sm text-primary placeholder:text-primary-50 placeholder:text-sm resize-none autofill-effect"
           />
         </div>
       </div>
-      {!textAreaProps.disabled && error && (
+      {error && (
         <p className="w-full text-start flex gap-1 items-center text-[11px] leading-tight text-red-500">
           <InfoIcon className="min-w-3 min-h-3 w-3 h-3 md:min-w-4 md:min-h-4 md:w-4 md:h-4 fill-red-500" />
           <span className="leading-none line-clamp-2">{error}</span>

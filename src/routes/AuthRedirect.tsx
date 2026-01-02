@@ -9,15 +9,18 @@ const AuthRedirect = ({ children }: { children: JSX.Element }) => {
   const { isLoading } = useAuthCheck();
   const location = useLocation();
 
-  if (isLoading) return <LoadingScreen />;
-
   if (isAuthenticated) {
     const state = location.state as { from?: { pathname?: string } } | null;
     const from = state?.from?.pathname || "/";
     return <Navigate to={from} replace />;
   }
 
-  return children;
+  return (
+    <>
+      {isLoading && <LoadingScreen />}
+      {children}
+    </>
+  );
 };
 
 export default AuthRedirect;

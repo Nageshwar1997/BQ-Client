@@ -83,6 +83,7 @@ const CenterContent = ({
   register,
 }: Pick<IFileInput, "fileInputProps" | "icons" | "register">) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (fileInputProps?.disabled) return;
     fileInputProps.onChange?.(event);
     register?.onChange?.(event);
   };
@@ -106,9 +107,7 @@ const CenterContent = ({
         aria-autocomplete="none"
         {...register}
         {...fileInputProps}
-        id={fileInputProps.name}
-        disabled={fileInputProps?.disabled}
-        multiple={fileInputProps?.multiple ?? false}
+        id={fileInputProps.id || fileInputProps.name}
         accept={fileInputProps?.accept ?? ALLOWED_IMAGE_TYPES.join(", ")}
         type="file"
         onChange={handleChange}
@@ -160,7 +159,7 @@ const FileInput = ({
         )}
         <MainSection fileInputProps={fileInputProps} {...props} />
       </div>
-      {!fileInputProps.disabled && errors?.length > 0 && (
+      {errors?.length > 0 && (
         <div className="flex flex-col gap-1">
           {errors?.map((error, index) => (
             <p

@@ -1,17 +1,72 @@
 import z from "zod";
 import {
-  fileValidation,
+  singleFileOrUrlValidation,
   zodEnums,
   zodStringOptional,
   zodStringRequired,
 } from "../../../utils/zod";
 import { regexes } from "../../../constants";
 
+const commonPasswordFields = {
+  blockSingleSpace: true,
+  min: 6,
+  max: 20,
+  customRegexes: [
+    {
+      regex: regexes.atLeastOneUppercaseLetter,
+      message: "must contain at least one uppercase letter",
+    },
+    {
+      regex: regexes.atLeastOneLowercaseLetter,
+      message: "must contain at least one lowercase letter",
+    },
+    {
+      regex: regexes.atLeastOneDigit,
+      message: "must contain at least one number",
+    },
+    {
+      regex: regexes.atLeastOneSpecialCharacter,
+      message: "must contain at least one special character e.g. @$!%*?&#",
+    },
+    {
+      regex: regexes.password,
+      message:
+        "must contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
+    },
+  ],
+};
+
+const emailSchema = z.object({
+  email: zodStringRequired({
+    field: "email",
+    showingFieldName: "Email",
+    blockSingleSpace: true,
+    customRegexes: [{ regex: regexes.validEmail, message: "must be a valid" }],
+  }).toLowerCase(),
+});
+
+export const registerOtpSchema = emailSchema;
+
+export const forgotPasswordSchema = emailSchema;
+
 export const registerSchema = z.object({
-  profilePic: fileValidation({
+  profilePic: singleFileOrUrlValidation({
     field: "profilePic",
     showingFieldName: "Profile Pic",
     required: false,
+  }),
+  otp: zodStringRequired({
+    field: "otp",
+    showingFieldName: "OTP",
+    blockSingleSpace: true,
+    min: 6,
+    max: 6,
+    customRegexes: [
+      {
+        regex: regexes.validOTP,
+        message: "must be a valid 6 digit number. It can contain only digits",
+      },
+    ],
   }),
   firstName: zodStringRequired({
     field: "firstName",
@@ -61,64 +116,14 @@ export const registerSchema = z.object({
     ],
   }),
   password: zodStringRequired({
+    ...commonPasswordFields,
     field: "password",
     showingFieldName: "Password",
-    blockSingleSpace: true,
-    min: 6,
-    max: 20,
-    customRegexes: [
-      {
-        regex: regexes.atLeastOneUppercaseLetter,
-        message: "must contain at least one uppercase letter",
-      },
-      {
-        regex: regexes.atLeastOneLowercaseLetter,
-        message: "must contain at least one lowercase letter",
-      },
-      {
-        regex: regexes.atLeastOneDigit,
-        message: "must contain at least one number",
-      },
-      {
-        regex: regexes.atLeastOneSpecialCharacter,
-        message: "must contain at least one special character e.g. @$!%*?&#",
-      },
-      {
-        regex: regexes.password,
-        message:
-          "must contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
-      },
-    ],
   }),
   confirmPassword: zodStringRequired({
+    ...commonPasswordFields,
     field: "confirmPassword",
     showingFieldName: "Confirm Password",
-    blockSingleSpace: true,
-    min: 6,
-    max: 20,
-    customRegexes: [
-      {
-        regex: regexes.atLeastOneUppercaseLetter,
-        message: "must contain at least one uppercase letter",
-      },
-      {
-        regex: regexes.atLeastOneLowercaseLetter,
-        message: "must contain at least one lowercase letter",
-      },
-      {
-        regex: regexes.atLeastOneDigit,
-        message: "must contain at least one number",
-      },
-      {
-        regex: regexes.atLeastOneSpecialCharacter,
-        message: "must contain at least one special character e.g. @$!%*?&#",
-      },
-      {
-        regex: regexes.password,
-        message:
-          "must contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
-      },
-    ],
   }),
   remember: z.boolean().optional().default(false),
 });
@@ -133,12 +138,7 @@ export const loginSchema = z
     email: zodStringOptional({
       field: "email",
       showingFieldName: "Email",
-      customRegexes: [
-        {
-          regex: regexes.validEmail,
-          message: "must be valid",
-        },
-      ],
+      customRegexes: [{ regex: regexes.validEmail, message: "must be valid" }],
     }).transform((val) => val?.toLowerCase()),
     phoneNumber: zodStringOptional({
       field: "phoneNumber",
@@ -152,34 +152,9 @@ export const loginSchema = z
       ],
     }),
     password: zodStringRequired({
+      ...commonPasswordFields,
       field: "password",
       showingFieldName: "Password",
-      blockSingleSpace: true,
-      min: 6,
-      max: 20,
-      customRegexes: [
-        {
-          regex: regexes.atLeastOneUppercaseLetter,
-          message: "must contain at least one uppercase letter",
-        },
-        {
-          regex: regexes.atLeastOneLowercaseLetter,
-          message: "must contain at least one lowercase letter",
-        },
-        {
-          regex: regexes.atLeastOneDigit,
-          message: "must contain at least one number",
-        },
-        {
-          regex: regexes.atLeastOneSpecialCharacter,
-          message: "must contain at least one special character e.g. @$!%*?&#",
-        },
-        {
-          regex: regexes.password,
-          message:
-            "must contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
-        },
-      ],
     }),
     remember: z.boolean().optional().default(false),
   })
@@ -205,7 +180,7 @@ export const loginSchema = z
   });
 
 export const updateUserSchema = z.object({
-  profilePic: fileValidation({
+  profilePic: singleFileOrUrlValidation({
     field: "profilePic",
     showingFieldName: "Profile Pic",
   }),
@@ -260,3 +235,67 @@ export const updateUserSchema = z.object({
     ],
   }),
 });
+
+const baseNewConfirmSchema = z.object({
+  newPassword: zodStringRequired({
+    ...commonPasswordFields,
+    field: "newPassword",
+    showingFieldName: "New password",
+  }),
+  confirmPassword: zodStringRequired({
+    ...commonPasswordFields,
+    field: "confirmPassword",
+    showingFieldName: "Confirm password",
+  }),
+});
+
+export const updatePasswordSchema = baseNewConfirmSchema.superRefine(
+  (data, ctx) => {
+    if (data.newPassword !== data.confirmPassword) {
+      ctx.addIssue({
+        path: ["confirmPassword"],
+        code: z.ZodIssueCode.custom,
+        message: "Confirm password does not match new password",
+      });
+    }
+  }
+);
+
+export const changePasswordSchema = baseNewConfirmSchema
+  .extend({
+    oldPassword: zodStringRequired({
+      ...commonPasswordFields,
+      field: "oldPassword",
+      showingFieldName: "Current password",
+    }),
+  })
+  .superRefine((data, ctx) => {
+    const { oldPassword, newPassword, confirmPassword } = data;
+
+    // Old & New must not be same
+    if (oldPassword === newPassword) {
+      ctx.addIssue({
+        path: ["newPassword"],
+        code: z.ZodIssueCode.custom,
+        message: "New password must be different from current password",
+      });
+    }
+
+    // Old & Confirm must not be same
+    if (oldPassword === confirmPassword) {
+      ctx.addIssue({
+        path: ["confirmPassword"],
+        code: z.ZodIssueCode.custom,
+        message: "Confirm password must be different from current password",
+      });
+    }
+
+    // New & Confirm must match
+    if (newPassword !== confirmPassword) {
+      ctx.addIssue({
+        path: ["confirmPassword"],
+        code: z.ZodIssueCode.custom,
+        message: "Confirm password does not match new password",
+      });
+    }
+  });

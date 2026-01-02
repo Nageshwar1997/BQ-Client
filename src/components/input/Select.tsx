@@ -67,7 +67,12 @@ const Select = ({
             </div>
           ) : null}
           {/* Hidden */}
-          <select ref={selectRef} {...selectProps} className="sr-only">
+          <select
+            ref={selectRef}
+            {...selectProps}
+            id={selectProps.id || selectProps.name}
+            className="sr-only"
+          >
             {options.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.name}
@@ -143,7 +148,7 @@ const Select = ({
         </div>
       </div>
 
-      {!selectProps?.disabled && error && (
+      {error && (
         <p className="w-full text-start flex gap-1 items-center text-[11px] leading-tight text-red-500">
           <InfoIcon className="min-w-3 min-h-3 w-3 h-3 md:min-w-4 md:min-h-4 md:w-4 md:h-4 fill-red-500" />
           <span className="leading-none line-clamp-2">{error}</span>
