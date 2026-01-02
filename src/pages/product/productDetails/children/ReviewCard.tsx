@@ -109,8 +109,6 @@ const ReviewCard = ({
           <img
             src={review.user.profilePic}
             alt="Profile"
-            crossOrigin="anonymous"
-            referrerPolicy="no-referrer"
             className="w-10 h-10 rounded-full aspect-square object-cover object-center"
           />
         ) : (
