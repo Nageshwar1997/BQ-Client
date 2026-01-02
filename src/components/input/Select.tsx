@@ -70,7 +70,7 @@ const Select = ({
           <select
             ref={selectRef}
             {...selectProps}
-            id={selectProps.name}
+            id={selectProps.id || selectProps.name}
             className="sr-only"
           >
             {options.map((option) => (
