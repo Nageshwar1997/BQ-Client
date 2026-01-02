@@ -1,6 +1,6 @@
 import z from "zod";
 import {
-  fileValidation,
+  singleFileOrUrlValidation,
   zodEnums,
   zodStringOptional,
   zodStringRequired,
@@ -17,7 +17,7 @@ export const registerOtpSchema = z.object({
 });
 
 export const registerSchema = z.object({
-  profilePic: fileValidation({
+  profilePic: singleFileOrUrlValidation({
     field: "profilePic",
     showingFieldName: "Profile Pic",
     required: false,
@@ -222,7 +222,7 @@ export const loginSchema = z
   });
 
 export const updateUserSchema = z.object({
-  profilePic: fileValidation({
+  profilePic: singleFileOrUrlValidation({
     field: "profilePic",
     showingFieldName: "Profile Pic",
   }),

@@ -1,7 +1,7 @@
 import z from "zod";
 import {
+  singleFileOrUrlValidation,
   zodEnums,
-  fileValidation,
   zodStringOptional,
   zodStringRequired,
 } from "../utils/zod";
@@ -137,25 +137,25 @@ export const businessDetailsAddressSchema = z.object({
 });
 
 export const requiredDocumentsSchema = z.object({
-  gst: fileValidation({
+  gst: singleFileOrUrlValidation({
     field: "gst",
     showingFieldName: "GST Registration Certificate",
     required: true,
     maxImageFileSize: 0.2 * MB,
   }),
-  itr: fileValidation({
+  itr: singleFileOrUrlValidation({
     field: "itr",
     showingFieldName: "Income Tax Proof",
     required: true,
     maxImageFileSize: 0.2 * MB,
   }),
-  addressProof: fileValidation({
+  addressProof: singleFileOrUrlValidation({
     field: "addressProof",
     showingFieldName: "Address Proof",
     required: true,
     maxImageFileSize: 0.2 * MB,
   }),
-  geoTagging: fileValidation({
+  geoTagging: singleFileOrUrlValidation({
     field: "geoTagging",
     showingFieldName: "Geo-Tagging Image",
     required: true,

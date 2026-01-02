@@ -7,6 +7,25 @@ export interface ZodCommonConfigs {
   showingParentFieldName?: string;
 }
 
+export interface ZodFileConfigs extends ZodCommonConfigs {
+  maxVideoFileSize?: number;
+  maxImageFileSize?: number;
+  fileOrUrl: unknown;
+  index?: number;
+  ctx: RefinementCtx;
+  required?: boolean;
+}
+
+export type ZodSingleFileConfigs = Omit<
+  ZodFileConfigs,
+  "index" | "ctx" | "fileOrUrl"
+>;
+
+export interface ZodMultipleFileConfigs extends ZodSingleFileConfigs {
+  maxImages?: number;
+  maxVideos?: number;
+}
+
 export interface ZodCompareConfigs {
   min?: number | undefined;
   max?: number | undefined;
@@ -39,12 +58,3 @@ export type ZodOptionalNumberConfigs = ZodNumberConfigs; // Optional
 
 // Enums
 export type ZodEnumsConfigs = ZodCommonConfigs;
-
-export interface ZodFileConfigs extends ZodCommonConfigs {
-  maxVideoFileSize?: number;
-  maxImageFileSize?: number;
-  fileOrUrl: unknown;
-  index?: number;
-  ctx: RefinementCtx;
-  required?: boolean;
-}

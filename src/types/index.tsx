@@ -52,14 +52,9 @@ export type TAuthAction = {
 
 export interface ProfilePicInputProps
   extends ClassName,
-    Pick<TBaseInput, "className" | "error"> {
-  fileInputProps: Omit<
-    InputHTMLAttributes<HTMLInputElement>,
-    "type" | "value"
-  > & {
-    onChange?: (file: File | null) => void;
-  };
-  previewUrl?: string;
+    Pick<TBaseInput, "register" | "error"> {
+  fileInputProps: Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "value">;
+  src?: string;
 }
 
 export type TFile = "image" | "video";
@@ -132,7 +127,7 @@ export type TLogin = z.infer<typeof loginSchema>;
 
 export type TPasswordField = keyof Pick<
   TRegister,
-  "password" | "confirmPassword" | "otp"
+  "password" | "confirmPassword"
 >;
 
 export interface RegisterInputMapDataProps {
