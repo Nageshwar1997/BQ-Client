@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { FieldErrors, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { RegisterTextContent, registerInputMapData } from "./data";
-import { TPasswordField } from "../../types";
+import { IInput, RegisterInputMapDataProps, TPasswordField } from "../../types";
 import AuthRobot from "./components/AuthRobot";
-import UploadProfile from "./components/UploadProfile";
+import ProfilePicInput from "./components/ProfilePicInput";
 import TextDisplay from "../../components/TextDisplay";
 import SocialAuth from "./components/SocialAuth";
 import Input from "../../components/input/Input";
@@ -26,8 +26,76 @@ import usePathParams from "../../hooks/usePathParams";
 import DarkMode from "../../components/DarkMode";
 import { PASSWORD_FIELDS } from "../../constants";
 import { useUserStore } from "../../store/user.store";
-import { saveLocalToken, saveSessionToken } from "../../utils";
+import {
+  getFileFromFileList,
+  saveLocalToken,
+  saveSessionToken,
+} from "../../utils";
 import ResendOtp from "../../components/ResendOtp";
+
+type TRegisterInput = {
+  input: RegisterInputMapDataProps;
+  isPending: boolean;
+  errors: FieldErrors<z.infer<typeof registerSchema>>;
+  register: IInput["register"];
+};
+
+const RegisterInput = ({
+  input,
+  register,
+  isPending,
+  errors,
+}: TRegisterInput) => {
+  const [showPasswords, setShowPasswords] = useState<
+    Record<TPasswordField, boolean>
+  >({
+    password: false,
+    confirmPassword: false,
+  });
+
+  const togglePasswordVisibility = (field: TPasswordField) => {
+    setShowPasswords((prevState) => ({
+      ...prevState,
+      [field]: !prevState[field],
+    }));
+  };
+  return (
+    <Input
+      inputProps={{
+        name: input.name,
+        placeholder: input.placeholder,
+        autoComplete: input.autoComplete,
+        type: PASSWORD_FIELDS.includes(input.name as TPasswordField)
+          ? showPasswords[input.name as TPasswordField]
+            ? "text"
+            : input.type
+          : input.type,
+        disabled: isPending,
+      }}
+      label={input.label}
+      register={register}
+      error={errors[input.name]?.message}
+      icons={{
+        ...(input.name === "phoneNumber" && {
+          left: { text: "+91" },
+        }),
+        ...(PASSWORD_FIELDS.includes(input.name as TPasswordField) && {
+          right: {
+            icon:
+              PASSWORD_FIELDS.includes(input.name as TPasswordField) &&
+              (showPasswords[input.name as TPasswordField] ? (
+                <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+              ) : (
+                <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+              )),
+            onClick: () =>
+              togglePasswordVisibility(input.name as TPasswordField),
+          },
+        }),
+      }}
+    />
+  );
+};
 
 const RegisterForm = ({
   otpToken = "",
@@ -46,18 +114,9 @@ const RegisterForm = ({
   const { navigate } = usePathParams();
   const { setUser } = useUserStore();
 
-  const [showPasswords, setShowPasswords] = useState<
-    Record<TPasswordField, boolean>
-  >({
-    password: false,
-    confirmPassword: false,
-    otp: false,
-  });
-
   const {
     watch,
     register,
-    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm<z.infer<typeof registerSchema>>({
@@ -75,14 +134,12 @@ const RegisterForm = ({
     },
   });
 
-  const togglePasswordVisibility = (field: TPasswordField) => {
-    setShowPasswords((prevState) => ({
-      ...prevState,
-      [field]: !prevState[field],
-    }));
-  };
+  const profilePicFile = getFileFromFileList(watch("profilePic"));
 
-  const profilePic = watch("profilePic");
+  const profilePicURL =
+    profilePicFile instanceof File
+      ? URL.createObjectURL(profilePicFile)
+      : undefined;
 
   const onSubmit = async (bodyData: z.infer<typeof registerSchema>) => {
     const formData = new FormData();
@@ -95,9 +152,8 @@ const RegisterForm = ({
     formData.append("phoneNumber", bodyData.phoneNumber);
     formData.append("otp", bodyData.otp);
 
-    const file = bodyData.profilePic;
-    if (file instanceof File) {
-      formData.append("profilePic", file);
+    if (profilePicFile) {
+      formData.append("profilePic", profilePicFile);
     }
     await verifyOtpAsync(
       { otpToken, data: formData },
@@ -140,75 +196,43 @@ const RegisterForm = ({
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <UploadProfile
-          className="!h-56"
-          error={errors?.profilePic?.message}
-          fileInputProps={{
-            name: "profilePic",
-            id: "profilePic",
-            onChange: (file) => {
-              if (file) {
-                setValue("profilePic", file, {
-                  shouldValidate: true,
-                });
-              }
-            },
-          }}
-          previewUrl={
-            profilePic instanceof File ? URL.createObjectURL(profilePic) : ""
-          }
-        />
+        <div className="flex gap-6">
+          <ProfilePicInput
+            className="!max-w-24"
+            src={profilePicURL}
+            error={errors.profilePic?.message}
+            register={register("profilePic")}
+            fileInputProps={{ name: "profilePic" }}
+          />
+          <div className="space-y-6 flex-1 border">
+            {registerInputMapData?.slice(0, 2).map((input, index) => (
+              <RegisterInput
+                key={index}
+                register={register(input.name)}
+                errors={errors}
+                input={input}
+                isPending={isPending}
+              />
+            ))}
+          </div>
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-5 lg:gap-y-6">
-          {registerInputMapData?.map((input, index) => (
+          {registerInputMapData?.slice(2).map((input, index) => (
             <div
               key={index}
               className={`${
-                ![
-                  "firstName",
-                  "lastName",
-                  ...PASSWORD_FIELDS.filter((f) => f !== "otp"),
-                ].includes(input.name)
+                !["firstName", "lastName", ...PASSWORD_FIELDS].includes(
+                  input.name
+                )
                   ? "lg:col-span-2"
                   : ""
               }`}
             >
-              <Input
-                inputProps={{
-                  name: input.name,
-                  placeholder: input.placeholder,
-                  autoComplete: input.autoComplete,
-                  type: PASSWORD_FIELDS.includes(input.name as TPasswordField)
-                    ? showPasswords[input.name as TPasswordField]
-                      ? "text"
-                      : input.type
-                    : input.type,
-                  disabled: input.name === "email" || isPending,
-                }}
-                label={input.label}
+              <RegisterInput
                 register={register(input.name)}
-                error={errors[input.name]?.message}
-                icons={{
-                  ...(input.name === "phoneNumber" && {
-                    left: { text: "+91" },
-                  }),
-                  ...(PASSWORD_FIELDS.includes(
-                    input.name as TPasswordField
-                  ) && {
-                    right: {
-                      icon:
-                        PASSWORD_FIELDS.includes(
-                          input.name as TPasswordField
-                        ) &&
-                        (showPasswords[input.name as TPasswordField] ? (
-                          <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-                        ) : (
-                          <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-                        )),
-                      onClick: () =>
-                        togglePasswordVisibility(input.name as TPasswordField),
-                    },
-                  }),
-                }}
+                errors={errors}
+                input={input}
+                isPending={isPending}
               />
             </div>
           ))}
@@ -290,7 +314,7 @@ const Register = () => {
                 {/* Register Form */}
                 {data?.otpToken && email ? (
                   <RegisterForm
-                    otpToken={data?.otpToken}
+                    otpToken={data.otpToken}
                     email={email}
                     onReset={reset}
                   />

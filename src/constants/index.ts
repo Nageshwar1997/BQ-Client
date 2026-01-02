@@ -80,7 +80,6 @@ export const ALLOWED_IMAGE_TYPES = [
 export const PASSWORD_FIELDS: TPasswordField[] = [
   "password",
   "confirmPassword",
-  "otp",
 ] as const;
 
 export const ALLOWED_VIDEO_TYPES = ["video/mp4", "video/webm"];
