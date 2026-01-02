@@ -404,7 +404,7 @@ export const updatePasswordFields: IChangePassword[] = [
 
 export const changePasswordFields: IChangePassword[] = [
   {
-    name: "oldPassword",
+    name: "oldPassword" as IChangePassword["name"],
     label: "Current Password",
     type: "password",
     autoComplete: "current-password",

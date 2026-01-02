@@ -7,10 +7,14 @@ import {
 import {
   add_wishlist_product,
   change_password,
+  check_reset_password_token_validity,
   create_seller_request,
+  forgot_password,
   get_user_details,
   get_user_wishlist,
   remove_wishlist_product,
+  reset_password,
+  reset_password_send_link,
   update_password,
   update_user_details,
 } from "./user.api";
@@ -61,6 +65,48 @@ export const useUpdatePassword = () => {
     onSuccess: (data) => {
       toastSuccessMessage(data?.message || "Password updated successfully!");
       queryClient.invalidateQueries({ queryKey: ["get_user_details"] });
+    },
+    onError: (error) => toastErrorMessage(error),
+  });
+};
+
+export const useCheckResetPasswordTokenValidity = (token: string) => {
+  return useQuery({
+    queryKey: ["check_reset_password_token_validity"],
+    queryFn: () => check_reset_password_token_validity(token),
+    retry: false,
+    enabled: true,
+    refetchOnWindowFocus: false,
+  });
+};
+
+export const useResetPasswordSendLink = () => {
+  return useMutation({
+    mutationKey: ["reset_password_send_link"],
+    mutationFn: reset_password_send_link,
+    onSuccess: (data) => {
+      toastSuccessMessage(data?.message || "Password updated successfully!");
+    },
+    onError: (error) => toastErrorMessage(error),
+  });
+};
+
+export const useResetPassword = () => {
+  return useMutation({
+    mutationKey: ["reset_password"],
+    mutationFn: reset_password,
+    onSuccess: (data) => {
+      toastSuccessMessage(data?.message || "Password Reset successfully!");
+    },
+    onError: (error) => toastErrorMessage(error),
+  });
+};
+export const useForgotPassword = () => {
+  return useMutation({
+    mutationKey: ["forgot_password"],
+    mutationFn: forgot_password,
+    onSuccess: (data) => {
+      toastSuccessMessage(data?.message || "Password Reset successfully!");
     },
     onError: (error) => toastErrorMessage(error),
   });

@@ -638,6 +638,6 @@ export type TChatData = {
 export interface IChangePassword
   extends Omit<RegisterInputMapDataProps, "name"> {
   name: keyof z.infer<
-    typeof updatePasswordSchema & typeof changePasswordSchema
+    typeof updatePasswordSchema | typeof changePasswordSchema
   >;
 }

@@ -22,6 +22,16 @@ export const userRoutes = {
   wishlist: { method: "GET", url: "/users/wishlist" },
   changePassword: { method: "PATCH", url: "/users/user/change-password" },
   updatePassword: { method: "PATCH", url: "/users/user/update-password" },
+  resetPasswordSendLink: {
+    method: "PATCH",
+    url: "/users/user/send-reset-password-link",
+  },
+  resetPassword: { method: "PATCH", url: "/users/user/reset-password" },
+  checkResetPasswordTokenValidity: {
+    method: "GET",
+    url: "/users/user/check-token-validity",
+  },
+  forgotPassword: { method: "POST", url: "/users/user/forgot-password" },
 };
 
 export const mediaRoutes = {

@@ -36,7 +36,7 @@ const commonPasswordFields = {
   ],
 };
 
-export const registerOtpSchema = z.object({
+const emailSchema = z.object({
   email: zodStringRequired({
     field: "email",
     showingFieldName: "Email",
@@ -44,6 +44,10 @@ export const registerOtpSchema = z.object({
     customRegexes: [{ regex: regexes.validEmail, message: "must be a valid" }],
   }).toLowerCase(),
 });
+
+export const registerOtpSchema = emailSchema;
+
+export const forgotPasswordSchema = emailSchema;
 
 export const registerSchema = z.object({
   profilePic: singleFileOrUrlValidation({

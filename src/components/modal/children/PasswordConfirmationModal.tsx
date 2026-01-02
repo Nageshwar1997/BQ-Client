@@ -14,6 +14,7 @@ import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "../../../icons";
 import {
   useChangePassword,
+  useResetPasswordSendLink,
   useUpdatePassword,
 } from "../../../api/user/user.service";
 import { useUserStore } from "../../../store/user.store";
@@ -23,6 +24,11 @@ const baseDefaultValues = { newPassword: "", confirmPassword: "" };
 const PasswordConfirmationModal = () => {
   const { queryParams, removeParam } = useQueryParams();
   const { setUser } = useUserStore();
+
+  const {
+    mutateAsync: resetPasswordSendLinkAsync,
+    isPending: isResetPasswordSendLinkPending,
+  } = useResetPasswordSendLink();
 
   const {
     mutateAsync: changePasswordAsync,
@@ -74,6 +80,10 @@ const PasswordConfirmationModal = () => {
       : baseDefaultValues,
   });
 
+  const handleResetPasswordSendLink = async () => {
+    await resetPasswordSendLinkAsync(undefined, { onSuccess: handleClose });
+  };
+
   const handleClose = () => {
     removeParam("confirm");
     reset();
@@ -110,38 +120,9 @@ const PasswordConfirmationModal = () => {
             Enter your passwords
           </h4>
           <hr className="w-full h-px block border-none bg-gradient-line" />
-          {isChangePassword
-            ? changePasswordFields.map((field) => (
-                <Input
-                  key={field.name}
-                  label={field.label}
-                  register={register(field.name)}
-                  error={
-                    (
-                      errors as FieldErrors<
-                        z.infer<typeof changePasswordSchema>
-                      >
-                    )[field.name]?.message
-                  }
-                  inputProps={{
-                    name: field.name,
-                    disabled: isPending,
-                    type: showPasswords[field.name] ? "text" : field.type,
-                    placeholder: field.placeholder,
-                  }}
-                  icons={{
-                    right: {
-                      icon: showPasswords[field.name] ? (
-                        <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-                      ) : (
-                        <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
-                      ),
-                      onClick: () => togglePasswordVisibility(field.name),
-                    },
-                  }}
-                />
-              ))
-            : updatePasswordFields.map((field) => (
+          {isChangePassword ? (
+            <>
+              {changePasswordFields.map((field) => (
                 <Input
                   key={field.name}
                   label={field.label}
@@ -171,6 +152,45 @@ const PasswordConfirmationModal = () => {
                   }}
                 />
               ))}
+              <button
+                onClick={handleResetPasswordSendLink}
+                type="button"
+                disabled={isResetPasswordSendLinkPending}
+                className="ml-auto bg-clip-text text-transparent bg-accent-duo text-[10px] sm:text-[13px] md:text-sm mr-2 hover:underline whitespace-nowrap disabled:pointer-events-none"
+              >
+                Not remembered your password?
+              </button>
+            </>
+          ) : (
+            updatePasswordFields.map((field) => (
+              <Input
+                key={field.name}
+                label={field.label}
+                register={register(field.name)}
+                error={
+                  (errors as FieldErrors<z.infer<typeof updatePasswordSchema>>)[
+                    field.name
+                  ]?.message
+                }
+                inputProps={{
+                  name: field.name,
+                  disabled: isPending,
+                  type: showPasswords[field.name] ? "text" : field.type,
+                  placeholder: field.placeholder,
+                }}
+                icons={{
+                  right: {
+                    icon: showPasswords[field.name] ? (
+                      <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                    ) : (
+                      <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                    ),
+                    onClick: () => togglePasswordVisibility(field.name),
+                  },
+                }}
+              />
+            ))
+          )}
         </div>
         <div className="w-full flex items-center justify-center gap-4">
           <Button

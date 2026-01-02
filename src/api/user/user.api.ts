@@ -87,6 +87,76 @@ export const update_password = async (data: TQueryParams) => {
   }
 };
 
+export const check_reset_password_token_validity = async (token: string) => {
+  try {
+    const { method, url } = userRoutes.checkResetPasswordTokenValidity;
+    const response = await api.request({
+      method,
+      url,
+      headers: { Authorization: token },
+    });
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      // If it's an Axios error
+      throw error?.response?.data?.message || "API Error occurred";
+    }
+    throw "Something went wrong!"; // For non-Axios errors
+  }
+};
+
+export const reset_password_send_link = async () => {
+  try {
+    const user_token = getUserToken();
+    const { method, url } = userRoutes.resetPasswordSendLink;
+    const response = await api.request({
+      method,
+      url,
+      headers: { Authorization: user_token },
+    });
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      // If it's an Axios error
+      throw error?.response?.data?.message || "API Error occurred";
+    }
+    throw "Something went wrong!"; // For non-Axios errors
+  }
+};
+
+export const reset_password = async (data: TQueryParams) => {
+  try {
+    const { token, ...restData } = data;
+    const { method, url } = userRoutes.resetPassword;
+    const response = await api.request({
+      method,
+      url,
+      data: restData,
+      headers: { Authorization: token },
+    });
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      // If it's an Axios error
+      throw error?.response?.data?.message || "API Error occurred";
+    }
+    throw "Something went wrong!"; // For non-Axios errors
+  }
+};
+export const forgot_password = async (email: string) => {
+  try {
+    const { method, url } = userRoutes.forgotPassword;
+    const response = await api.request({ method, url: `${url}/${email}` });
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      // If it's an Axios error
+      throw error?.response?.data?.message || "API Error occurred";
+    }
+    throw "Something went wrong!"; // For non-Axios errors
+  }
+};
+
 export const create_seller_request = async (data: FormData) => {
   try {
     const user_token = getUserToken();
