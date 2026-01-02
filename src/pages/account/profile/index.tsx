@@ -4,21 +4,14 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { updateUserSchema } from "../../auth/helpers/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  EditIcon,
-  ImageUpIcon,
-  InfoIcon,
-  RefreshIcon,
-  UserCircleIcon,
-} from "../../../icons";
+import { EditIcon, RefreshIcon } from "../../../icons";
 import Button from "../../../components/button/Button";
-import FileInput from "../../../components/input/FileInput";
+import ProfilePicInput from "../../auth/components/ProfilePicInput";
 import { useRef, useState } from "react";
 import { UserTypes } from "../../../types";
-import { deepEqual } from "../../../utils";
+import { deepEqual, getFileFromFileList } from "../../../utils";
 import { useUpdateUser } from "../../../api/user/user.service";
 import { toastErrorMessage } from "../../../utils/toasts";
-import { ALLOWED_IMAGE_TYPES } from "../../../constants";
 
 const Profile = () => {
   const { mutateAsync, isPending } = useUpdateUser();
@@ -54,14 +47,10 @@ const Profile = () => {
     },
   });
 
-  const profilePicList = watch("profilePic");
+  const profilePicFile = getFileFromFileList(watch("profilePic"));
 
-  const profilePic =
-    profilePicList instanceof FileList && profilePicList?.[0]
-      ? profilePicList[0]
-      : null;
-
-  const profilePicURL = profilePic ? URL.createObjectURL(profilePic) : null;
+  const profilePicURL =
+    profilePicFile instanceof File ? URL.createObjectURL(profilePicFile) : null;
 
   const handleReset = () => {
     reset();
@@ -109,8 +98,8 @@ const Profile = () => {
       }
     });
 
-    if (profilePic) {
-      formData.append("profilePic", profilePic);
+    if (profilePicFile) {
+      formData.append("profilePic", profilePicFile);
     }
 
     await mutateAsync(formData, { onSuccess: (data) => setUser(data.user) });
@@ -133,45 +122,14 @@ const Profile = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
         {/* PROFILE PIC + CHANGE PASSWORD */}
         <div className="flex justify-between gap-6 mb-2">
-          <label
-            htmlFor="profilePic"
-            className="flex flex-col max-w-40 w-full group cursor-pointer"
-          >
-            <div className="w-full h-full relative border border-tertiary-50 overflow-hidden rounded-lg">
-              {profilePicURL || user?.profilePic ? (
-                <img
-                  src={profilePicURL ? profilePicURL : user?.profilePic}
-                  alt="Profile Pic"
-                  className="w-full max-h-40 aspect-square object-cover"
-                />
-              ) : (
-                <UserCircleIcon className="stroke-tertiary w-full h-full p-5" />
-              )}
-
-              <div className="absolute bottom-0 right-0 p-1 bg-tertiary rounded-tl-lg">
-                <ImageUpIcon className="stroke-tertiary-inverted group-hover:stroke-primary-inverted" />
-              </div>
-            </div>
-
-            {errors.profilePic?.message && (
-              <p className="mt-2 w-full text-start flex gap-1 items-center text-[11px] leading-tight text-red-500">
-                <InfoIcon className="min-w-3 min-h-3 w-3 h-3 md:min-w-4 md:min-h-4 md:w-4 md:h-4 fill-red-500" />
-                <span className="leading-none line-clamp-2 text-wrap">
-                  {errors.profilePic?.message}
-                </span>
-              </p>
-            )}
-
-            <FileInput
-              register={register("profilePic")}
-              fileInputProps={{
-                name: "profilePic",
-                multiple: false,
-                accept: ALLOWED_IMAGE_TYPES.join(", "),
-              }}
-              containerClassName="hidden"
-            />
-          </label>
+          <ProfilePicInput
+            src={profilePicURL || user?.profilePic}
+            error={errors.profilePic?.message}
+            register={register("profilePic")}
+            fileInputProps={{
+              name: "profilePic",
+            }}
+          />
           <Button
             pattern="outline"
             content={
