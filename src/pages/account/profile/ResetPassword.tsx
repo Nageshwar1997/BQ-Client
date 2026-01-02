@@ -62,7 +62,7 @@ const ResetPassword = () => {
   useEffect(() => {
     if (!queryParams.token) {
       toastErrorMessage("Invalid URL");
-      setTimeout(() => window.close(), 2000);
+      setTimeout(() => handleClose(), 2000);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
