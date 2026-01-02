@@ -155,22 +155,23 @@ const Profile = () => {
           </div>
           <div className="grid sm:grid-cols-2 gap-x-4 gap-y-6">
             {UPDATE_PROFILE_FIELDS.map((field) => {
+              const { label, placeholder, autoComplete, type } = field;
+              const name = field.name as keyof z.infer<typeof updateUserSchema>;
               const isEditable =
-                field.name === "email"
-                  ? !isSocialAuthOnly && isManualExist
-                  : true;
+                name === "email" ? !isSocialAuthOnly && isManualExist : true;
               return (
                 <Input
-                  key={field.name}
-                  label={field.label}
-                  register={register(field.name)}
-                  needRef={focusRef.current === field.name}
-                  error={errors[field.name]?.message}
+                  key={name}
+                  label={label}
+                  register={register(name)}
+                  needRef={focusRef.current === name}
+                  error={errors[name]?.message}
                   inputProps={{
-                    type: field.type,
-                    name: field.name,
-                    placeholder: field.placeholder,
-                    disabled: !editableInputs[field.name],
+                    type,
+                    name,
+                    placeholder,
+                    disabled: !editableInputs[name],
+                    autoComplete,
                   }}
                   icons={{
                     ...(isEditable && {
@@ -179,17 +180,15 @@ const Profile = () => {
                           <EditIcon className="w-5 h-5 stroke-primary opacity-50 group-hover:opacity-100" />
                         ),
                         onClick: () => {
-                          focusRef.current = field.name;
+                          focusRef.current = name;
                           setEditableInputs((prev) => ({
                             ...prev,
-                            [field.name]: true,
+                            [name]: true,
                           }));
                         },
                       },
                     }),
-                    ...(field.name === "phoneNumber" && {
-                      left: { text: "+91" },
-                    }),
+                    ...(name === "phoneNumber" && { left: { text: "+91" } }),
                   }}
                 />
               );

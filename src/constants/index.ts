@@ -1,4 +1,3 @@
-import z from "zod";
 import {
   CareIcon,
   DownloadIcon,
@@ -11,7 +10,6 @@ import {
   UserCircleIcon,
 } from "../icons";
 import { IChangePassword, TChatData, TPasswordField, TRegexes } from "../types";
-import { updateUserSchema } from "../pages/auth/helpers/auth.schema";
 
 export * from "./categories";
 
@@ -356,20 +354,34 @@ export const ORDER_CANCEL_REASONS = [
   "Other",
 ];
 
-export const UPDATE_PROFILE_FIELDS: {
-  name: keyof z.infer<typeof updateUserSchema>;
-  label: string;
-  placeholder: string;
-  type?: string;
-}[] = [
-  { name: "firstName", label: "First Name", placeholder: "Enter first name" },
-  { name: "lastName", label: "Last Name", placeholder: "Enter last name" },
-  { name: "email", label: "Email", placeholder: "Enter email address" },
+export const UPDATE_PROFILE_FIELDS = [
+  {
+    name: "firstName",
+    label: "First Name",
+    placeholder: "Enter first name",
+    type: "text",
+    autoComplete: "given-name",
+  },
+  {
+    name: "lastName",
+    label: "Last Name",
+    placeholder: "Enter last name",
+    type: "text",
+    autoComplete: "given-name",
+  },
+  {
+    name: "email",
+    label: "Email",
+    placeholder: "Enter email address",
+    type: "text",
+    autoComplete: "email",
+  },
   {
     name: "phoneNumber",
     label: "Phone Number",
     placeholder: "Enter phone number",
     type: "number",
+    autoComplete: "tel",
   },
 ];
 
