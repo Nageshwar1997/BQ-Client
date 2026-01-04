@@ -46,4 +46,4 @@ export const {
   // X
   // Y
   // Z
-} = import.meta.env;
+} = import.meta.env as Record<string, string>;
