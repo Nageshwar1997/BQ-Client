@@ -12,6 +12,8 @@ export const {
 
   // F
   // G
+  VITE_GOOGLE_MAPS_API_KEY,
+
   // H
   // I
   VITE_IS_DEV,

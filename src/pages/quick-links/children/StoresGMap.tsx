@@ -10,6 +10,7 @@ import "./GoogleMap.css";
 import Button from "../../../components/button/Button";
 import { NavigationIcon } from "../../../icons";
 import ShowApiStatus from "../../../components/api-status/ShowApiStatus";
+import { VITE_GOOGLE_MAPS_API_KEY } from "../../../envs";
 
 interface Store {
   id: number;
@@ -35,7 +36,7 @@ const stores: Store[] = [
 
 const StoresGMap = () => {
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY!,
+    googleMapsApiKey: VITE_GOOGLE_MAPS_API_KEY,
   });
   const [center, setCenter] = useState<{ lat: number; lng: number }>({
     lat: 19.12875937998702,
