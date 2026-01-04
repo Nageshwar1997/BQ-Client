@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import { Link, useRouteError } from "react-router-dom";
 
-import { VITE_IS_DEV } from "../../envs/index.env";
+import { VITE_IS_DEV } from "../../envs";
 import Button from "../../components/button/Button";
 
 type TError = {

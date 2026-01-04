@@ -1,7 +1,7 @@
 import {
   VITE_CONTACT_US_GOOGLE_APP_SCRIPTS_URL,
   VITE_OPENING_GOOGLE_APP_SCRIPTS_URL,
-} from "../../envs/index.env";
+} from "../../envs";
 import { TQueryParams } from "../types";
 
 export const send_contact_request_and_mail = async (body: TQueryParams) => {

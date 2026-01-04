@@ -11,7 +11,7 @@ import {
   VITE_IS_DEV,
   VITE_LOCALHOST_BACKEND_URL,
   VITE_PRODUCTION_BACKEND_URL,
-} from "../envs/index.env";
+} from "../envs";
 import { FetchedReviewType, IOrder, TPossibleTimeFormats } from "../types";
 import { ORDER_STATUS, ORDER_STATUS_CLASSES } from "../constants";
 const TOKEN_KEY = "user_token";

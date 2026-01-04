@@ -7,7 +7,7 @@ import {
 } from "../../../api/order/order.service";
 import { useClearCart } from "../../../api/cart/cart.service";
 import { toastErrorMessage } from "../../../utils/toasts";
-import { VITE_IS_DEV, VITE_RAZORPAY_KEY_ID } from "../../../envs/index.env";
+import { VITE_IS_DEV, VITE_RAZORPAY_KEY_ID } from "../../../envs";
 import { useUserStore } from "../../../store/user.store";
 import usePathParams from "../../../hooks/usePathParams";
 import AddressInfo from "../../address/children/AddressInfo";

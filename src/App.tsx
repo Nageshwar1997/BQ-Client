@@ -5,7 +5,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
 import router from "./routes";
 import useThemeStore from "./store/theme.store";
-import { VITE_IS_DEV } from "./envs/index.env";
+import { VITE_IS_DEV } from "./envs";
 
 function App() {
   const { theme } = useThemeStore();
