@@ -3,8 +3,8 @@ export const {
   // B
   // C
   VITE_CONTACT_US_GOOGLE_APP_SCRIPTS_URL,
-  VITE_CONTACT_US_GOOGLE_DEPLOYMENT_ID, // NOTE - This is not used anywhere It's just for convenience
-  VITE_CONTACT_US_GOOGLE_SHEET_URL, // NOTE - This is not used anywhere It's just for convenience
+  // VITE_CONTACT_US_GOOGLE_DEPLOYMENT_ID, // NOTE - This is not used anywhere It's just for convenience
+  // VITE_CONTACT_US_GOOGLE_SHEET_URL, // NOTE - This is not used anywhere It's just for convenience
 
   // D
   // E
@@ -25,8 +25,8 @@ export const {
   // N
   // O
   VITE_OPENING_GOOGLE_APP_SCRIPTS_URL,
-  VITE_OPENING_GOOGLE_DEPLOYMENT_ID, // NOTE - This is not used anywhere It's just for convenience
-  VITE_OPENING_GOOGLE_SHEET_URL, // NOTE - This is not used anywhere It's just for convenience
+  // VITE_OPENING_GOOGLE_DEPLOYMENT_ID, // NOTE - This is not used anywhere It's just for convenience
+  // VITE_OPENING_GOOGLE_SHEET_URL, // NOTE - This is not used anywhere It's just for convenience
 
   // P
   VITE_PRODUCTION_BACKEND_URL,
@@ -34,7 +34,7 @@ export const {
   // Q
   // R
   VITE_RAZORPAY_KEY_ID,
-  VITE_RAZORPAY_KEY_SECRET,
+  // VITE_RAZORPAY_KEY_SECRET, // NOTE - This is not used anywhere It's just for convenience
 
   // S
   // T
