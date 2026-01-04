@@ -1,9 +1,12 @@
-import { envs } from "../../envs/index.env";
+import {
+  VITE_CONTACT_US_GOOGLE_APP_SCRIPTS_URL,
+  VITE_OPENING_GOOGLE_APP_SCRIPTS_URL,
+} from "../../envs/index.env";
 import { TQueryParams } from "../types";
 
 export const send_contact_request_and_mail = async (body: TQueryParams) => {
   try {
-    const resp = await fetch(envs.CONTACT_US_GOOGLE_APP_SCRIPTS_URL, {
+    const resp = await fetch(VITE_CONTACT_US_GOOGLE_APP_SCRIPTS_URL, {
       method: "POST",
       mode: "no-cors",
       headers: { "Content-Type": "application/json" },
@@ -20,9 +23,11 @@ export const send_contact_request_and_mail = async (body: TQueryParams) => {
   }
 };
 
-export const send_job_application_request_and_mail = async (body: TQueryParams) => {
+export const send_job_application_request_and_mail = async (
+  body: TQueryParams
+) => {
   try {
-    const resp = await fetch(envs.OPENING_GOOGLE_APP_SCRIPTS_URL, {
+    const resp = await fetch(VITE_OPENING_GOOGLE_APP_SCRIPTS_URL, {
       method: "POST",
       mode: "no-cors",
       headers: { "Content-Type": "application/json" },

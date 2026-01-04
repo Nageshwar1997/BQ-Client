@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
-import { envs } from "../envs/index.env";
+import { getBackendURL } from "../utils";
 import { TChatData } from "../types";
 import { useUserStore } from "../store/user.store";
 
@@ -34,7 +34,7 @@ export const useSocket = (context: TChatData["context"] | null) => {
       socket.disconnect();
     }
 
-    const newSocket = io(`${envs.BACKEND_URL}/${context}`, {
+    const newSocket = io(`${getBackendURL()}/${context}`, {
       autoConnect: true,
       transports: ["websocket", "polling"],
     });

@@ -6,15 +6,22 @@ import {
   dummyFeedbacks,
   highlightedCategoryOptions,
 } from "../components/navbar/data";
-import { envs } from "../envs/index.env";
+import {
+  VITE_ENCRYPTION_SECRET_KEY,
+  VITE_IS_DEV,
+  VITE_LOCALHOST_BACKEND_URL,
+  VITE_PRODUCTION_BACKEND_URL,
+} from "../envs/index.env";
 import { FetchedReviewType, IOrder, TPossibleTimeFormats } from "../types";
 import { ORDER_STATUS, ORDER_STATUS_CLASSES } from "../constants";
 const TOKEN_KEY = "user_token";
-const SECRET_KEY = envs.ENCRYPTION_SECRET_KEY;
 
 export const encryptData = (data: object | string) => {
   const stringData = typeof data === "string" ? data : JSON.stringify(data);
-  const encrypted = CryptoJS.AES.encrypt(stringData, SECRET_KEY);
+  const encrypted = CryptoJS.AES.encrypt(
+    stringData,
+    VITE_ENCRYPTION_SECRET_KEY
+  );
   return encrypted.toString();
 };
 
@@ -23,7 +30,7 @@ export const decryptData = (
 ): object | string | null => {
   if (!encryptedData) return null;
 
-  const bytes = CryptoJS.AES.decrypt(encryptedData, SECRET_KEY);
+  const bytes = CryptoJS.AES.decrypt(encryptedData, VITE_ENCRYPTION_SECRET_KEY);
   const decrypted = bytes.toString(CryptoJS.enc.Utf8);
 
   if (decrypted) {
@@ -403,3 +410,8 @@ export const getFileFromFileList = (list: unknown) => {
     return null;
   }
 };
+
+export const getBackendURL = (): string =>
+  VITE_IS_DEV === "true"
+    ? VITE_LOCALHOST_BACKEND_URL
+    : VITE_PRODUCTION_BACKEND_URL;
