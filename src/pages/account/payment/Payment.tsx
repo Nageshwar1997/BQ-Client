@@ -7,7 +7,7 @@ import {
 } from "../../../api/order/order.service";
 import { useClearCart } from "../../../api/cart/cart.service";
 import { toastErrorMessage } from "../../../utils/toasts";
-import { envs } from "../../../envs/index.env";
+import { VITE_IS_DEV, VITE_RAZORPAY_KEY_ID } from "../../../envs";
 import { useUserStore } from "../../../store/user.store";
 import usePathParams from "../../../hooks/usePathParams";
 import AddressInfo from "../../address/children/AddressInfo";
@@ -83,7 +83,7 @@ const Payment = () => {
       }
 
       const options = {
-        key: envs.RAZORPAY_KEY_ID,
+        key: VITE_RAZORPAY_KEY_ID,
         amount: createdOrder.razorpayOrder.amount,
         currency: createdOrder.razorpayOrder.currency,
         name: "Beautinique (Beauty Unique)",
@@ -91,7 +91,7 @@ const Payment = () => {
         image: "/images/logo/BQ_gradient_logo.webp",
         order_id: createdOrder.razorpayOrder.id,
         handler: async (response: Record<string, string>) => {
-          if (envs.NODE_ENV === "development") {
+          if (VITE_IS_DEV === "true") {
             console.log("Response", response);
           }
 

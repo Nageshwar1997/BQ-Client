@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import { Link, useRouteError } from "react-router-dom";
 
-import { envs } from "../../envs/index.env";
+import { VITE_IS_DEV } from "../../envs";
 import Button from "../../components/button/Button";
 
 type TError = {
@@ -24,7 +24,7 @@ const Errors = ({ imgText, title, message }: TError) => {
         {title}
       </h1>
       <p className="text-tertiary">{message}</p>
-      {error && envs.NODE_ENV?.includes("development") && (
+      {error && VITE_IS_DEV.includes("true") && (
         <pre className="bg-primary-50 p-2 rounded-lg text-sm text-white max-w-sm text-wrap">
           Error:{" "}
           {error instanceof Error || error instanceof AxiosError
