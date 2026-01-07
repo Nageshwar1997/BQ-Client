@@ -7,9 +7,12 @@ import {
 import {
   add_wishlist_product,
   change_password,
+  check_forgot_password_token_validity,
   check_reset_password_token_validity,
   create_seller_request,
   forgot_password,
+  forgot_password_resend_link,
+  forgot_password_send_link,
   get_user_details,
   get_user_wishlist,
   remove_wishlist_product,
@@ -80,12 +83,48 @@ export const useCheckResetPasswordTokenValidity = (token: string) => {
   });
 };
 
+export const useCheckForgotPasswordTokenValidity = (token: string) => {
+  return useQuery({
+    queryKey: ["check_forgot_password_token_validity"],
+    queryFn: () => check_forgot_password_token_validity(token),
+    retry: false,
+    enabled: true,
+    refetchOnWindowFocus: false,
+  });
+};
+
 export const useResetPasswordSendLink = () => {
   return useMutation({
     mutationKey: ["reset_password_send_link"],
     mutationFn: reset_password_send_link,
     onSuccess: (data) => {
       toastSuccessMessage(data?.message || "Password updated successfully!");
+    },
+    onError: (error) => toastErrorMessage(error),
+  });
+};
+
+export const useForgotPasswordSendLink = () => {
+  return useMutation({
+    mutationKey: ["forgot_password_send_link"],
+    mutationFn: forgot_password_send_link,
+    onSuccess: (data) => {
+      toastSuccessMessage(
+        data?.message || "Forgot password link sent successfully!"
+      );
+    },
+    onError: (error) => toastErrorMessage(error),
+  });
+};
+
+export const useForgotPasswordResendLink = () => {
+  return useMutation({
+    mutationKey: ["forgot_password_resend_link"],
+    mutationFn: forgot_password_resend_link,
+    onSuccess: (data) => {
+      toastSuccessMessage(
+        data?.message || "Forgot password link resent successfully!"
+      );
     },
     onError: (error) => toastErrorMessage(error),
   });
@@ -101,6 +140,7 @@ export const useResetPassword = () => {
     onError: (error) => toastErrorMessage(error),
   });
 };
+
 export const useForgotPassword = () => {
   return useMutation({
     mutationKey: ["forgot_password"],

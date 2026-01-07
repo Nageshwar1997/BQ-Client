@@ -105,6 +105,24 @@ export const check_reset_password_token_validity = async (token: string) => {
   }
 };
 
+export const check_forgot_password_token_validity = async (token: string) => {
+  try {
+    const { method, url } = userRoutes.checkForgotPasswordTokenValidity;
+    const response = await api.request({
+      method,
+      url,
+      headers: { Authorization: token },
+    });
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      // If it's an Axios error
+      throw error?.response?.data?.message || "API Error occurred";
+    }
+    throw "Something went wrong!"; // For non-Axios errors
+  }
+};
+
 export const reset_password_send_link = async () => {
   try {
     const user_token = getUserToken();
@@ -113,6 +131,42 @@ export const reset_password_send_link = async () => {
       method,
       url,
       headers: { Authorization: user_token },
+    });
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      // If it's an Axios error
+      throw error?.response?.data?.message || "API Error occurred";
+    }
+    throw "Something went wrong!"; // For non-Axios errors
+  }
+};
+
+export const forgot_password_send_link = async (email: string) => {
+  try {
+    const { method, url } = userRoutes.forgotPasswordSendLink;
+    const response = await api.request({
+      method,
+      url,
+      data: { email },
+    });
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      // If it's an Axios error
+      throw error?.response?.data?.message || "API Error occurred";
+    }
+    throw "Something went wrong!"; // For non-Axios errors
+  }
+};
+
+export const forgot_password_resend_link = async (token: string) => {
+  try {
+    const { method, url } = userRoutes.forgotPasswordResendLink;
+    const response = await api.request({
+      method,
+      url,
+      headers: { Authorization: token },
     });
     return response.data;
   } catch (error) {
@@ -143,10 +197,16 @@ export const reset_password = async (data: TQueryParams) => {
     throw "Something went wrong!"; // For non-Axios errors
   }
 };
-export const forgot_password = async (email: string) => {
+export const forgot_password = async (data: TQueryParams) => {
   try {
+    const { token, ...restData } = data;
     const { method, url } = userRoutes.forgotPassword;
-    const response = await api.request({ method, url: `${url}/${email}` });
+    const response = await api.request({
+      method,
+      url,
+      data: restData,
+      headers: { Authorization: token },
+    });
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {

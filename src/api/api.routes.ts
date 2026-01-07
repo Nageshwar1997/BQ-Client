@@ -26,12 +26,24 @@ export const userRoutes = {
     method: "PATCH",
     url: "/users/user/send-reset-password-link",
   },
+  forgotPasswordSendLink: {
+    method: "POST",
+    url: "/users/user/forgot-password-link",
+  },
+  forgotPasswordResendLink: {
+    method: "POST",
+    url: "/users/user/forgot-password-resend-link",
+  },
   resetPassword: { method: "PATCH", url: "/users/user/reset-password" },
   checkResetPasswordTokenValidity: {
     method: "GET",
-    url: "/users/user/check-token-validity",
+    url: "/users/user/reset-password-token-validity",
   },
   forgotPassword: { method: "POST", url: "/users/user/forgot-password" },
+  checkForgotPasswordTokenValidity: {
+    method: "GET",
+    url: "/users/user/forgot-password-token-validity",
+  },
 };
 
 export const mediaRoutes = {
