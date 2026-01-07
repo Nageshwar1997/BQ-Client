@@ -88,7 +88,7 @@ const Profile = () => {
       }
     });
 
-    if (!Object.keys(changedFields).length) {
+    if (!Object.keys(changedFields).length && !profilePicFile) {
       toastErrorMessage("No changes made to update profile!");
       return;
     }
