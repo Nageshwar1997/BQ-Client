@@ -19,6 +19,21 @@ export const login_user = async (data: Partial<LoginFormInputProps>) => {
   }
 };
 
+export const logout_user = async (userId: string) => {
+  try {
+    const { method, url } = authRoutes.logout;
+
+    const response = await api.request({ method, url: `${url}/${userId}` });
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      // If it's an Axios error
+      throw error?.response?.data?.message || "API Error occurred";
+    }
+    throw "Something went wrong!"; // For non-Axios errors
+  }
+};
+
 // Manually Register
 export const register_user_send_otp = async (email: string) => {
   try {

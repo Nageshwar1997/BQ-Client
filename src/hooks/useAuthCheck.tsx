@@ -6,9 +6,11 @@ import useCartStore from "../store/cart.store";
 import { useUserCart } from "./useUserCart";
 import useWishlistStore from "../store/wishlist.store";
 import useUserWishlist from "./useUserWishlist";
+import { useLogout } from "../api/auth/auth.service";
 
 export const useAuthCheck = (readyToCall?: boolean) => {
-  const { setUser, logout } = useUserStore();
+  const { setUser } = useUserStore();
+  const { logout } = useLogout();
   const { setCart } = useCartStore();
   const { cart: cartData } = useUserCart();
   const { setWishlist } = useWishlistStore();

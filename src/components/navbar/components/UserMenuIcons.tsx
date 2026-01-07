@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   BuildingIcon,
   HeartIcon,
@@ -20,7 +21,7 @@ import useQueryParams from "../../../hooks/useQueryParams";
 import useCartStore from "../../../store/cart.store";
 import useWishlistStore from "../../../store/wishlist.store";
 import useRequireAuth from "../../../hooks/useRequireAuth";
-import { Link } from "react-router-dom";
+import { useLogout } from "../../../api/auth/auth.service";
 
 const UserPopup = ({
   isOpen,
@@ -31,7 +32,8 @@ const UserPopup = ({
 }) => {
   const { navigate } = usePathParams();
   const { setParams, queryParams } = useQueryParams();
-  const { user, isAuthenticated, logout } = useUserStore();
+  const { user, isAuthenticated } = useUserStore();
+  const { logout } = useLogout();
 
   if (!isOpen || queryParams.login === "true") return null;
 

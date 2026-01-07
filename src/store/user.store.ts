@@ -24,7 +24,7 @@ export const useUserStore = create<UserStoreType>((set) => {
       set({ user, isAuthenticated: true });
     },
 
-    logout: () => {
+    localLogout: () => {
       sessionStorage.removeItem(SESSION_KEY);
       removeStorageToken();
       set({ user: null, isAuthenticated: false });

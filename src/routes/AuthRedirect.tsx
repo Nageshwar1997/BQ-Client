@@ -3,10 +3,12 @@ import { useUserStore } from "../store/user.store";
 import { useAuthCheck } from "../hooks/useAuthCheck";
 import LoadingScreen from "../components/loaders/LoadingScreen";
 import { JSX } from "react";
+import { getUserToken } from "../utils";
 
 const AuthRedirect = ({ children }: { children: JSX.Element }) => {
+  const token = getUserToken();
   const { isAuthenticated } = useUserStore();
-  const { isLoading } = useAuthCheck();
+  const { isLoading } = useAuthCheck(!!token);
   const location = useLocation();
 
   if (isAuthenticated) {

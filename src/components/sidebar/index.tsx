@@ -11,10 +11,12 @@ import {
 } from "../Gradients";
 import useHorizontalScrollable from "../../hooks/useHorizontalScrollable";
 import useIsMobile from "../../hooks/useIsMobile";
+import { useLogout } from "../../api/auth/auth.service";
 
 const Sidebar = () => {
   const { navigate } = usePathParams();
-  const { user, logout } = useUserStore();
+  const { user } = useUserStore();
+  const { logout } = useLogout();
   const { showGradient: showV_Gradient, containerRef: vContainerRef } =
     useVerticalScrollable();
   const { showGradient: showH_Gradient, containerRef: hContainerRef } =

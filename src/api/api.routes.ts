@@ -3,6 +3,7 @@ export const authRoutes = {
   register_resend_otp: { method: "POST", url: "/auth/register/resend-otp" },
   register_verify_otp: { method: "POST", url: "/auth/register/verify-otp" },
   login: { method: "POST", url: "/auth/login" },
+  logout: { method: "DELETE", url: "/auth/logout" },
 };
 
 export const productRoutes = {
