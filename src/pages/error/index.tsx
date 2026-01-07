@@ -24,7 +24,7 @@ const Errors = ({ imgText, title, message }: TError) => {
         {title}
       </h1>
       <p className="text-tertiary">{message}</p>
-      {error && VITE_IS_DEV.includes("true") && (
+      {VITE_IS_DEV === "true" && !!error && (
         <pre className="bg-primary-50 p-2 rounded-lg text-sm text-white max-w-sm text-wrap">
           Error:{" "}
           {error instanceof Error || error instanceof AxiosError
