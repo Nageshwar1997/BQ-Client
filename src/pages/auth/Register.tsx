@@ -31,7 +31,7 @@ import {
   saveLocalToken,
   saveSessionToken,
 } from "../../utils";
-import ResendOtp from "../../components/ResendOtp";
+import Resend from "../../components/Resend";
 
 type TRegisterInput = {
   input: RegisterInputMapDataProps;
@@ -237,7 +237,11 @@ const RegisterForm = ({
             </div>
           ))}
         </div>
-        <ResendOtp onResend={!isPending ? handleResend : undefined} />
+        <Resend
+          label="Not received OTP?"
+          count={60}
+          onResend={!isPending ? handleResend : undefined}
+        />
         <div className="space-y-3">
           <Checkbox
             register={register("remember")}

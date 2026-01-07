@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-type TResendOtp = { count?: number; onResend?: () => void };
+type TResendOtp = { label: string; count: number; onResend?: () => void };
 
-const ResendOtp = ({ onResend, count = 60 }: TResendOtp) => {
+const Resend = ({ onResend, count, label = "Not received?" }: TResendOtp) => {
   const [counter, setCounter] = useState(count);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const ResendOtp = ({ onResend, count = 60 }: TResendOtp) => {
   return (
     <p className="space-x-2">
       <span className="bg-clip-text text-transparent bg-silver-duo text-xs md:text-sm">
-        Not received OTP?
+        {label}
       </span>
 
       {counter > 0 ? (
@@ -49,4 +49,4 @@ const ResendOtp = ({ onResend, count = 60 }: TResendOtp) => {
   );
 };
 
-export default ResendOtp;
+export default Resend;
