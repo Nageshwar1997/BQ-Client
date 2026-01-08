@@ -13,7 +13,7 @@ const Lips = () => {
         return (
           <div
             key={index}
-            className={`space-y-4 min-w-[200px] max-w-[300px] pb-4 lg:pb-0 border-b border-primary-battleship-davys-gray ${
+            className={`space-y-4 min-w-50 max-w-75 pb-4 lg:pb-0 border-b border-primary-battleship-davys-gray ${
               [
                 "finish_types",
                 "lipstick_forms",
@@ -31,23 +31,19 @@ const Lips = () => {
           </div>
         );
       })}
-      <div className="w-full min-h-[190px] xl:max-h-[220px] mt-10 col-span-2 shadow-lg shadow-secondary-inverted hidden xl:flex items-center justify-center gap-5">
-        <span className="w-1/2 h-full rounded-xl overflow-hidden">
-          <img
-            src="/images/navbar/Lipstick1.jpg"
-            alt=""
-            className="h-full object-cover object-center opacity-95 hover:opacity-100 cursor-pointer"
-            loading="lazy"
-          />
-        </span>
-        <span className="w-1/2 h-full rounded-xl overflow-hidden">
-          <img
-            src="/images/navbar/Lipstick2.jpg"
-            alt=""
-            className="h-full object-cover object-center opacity-95 hover:opacity-100 cursor-pointer"
-            loading="lazy"
-          />
-        </span>
+      <div className="hidden lg:flex w-full max-h-46 xl:max-h-62.5 col-span-2 shadow-lg shadow-secondary-inverted items-center gap-5">
+        <img
+          src="/images/navbar/Lipstick1.jpg"
+          alt="Lipstick1"
+          className="max-w-[calc(50%-10px)] h-full object-fill object-center opacity-95 hover:opacity-100 cursor-pointer rounded-lg"
+          loading="lazy"
+        />
+        <img
+          src="/images/navbar/Lipstick2.jpg"
+          alt="Lipstick2"
+          className="max-w-[calc(50%-10px)] h-full object-fill object-center opacity-95 hover:opacity-100 cursor-pointer rounded-lg"
+          loading="lazy"
+        />
       </div>
     </div>
   );

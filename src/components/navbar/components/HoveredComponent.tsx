@@ -1,14 +1,14 @@
-import { navbarCategoriesData } from "../data";
+import { NAVBAR_CATEGORIES_DATA } from "../data";
 
 const HoveredComponent = ({ index }: { index: number }) => {
-  if (index === null || index >= navbarCategoriesData.length) {
+  if (index === null || index >= NAVBAR_CATEGORIES_DATA.length) {
     return null;
   }
 
-  const Component = navbarCategoriesData[index].component;
+  const Component = NAVBAR_CATEGORIES_DATA[index].component;
 
   return (
-    <div className="lg:p-px lg:bg-primary-battleship-davys-gray lg:rounded-xl h-full backdrop-blur-3xl max-w-[1300px] shadow-navbar-card">
+    <div className="lg:p-px lg:bg-primary-battleship-davys-gray lg:rounded-xl h-full backdrop-blur-3xl max-w-325 shadow-navbar-card">
       <div className="bg-platinum-black text-secondary lg:p-5 lg:bg-secondary-inverted lg:rounded-xl lg:font-metropolis">
         <Component />
       </div>

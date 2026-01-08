@@ -12,7 +12,7 @@ const Eyes = () => {
         return (
           <div
             key={index}
-            className={`space-y-4 min-w-[200px] max-w-[300px] pb-4 lg:pb-0 border-b border-primary-battleship-davys-gray ${
+            className={`space-y-4 min-w-50 max-w-75 pb-4 lg:pb-0 border-b border-primary-battleship-davys-gray ${
               ![
                 "kohl_and_kajal",
                 "mascaras",
@@ -28,11 +28,17 @@ const Eyes = () => {
           </div>
         );
       })}
-      <div className="hidden lg:block w-full max-h-[185px] xl:max-h-[220px] col-span-2 overflow-hidden shadow-lg shadow-secondary-inverted rounded-xl mt-10">
+      <div className="hidden lg:flex w-full max-h-46 xl:max-h-62.5 col-span-2 shadow-lg shadow-secondary-inverted items-center gap-5">
         <img
           src="/images/navbar/Mascara.jpg"
-          alt=""
-          className="w-full h-full object-cover object-center opacity-95 hover:opacity-100 cursor-pointer"
+          alt="Mascara"
+          className="max-w-[calc(50%-10px)] h-full object-fill object-center opacity-95 hover:opacity-100 cursor-pointer rounded-lg"
+          loading="lazy"
+        />
+        <img
+          src="/images/navbar/Mascara.jpg"
+          alt="Mascara"
+          className="max-w-[calc(50%-10px)] h-full object-fill object-center opacity-95 hover:opacity-100 cursor-pointer rounded-lg"
           loading="lazy"
         />
       </div>

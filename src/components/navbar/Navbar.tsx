@@ -1,21 +1,45 @@
 import { useState, useRef, useEffect } from "react";
-import {
-  CareIcon,
-  CashIcon,
-  CloseIcon,
-  DropdownIcon,
-  GiftCardIcon,
-  MenuIcon,
-  TrackIcon,
-} from "../../icons";
+import { CloseIcon, DropdownIcon, MenuIcon } from "../../icons";
 import UserMenuIcons from "./components/UserMenuIcons";
-import { navbarCategoriesData } from "./data";
+import { NAVBAR_TOP_LAYER_DATA, NAVBAR_CATEGORIES_DATA } from "./data";
 import { Link } from "react-router-dom";
 import HoveredComponent from "./components/HoveredComponent";
 import Button from "../button/Button";
 import { BottomGradient } from "../Gradients";
 import usePathParams from "../../hooks/usePathParams";
 import { useUserStore } from "../../store/user.store";
+import useRequireAuth from "../../hooks/useRequireAuth";
+
+const TopLayer = () => {
+  const requireAuth = useRequireAuth();
+  const { navigate } = usePathParams();
+
+  const handleNavigate = (path: string, isPrivateRoute?: boolean) => {
+    const action = () => navigate(path); // wrap in a function
+    if (isPrivateRoute && !requireAuth(action)) return; // store action if not logged in
+    action(); // run immediately if logged in
+  };
+  return (
+    <div className="h-9 flex items-center justify-between px-2 sm:px-5 text-secondary rounded-b-md bg-secondary-inverted">
+      <p className="text-sm opacity-80">Beautinique Luxury</p>
+      <div className="flex items-center gap-3 text-xs">
+        {NAVBAR_TOP_LAYER_DATA.map((item) => {
+          const Icon = item.icon;
+          return (
+            <button
+              key={item.text}
+              onClick={() => handleNavigate(item.path, item.private)}
+              className="flex items-center gap-0.5 cursor-pointer lg:opacity-80 hover:opacity-100 transition-all duration-300"
+            >
+              <Icon className={`w-3.5 h-3.5 pb-px ${item.className}`} />
+              <span>{item.text}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
 
 const Navbar = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -33,7 +57,7 @@ const Navbar = () => {
   const [isNavbarAtTop, setIsNavbarAtTop] = useState(false);
   const [isNavbarHovered, setIsNavbarHovered] = useState(false);
 
-  const levelOneCategories = navbarCategoriesData.filter(
+  const levelOneCategories = NAVBAR_CATEGORIES_DATA.filter(
     (item) => item.level === 1
   );
 
@@ -129,11 +153,11 @@ const Navbar = () => {
 
   return (
     <div
-      className={`h-16 lg:h-[100px] w-full flex justify-between items-center gap-3 lg:gap-0 xl:gap-5 sticky top-0 left-0 lg:-top-9 text-tertiary z-50 ${
+      className={`h-16 lg:h-25 w-full flex justify-between items-center gap-3 lg:gap-0 xl:gap-5 sticky top-0 left-0 lg:-top-9 text-tertiary z-50 ${
         isNavbarAtTop || isNavbarHovered || nonTransparent
           ? "bg-tertiary-inverted shadow-lg shadow-primary-inverted-50"
           : "bg-transparent"
-      } ${paths.includes("account") ? "lg:!-top-0" : ""}`}
+      } ${paths.includes("account") ? "lg:top-0!" : ""}`}
       onMouseEnter={() => setIsNavbarHovered(true)}
       onMouseLeave={() => setIsNavbarHovered(false)}
     >
@@ -141,31 +165,7 @@ const Navbar = () => {
         className="w-full h-full hidden lg:block"
         onMouseLeave={handleMouseLeave}
       >
-        <div
-          className={`h-9 flex items-center justify-between px-2 sm:px-5 text-secondary rounded-b-md bg-secondary-inverted`}
-        >
-          <p className="text-sm text-nowrap cursor-pointer lg:opacity-90 hover:opacity-100 transition-all duration-300">
-            Beautinique Luxury
-          </p>
-          <div className="flex items-center gap-3 text-xs">
-            <p className="flex items-center gap-0.5 cursor-pointer lg:opacity-90 hover:opacity-100 transition-all duration-300">
-              <CashIcon className="w-3.5 h-3.5 pb-px stroke-secondary" />
-              <span className="text-nowrap">BQ Cash</span>
-            </p>
-            <p className="flex items-center gap-0.5 cursor-pointer lg:opacity-90 hover:opacity-100 transition-all duration-300">
-              <GiftCardIcon className="w-3.5 h-3.5 pb-px fill-secondary" />
-              <span className="text-nowrap">Gift Card</span>
-            </p>
-            <p className="flex items-center gap-0.5 cursor-pointer lg:opacity-90 hover:opacity-100 transition-all duration-300">
-              <CareIcon className="w-3.5 h-3.5 pb-px fill-secondary" />
-              <span className="text-nowrap">BQ Care</span>
-            </p>
-            <p className="flex items-center gap-0.5 cursor-pointer lg:opacity-90 hover:opacity-100 transition-all duration-300">
-              <TrackIcon className="w-3.5 h-3.5 pb-px stroke-secondary" />
-              <span className="text-nowrap">Track Orders</span>
-            </p>
-          </div>
-        </div>
+        <TopLayer />
         <div className="w-full h-16 flex items-center px-2 sm:px-5">
           <Link
             to="/"
@@ -187,8 +187,8 @@ const Navbar = () => {
                 >
                   {/* Left Curve */}
                   {hoveredIndex === index && (
-                    <div className="absolute left-px transform -translate-x-full bg-secondary-inverted bottom-0 h-3 w-3 z-[52]">
-                      <div className="bg-tertiary-inverted h-full w-full rounded-br-full z-[51] border-b border-r border-primary-battleship-davys-gray" />
+                    <div className="absolute left-px transform -translate-x-full bg-secondary-inverted bottom-0 h-3 w-3 z-52">
+                      <div className="bg-tertiary-inverted h-full w-full rounded-br-full z-51 border-b border-r border-primary-battleship-davys-gray" />
                     </div>
                   )}
                   <div
@@ -217,7 +217,7 @@ const Navbar = () => {
                     <DropdownIcon
                       className={`stroke-tertiary ${
                         hoveredIndex === index
-                          ? "rotate-180 !stroke-blue-crayola-c"
+                          ? "rotate-180 stroke-blue-crayola-c!"
                           : ""
                       } ${
                         isNavbarAtTop || isNavbarHovered || nonTransparent
@@ -228,7 +228,7 @@ const Navbar = () => {
                   </div>
                   {/* Right Curve */}
                   {hoveredIndex === index && (
-                    <div className="absolute right-px transform translate-x-full bg-secondary-inverted bottom-0 h-3 w-3 z-[52]">
+                    <div className="absolute right-px transform translate-x-full bg-secondary-inverted bottom-0 h-3 w-3 z-52">
                       <div className="bg-tertiary-inverted h-full w-full rounded-bl-full border-b border-l border-primary-battleship-davys-gray" />
                     </div>
                   )}
@@ -240,12 +240,12 @@ const Navbar = () => {
               className={`${
                 isNavbarAtTop || isNavbarHovered || nonTransparent
                   ? ""
-                  : "light:[&_svg]:stroke-tertiary-inverted"
+                  : "[&_svg]:light:stroke-tertiary-inverted"
               }`}
             />
             {(hoveredIndex !== null || isContainerHovered) && (
               <div
-                className={`rounded-2xl absolute -left-5 top-[63px] w-auto h-fit z-[49] justify-self-center transition-all duration-300`}
+                className={`rounded-2xl absolute -left-5 top-15.75 w-auto h-fit z-49 justify-self-center transition-all duration-300`}
                 ref={containerRef}
                 onMouseEnter={handleContainerMouseEnter}
                 onMouseLeave={handleMouseLeave}
@@ -286,7 +286,7 @@ const Navbar = () => {
         </div>
         {isMobileNavbarOpened && (
           <div className="absolute top-16 left-0 w-full h-dvh bg-secondary-inverted flex flex-col z-50">
-            <div className="h-[calc(100%-64px)] overflow-hidden overflow-y-scroll flex-grow">
+            <div className="h-[calc(100%-64px)] overflow-hidden overflow-y-scroll grow">
               {levelOneCategories.map((category, index) => {
                 const AccordionContentComponent = category.component;
                 const isActive = activeIndices.includes(index);
@@ -318,23 +318,20 @@ const Navbar = () => {
               })}
             </div>
             {!isAuthenticated && (
-              <div className="fixed bottom-0 left-0 w-full flex gap-5 md:gap-10 justify-center items-center px-6 py-2 pt-8 z-[51]">
-                <BottomGradient className="!w-full" />
-                <Link to={"/login"} className="w-1/2 sm:w-1/3 md:w-1/4 z-[51]">
+              <div className="fixed bottom-0 left-0 w-full flex gap-5 md:gap-10 justify-center items-center px-6 py-2 pt-8 z-51">
+                <BottomGradient className="w-full!" />
+                <Link to={"/login"} className="w-1/2 sm:w-1/3 md:w-1/4 z-51">
                   <Button
                     content="Login"
                     pattern="primary"
-                    className="!rounded-lg !px-6 !py-3"
+                    className="rounded-lg! px-6! py-3!"
                   />
                 </Link>
-                <Link
-                  to={"/register"}
-                  className="w-1/2 sm:w-1/3 md:w-1/4 z-[51]"
-                >
+                <Link to={"/register"} className="w-1/2 sm:w-1/3 md:w-1/4 z-51">
                   <Button
                     content="Register"
                     pattern="secondary"
-                    className="!rounded-lg !px-6 !py-3"
+                    className="rounded-lg! px-6! py-3!"
                   />
                 </Link>
               </div>

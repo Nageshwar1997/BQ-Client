@@ -104,12 +104,12 @@ export const socialCommunity: SocialCommunityItem[] = [
     id: 1,
     icon: PlayIcon,
     label: "Founder's Story: Watch Now",
-    link: "https://www.youtube.com/watch?v=92kcChL74ZE",
+    link: "/press-media#watch",
   },
   {
     id: 2,
     icon: ChatIcon,
     label: "Chat with our team",
-    link: "/contact-us",
+    link: "/contact",
   },
 ];

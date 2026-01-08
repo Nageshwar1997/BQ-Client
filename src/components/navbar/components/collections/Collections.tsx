@@ -16,9 +16,9 @@ const Collections = () => {
           return (
             <div
               key={index}
-              className={`space-y-4 min-w-[200px] max-w-[300px] pb-4 lg:pb-0 border-b border-primary-battleship-davys-gray lg:border-none ${
+              className={`space-y-4 min-w-50 max-w-75 pb-4 lg:pb-0 border-b border-primary-battleship-davys-gray lg:border-none ${
                 category.category === "gifting"
-                  ? "md:col-span-3 lg:col-span-1 md:max-w-full lg:max-w-[300px]"
+                  ? "md:col-span-3 lg:col-span-1 md:max-w-full lg:max-w-75"
                   : ""
               }`}
             >
@@ -44,7 +44,7 @@ const Collections = () => {
         </div>
         <TextDisplay
           content={getTodaysFeedback(1)}
-          contentClassName="text-[11px] xl:text-sm w-fit [&>span]:mr-1.5 !text-left !justify-start"
+          contentClassName="text-[11px] xl:text-sm w-fit [&>span]:mr-1.5 text-left! justify-start!"
         />
       </div>
     </div>

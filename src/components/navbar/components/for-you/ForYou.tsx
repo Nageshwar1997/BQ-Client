@@ -42,12 +42,12 @@ const ForYou = () => {
                 >
                   <CategoryLabel
                     text={category?.label}
-                    className="capitalize text-silver-jet group-hover:text-primary !px-0"
+                    className="capitalize text-silver-jet group-hover:text-primary px-0!"
                   />
                   <p className="text-xs text-primary-battleship-davys-gray-inverted group-hover:text-silver-jet font-normal tracking-tight leading-5 line-clamp-2">
                     {category.description}
                   </p>
-                  <div className="relative max-w-[250px] h-[150px] overflow-hidden rounded-lg group-hover:shadow-sm group-hover:shadow-primary-inverted">
+                  <div className="relative max-w-62.5 h-37.5 overflow-hidden rounded-lg group-hover:shadow-xs group-hover:shadow-primary-inverted">
                     {playingVideoIndex === index ? (
                       <VideoPlayer
                         videoProps={{
@@ -75,22 +75,22 @@ const ForYou = () => {
                   <CategoryLabel
                     text={category?.heading as string}
                     path={category?.path}
-                    className="!px-0 !mt-0 py-1 border-b border-secondary-battleship-davys-gray text-left"
+                    className="px-0! mt-0! py-1 border-b border-secondary-battleship-davys-gray text-left"
                   />
                   <div className="flex gap-4 cursor-pointer justify-between items-center pt-1">
                     <div className="flex gap-1 flex-col items-start">
                       <CategoryLabel
                         text={category.label}
                         path={subCategoryPath || category.path}
-                        className="capitalize font-metropolis text-silver-jet !px-0 !mt-0 text-left"
+                        className="capitalize font-metropolis text-silver-jet px-0! mt-0! text-left"
                       />
-                      <p className="text-[10.5px] sm:text-xs md:text-sm pt-1 leading-[18px] text-primary-battleship-davys-gray-inverted text-left">
+                      <p className="text-[10.5px] sm:text-xs md:text-sm pt-1 leading-4.5 text-primary-battleship-davys-gray-inverted text-left">
                         {category.description}
                       </p>
                     </div>
                   </div>
                 </div>
-                <div className="relative max-w-[200px] h-[120px] border border-primary-10 w-1/2 sm:w-1/3 overflow-hidden rounded-lg bg-platinum-black group-hover:bg-smoke-eerie flex items-center justify-center">
+                <div className="relative max-w-50 h-30 border border-primary-10 w-1/2 sm:w-1/3 overflow-hidden rounded-lg bg-platinum-black group-hover:bg-smoke-eerie flex items-center justify-center">
                   {playingVideoIndex === index ? (
                     <VideoPlayer
                       videoProps={{
@@ -134,11 +134,10 @@ const ForYou = () => {
                 <Link
                   to={data.link}
                   key={data.id}
-                  target="_blank"
                   className="flex gap-2 items-center group"
                 >
                   <Icon className="w-5 h-5 fill-secondary opacity-80 group-hover:opacity-100" />
-                  <span className="text-sm font-normal leading-[21px] text-secondary opacity-80 group-hover:opacity-100">
+                  <span className="text-sm font-normal leading-5 text-secondary opacity-80 group-hover:opacity-100">
                     {data.label}
                   </span>
                 </Link>
@@ -153,7 +152,7 @@ const ForYou = () => {
               <Button
                 content="Register"
                 pattern="outline"
-                className="!rounded-lg lg:!py-2"
+                className="rounded-lg! lg:py-2!"
               />
             </Link>
           </div>

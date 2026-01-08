@@ -16,18 +16,24 @@ const Skin = () => {
           return (
             <div
               key={index}
-              className="space-y-4 min-w-[200px] max-w-[300px] pb-4 lg:pb-0 border-b border-primary-battleship-davys-gray lg:border-none"
+              className="space-y-4 min-w-50 max-w-75 pb-4 lg:pb-0 border-b border-primary-battleship-davys-gray lg:border-none"
             >
               <CategoryLabel text={label} path={category.path} />
               <SubCategories subCategories={subCategories} />
             </div>
           );
         })}
-        <div className="hidden md:block lg:hidden w-full max-h-[250px] col-span-2 overflow-y-scroll shadow-lg shadow-secondary-inverted rounded-2xl">
+        <div className="hidden md:flex lg:hidden w-full max-h-62.5 col-span-2 shadow-lg shadow-secondary-inverted items-center gap-4">
           <img
             src="/images/navbar/moisturizer.jpg"
-            alt=""
-            className="w-full h-full object-cover object-center opacity-95 hover:opacity-100 cursor-pointer"
+            alt="Moisturizer"
+            className="min-w-50 max-w-75 h-full object-fill opacity-95 hover:opacity-100 cursor-pointer rounded-lg"
+            loading="lazy"
+          />
+          <img
+            src="/images/navbar/moisturizer.jpg"
+            alt="Moisturizer"
+            className="min-w-50 max-w-75 h-full object-fill opacity-95 hover:opacity-100 cursor-pointer rounded-lg"
             loading="lazy"
           />
         </div>
@@ -41,7 +47,7 @@ const Skin = () => {
         </div>
         <TextDisplay
           content={getTodaysFeedback()}
-          contentClassName="text-[11px] xl:text-sm w-fit [&>span]:mr-1.5 !text-left !justify-start"
+          contentClassName="text-[11px] xl:text-sm w-fit [&>span]:mr-1.5 text-left! justify-start!"
         />
       </div>
     </div>

@@ -1,13 +1,9 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import {
   BuildingIcon,
   HeartIcon,
-  PercentCircleIcon,
   SearchIcon,
   ShoppingBag,
-  TrackIcon,
-  TruckIcon,
   UserCircleIcon,
 } from "../../../icons";
 import DarkMode from "../../DarkMode";
@@ -22,6 +18,7 @@ import useCartStore from "../../../store/cart.store";
 import useWishlistStore from "../../../store/wishlist.store";
 import useRequireAuth from "../../../hooks/useRequireAuth";
 import { useLogout } from "../../../api/auth/auth.service";
+import { USER_MENU_POPUP_DATA } from "../data";
 
 const UserPopup = ({
   isOpen,
@@ -31,22 +28,31 @@ const UserPopup = ({
   onClose: () => void;
 }) => {
   const { navigate } = usePathParams();
+  const requireAuth = useRequireAuth();
+
   const { setParams, queryParams } = useQueryParams();
   const { user, isAuthenticated } = useUserStore();
   const { logout } = useLogout();
+
+  const handleNavigate = (path: string, isPrivateRoute?: boolean) => {
+    const action = () => navigate(path); // wrap in a function
+    if (isPrivateRoute && !requireAuth(action)) return; // store action if not logged in
+    action(); // run immediately if logged in
+    onClose();
+  };
 
   if (!isOpen || queryParams.login === "true") return null;
 
   return (
     <div
-      className="absolute top-full left-1/2 transform -translate-x-1/2 mt-[22px] md:mt-5 w-48"
+      className="absolute top-full left-1/2 transform -translate-x-1/2 mt-5.5 md:mt-5 w-48"
       onMouseLeave={onClose}
     >
       <Modal
         isOpen={isOpen}
         onClose={onClose}
-        containerProps={{ className: "relative !p-0 !rounded-lg" }}
-        className="!bg-platinum-jet !rounded-lg [&>div>div>svg]:hidden [&>div]:!p-4"
+        containerProps={{ className: "relative p-0! rounded-lg!" }}
+        className="bg-platinum-jet! rounded-lg! [&>div>div>svg]:hidden [&>div]:p-4!"
       >
         <div className="flex flex-col gap-2">
           <div className="flex flex-col items-center gap-2">
@@ -55,10 +61,10 @@ const UserPopup = ({
                 <img
                   src={user.profilePic}
                   alt={user.firstName}
-                  className="w-full h-full border-2 border-secondary rounded-full object-cover aspect-square"
+                  className="w-full h-full border-2 border-tertiary rounded-full object-cover aspect-square"
                 />
               ) : (
-                <UserCircleIcon className="stroke-secondary w-full h-full" />
+                <UserCircleIcon className="stroke-tertiary w-full h-full" />
               )}
             </div>
             <p className="text-sm capitalize line-clamp-1 font-semibold">
@@ -67,57 +73,30 @@ const UserPopup = ({
           </div>
           <hr className="h-px block border-none bg-gradient-line" />
           <div className="flex flex-col gap-2.5 py-1">
-            <Link
-              to="/account"
-              className="flex items-center gap-2 cursor-pointer"
-            >
-              <UserCircleIcon className="w-5 h-5 stroke-tertiary" />
-              <p className="text-sm/none text-tertiary">My Profile</p>
-            </Link>
-            <Link
-              to="/account/track"
-              className="flex items-center gap-2 cursor-pointer"
-            >
-              <TrackIcon className="w-5 h-5 stroke-tertiary" />
-              <p className="text-sm/none text-tertiary">Track Orders</p>
-            </Link>
-            <Link
-              to="/account/orders"
-              className="flex items-center gap-2 cursor-pointer"
-            >
-              <TruckIcon className="w-5 h-5 stroke-tertiary" />
-              <p className="text-sm/none text-tertiary">Orders</p>
-            </Link>
-            <Link
-              to="/account/cart"
-              className="flex items-center gap-2 cursor-pointer"
-            >
-              <ShoppingBag className="w-5 h-5 stroke-tertiary" />
-              <p className="text-sm/none text-tertiary">Cart</p>
-            </Link>
-            <Link
-              to="/offers"
-              className="flex items-center gap-2 cursor-pointer"
-            >
-              <PercentCircleIcon className="w-5 h-5 stroke-tertiary" />
-              <p className="text-sm/none text-tertiary">Offers</p>
-            </Link>
+            {USER_MENU_POPUP_DATA.map((item, i) => (
+              <button
+                key={i}
+                className="flex items-center gap-2 cursor-pointer [&>svg]:w-5 [&>svg]:h-5 [&>svg]:stroke-tertiary text-tertiary text-sm/none hover:scale-x-105 opacity-80 hover:opacity-100 transition-all duration-300"
+                onClick={() => handleNavigate(item.path, item.private)}
+              >
+                {item.icon}
+                {item.text}
+              </button>
+            ))}
           </div>
-          <div className="flex justify-between items-center gap-2">
+          <div className="flex justify-between items-center gap-2 [&>button]:p-1.5 [&>button]:rounded-sm [&>button]:text-xs">
             <Button
               content={isAuthenticated ? "Logout" : "Login"}
               pattern="primary"
-              className="!p-1.5 !rounded !text-xs"
               buttonProps={{
                 onClick: () =>
-                  !isAuthenticated ? setParams({ login: "true" }) : logout(),
+                  isAuthenticated ? logout() : setParams({ login: "true" }),
               }}
             />
             {!isAuthenticated && (
               <Button
                 content="Register"
                 pattern="secondary"
-                className="!p-1.5 !rounded !text-xs"
                 buttonProps={{ onClick: () => navigate("/register") }}
               />
             )}
@@ -181,8 +160,10 @@ const UserMenuIcons = ({
           <UserCircleIcon
             onClick={() => setIsOpen((prev) => ({ ...prev, user: true }))}
             className={`w-5 h-5 md:w-6 md:h-6 cursor-pointer ${
-              isOpen.user ? "!stroke-blue-crayola-c" : "stroke-tertiary"
-            } hover:stroke-secondary`}
+              isOpen.user
+                ? "stroke-blue-crayola-c"
+                : "stroke-tertiary hover:stroke-secondary"
+            }`}
           />
           <UserPopup
             isOpen={isOpen.user}
@@ -199,7 +180,7 @@ const UserMenuIcons = ({
             className="cursor-pointer stroke-tertiary w-5 h-5 md:w-6 md:h-6"
           />
           {cart?.products && cart?.products.length > 0 && (
-            <span className="absolute bottom-0.5 md:bottom-[3px] font-semibold bg-clip-text text-transparent bg-accent-duo inset-x-0 text-[11px] md:text-[11px] leading-none w-fit mx-auto pointer-events-none">
+            <span className="absolute bottom-0.5 md:bottom-0.75 font-semibold bg-clip-text text-transparent bg-accent-duo inset-x-0 text-[11px] md:text-[11px] leading-none w-fit mx-auto pointer-events-none">
               {cart?.products.length}
             </span>
           )}
