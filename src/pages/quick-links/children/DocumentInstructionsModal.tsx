@@ -23,13 +23,13 @@ const DocumentInstructionsModal = () => {
       isOpen={!!key}
       onClose={onClose}
       heading={`Instructions for ${instruction.title}`}
-      className="!max-w-lg [&_h2]:text-base [&_h2]:sm:text-lg [&_h2]:md:text-xl [&_h2]:lg:text-2xl"
+      className="max-w-lg! [&_h2]:text-base sm:[&_h2]:text-lg md:[&_h2]:text-xl lg:[&_h2]:text-2xl"
     >
       <div className="space-y-4">
         <ul className="space-y-2 text-xs md:text-sm text-silver-jet">
           {instruction.instructions.map((point, index) => (
             <div key={index} className="flex gap-1.5 md:gap-2">
-              <span className="mt-[5px] min-w-1 min-h-1 max-w-1 max-h-1 md:min-w-2 md:min-h-2 md:max-w-2 md:max-h-2 rounded-full bg-primary-50" />
+              <span className="mt-1.25 min-w-1 min-h-1 max-w-1 max-h-1 md:min-w-2 md:min-h-2 md:max-w-2 md:max-h-2 rounded-full bg-primary-50" />
               <li>{point}</li>
             </div>
           ))}

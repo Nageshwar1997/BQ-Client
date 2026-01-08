@@ -88,7 +88,7 @@ const StoresGMap = () => {
     }
   }, [hoveredStore, isLoaded]);
   return (
-    <div className="w-full h-[50dvh] md:h-[40dvh] lg:h-[500px] rounded-xl overflow-hidden shadow-lg shadow-primary-30">
+    <div className="w-full h-[50dvh] md:h-[40dvh] lg:h-125 rounded-xl overflow-hidden shadow-lg shadow-primary-30">
       {isLoaded ? (
         <GoogleMap
           zoom={5.3}
@@ -120,7 +120,7 @@ const StoresGMap = () => {
                   <Button
                     content="Navigate"
                     pattern="primary"
-                    className="!py-1 !px-2 !rounded !text-xs max-w-40 mx-auto gap-1.5"
+                    className="py-1! px-2! rounded-sm! text-xs! max-w-40 mx-auto gap-1.5"
                     rightIcon={
                       <NavigationIcon
                         className="w-4 h-4 stroke-white"
