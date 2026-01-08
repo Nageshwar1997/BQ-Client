@@ -75,14 +75,14 @@ const ReferFriend = () => {
               value: referralLink,
               type: "url",
               disabled: true,
-              className: "!select-none pointer-events-none",
+              className: "select-none! pointer-events-none",
             }}
             containerClassName="max-w-lg"
           />
           <Button
             content={copied ? "Copied!" : "Copy Link"}
             pattern="primary"
-            className="max-w-40 !py-3 !rounded-lg"
+            className="max-w-40 h-10 lg:h-12 rounded-lg!"
             buttonProps={{ disabled: true, onClick: handleCopy }}
           />
         </div>
