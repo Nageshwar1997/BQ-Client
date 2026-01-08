@@ -111,7 +111,7 @@ const InputField = ({
               placeholder: field.placeholder,
               disabled: field.disabled,
             }}
-            optionsClassName="!max-h-60"
+            optionsClassName="max-h-50"
             optionsPosition="bottom"
             error={errorMessage}
           />
@@ -175,9 +175,6 @@ const InputField = ({
         disabled: field.disabled,
         placeholder: field.placeholder,
         autoComplete: field.autoComplete,
-        className: ["gst", "pan"].includes(field.name)
-          ? "uppercase placeholder:[text-transform:none]"
-          : "",
       }}
       containerClassName={containerClassName}
       register={register(name)}
@@ -192,7 +189,7 @@ const InputField = ({
 };
 
 // =============================
-// BecomeSeller Component
+// BecomeSeller Page
 // =============================
 const BecomeSeller = () => {
   const { user, isAuthenticated } = useUserStore();
@@ -270,8 +267,8 @@ const BecomeSeller = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
         {(
           Object.entries(becomeSellerFormMapData) as [TMapKey, TMapValue][]
-        ).map(([sectionKey, fields]) => (
-          <div key={sectionKey as string} className="flex flex-col gap-6">
+        ).map(([sectionKey, fields], index) => (
+          <div key={sectionKey + index} className="flex flex-col gap-6">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-full h-0.5 bg-accent-duo rounded-full" />
               <div className="w-fit px-2 whitespace-nowrap text-lg text-primary">
