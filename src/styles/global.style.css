@@ -1,72 +1,75 @@
-@import url("./fonts.style.css");
 @import url("./variables.style.css");
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: "metropolis", sans-serif;
+@layer base {
+  * {
+    box-sizing: border-box;
+    font-family: "metropolis", sans-serif;
+  }
+
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--primary, currentcolor);
+  }
+
+  /* Scrollbar Hide */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  button,
+  a {
+    outline: none;
+  }
+
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus .autofill-effect:-webkit-autofill {
+    -webkit-text-fill-color: var(--primary);
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  /* Disable arrows */
+  /* Hide spinner in WebKit browsers (Chrome, Edge, Safari) */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  /* Hide spinner in Firefox */
+  input[type="number"] {
+    appearance: textfield;
+  }
 }
 
-/* Scrollbar Hide */
-::-webkit-scrollbar {
-  display: none;
-}
+@layer utilities {
+  /* Loading Screen Page */
+  .loadingHighlight,
+  .highlight {
+    color: transparent;
+    background-clip: text;
+    background-image: var(--accent-duo);
+    display: inline;
+  }
 
-button,
-a {
-  outline: none;
-}
+  /* Min Max Slider Style */
+  .range-slider-thumb::-webkit-slider-thumb {
+    @apply w-3 h-3 bg-primary rounded-full cursor-pointer relative z-3;
+    pointer-events: all;
+    -webkit-appearance: none;
+  }
+  .range-slider-thumb::-moz-range-thumb {
+    @apply w-3 h-3 bg-primary rounded-full cursor-pointer relative z-3;
+    pointer-events: all;
+  }
 
-/* textarea:-webkit-autofill, */
-/* textarea:-webkit-autofill:hover,
-textarea:-webkit-autofill:focus,
-select:-webkit-autofill,
-select:-webkit-autofill:hover,
-select:-webkit-autofill:focus  */
-/* input:-webkit-autofill:hover,  */
-/* input:-webkit-autofill:focus */
-.autofill-effect:-webkit-autofill {
-  -webkit-text-fill-color: var(--primary);
-  transition: background-color 5000s ease-in-out 0s;
+  /* NOTE -  You can customize the prose styles here */
+  /* .custom-prose {
+  } */
 }
-
-/* Hide spinner in WebKit browsers (Chrome, Edge, Safari) */
-.number-input-mouse-control-none::-webkit-inner-spin-button,
-.number-input-mouse-control-none::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Hide spinner in Firefox */
-.number-input-mouse-control-none[type="number"] {
-  appearance: textfield;
-}
-
-/* *Loading Screen Page */
-.loadingHighlight,
-.highlight {
-  color: transparent;
-  background-clip: text;
-  background-image: var(--accent-duo);
-  display: inline;
-}
-
-/* Min Max Slider Style */
-.range-slider-thumb-base {
-  @apply w-3 h-3 bg-primary rounded-full cursor-pointer relative z-[3];
-}
-.range-slider-thumb::-webkit-slider-thumb {
-  @apply range-slider-thumb-base;
-  pointer-events: all;
-  -webkit-appearance: none;
-}
-
-.range-slider-thumb::-moz-range-thumb {
-  pointer-events: all;
-  @apply range-slider-thumb-base;
-}
-
-/* NOTE -  You can customize the prose styles here */
-/* .custom-prose {
-} */
