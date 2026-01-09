@@ -18,12 +18,12 @@ const CartItem = ({ item }: { item: TCartProduct }) => {
     <div className="p-2 flex gap-4 border shadow-md shadow-primary-10 border-primary-30 rounded-xl relative opacity-90">
       <div className="space-y-2.5">
         <div
-          className="w-24 h-24 relative overflow-hidden rounded-sm shadow cursor-pointer"
+          className="w-24 h-24 relative overflow-hidden rounded-xs shadow-sm cursor-pointer"
           onClick={() => navigate(`/product/${item?.product?._id}`)}
         >
           {(stock < 5 || isOutOfStock) && (
             <p
-              className={`absolute bottom-0 right-0 text-[8px] text-primary-inverted px-1 font-medium rounded-sm ${
+              className={`absolute bottom-0 right-0 text-[8px] text-primary-inverted px-1 font-medium rounded-xs ${
                 isOutOfStock ? "bg-red-600" : "bg-primary-50"
               }`}
             >
@@ -39,7 +39,7 @@ const CartItem = ({ item }: { item: TCartProduct }) => {
         <div className="grow w-24 flex items-center justify-center gap-3">
           <Button
             pattern="secondary"
-            className="!rounded-full !p-0 !w-6 h-6 !shadow-none disabled:!opacity-50"
+            className="rounded-full! p-0! w-6! h-6 shadow-none! disabled:opacity-50!"
             buttonProps={{
               disabled: !allowDec || isOutOfStock,
               onClick: () => handleQuantityChange(item._id, item.quantity - 1),
@@ -56,7 +56,7 @@ const CartItem = ({ item }: { item: TCartProduct }) => {
           </span>
           <Button
             pattern="secondary"
-            className="!w-6 h-6 !rounded-full !p-0 !shadow-none disabled:!opacity-50"
+            className="w-6! h-6 rounded-full! p-0! shadow-none! disabled:opacity-50!"
             buttonProps={{
               disabled: !allowInc || isOutOfStock,
               onClick: () => handleQuantityChange(item._id, item.quantity + 1),
@@ -95,7 +95,7 @@ const CartItem = ({ item }: { item: TCartProduct }) => {
         <Button
           content="Remove"
           pattern="primary"
-          className="!w-fit !rounded !px-3 !py-1 mt-1 !text-sm gap-2"
+          className="w-fit! rounded-sm! px-3! py-1! mt-1 text-sm! gap-2"
           rightIcon={
             <TrashIcon
               className="w-[14px] h-[14px] stroke-white"

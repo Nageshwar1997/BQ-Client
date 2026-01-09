@@ -22,7 +22,7 @@ const EmployeeCard = ({
               alt={employee.name}
               className="w-full h-56 object-cover object-top"
             />
-            <div className="absolute inset-x-0 bottom-0 flex flex-col items-center justify-center bg-gradient-to-t from-primary-inverted to-transparent px-4 py-2 pt-4 space-y-0.5 rounded-b-[14px]">
+            <div className="absolute inset-x-0 bottom-0 flex flex-col items-center justify-center bg-linear-to-t from-primary-inverted to-transparent px-4 py-2 pt-4 space-y-0.5 rounded-b-[14px]">
               <h3 className="font-semibold bg-clip-text text-transparent bg-silver-duo text-center">
                 {employee.name}
               </h3>
@@ -36,7 +36,7 @@ const EmployeeCard = ({
               <h3 className="line-clamp-2 leading-5 text-xl font-semibold text-secondary">
                 {employee.description?.title}
               </h3>
-              <q className="line-clamp-[7] text-base/5 text-tertiary">
+              <q className="line-clamp-7 text-base/5 text-tertiary">
                 {employee.description?.description}
               </q>
             </div>

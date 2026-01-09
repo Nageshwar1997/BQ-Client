@@ -24,7 +24,7 @@ const Sidebar = () => {
   const isMobile = useIsMobile(640);
 
   return (
-    <div className="w-full sm:max-w-20 lg:max-w-[250px] sm:max-h-[calc(100dvh-64px)] lg:max-h-[calc(100dvh-100px)] grow bg-tertiary-inverted sm:bg-secondary-inverted text-tertiary fixed sm:sticky bottom-0 sm:bottom-auto sm:top-16 lg:top-[100px] sm:border-r border-r-primary-30 z-50 sm:z-0">
+    <div className="w-full sm:max-w-20 lg:max-w-62.5 sm:max-h-[calc(100dvh-64px)] lg:max-h-[calc(100dvh-100px)] grow bg-tertiary-inverted sm:bg-secondary-inverted text-tertiary fixed sm:sticky bottom-0 sm:bottom-auto sm:top-16 lg:top-25 sm:border-r border-r-primary-30 z-50 sm:z-0">
       <div className="w-full h-full flex sm:flex-col sm:gap-3">
         {/* Profile Section */}
         <div className="w-full hidden sm:flex flex-col lg:flex-row justify-center items-center gap-1 px-2 py-3 sm:border-b border-b-primary-30">
@@ -51,10 +51,10 @@ const Sidebar = () => {
         </div>
         <div className="w-full sm:h-[calc(100%-100px)] relative">
           {showV_Gradient.top && (
-            <TopGradient className="!w-full h-8 -top-px from-secondary-inverted hidden sm:block" />
+            <TopGradient className="w-full! h-8 -top-px from-secondary-inverted hidden sm:block" />
           )}
           {showH_Gradient.left && (
-            <LeftGradient className="!w-8 h-full left-0 from-secondary-inverted sm:hidden" />
+            <LeftGradient className="w-8! h-full left-0 from-secondary-inverted sm:hidden" />
           )}
           <div
             className={`w-full h-full overflow-x-scroll sm:overflow-y-scroll scroll-smooth p-2 flex sm:flex-col gap-3 items-center ${
@@ -76,7 +76,7 @@ const Sidebar = () => {
                       ? logout()
                       : null
                   }
-                  className="w-fit lg:w-full flex items-center justify-between gap-2 group cursor-pointer p-2 border border-primary-10 rounded-lg hover:bg-primary-inverted-10 shadow-lg hover:shadow-primary-inverted-50 light:hover:shadow-primary-50 hover:scale-[1.02] duration-300"
+                  className="w-fit lg:w-full flex items-center justify-between gap-2 group cursor-pointer p-2 border border-primary-10 rounded-lg hover:bg-primary-inverted-10 shadow-lg hover:shadow-primary-inverted-50 hover:light:shadow-primary-50 hover:scale-[1.02] duration-300"
                 >
                   <div className="flex items-center gap-2">
                     <Icon
@@ -97,10 +97,10 @@ const Sidebar = () => {
           </div>
         </div>
         {showV_Gradient.bottom && (
-          <BottomGradient className="!w-full bottom-0 h-8 from-secondary-inverted hidden sm:block" />
+          <BottomGradient className="w-full! bottom-0 h-8 from-secondary-inverted hidden sm:block" />
         )}
         {showH_Gradient.right && (
-          <RightGradient className="!w-8 h-full right-0 from-secondary-inverted sm:hidden" />
+          <RightGradient className="w-8! h-full right-0 from-secondary-inverted sm:hidden" />
         )}
       </div>
     </div>

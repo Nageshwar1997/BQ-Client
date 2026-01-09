@@ -91,10 +91,10 @@ const SearchProducts = () => {
         alt={"Category"}
       />
       <div className="grow flex flex-col">
-        <div className="sticky top-16 h-9 lg:h-[54px] bg-primary-inverted border-y border-y-primary-50 z-10">
+        <div className="sticky top-16 h-9 lg:h-13.5 bg-primary-inverted border-y border-y-primary-50 z-10">
           <div className="flex items-center justify-between h-full">
             <button
-              className="h-full flex items-center gap-2 px-5 py-2 lg:px-11 lg:py-[14px] border-r border-r-primary-50 base:tracking-widest"
+              className="h-full flex items-center gap-2 px-5 py-2 lg:px-11 lg:py-3.5 border-r border-r-primary-50 base:tracking-widest"
               onClick={() =>
                 setShow((prev) => ({ sortBy: false, filter: !prev.filter }))
               }
@@ -131,7 +131,7 @@ const SearchProducts = () => {
               }}
             />
             <button
-              className="h-full flex items-center gap-2 px-5 py-2 lg:px-11 lg:py-[14px] border-l border-l-primary-50 base:tracking-widest group"
+              className="h-full flex items-center gap-2 px-5 py-2 lg:px-11 lg:py-3.5 border-l border-l-primary-50 base:tracking-widest group"
               onClick={() =>
                 setShow((prev) => ({ filter: false, sortBy: !prev.sortBy }))
               }
@@ -151,8 +151,8 @@ const SearchProducts = () => {
 
         <div className="grow bg-primary-inverted flex">
           <Filters
-            className={`sticky top-[100px] lg:top-[118px] transform transition-all duration-500 ease-in-out overflow-hidden ${
-              show.filter ? "w-[270px]" : "w-0"
+            className={`sticky top-25 lg:top-29.5 transform transition-all duration-500 ease-in-out overflow-hidden ${
+              show.filter ? "w-67.5" : "w-0"
             }`}
             needCategoriesFilters={true}
           />
@@ -161,7 +161,7 @@ const SearchProducts = () => {
               headingText="Something went wrong!"
               descriptionText="Please try again or refresh page"
               showHrLine={true}
-              className="mx-auto mb-auto [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase [&>p]:text-xs [&>p]:base:text-sm [&>p]:sm:text-base [&>p]:md:text-lg pt-[150px]"
+              className="mx-auto mb-auto [&>h3]:text-base base:[&>h3]:text-base sm:[&>h3]:text-xl md:[&>h3]:text-2xl lg:[&>h3]:text-3xl xl:[&>h3]:text-4xl [&>h3]:uppercase [&>p]:text-xs base:[&>p]:text-sm sm:[&>p]:text-base md:[&>p]:text-lg pt-37.5"
             />
           ) : products.length === 0 &&
             !isError &&
@@ -169,7 +169,7 @@ const SearchProducts = () => {
             !isFetchingNextPage ? (
             <EmptyData
               content={"No products found"}
-              className="mx-auto mb-auto [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase pt-[150px] gap-5"
+              className="mx-auto mb-auto [&>h3]:text-base base:[&>h3]:text-base sm:[&>h3]:text-xl md:[&>h3]:text-2xl lg:[&>h3]:text-3xl xl:[&>h3]:text-4xl [&>h3]:uppercase pt-37.5 gap-5"
             />
           ) : (
             <div className="flex-1 p-4 grid gap-4 grid-cols-[repeat(auto-fit,minmax(13rem,1fr))] base:grid-cols-[repeat(auto-fill,minmax(14rem,1fr))] xl:grid-cols-[repeat(auto-fill,minmax(16rem,1fr))]">
@@ -200,8 +200,8 @@ const SearchProducts = () => {
             </div>
           )}
           <SortBy
-            className={`sticky top-[100px] lg:top-[118px] transform transition-all duration-500 ease-in-out overflow-hidden ${
-              show.sortBy ? "w-[270px]" : "w-0"
+            className={`sticky top-25 lg:top-29.5 transform transition-all duration-500 ease-in-out overflow-hidden ${
+              show.sortBy ? "w-67.5" : "w-0"
             }`}
           />
         </div>

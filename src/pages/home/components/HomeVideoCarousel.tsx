@@ -80,7 +80,7 @@ const HomeVideoCarousel = () => {
   }, [currentIndex, videos, handleNext]);
 
   return (
-    <div className="relative w-full h-full max-h-[540px] aspect-[8/3] group">
+    <div className="relative w-full h-full max-h-135 aspect-8/3 group">
       {isLoading && !isError ? (
         <div className="w-full h-full bg-silver animate-pulse" />
       ) : !isLoading && isError ? (
@@ -89,7 +89,7 @@ const HomeVideoCarousel = () => {
             headingText="Unable to load videos"
             descriptionText="Please try again or refresh page"
             showHrLine={true}
-            className="[&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase [&>p]:text-xs [&>p]:base:text-sm [&>p]:sm:text-base [&>p]:md:text-lg"
+            className="[&>h3]:text-base base:[&>h3]:text-base sm:[&>h3]:text-xl md:[&>h3]:text-2xl lg:[&>h3]:text-3xl xl:[&>h3]:text-4xl [&>h3]:uppercase [&>p]:text-xs base:[&>p]:text-sm sm:[&>p]:text-base md:[&>p]:text-lg"
           />
         </div>
       ) : (
@@ -108,7 +108,7 @@ const HomeVideoCarousel = () => {
               onClick={type === "prev" ? handlePrev : handleNext}
               className={`absolute top-1/2 ${
                 type === "prev" ? "left-4" : "right-4"
-              } transform -translate-y-1/2 bg-primary-50 hover:bg-primary p-3 rounded-full hidden group-hover:lg:block`}
+              } transform -translate-y-1/2 bg-primary-50 hover:bg-primary p-3 rounded-full hidden lg:group-hover:block`}
             >
               {type === "prev" ? (
                 <LeftArrowIcon

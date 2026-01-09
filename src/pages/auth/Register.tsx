@@ -84,9 +84,9 @@ const RegisterInput = ({
             icon:
               PASSWORD_FIELDS.includes(input.name as TPasswordField) &&
               (showPasswords[input.name as TPasswordField] ? (
-                <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                <EyeOffIcon className="fill-primary! opacity-50 hover:opacity-100 h-full" />
               ) : (
-                <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                <EyeIcon className="fill-primary! opacity-50 hover:opacity-100 h-full" />
               )),
             onClick: () =>
               togglePasswordVisibility(input.name as TPasswordField),
@@ -198,7 +198,7 @@ const RegisterForm = ({
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="flex gap-6">
           <ProfilePicInput
-            className="!max-w-24"
+            className="max-w-24!"
             src={profilePicURL}
             error={errors.profilePic?.message}
             register={register("profilePic")}
@@ -294,7 +294,7 @@ const Register = () => {
   return (
     <div className="w-full min-h-dvh max-h-dvh h-full p-4 flex gap-4">
       <AuthRobot />
-      <DarkMode className="border absolute top-5 right-5 h-fit p-2 md:p-3 rounded-full bg-secondary-inverted [&_path]:!stroke-secondary z-10" />
+      <DarkMode className="border absolute top-5 right-5 h-fit p-2 md:p-3 rounded-full bg-secondary-inverted [&_path]:stroke-secondary! z-10" />
       <div
         className={`flex-1 flex flex-col items-center gap-4 relative ${
           !showGradient.bottom && !showGradient.top
@@ -313,7 +313,7 @@ const Register = () => {
               contentClassName="mb-3 font-semibold"
             />
             <SocialAuth />
-            <div className="w-full max-w-[400px] lg:max-w-[500px] sm:w-[90%] lg:w-[500px] border-gradient p-px rounded-3xl mx-auto">
+            <div className="w-full max-w-100 lg:max-w-125 sm:w-[90%] lg:w-125 border-gradient p-px rounded-3xl mx-auto">
               <div className="shadow-light-dark-soft bg-platinum-black p-4 base:p-6 md:px-8 rounded-3xl">
                 {/* Register Form */}
                 {data?.otpToken && email ? (

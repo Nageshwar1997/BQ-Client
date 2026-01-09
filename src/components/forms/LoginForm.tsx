@@ -110,7 +110,7 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
           <div
             className={`shadow-light-dark-soft bg-platinum-black p-4 base:p-6 md:px-8 rounded-3xl space-y-6 mx-auto ${
               paths.includes("login")
-                ? "max-w-[400px] lg:max-w-[500px] sm:w-[90%] lg:w-[500px]"
+                ? "max-w-100 lg:max-w-125 sm:w-[90%] lg:w-125"
                 : ""
             }`}
           >
@@ -128,7 +128,7 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
                     { label: "Email", value: "email" },
                     { label: "Phone", value: "phoneNumber" },
                   ]}
-                  className="!w-40"
+                  className="w-40!"
                 />
               )}
             />
@@ -159,9 +159,9 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
                         ...(isPassword && {
                           right: {
                             icon: showPassword ? (
-                              <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                              <EyeOffIcon className="fill-primary opacity-50 hover:opacity-100 h-full" />
                             ) : (
-                              <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                              <EyeIcon className="fill-primary opacity-50 hover:opacity-100 h-full" />
                             ),
                             onClick: () => setShowPassword((prev) => !prev),
                           },
@@ -193,7 +193,7 @@ const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
                 pattern="primary"
                 buttonProps={{ type: "submit" }}
                 content="Login"
-                className="!text-base"
+                className="text-base!"
               />
             </div>
             <div className="flex items-center justify-center gap-2">

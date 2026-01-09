@@ -88,7 +88,7 @@ const OpeningModal = ({
       isOpen={isOpen}
       onClose={onClose}
       heading={opening.role}
-      className="!max-w-xl [&>div>div>h2]:text-start [&>div]:pb-0"
+      className="max-w-xl! [&>div>div>h2]:text-start [&>div]:pb-0"
     >
       <form onSubmit={handleSubmit(onSubmit)} className="relative">
         <div className="space-y-6">
@@ -189,7 +189,7 @@ const OpeningModal = ({
           }}
           error={errors.portfolio?.message}
         />
-        <div className="flex flex-col items-end justify-end sticky bottom-0 inset-x-0 z-10 py-4 h-24 bg-gradient-to-t from-primary-inverted to-transparent">
+        <div className="flex flex-col items-end justify-end sticky bottom-0 inset-x-0 z-10 py-4 h-24 bg-linear-to-t from-primary-inverted to-transparent">
           <Button
             pattern="primary"
             content={isPending ? "Applying..." : "Apply Now"}

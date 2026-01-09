@@ -149,7 +149,7 @@ const Payment = () => {
               key={item._id}
               className="p-2 flex gap-4 border shadow-md border-primary-30 rounded-xl opacity-90 items-stretch"
             >
-              <div className="w-24 rounded-sm shadow">
+              <div className="w-24 rounded-xs shadow-sm">
                 <img
                   src={
                     item?.shade?.images?.[0] || item?.product?.commonImages?.[0]
@@ -226,7 +226,7 @@ const Payment = () => {
         <Button
           pattern="primary"
           content={isOrderPending ? "Processing..." : "Pay Now"}
-          className="!rounded-lg mt-4 !p-3 gap-2"
+          className="rounded-lg! mt-4 p-3! gap-2"
           rightIcon={<RightArrowIcon className="stroke-white" />}
           buttonProps={{ onClick: handlePayment, disabled: isOrderPending }}
         />

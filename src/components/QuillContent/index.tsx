@@ -32,10 +32,10 @@ const QuillContent = ({ content, className = "" }: QuillContentProps) => {
 
             prose-headings:text-primary
             prose-headings:font-semibold
-            prose-headings:!my-3
+            prose-headings:my-3!
 
             prose-p:text-secondary
-            prose-p:!my-2
+            prose-p:my-2!
             prose-p:leading-relaxed
 
             prose-a:text-transparent
@@ -68,7 +68,7 @@ const QuillContent = ({ content, className = "" }: QuillContentProps) => {
             prose-code:bg-primary-10
             prose-code:px-1
             prose-code:py-0.5
-            prose-code:rounded
+            prose-code:rounded-sm
             prose-code:text-sm
             prose-code:font-mono
             prose-code:text-primary-inverted

@@ -7,8 +7,8 @@ const BuyOnEMIAndCurrentViewers = ({ price }: { price: number }) => {
   return (
     <div className="flex flex-col gap-4">
       <p>Tax included</p>
-      <div className="relative border border-primary-50 rounded">
-        <div className="absolute -top-2.5 left-3 bg-primary text-primary-inverted px-2 py-px text-[10px] rounded">
+      <div className="relative border border-primary-50 rounded-sm">
+        <div className="absolute -top-2.5 left-3 bg-primary text-primary-inverted px-2 py-px text-[10px] rounded-sm">
           Flat ₹100 cashback
         </div>
         <div className="flex justify-between items-center relative text-[10px] sm:text-sm">
@@ -32,8 +32,8 @@ const BuyOnEMIAndCurrentViewers = ({ price }: { price: number }) => {
           </p>
         </div>
       </div>
-      <div className="flex items-center gap-2 border border-primary-50 p-2 rounded">
-        <div className="w-3 h-3 rounded-full bg-gradient-to-t from-green-500/50 to-green-500/50 flex items-center justify-center">
+      <div className="flex items-center gap-2 border border-primary-50 p-2 rounded-sm">
+        <div className="w-3 h-3 rounded-full bg-linear-to-t from-green-500/50 to-green-500/50 flex items-center justify-center">
           <div className="w-1.5 h-1.5 rounded-full animate-blink bg-green-600" />
         </div>
         <div className="text-sm/4 md:text-base/4">

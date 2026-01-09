@@ -34,13 +34,13 @@ const Teams = () => {
           and cosmetics.
         </p>
       </header>
-      <div className="sticky top-16 bg-primary-inverted z-[1]">
+      <div className="sticky top-16 bg-primary-inverted z-1">
         <div className="relative py-2">
           {showGradient.left && (
-            <LeftGradient className="!w-10 md:!w-20 h-full" />
+            <LeftGradient className="w-10! md:w-20! h-full" />
           )}
           {showGradient.right && (
-            <RightGradient className="!w-10 md:!w-20 h-full" />
+            <RightGradient className="w-10! md:w-20! h-full" />
           )}
           <div
             className="flex gap-4 overflow-y-scroll scroll-smooth"

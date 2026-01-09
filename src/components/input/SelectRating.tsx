@@ -107,7 +107,7 @@ const SelectRating = ({ initialValue = 0, onChange, error }: RatingProps) => {
             <Button
               content={`Give ${val}`}
               pattern="secondary"
-              className="!py-1 !px-2 !rounded shadow-none hover:shadow-sm hover:shadow-primary-50 [&>*:first-child]:pt-px !text-xs"
+              className="py-1! px-2! rounded-sm! shadow-none hover:shadow-xs hover:shadow-primary-50 [&>*:first-child]:pt-px text-xs!"
               rightIcon={
                 <StarFillIcon className="w-4 h-4" fill="currentColor" />
               }

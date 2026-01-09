@@ -68,10 +68,10 @@ const AddressCard = ({
                 buttonProps={{
                   onClick: () => handleAddressSelect(type, address._id),
                 }}
-                className={`!px-3 !py-1 !text-xs !rounded capitalize text-primary-inverted ${
+                className={`px-3! py-1! text-xs! rounded! capitalize text-primary-inverted ${
                   isActive
-                    ? "bg-accent-duo !text-primary"
-                    : "bg-silver-duo !text-primary-inverted"
+                    ? "bg-accent-duo text-primary!"
+                    : "bg-silver-duo text-primary-inverted!"
                 }`}
               />
             );
@@ -87,7 +87,7 @@ const AddressCard = ({
                 strokeWidth={2.5}
               />
             }
-            className="!rounded-full !shadow-neumorphic-layered !w-fit !h-fit !p-1.5"
+            className="rounded-full! shadow-neumorphic-layered! w-fit! h-fit! p-1.5!"
           />
           <Button
             pattern="secondary"
@@ -97,7 +97,7 @@ const AddressCard = ({
                 strokeWidth={2.5}
               />
             }
-            className="!rounded-full !shadow-neumorphic-layered !w-fit !h-fit !p-1.5"
+            className="rounded-full! shadow-neumorphic-layered! w-fit! h-fit! p-1.5!"
             buttonProps={{ onClick: () => setParams({ confirm: address._id }) }}
           />
         </div>

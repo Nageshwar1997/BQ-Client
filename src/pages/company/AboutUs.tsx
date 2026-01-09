@@ -30,7 +30,7 @@ const AboutUs = () => {
       <CustomCursorVideoSection
         title="Get Ready With BQ"
         videoUrl="/videos/home/Brush-Slow-Mo.mp4"
-        className="[&>h1]:text-2xl [&>h1]:base:text-3xl [&>h1]:sm:text-4xl !gap-4"
+        className="[&>h1]:text-2xl base:[&>h1]:text-3xl sm:[&>h1]:text-4xl gap-4!"
       />
 
       {/* Mission, Vision, Values */}
@@ -55,7 +55,7 @@ const AboutUs = () => {
         ].map((item, i) => (
           <div
             key={i}
-            className="border border-secondary-10 p-6 rounded-2xl shadow-sm hover:shadow-lg shadow-secondary-30 hover:shadow-primary-10 transition-shadow"
+            className="border border-secondary-10 p-6 rounded-2xl shadow-xs hover:shadow-lg shadow-secondary-30 hover:shadow-primary-10 transition-shadow"
           >
             <h3 className="text-xl font-semibold mb-3 text-secondary">
               {item.title}

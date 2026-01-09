@@ -75,9 +75,9 @@ const RetailAndECommerce = () => {
         <img
           src="/images/company/retail-e-commerce/explore-experience.webp"
           alt="Explore Experience"
-          className="object-cover min-h-[400px] object-right-top w-full h-full"
+          className="object-cover min-h-100 object-top-right w-full h-full"
         />
-        <div className="absolute bottom-0 inset-x-0 min-h-[400px] p-4 pt-8 bg-gradient-to-t from-primary-inverted to-transparent flex flex-col justify-end">
+        <div className="absolute bottom-0 inset-x-0 min-h-100 p-4 pt-8 bg-linear-to-t from-primary-inverted to-transparent flex flex-col justify-end">
           <h2 className="text-base base:text-lg sm:text-xl lg:text-2xl font-bold bg-clip-text bg-silver-duo text-transparent">
             Explore the Beautinique Experience
           </h2>
@@ -93,14 +93,14 @@ const RetailAndECommerce = () => {
           <Button
             pattern="primary"
             content="Find a Store"
-            className="!rounded-lg"
+            className="rounded-lg!"
           />
         </Link>
         <Link to="/search" className="w-1/2">
           <Button
             pattern="secondary"
             content="Shop Now"
-            className="!rounded-lg"
+            className="rounded-lg!"
           />
         </Link>
       </section>

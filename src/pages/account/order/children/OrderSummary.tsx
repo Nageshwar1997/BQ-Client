@@ -56,7 +56,7 @@ const OrderSummary = ({ order, className = "" }: Props) => {
                     strokeWidth="2.5"
                   />
                 }
-                className="min-w-[86px] max-w-fit !rounded-lg !px-x !py-2"
+                className="min-w-21.5 max-w-fit rounded-lg! px-px! py-2!"
                 buttonProps={{ onClick: () => setParams({ confirm: "true" }) }}
               />
             )}
@@ -75,7 +75,7 @@ const OrderSummary = ({ order, className = "" }: Props) => {
                     />
                   }
                   pattern="primary"
-                  className="min-w-[86px] max-w-fit !rounded-lg !px-x !py-2"
+                  className="min-w-21.5 max-w-fit rounded-lg! px-px! py-2!"
                 />
               </Link>
             )}

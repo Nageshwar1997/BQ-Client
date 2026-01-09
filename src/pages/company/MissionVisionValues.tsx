@@ -143,7 +143,7 @@ const MissionVisionValues = () => {
           <Button
             pattern="secondary"
             content="Get in Touch"
-            className="max-w-xs mx-auto !rounded-full"
+            className="max-w-xs mx-auto rounded-full!"
           />
         </Link>
       </section>

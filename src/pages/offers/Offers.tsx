@@ -117,7 +117,7 @@ const Offers = () => {
               {offer.code && (
                 <Button
                   pattern="secondary"
-                  className="mt-4 !rounded-full !py-2 !px-4"
+                  className="mt-4 rounded-full! py-2! px-4!"
                   content={
                     copiedCode === offer.code
                       ? "Code Expired!" // FIXME - Copied!
@@ -155,7 +155,7 @@ const Offers = () => {
           <Button
             pattern="primary"
             content="Shop Now"
-            className="!rounded-lg"
+            className="rounded-lg!"
           />
         </Link>
       </footer>

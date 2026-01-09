@@ -28,7 +28,7 @@ const OrderProducts = ({ products = [], className = "" }: Props) => {
             } gap-4 border shadow-md border-primary-30 rounded-lg opacity-90 items-stretch`}
           >
             <div
-              className={`w-24 rounded-sm shadow overflow-hidden ${
+              className={`w-24 rounded-xs shadow overflow-hidden ${
                 isAccountPage ? "w-32 base:w-24 mx-auto" : ""
               }`}
             >

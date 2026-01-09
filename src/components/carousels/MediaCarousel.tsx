@@ -20,7 +20,7 @@ const MediaCarousel = ({
   return (
     <div className={`p-1 relative ${className}`}>
       {showGradient.left && (
-        <LeftGradient className={`!w-20 h-full ${gradientClassName}`} />
+        <LeftGradient className={`w-20! h-full ${gradientClassName}`} />
       )}
       <div
         className={`flex items-center gap-2 overflow-x-scroll scroll-smooth overflow-hidden ${
@@ -37,7 +37,7 @@ const MediaCarousel = ({
               }
             }}
             onClick={() => onClick(i)}
-            className={`w-20 h-20 group rounded overflow-hidden border shadow-sm shrink-0 hover:opacity-100 transition-colors duration-300 relative ${
+            className={`w-20 h-20 group rounded overflow-hidden border shadow-xs shrink-0 hover:opacity-100 transition-colors duration-300 relative ${
               i === selected
                 ? "border-tertiary opacity-100"
                 : "border-primary-30 opacity-90"
@@ -67,7 +67,7 @@ const MediaCarousel = ({
             {handleRemove && (
               <button
                 type="button"
-                className="absolute top-0.5 right-0.5 z-[1] bg-tertiary rounded-full p-0.5 flex items-center justify-center text-xs"
+                className="absolute top-0.5 right-0.5 z-1 bg-tertiary rounded-full p-0.5 flex items-center justify-center text-xs"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleRemove(i);
@@ -80,7 +80,7 @@ const MediaCarousel = ({
         ))}
       </div>
       {showGradient.right && (
-        <RightGradient className={`!w-20 h-full ${gradientClassName}`} />
+        <RightGradient className={`w-20! h-full ${gradientClassName}`} />
       )}
     </div>
   );

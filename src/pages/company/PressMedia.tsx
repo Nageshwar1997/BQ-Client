@@ -1,7 +1,19 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { BRAND_FEATURE_HIGHLIGHTS } from "../../constants";
+import { useEffect } from "react";
 
 const PressMedia = () => {
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (!hash) return;
+
+    const id = hash.replace("#", "");
+    const el = document.getElementById(id);
+
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [hash]);
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-10">
       <header className="text-center space-y-3 sm:space-y-4">
@@ -36,7 +48,7 @@ const PressMedia = () => {
               key={index}
               src={`/images/company/press-media/${name}.webp`}
               alt="Times of India"
-              className={`w-16 h-16 base:w-20 base:h-20 md:h-40 md:w-40 aspect-square rounded-xl object-contain border border-primary-30 shadow-sm shadow-primary-30 p-2 ${
+              className={`w-16 h-16 base:w-20 base:h-20 md:h-40 md:w-40 aspect-square rounded-xl object-contain border border-primary-30 shadow-xs shadow-primary-30 p-2 ${
                 name === "TOI" ? "bg-[#D32000]" : "bg-white"
               }`}
             />
@@ -48,19 +60,24 @@ const PressMedia = () => {
           Brand Feature Highlights
         </h2>
         <div className="grid gap-6 grid-cols-[repeat(auto-fit,minmax(250px,1fr))]">
-          {BRAND_FEATURE_HIGHLIGHTS.map(({ title, description, image }) => (
-            <div className="rounded-2xl overflow-hidden shadow-md bg-primary-1 shadow-primary-10 border border-primary-30">
-              <img
-                src={`/images/company/press-media/${image}`}
-                alt="Magazine"
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-4 space-y-2 border-t border-t-primary-30">
-                <h3 className="font-semibold">{title}</h3>
-                <p className="text-sm text-tertiary">{description}</p>
+          {BRAND_FEATURE_HIGHLIGHTS.map(
+            ({ title, description, image }, index) => (
+              <div
+                key={index}
+                className="rounded-2xl overflow-hidden shadow-md bg-primary-1 shadow-primary-10 border border-primary-30"
+              >
+                <img
+                  src={`/images/company/press-media/${image}`}
+                  alt="Magazine"
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-4 space-y-2 border-t border-t-primary-30">
+                  <h3 className="font-semibold">{title}</h3>
+                  <p className="text-sm text-tertiary">{description}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          )}
         </div>
       </section>
       <section className="space-y-5 sm:space-y-6">
@@ -68,6 +85,7 @@ const PressMedia = () => {
           Exclusive Interview
         </h2>
         <iframe
+          id="watch"
           className="w-full h-full aspect-video rounded-2xl shadow-lg shadow-primary-10"
           src="https://www.youtube.com/embed/iJyK1-gvjrE?si=gUzKP3fb7HCH9FnT"
           title="YouTube video player"

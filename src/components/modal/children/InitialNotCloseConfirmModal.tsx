@@ -62,9 +62,9 @@ const InitialNotCloseConfirmModal = ({
         ...modalProps?.containerProps,
         onClick: (e) =>
           modalProps?.containerProps?.onClick ?? e.stopPropagation(),
-        className: `!p-6 ${modalProps?.containerProps?.className || ""}`,
+        className: `p-6! ${modalProps?.containerProps?.className || ""}`,
       }}
-      className={`[&>div>div>svg]:hidden !bg-primary-inverted [&>div]:!p-4 [&>div>div]:!p-0 max-w-md border-2 ${
+      className={`[&>div>div>svg]:hidden bg-primary-inverted! [&>div]:p-4! [&>div>div]:p-0! max-w-md border-2 ${
         type !== "custom"
           ? type === "success"
             ? "border-green-500"
@@ -76,7 +76,7 @@ const InitialNotCloseConfirmModal = ({
           : ""
       } ${modalProps?.className || ""}`}
     >
-      <div className="!rounded-xl p-1.5">
+      <div className="rounded-xl! p-1.5">
         {type !== "custom" ? (
           <div className="flex flex-col items-center justify-center gap-6">
             <TopIconLayer type={type} />
@@ -94,7 +94,7 @@ const InitialNotCloseConfirmModal = ({
                   <Button
                     {...buttons.left}
                     pattern="secondary"
-                    className={`max-h-10 !rounded-md ${
+                    className={`max-h-10 rounded-md! ${
                       buttons.left.className || ""
                     }`}
                     buttonProps={{
@@ -110,7 +110,7 @@ const InitialNotCloseConfirmModal = ({
                   <Button
                     {...buttons.right}
                     pattern="primary"
-                    className={`max-h-10 !rounded-md ${
+                    className={`max-h-10 rounded-md! ${
                       buttons.right.className || ""
                     }`}
                     buttonProps={{

@@ -79,7 +79,7 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
       />
       {/* Query Info */}
       <div
-        className={`flex items-center justify-between px-3 py-2 text-tertiary bg-smoke-eerie rounded shadow-sm mb-1 ${
+        className={`flex items-center justify-between px-3 py-2 text-tertiary bg-smoke-eerie rounded shadow-xs mb-1 ${
           searchQuery.trim() ? "opacity-100" : "opacity-50 pointer-events-none"
         }`}
       >
@@ -97,7 +97,7 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
         />
       </div>
       {/* Result Container */}
-      <div className="flex flex-col flex-1 min-h-[235px] max-h-[350px] w-full overflow-y-auto rounded-lg bg-smoke-eerie shadow-inner">
+      <div className="flex flex-col flex-1 min-h-58.75 max-h-87.5 w-full overflow-y-auto rounded-lg bg-smoke-eerie shadow-inner">
         {productsQuery.isPending && debouncedQuery ? (
           <SearchModalSkeleton count={5} />
         ) : productsQuery.isError ? (
@@ -112,13 +112,13 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
             {products.map((p: FetchedProductType) => (
               <li
                 key={p._id}
-                className="border border-primary-30 flex items-center gap-2 p-1 rounded hover:bg-primary-inverted-30 cursor-pointer transition"
+                className="border border-primary-30 flex items-center gap-2 p-1 rounded-sm hover:bg-primary-inverted-30 cursor-pointer transition"
                 onClick={() => handleSubmit(p._id)}
               >
                 <img
                   src={p.commonImages[0]}
                   alt={p.brand}
-                  className="w-8 h-8 object-cover rounded aspect-square"
+                  className="w-8 h-8 object-cover rounded-sm aspect-square"
                 />
                 <div className="flex flex-col">
                   <h3 className="text-xs font-medium text-secondary line-clamp-1">

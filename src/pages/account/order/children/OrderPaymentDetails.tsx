@@ -25,7 +25,7 @@ const OrderPaymentDetails = ({ order, className = "" }: Props) => {
       value:
         transaction?.upi_transaction_id ||
         transaction?.netbanking_bank_transaction_id,
-      className: "[&>span:nth-child(2)]:break-words",
+      className: "[&>span:nth-child(2)]:wrap-break-word",
     },
     {
       field: "Authcode",

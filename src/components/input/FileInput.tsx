@@ -89,7 +89,7 @@ const CenterContent = ({
   };
   return (
     <div
-      className={`flex-1 w-full h-full outline-none border-none focus:outline-none focus:border-none bg-transparent font-normal text-sm p-3 flex items-center justify-start cursor-pointer ${
+      className={`flex-1 w-full h-full outline-hidden border-none focus:outline-hidden focus:border-none bg-transparent font-normal text-sm p-3 flex items-center justify-start cursor-pointer ${
         icons?.left?.icon
           ? "pl-0"
           : icons?.right?.icon
@@ -152,7 +152,7 @@ const FileInput = ({
         {label && (
           <label
             htmlFor={fileInputProps.name}
-            className={`text-[10px] lg:text-xs text-primary-50 absolute top-0 left-3 transform -translate-y-1/2 border border-primary-10 leading-none px-1 md:px-2 py-0.5 bg-smoke-eerie rounded cursor-pointer`}
+            className={`text-[10px] lg:text-xs text-primary-50 absolute top-0 left-3 transform -translate-y-1/2 border border-primary-10 leading-none px-1 md:px-2 py-0.5 bg-smoke-eerie rounded-sm cursor-pointer`}
           >
             {label}
           </label>
@@ -174,8 +174,8 @@ const FileInput = ({
       )}
       {previews?.length > 0 && (
         <MediaCarousel
-          className={`border border-primary-10 bg-smoke-eerie rounded-lg p-2 [&>div]:justify-start [&>div>div]:w-14 [&>div>div]:h-14 [&>div>div]:md:w-16 [&>div>div]:md:h-16 [&>div>div]:lg:w-20 [&>div>div]:lg:h-20 ${mediaCarouselClassName}`}
-          gradientClassName="!w-9 lg:!w-20"
+          className={`border border-primary-10 bg-smoke-eerie rounded-lg p-2 [&>div]:justify-start [&>div>div]:w-14 [&>div>div]:h-14 md:[&>div>div]:w-16 md:[&>div>div]:h-16 lg:[&>div>div]:w-20 lg:[&>div>div]:h-20 ${mediaCarouselClassName}`}
+          gradientClassName="w-9! lg:w-20!"
           data={previews}
           onClick={(i) => {
             setCurrentIndex(i);

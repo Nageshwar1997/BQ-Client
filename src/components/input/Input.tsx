@@ -30,7 +30,7 @@ const Input = ({
         {label && (
           <label
             htmlFor={inputProps.name}
-            className={`text-[10px] lg:text-xs text-primary-50 absolute top-0 left-3 transform -translate-y-1/2 border border-primary-10 leading-none px-1 md:px-2 py-0.5 bg-smoke-eerie rounded cursor-pointer`}
+            className={`text-[10px] lg:text-xs text-primary-50 absolute top-0 left-3 transform -translate-y-1/2 border border-primary-10 leading-none px-1 md:px-2 py-0.5 bg-smoke-eerie rounded-sm cursor-pointer`}
           >
             {label}
           </label>
@@ -65,7 +65,7 @@ const Input = ({
             onWheel={(event) =>
               inputProps?.type === "number" ? event.currentTarget.blur() : null
             }
-            className={`flex-1 w-full h-full outline-none border-none focus:outline-none focus:border-none bg-transparent font-normal text-sm p-3 text-primary placeholder:text-primary-50 placeholder:text-sm autofill-effect line-clamp-1 disabled:cursor-not-allowed ${
+            className={`flex-1 w-full h-full outline-hidden border-none focus:outline-hidden focus:border-none bg-transparent font-normal text-sm p-3 text-primary placeholder:text-primary-50 placeholder:text-sm autofill-effect line-clamp-1 disabled:cursor-not-allowed ${
               icons?.left?.icon
                 ? "pl-0"
                 : icons?.right?.icon
@@ -75,7 +75,7 @@ const Input = ({
                 : ""
             } ${
               inputProps?.type === "number"
-                ? "number-input-mouse-control-none"
+                ? ""
                 : ""
             } ${inputProps?.className || ""}`}
           />

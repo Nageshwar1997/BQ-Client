@@ -6,12 +6,12 @@ const SearchModalSkeleton = ({ count }: { count: number }) => {
       {Array.from({ length: count }).map((_, index) => (
         <div
           key={index}
-          className="border border-primary-30 flex items-center gap-2 p-1 rounded"
+          className="border border-primary-30 flex items-center gap-2 p-1 rounded-sm"
         >
-          <Skeleton className="!w-8 h-8 rounded aspect-square" />
+          <Skeleton className="w-8! h-8 rounded-sm aspect-square" />
           <div className="w-full flex flex-col gap-1">
             <Skeleton />
-            <Skeleton className="!h-3" />
+            <Skeleton className="h-3!" />
           </div>
         </div>
       ))}

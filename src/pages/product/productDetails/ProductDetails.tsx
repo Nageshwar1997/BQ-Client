@@ -79,12 +79,12 @@ const ProductDetails = () => {
           <ShowError
             headingText="Something went wrong!"
             descriptionText="Failed to get the product. Please reload the page"
-            className="w-full h-[50dvh] mx-auto mb-auto [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase [&>p]:text-xs [&>p]:base:text-sm [&>p]:sm:text-base [&>p]:md:text-lg"
+            className="w-full h-[50dvh] mx-auto mb-auto [&>h3]:text-base base:[&>h3]:text-base sm:[&>h3]:text-xl md:[&>h3]:text-2xl lg:[&>h3]:text-3xl xl:[&>h3]:text-4xl [&>h3]:uppercase [&>p]:text-xs base:[&>p]:text-sm sm:[&>p]:text-base md:[&>p]:text-lg"
           />
         ) : Object.keys(product)?.length === 0 ? (
           <EmptyData
             content={"No product found"}
-            className="w-full h-[50dvh] mx-auto [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase gap-5"
+            className="w-full h-[50dvh] mx-auto [&>h3]:text-base base:[&>h3]:text-base sm:[&>h3]:text-xl md:[&>h3]:text-2xl lg:[&>h3]:text-3xl xl:[&>h3]:text-4xl [&>h3]:uppercase gap-5"
           />
         ) : (
           <Fragment>
@@ -181,7 +181,7 @@ const ProductDetails = () => {
                   />
                 </div>
                 <hr className="w-full h-px block border-none bg-gradient-line" />
-                <div className="flex flex-shrink-0 gap-4 overflow-x-scroll">
+                <div className="flex shrink-0 gap-4 overflow-x-scroll">
                   {CATEGORY_VIDEOS.map((video, index) => (
                     <div
                       key={index}
@@ -194,7 +194,7 @@ const ProductDetails = () => {
                         autoPlay
                         muted
                         loop
-                        className="w-full h-full aspect-[9/16] object-cover"
+                        className="w-full h-full aspect-9/16 object-cover"
                       />
                     </div>
                   ))}

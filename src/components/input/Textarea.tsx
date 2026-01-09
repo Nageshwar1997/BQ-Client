@@ -30,7 +30,7 @@ const Textarea = ({
         {label && (
           <label
             htmlFor={textAreaProps.name}
-            className={`text-[10px] lg:text-xs text-primary-50 absolute top-0 left-3 transform -translate-y-1/2 border border-primary-10 leading-none px-1 md:px-2 py-0.5 bg-smoke-eerie rounded cursor-pointer`}
+            className={`text-[10px] lg:text-xs text-primary-50 absolute top-0 left-3 transform -translate-y-1/2 border border-primary-10 leading-none px-1 md:px-2 py-0.5 bg-smoke-eerie rounded-sm cursor-pointer`}
           >
             {label}
           </label>
@@ -47,7 +47,7 @@ const Textarea = ({
             id={textAreaProps.id || textAreaProps.name}
             disabled={textAreaProps.disabled}
             onChange={handleChange}
-            className="flex-1 w-full h-full outline-none border-none focus:outline-none focus:border-none bg-transparent font-normal text-sm text-primary placeholder:text-primary-50 placeholder:text-sm resize-none autofill-effect"
+            className="flex-1 w-full h-full outline-hidden border-none focus:outline-hidden focus:border-none bg-transparent font-normal text-sm text-primary placeholder:text-primary-50 placeholder:text-sm resize-none autofill-effect"
           />
         </div>
       </div>

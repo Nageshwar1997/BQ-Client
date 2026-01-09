@@ -143,9 +143,9 @@ const PasswordConfirmationModal = () => {
                   icons={{
                     right: {
                       icon: showPasswords[field.name] ? (
-                        <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                        <EyeOffIcon className="fill-primary! opacity-50 hover:opacity-100 h-full" />
                       ) : (
-                        <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                        <EyeIcon className="fill-primary! opacity-50 hover:opacity-100 h-full" />
                       ),
                       onClick: () => togglePasswordVisibility(field.name),
                     },
@@ -181,9 +181,9 @@ const PasswordConfirmationModal = () => {
                 icons={{
                   right: {
                     icon: showPasswords[field.name] ? (
-                      <EyeOffIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                      <EyeOffIcon className="fill-primary! opacity-50 hover:opacity-100 h-full" />
                     ) : (
-                      <EyeIcon className="!fill-primary opacity-50 hover:opacity-100 h-full" />
+                      <EyeIcon className="fill-primary! opacity-50 hover:opacity-100 h-full" />
                     ),
                     onClick: () => togglePasswordVisibility(field.name),
                   },
@@ -196,13 +196,13 @@ const PasswordConfirmationModal = () => {
           <Button
             content="Cancel"
             pattern="secondary"
-            className={`max-h-10 !rounded-md`}
+            className={`max-h-10 rounded-md!`}
             buttonProps={{ type: "button", onClick: handleClose }}
           />
           <Button
             content="Confirm"
             pattern="primary"
-            className={`max-h-10 !rounded-md`}
+            className={`max-h-10 rounded-md!`}
             buttonProps={{ disabled: !isDirty || isPending, type: "submit" }}
           />
         </div>

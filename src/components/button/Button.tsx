@@ -26,7 +26,7 @@ const Button = ({
   return (
     <button
       {...buttonProps}
-      className={`w-full text-sm xl:text-base font-semibold font-metropolis leading-4 rounded-xl flex justify-center items-center gap-1 py-3 lg:py-4 px-4 lg:px-5 outline-none focus-within:outline-none cursor-pointer disabled:cursor-not-allowed disabled:opacity-80 transition-all duration-300 group ${getButtonCSS} ${className} ${
+      className={`w-full text-sm xl:text-base font-semibold font-metropolis leading-4 rounded-xl flex justify-center items-center gap-1 py-3 lg:py-4 px-4 lg:px-5 outline-hidden focus-within:outline-hidden cursor-pointer disabled:cursor-not-allowed disabled:opacity-80 transition-all duration-300 group ${getButtonCSS} ${className} ${
         buttonProps?.className ?? ""
       }`}
       type={buttonProps?.type || "button"}

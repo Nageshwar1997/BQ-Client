@@ -50,7 +50,7 @@ const Accessibility = () => {
           If you encounter any accessibility barriers or have suggestions to
           help us improve, we’d love to hear from you.
         </p>
-        <div className="rounded-2xl shadow-sm flex flex-col base:flex-row base:items-center justify-start gap-1">
+        <div className="rounded-2xl shadow-xs flex flex-col base:flex-row base:items-center justify-start gap-1">
           <p className="font-medium">Contact us at: </p>
           <Link
             to="mailto:beautinique.bq@gmail.com"

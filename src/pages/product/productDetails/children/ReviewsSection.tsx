@@ -56,7 +56,7 @@ const ReviewsSection = () => {
         closeOnOptionClick={true}
         closeOnOutsideClick={true}
         showShadow={true}
-        className="!w-[180px] ml-auto [&>button]:border [&>button]:border-primary-30 [&>button]:rounded-md [&>div]:rounded-md sticky top-[65px]"
+        className="w-45! ml-auto [&>button]:border [&>button]:border-primary-30 [&>button]:rounded-md [&>div]:rounded-md sticky top-16.25"
       >
         <DropdownOptions
           options={REVIEWS_OPTIONS}
@@ -78,7 +78,7 @@ const ReviewsSection = () => {
         <ShowError
           headingText="Something went wrong!"
           descriptionText="Failed to get the reviews. Please reload the page"
-          className="w-full mx-auto mb-auto [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase [&>p]:text-xs [&>p]:base:text-sm [&>p]:sm:text-base [&>p]:md:text-lg"
+          className="w-full mx-auto mb-auto [&>h3]:text-base base:[&>h3]:text-base sm:[&>h3]:text-xl md:[&>h3]:text-2xl lg:[&>h3]:text-3xl xl:[&>h3]:text-4xl [&>h3]:uppercase [&>p]:text-xs base:[&>p]:text-sm sm:[&>p]:text-base md:[&>p]:text-lg"
         />
       ) : isLoading ? (
         Array.from({ length: 5 }).map((_, index) => (
@@ -92,7 +92,7 @@ const ReviewsSection = () => {
       ) : reviews.length === 0 ? (
         <EmptyData
           content={"Reviews not available"}
-          className="w-full mx-auto [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase gap-5"
+          className="w-full mx-auto [&>h3]:text-base base:[&>h3]:text-base sm:[&>h3]:text-xl md:[&>h3]:text-2xl lg:[&>h3]:text-3xl xl:[&>h3]:text-4xl [&>h3]:uppercase gap-5"
         />
       ) : reviews.length > 0 ? (
         <div className="flex flex-col gap-4">

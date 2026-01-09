@@ -114,7 +114,7 @@ const CancelOrderConfirmationModal = ({ orderId }: { orderId: string }) => {
           <Button
             content="Cancel"
             pattern="secondary"
-            className={`max-h-10 !rounded-md`}
+            className={`max-h-10 rounded-md!`}
             buttonProps={{
               type: "button",
               onClick: handleClose,
@@ -123,7 +123,7 @@ const CancelOrderConfirmationModal = ({ orderId }: { orderId: string }) => {
           <Button
             content="Confirm"
             pattern="primary"
-            className={`max-h-10 !rounded-md`}
+            className={`max-h-10 rounded-md!`}
             buttonProps={{
               disabled: isSubmitting || isCancelPending || !selectedReason,
               type: "submit",

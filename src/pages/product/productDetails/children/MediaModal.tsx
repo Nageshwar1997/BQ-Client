@@ -47,7 +47,7 @@ const MediaModal = ({
           muted: true,
           loop: true,
           className:
-            "!object-contain bg-primary-10 backdrop-blur-[2px] rounded-lg",
+            "object-contain! bg-primary-10 backdrop-blur-[2px] rounded-lg",
         }}
       />
     </Modal>

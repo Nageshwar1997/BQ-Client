@@ -25,7 +25,7 @@ const ShowApiStatus = ({
       className={`w-full h-full flex m-auto flex-col items-center justify-center gap-2 p-4 ${className}`}
     >
       {type === "loading" ? (
-        <LoadingPage text={loadingText} className="!static min-h-[30dvh]" />
+        <LoadingPage text={loadingText} className="static! min-h-[30dvh]" />
       ) : (
         <>
           {type === "error" ? (

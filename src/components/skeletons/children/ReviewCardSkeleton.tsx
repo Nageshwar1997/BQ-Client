@@ -15,23 +15,23 @@ const ReviewCardSkeleton = ({ className }: ClassName) => {
             />
           ))}
         </div>
-        <Skeleton className="!w-36" />
+        <Skeleton className="w-36!" />
       </div>
       <div className="flex gap-2">
-        <Skeleton className="!w-10 !h-10 !rounded-full" />
+        <Skeleton className="w-10! h-10! rounded-full!" />
         <div className="space-y-1.5">
           <div className="flex items-center gap-2 h-4">
-            <Skeleton className="w-14 !h-full" />
+            <Skeleton className="w-14 h-full!" />
             <div className="h-full flex items-center gap-2">
-              <Skeleton className="!w-4 !h-full" />
-              <Skeleton className="!w-4 !h-full" />
+              <Skeleton className="w-4! h-full!" />
+              <Skeleton className="w-4! h-full!" />
             </div>
           </div>
           <Skeleton className="h-4" />
         </div>
       </div>
       <div className="text-sm space-y-1">
-        <Skeleton className="!w-36" />
+        <Skeleton className="w-36!" />
         <Skeleton className="max-w-lg" />
       </div>
       <MediaCarouselSkeleton

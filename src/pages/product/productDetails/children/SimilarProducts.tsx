@@ -66,9 +66,9 @@ const SimilarProducts = ({ category }: { category: PopulatedCategory }) => {
       />
       <hr className="max-w-xl mx-auto h-px block border-none bg-gradient-line my-4" />
       <div className="relative">
-        {showGradient.left && <LeftGradient className="h-full !w-5 !sm:w-20" />}
+        {showGradient.left && <LeftGradient className="h-full w-5! !sm:w-20" />}
         <div
-          className="max-h-[445px] flex gap-4 overflow-x-auto scroll-smooth px-4"
+          className="max-h-111.25 flex gap-4 overflow-x-auto scroll-smooth px-4"
           ref={containerRef}
         >
           {isError ? (
@@ -76,16 +76,16 @@ const SimilarProducts = ({ category }: { category: PopulatedCategory }) => {
               headingText="Something went wrong!"
               descriptionText="Failed to find similar products. Please reload the page"
               showHrLine={true}
-              className="mx-auto mb-auto [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase [&>p]:text-xs [&>p]:base:text-sm [&>p]:sm:text-base [&>p]:md:text-lg"
+              className="mx-auto mb-auto [&>h3]:text-base base:[&>h3]:text-base sm:[&>h3]:text-xl md:[&>h3]:text-2xl lg:[&>h3]:text-3xl xl:[&>h3]:text-4xl [&>h3]:uppercase [&>p]:text-xs base:[&>p]:text-sm sm:[&>p]:text-base md:[&>p]:text-lg"
             />
           ) : isLoading ? (
             Array.from({ length: 5 }).map((_, index) => (
-              <ProductCardSkeleton key={index} className="shrink-0 w-[260px]" />
+              <ProductCardSkeleton key={index} className="shrink-0 w-65" />
             ))
           ) : products.length <= 1 ? (
             <EmptyData
               content={"No similar products found"}
-              className="mx-auto mb-auto [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase gap-5"
+              className="mx-auto mb-auto [&>h3]:text-base base:[&>h3]:text-base sm:[&>h3]:text-xl md:[&>h3]:text-2xl lg:[&>h3]:text-3xl xl:[&>h3]:text-4xl [&>h3]:uppercase gap-5"
             />
           ) : (
             <>
@@ -94,20 +94,20 @@ const SimilarProducts = ({ category }: { category: PopulatedCategory }) => {
                 .map((product, index) => (
                   <div
                     key={index}
-                    className="shrink-0 w-[260px] h-full"
+                    className="shrink-0 w-65 h-full"
                     ref={index === products.length - 2 ? ref : null}
                   >
                     <ProductCard product={product} />
                   </div>
                 ))}
               {isFetchingNextPage && (
-                <ProductCardSkeleton className="w-[260px]" />
+                <ProductCardSkeleton className="w-65" />
               )}
             </>
           )}
         </div>
         {showGradient.right && (
-          <RightGradient className="h-full !w-5 !sm:w-20" />
+          <RightGradient className="h-full w-5! !sm:w-20" />
         )}
       </div>
     </div>

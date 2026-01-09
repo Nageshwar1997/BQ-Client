@@ -9,11 +9,11 @@ const SocialAuth = () => {
         <Link
           to={`${getBackendURL()}/api/auth/${item.name}`}
           key={index}
-          className="h-12 w-12 p-2.5 rounded-2xl border border-primary-8 bg-seasalt-black backdrop-blur mb-2.5 shadow-neumorphic-layered"
+          className="h-12 w-12 p-2.5 rounded-2xl border border-primary-8 bg-seasalt-black backdrop-blur-sm mb-2.5 shadow-neumorphic-layered"
         >
           <img
             src={item.url}
-            alt=""
+            alt={item.name}
             className="w-full h-full p-0.5 object-cover"
             title={item.name}
           />

@@ -20,8 +20,8 @@ const MediaCarouselSkeleton = ({
     <div className={`rounded-lg max-w-3xl w-full overflow-hidden ${className}`}>
       {/* Main Image */}
       {mainImage && (
-        <div className="mb-4 h-[400px] lg:h-[420px] xl:h-[500px] flex items-center justify-center">
-          <Skeleton className="h-full !rounded-lg" />
+        <div className="mb-4 h-100 lg:h-105 xl:h-125 flex items-center justify-center">
+          <Skeleton className="h-full rounded-lg!" />
         </div>
       )}
       {hrLine && (
@@ -31,7 +31,7 @@ const MediaCarouselSkeleton = ({
       {thumbnails && (
         <div className={`p-1 relative`}>
           {showGradient.left && (
-            <LeftGradient className="!w-10 sm:!w-20 h-full" />
+            <LeftGradient className="w-10! sm:w-20! h-full" />
           )}
           <div
             className={`flex items-center gap-2 ${
@@ -44,14 +44,14 @@ const MediaCarouselSkeleton = ({
             {Array.from({ length: thumbnailsCount })?.map((_, i) => (
               <div
                 key={i}
-                className={`w-20 h-20 group rounded overflow-hidden shadow-sm shrink-0`}
+                className={`w-20 h-20 group rounded-sm overflow-hidden shadow-xs shrink-0`}
               >
                 <Skeleton className="w-full h-full object-cover cursor-pointer aspect-square" />
               </div>
             ))}
           </div>
           {showGradient.right && (
-            <RightGradient className="!w-10 sm:!w-20 h-full" />
+            <RightGradient className="w-10! sm:w-20! h-full" />
           )}
         </div>
       )}

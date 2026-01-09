@@ -25,9 +25,9 @@ const CustomerReviews = ({ reviews }: { reviews: number[] }) => {
                 rating={Number(rating)}
                 className="[&>svg]:w-4 [&>svg]:h-4 md:[&>svg]:w-5 md:[&>svg]:h-5 gap-0 md:gap-0.5"
               />
-              <div className="relative h-4 md:h-5 bg-primary-10 rounded-sm w-full max-w-xs">
+              <div className="relative h-4 md:h-5 bg-primary-10 rounded-xs w-full max-w-xs">
                 <div
-                  className="absolute top-0 left-0 h-full bg-primary rounded-sm"
+                  className="absolute top-0 left-0 h-full bg-primary rounded-xs"
                   style={{ width: `${percent}%` }}
                 />
               </div>

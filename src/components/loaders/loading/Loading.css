@@ -21,7 +21,6 @@
 /* 🔹 Ring 1 */
 .rings:nth-child(1) {
   border-bottom-width: 0.6vmin;
-  /* border-color: rgba(255, 0, 255, 0.9); */
   border-color: red;
   animation: rotate1 2s linear infinite;
 }
@@ -29,7 +28,6 @@
 /* 🔹 Ring 2 */
 .rings:nth-child(2) {
   border-right-width: 0.6vmin;
-  /* border-color: rgba(0, 162, 255, 0.9); */
   border-color: green;
   animation: rotate2 2s linear infinite;
 }
@@ -37,7 +35,6 @@
 /* 🔹 Ring 3 */
 .rings:nth-child(3) {
   border-top-width: 0.6vmin;
-  /* border-color: rgba(0, 255, 13, 0.9); */
   border-color: blue;
   animation: rotate3 2s linear infinite;
 }
@@ -45,7 +42,6 @@
 /* 🔹 Ring 4 */
 .rings:nth-child(4) {
   border-left-width: 0.6vmin;
-  /* border-color: rgba(255, 255, 0, 0.9); */
   border-color: yellow;
   animation: rotate4 2s linear infinite;
 }

@@ -35,7 +35,7 @@ const ReviewsMedia = ({
     <div className="w-full">
       {isLoading ? (
         <div className="flex flex-col items-center mx-auto gap-4 max-w-3xl">
-          <Skeleton className="!w-2/3" />
+          <Skeleton className="w-2/3!" />
           <MediaCarouselSkeleton
             thumbnails={true}
             hrLine={false}
@@ -46,7 +46,7 @@ const ReviewsMedia = ({
         <ShowError
           headingText="Something went wrong!"
           descriptionText="Failed to get the reviews media. Please reload the page"
-          className="w-full mx-auto mb-auto [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase [&>p]:text-xs [&>p]:base:text-sm [&>p]:sm:text-base [&>p]:md:text-lg"
+          className="w-full mx-auto mb-auto [&>h3]:text-base base:[&>h3]:text-base sm:[&>h3]:text-xl md:[&>h3]:text-2xl lg:[&>h3]:text-3xl xl:[&>h3]:text-4xl [&>h3]:uppercase [&>p]:text-xs base:[&>p]:text-sm sm:[&>p]:text-base md:[&>p]:text-lg"
         />
       ) : reviewMedia.length ? (
         <div className="flex flex-col gap-4">
@@ -67,7 +67,7 @@ const ReviewsMedia = ({
       ) : (
         <EmptyData
           content={"Reviews media not available"}
-          className="w-full mx-auto [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase gap-3 !p-[14px]"
+          className="w-full mx-auto [&>h3]:text-base base:[&>h3]:text-base sm:[&>h3]:text-xl md:[&>h3]:text-2xl lg:[&>h3]:text-3xl xl:[&>h3]:text-4xl [&>h3]:uppercase gap-3 p-3.5!"
         />
       )}
       {showMediaModal && (

@@ -49,7 +49,7 @@ const Orders = () => {
           closeOnOptionClick={true}
           closeOnOutsideClick={true}
           showShadow={true}
-          className="!w-[180px] ml-auto [&>button]:border [&>button]:border-primary-30 [&>button]:rounded-md [&>div]:rounded-md sticky top-[65px] [&>button]:bg-transparent"
+          className="w-45! ml-auto [&>button]:border [&>button]:border-primary-30 [&>button]:rounded-md [&>div]:rounded-md sticky top-16.25 [&>button]:bg-transparent"
         >
           <DropdownOptions
             options={ORDER_STATUS_OPTIONS}
@@ -76,14 +76,14 @@ const Orders = () => {
           <LoadingPage
             text="Loading Orders..."
             className={`${
-              pathname === "/orders" ? "!static min-h-[75dvh]" : ""
+              pathname === "/orders" ? "static! min-h-[75dvh]" : ""
             }`}
           />
         ) : isError ? (
           <ShowError
             headingText="Something went wrong!"
             descriptionText="Failed to get the orders. Please reload the page"
-            className="w-full min-h-[50dvh] h-full mx-auto [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase [&>p]:text-xs [&>p]:base:text-sm [&>p]:sm:text-base [&>p]:md:text-lg"
+            className="w-full min-h-[50dvh] h-full mx-auto [&>h3]:text-base base:[&>h3]:text-base sm:[&>h3]:text-xl md:[&>h3]:text-2xl lg:[&>h3]:text-3xl xl:[&>h3]:text-4xl [&>h3]:uppercase [&>p]:text-xs base:[&>p]:text-sm sm:[&>p]:text-base md:[&>p]:text-lg"
           />
         ) : orders?.length > 0 ? (
           orders.map((order, index) => {
@@ -97,7 +97,7 @@ const Orders = () => {
               >
                 {/* Order Header */}
                 <div className="text-sm flex flex-col md:flex-row md:justify-between items-center mb-4 gap-3">
-                  <i className="font-semibold text-tertiary break-words">
+                  <i className="font-semibold text-tertiary wrap-break-word">
                     Order ID: {order._id}
                   </i>
                   <span
@@ -200,7 +200,7 @@ const Orders = () => {
         ) : (
           <EmptyData
             content={"No orders found"}
-            className="h-[50dvh] !justify-start [&>h3]:text-base [&>h3]:base:text-base [&>h3]:sm:text-xl [&>h3]:md:text-2xl [&>h3]:lg:text-3xl [&>h3]:xl:text-4xl [&>h3]:uppercase pt-[150px] gap-5"
+            className="h-[50dvh] justify-start! [&>h3]:text-base base:[&>h3]:text-base sm:[&>h3]:text-xl md:[&>h3]:text-2xl lg:[&>h3]:text-3xl xl:[&>h3]:text-4xl [&>h3]:uppercase pt-37.5 gap-5"
           />
         )}
       </div>

@@ -128,9 +128,9 @@ function Filters({
           className="border-b border-b-primary-50 [&>button]:px-0 [&>button]:py-3"
         >
           <Checkbox
-            containerClassName="-mt-2 !px-1"
-            labelClassName="!bg-primary"
-            className="!w-10 !h-5 after:!h-3 after:!w-3"
+            containerClassName="-mt-2 px-1!"
+            labelClassName="bg-primary!"
+            className="w-10! h-5! after:h-3! after:w-3!"
             checkboxProps={{
               name: "inStock",
               checked: queryParams.inStock === "true",
@@ -157,7 +157,7 @@ function Filters({
           }}
           className="border-b border-b-primary-50 [&>button]:px-0 [&>button]:py-3"
         >
-          <div className="flex flex-col gap-2 -mt-2 !px-1">
+          <div className="flex flex-col gap-2 -mt-2 px-1!">
             <div className="h-9 flex justify-between gap-2">
               {(["min", "max"] as TPriceRangeKeys[]).map((key, index) => {
                 const isMin = key === "min";
@@ -167,7 +167,7 @@ function Filters({
                   <Fragment key={index}>
                     <Input
                       containerClassName="h-full [&>div]:h-full"
-                      className="[&_p]:w-10 [&_p]:text-xs !rounded border border-primary-30 [&_p]:border-r [&_p]:border-r-primary-30 [&_p]:bg-primary-10 [&_p]:text-primary"
+                      className="[&_p]:w-10 [&_p]:text-xs rounded-sm! border border-primary-30 [&_p]:border-r [&_p]:border-r-primary-30 [&_p]:bg-primary-10 [&_p]:text-primary"
                       icons={{ left: { text: key } }}
                       inputProps={{
                         name: key,
@@ -233,10 +233,10 @@ function Filters({
           }}
           className="border-b border-b-primary-50 [&>button]:px-0 [&>button]:py-3"
         >
-          <div className="flex flex-col gap-2 -mt-2 !px-1">
+          <div className="flex flex-col gap-2 -mt-2 px-1!">
             <Input
               containerClassName="h-9 [&>div]:h-full"
-              className="[&_p]:w-14 [&_p]:text-xs !rounded border border-primary-30 [&_p]:border-r [&_p]:border-r-primary-30 [&_p]:bg-primary-10 [&_p]:text-primary [&_p]:text-nowrap"
+              className="[&_p]:w-14 [&_p]:text-xs rounded-sm! border border-primary-30 [&_p]:border-r [&_p]:border-r-primary-30 [&_p]:bg-primary-10 [&_p]:text-primary [&_p]:text-nowrap"
               icons={{ left: { text: "0 - 100" } }}
               inputProps={{
                 name: "discount",

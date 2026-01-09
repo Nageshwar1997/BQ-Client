@@ -17,7 +17,7 @@ const HomeHero = () => {
               className="w-56 base:w-64 relative h-full object-contain"
             />
           </div>
-          <h1 className="text-2xl md:text-4xl leading-10 md:leading-[48px] lg:text-left font-semibold">
+          <h1 className="text-2xl md:text-4xl leading-10 md:leading-12 lg:text-left font-semibold">
             <span className="bg-silver-duo bg-clip-text text-transparent">
               India's First Beauty Brand that Delivers Products Directly to the
               Customer
@@ -36,13 +36,13 @@ const HomeHero = () => {
               rightIcon={
                 <RightArrowIcon className="w-5 h-5 stroke-secondary-inverted" />
               }
-              className="py-4 !px-6 !gap-3"
+              className="py-4 px-6! gap-3!"
             />
           </Link>
         </div>
-        <div className="relative flex items-center justify-center w-[518px] h-[351px]">
+        <div className="relative flex items-center justify-center w-129.5 h-87.75">
           <LineGrid className="absolute -top-10 -right-20 [&_line]:stroke-primary-50 [&_line]:opacity-50 z-0" />
-          <div className='max-w-[300px] max-h-[280px] md:max-w-[350px] md:max-h-[310px] w-full h-full bg-[url("/images/logo/BQ.webp")] bg-cover bg-center bg-no-repeat bg-opacity-50 lg:mt-28 z-[1]' />
+          <div className='max-w-75 max-h-70 md:max-w-87.5 md:max-h-77.5 w-full h-full bg-[url("/images/logo/BQ.webp")] bg-cover bg-center bg-no-repeat bg-opacity-50 lg:mt-28 z-1' />
         </div>
       </div>
     </div>

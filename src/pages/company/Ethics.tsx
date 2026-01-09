@@ -75,7 +75,7 @@ const Ethics = () => {
             (badge) => (
               <div
                 key={badge}
-                className="min-w-40 bg-primary-1 border border-primary-30 shadow-primary-10 rounded-lg px-5 py-2 shadow text-sm font-medium flex items-center justify-center gap-1"
+                className="min-w-40 bg-primary-1 border border-primary-30 shadow-primary-10 rounded-lg px-5 py-2 shadow-sm text-sm font-medium flex items-center justify-center gap-1"
               >
                 <span>✅</span>
                 <span>{badge}</span>

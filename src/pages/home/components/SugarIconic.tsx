@@ -12,7 +12,7 @@ const SugarIconic = () => {
       />
       <div className="grid sm:grid-cols-3 gap-5 place-items-center mt-5">
         {SUGAR_ICONICS_DATA.map((item, index) => (
-          <div key={index} className="overflow-hidden rounded max-w-[400px]">
+          <div key={index} className="overflow-hidden rounded-sm max-w-100">
             <img
               src={item.img}
               alt={`Sugar Iconic ${index}`}

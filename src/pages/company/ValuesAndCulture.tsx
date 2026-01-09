@@ -32,7 +32,7 @@ const ValuesAndCulture = () => {
             src="/images/company/values-culture/who-we-are.webp"
             alt="The Heartbeat of Who We Are"
           />
-          <div className="absolute bottom-0 inset-x-0 p-4 lg:p-8 bg-gradient-to-t from-[#23233a] to-transparent">
+          <div className="absolute bottom-0 inset-x-0 p-4 lg:p-8 bg-linear-to-t from-[#23233a] to-transparent">
             <h1 className="font-bold text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
               Values System
             </h1>
@@ -56,7 +56,7 @@ const ValuesAndCulture = () => {
                 <h4 className="text-lg/5 font-medium text-center lg:text-start text-primary">
                   {data.title}
                 </h4>
-                <p className="text-description font-metropolis text-xs font-normal leading-[18px] text-center lg:text-start">
+                <p className="text-description font-metropolis text-xs font-normal leading-4.5 text-center lg:text-start">
                   {data.description}
                 </p>
               </div>
@@ -71,7 +71,7 @@ const ValuesAndCulture = () => {
           alt="Life & Values at Beautinique"
           className="w-full h-auto object-contain aspect-video"
         />
-        <div className="absolute bottom-0 inset-x-0 p-4 lg:p-8 bg-gradient-to-t from-[#23233a] to-transparent">
+        <div className="absolute bottom-0 inset-x-0 p-4 lg:p-8 bg-linear-to-t from-[#23233a] to-transparent">
           <h1 className="font-bold text-white text-lg base:text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-5 text-center">
             Life & Values at Beautinique
           </h1>
@@ -194,9 +194,9 @@ const ValuesAndCulture = () => {
         <img
           src="/images/company/values-culture/Group-with-Trophy.webp"
           alt="A Culture of Creativity, Collaboration & Dedication"
-          className="object-cover origin-center w-full h-full max-h-[700px]"
+          className="object-cover origin-center w-full h-full max-h-175"
         />
-        <div className="absolute bottom-0 inset-x-0 p-4 lg:p-8 bg-gradient-to-t from-primary-inverted to-transparent">
+        <div className="absolute bottom-0 inset-x-0 p-4 lg:p-8 bg-linear-to-t from-primary-inverted to-transparent">
           <h1 className="font-bold text-primary text-center text-xl sm:text-2xl md:text-3xl lg:text-4xl">
             A Culture of Creativity, Collaboration & Dedication
           </h1>

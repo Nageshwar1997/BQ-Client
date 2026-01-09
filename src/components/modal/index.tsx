@@ -33,17 +33,17 @@ const Modal = ({
     <div
       onClick={onClose}
       {...containerProps}
-      className={`fixed inset-0 z-[100] flex items-center justify-center bg-primary-inverted-50 p-8 backdrop-blur-sm ${
+      className={`fixed inset-0 z-100 flex items-center justify-center bg-primary-inverted-50 p-8 backdrop-blur-xs ${
         containerProps?.className || ""
       }`}
     >
       <div
-        className={`bg-primary-inverted rounded-xl shadow-[var(--primary-8)_0px_4px_16px,_var(--primary-10)_0px_8px_32px] w-full max-w-md max-h-[90vh] relative overflow-hidden ${className}`}
+        className={`bg-primary-inverted rounded-xl shadow-[var(--primary-8)_0px_4px_16px,var(--primary-10)_0px_8px_32px] w-full max-w-md max-h-[90vh] relative overflow-hidden ${className}`}
         onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
       >
         {/* Scrollable area */}
         {showGradient.top && (
-          <TopGradient className={`h-8 ${heading ? "!top-16" : ""}`} />
+          <TopGradient className={`h-8 ${heading ? "top-16!" : ""}`} />
         )}
         <div
           ref={containerRef}

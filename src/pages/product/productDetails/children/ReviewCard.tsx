@@ -120,10 +120,10 @@ const ReviewCard = ({
               content="Helpful"
               pattern="outline"
               buttonProps={{ onClick: () => handleActionClick("isHelpful") }}
-              className={`!w-fit !py-0.5 !px-2 !rounded-sm !text-xs/normal !border-none !duration-0 ${
+              className={`w-fit! py-0.5! px-2! rounded-xs! text-xs/normal! border-none! duration-0! ${
                 updateStatus.isHelpful
-                  ? "bg-accent-duo !text-primary-inverted"
-                  : "bg-silver-duo !text-primary-inverted"
+                  ? "bg-accent-duo text-primary-inverted!"
+                  : "bg-silver-duo text-primary-inverted!"
               }`}
             />
             <div className="flex items-center gap-2">

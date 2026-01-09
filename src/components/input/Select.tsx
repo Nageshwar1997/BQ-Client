@@ -43,7 +43,7 @@ const Select = ({
           <button
             type="button"
             onClick={() => setIsOpen((prev) => !prev)}
-            className="text-[10px] lg:text-xs text-primary-50 absolute top-0 left-3 transform -translate-y-1/2 border border-primary-10 leading-none px-1 md:px-2 py-0.5 bg-smoke-eerie rounded cursor-pointer z-[2]"
+            className="text-[10px] lg:text-xs text-primary-50 absolute top-0 left-3 transform -translate-y-1/2 border border-primary-10 leading-none px-1 md:px-2 py-0.5 bg-smoke-eerie rounded-sm cursor-pointer z-2"
           >
             {label}
           </button>
@@ -105,7 +105,7 @@ const Select = ({
             />
             {isOpen && (
               <div
-                className={`absolute left-0 w-full z-[3] rounded-lg border border-primary-10 bg-smoke-eerie shadow-md overflow-hidden ${
+                className={`absolute left-0 w-full z-3 rounded-lg border border-primary-10 bg-smoke-eerie shadow-md overflow-hidden ${
                   optionsPosition === "top"
                     ? "bottom-full mb-2"
                     : "top-full mt-2"

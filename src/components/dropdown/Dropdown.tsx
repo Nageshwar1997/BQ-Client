@@ -51,7 +51,7 @@ const Dropdown = ({
         onClick={() => setIsOpen((prev) => !prev)}
         aria-expanded={isOpen}
       >
-        <div className="flex items-center gap-2 [&>span]:transition-all [&>span]:duration-300 [&>span]:flex [&>span]:items-center [&>span]:justify-center [&>span]:text-sm [&>span]:sm:text-base [&>span]:text-primary">
+        <div className="flex items-center gap-2 [&>span]:transition-all [&>span]:duration-300 [&>span]:flex [&>span]:items-center [&>span]:justify-center [&>span]:text-sm sm:[&>span]:text-base [&>span]:text-primary">
           {icons?.left && <span>{icons.left}</span>}
           <span className="font-medium whitespace-nowrap">{title}</span>
           {icons?.right && <span>{icons.right}</span>}
@@ -64,11 +64,11 @@ const Dropdown = ({
       </button>
       <div
         ref={containerRef}
-        className={`transition-all duration-500 ease-in-out overflow-hidden opacity-0 w-full max-h-0 bg-primary-inverted [&>*]:py-2 [&>*]:px-3 ${
+        className={`transition-all duration-500 ease-in-out overflow-hidden opacity-0 w-full max-h-0 bg-primary-inverted *:py-2 *:px-3 ${
           isAbsolute ? "absolute top-full inset-x-0 mt-2 z-10" : ""
         } ${
           showShadow
-            ? "shadow-[var(--primary-8)_0px_4px_16px,_var(--primary-10)_0px_8px_32px]"
+            ? "shadow-[var(--primary-8)_0px_4px_16px,var(--primary-10)_0px_8px_32px]"
             : ""
         } ${isRounded ? "rounded-lg" : ""}`}
       >

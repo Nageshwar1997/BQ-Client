@@ -33,7 +33,7 @@ const RatingBars = ({ reviews = [] }: { reviews: FetchedReviewType[] }) => {
             <Button
               pattern="secondary"
               content="Write a Review"
-              className="max-w-44 py-2! lg:py-3 !rounded-md"
+              className="max-w-44 py-2! lg:py-3 rounded-md!"
               buttonProps={{ onClick: handlePopupToggle }}
             />
             <div className="flex flex-col gap-0.5 items-center justify-center text-secondary">

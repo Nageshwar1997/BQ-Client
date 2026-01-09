@@ -38,7 +38,7 @@ const Errors = ({ imgText, title, message }: TError) => {
             <Button
               content={index === 0 ? "Contact Us" : "Home"}
               pattern={index === 0 ? "secondary" : "primary"}
-              className="min-w-36 base:min-w-40 !rounded-lg"
+              className="min-w-36 base:min-w-40 rounded-lg!"
             />
           </Link>
         ))}

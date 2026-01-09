@@ -12,7 +12,7 @@ const ProductCard = ({
 }) => {
   return (
     <div
-      className="p-4 rounded-lg shadow-sm bg-primary-inverted flex flex-col gap-4 border-rounded-corners-gradient cursor-pointer h-full"
+      className="p-4 rounded-lg shadow-xs bg-primary-inverted flex flex-col gap-4 border-rounded-corners-gradient cursor-pointer h-full"
       onClick={onClick}
     >
       <div className="aspect-square overflow-hidden rounded-md relative group">

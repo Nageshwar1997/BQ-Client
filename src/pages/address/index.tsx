@@ -103,7 +103,7 @@ const Address = () => {
         <Button
           pattern="secondary"
           content="Add Address"
-          className="!rounded-md !w-fit text-nowrap gap-1.5 !py-2.5"
+          className="rounded-md! w-fit! text-nowrap gap-1.5 py-2.5!"
           rightIcon={
             <UploadCloudIcon
               className="stroke-secondary-inverted w-5 h-5"

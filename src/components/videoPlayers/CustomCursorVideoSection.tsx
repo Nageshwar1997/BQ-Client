@@ -151,7 +151,7 @@ const CustomCursorVideoSection = ({
           />
           <div
             ref={cursorRef}
-            className="absolute pointer-events-none z-[1] will-change-transform"
+            className="absolute pointer-events-none z-1 will-change-transform"
           >
             {showCustomCursor && (
               <img

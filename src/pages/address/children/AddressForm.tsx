@@ -168,7 +168,7 @@ const AddressForm = ({
                     autoComplete,
                     disabled: name === "country",
                   }}
-                  optionsClassName="!max-h-60"
+                  optionsClassName="max-h-60!"
                   optionsPosition="top"
                   error={errors?.[name]?.message}
                 />

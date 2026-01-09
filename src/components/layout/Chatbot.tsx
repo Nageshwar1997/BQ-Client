@@ -137,7 +137,7 @@ const Chatbot = () => {
           content={
             <BotIcon className="stroke-white w-4 md:w-6 lg:w-8 h-4 md:h-6 lg:h-8" />
           }
-          className="!rounded-full !p-2 md:!p-2.5 lg:!p-3"
+          className="rounded-full! p-2! md:p-2.5! lg:p-3!"
           pattern="primary"
           buttonProps={{ onClick: () => setIsOpen(true) }}
         />
@@ -188,7 +188,7 @@ const Chatbot = () => {
                               key={i}
                               pattern="outline"
                               content={q}
-                              className="bg-tertiary-inverted-50 text-tertiary !text-[13px]/4 !p-2 max-w-[80%] !rounded !border-tertiary-30 [&_span]:text-start [&_span]:break-words transition-none !justify-start"
+                              className="bg-tertiary-inverted-50 text-tertiary text-[13px]/4! p-2! max-w-[80%] rounded-sm! border-tertiary-30! [&_span]:text-start [&_span]:wrap-break-word transition-none justify-start!"
                               buttonProps={{
                                 onClick: () => handleSuggestionClick(q),
                               }}
@@ -268,7 +268,7 @@ const Chatbot = () => {
                 onKeyDown: (e) => e.key === "Enter" && handleSend(),
                 disabled: typing || !context,
               }}
-              className="!rounded-full"
+              className="rounded-full!"
               containerClassName="[&>div]:h-10"
             />
             <Button
@@ -276,7 +276,7 @@ const Chatbot = () => {
                 onClick: () => handleSend(),
                 disabled: typing || !context,
               }}
-              className="!w-10 !h-10 !rounded-full !p-2"
+              className="w-10! h-10! rounded-full! p-2!"
               pattern="primary"
               content={
                 <NavigationIcon className="rotate-45 mr-1 stroke-white" />

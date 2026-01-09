@@ -6,26 +6,26 @@ export const BlogCardSkeleton = () => (
     <div className="p-4 flex flex-col gap-2 flex-1 justify-between shadow-light-dark-soft">
       <div className="space-y-1">
         <Skeleton className="h-5" />
-        <Skeleton className="h-5 !w-2/3" />
+        <Skeleton className="h-5 w-2/3!" />
       </div>
       <div className="flex flex-wrap gap-2">
         {Array.from({ length: 4 }).map((_, index) => (
           <Skeleton
             key={index}
-            className={`h-5 !rounded-full ${
+            className={`h-5 rounded-full! ${
               index === 3 ? "max-w-8" : "max-w-20"
             }`}
           />
         ))}
       </div>
       <div className="space-y-1">
-        <Skeleton className="!h-3" />
-        <Skeleton className="!h-3" />
-        <Skeleton className="!h-3 !w-2/3" />
+        <Skeleton className="h-3!" />
+        <Skeleton className="h-3!" />
+        <Skeleton className="h-3! w-2/3!" />
       </div>
       <div className="flex gap-2 justify-between">
-        <Skeleton className="!h-3" />
-        <Skeleton className="!h-3" />
+        <Skeleton className="h-3!" />
+        <Skeleton className="h-3!" />
       </div>
     </div>
   </div>

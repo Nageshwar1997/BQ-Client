@@ -48,13 +48,13 @@ const OpeningCard = ({
             <div className="flex items-start content-start gap-1.5 self-stretch flex-wrap">
               {opening?.tags?.slice(0, 2).map((tag, index) => (
                 <Fragment key={`${tag}-${index}`}>
-                  <div className="flex py-0.5 px-1.5 rounded bg-tertiary-inverted text-primary text-[10px]/[14px] font-semibold">
+                  <div className="flex py-0.5 px-1.5 rounded-sm bg-tertiary-inverted text-primary text-[10px]/[14px] font-semibold">
                     {tag}
                   </div>
                 </Fragment>
               ))}
               {opening?.tags?.length > 2 && (
-                <div className="h-[18px] w-[18px] flex items-center justify-center rounded-full bg-tertiary-inverted text-primary text-[10px]/[14px] font-semibold">
+                <div className="h-4.5 w-4.5 flex items-center justify-center rounded-full bg-tertiary-inverted text-primary text-[10px]/[14px] font-semibold">
                   {opening?.tags?.length - 2}+
                 </div>
               )}
@@ -64,7 +64,7 @@ const OpeningCard = ({
         <Button
           pattern="secondary"
           content="Apply Now"
-          className="!w-fit !rounded-full !py-1.5 !px-5 !duration-0 !text-xs/[18px] backdrop-blur-md"
+          className="w-fit! rounded-full! py-1.5! px-5! duration-0! text-xs/[18px]! backdrop-blur-md"
           buttonProps={{ onClick: () => setIsModalOpen(true) }}
         />
         <OpeningModal

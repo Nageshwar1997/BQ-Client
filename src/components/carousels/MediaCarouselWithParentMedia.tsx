@@ -54,7 +54,7 @@ const MediaCarouselWithParentMedia = ({
       className={`bg-primary-inverted rounded-lg max-w-3xl w-full overflow-hidden ${className}`}
     >
       {/* Main Image */}
-      <div className="mb-4 h-[400px] lg:h-[420px] xl:h-[500px] flex items-center justify-center relative">
+      <div className="mb-4 h-100 lg:h-105 xl:h-125 flex items-center justify-center relative">
         <div className="w-full h-full transform transition-opacity duration-500 flex items-center justify-center rounded-lg">
           {mediaType === "video" ? (
             <VideoPlayer
@@ -81,12 +81,12 @@ const MediaCarouselWithParentMedia = ({
                   currentIndex > 0 ? prev - 1 : data?.length - 1
                 );
               }}
-              className="p-[5px] rounded border border-primary-50 bg-primary-inverted-50 cursor-pointer"
+              className="p-1.25 rounded-sm border border-primary-50 bg-primary-inverted-50 cursor-pointer"
             >
               <DropdownIcon className="rotate-90 [&>path]:stroke-primary" />
             </button>
 
-            <span className="py-2 w-24 px-4 min-h-full border border-primary-50 content-center bg-primary-inverted-50 text-primary leading-none rounded">
+            <span className="py-2 w-24 px-4 min-h-full border border-primary-50 content-center bg-primary-inverted-50 text-primary leading-none rounded-sm">
               {currentIndex + 1} of {data.length}
             </span>
             <button
@@ -96,7 +96,7 @@ const MediaCarouselWithParentMedia = ({
                   currentIndex < data.length - 1 ? prev + 1 : 0
                 );
               }}
-              className="p-[5px] rounded border border-primary-50 bg-primary-inverted-50 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="p-1.25 rounded-sm border border-primary-50 bg-primary-inverted-50 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <DropdownIcon className="-rotate-90 [&>path]:stroke-primary" />
             </button>

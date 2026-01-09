@@ -64,7 +64,7 @@ const Blogs = () => {
                   <img
                     src={blog.smallThumbnail}
                     alt={blog.mainTitle}
-                    className="absolute inset-0 object-contain w-full h-full z-10 rounded"
+                    className="absolute inset-0 object-contain w-full h-full z-10 rounded-sm"
                   />
                 </div>
                 <div className="p-4 flex flex-col gap-2 flex-1 justify-between shadow-light-dark-soft">

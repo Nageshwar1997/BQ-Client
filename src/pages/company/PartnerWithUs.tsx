@@ -36,7 +36,7 @@ const PartnerWithUs = () => {
         ].map((item, i) => (
           <div
             key={i}
-            className="border border-secondary-10 p-6 rounded-2xl shadow-sm hover:shadow-lg shadow-secondary-30 hover:shadow-primary-10 transition-shadow"
+            className="border border-secondary-10 p-6 rounded-2xl shadow-xs hover:shadow-lg shadow-secondary-30 hover:shadow-primary-10 transition-shadow"
           >
             <h3 className="text-xl font-semibold mb-3 text-secondary">
               {item.title}
