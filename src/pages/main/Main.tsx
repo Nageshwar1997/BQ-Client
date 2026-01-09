@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 
 import Navbar from "../../components/navbar/Navbar";
@@ -10,6 +10,7 @@ import { useUserStore } from "../../store/user.store";
 import useUserWishlist from "../../hooks/useUserWishlist";
 import useWishlistStore from "../../store/wishlist.store";
 import Chatbot from "../../components/layout/Chatbot";
+import ScrollToTop from "../../hooks/ScrollToTop";
 
 const Main = () => {
   const { isAuthenticated } = useUserStore();
@@ -31,17 +32,19 @@ const Main = () => {
       setWishlist(wishlist ?? null);
     }
   }, [wishlist, isAuthenticated, setWishlist]);
+
   return (
-    <Fragment>
+    <div id="main" className="w-full h-full">
+      <ScrollToTop />
       {/* If the user isn't logged in, show the auth modal. just add queryParams.login = "true" to the url */}
       <AuthModal />
       <Navbar />
-      <main>
+      <main className="w-full h-full">
         <Outlet />
       </main>
       <Footer />
       <Chatbot />
-    </Fragment>
+    </div>
   );
 };
 
