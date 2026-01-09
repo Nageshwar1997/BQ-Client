@@ -30,7 +30,7 @@ const Face = () => {
           key={i}
           className={`flex flex-col gap-2 ${
             i === 3
-              ? "md:col-span-3 md:flex-row md:justify-around lg:col-span-1 lg:flex-col lg:justify-start md:gap-4 lg:gap-[18px] xl:gap-6"
+              ? "md:col-span-3 md:flex-row md:justify-around lg:col-span-1 lg:flex-col lg:justify-start md:gap-4 lg:gap-4.5 xl:gap-6"
               : ""
           }`}
         >
@@ -39,7 +39,7 @@ const Face = () => {
             return (
               <div
                 key={index}
-                className={`space-y-4 min-w-[200px] max-w-[300px] pb-4 lg:pb-0 border-b border-primary-battleship-davys-gray ${
+                className={`space-y-4 min-w-50 max-w-75 pb-4 lg:pb-0 border-b border-primary-battleship-davys-gray ${
                   [
                     "traditional_and_essentials",
                     "setting_and_finishing",
@@ -50,7 +50,7 @@ const Face = () => {
                     : "lg:pb-2"
                 } ${
                   category.category === "foundations_by_skin_type"
-                    ? "base:pb-[23px] md:pb-4"
+                    ? "base:pb-5.75 md:pb-4"
                     : ""
                 }`}
               >

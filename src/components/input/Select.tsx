@@ -118,7 +118,7 @@ const Select = ({
                       <li
                         key={option.value}
                         ref={active ? selectedOptionRef : null}
-                        className={`flex justify-between items-center gap-2 p-2 hover:bg-primary-10 text-tertiary cursor-pointer text-sm rounded-[4px] ${
+                        className={`flex justify-between items-center gap-2 p-2 hover:bg-primary-10 text-tertiary cursor-pointer text-sm rounded-sm ${
                           active ? "bg-primary-8" : ""
                         }`}
                         onClick={(e) => {

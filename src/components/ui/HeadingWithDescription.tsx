@@ -24,7 +24,7 @@ const HeadingWithDescription = ({
           return (
             <h1
               key={index}
-              className="text-center text-4xl lg:text-5xl font-medium leading-[43px] lg:leading-[57px]"
+              className="text-center text-4xl lg:text-5xl font-medium leading-10.75 lg:leading-14.25"
             >
               {words?.map((word, wordIndex) => (
                 <span

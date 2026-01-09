@@ -106,7 +106,7 @@ const Range = ({
       {/* coloured track behind thumbs */}
       <div
         ref={trackRef}
-        className="absolute top-1/2 -translate-y-1/2 w-full h-[3px] bg-primary-30 rounded-sm"
+        className="absolute top-1/2 -translate-y-1/2 w-full h-0.75 bg-primary-30 rounded-sm"
       />
     </div>
   );

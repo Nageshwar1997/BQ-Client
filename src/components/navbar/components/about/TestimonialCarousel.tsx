@@ -48,7 +48,7 @@ const TestimonialCarousel: React.FC<{ testimonials: Testimonial[] }> = ({
             index === currentIndex ? "block" : "hidden"
           }`}
         >
-          <div className="flex flex-col gap-4 h-[115px] base:h-[128px] md:h-[150px] leading-6">
+          <div className="flex flex-col gap-4 h-28.75 base:h-32 md:h-37.5 leading-6">
             <div className="flex gap-1">
               {Array.from({ length: 5 }).map((_, idx) => (
                 <YellowStarIcon key={idx} className="w-4 h-4 md:w-5 md:h-5" />

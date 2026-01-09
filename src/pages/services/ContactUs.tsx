@@ -150,12 +150,10 @@ const ContactUs = () => {
                   key={item.id}
                   target="_blank"
                   className={`[&>svg]:w-10 [&>svg]:h-10 [&>svg>_g]:fill-primary-inverted [&>svg>path]:fill-primary-battleship-davys-gray-inverted cursor-pointer ${
-                    [5, 6].includes(item.id) ? "[&>svg]:p-[5px]" : ""
+                    [5, 6].includes(item.id) ? "[&>svg]:p-1.25" : ""
                   } ${
-                    [2].includes(item.id)
-                      ? "[&>svg]:p-[2px] [&>svg]:pb-[3px]"
-                      : ""
-                  } ${[3, 4].includes(item.id) ? "[&>svg]:pb-[2px]" : ""}`}
+                    [2].includes(item.id) ? "[&>svg]:p-0.5 [&>svg]:pb-0.75" : ""
+                  } ${[3, 4].includes(item.id) ? "[&>svg]:pb-0.5" : ""}`}
                 >
                   {item.icon}
                 </Link>

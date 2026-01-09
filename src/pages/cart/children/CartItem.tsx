@@ -97,10 +97,7 @@ const CartItem = ({ item }: { item: TCartProduct }) => {
           pattern="primary"
           className="w-fit! rounded-sm! px-3! py-1! mt-1 text-sm! gap-2"
           rightIcon={
-            <TrashIcon
-              className="w-[14px] h-[14px] stroke-white"
-              strokeWidth={2.5}
-            />
+            <TrashIcon className="w-3.5 h-3.5 stroke-white" strokeWidth={2.5} />
           }
           buttonProps={{ onClick: () => handleRemoveItem(item._id) }}
         />
