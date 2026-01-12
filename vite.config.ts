@@ -1,14 +1,16 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import { visualizer } from "rollup-plugin-visualizer";
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { visualizer } from 'rollup-plugin-visualizer';
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
-    mode === "analyze" &&
+    tailwindcss(),
+    mode === 'analyze' &&
       visualizer({
         open: true,
-        filename: "stats.html",
+        filename: 'stats.html',
         gzipSize: true,
         brotliSize: true,
       }),
@@ -18,8 +20,8 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: {
-          react: ["react", "react-dom"],
-          motion: ["framer-motion"],
+          react: ['react', 'react-dom'],
+          motion: ['framer-motion'],
         },
       },
     },

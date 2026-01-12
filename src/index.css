@@ -1,0 +1,58 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-metropolis: 'Metropolis', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Dark theme */
+[theme='dark'] {
+  /* Dark Variables */
+}
+
+/* Light theme */
+[theme='light'] {
+  /* Light Variables */
+}
+
+@layer base {
+  /* Metropolis - Light (Weight: 300) */
+  @font-face {
+    font-family: 'Metropolis';
+    src: url('/fonts/metropolis/Metropolis-Light.woff2') format('woff2');
+    font-style: normal;
+    font-weight: 300; /* Light */
+    font-display: swap;
+  }
+  /* Metropolis - Regular (Weight: 400) */
+  @font-face {
+    font-family: 'Metropolis';
+    src: url('/fonts/metropolis/Metropolis-Regular.woff2') format('woff2');
+    font-style: normal;
+    font-weight: 400; /* Regular */
+    font-display: swap;
+  }
+  /* Metropolis - Medium (Weight: 500) */
+  @font-face {
+    font-family: 'Metropolis';
+    src: url('/fonts/metropolis/Metropolis-Medium.woff2') format('woff2');
+    font-style: normal;
+    font-weight: 500; /* Medium */
+    font-display: swap;
+  }
+  /* Metropolis - SemiBold (Weight: 600) */
+  @font-face {
+    font-family: 'Metropolis';
+    src: url('/fonts/metropolis/Metropolis-SemiBold.woff2') format('woff2');
+    font-style: normal;
+    font-weight: 600; /* SemiBold */
+    font-display: swap;
+  }
+  /* Metropolis - Bold (Weight: 700) */
+  @font-face {
+    font-family: 'Metropolis';
+    src: url('/fonts/metropolis/Metropolis-Bold.woff2') format('woff2');
+    font-style: normal;
+    font-weight: 700; /* Bold */
+    font-display: swap;
+  }
+}
