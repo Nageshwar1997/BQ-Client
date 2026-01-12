@@ -1,17 +1,37 @@
 @import 'tailwindcss';
 
 @theme {
+  /* =============== Fonts =============== */
   --font-metropolis: 'Metropolis', ui-sans-serif, system-ui, sans-serif;
+
+  /* =============== Colors =============== */
+  --color-primary: var(--primary);
+  --color-primary-inverted: var(--primary-inverted);
+  --color-tertiary: var(--tertiary);
 }
 
 /* Dark theme */
 [theme='dark'] {
-  /* Dark Variables */
+  /* PRIMARY */
+  --primary: #ffffff;
+  --primary-inverted: #000000;
+
+  /* SECONDARY */
+
+  /* TERTIARY */
+  --tertiary: #c8c8c8;
 }
 
 /* Light theme */
 [theme='light'] {
-  /* Light Variables */
+  /* PRIMARY */
+  --primary: #000000;
+  --primary-inverted: #ffffff;
+
+  /* SECONDARY */
+
+  /* TERTIARY */
+  --tertiary: #2e2e2e;
 }
 
 @layer base {
