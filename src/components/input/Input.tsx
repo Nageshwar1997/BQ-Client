@@ -1,13 +1,14 @@
-import { ChangeEvent, useEffect, useRef } from "react";
-import { InfoIcon } from "../../icons";
-import { IInput } from "../../types";
+import { useEffect, useRef, type ChangeEvent } from 'react';
 
-const Input = ({
-  label = "",
+import { InfoIcon } from '../../icons';
+import type { IInput } from '../../types';
+
+export const Input = ({
+  label = '',
   register,
-  className = "",
-  error = "",
-  containerClassName = "",
+  className = '',
+  error = '',
+  containerClassName = '',
   icons,
   inputProps,
   needRef = false,
@@ -25,30 +26,30 @@ const Input = ({
   }, [needRef]);
 
   return (
-    <div className={`w-full flex flex-col gap-1.5 ${containerClassName}`}>
+    <div className={`flex w-full flex-col gap-1.5 ${containerClassName}`}>
       <div className="relative h-10 lg:h-12">
         {label && (
           <label
-            htmlFor={inputProps.name}
-            className={`text-[10px] lg:text-xs text-primary-50 absolute top-0 left-3 transform -translate-y-1/2 border border-primary-10 leading-none px-1 md:px-2 py-0.5 bg-smoke-eerie rounded-sm cursor-pointer`}
+            htmlFor={inputProps?.name ?? ''}
+            className="text-primary/50 border-primary/10 bg-smoke-eerie absolute top-0 left-3 -translate-y-1/2 transform cursor-pointer rounded-sm border px-1 py-0.5 text-[10px] leading-none md:px-2 lg:text-xs"
           >
             {label}
           </label>
         )}
         <div
-          className={`w-full h-full flex items-center gap-1 border border-primary-10 bg-smoke-eerie rounded-lg overflow-hidden ${className}`}
+          className={`border-primary/10 bg-smoke-eerie flex h-full w-full items-center gap-1 overflow-hidden rounded-lg border ${className}`}
         >
           {/* Left Icon */}
           {icons?.left?.icon ? (
             <span
               onClick={icons.left.onClick}
-              className="h-full flex justify-center items-center cursor-pointer p-2 overflow-hidden group"
+              className="group flex h-full cursor-pointer items-center justify-center overflow-hidden p-2"
             >
               {icons.left.icon}
             </span>
           ) : icons?.left?.text ? (
             <div className="h-full overflow-hidden">
-              <p className="h-full flex items-center justify-center text-sm text-primary-50 border-r border-r-primary-10 p-3 capitalize">
+              <p className="text-primary/50 border-r-primary/10 flex h-full items-center justify-center border-r p-3 text-sm capitalize">
                 {icons?.left?.text}
               </p>
             </div>
@@ -59,31 +60,25 @@ const Input = ({
             {...register}
             {...inputProps}
             {...(needRef && { ref: inputRef })}
-            id={inputProps.name}
+            id={inputProps?.name}
             disabled={inputProps?.disabled}
-            onChange={!inputProps.disabled ? handleChange : undefined}
-            onWheel={(event) =>
-              inputProps?.type === "number" ? event.currentTarget.blur() : null
-            }
-            className={`flex-1 w-full h-full outline-hidden border-none focus:outline-hidden focus:border-none bg-transparent font-normal text-sm p-3 text-primary placeholder:text-primary-50 placeholder:text-sm autofill-effect line-clamp-1 disabled:cursor-not-allowed ${
+            onChange={handleChange}
+            onWheel={(event) => (inputProps?.type === 'number' ? event.currentTarget.blur() : null)}
+            className={`text-primary placeholder:text-primary/50 autofill-effect line-clamp-1 h-full w-full flex-1 border-none bg-transparent p-3 text-sm font-normal outline-hidden placeholder:text-sm focus:border-none focus:outline-hidden disabled:cursor-not-allowed ${
               icons?.left?.icon
-                ? "pl-0"
+                ? 'pl-0'
                 : icons?.right?.icon
-                ? "pr-0"
-                : icons?.left?.text
-                ? "pl-2"
-                : ""
-            } ${
-              inputProps?.type === "number"
-                ? ""
-                : ""
-            } ${inputProps?.className || ""}`}
+                  ? 'pr-0'
+                  : icons?.left?.text
+                    ? 'pl-2'
+                    : ''
+            } ${inputProps?.className || ''}`}
           />
           {/* Right Icon */}
           {icons?.right && (
             <span
               onClick={icons.right.onClick}
-              className="h-full flex justify-center items-center cursor-pointer p-2 overflow-hidden group"
+              className="group flex h-full cursor-pointer items-center justify-center overflow-hidden p-2"
             >
               {icons.right.icon}
             </span>
@@ -91,13 +86,11 @@ const Input = ({
         </div>
       </div>
       {error && (
-        <p className="w-full text-start flex gap-1 items-center text-[11px] leading-tight text-red-500">
-          <InfoIcon className="min-w-3 min-h-3 w-3 h-3 md:min-w-4 md:min-h-4 md:w-4 md:h-4 fill-red-500" />
-          <span className="leading-none line-clamp-2">{error}</span>
+        <p className="text-red-c flex w-full items-center gap-1 text-start text-[11px] leading-tight">
+          <InfoIcon className="fill-red-c h-3 min-h-3 w-3 min-w-3 md:h-4 md:min-h-4 md:w-4 md:min-w-4" />
+          <span className="line-clamp-2 leading-none">{error}</span>
         </p>
       )}
     </div>
   );
 };
-
-export default Input;
