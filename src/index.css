@@ -1,37 +1,76 @@
 @import 'tailwindcss';
 
+:root {
+  --picton-blue-c: #25adf9;
+  --blue-crayola-c: #07f;
+  --dodger-blue-c: #2e90fa;
+  --princeton-orange-c: #f79009;
+  --naples-yellow-c: #f7d158;
+  --razzle-dazzle-rose-c: #ee46bc;
+  --veronica-c: #9747ff;
+  --jade-c: #12b76a;
+  --turquoise-c: #00e5d1;
+  --rose-c: #fe026c;
+  --electric-purple-c: #b519df;
+}
+
 @theme {
   /* =============== Fonts =============== */
   --font-metropolis: 'Metropolis', ui-sans-serif, system-ui, sans-serif;
 
   /* =============== Colors =============== */
-  --color-primary: var(--primary);
-  --color-primary-inverted: var(--primary-inverted);
+  --color-primary: rgb(var(--primary-rgb));
+  --color-primary-inverted: rgb(var(--primary-inverted-rgb));
   --color-tertiary: var(--tertiary);
+
+  --color-picton-blue-c: var(--picton-blue-c);
+  --color-blue-crayola-c: var(--blue-crayola-c);
+  --color-dodger-blue-c: var(--dodger-blue-c);
+  --color-princeton-orange-c: var(--princeton-orange-c);
+  --color-naples-yellow-c: var(--naples-yellow-c);
+  --color-razzle-dazzle-rose-c: var(--razzle-dazzle-rose-c);
+  --color-veronica-c: var(--veronica-c);
+  --color-jade-c: var(--jade-c);
+  --color-turquoise-c: var(--turquoise-c);
+  --color-rose-c: var(--rose-c);
+  --color-electric-purple-c: var(--electric-purple-c);
+
+  --background-image-accent-duo: var(--accent-duo);
 }
 
 /* Dark theme */
 [theme='dark'] {
   /* PRIMARY */
-  --primary: #ffffff;
-  --primary-inverted: #000000;
+  --primary-rgb: 255, 255, 255;
+  --primary-inverted-rgb: 0, 0, 0;
 
   /* SECONDARY */
 
   /* TERTIARY */
   --tertiary: #c8c8c8;
+
+  /* GRADIENTS */
+  --accent-duo: linear-gradient(
+    114deg,
+    var(--turquoise-c) 6.19%,
+    var(--picton-blue-c) 37.23%,
+    var(--blue-crayola-c) 94.85%
+  );
 }
 
 /* Light theme */
 [theme='light'] {
   /* PRIMARY */
-  --primary: #000000;
-  --primary-inverted: #ffffff;
+  --primary-rgb: 0, 0, 0;
+  --primary-inverted-rgb: 255, 255, 255;
 
   /* SECONDARY */
 
   /* TERTIARY */
   --tertiary: #2e2e2e;
+
+  /* GRADIENTS */
+  --accent-duo: linear-gradient(114deg, var(--picton-blue-c) 6.19%, var(--blue-crayola-c) 41.65%);
 }
 
 @layer base {
@@ -74,5 +113,31 @@
     font-style: normal;
     font-weight: 700; /* Bold */
     font-display: swap;
+  }
+}
+
+@layer utilities {
+  @keyframes rotate1 {
+    to {
+      transform: rotateX(45deg) rotateY(-45deg) rotateZ(360deg);
+    }
+  }
+
+  @keyframes rotate2 {
+    to {
+      transform: rotateX(55deg) rotateY(15deg) rotateZ(360deg);
+    }
+  }
+
+  @keyframes rotate3 {
+    to {
+      transform: rotateX(40deg) rotateY(65deg) rotateZ(360deg);
+    }
+  }
+
+  @keyframes rotate4 {
+    to {
+      transform: rotateX(50deg) rotateY(-25deg) rotateZ(360deg);
+    }
   }
 }
