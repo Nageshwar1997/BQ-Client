@@ -1,0 +1,67 @@
+/* 🔴 Ring 1 */
+#ring-1 {
+  --rx: 45deg;
+  --ry: -45deg;
+  --z: 0deg;
+
+  border-bottom-width: 0.6vmin;
+  border-color: red;
+  animation-delay: 0s;
+}
+
+/* 🟢 Ring 2 */
+#ring-2 {
+  --rx: 55deg;
+  --ry: 15deg;
+  --z: 90deg;
+
+  border-right-width: 0.6vmin;
+  border-color: green;
+  animation-delay: -0.5s;
+}
+
+/* 🔵 Ring 3 */
+#ring-3 {
+  --rx: 40deg;
+  --ry: 65deg;
+  --z: 180deg;
+
+  border-top-width: 0.6vmin;
+  border-color: blue;
+  animation-delay: -1s;
+}
+
+/* 🟡 Ring 4 */
+#ring-4 {
+  --rx: 50deg;
+  --ry: -25deg;
+  --z: 270deg;
+
+  border-left-width: 0.6vmin;
+  border-color: yellow;
+  animation-delay: -1.5s;
+}
+
+@keyframes loading-text {
+  0% {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes ring-spin {
+  from {
+    transform: rotateX(var(--rx)) rotateY(var(--ry)) rotateZ(var(--z));
+  }
+  to {
+    transform: rotateX(var(--rx)) rotateY(var(--ry)) rotateZ(calc(var(--z) + 360deg));
+  }
+}
