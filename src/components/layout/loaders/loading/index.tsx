@@ -2,8 +2,8 @@ import './Loading.css';
 
 const Loading = ({ className, text = 'Loading....' }: { className?: string; text: string }) => {
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center">
-      <div className={`relative h-[20vmin] w-[20vmin] ${className}`}>
+    <div className={`flex h-full w-full flex-col items-center justify-center ${className}`}>
+      <div className="relative h-[20vmin] w-[20vmin]">
         {Array.from({ length: 4 }).map((_, index) => (
           <div
             key={index}
