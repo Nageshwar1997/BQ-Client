@@ -1,0 +1,49 @@
+@layer base {
+  * {
+    box-sizing: border-box;
+    font-family: 'metropolis', sans-serif;
+  }
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--primary, currentcolor);
+  }
+  /* Scrollbar Hide */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  button,
+  a {
+    outline: none;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus .autofill-effect:-webkit-autofill {
+    -webkit-text-fill-color: var(--primary);
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  /* Disable arrows */
+  /* Hide spinner in WebKit browsers (Chrome, Edge, Safari) */
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  /* Hide spinner in Firefox */
+  input[type='number'] {
+    appearance: textfield;
+  }
+}

@@ -1,0 +1,8 @@
+/* THis is for ref one any new utility added remove it */
+@utility no-scrollbar {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
