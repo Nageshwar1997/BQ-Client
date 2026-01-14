@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import type { TParams } from '../types';
 
-export const useMyParams = () => {
+export const useQueryParams = () => {
   const navigate = useNavigate();
   const { hash, pathname, state } = useLocation();
   const paths = pathname.split('/').filter((path) => path !== '');
