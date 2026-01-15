@@ -400,14 +400,14 @@
         width: 14%;
         aspect-ratio: 2.5;
         border-radius: 50% / 0 0 100% 100%;
-        border: 0.5em solid #900;
+        border: 0.5em solid var(--color-red-900);
         border-top: 0;
         top: 83%;
         left: 50%;
         translate: -50% -50%;
         clip-path: polygon(0 40%, 10% 30%, 90% 30%, 100% 40%, 150% 40%, 150% 150%, 0 150%);
-        /*         mask: radial-gradient(farthest-side at 50% 100%, #000 99%, #0000); */
-        filter: drop-shadow(0.1em 0.1em 0.2em #800c) drop-shadow(-0.1em -0.1em 0.1em #fff);
+        filter: drop-shadow(0.1em 0.1em 0.2em var(--color-red-900))
+          drop-shadow(-0.1em -0.1em 0.1em #fff);
       }
 
       .cheek {
