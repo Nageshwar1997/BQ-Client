@@ -72,7 +72,7 @@ const LoadingScreen = () => {
     () => (
       <p
         dangerouslySetInnerHTML={{ __html: loadingState.loadingText }}
-        className="absolute top-[320px] bg-primary-50 border border-white/60 p-2 rounded-xl text-white/80 font-light md:font-normal mt-5 text-sm md:text-lg leading-6 md:leading-6 text-center"
+        className="absolute top-80 bg-primary-50 border border-white/60 p-2 rounded-xl text-white/80 font-light md:font-normal mt-5 text-sm md:text-lg leading-6 md:leading-6 text-center"
       />
     ),
     [loadingState.loadingText]
@@ -92,7 +92,7 @@ const LoadingScreen = () => {
           loop
           muted
           playsInline
-          className="w-[400px] h-[400px] mix-blend-lighten"
+          className="w-100 h-100 mix-blend-lighten"
         />
         {loadingText}
       </div>
