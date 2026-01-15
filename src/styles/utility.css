@@ -1,8 +1,32 @@
-/* THis is for ref one any new utility added remove it */
-@utility no-scrollbar {
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    display: none;
+@utility autofill-effect {
+  /* 🔹 Base normalization (prevents font jump on suggestion hover) */
+  &:where(input, textarea, select) {
+    caret-color: var(--primary);
   }
+
+  /* 🔹 Chrome / Edge / Safari autofill */
+  &:where(input, textarea, select):-webkit-autofill,
+  &:where(input, textarea, select):-webkit-autofill:hover,
+  &:where(input, textarea, select):-webkit-autofill:focus,
+  &:where(input, textarea, select):-webkit-autofill:active {
+    -webkit-text-fill-color: var(--primary);
+    caret-color: var(--primary);
+
+    /* prevent background flash */
+    transition: background-color 5000s ease-in-out 0s;
+    box-shadow: 0 0 0px 1000px transparent inset;
+
+    /* keep typography stable */
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+  }
+}
+
+@utility gradient-text-accent {
+  @apply bg-accent-duo inline bg-clip-text text-transparent;
+}
+
+@utility gradient-text-silver {
+  @apply bg-silver-duo inline bg-clip-text text-transparent;
 }

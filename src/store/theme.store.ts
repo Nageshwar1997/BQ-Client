@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import type { TTheme, TThemeStore } from '../types';
 
-const useThemeStore = create<TThemeStore>((set) => {
+export const useThemeStore = create<TThemeStore>((set) => {
   const currentTheme = localStorage.getItem('theme') || '';
   const isValidTheme = currentTheme && ['dark', 'light'].includes(currentTheme);
 
@@ -15,5 +15,3 @@ const useThemeStore = create<TThemeStore>((set) => {
       }),
   };
 });
-
-export default useThemeStore;

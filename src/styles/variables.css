@@ -14,11 +14,24 @@
 
 @theme {
   --font-metropolis: 'Metropolis', ui-sans-serif, system-ui, sans-serif;
+  --default-font-family: var(--font-metropolis);
 
-  --color-primary: rgb(var(--primary-rgb));
-  --color-primary-inverted: rgb(var(--primary-inverted-rgb));
+  /* ========== Colors ========== */
+  /* Primary */
+  --color-primary: var(--primary);
+  --color-primary-inverted: var(--primary-inverted);
+
+  /* Secondary */
+
+  /* Tertiary */
   --color-tertiary: var(--tertiary);
 
+  /* Other */
+
+  --color-smoke-eerie: var(--smoke-eerie);
+  --color-smoke-eerie-inverted: var(--smoke-eerie-inverted);
+
+  /* Common */
   --color-picton-blue-c: var(--picton-blue-c);
   --color-blue-crayola-c: var(--blue-crayola-c);
   --color-dodger-blue-c: var(--dodger-blue-c);
@@ -30,16 +43,29 @@
   --color-turquoise-c: var(--turquoise-c);
   --color-rose-c: var(--rose-c);
   --color-electric-purple-c: var(--electric-purple-c);
+  --color-red-c: #ff0000;
 
   /* Background Images & Gradients */
   --background-image-accent-duo: var(--accent-duo);
+  --background-image-silver-duo: var(--silver-duo);
 }
 
 /* Dark */
 [theme='dark'] {
+  /* Primary */
   --primary-rgb: 255, 255, 255;
+  --primary: rgb(var(--primary-rgb));
   --primary-inverted-rgb: 0, 0, 0;
+  --primary-inverted: rgb(var(--primary-inverted-rgb));
+
+  /* Secondary */
+
+  /* Tertiary */
   --tertiary: #c8c8c8;
+
+  /* Other */
+  --smoke-eerie: #1a1a1a;
+  --smoke-eerie-inverted: #f2f2f2;
 
   --accent-duo: linear-gradient(
     114deg,
@@ -47,13 +73,26 @@
     var(--picton-blue-c) 37.23%,
     var(--blue-crayola-c) 94.85%
   );
+  --silver-duo: linear-gradient(180deg, #fff 24.54%, #b2b2b2 87.96%);
 }
 
 /* Light */
 [theme='light'] {
+  /* Primary */
   --primary-rgb: 0, 0, 0;
+  --primary: rgb(var(--primary-rgb));
   --primary-inverted-rgb: 255, 255, 255;
+  --primary-inverted: rgb(var(--primary-inverted-rgb));
+
+  /* Secondary */
+
+  /* Tertiary */
   --tertiary: #2e2e2e;
 
+  /* Other */
+  --smoke-eerie: #f2f2f2;
+  --smoke-eerie-inverted: #1a1a1a;
+
   --accent-duo: linear-gradient(114deg, var(--picton-blue-c) 6.19%, var(--blue-crayola-c) 41.65%);
+  --silver-duo: linear-gradient(180deg, #4d4d4d 24.54%, #080808 87.96%);
 }

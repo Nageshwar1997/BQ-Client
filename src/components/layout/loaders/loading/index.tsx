@@ -9,7 +9,7 @@ const Loading = ({ className = '', text = 'Loading....' }: ILoading) => {
           {LOADING_RINGS_DATA.map((ring, index) => (
             <div
               key={index}
-              className="absolute inset-0 animate-[ring-spin_2s_linear_infinite] rounded-full border-solid shadow-[0_0_10px_rgb(var(--primary-rgb),0.1)]"
+              className="absolute inset-0 animate-[ring-spin_2s_linear_infinite] rounded-full border-solid shadow-[0_0_10px_rgb(var(--primary-rgb),0.15)]"
               style={{
                 ['--rx' as string]: `${ring.rotation.rx}deg`,
                 ['--ry' as string]: `${ring.rotation.ry}deg`,

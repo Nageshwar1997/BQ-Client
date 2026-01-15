@@ -1,19 +1,50 @@
 .article {
   --detail: #222;
   --mouth:
-    radial-gradient(49% 55% at 50% 89%, #0000, #c001 40%, #0000 0),
-    radial-gradient(50% 50% at 50% 88%, #fff 38%, #0000, #00000003 40%, #0000 0),
-    linear-gradient(130deg, #bbc0cc88, #bbccc000), linear-gradient(-130deg, #0081, #0080),
-    linear-gradient(#0084 10%, #0000 50%);
+    radial-gradient(
+      49% 55% at 50% 89%,
+      rgb(var(--primary-rgb), 0),
+      #c001 40%,
+      rgb(var(--primary-rgb), 0) 0
+    ),
+    radial-gradient(
+      50% 50% at 50% 88%,
+      white 38%,
+      rgb(var(--primary-rgb), 0),
+      rgb(var(--primary-rgb), 0.01) 40%,
+      rgb(var(--primary-rgb), 0) 0
+    ),
+    linear-gradient(130deg, rgb(var(--primary-inverted-rgb), 0.05), #bbccc000),
+    linear-gradient(-130deg, #0081, #0080),
+    linear-gradient(#0084 10%, rgb(var(--primary-rgb), 0) 50%);
   --dots:
-    radial-gradient(circle, #0001 0.1em, #0000 0) 1em 1em / 3em 7em,
-    radial-gradient(circle, #0001 0.1em, #0000 0) 1em 1em / 7em 3em,
-    radial-gradient(circle, #0001 0.1em, #0000 0) 1em 1em / 11em 13em,
-    radial-gradient(circle, #fff2 0.1em, #0000 0) 1em 1em / 13em 11em,
-    radial-gradient(circle, #fff3 0.1em, #0000 0) 1em 1em / 5em 5em,
-    radial-gradient(circle, #fff4 0.1em, #0000 0) 1em 1em / 4em 9em;
+    radial-gradient(circle, rgb(var(--primary-rgb), 0.07) 0.1em, rgb(var(--primary-rgb), 0) 0) 1em
+      1em / 3em 7em,
+    radial-gradient(circle, rgb(var(--primary-rgb), 0.07) 0.1em, rgb(var(--primary-rgb), 0) 0) 1em
+      1em / 7em 3em,
+    radial-gradient(circle, rgb(var(--primary-rgb), 0.07) 0.1em, rgb(var(--primary-rgb), 0) 0) 1em
+      1em / 11em 13em,
+    radial-gradient(
+        circle,
+        rgb(var(--primary-inverted-rgb), 0.13) 0.1em,
+        rgb(var(--primary-rgb), 0) 0
+      )
+      1em 1em / 13em 11em,
+    radial-gradient(
+        circle,
+        rgb(var(--primary-inverted-rgb), 0.2) 0.1em,
+        rgb(var(--primary-rgb), 0) 0
+      )
+      1em 1em / 5em 5em,
+    radial-gradient(
+        circle,
+        rgb(var(--primary-inverted-rgb), 0.27) 0.1em,
+        rgb(var(--primary-rgb), 0) 0
+      )
+      1em 1em / 4em 9em;
   --light:
-    radial-gradient(at 35% 30%, #fff5, #fff0 40%), radial-gradient(at 45% 40%, #fff6, #fff0 70%);
+    radial-gradient(at 35% 30%, #fff4, rgb(var(--primary-inverted-rgb), 0) 40%),
+    radial-gradient(at 45% 40%, #fff5, rgb(var(--primary-inverted-rgb), 0) 70%);
   position: relative;
   font-size: 1vmin;
   width: 80em;
@@ -56,10 +87,21 @@
 
     .chest {
       --mouth:
-        radial-gradient(49% 55% at 50% 70%, #0000, #c001 80%, #0000 0),
-        radial-gradient(50% 55% at 50% 69%, #fff 78%, #0000, #00000003 80%, #0000 0),
+        radial-gradient(
+          49% 55% at 50% 70%,
+          rgb(var(--primary-rgb), 0),
+          #c001 80%,
+          rgb(var(--primary-rgb), 0) 0
+        ),
+        radial-gradient(
+          50% 55% at 50% 69%,
+          #fff 78%,
+          rgb(var(--primary-rgb), 0),
+          rgb(var(--primary-rgb), 0.01) 80%,
+          rgb(var(--primary-rgb), 0) 0
+        ),
         linear-gradient(130deg, #bbc0cc88, #bbccc000), linear-gradient(-130deg, #0081, #0080),
-        linear-gradient(#0084 10%, #0000 50%);
+        linear-gradient(#0084 10%, rgb(var(--primary-rgb), 0) 50%);
       left: 50%;
       translate: -50%;
       border-radius: 100% / 155% 155% 56% 56%;
@@ -74,11 +116,15 @@
         inset -4em 0 4em -2em #0083,
         inset 0 -6em 8em -4em #8004,
         inset 0 -4em 4em -2em #0083,
-        inset 1em 1em 3em #fff5;
+        inset 1em 1em 3em rgb(var(--primary-inverted-rgb), 0.33);
       background:
-        radial-gradient(60% 100% at 50% 80%, #0000 40%, #3002),
-        radial-gradient(10% 5% at 50% 0, #0001, #0000 80%), var(--dots), var(--light), var(--mouth),
-        var(--blue-crayola-c);
+        radial-gradient(60% 100% at 50% 80%, rgb(var(--primary-rgb), 0) 40%, #3002),
+        radial-gradient(
+          10% 5% at 50% 0,
+          rgb(var(--primary-rgb), 0.07),
+          rgb(var(--primary-rgb), 0) 80%
+        ),
+        var(--dots), var(--light), var(--mouth), var(--blue-crayola-c);
 
       .arm {
         width: 30%;
@@ -88,11 +134,16 @@
         left: 0;
         rotate: -10deg;
         background:
-          linear-gradient(200deg, #400c, #0000 30%),
+          linear-gradient(200deg, #400c, rgb(var(--primary-rgb), 0) 30%),
           radial-gradient(200% 80% at 65% 5%, #6003 5%, #0080 25%),
           radial-gradient(200% 70% at 80% 10%, #0082, #0080 40%),
-          radial-gradient(60% 100% at 50% 80%, #0000 40%, #3002),
-          radial-gradient(10% 5% at 50% 0, #0001, #0000 80%), var(--dots), var(--blue-crayola-c);
+          radial-gradient(60% 100% at 50% 80%, rgb(var(--primary-rgb), 0) 40%, #3002),
+          radial-gradient(
+            10% 5% at 50% 0,
+            rgb(var(--primary-rgb), 0.07),
+            rgb(var(--primary-rgb), 0) 80%
+          ),
+          var(--dots), var(--blue-crayola-c);
         box-shadow:
           inset 0 0 5em -2.75em,
           inset -4em 0 4em -2em #0083,
@@ -139,9 +190,13 @@
           radial-gradient(at 35% 30%, #fff2, #fff0 40%),
           radial-gradient(at 45% 40%, #fff3, #fff0 70%);
         background:
-          radial-gradient(60% 100% at 50% 80%, #0000 40%, #3002),
-          radial-gradient(10% 5% at 50% 0, #0001, #0000 80%), var(--dots), var(--light),
-          var(--blue-crayola-c);
+          radial-gradient(60% 100% at 50% 80%, rgb(var(--primary-rgb), 0) 40%, #3002),
+          radial-gradient(
+            10% 5% at 50% 0,
+            rgb(var(--primary-rgb), 0.07),
+            rgb(var(--primary-rgb), 0) 80%
+          ),
+          var(--dots), var(--light), var(--blue-crayola-c);
 
         &::before {
           --s1: 0.75em 0.6em 1.5em -1.25em #3007, 1em 0.5em 1.5em -1em #3007;
@@ -169,7 +224,7 @@
         }
 
         &::after {
-          acontent: '';
+          content: '';
           inset: 0;
           border-radius: 10em 90% 40% 10em;
           box-shadow:
@@ -185,12 +240,21 @@
           right: 0;
           transform: scaleX(-1) translate(-5%, -10%) rotate(-20deg);
           clip-path: polygon(0 0, 80% 0, 85% 100%, 0 100%);
-          mask: radial-gradient(47% 80% at 118% 42%, #0000 60%, #000);
-          /*            radial-gradient(25% 160% at 100% 0, #0000 70%, #000) */
+          mask: radial-gradient(
+            47% 80% at 118% 42%,
+            rgb(var(--primary-rgb), 0) 60%,
+            rgb(var(--primary-rgb), 1)
+          );
           background:
-            radial-gradient(60% 100% at 50% 80%, #0000 40%, #3002),
-            radial-gradient(10% 5% at 50% 0, #0001, #0000 80%), var(--dots), var(--light),
-            radial-gradient(60% 50% at 30% 50%, #0082 60%, #0000), var(--blue-crayola-c);
+            radial-gradient(60% 100% at 50% 80%, rgb(var(--primary-rgb), 0) 40%, #3002),
+            radial-gradient(
+              10% 5% at 50% 0,
+              rgb(var(--primary-rgb), 0.07),
+              rgb(var(--primary-rgb), 0) 80%
+            ),
+            var(--dots), var(--light),
+            radial-gradient(60% 50% at 30% 50%, #0082 60%, rgb(var(--primary-rgb), 0)),
+            var(--blue-crayola-c);
 
           box-shadow:
             inset 0 0 4em -2.75em,
@@ -232,10 +296,13 @@
         inset 0 -6em 8em -4em #8001,
         inset 0 -4em 4em -2em #0082,
         inset 1em 1em 3em #fff5;
-      background: 
-/*         radial-gradient(60% 100% at 50% 80%, #0000 40%, #3002), */
-        radial-gradient(10% 5% at 50% 0, #0001, #0000 80%), var(--dots), var(--light),
-        var(--blue-crayola-c);
+      background:
+        radial-gradient(
+          10% 5% at 50% 0,
+          rgb(var(--primary-rgb), 0.07),
+          rgb(var(--primary-rgb), 0) 80%
+        ),
+        var(--dots), var(--light), var(--blue-crayola-c);
 
       &::after {
         content: '';
@@ -243,9 +310,13 @@
         border-radius: inherit;
         box-shadow: inherit;
         background:
-          radial-gradient(60% 65% at 105% 90%, #8005 0%, #0000 90%),
-          radial-gradient(60% 65% at 110% 95%, #0085 0%, #0000 95%),
-          radial-gradient(65% 70% at 110% 95%, #0005 0%, #0000);
+          radial-gradient(60% 65% at 105% 90%, #8005 0%, rgb(var(--primary-rgb), 0) 90%),
+          radial-gradient(60% 65% at 110% 95%, #0085 0%, rgb(var(--primary-rgb), 0) 95%),
+          radial-gradient(
+            65% 70% at 110% 95%,
+            rgb(var(--primary-rgb), 0.33) 0%,
+            rgb(var(--primary-rgb), 0)
+          );
       }
 
       &::before {
@@ -306,9 +377,13 @@
         inset 0 -4em 4em -2em #0083,
         inset 1em 1em 3em #fff5;
       background:
-        radial-gradient(60% 100% at 50% 80%, #0000 40%, #3002),
-        radial-gradient(10% 5% at 50% 0, #0001, #0000 80%), var(--dots), var(--light), var(--mouth),
-        var(--blue-crayola-c);
+        radial-gradient(60% 100% at 50% 80%, rgb(var(--primary-rgb), 0) 40%, #3002),
+        radial-gradient(
+          10% 5% at 50% 0,
+          rgb(var(--primary-rgb), 0.07),
+          rgb(var(--primary-rgb), 0) 80%
+        ),
+        var(--dots), var(--light), var(--mouth), var(--blue-crayola-c);
 
       .hair {
         width: 15%;
@@ -319,7 +394,7 @@
         top: -4%;
         transform: translate(-80%, 0) rotate(10deg);
         box-shadow:
-          inset 0 0 1em 0em #0001,
+          inset 0 0 1em 0em rgb(var(--primary-rgb), 0.07),
           inset 0.4em 0 0.2em 0.2em #0081,
           inset 0 0.6em 0.4em 0.4em #8001,
           inset 0 0.4em 0.2em 0.2em #0081,
@@ -341,16 +416,11 @@
         }
       }
 
-      .nose {
-        width: 22%;
-        height: 35%;
-        top: 62%;
-        left: 50%;
-        translate: -50% -50%;
-        border-radius: 100% / 120% 120% 66% 66%;
+      .nose,
+      .eye {
         box-shadow:
           inset 0 0 4em -1.5em,
-          inset 2em 2em 1.5em -1.5em #fff5,
+          inset 2em 2em 1.5em -1.5em rgb(var(--primary-inverted-rgb), 0.33),
           inset -5em 0 4em -4em #0088,
           0 0 1em #0004,
           1em 1em 2em -1em #3007,
@@ -360,38 +430,28 @@
           radial-gradient(at 40% 40%, #fff4, #fff0 60%), var(--detail);
       }
 
+      .nose {
+        width: 22%;
+        height: 35%;
+        top: 62%;
+        left: 50%;
+        translate: -50% -50%;
+        border-radius: 100% / 120% 120% 66% 66%;
+      }
+
       .eye {
         --pos: 26%;
         --c1: #fff7;
         --p1: 35%;
         --b1: 1.25em -1.5em 0.75em #0000660c, 0.25em -1em 2em 2em #0061;
-        --b2: 0.125em 0em 0.5em 0.5em #0001, 0 0 0.3em 0.85em #fff2;
+        --b2: 0.125em 0em 0.5em 0.5em rgb(var(--primary-rgb), 0.07), 0 0 0.3em 0.85em #fff1;
         width: 16%;
         aspect-ratio: 1;
         border-radius: 50%;
         translate: -50% -50%;
         top: 57%;
         left: var(--pos);
-        box-shadow:
-          inset 0 0 4em -1.5em,
-          inset 0 -2em 1em -0.5em #c003,
-          inset -2em 0 1em -1em #00c3,
-          inset 2em 2em 1.5em -1.5em #fff5,
-          inset -5em 0 4em -4em #c003,
-          inset -5em 0 4em -4em #0088,
-          0 0 1em #0004,
-          var(--b2),
-          0.5em 1em 2em -1em #3007,
-          0.75em 0.5em 2em -0.75em #3007,
-          var(--b1);
-        background:
-          radial-gradient(var(--p1) 35% at 35% 30%, var(--c1) 10%, #fff0),
-          radial-gradient(at 40% 40%, #fff4, #fff0 60%), var(--detail);
-
         & ~ & {
-          --c1: #fff5;
-          --p1: 50%;
-          --b1: -1.25em -1.5em 0.75em #0000660c, 0.25em -1em 2em 2em #00006608;
           left: calc(100% - var(--pos));
         }
       }
@@ -400,14 +460,13 @@
         width: 14%;
         aspect-ratio: 2.5;
         border-radius: 50% / 0 0 100% 100%;
-        border: 0.5em solid var(--color-red-900);
+        border: 0.5em solid #900;
         border-top: 0;
         top: 83%;
         left: 50%;
         translate: -50% -50%;
         clip-path: polygon(0 40%, 10% 30%, 90% 30%, 100% 40%, 150% 40%, 150% 150%, 0 150%);
-        filter: drop-shadow(0.1em 0.1em 0.2em var(--color-red-900))
-          drop-shadow(-0.1em -0.1em 0.1em #fff);
+        filter: drop-shadow(0.1em 0.1em 0.2em #800c) drop-shadow(-0.1em -0.1em 0.1em #fff);
       }
 
       .cheek {
@@ -466,7 +525,6 @@
 .article .head .face .eye::before,
 .article .head .face .eye::after {
   position: absolute;
-  box-sizing: border-box;
 }
 
 @keyframes floating {
