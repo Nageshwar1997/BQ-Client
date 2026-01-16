@@ -1,10 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
-import type { TQueryParams } from '../types';
+import type { TLogin, TParams } from '../types';
 import Request from './Request';
+import { toaster } from '../utils';
 
-export class AuthApi extends Request {
-  protected login = () => {
-    return this.request({ ...this.routes.auth.login });
+class AuthApi extends Request {
+  protected login = (data: TLogin) => {
+    return this.request({ ...this.routes.auth.login, data });
   };
   protected logout = (userId: string) => {
     const { method, url } = this.routes.auth.logout;
@@ -14,7 +15,7 @@ export class AuthApi extends Request {
     const { method, url } = this.routes.auth.register.send_otp;
     return this.request({ method, url, params: { email } });
   };
-  protected resend_otp = (params: TQueryParams) => {
+  protected resend_otp = (params: TParams) => {
     const { method, url } = this.routes.auth.register.resend_otp;
     return this.request({ method, url, params });
   };
@@ -26,18 +27,18 @@ export class AuthApi extends Request {
     data: FormData;
   }) => {
     const { method, url } = this.routes.auth.register.verify_otp;
-    this._toast('Registering...', 'success');
     return this.request({ method, url, params: { otpToken }, data });
   };
 }
 
 export class AuthService extends AuthApi {
-  public useLogin = () => {
+  public Login = () => {
     return useMutation({
       mutationKey: ['login'],
       mutationFn: this.login,
-      onSuccess: (data) => this._toast(data?.message, 'success'), // data.message
-      onError: (error) => this._toast(error, 'error'), // error
+      onSuccess: (data) => toaster('success', data?.message),
+      onError: (error) => toaster('error', error),
     });
   };
+  public useLogout = () => {};
 }
