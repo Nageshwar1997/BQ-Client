@@ -35,13 +35,11 @@ export const Input = ({
           className={`border-primary/10 bg-smoke-eerie flex h-full w-full items-center gap-1 overflow-hidden rounded-lg border ${className}`}
         >
           {/* Left Icon */}
-          {icons?.left?.text ? (
-            <p className="text-primary/50 border-r-primary/10 flex h-full items-center justify-center border-r p-3 text-sm capitalize">
-              {icons?.left?.text}
-            </p>
-          ) : (
-            <InputIcon icon={icons?.left?.icon} onClick={icons?.left?.onClick} />
-          )}
+          <InputIcon
+            icon={icons?.left?.icon}
+            text={icons?.left?.text}
+            onClick={icons?.left?.onClick}
+          />
           {/* Input */}
           <input
             aria-autocomplete="none"

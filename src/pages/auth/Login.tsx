@@ -1,31 +1,198 @@
-import useVerticalScrollable from "../../hooks/useVerticalScrollable";
-import { BottomGradient, TopGradient } from "../../components/Gradients";
-import AuthRobot from "./components/AuthRobot";
-import LoginForm from "../../components/forms/LoginForm";
-import DarkMode from "../../components/DarkMode";
+import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { saveLocalToken, saveSessionToken } from '../../utils';
+import type { TLogin } from '../../types';
+import { loginSchema } from '../../schemas';
+import { service } from '../../classes';
+import { useQueryParams } from '../../hooks';
+import { useState } from 'react';
+import GradientText from '../../components/ui/GradientText';
+import BorderGradient from '../../components/ui/BorderGradient';
+import Radio from '../../components/input/Radio';
+import { LOGIN_INPUT_MAP_DATA } from '../../constants';
+import { Input } from '../../components/input/Input';
+import { EyeIcon, EyeOffIcon } from '../../icons';
+import Checkbox from '../../components/input/Checkbox';
+import Button from '../../components/ui/Button';
+import SocialAuth from './children/SocialAuth';
+import BottomInstructions from './children/BottomInstructions';
 
-const Login = () => {
-  const { showGradient, containerRef } = useVerticalScrollable();
+const Login = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const { removeParam, params } = useQueryParams();
+  // const { setUser } = useUserStore();
 
+  const { mutateAsync, isPending } = service.auth.Login();
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isDirty },
+    reset,
+    register,
+    watch,
+  } = useForm({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      loginMethod: 'email',
+      email: '',
+      phoneNumber: '',
+      password: '',
+      remember: false,
+    },
+  });
+
+  const selectedMethod = watch('loginMethod');
+
+  const handleLoginMethodChange = (method: TLogin['loginMethod']) => {
+    reset({
+      loginMethod: method,
+      email: method === 'email' ? '' : undefined,
+      phoneNumber: method === 'phoneNumber' ? '' : undefined,
+      password: '',
+      remember: false,
+    });
+  };
+
+  const onSubmit = async (bodyData: TLogin) => {
+    const finalData: Partial<TLogin> = {
+      password: bodyData.password,
+    };
+
+    if (bodyData.loginMethod === 'email' && bodyData.email) {
+      finalData.email = bodyData.email;
+    } else if (bodyData.loginMethod === 'phoneNumber' && bodyData.phoneNumber) {
+      finalData.phoneNumber = bodyData.phoneNumber;
+    }
+
+    mutateAsync(finalData, {
+      onSettled(data, error) {
+        if (data && !error) {
+          if (onLoginSuccess) {
+            onLoginSuccess();
+          }
+          if (data.user) {
+            // setUser(data.user);
+          }
+          if (bodyData.remember) {
+            saveLocalToken(data?.token);
+          } else {
+            saveSessionToken(data?.token);
+          }
+          if (params.login === 'true') {
+            removeParam('login');
+          }
+        }
+        if (error) {
+          console.error('Error from mutation:', error);
+        }
+      },
+    });
+  };
   return (
-    <div className="w-full min-h-dvh max-h-dvh h-full p-4 flex gap-4 overflow-hidden relative">
-      <AuthRobot />
-      <DarkMode className="border absolute top-5 right-5 h-fit p-2 md:p-3 rounded-full bg-secondary-inverted stroke-secondary! z-10" />
-      <div
-        ref={containerRef}
-        className={`flex-1 flex flex-col items-center gap-4 overflow-hidden overflow-y-scroll scroll-smooth ${
-          !showGradient.bottom && !showGradient.top
-            ? "justify-center"
-            : "justify-start"
-        }`}
-      >
-        <div className="w-full">
-          {showGradient.top && <TopGradient />}
-          <LoginForm />
-          {showGradient.bottom && <BottomGradient />}
+    <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-4">
+      <GradientText
+        type="accent"
+        text="Login"
+        className="mx-auto text-2xl leading-tight font-medium sm:text-3xl md:text-4xl lg:text-5xl"
+      />
+      <SocialAuth />
+      <BorderGradient className="[&>div]:space-y-6">
+        <Controller
+          name="loginMethod"
+          control={control}
+          render={({ field }) => (
+            <Radio
+              value={field.value}
+              onChange={(value) => {
+                handleLoginMethodChange(value);
+                field.onChange(value);
+              }}
+              options={[
+                { label: 'Email', value: 'email' },
+                { label: 'Phone', value: 'phoneNumber' },
+              ]}
+              className="w-40!"
+            />
+          )}
+        />
+        <div className="flex flex-col gap-5 lg:gap-6">
+          {LOGIN_INPUT_MAP_DATA?.map((item, index) => {
+            const isPassword = item.name === 'password';
+            const isPhone = item.name === 'phoneNumber';
+            const isEmail = item.name === 'email';
+            const isEmailSelected = selectedMethod === 'email';
+            if (isPhone && isEmailSelected) return null;
+            if (isEmail && !isEmailSelected) return null;
+            return (
+              <div key={index}>
+                <Input
+                  label={item.label}
+                  register={register(item.name)}
+                  inputProps={{
+                    name: item.name,
+                    placeholder: item.placeholder,
+                    autoComplete: item.autoComplete,
+                    type: isPassword ? (showPassword ? 'text' : item.type) : item.type,
+                    disabled: isPending,
+                  }}
+                  icons={{
+                    ...(isPassword && {
+                      right: {
+                        icon: showPassword ? (
+                          <EyeOffIcon className="fill-primary h-full opacity-50 hover:opacity-100" />
+                        ) : (
+                          <EyeIcon className="fill-primary h-full opacity-50 hover:opacity-100" />
+                        ),
+                        onClick: () => setShowPassword((prev) => !prev),
+                      },
+                    }),
+
+                    ...(isPhone && { left: { text: '+91' } }),
+                  }}
+                  error={errors?.[item.name]?.message}
+                />
+              </div>
+            );
+          })}
         </div>
-      </div>
-    </div>
+        <div className="space-y-3">
+          <div className="flex items-center justify-between gap-2">
+            <Checkbox
+              register={register('remember')}
+              checkboxProps={{ name: 'remember' }}
+              rightText="Remember"
+            />
+            <GradientText
+              text="Forgot Password?"
+              type="accent"
+              path="/forgot-password"
+              className="mr-2 text-[10px] whitespace-nowrap hover:underline sm:text-[13px] md:text-sm"
+            />
+          </div>
+          <Button
+            pattern="primary"
+            buttonProps={{ type: 'submit', disabled: isPending || !isDirty }}
+            content="Login"
+            className="text-base!"
+          />
+        </div>
+        <div className="flex items-center justify-center gap-2">
+          <GradientText
+            text="Don't have an account?"
+            type="silver"
+            className="text-xs md:text-sm"
+          />
+          <GradientText
+            text="Register"
+            type="accent"
+            path="/register"
+            className="text-sm hover:font-medium md:text-base"
+          />
+        </div>
+        <BottomInstructions />
+      </BorderGradient>
+    </form>
   );
 };
 
