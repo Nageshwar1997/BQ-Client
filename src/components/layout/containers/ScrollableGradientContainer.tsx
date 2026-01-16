@@ -1,5 +1,4 @@
-import type { ReactNode, RefObject } from 'react';
-import type { TClassName, TGradientPos } from '../../../types';
+import type { IScrollableGradientContainer, TGradientPos } from '../../../types';
 import { LinearGradient } from '../../ui/LinearGradient';
 
 const ScrollableGradientContainer = ({
@@ -8,25 +7,21 @@ const ScrollableGradientContainer = ({
   children,
   gradient = {},
   gradientClassName = '',
-}: {
-  ref?: RefObject<HTMLDivElement | null>;
-  children: ReactNode;
-  gradient: Partial<Record<TGradientPos, boolean>>;
-  gradientClassName?: string;
-} & TClassName) => {
+}: IScrollableGradientContainer) => {
+  const isVertical = !!(gradient.top || gradient.bottom);
+  const isHorizontal = !!(gradient.left || gradient.right);
+
   return (
-    <div ref={ref} className={`relative h-full w-full overflow-hidden ${className}`}>
-      <div className="w-full overflow-y-scroll scroll-smooth">
-        {Object.entries(gradient).map(
-          ([key, value], i) =>
-            value && (
-              <LinearGradient
-                position={key as TGradientPos}
-                key={i}
-                className={gradientClassName}
-              />
-            ),
-        )}
+    <div className={`relative h-full w-full overflow-hidden ${className}`}>
+      {Object.entries(gradient).map(([key, value]) =>
+        value ? (
+          <LinearGradient key={key} position={key as TGradientPos} className={gradientClassName} />
+        ) : null,
+      )}
+      <div
+        ref={ref}
+        className={`relative z-0 h-full w-full scroll-smooth ${isVertical ? 'overflow-y-auto' : ''} ${isHorizontal ? 'overflow-x-auto whitespace-nowrap' : ''} `}
+      >
         {children}
       </div>
     </div>

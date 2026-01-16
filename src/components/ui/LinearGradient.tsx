@@ -2,21 +2,19 @@ import { useMemo } from 'react';
 import type { TClassName, TGradientPos } from '../../types';
 
 export const LinearGradient = ({
-  className,
+  className = '',
   position,
 }: TClassName & { position: TGradientPos }) => {
-  if (!position) return null;
-
   const positionClass = useMemo(() => {
     switch (position) {
       case 'top':
-        return 'top-0 bg-linear-to-b';
+        return 'inset-x-0 top-0 h-20 bg-linear-to-b';
       case 'bottom':
-        return 'bottom-0 bg-linear-to-t';
+        return 'inset-x-0 bottom-0 h-20 bg-linear-to-t';
       case 'left':
-        return 'top-0 bg-linear-to-r';
+        return 'inset-y-0 left-0 w-20 bg-linear-to-r';
       case 'right':
-        return 'top-0 bg-linear-to-l';
+        return 'inset-y-0 right-0 w-20 bg-linear-to-l';
       default:
         return '';
     }
