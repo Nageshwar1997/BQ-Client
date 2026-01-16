@@ -1,2 +1,2 @@
 export * from './ui/Theme';
-export * from './ScrollToTop';
+export * from './other/ScrollToTop';
