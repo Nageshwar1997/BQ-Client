@@ -1,28 +1,43 @@
+import { useScrollable } from '../../../hooks';
 import type { IScrollableGradientContainer, TGradientPos } from '../../../types';
 import { LinearGradient } from '../../ui/LinearGradient';
 
 const ScrollableGradientContainer = ({
   className = '',
-  ref,
   children,
-  gradient = {},
+  containerClassName = '',
   gradientClassName = '',
+  direction,
 }: IScrollableGradientContainer) => {
-  const isVertical = !!(gradient.top || gradient.bottom);
-  const isHorizontal = !!(gradient.left || gradient.right);
+  const { showGradient, containerRef } = useScrollable(direction);
+
+  const isHorizontal = direction === 'horizontal';
+  const isVertical = direction === 'vertical';
+  const gradients = Object.entries(showGradient).filter(([_key, value]) => !!value);
 
   return (
-    <div className={`relative h-full w-full overflow-hidden ${className}`}>
-      {Object.entries(gradient).map(([key, value]) =>
-        value ? (
-          <LinearGradient key={key} position={key as TGradientPos} className={gradientClassName} />
-        ) : null,
-      )}
+    <div className={`relative h-full w-full overflow-hidden ${containerClassName}`}>
+      {gradients.map(([key]) => (
+        <LinearGradient key={key} position={key as TGradientPos} className={gradientClassName} />
+      ))}
+
       <div
-        ref={ref}
-        className={`relative z-0 h-full w-full scroll-smooth ${isVertical ? 'overflow-y-auto' : ''} ${isHorizontal ? 'overflow-x-auto whitespace-nowrap' : ''} `}
+        ref={containerRef}
+        className={`relative z-0 h-full w-full scroll-smooth ${isVertical ? 'overflow-y-auto' : ''} ${isHorizontal ? 'overflow-x-auto whitespace-nowrap' : ''} ${className} `}
       >
-        {children}
+        <div
+          className={`flex gap-2 ${isVertical ? 'flex-col' : 'flex-row'} ${
+            isVertical
+              ? !showGradient.top && !showGradient.bottom
+                ? 'items-center justify-center'
+                : 'items-start justify-start'
+              : !showGradient.left && !showGradient.right
+                ? 'items-center justify-center'
+                : 'items-start justify-start'
+          } `}
+        >
+          {children}
+        </div>
       </div>
     </div>
   );
