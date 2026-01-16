@@ -1,45 +1,40 @@
-import { ICheckbox } from "../../types";
-import { InfoIcon } from "../../icons";
+import type { ICheckbox } from '../../types';
+import InputError from '../ui/InputError';
 
 const Checkbox = ({
   register,
-  className = "",
+  className = '',
   rightText,
-  labelClassName = "",
+  labelClassName = '',
   checkboxProps,
-  containerClassName = "",
+  containerClassName = '',
   error,
 }: ICheckbox) => {
   return (
-    <div className={`w-full flex flex-col gap-1.5 ${containerClassName}`}>
+    <div className={`flex w-full flex-col gap-1.5 ${containerClassName}`}>
       <div className="flex items-center gap-2 sm:gap-3">
         <label
-          className={`w-fit relative inline-flex items-center cursor-pointer border border-primary-10 bg-smoke-eerie rounded-full ${labelClassName}`}
+          className={`border-primary/10 bg-smoke-eerie relative inline-flex w-fit cursor-pointer items-center rounded-full border ${labelClassName}`}
         >
           <input
             name="remember"
             type="checkbox"
-            className="sr-only peer outline-hidden"
+            className="peer sr-only outline-hidden"
             {...register}
             {...checkboxProps}
             id={checkboxProps?.id || checkboxProps?.name}
           />
           <div
-            className={`w-10 md:w-11 h-5 md:h-6 rounded-full peer-checked:after:translate-x-5 after:content-[''] after:absolute after:top-1 after:left-1 after:bg-silver-jet-2 peer-checked:after:bg-white after:border after:border-primary-10 after:rounded-full after:h-3 after:w-3 md:after:h-4 md:after:w-4 after:transition-all peer-checked:bg-accent-duo ${className}`}
+            className={`after:bg-silver after:border-primary/10 peer-checked:bg-accent-duo h-5 w-10 rounded-full after:absolute after:top-1 after:left-1 after:h-3 after:w-3 after:rounded-full after:border after:transition-all after:content-[''] peer-checked:after:translate-x-5 peer-checked:after:bg-white md:h-6 md:w-11 md:after:h-4 md:after:w-4 ${className}`}
           />
         </label>
         {rightText && (
-          <span className="text-xs sm:text-[13px] md:text-sm text-primary-50 font-medium whitespace-nowrap">
+          <span className="text-primary-50 text-xs font-medium whitespace-nowrap sm:text-[13px] md:text-sm">
             {rightText}
           </span>
         )}
       </div>
-      {error && (
-        <p className="w-full text-start flex gap-1 items-center text-[11px] leading-tight text-red-500">
-          <InfoIcon className="min-w-3 min-h-3 w-3 h-3 md:min-w-4 md:min-h-4 md:w-4 md:h-4 fill-red-500" />
-          <span className="leading-none line-clamp-2">{error}</span>
-        </p>
-      )}
+      <InputError error={error} />
     </div>
   );
 };
