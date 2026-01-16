@@ -16,10 +16,18 @@
   --font-metropolis: 'Metropolis', ui-sans-serif, system-ui, sans-serif;
   --default-font-family: var(--font-metropolis);
 
+  /* Breakpoints */
+  --breakpoint-base: 450px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-xxl: 1536px;
+
   /* ========== Colors ========== */
   /* Primary */
   --color-primary: var(--primary);
-  --color-primary-inverted: var(--primary-inverted);
+  --color-primary-invert: var(--primary-invert);
 
   /* Secondary */
 
@@ -27,9 +35,14 @@
   --color-tertiary: var(--tertiary);
 
   /* Other */
-
   --color-smoke-eerie: var(--smoke-eerie);
-  --color-smoke-eerie-inverted: var(--smoke-eerie-inverted);
+  --color-smoke-eerie-invert: var(--smoke-eerie-invert);
+  --color-battleship-davys-gray: var(--battleship-davys-gray);
+  --color-battleship-davys-gray-invert: var(--battleship-davys-gray-invert);
+  --color-timberwolf-eerie-black: var(--timberwolf-eerie-black);
+  --color-platinum-black: var(--platinum-black);
+  --color-platinum-black-invert: var(--platinum-black-invert);
+  --color-picton-dodger-blue: var(--picton-dodger-blue);
 
   /* Common */
   --color-picton-blue-c: var(--picton-blue-c);
@@ -48,6 +61,23 @@
   /* Background Images & Gradients */
   --background-image-accent-duo: var(--accent-duo);
   --background-image-silver-duo: var(--silver-duo);
+  --background-image-border-gradient: linear-gradient(
+    to bottom,
+    var(--battleship-davys-gray),
+    var(--timberwolf-eerie-black)
+  );
+
+  /* Box Shadows */
+  --shadow-light-dark-soft:
+    0px 0px 250px 0px rgba(var(--primary-rgb), 0.03),
+    0px 0px 95px 0px rgba(var(--primary-rgb), 0.1) inset;
+  --shadow-primary-btn:
+    0px 4px 4px 0px rgba(var(--primary-invert-rgb), 0.3),
+    0px 2px 8px 0px rgba(var(--picton-dodger-blue-rgb), 0.3);
+  --shadow-primary-btn-hover:
+    0px 4px 4px 0px rgba(var(--primary-invert-rgb), 0.3),
+    0px 2px 4px 0px rgba(var(--picton-dodger-blue-rgb), 0.1),
+    0px 2px 8px 0px rgba(var(--picton-dodger-blue-rgb), 0.5);
 }
 
 /* Dark */
@@ -55,8 +85,8 @@
   /* Primary */
   --primary-rgb: 255, 255, 255;
   --primary: rgb(var(--primary-rgb));
-  --primary-inverted-rgb: 0, 0, 0;
-  --primary-inverted: rgb(var(--primary-inverted-rgb));
+  --primary-invert-rgb: 0, 0, 0;
+  --primary-invert: rgb(var(--primary-invert-rgb));
 
   /* Secondary */
 
@@ -65,7 +95,14 @@
 
   /* Other */
   --smoke-eerie: #1a1a1a;
-  --smoke-eerie-inverted: #f2f2f2;
+  --smoke-eerie-invert: #f2f2f2;
+  --battleship-davys-gray: #4d4d4d;
+  --battleship-davys-gray-invert: #999999;
+  --timberwolf-eerie-black: #191919;
+  --platinum-black: #080808;
+  --platinum-black-invert: #e6e6e6;
+  --picton-dodger-blue-rgb: 37, 173, 249;
+  --picton-dodger-blue: rgb(var(--picton-dodger-blue-rgb));
 
   --accent-duo: linear-gradient(
     114deg,
@@ -81,8 +118,8 @@
   /* Primary */
   --primary-rgb: 0, 0, 0;
   --primary: rgb(var(--primary-rgb));
-  --primary-inverted-rgb: 255, 255, 255;
-  --primary-inverted: rgb(var(--primary-inverted-rgb));
+  --primary-invert-rgb: 255, 255, 255;
+  --primary-invert: rgb(var(--primary-invert-rgb));
 
   /* Secondary */
 
@@ -91,7 +128,14 @@
 
   /* Other */
   --smoke-eerie: #f2f2f2;
-  --smoke-eerie-inverted: #1a1a1a;
+  --smoke-eerie-invert: #1a1a1a;
+  --battleship-davys-gray: #999999;
+  --battleship-davys-gray-invert: #4d4d4d;
+  --timberwolf-eerie-black: #d8d8d8;
+  --platinum-black: #e6e6e6;
+  --platinum-black-invert: #080808;
+  --picton-dodger-blue-rgb: 46, 144, 250;
+  --picton-dodger-blue: rgb(var(--picton-dodger-blue-rgb));
 
   --accent-duo: linear-gradient(114deg, var(--picton-blue-c) 6.19%, var(--blue-crayola-c) 41.65%);
   --silver-duo: linear-gradient(180deg, #4d4d4d 24.54%, #080808 87.96%);
