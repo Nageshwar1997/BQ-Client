@@ -5,22 +5,22 @@ import ScrollableGradientContainer from '../containers/ScrollableGradientContain
 
 const MediaCarousel = ({
   className = '',
-  data,
+  media,
   selected,
   onClick,
   thumbnailRefs,
   handleRemove,
-  gradientClassName = '',
+  gradientClassNames,
 }: IMediaCarousel) => {
-  if (data?.length === 0) return null;
+  if (media?.length === 0) return null;
 
   return (
     <ScrollableGradientContainer
       direction="horizontal"
       className={`w-full ${className}`}
-      gradientClassName={gradientClassName}
+      gradientClassNames={gradientClassNames}
     >
-      {data?.map((item, i) => (
+      {media?.map((item, i) => (
         <div
           key={i}
           ref={(el) => {
@@ -29,7 +29,7 @@ const MediaCarousel = ({
             }
           }}
           onClick={() => onClick(i)}
-          className={`group relative h-20 w-20 shrink-0 overflow-hidden rounded border shadow-xs transition-colors duration-300 hover:opacity-100 ${
+          className={`group relative h-14 w-14 shrink-0 overflow-hidden rounded border shadow-xs transition-colors duration-300 hover:opacity-100 md:h-16 md:w-16 lg:h-20 lg:w-20 ${
             i === selected ? 'border-tertiary opacity-100' : 'border-primary/30 opacity-90'
           } ${item.type === 'video' ? 'relative' : ''}`}
         >

@@ -1,44 +1,26 @@
-import { ChangeEvent, ReactNode, useState } from "react";
-import { InfoIcon } from "../../icons";
-import MediaModal from "../../pages/product/productDetails/children/MediaModal";
-import MediaCarousel from "../carousels/MediaCarousel";
-import { IFileInput } from "../../types";
-import { ALLOWED_IMAGE_TYPES } from "../../constants";
+import { useState, type ChangeEvent, type ReactNode } from 'react';
+import type { IFileInput } from '../../types';
+import InputIcon from './children/InputIcon';
+import { ALLOWED_IMAGE_FORMATS } from '../../constants';
+import InputError from '../ui/InputError';
+import InputLabel from './children/InputLabel';
+import MediaCarousel from '../layout/carousels/MediaCarousel';
+import MediaModal from '../layout/modals/MediaModal';
 
 const InputWrapper = ({
   children,
   icons,
 }: {
   children: ReactNode;
-  icons?: IFileInput["icons"];
+  icons?: IFileInput['icons'];
 }) => (
   <>
     {/* Left Icon */}
-    {icons?.left?.icon ? (
-      <span
-        onClick={icons.left.onClick}
-        className="h-full flex justify-center items-center cursor-pointer p-2 overflow-hidden group"
-      >
-        {icons.left.icon}
-      </span>
-    ) : icons?.left?.text ? (
-      <div className="h-full overflow-hidden">
-        <p className="h-full flex items-center justify-center text-sm text-primary-50 border-r border-r-primary-10 p-3 capitalize">
-          {icons?.left?.text}
-        </p>
-      </div>
-    ) : null}
+    <InputIcon icon={icons?.left?.icon} text={icons?.left?.text} onClick={icons?.left?.onClick} />
     {/* Main Section */}
     {children}
     {/* Right Icon */}
-    {icons?.right ? (
-      <span
-        onClick={icons.right.onClick}
-        className="h-full flex justify-center items-center cursor-pointer p-2 overflow-hidden group"
-      >
-        {icons.right.icon}
-      </span>
-    ) : null}
+    <InputIcon icon={icons?.right?.icon} onClick={icons?.right?.onClick} />
   </>
 );
 
@@ -47,12 +29,12 @@ const InputWithoutIconClick = ({
   className,
   children,
   icons,
-}: Pick<IFileInput, "fileInputProps" | "className" | "icons"> & {
+}: Pick<IFileInput, 'fileInputProps' | 'className' | 'icons'> & {
   children: ReactNode;
 }) => (
   <label
     htmlFor={fileInputProps.name}
-    className={`w-full h-full flex items-center gap-1 border border-primary-10 bg-smoke-eerie rounded-lg overflow-hidden group ${className}`}
+    className={`border-primary/10 bg-smoke-eerie group flex h-full w-full items-center gap-1 overflow-hidden rounded-lg border ${className}`}
   >
     <InputWrapper icons={icons}>{children}</InputWrapper>
   </label>
@@ -63,14 +45,14 @@ const InputWithIconClick = ({
   className,
   children,
   icons,
-}: Pick<IFileInput, "fileInputProps" | "className" | "icons"> & {
+}: Pick<IFileInput, 'fileInputProps' | 'className' | 'icons'> & {
   children: ReactNode;
 }) => (
   <div
-    className={`w-full h-full flex items-center gap-1 border border-primary-10 bg-smoke-eerie rounded-lg overflow-hidden group ${className}`}
+    className={`border-primary/10 bg-smoke-eerie group flex h-full w-full items-center gap-1 overflow-hidden rounded-lg border ${className}`}
   >
     <InputWrapper icons={icons}>
-      <label htmlFor={fileInputProps.name} className="flex-1 h-full">
+      <label htmlFor={fileInputProps.name} className="h-full flex-1">
         {children}
       </label>
     </InputWrapper>
@@ -81,7 +63,7 @@ const CenterContent = ({
   fileInputProps,
   icons,
   register,
-}: Pick<IFileInput, "fileInputProps" | "icons" | "register">) => {
+}: Pick<IFileInput, 'fileInputProps' | 'icons' | 'register'>) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (fileInputProps?.disabled) return;
     fileInputProps.onChange?.(event);
@@ -89,26 +71,18 @@ const CenterContent = ({
   };
   return (
     <div
-      className={`flex-1 w-full h-full outline-hidden border-none focus:outline-hidden focus:border-none bg-transparent font-normal text-sm p-3 flex items-center justify-start cursor-pointer ${
-        icons?.left?.icon
-          ? "pl-0"
-          : icons?.right?.icon
-          ? "pr-0"
-          : icons?.left?.text
-          ? "pl-2"
-          : ""
+      className={`flex h-full w-full flex-1 cursor-pointer items-center justify-start border-none bg-transparent p-3 text-sm font-normal outline-hidden focus:border-none focus:outline-hidden ${
+        icons?.left?.icon ? 'pl-0' : icons?.right?.icon ? 'pr-0' : icons?.left?.text ? 'pl-2' : ''
       }`}
     >
-      <p className="text-primary-50 text-sm line-clamp-1">
-        {fileInputProps?.placeholder}
-      </p>
+      <p className="text-primary-50 line-clamp-1 text-sm">{fileInputProps?.placeholder}</p>
       {/* Input */}
       <input
         aria-autocomplete="none"
         {...register}
         {...fileInputProps}
         id={fileInputProps.id || fileInputProps.name}
-        accept={fileInputProps?.accept ?? ALLOWED_IMAGE_TYPES.join(", ")}
+        accept={fileInputProps?.accept ?? ALLOWED_IMAGE_FORMATS.join(', ')}
         type="file"
         onChange={handleChange}
         className="sr-only"
@@ -120,7 +94,7 @@ const CenterContent = ({
 const MainSection = ({
   icons,
   ...props
-}: Pick<IFileInput, "fileInputProps" | "className" | "icons" | "register">) => {
+}: Pick<IFileInput, 'fileInputProps' | 'className' | 'icons' | 'register'>) => {
   return icons?.left?.onClick || icons?.right?.onClick ? (
     <InputWithIconClick {...props} icons={icons}>
       <CenterContent {...props} icons={icons} />
@@ -133,10 +107,10 @@ const MainSection = ({
 };
 
 const FileInput = ({
-  label = "",
-  containerClassName = "",
-  mediaModalClassName = "",
-  mediaCarouselClassName = "",
+  label = '',
+  containerClassName = '',
+  mediaModalClassName = '',
+  mediaCarouselClassName = '',
   errors = [],
   previews = [],
   handleRemoveImage,
@@ -147,36 +121,23 @@ const FileInput = ({
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
 
   return (
-    <div className={`w-full flex flex-col gap-1.5 ${containerClassName}`}>
+    <div className={`flex w-full flex-col gap-1.5 ${containerClassName}`}>
       <div className="relative h-10 lg:h-12">
-        {label && (
-          <label
-            htmlFor={fileInputProps.name}
-            className={`text-[10px] lg:text-xs text-primary-50 absolute top-0 left-3 transform -translate-y-1/2 border border-primary-10 leading-none px-1 md:px-2 py-0.5 bg-smoke-eerie rounded-sm cursor-pointer`}
-          >
-            {label}
-          </label>
-        )}
+        <InputLabel label={label} name={fileInputProps.name} />
         <MainSection fileInputProps={fileInputProps} {...props} />
       </div>
       {errors?.length > 0 && (
         <div className="flex flex-col gap-1">
           {errors?.map((error, index) => (
-            <p
-              key={index}
-              className={`w-full text-start flex gap-1 items-center text-[11px] leading-tight text-red-500`}
-            >
-              <InfoIcon className="min-w-3 min-h-3 w-3 h-3 md:min-w-4 md:min-h-4 md:w-4 md:h-4 fill-red-500" />
-              <span className="leading-none line-clamp-2">{error}</span>
-            </p>
+            <InputError key={index} error={error} />
           ))}
         </div>
       )}
       {previews?.length > 0 && (
         <MediaCarousel
-          className={`border border-primary-10 bg-smoke-eerie rounded-lg p-2 [&>div]:justify-start [&>div>div]:w-14 [&>div>div]:h-14 md:[&>div>div]:w-16 md:[&>div>div]:h-16 lg:[&>div>div]:w-20 lg:[&>div>div]:h-20 ${mediaCarouselClassName}`}
-          gradientClassName="w-9! lg:w-20!"
-          data={previews}
+          className={`border-primary/10 bg-smoke-eerie rounded-lg border p-2 ${mediaCarouselClassName}`}
+          gradientClassNames={{ left: 'w-10! lg:w-20!', right: 'w-10! lg:w-20!' }}
+          media={previews}
           onClick={(i) => {
             setCurrentIndex(i);
             setShowImageModal(true);
@@ -190,7 +151,7 @@ const FileInput = ({
           currentIndex={currentIndex}
           onClose={setShowImageModal}
           opened={showImageModal}
-          reviewMedia={previews}
+          media={previews}
           setCurrentIndex={setCurrentIndex}
           handleRemove={handleRemoveImage}
         />

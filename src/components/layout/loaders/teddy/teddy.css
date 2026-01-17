@@ -14,7 +14,7 @@
       rgb(var(--primary-rgb), 0.01) 40%,
       rgb(var(--primary-rgb), 0) 0
     ),
-    linear-gradient(130deg, rgb(var(--primary-inverted-rgb), 0.05), #bbccc000),
+    linear-gradient(130deg, rgb(var(--primary-invert-rgb), 0.05), #bbccc000),
     linear-gradient(-130deg, #0081, #0080),
     linear-gradient(#0084 10%, rgb(var(--primary-rgb), 0) 50%);
   --dots:
@@ -26,25 +26,21 @@
       1em / 11em 13em,
     radial-gradient(
         circle,
-        rgb(var(--primary-inverted-rgb), 0.13) 0.1em,
+        rgb(var(--primary-invert-rgb), 0.13) 0.1em,
         rgb(var(--primary-rgb), 0) 0
       )
       1em 1em / 13em 11em,
-    radial-gradient(
-        circle,
-        rgb(var(--primary-inverted-rgb), 0.2) 0.1em,
-        rgb(var(--primary-rgb), 0) 0
-      )
+    radial-gradient(circle, rgb(var(--primary-invert-rgb), 0.2) 0.1em, rgb(var(--primary-rgb), 0) 0)
       1em 1em / 5em 5em,
     radial-gradient(
         circle,
-        rgb(var(--primary-inverted-rgb), 0.27) 0.1em,
+        rgb(var(--primary-invert-rgb), 0.27) 0.1em,
         rgb(var(--primary-rgb), 0) 0
       )
       1em 1em / 4em 9em;
   --light:
-    radial-gradient(at 35% 30%, #fff4, rgb(var(--primary-inverted-rgb), 0) 40%),
-    radial-gradient(at 45% 40%, #fff5, rgb(var(--primary-inverted-rgb), 0) 70%);
+    radial-gradient(at 35% 30%, #fff4, rgb(var(--primary-invert-rgb), 0) 40%),
+    radial-gradient(at 45% 40%, #fff5, rgb(var(--primary-invert-rgb), 0) 70%);
   position: relative;
   font-size: 1vmin;
   width: 80em;
@@ -116,7 +112,7 @@
         inset -4em 0 4em -2em #0083,
         inset 0 -6em 8em -4em #8004,
         inset 0 -4em 4em -2em #0083,
-        inset 1em 1em 3em rgb(var(--primary-inverted-rgb), 0.33);
+        inset 1em 1em 3em rgb(var(--primary-invert-rgb), 0.33);
       background:
         radial-gradient(60% 100% at 50% 80%, rgb(var(--primary-rgb), 0) 40%, #3002),
         radial-gradient(
@@ -420,7 +416,7 @@
       .eye {
         box-shadow:
           inset 0 0 4em -1.5em,
-          inset 2em 2em 1.5em -1.5em rgb(var(--primary-inverted-rgb), 0.33),
+          inset 2em 2em 1.5em -1.5em rgb(var(--primary-invert-rgb), 0.33),
           inset -5em 0 4em -4em #0088,
           0 0 1em #0004,
           1em 1em 2em -1em #3007,

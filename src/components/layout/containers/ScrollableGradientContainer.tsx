@@ -6,32 +6,36 @@ const ScrollableGradientContainer = ({
   className = '',
   children,
   containerClassName = '',
-  gradientClassName = '',
+  gradientClassNames = {},
   direction,
 }: IScrollableGradientContainer) => {
-  const { showGradient, containerRef } = useScrollable(direction);
+  const { showH_Gradient, showV_Gradient, containerRef } = useScrollable(direction);
 
   const isHorizontal = direction === 'horizontal';
   const isVertical = direction === 'vertical';
-  const gradients = Object.entries(showGradient).filter(([_key, value]) => !!value);
+
+  const gradients = { ...showH_Gradient, ...showV_Gradient };
+
+  const gradientKeys = Object.entries(gradients)
+    .filter(([, value]) => value === true)
+    .map(([key]) => key as TGradientPos);
 
   return (
-    <div className={`relative h-full w-full overflow-hidden ${containerClassName}`}>
-      {gradients.map(([key]) => (
-        <LinearGradient key={key} position={key as TGradientPos} className={gradientClassName} />
+    <div className={`relative flex h-full w-full flex-col overflow-hidden ${containerClassName}`}>
+      {gradientKeys.map((key) => (
+        <LinearGradient key={key} position={key} className={gradientClassNames[key] || ''} />
       ))}
-
       <div
         ref={containerRef}
-        className={`relative z-0 h-full w-full scroll-smooth ${isVertical ? 'overflow-y-auto' : ''} ${isHorizontal ? 'overflow-x-auto whitespace-nowrap' : ''} ${className} `}
+        className={`relative flex-1 scroll-smooth ${isVertical ? 'overflow-y-auto' : ''} ${isHorizontal ? 'overflow-x-auto whitespace-nowrap' : ''} ${className} `}
       >
         <div
           className={`flex gap-2 ${isVertical ? 'flex-col' : 'flex-row'} ${
             isVertical
-              ? !showGradient.top && !showGradient.bottom
+              ? !gradients.top && !gradients.bottom
                 ? 'items-center justify-center'
                 : 'items-start justify-start'
-              : !showGradient.left && !showGradient.right
+              : !gradients.left && !gradients.right
                 ? 'items-center justify-center'
                 : 'items-start justify-start'
           } `}
