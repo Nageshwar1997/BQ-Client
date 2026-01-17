@@ -30,9 +30,12 @@
   --color-primary-invert: var(--primary-invert);
 
   /* Secondary */
+  --color-secondary: var(--secondary);
+  --color-secondary-invert: var(--secondary-invert);
 
   /* Tertiary */
   --color-tertiary: var(--tertiary);
+  --color-tertiary-invert: var(--tertiary-invert);
 
   /* Other */
   --color-smoke-eerie: var(--smoke-eerie);
@@ -73,6 +76,13 @@
     rgba(var(--primary-rgb), 0.7) 50%,
     rgba(var(--primary-rgb), 0) 85%
   );
+  --background-image-sky-blue-burst:
+    radial-gradient(
+      50% 50% at 50% 50%,
+      rgba(var(--primary-invert-rgb), 0.2) 0%,
+      rgba(var(--primary-invert-rgb), 0) 100%
+    ),
+    linear-gradient(107deg, var(--blue-crayola-c) -65.15%, var(--blue-crayola-c) 90.95%);
 
   /* Box Shadows */
   --shadow-light-dark-soft:
@@ -85,6 +95,24 @@
     0px 4px 4px 0px rgba(var(--primary-invert-rgb), 0.3),
     0px 2px 4px 0px rgba(var(--picton-dodger-blue-rgb), 0.1),
     0px 2px 8px 0px rgba(var(--picton-dodger-blue-rgb), 0.5);
+  --shadow-secondary-btn:
+    0px 4px 4px 0px rgba(var(--secondary-invert-rgb), 0.3),
+    0px 2px 8px 0px rgba(var(--secondary-rgb), 0.3);
+  --shadow-secondary-btn-hover:
+    0px 4px 4px 0px rgba(var(--secondary-invert-rgb), 0.3),
+    0px 2px 4px 0px rgba(var(--secondary-rgb), 0.1), 0px 2px 8px 0px rgba(var(--secondary-rgb), 0.5);
+  --shadow-tertiary-btn:
+    0px 4px 4px 0px rgba(var(--tertiary-invert-rgb), 0.3),
+    0px 2px 8px 0px rgba(var(--tertiary-rgb), 0.3);
+  --shadow-tertiary-btn-hover:
+    0px 4px 4px 0px rgba(var(--tertiary-invert-rgb), 0.3),
+    0px 2px 4px 0px rgba(var(--tertiary-rgb), 0.1), 0px 2px 8px 0px rgba(var(--tertiary-rgb), 0.5);
+  --shadow-outline-btn:
+    0px 4px 4px 0px rgba(var(--tertiary-invert-rgb), 0.2),
+    0px 2px 8px 0px rgba(var(--tertiary-rgb), 0.2);
+  --shadow-outline-btn-hover:
+    0px 4px 4px 0px rgba(var(--primary-invert-rgb), 0.2),
+    0px 2px 4px 0px rgba(var(--primary-rgb), 0.05), 0px 2px 8px 0px rgba(var(--primary-rgb), 0.25);
 }
 
 /* Dark */
@@ -96,9 +124,16 @@
   --primary-invert: rgb(var(--primary-invert-rgb));
 
   /* Secondary */
+  --secondary-rgb: 245, 245, 245;
+  --secondary: rgb(var(--secondary-rgb));
+  --secondary-invert-rgb: 28, 28, 28;
+  --secondary-invert: rgb(var(--secondary-invert-rgb));
 
   /* Tertiary */
-  --tertiary: #c8c8c8;
+  --tertiary-rgb: 200, 200, 200;
+  --tertiary: rgb(var(--tertiary-rgb));
+  --tertiary-invert-rgb: 46, 46, 46;
+  --tertiary-invert: rgb(var(--tertiary-invert-rgb));
 
   /* Other */
   --smoke-eerie: #1a1a1a;
@@ -119,7 +154,11 @@
     var(--picton-blue-c) 37.23%,
     var(--blue-crayola-c) 94.85%
   );
-  --silver-duo: linear-gradient(180deg, #fff 24.54%, #b2b2b2 87.96%);
+  --silver-duo: linear-gradient(
+    180deg,
+    var(--primary) 24.54%,
+    rgba(var(--secondary-rgb), 0.4) 87.96%
+  );
 }
 
 /* Light */
@@ -131,9 +170,16 @@
   --primary-invert: rgb(var(--primary-invert-rgb));
 
   /* Secondary */
+  --secondary-rgb: 28, 28, 28;
+  --secondary: rgb(var(--secondary-rgb));
+  --secondary-invert-rgb: 245, 245, 245;
+  --secondary-invert: rgb(var(--secondary-invert-rgb));
 
   /* Tertiary */
-  --tertiary: #2e2e2e;
+  --tertiary-rgb: 46, 46, 46;
+  --tertiary: rgb(var(--tertiary-rgb));
+  --tertiary-invert-rgb: 200, 200, 200;
+  --tertiary-invert: rgb(var(--tertiary-invert-rgb));
 
   /* Other */
   --smoke-eerie: #f2f2f2;
@@ -149,5 +195,9 @@
 
   /* Background Images & Gradients */
   --accent-duo: linear-gradient(114deg, var(--picton-blue-c) 6.19%, var(--blue-crayola-c) 41.65%);
-  --silver-duo: linear-gradient(180deg, #4d4d4d 24.54%, #080808 87.96%);
+  --silver-duo: linear-gradient(
+    180deg,
+    var(--battleship-davys-gray-invert) 24.54%,
+    var(--platinum-black-invert) 87.96%
+  );
 }
