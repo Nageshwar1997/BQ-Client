@@ -4,7 +4,7 @@ import Request from './Request';
 import { toaster } from '../utils';
 
 class AuthApi extends Request {
-  protected login = (data: TLogin) => {
+  protected login = (data: Partial<TLogin>) => {
     return this.request({ ...this.routes.auth.login, data });
   };
   protected logout = (userId: string) => {
