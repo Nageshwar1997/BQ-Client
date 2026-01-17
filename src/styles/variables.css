@@ -67,6 +67,12 @@
     var(--battleship-davys-gray),
     var(--timberwolf-eerie-black)
   );
+  --background-image-hr-line: linear-gradient(
+    90deg,
+    rgba(var(--primary-rgb), 0) 15%,
+    rgba(var(--primary-rgb), 0.7) 50%,
+    rgba(var(--primary-rgb), 0) 85%
+  );
 
   /* Box Shadows */
   --shadow-light-dark-soft:
