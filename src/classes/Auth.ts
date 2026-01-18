@@ -70,5 +70,11 @@ export class AuthService extends AuthApi {
       onError: (error) => toaster('error', error),
     });
   };
-  public useLogout = () => {};
+  public useLogout = () => {
+    return useMutation({
+      mutationKey: ['logout'],
+      mutationFn: this.logout,
+      onError: (error) => console.log('Error from logout user:', error),
+    });
+  };
 }
