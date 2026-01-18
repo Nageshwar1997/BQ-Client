@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import type { IGradientText } from '../../types';
 
-const Text = ({ text, type, className }: IGradientText) => (
+const Text = ({ text, type, className, children }: IGradientText) => (
   <span
-    className={`w-fit bg-clip-text text-transparent ${type === 'accent' ? 'bg-accent-duo' : 'bg-silver-duo'} ${className}`}
+    className={`text-fill-transparent w-fit ${type === 'accent' ? 'bg-accent-duo' : 'bg-silver-duo'} ${className}`}
   >
-    {text}
+    {children ? children : text}
   </span>
 );
 const GradientText = (props: IGradientText) => {
