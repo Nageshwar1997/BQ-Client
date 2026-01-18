@@ -19,7 +19,7 @@ class AuthApi extends Request {
     const { method, url } = this.routes.auth.register.resend_otp;
     return this.request({ method, url, params });
   };
-  protected register_and_verify_otp = ({
+  protected verify_otp_and_register = ({
     otpToken,
     data,
   }: {
@@ -36,6 +36,36 @@ export class AuthService extends AuthApi {
     return useMutation({
       mutationKey: ['login'],
       mutationFn: this.login,
+      onSuccess: (data) => toaster('success', data?.message),
+      onError: (error) => toaster('error', error),
+    });
+  };
+  public SendOtp = () => {
+    return useMutation({
+      mutationKey: ['register_send_otp'],
+      mutationFn: this.send_otp,
+      onSuccess: (data) => toaster('success', data?.message),
+      onError: (error) => toaster('error', error),
+    });
+  };
+  public ResendOtp = () => {
+    return useMutation({
+      mutationKey: ['register_user_resend_otp'],
+      mutationFn: this.resend_otp,
+      onSuccess: (data) => toaster('success', data?.message),
+      onError: (error) => {
+        if (typeof error === 'string') {
+          toaster('error', (error as string).replace(' Go Back', ''));
+        } else {
+          toaster('error', error);
+        }
+      },
+    });
+  };
+  public VerifyOtpAndRegister = () => {
+    return useMutation({
+      mutationKey: ['register_user_verify_otp'],
+      mutationFn: this.verify_otp_and_register,
       onSuccess: (data) => toaster('success', data?.message),
       onError: (error) => toaster('error', error),
     });
