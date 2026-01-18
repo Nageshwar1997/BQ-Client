@@ -1,3 +1,5 @@
+import type { TRecordString } from '../types';
+
 export const {
   // A
   // B
@@ -46,4 +48,4 @@ export const {
   // X
   // Y
   // Z
-} = import.meta.env as Record<string, string>;
+} = import.meta.env as TRecordString;

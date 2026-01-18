@@ -26,3 +26,10 @@
 @utility gradient-text-silver {
   @apply bg-silver-duo inline bg-clip-text text-transparent;
 }
+
+@utility text-fill-transparent {
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-clip: text;
+}

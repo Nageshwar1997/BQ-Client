@@ -1,86 +1,65 @@
-import z from "zod";
+import z, { type RefinementCtx } from 'zod';
+import type {
+  IZodEnumsConfigs,
+  IZodFileConfigs,
+  IZodSingleFileConfigs,
+  IZodStringConfigs,
+  ZodNumberConfigs,
+} from '../types';
 import {
-  ALLOWED_IMAGE_TYPES,
-  ALLOWED_VIDEO_TYPES,
+  ALLOWED_IMAGE_FORMATS,
+  ALLOWED_VIDEO_FORMATS,
   MAX_IMAGE_FILE_SIZE,
   MAX_VIDEO_FILE_SIZE,
   MB,
   regexes,
-} from "../constants";
-import {
-  ZodEnumsConfigs,
-  ZodCompareConfigs,
-  ZodRequiredNumberConfigs,
-  ZodRequiredStringConfigs,
-  ZodOptionalStringConfigs,
-  ZodFileConfigs,
-  ZodSingleFileConfigs,
-  ZodMultipleFileConfigs,
-} from "../types/zod";
+} from '../constants';
+import { nullCheck } from './common';
 
-export const getZodStringMessages = (
-  props: ZodCompareConfigs & { field: string }
+export const zodCustomIssue = (
+  ctx: RefinementCtx,
+  message: string,
+  fieldPath?: string | number,
 ) => {
-  const { field, min, max } = props;
-  return {
-    required: `${field} is required.`,
-    invalid_type: `${field} must be a string.`,
-    non_empty: `${field} cannot be empty.`,
-    min: `${field} must be at least ${min} characters.`,
-    max: `${field} must not exceed ${max} characters.`,
-    multiple_spaces: `${field} must not contain multiple consecutive spaces.`,
-    single_space: `${field} must not contain any spaces.`,
-    custom: `${field} `,
-  };
+  const path = fieldPath !== undefined ? [fieldPath] : [];
+  return ctx.addIssue({ path, code: 'custom', message });
 };
 
-export const getZodNumberMessages = (
-  props: ZodCompareConfigs & { field: string }
-) => {
-  const { field, min, max } = props;
-  return {
-    required: `${field} is required.`,
-    invalid_type: `${field} must be a number.`,
-    nonNegative: `${field} must be a non-negative number.`,
-    mustBeInt: `${field} must be an integer.`,
-    min: `${field} must be at least ${min}.`,
-    max: `${field} must not exceed ${max}.`,
-  };
-};
-
-export const zodStringRequired = ({
+export const zodString = ({
   field,
-  showingFieldName,
-  showingParentFieldName,
+  label,
   nonEmpty = true,
   min,
   max,
-  blockSingleSpace,
-  blockMultipleSpaces,
+  allowSpace = true,
   parentField,
+  parentLabel,
   customRegexes,
-}: ZodRequiredStringConfigs) => {
-  const readableField = showingFieldName ?? field;
-  const readableParent = showingParentFieldName ?? parentField;
+  lowerOrUpper,
+}: IZodStringConfigs) => {
+  const baseName = label ?? field;
+  const parentName = parentLabel ?? parentField;
 
-  const nestedField = readableParent
-    ? `${readableParent}${
-        readableParent.includes("[") ? " " : ": "
-      }${readableField}`
-    : readableField;
+  const name = parentName ? `${parentName}: ${baseName}` : baseName;
 
-  const messages = getZodStringMessages({ field: nestedField, min, max });
+  const messages = {
+    required: `${name} is required.`,
+    invalid_type: `${name} must be a string.`,
+    non_empty: `${name} cannot be empty.`,
+    min: `${name} must be at least ${min} characters.`,
+    max: `${name} must not exceed ${max} characters.`,
+    multiple_spaces: `${name} must not contain multiple consecutive spaces.`,
+    single_space: `${name} must not contain any spaces.`,
+    custom: `${name}`,
+  };
 
   let schema = z
-    .string({
-      required_error: messages.required,
-      invalid_type_error: messages.invalid_type,
-    })
+    .string(messages.required)
     .trim()
-    .min(1, messages.required);
+    .refine((val) => typeof val === 'string', { message: messages.invalid_type });
 
   if (nonEmpty) {
-    schema = schema.nonempty({ message: messages.non_empty });
+    schema = schema.nonempty({ message: messages.required });
   }
 
   if (nonEmpty && min !== undefined) {
@@ -91,12 +70,16 @@ export const zodStringRequired = ({
     schema = schema.max(max, messages.max);
   }
 
-  if (blockMultipleSpaces) {
+  if (allowSpace === true) {
     schema = schema.regex(regexes.singleSpace, messages.multiple_spaces);
+  } else if (allowSpace === false) {
+    schema = schema.regex(regexes.noSpace, messages.single_space);
   }
 
-  if (blockSingleSpace) {
-    schema = schema.regex(regexes.noSpace, messages.single_space);
+  if (lowerOrUpper === 'lower') {
+    schema = schema.toLowerCase();
+  } else if (lowerOrUpper === 'upper') {
+    schema = schema.toUpperCase();
   }
 
   if (customRegexes?.length) {
@@ -108,372 +91,180 @@ export const zodStringRequired = ({
   return schema;
 };
 
-export const zodStringOptional = ({
+export const zodNumber = ({
   field,
-  showingFieldName,
-  showingParentFieldName,
-  nonEmpty = true,
+  label,
+  parentField,
+  parentLabel,
   min,
   max,
-  blockSingleSpace,
-  blockMultipleSpaces,
-  parentField,
-  customRegexes,
-}: ZodOptionalStringConfigs) => {
-  const readableField = showingFieldName ?? field;
-  const readableParent = showingParentFieldName ?? parentField;
+  required,
+  int = false,
+  positive = true,
+}: ZodNumberConfigs) => {
+  const baseName = label ?? field;
+  const parentName = parentLabel ?? parentField;
 
-  const nestedField = readableParent
-    ? `${readableParent}${
-        readableParent.includes("[") ? " " : ": "
-      }${readableField}`
-    : readableField;
-  const messages = getZodStringMessages({ field: nestedField, min, max });
+  const name = parentName ? `${parentName}: ${baseName}` : baseName;
 
-  const schema = z
-    .string()
-    .trim()
-    .optional()
-    .superRefine((val, ctx) => {
-      if (val === undefined || val === null || val === "") return;
+  const messages = {
+    required: `${name} is required.`,
+    invalid_type: `${name} must be a number.`,
+    positive: `${name} must be a positive number.`,
+    int: `${name} must be an integer.`,
+    min: `${name} must be at least ${min}.`,
+    max: `${name} must not exceed ${max}.`,
+  };
 
-      if (typeof val !== "string") {
-        return ctx.addIssue({
-          code: "custom",
-          message: messages.invalid_type,
-        });
-      }
+  let schema = z.number({ error: messages.required }).refine((val) => !isNaN(val), {
+    message: messages.invalid_type,
+  });
 
-      if (nonEmpty && val.trim().length === 0) {
-        ctx.addIssue({ code: "custom", message: messages.non_empty });
-      }
+  if (positive) {
+    schema = schema.positive({ message: messages.positive });
+  }
 
-      if (nonEmpty && min !== undefined && val.length < min) {
-        ctx.addIssue({ code: "custom", message: messages.min });
-      }
+  if (int) {
+    schema = schema.int({ message: messages.int });
+  }
 
-      if (nonEmpty && max !== undefined && val.length > max) {
-        ctx.addIssue({ code: "custom", message: messages.max });
-      }
+  if (min !== undefined) {
+    schema = schema.min(min, { message: messages.min });
+  }
 
-      if (blockMultipleSpaces && !regexes.singleSpace.test(val)) {
-        ctx.addIssue({ code: "custom", message: messages.multiple_spaces });
-      }
+  if (max !== undefined) {
+    schema = schema.max(max, { message: messages.max });
+  }
 
-      if (blockSingleSpace && !regexes.noSpace.test(val)) {
-        ctx.addIssue({ code: "custom", message: messages.single_space });
-      }
-
-      if (customRegexes?.length) {
-        customRegexes.forEach(
-          ({ regex, message }: { regex: RegExp; message: string }) => {
-            if (!regex.test(val)) {
-              ctx.addIssue({
-                code: "custom",
-                message: `${messages.custom} ${message}.`,
-              });
-            }
-          }
-        );
-      }
-    });
-
-  return schema;
+  return required ? schema : schema.optional();
 };
 
-export const zodNumberRequired = ({
+export const zodEnum = ({
+  enumValues,
   field,
+  label,
   parentField,
-  showingFieldName,
-  showingParentFieldName,
-  min,
-  max,
-  mustBeInt = false,
-  nonNegative = true,
-}: ZodRequiredNumberConfigs) => {
-  const readableField = showingFieldName ?? field;
-  const readableParent = showingParentFieldName ?? parentField;
+  parentLabel,
+}: IZodEnumsConfigs) => {
+  const baseName = label ?? field;
+  const parentName = parentLabel ?? parentField;
 
-  const nestedField = readableParent
-    ? `${readableParent}${
-        readableParent.includes("[") ? " " : ": "
-      }${readableField}`
-    : readableField;
+  const name = parentName ? `${parentName}: ${baseName}` : baseName;
 
-  const messages = getZodNumberMessages({ field: nestedField, min, max });
-
-  const schema = z
-    .union([z.string(), z.number()])
-    .transform((val) => {
-      if (val === "" || val === null || val === undefined)
-        return { value: NaN, reason: "required" };
-      const num = Number(val);
-      return isNaN(num)
-        ? { value: NaN, reason: "invalid" }
-        : { value: num, reason: null };
-    })
-    .superRefine(({ value, reason }, ctx) => {
-      if (isNaN(value)) {
-        ctx.addIssue({
-          code: "custom",
-          message:
-            reason === "required" ? messages.required : messages.invalid_type,
-        });
-        return;
-      }
-
-      if (nonNegative && value < 0) {
-        ctx.addIssue({
-          code: "custom",
-          message: messages.nonNegative,
-        });
-      }
-
-      if (mustBeInt && !Number.isInteger(value)) {
-        ctx.addIssue({
-          code: "custom",
-          message: messages.mustBeInt,
-        });
-      }
-
-      if (min !== undefined && value < min) {
-        ctx.addIssue({
-          code: "custom",
-          message: messages.min,
-        });
-      }
-
-      if (max !== undefined && value > max) {
-        ctx.addIssue({
-          code: "custom",
-          message: messages.max,
-        });
-      }
-    })
-    .transform(({ value }) => value);
-
-  return schema;
+  return z.enum(enumValues, {
+    error: `${name} is required. Must be one of: ${enumValues.join(', ')}.`,
+  });
 };
 
-export function zodFileOrUrl({
-  fileOrUrl,
-  field,
-  index,
-  ctx,
-  showingFieldName,
-  required = true,
-  maxImageFileSize = MAX_IMAGE_FILE_SIZE,
-  maxVideoFileSize = MAX_VIDEO_FILE_SIZE,
-}: ZodFileConfigs) {
+export function zodFileOrUrl(props: IZodFileConfigs) {
+  const {
+    fileOrUrl,
+    field,
+    index,
+    ctx,
+    label,
+    parentField,
+    parentLabel,
+    required = true,
+    maxImageFileSize = MAX_IMAGE_FILE_SIZE,
+    maxVideoFileSize = MAX_VIDEO_FILE_SIZE,
+  } = props;
   let isVideo = false;
-  const path: (string | number)[] = index !== undefined ? [index] : [];
-  const name =
-    index !== undefined && index !== null
-      ? index + 1
-      : showingFieldName
-      ? showingFieldName
-      : field;
+  const path = nullCheck(index) ? index : undefined;
+
+  const baseName = label ?? field;
+  const parentName = parentLabel ?? parentField;
+
+  const name = nullCheck(index)
+    ? parentName
+      ? `${parentName}: ${baseName} ${index + 1}`
+      : `${baseName} ${index + 1}`
+    : parentName
+      ? `${parentName}: ${baseName}`
+      : baseName;
+
   const isFileOrUrl =
-    typeof fileOrUrl === "string"
-      ? "URL "
-      : fileOrUrl instanceof File
-      ? "File "
-      : "";
+    typeof fileOrUrl === 'string' ? 'URL ' : fileOrUrl instanceof File ? 'File ' : '';
 
   if (!fileOrUrl) {
     if (required) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: `${isFileOrUrl}${name} is required.`,
-        path,
-      });
+      zodCustomIssue(ctx, `${isFileOrUrl}${name} is required.`, path);
     }
     return;
   }
 
-  if (typeof File !== "undefined" && fileOrUrl instanceof File) {
+  if (typeof File !== 'undefined' && fileOrUrl instanceof File) {
     // detect type
-    isVideo = ALLOWED_VIDEO_TYPES.includes(fileOrUrl.type);
+    isVideo = ALLOWED_VIDEO_FORMATS.includes(fileOrUrl.type);
 
     // type check
-    const allowedTypes = isVideo ? ALLOWED_VIDEO_TYPES : ALLOWED_IMAGE_TYPES;
+    const allowedTypes = isVideo ? ALLOWED_VIDEO_FORMATS : ALLOWED_IMAGE_FORMATS;
     if (!allowedTypes.includes(fileOrUrl.type)) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: `${
-          isVideo ? "Video" : "Image"
-        } ${name} invalid format. Allowed formats: ${allowedTypes
-          .map((t) => t.split("/")[1])
-          .join(", ")}`,
+      zodCustomIssue(
+        ctx,
+        `${isVideo ? 'Video' : 'Image'} ${name} invalid format. Allowed formats: ${allowedTypes
+          .map((t) => t.split('/')[1])
+          .join(', ')}`,
         path,
-      });
+      );
     }
 
     // size check
     const maxSize = isVideo ? maxVideoFileSize : maxImageFileSize;
     if (fileOrUrl.size > maxSize) {
       const sizeInMB = (fileOrUrl.size / MB).toFixed(2);
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: `${
-          isVideo ? "Video" : "Image"
-        } ${name} is too large (${sizeInMB} MB). Max allowed is ${
-          maxSize / MB
-        } MB.`,
+      zodCustomIssue(
+        ctx,
+        `${
+          isVideo ? 'Video' : 'Image'
+        } ${name} is too large (${sizeInMB} MB). Max allowed is ${maxSize / MB} MB.`,
         path,
-      });
+      );
     }
-  } else if (typeof fileOrUrl === "string") {
-    try {
-      const url = new URL(fileOrUrl);
-      if (!["http:", "https:"].includes(url.protocol)) {
-        throw new Error();
-      }
-    } catch {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: `Media ${name} is not a valid URL`,
-        path,
-      });
-    }
+  } else if (typeof fileOrUrl === 'string' && !regexes.url.test(fileOrUrl)) {
+    zodCustomIssue(ctx, `Media ${name} is not a valid URL`, path);
   } else {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: `Item ${name} must be a File or a valid media URL`,
-      path,
-    });
+    zodCustomIssue(ctx, `Item ${name} must be a File or a valid media URL`, path);
   }
 }
 
-export const singleFileOrUrlValidation = ({
+export const zodSingleFileOrUrl = ({
   field,
-  showingFieldName,
+  label,
   required = true,
-  showingParentFieldName,
+  parentLabel,
   parentField,
   maxImageFileSize = MAX_IMAGE_FILE_SIZE,
   maxVideoFileSize = MAX_VIDEO_FILE_SIZE,
-}: ZodSingleFileConfigs) => {
-  return z
-    .unknown()
-    .optional()
-    .superRefine((value, ctx) => {
-      const readableField = showingFieldName ?? field;
-      const readableParent = showingParentFieldName ?? parentField;
+}: IZodSingleFileConfigs) => {
+  const baseName = label ?? field;
+  const parentName = parentLabel ?? parentField;
 
-      const name = readableParent
-        ? `${readableParent}${
-            readableParent.includes("[") ? " " : ": "
-          }${readableField}`
-        : readableField;
+  const name = parentName ? `${parentName}: ${baseName}` : baseName;
+  return z.unknown().superRefine((value, ctx) => {
+    let fileOrUrl = value;
 
-      let fileOrUrl = value;
-
-      console.log("fileOrUrl", fileOrUrl);
-
-      // ✅ Normalize FileList → single File
-      if (typeof FileList !== "undefined" && value instanceof FileList) {
-        if (value.length > 1) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: `${name} allows only one file`,
-          });
-          return;
-        }
+    if (typeof FileList !== 'undefined' && value instanceof FileList) {
+      if (value.length === 0) {
+        fileOrUrl = undefined;
+      } else if (value.length > 1) {
+        zodCustomIssue(ctx, `${name} allows only one file.`);
+        return;
+      } else {
         fileOrUrl = value[0];
       }
+    }
 
-      // 🔁 reuse existing validator
-      zodFileOrUrl({
-        fileOrUrl,
-        field,
-        ctx,
-        showingFieldName: name,
-        required,
-        maxImageFileSize,
-        maxVideoFileSize,
-      });
+    zodFileOrUrl({
+      fileOrUrl,
+      ctx,
+      field,
+      label,
+      maxImageFileSize,
+      maxVideoFileSize,
+      parentLabel,
+      parentField,
+      required,
     });
-};
-
-export const multipleFilesOrUrlsValidation = ({
-  field,
-  showingFieldName,
-  required = true,
-  maxImages,
-  maxVideos,
-  showingParentFieldName,
-  parentField,
-  maxImageFileSize = MAX_IMAGE_FILE_SIZE,
-  maxVideoFileSize = MAX_VIDEO_FILE_SIZE,
-}: ZodMultipleFileConfigs) => {
-  return z
-    .array(z.union([z.instanceof(File), z.string()]))
-    .optional()
-    .default([])
-    .superRefine((files, ctx) => {
-      const readableField = showingFieldName ?? field;
-      const readableParent = showingParentFieldName ?? parentField;
-
-      const nestedField = readableParent
-        ? `${readableParent}${
-            readableParent.includes("[") ? " " : ": "
-          }${readableField}`
-        : readableField;
-      const name = nestedField;
-
-      if (required && files.length === 0) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: `${name} is required.`,
-        });
-        return;
-      }
-
-      let imageCount = 0;
-      let videoCount = 0;
-
-      files.forEach((item, index) => {
-        if (item instanceof File) {
-          if (ALLOWED_IMAGE_TYPES.includes(item.type)) imageCount++;
-          else if (ALLOWED_VIDEO_TYPES.includes(item.type)) videoCount++;
-        }
-
-        // 🔁 reuse single file/url validator
-        zodFileOrUrl({
-          fileOrUrl: item,
-          field,
-          index,
-          ctx,
-          showingFieldName: name,
-          required,
-          maxImageFileSize,
-          maxVideoFileSize,
-        });
-      });
-
-      if (maxImages !== undefined && imageCount > maxImages) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: `You can upload a maximum of ${maxImages} images`,
-        });
-      }
-
-      if (maxVideos !== undefined && videoCount > maxVideos) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: `You can upload a maximum of ${maxVideos} videos`,
-        });
-      }
-    });
-};
-
-export const zodEnums = (props: ZodEnumsConfigs & { enums: string[] }) => {
-  return z.enum([props.enums[0], ...props.enums.slice(1)], {
-    errorMap: () => ({
-      message: `${
-        props.showingFieldName
-      } is required. Must be '${props.enums.join(", ")}'.`,
-    }),
   });
 };

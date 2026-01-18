@@ -1,38 +1,36 @@
-import { create } from "zustand";
-import { UserStoreType, UserTypes } from "../types";
-import { decryptData, encryptData, removeStorageToken } from "../utils";
-import useCartStore from "./cart.store";
-import useWishlistStore from "./wishlist.store";
-const SESSION_KEY = "user";
+import { create } from 'zustand';
+import type { IUser, TUserStore } from '../types';
+import { decryptData, encryptData, removeStorageToken } from '../utils';
+const SESSION_KEY = 'user';
 
-export const useUserStore = create<UserStoreType>((set) => {
+export const useUserStore = create<TUserStore>((set) => {
   const encrypted = sessionStorage.getItem(SESSION_KEY);
-  let user: UserTypes | null = null;
-  const decrypted = decryptData(encrypted ?? "");
-  if (decrypted && typeof decrypted === "object") {
-    user = decrypted as UserTypes;
+  let user: IUser | null = null;
+  const decrypted = decryptData(encrypted ?? '');
+  if (decrypted && typeof decrypted === 'object') {
+    user = decrypted as IUser;
   }
 
   return {
     user,
-    isAuthenticated: !!user,
+    authenticated: !!user,
 
     setUser: (user) => {
       const encryptedUser = encryptData(user);
 
       sessionStorage.setItem(SESSION_KEY, encryptedUser);
-      set({ user, isAuthenticated: true });
+      set({ user, authenticated: true });
     },
 
     localLogout: () => {
       sessionStorage.removeItem(SESSION_KEY);
       removeStorageToken();
-      set({ user: null, isAuthenticated: false });
+      set({ user: null, authenticated: false });
       // Reset cart on logout
-      const { setCart } = useCartStore.getState();
-      const { setWishlist } = useWishlistStore.getState();
-      setCart(null);
-      setWishlist(null);
+      //   const { setCart } = useCartStore.getState();
+      //   const { setWishlist } = useWishlistStore.getState();
+      //   setCart(null);
+      //   setWishlist(null);
     },
   };
 });

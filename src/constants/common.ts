@@ -5,10 +5,11 @@ export const BACKEND_URL =
   VITE_IS_DEV === 'true' ? VITE_LOCALHOST_BACKEND_URL : VITE_PRODUCTION_BACKEND_URL;
 
 export const MB = 1024 ** 2;
-export const MAX_IMAGE_FILE_SIZE = 2 * MB; // 2MB
+export const MAX_IMAGE_FILE_SIZE = 0.1 * MB; // 2MB
 export const MAX_VIDEO_FILE_SIZE = 50 * MB; // 50MB
 export const ALLOWED_IMAGE_FORMATS = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
 export const ALLOWED_VIDEO_FORMATS = ['video/mp4', 'video/webm'];
+export const DEFAULT_POSTER = '/images/logo/BQ_gradient_logo.webp';
 
 export const LOADING_RINGS_DATA = [
   {
@@ -56,9 +57,17 @@ export const regexes: Record<TRegexes, RegExp> = {
   url: /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/[\w\-._~:/?#[\]@!$&'()*+,;=%]*)?$/i,
   pan: /^[A-Za-z]{5}[0-9]{4}[A-Za-z]$/,
 };
-
-export const SVG24WH = { width: '24', height: '24' } as const;
+export const XMLNS = { xmlns: 'http://www.w3.org/2000/svg' } as const;
+export const SVG24WH = { ...XMLNS, width: '24', height: '24' } as const;
 export const SVG24VB = { viewBox: '0 0 24 24' } as const;
 export const SVG24WH_VB = { ...SVG24WH, ...SVG24VB } as const;
 export const SVG_LC_LJ_ROUND = { strokeLinecap: 'round', strokeLinejoin: 'round' } as const;
+export const SVG_PATH_FR_CR = { fillRule: 'evenodd', clipRule: 'evenodd' } as const;
 export const SVG24WH_VB_LC_LJ_R = { ...SVG24WH_VB, ...SVG_LC_LJ_ROUND } as const;
+
+export const AUTH_PROVIDER = {
+  GOOGLE: 'GOOGLE',
+  MANUAL: 'MANUAL',
+  LINKEDIN: 'LINKEDIN',
+  GITHUB: 'GITHUB',
+} as const;

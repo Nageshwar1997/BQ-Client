@@ -1,7 +1,9 @@
 import type { IZodStringConfigs } from '../types';
 import { regexes } from './common';
 
-export const passwordValidationOptions: Partial<IZodStringConfigs> = {
+export const passwordValidationOptions: IZodStringConfigs = {
+  field: 'password',
+  label: 'Password',
   allowSpace: false,
   min: 6,
   max: 20,
@@ -30,7 +32,9 @@ export const passwordValidationOptions: Partial<IZodStringConfigs> = {
   ],
 };
 
-export const phoneValidationOptions: Partial<IZodStringConfigs> = {
+export const phoneValidationOptions: IZodStringConfigs = {
+  field: 'phoneNumber',
+  label: 'Phone number',
   allowSpace: false,
   customRegexes: [
     { regex: regexes.phoneStart, message: 'must be start with 6, 7, 8, or 9' },
@@ -42,8 +46,33 @@ export const phoneValidationOptions: Partial<IZodStringConfigs> = {
   ],
 };
 
-export const emailValidationOptions: Partial<IZodStringConfigs> = {
+export const emailValidationOptions: IZodStringConfigs = {
   allowSpace: false,
-  required: false,
+  field: 'email',
+  label: 'Email',
+  lowerOrUpper: 'lower',
   customRegexes: [{ regex: regexes.email, message: 'must be valid' }],
+};
+
+export const nameValidationOptions: Partial<IZodStringConfigs> = {
+  allowSpace: true,
+  min: 2,
+  max: 50,
+  customRegexes: [
+    {
+      regex: regexes.name,
+      message: 'can only contain letters and only one space is allowed between words',
+    },
+  ],
+};
+
+export const otpValidationOptions: IZodStringConfigs = {
+  field: 'otp',
+  label: 'OTP',
+  allowSpace: false,
+  min: 6,
+  max: 6,
+  customRegexes: [
+    { regex: regexes.otp, message: 'must be a valid 6 digit number. It can contain only digits' },
+  ],
 };

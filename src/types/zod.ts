@@ -1,60 +1,42 @@
-import { RefinementCtx } from "zod";
+import type { RefinementCtx } from 'zod';
 
-export interface ZodCommonConfigs {
+type TZodCommonBaseConfigs = {
   field: string;
   parentField?: string;
-  showingFieldName: string;
-  showingParentFieldName?: string;
-}
+  label: string;
+  parentLabel?: string;
+};
 
-export interface ZodFileConfigs extends ZodCommonConfigs {
-  maxVideoFileSize?: number;
-  maxImageFileSize?: number;
-  fileOrUrl: unknown;
-  index?: number;
-  ctx: RefinementCtx;
+export interface IZodCommonConfigs extends TZodCommonBaseConfigs {
   required?: boolean;
 }
 
-export type ZodSingleFileConfigs = Omit<
-  ZodFileConfigs,
-  "index" | "ctx" | "fileOrUrl"
->;
+export type TZodCompareConfigs = { min?: number; max?: number };
+export type TZodRegex = { regex: RegExp; message: string };
 
-export interface ZodMultipleFileConfigs extends ZodSingleFileConfigs {
-  maxImages?: number;
-  maxVideos?: number;
+export interface IZodEnumsConfigs extends TZodCommonBaseConfigs {
+  enumValues: readonly string[];
 }
 
-export interface ZodCompareConfigs {
-  min?: number | undefined;
-  max?: number | undefined;
+export interface IZodSingleFileConfigs extends IZodCommonConfigs {
+  maxVideoFileSize?: number;
+  maxImageFileSize?: number;
 }
 
-export type TZodRegex = {
-  regex: RegExp;
-  message: string;
-};
+export interface IZodFileConfigs extends IZodSingleFileConfigs {
+  fileOrUrl: unknown;
+  index?: number;
+  ctx: RefinementCtx;
+}
 
-export interface ZodStringConfigs extends ZodCommonConfigs, ZodCompareConfigs {
-  blockMultipleSpaces?: boolean;
-  blockSingleSpace?: boolean;
+export interface IZodStringConfigs extends TZodCommonBaseConfigs, TZodCompareConfigs {
+  allowSpace?: boolean;
   nonEmpty?: boolean;
   customRegexes?: TZodRegex[];
+  lowerOrUpper?: 'upper' | 'lower';
 }
 
-export interface ZodNumberConfigs extends ZodCommonConfigs, ZodCompareConfigs {
-  mustBeInt?: boolean;
-  nonNegative?: boolean;
+export interface ZodNumberConfigs extends IZodCommonConfigs, TZodCompareConfigs {
+  int?: boolean;
+  positive?: boolean;
 }
-
-// String
-export type ZodRequiredStringConfigs = ZodStringConfigs; // Required
-export type ZodOptionalStringConfigs = ZodStringConfigs; // Optional
-
-// Number
-export type ZodRequiredNumberConfigs = ZodNumberConfigs; // Required
-export type ZodOptionalNumberConfigs = ZodNumberConfigs; // Optional
-
-// Enums
-export type ZodEnumsConfigs = ZodCommonConfigs;

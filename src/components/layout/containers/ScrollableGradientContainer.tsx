@@ -27,10 +27,10 @@ const ScrollableGradientContainer = ({
       ))}
       <div
         ref={containerRef}
-        className={`relative flex-1 scroll-smooth ${isVertical ? 'overflow-y-auto' : ''} ${isHorizontal ? 'overflow-x-auto whitespace-nowrap' : ''} ${className} `}
+        className={`relative w-full flex-1 scroll-smooth ${isVertical ? 'overflow-y-auto' : ''} ${isHorizontal ? 'overflow-x-auto whitespace-nowrap' : ''} ${className} `}
       >
         <div
-          className={`flex gap-2 ${isVertical ? 'flex-col' : 'flex-row'} ${
+          className={`w-full h-full flex gap-2 ${isVertical ? 'flex-col' : 'flex-row'} ${
             isVertical
               ? !gradients.top && !gradients.bottom
                 ? 'items-center justify-center'

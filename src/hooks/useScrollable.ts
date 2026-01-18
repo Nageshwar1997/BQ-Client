@@ -1,69 +1,73 @@
 import { useEffect, useRef, useState } from 'react';
 
-export const useHorizontalScrollable = () => {
+import type { TScrollDirection } from '../types';
+
+type THorizontal = { left: boolean; right: boolean };
+type TVertical = { top: boolean; bottom: boolean };
+type TScroll =
+  | ({ direction: 'horizontal' } & THorizontal)
+  | ({ direction: 'vertical' } & TVertical);
+
+export const useScrollable = (direction: TScrollDirection) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [showGradient, setShowGradient] = useState({ left: false, right: false });
+  const [showGradient, setShowGradient] = useState<TScroll>(
+    direction === 'horizontal'
+      ? { direction: 'horizontal', left: false, right: false }
+      : { direction: 'vertical', top: false, bottom: false },
+  );
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
     const checkScroll = () => {
-      const hasScroll = container.scrollWidth > container.clientWidth;
-      const isAtLeft = container.scrollLeft <= 0;
-      const isAtRight =
-        Math.ceil(container.scrollLeft + container.clientWidth) >= container.scrollWidth;
+      if (direction === 'horizontal') {
+        const hasScroll = container.scrollWidth > container.clientWidth;
+        const isAtLeft = container.scrollLeft <= 0;
+        const isAtRight =
+          Math.ceil(container.scrollLeft + container.clientWidth) >= container.scrollWidth;
 
-      if (hasScroll) {
-        setShowGradient({ left: !isAtLeft, right: !isAtRight });
+        setShowGradient({
+          direction: 'horizontal',
+          left: hasScroll && !isAtLeft,
+          right: hasScroll && !isAtRight,
+        });
       } else {
-        setShowGradient({ left: false, right: false });
+        const hasScroll = container.scrollHeight > container.clientHeight;
+        const isAtTop = container.scrollTop <= 0;
+        const isAtBottom =
+          Math.ceil(container.scrollTop + container.clientHeight) >= container.scrollHeight;
+
+        setShowGradient({
+          direction: 'vertical',
+          top: hasScroll && !isAtTop,
+          bottom: hasScroll && !isAtBottom,
+        });
       }
     };
 
-    container.addEventListener('scroll', checkScroll);
-    window.addEventListener('resize', checkScroll); // to detect layout shifts
     checkScroll();
+    container.addEventListener('scroll', checkScroll);
+    window.addEventListener('resize', checkScroll);
 
     return () => {
       container.removeEventListener('scroll', checkScroll);
       window.removeEventListener('resize', checkScroll);
     };
-  }, []);
+  }, [direction]);
 
-  return { showGradient, containerRef } as const;
-};
+  const showV_Gradient = {
+    ...(showGradient.direction === 'vertical' && {
+      top: showGradient.top,
+      bottom: showGradient.bottom,
+    }),
+  };
+  const showH_Gradient = {
+    ...(showGradient.direction === 'horizontal' && {
+      left: showGradient.left,
+      right: showGradient.right,
+    }),
+  };
 
-export const useVerticalScrollable = () => {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const [showGradient, setShowGradient] = useState({ top: false, bottom: false });
-
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const checkScroll = () => {
-      const hasScroll = container.scrollHeight > container.clientHeight;
-      const isAtTop = container.scrollTop <= 0;
-      const isAtBottom =
-        Math.ceil(container.scrollTop + container.clientHeight) >= container.scrollHeight;
-
-      if (hasScroll) {
-        setShowGradient({ top: !isAtTop, bottom: !isAtBottom });
-      } else {
-        setShowGradient({ top: false, bottom: false });
-      }
-    };
-
-    container.addEventListener('scroll', checkScroll);
-    window.addEventListener('resize', checkScroll); // for dynamic content resize
-    checkScroll();
-
-    return () => {
-      container.removeEventListener('scroll', checkScroll);
-      window.removeEventListener('resize', checkScroll);
-    };
-  }, []);
-
-  return { showGradient, containerRef } as const;
+  return { showV_Gradient, showH_Gradient, containerRef } as const;
 };

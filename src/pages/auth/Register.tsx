@@ -16,8 +16,7 @@ import Checkbox from '../../components/input/Checkbox';
 import BorderGradient from '../../components/ui/BorderGradient';
 import { getFileFromFileList, saveLocalToken, saveSessionToken } from '../../utils';
 import { registerSchema, sendOtpSchema } from '../../schemas';
-import { service } from '../../classes';
-import { useQueryParams } from '../../hooks';
+import { service, store } from '../../classes';
 import Resend from '../../components/ui/Resend';
 
 type TRegisterInput = {
@@ -88,8 +87,7 @@ const RegisterForm = ({
     service.auth.VerifyOtpAndRegister();
   const { mutateAsync: resendOtpAsync, isPending: isResendingOtp } = service.auth.ResendOtp();
 
-  const { navigate } = useQueryParams();
-  //   const { setUser } = useUserStore();
+  const { setUser } = store.user();
 
   const {
     watch,
@@ -134,17 +132,14 @@ const RegisterForm = ({
       { otpToken, data: formData },
       {
         onSuccess: (data) => {
-          console.log('data', data);
           if (data.user) {
-            // setUser(data.user);
+            setUser(data.user);
           }
           if (bodyData.remember) {
             saveLocalToken(data?.token);
           } else {
             saveSessionToken(data?.token);
           }
-
-          setTimeout(() => navigate('/'), 500);
         },
       },
     );

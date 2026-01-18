@@ -30,5 +30,5 @@ export const useQueryParams = () => {
     newSearchParams.delete(paramKey);
     navigate({ search: newSearchParams.toString() });
   };
-  return { params: getParams(), setParams, removeParam, hash, pathname, state, paths };
+  return { params: getParams(), setParams, removeParam, hash, pathname, state, paths, navigate };
 };

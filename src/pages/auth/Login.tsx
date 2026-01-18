@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { saveLocalToken, saveSessionToken } from '../../utils';
 import type { TLogin } from '../../types';
 import { loginSchema } from '../../schemas';
-import { service } from '../../classes';
+import { service, store } from '../../classes';
 import { useQueryParams } from '../../hooks';
 import { useState } from 'react';
 import GradientText from '../../components/ui/GradientText';
@@ -20,8 +20,7 @@ import BottomInstructions from './children/BottomInstructions';
 const Login = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { removeParam, params } = useQueryParams();
-  // const { setUser } = useUserStore();
-
+  const { setUser } = store.user();
   const { mutateAsync, isPending } = service.auth.Login();
 
   const {
@@ -66,23 +65,18 @@ const Login = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
     }
 
     mutateAsync(finalData, {
-      onSettled(data, error) {
-        if (data && !error) {
-          if (onLoginSuccess) onLoginSuccess();
-          if (data.user) {
-            // setUser(data.user);
-          }
-          if (bodyData.remember) {
-            saveLocalToken(data?.token);
-          } else {
-            saveSessionToken(data?.token);
-          }
-          if (params.login === 'true') {
-            removeParam('login');
-          }
+      onSuccess(data) {
+        onLoginSuccess?.();
+        if (data.user) {
+          setUser(data.user);
         }
-        if (error) {
-          console.error('Error from mutation:', error);
+        if (bodyData.remember) {
+          saveLocalToken(data?.token);
+        } else {
+          saveSessionToken(data?.token);
+        }
+        if (params.login === 'true') {
+          removeParam('login');
         }
       },
     });
