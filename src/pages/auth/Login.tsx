@@ -92,10 +92,10 @@ const Login = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
       <GradientText
         type="accent"
         text="Login"
-        className="mx-auto text-2xl leading-tight font-medium sm:text-3xl md:text-4xl lg:text-5xl"
+        className="mx-auto text-2xl leading-tight font-semibold sm:text-3xl md:text-4xl lg:text-5xl"
       />
       <SocialAuth />
-      <BorderGradient className="[&>div]:space-y-6">
+      <BorderGradient className="space-y-6">
         <Controller
           name="loginMethod"
           control={control}
@@ -172,7 +172,6 @@ const Login = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
             pattern="primary"
             buttonProps={{ type: 'submit', disabled: isPending || !isDirty }}
             content="Login"
-            className="text-base!"
           />
         </div>
         <div className="flex items-center justify-center gap-2">
@@ -184,7 +183,7 @@ const Login = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
           <GradientText
             text="Register"
             type="accent"
-            path="/register"
+            path="/auth/register"
             className="text-sm hover:font-medium md:text-base"
           />
         </div>
