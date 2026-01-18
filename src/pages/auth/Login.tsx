@@ -9,7 +9,7 @@ import { useState } from 'react';
 import GradientText from '../../components/ui/GradientText';
 import BorderGradient from '../../components/ui/BorderGradient';
 import Radio from '../../components/input/Radio';
-import { LOGIN_INPUT_MAP_DATA } from '../../constants';
+import { LOGIN_INPUT_MAP_DATA } from '../../constants/input';
 import { Input } from '../../components/input/Input';
 import { EyeIcon, EyeOffIcon } from '../../icons';
 import Checkbox from '../../components/input/Checkbox';
@@ -68,9 +68,7 @@ const Login = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
     mutateAsync(finalData, {
       onSettled(data, error) {
         if (data && !error) {
-          if (onLoginSuccess) {
-            onLoginSuccess();
-          }
+          if (onLoginSuccess) onLoginSuccess();
           if (data.user) {
             // setUser(data.user);
           }
