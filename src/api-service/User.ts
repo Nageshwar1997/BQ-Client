@@ -1,5 +1,5 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { ApiRequest } from '.';
+import { ApiRequest } from './ApiRequest';
 
 class UserApi extends ApiRequest {
   protected get_user_details = () => {

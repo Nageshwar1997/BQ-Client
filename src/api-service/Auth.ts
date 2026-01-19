@@ -1,7 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 import type { TLogin, TParams } from '../types';
-import { ApiRequest, store } from '.';
+import { ApiRequest } from './ApiRequest';
 import { toaster } from '../utils';
+import { store } from '../store';
 
 class AuthApi extends ApiRequest {
   protected login = (data: Partial<TLogin>) => {
@@ -50,7 +51,7 @@ export class AuthService extends AuthApi {
   };
   public ResendOtp = () => {
     return useMutation({
-      mutationKey: ['register_user_resend_otp'],
+      mutationKey: ['register_resend_otp'],
       mutationFn: this.resend_otp,
       onSuccess: (data) => toaster('success', data?.message),
       onError: (error) => {
@@ -64,7 +65,7 @@ export class AuthService extends AuthApi {
   };
   public VerifyOtpAndRegister = () => {
     return useMutation({
-      mutationKey: ['register_user_verify_otp'],
+      mutationKey: ['verify_otp_and_register'],
       mutationFn: this.verify_otp_and_register,
       onSuccess: (data) => toaster('success', data?.message),
       onError: (error) => toaster('error', error),

@@ -1,5 +1,5 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { ApiRequest } from '.';
+import { ApiRequest } from '../classes';
 
 class MediaApi extends ApiRequest {
   protected get_home_videos = () => {
