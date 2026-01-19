@@ -18,7 +18,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Toaster position="top-center" />
-      <div className="bg-primary-inverted text-primary h-full max-h-dvh min-h-dvh w-full max-w-dvw min-w-dvw overflow-y-scroll">
+      <div className="bg-primary-invert text-primary h-full max-h-dvh min-h-dvh w-full max-w-dvw min-w-dvw overflow-y-scroll">
         <div className="mx-auto h-full w-full max-w-480">
           <RouterProvider router={router} />
         </div>

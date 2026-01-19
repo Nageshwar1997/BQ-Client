@@ -1,7 +1,7 @@
 import { type JSX } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuthCheck, useQueryParams } from '../hooks';
-import { store } from '../classes';
+import { store } from '../store';
 import { LoadingScreen } from '../components';
 import { getUserToken } from '../utils';
 

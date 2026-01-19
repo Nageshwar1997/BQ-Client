@@ -16,7 +16,8 @@ import Checkbox from '../../components/input/Checkbox';
 import BorderGradient from '../../components/ui/BorderGradient';
 import { getFileFromFileList, saveLocalToken, saveSessionToken } from '../../utils';
 import { registerSchema, sendOtpSchema } from '../../schemas';
-import { service, store } from '../../classes';
+import { store } from '../../store';
+import { service } from '../../api-service';
 import Resend from '../../components/ui/Resend';
 
 type TRegisterInput = {

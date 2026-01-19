@@ -2,7 +2,7 @@ import { type JSX } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { LoadingScreen } from '../components';
 import { useAuthCheck } from '../hooks';
-import { store } from '../classes';
+import { store } from '../store';
 
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
   const { isLoading } = useAuthCheck();
