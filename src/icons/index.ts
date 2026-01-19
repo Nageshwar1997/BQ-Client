@@ -1,1 +1,2 @@
-export * from "./Common"
+export * from './CommonIcons';
+export * from './NavbarIcons';
