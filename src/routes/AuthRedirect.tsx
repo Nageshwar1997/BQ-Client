@@ -1,19 +1,18 @@
-import { Navigate, useLocation } from "react-router-dom";
-import { useUserStore } from "../store/user.store";
-import { useAuthCheck } from "../hooks/useAuthCheck";
-import LoadingScreen from "../components/loaders/LoadingScreen";
-import { JSX } from "react";
-import { getUserToken } from "../utils";
+import { type JSX } from 'react';
+import { Navigate } from 'react-router-dom';
+import { useAuthCheck, useQueryParams } from '../hooks';
+import { store } from '../classes';
+import { LoadingScreen } from '../components';
+import { getUserToken } from '../utils';
 
 const AuthRedirect = ({ children }: { children: JSX.Element }) => {
   const token = getUserToken();
-  const { isAuthenticated } = useUserStore();
+  const { authenticated } = store.user();
   const { isLoading } = useAuthCheck(!!token);
-  const location = useLocation();
+  const { state } = useQueryParams();
 
-  if (isAuthenticated) {
-    const state = location.state as { from?: { pathname?: string } } | null;
-    const from = state?.from?.pathname || "/";
+  if (authenticated) {
+    const from = state?.from?.pathname || '/';
     return <Navigate to={from} replace />;
   }
 

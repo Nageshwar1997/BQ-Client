@@ -1,17 +1,17 @@
-import { JSX } from "react";
-import { Navigate, useLocation } from "react-router-dom";
-import LoadingScreen from "../components/loaders/LoadingScreen";
-import { useAuthCheck } from "../hooks/useAuthCheck";
-import { useUserStore } from "../store/user.store";
+import { type JSX } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { LoadingScreen } from '../components';
+import { useAuthCheck } from '../hooks';
+import { store } from '../classes';
 
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
   const { isLoading } = useAuthCheck();
-  const { isAuthenticated } = useUserStore();
+  const { authenticated } = store.user();
   const location = useLocation();
 
   if (isLoading) return <LoadingScreen />;
 
-  if (!isAuthenticated) {
+  if (!authenticated) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
