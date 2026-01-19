@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { BEAUTY_FACTS } from '../../../constants';
 import Teddy from './teddy/Teddy';
 
-const LoadingScreen = () => {
+export const LoadingScreen = () => {
   const TEXT_CHANGE_INTERVAL = 5000;
 
   const [fact, setFact] = useState(BEAUTY_FACTS[getRandomIndex(BEAUTY_FACTS)]);
@@ -28,7 +28,7 @@ const LoadingScreen = () => {
     return Math.floor(Math.random() * array.length);
   }
   return (
-    <div className="relative flex h-dvh w-dvw flex-col items-center justify-center bg-[radial-gradient(circle,rgba(var(--primary-rgb),0.5)_0%,rgba(var(--primary-rgb),0.2)_30%,rgba(var(--primary-invert-rgb),0.2)_60%,rgba(var(--primary-invert-rgb),1)_100%)] px-10">
+    <div className="relative z-100 flex h-dvh w-dvw flex-col items-center justify-center bg-[radial-gradient(circle,rgba(var(--primary-rgb),0.5)_0%,rgba(var(--primary-rgb),0.2)_30%,rgba(var(--primary-invert-rgb),0.2)_60%,rgba(var(--primary-invert-rgb),1)_100%)] px-10">
       <Teddy />
       <div className="border-primary/50 absolute bottom-[10%] mx-10 max-w-4xl rounded-xl border px-4 py-2 text-center backdrop-blur-2xl">
         {loadingText}
@@ -36,4 +36,3 @@ const LoadingScreen = () => {
     </div>
   );
 };
-export default LoadingScreen;
