@@ -1,9 +1,9 @@
 import type { TClassName } from '../../types';
 import { MoonIcon, SunIcon } from '../../icons';
-import { useThemeStore } from '../../store';
+import { store } from '../../store';
 
 export const Theme = ({ className }: TClassName) => {
-  const { theme, toggleTheme } = useThemeStore();
+  const { theme, toggleTheme } = store.theme();
 
   return (
     <button type="button" onClick={toggleTheme} className={`cursor-pointer ${className}`}>

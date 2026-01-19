@@ -5,3 +5,4 @@ export * from './other';
 export * from './navbar/common';
 export * from './navbar/about';
 export * from './navbar/collections';
+export * from './navbar/eyes';

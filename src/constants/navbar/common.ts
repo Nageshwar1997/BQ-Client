@@ -44,4 +44,12 @@ export const HIGHLIGHTED_CATEGORIES = {
     // "serum", // already in skin->moisturizers
     'sugar_set',
   ],
+  eyes: [
+    'kohl',
+    'curl_lengthening_mascara',
+    'liquid_eyeliner',
+    'glitter_eyeshadow',
+    'brow_pencil',
+    'eye_combo',
+  ],
 };
