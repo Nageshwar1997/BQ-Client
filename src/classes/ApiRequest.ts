@@ -1,9 +1,11 @@
 import axios, { AxiosError, type AxiosInstance, type AxiosRequestConfig } from 'axios';
 import { apiRoutes, BACKEND_URL } from '../constants';
+import { getUserToken } from '../utils';
 
-class Request {
+export class ApiRequest {
   private baseUrl = `${BACKEND_URL}/api`;
   private instance: AxiosInstance = axios.create({ baseURL: this.baseUrl });
+  protected token: string | null = getUserToken();
   protected routes = apiRoutes;
   protected request = async (config: AxiosRequestConfig) => {
     try {
@@ -20,5 +22,3 @@ class Request {
     }
   };
 }
-
-export default Request;

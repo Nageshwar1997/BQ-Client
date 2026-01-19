@@ -1,13 +1,13 @@
 import { useMutation } from '@tanstack/react-query';
 import type { TLogin, TParams } from '../types';
-import Request from './Request';
+import { ApiRequest, store } from '.';
 import { toaster } from '../utils';
 
-class AuthApi extends Request {
+class AuthApi extends ApiRequest {
   protected login = (data: Partial<TLogin>) => {
     return this.request({ ...this.routes.auth.login, data });
   };
-  protected logout = (userId: string) => {
+  protected logout = (userId?: string) => {
     const { method, url } = this.routes.auth.logout;
     return this.request({ method, url: `${url}/${userId}` });
   };
@@ -70,10 +70,11 @@ export class AuthService extends AuthApi {
       onError: (error) => toaster('error', error),
     });
   };
-  public useLogout = () => {
+  public Logout = () => {
+    const { user } = store.user();
     return useMutation({
       mutationKey: ['logout'],
-      mutationFn: this.logout,
+      mutationFn: () => this.logout(user?._id),
       onError: (error) => console.log('Error from logout user:', error),
     });
   };
