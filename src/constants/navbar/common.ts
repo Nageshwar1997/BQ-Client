@@ -69,4 +69,5 @@ export const HIGHLIGHTED_CATEGORIES = {
     'lip_glitter',
     'lip_palette',
   ],
+  skin: ['serum', 'sunscreen', 'aquaholic', 'face_pack'],
 };
