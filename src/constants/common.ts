@@ -64,6 +64,7 @@ export const SVG24WH_VB = { ...SVG24WH, ...SVG24VB } as const;
 export const SVG_LC_LJ_ROUND = { strokeLinecap: 'round', strokeLinejoin: 'round' } as const;
 export const SVG_PATH_FR_CR = { fillRule: 'evenodd', clipRule: 'evenodd' } as const;
 export const SVG24WH_VB_LC_LJ_R = { ...SVG24WH_VB, ...SVG_LC_LJ_ROUND } as const;
+export const SVG_F_C_RULE = { fillRule: 'evenodd', clipRule: 'evenodd' } as const;
 
 export const AUTH_PROVIDER = {
   GOOGLE: 'GOOGLE',

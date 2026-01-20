@@ -61,4 +61,12 @@ export const HIGHLIGHTED_CATEGORIES = {
     'sindoor',
     'compact_powder',
   ],
+  lips: [
+    'lip_gloss',
+    'liquid_lipstick',
+    'lip_tint_and_stain',
+    'lipstick_fixer_and_remover',
+    'lip_glitter',
+    'lip_palette',
+  ],
 };
