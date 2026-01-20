@@ -52,4 +52,13 @@ export const HIGHLIGHTED_CATEGORIES = {
     'brow_pencil',
     'eye_combo',
   ],
+  face: [
+    'color_corrector',
+    'compact',
+    'makeup_remover',
+    'matte_foundation',
+    'cheek_stain',
+    'sindoor',
+    'compact_powder',
+  ],
 };
