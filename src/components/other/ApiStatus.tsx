@@ -23,7 +23,7 @@ const ApiDescription = ({ status, empty, error, showHrLine }: IApiStatus) => {
             children={title && typeof title !== 'string' ? title : undefined}
           />
           {(error?.description || empty?.description) && (
-            <p className="text-silver-jet font-metropolis text-center text-sm leading-6 font-normal sm:text-base md:text-lg">
+            <p className="text-silver-jet text-center text-sm leading-6 font-normal sm:text-base md:text-lg">
               {status === 'empty'
                 ? empty?.description
                 : status === 'error'

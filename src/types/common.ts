@@ -1,5 +1,6 @@
 import type {
   ButtonHTMLAttributes,
+  FC,
   InputHTMLAttributes,
   JSX,
   ReactNode,
@@ -180,3 +181,28 @@ export type TRegexes =
   | 'atLeastOneUppercaseLetter'
   | 'only_letters_and_spaces_and_dots'
   | 'pan';
+
+type TCategoryBaseL = {
+  id: number;
+  path?: string;
+  level: number;
+  label: string;
+  category: string;
+};
+
+export interface ICategoryL1 extends TCategoryBaseL {
+  icon: FC<TIcon>;
+  component: FC;
+  description: string;
+  subCategories: ICategoryL2[];
+}
+
+export interface ICategoryL2 extends TCategoryBaseL {
+  subCategories: ICategoryL3[];
+  heading?: string;
+  videoUrl?: string;
+  thumbnail?: string;
+  description?: string;
+}
+
+export interface ICategoryL3 extends ICategoryL1 {}

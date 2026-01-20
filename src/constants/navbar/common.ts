@@ -1,3 +1,4 @@
+import ForYou from '../../components/layout/navbar/ForYou';
 import {
   CareIcon,
   CashIcon,
@@ -8,6 +9,8 @@ import {
   TruckIcon,
   UserCircleIcon,
 } from '../../icons';
+import type { ICategoryL1 } from '../../types';
+import { blogs, new_new, offers, sugar_play } from './for-you';
 
 export const NAVBAR_TOP_LAYER_DATA = [
   {
@@ -70,4 +73,14 @@ export const HIGHLIGHTED_CATEGORIES = {
     'lip_palette',
   ],
   skin: ['serum', 'sunscreen', 'aquaholic', 'face_pack'],
+};
+
+export const for_you: ICategoryL1 = {
+  id: 1,
+  level: 1,
+  label: 'For You',
+  category: 'for_you',
+  path: '/products/for_you',
+  component: ForYou,
+  subCategories: [new_new, sugar_play, offers, blogs], // NOTE -  only new is reserved keyword we can't use new so new_new used
 };
