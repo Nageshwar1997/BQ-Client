@@ -3,6 +3,7 @@ import type { TLogin, TParams } from '../types';
 import { ApiRequest } from './ApiRequest';
 import { toaster } from '../utils';
 import { store } from '../store';
+import { QUERY_KEYS } from '../constants';
 
 class AuthApi extends ApiRequest {
   protected login = (data: Partial<TLogin>) => {
@@ -35,7 +36,7 @@ class AuthApi extends ApiRequest {
 export class AuthService extends AuthApi {
   public Login = () => {
     return useMutation({
-      mutationKey: ['login'],
+      mutationKey: QUERY_KEYS.auth.login,
       mutationFn: this.login,
       onSuccess: (data) => toaster('success', data?.message),
       onError: (error) => toaster('error', error),
@@ -43,7 +44,7 @@ export class AuthService extends AuthApi {
   };
   public SendOtp = () => {
     return useMutation({
-      mutationKey: ['register_send_otp'],
+      mutationKey: QUERY_KEYS.auth.register.send_otp,
       mutationFn: this.send_otp,
       onSuccess: (data) => toaster('success', data?.message),
       onError: (error) => toaster('error', error),
@@ -51,7 +52,7 @@ export class AuthService extends AuthApi {
   };
   public ResendOtp = () => {
     return useMutation({
-      mutationKey: ['register_resend_otp'],
+      mutationKey: QUERY_KEYS.auth.register.resend_otp,
       mutationFn: this.resend_otp,
       onSuccess: (data) => toaster('success', data?.message),
       onError: (error) => {
@@ -65,7 +66,7 @@ export class AuthService extends AuthApi {
   };
   public VerifyOtpAndRegister = () => {
     return useMutation({
-      mutationKey: ['verify_otp_and_register'],
+      mutationKey: QUERY_KEYS.auth.register.verify_otp,
       mutationFn: this.verify_otp_and_register,
       onSuccess: (data) => toaster('success', data?.message),
       onError: (error) => toaster('error', error),
@@ -74,7 +75,7 @@ export class AuthService extends AuthApi {
   public Logout = () => {
     const { user } = store.user();
     return useMutation({
-      mutationKey: ['logout'],
+      mutationKey: QUERY_KEYS.auth.logout,
       mutationFn: () => this.logout(user?._id),
       onError: (error) => console.log('Error from logout user:', error),
     });
