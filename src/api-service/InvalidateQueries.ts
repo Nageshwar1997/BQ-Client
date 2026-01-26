@@ -39,6 +39,14 @@ export class InvalidateQueries {
     this.invalidateQuery(QUERY_KEYS.addresses.get);
   }
 
+  orders() {
+    this.invalidateQuery(QUERY_KEYS.orders.get_all_orders);
+  }
+
+  order_by_id(id?: string) {
+    this.invalidateQuery([...QUERY_KEYS.orders.get_order_by_id, id]);
+  }
+
   multiple(keys: readonly QueryKey[]) {
     keys.forEach(this.invalidateQuery);
   }

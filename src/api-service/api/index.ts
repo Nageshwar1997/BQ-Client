@@ -5,3 +5,4 @@ export * from './Address.api';
 export * from './Blog.api';
 export * from './Cart.api';
 export * from './G-Form.api';
+export * from './Order.api';

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Fragment, useState } from 'react';
-import { useQueryParams } from '../../../hooks';
+import { usePathParams } from '../../../hooks';
 import { for_you } from '../../../constants';
 import VideoPlayer from '../media/VideoPlayer';
 import { PlayIcon } from '../../../icons';
@@ -9,7 +9,7 @@ import Button from '../../ui/Button';
 import { CategoryLabel } from './children/CategoryLabel';
 
 const ForYou = () => {
-  const { navigate } = useQueryParams();
+  const { navigate } = usePathParams();
   const [playingVideoIndex, setPlayingVideoIndex] = useState<null | number>(null);
   return (
     <div className="h-full w-full space-y-4 p-4 lg:p-0">

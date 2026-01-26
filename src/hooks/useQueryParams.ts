@@ -1,10 +1,17 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import type { TParams } from '../types';
 
-export const useQueryParams = () => {
+export const usePathParams = () => {
   const navigate = useNavigate();
-  const { hash, pathname, state } = useLocation();
-  const paths = pathname.split('/').filter((path) => path !== '');
+  const pathParams = useParams();
+  const location = useLocation();
+  const paths = location.pathname.split('/').filter((path) => path !== '');
+
+  return { pathParams, ...location, paths, navigate };
+};
+
+export const useQueryParams = () => {
+  const { navigate } = usePathParams();
 
   const getParams = (): TParams => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -30,5 +37,9 @@ export const useQueryParams = () => {
     newSearchParams.delete(paramKey);
     navigate({ search: newSearchParams.toString() });
   };
-  return { params: getParams(), setParams, removeParam, hash, pathname, state, paths, navigate };
+  return {
+    queryParams: getParams(),
+    setParams,
+    removeParam,
+  };
 };

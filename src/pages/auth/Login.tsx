@@ -20,7 +20,7 @@ import BottomInstructions from './children/BottomInstructions';
 
 const Login = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const { removeParam, params } = useQueryParams();
+  const { removeParam, queryParams } = useQueryParams();
   const { setUser } = store.user();
   const { mutateAsync, isPending } = service.auth.Login();
 
@@ -76,7 +76,7 @@ const Login = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
         } else {
           saveSessionToken(data?.token);
         }
-        if (params.login === 'true') {
+        if (queryParams.login === 'true') {
           removeParam('login');
         }
       },

@@ -50,19 +50,19 @@ export class UserService extends UserApi {
   };
 
   public ResetPasswordTokenValidityCheck = () => {
-    const { params } = useQueryParams();
+    const { queryParams } = useQueryParams();
     return useQuery({
       queryKey: QUERY_KEYS.users.user.password.token_validity.reset_password_check,
-      queryFn: () => this.reset_password_token_validity_check(params.token),
+      queryFn: () => this.reset_password_token_validity_check(queryParams.token),
       retry: false,
     });
   };
 
   public ForgotPasswordTokenValidityCheck = () => {
-    const { params } = useQueryParams();
+    const { queryParams } = useQueryParams();
     return useQuery({
       queryKey: QUERY_KEYS.users.user.password.token_validity.forgot_password_check,
-      queryFn: () => this.forgot_password_token_validity_check(params.token),
+      queryFn: () => this.forgot_password_token_validity_check(queryParams.token),
       retry: false,
     });
   };
@@ -124,10 +124,10 @@ export class UserService extends UserApi {
   public GetWishlist = () => {
     const token = getUserToken();
     const { authenticated } = store.user.getState();
-    const { params } = useQueryParams();
+    const { queryParams } = useQueryParams();
 
     return useQuery({
-      queryKey: [...QUERY_KEYS.users.wishlist.get, !!params.login, authenticated, !!token],
+      queryKey: [...QUERY_KEYS.users.wishlist.get, !!queryParams.login, authenticated, !!token],
       queryFn: this.get_wishlist,
       retry: false,
       staleTime: 0.5 * 60 * 1000, // 30 seconds

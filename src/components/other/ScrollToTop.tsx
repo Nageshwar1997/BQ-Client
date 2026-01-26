@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { useQueryParams } from '../../hooks';
+import { usePathParams } from '../../hooks';
 
 export const ScrollToTop = () => {
-  const { pathname } = useQueryParams();
+  const { pathname } = usePathParams();
 
   useEffect(() => {
     const el = document.getElementById('main');

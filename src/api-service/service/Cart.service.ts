@@ -60,10 +60,10 @@ export class CartService extends CartApi {
   };
 
   public GetCart = () => {
-    const { params } = useQueryParams();
+    const { queryParams } = useQueryParams();
     const { authenticated } = store.user.getState();
     return useQuery({
-      queryKey: ['get_user_cart', params.login, authenticated],
+      queryKey: ['get_user_cart', queryParams.login, authenticated],
       queryFn: this.get_cart,
       enabled: authenticated,
       placeholderData: keepPreviousData,
