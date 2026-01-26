@@ -7,8 +7,14 @@ export class ApiRequest {
   private instance: AxiosInstance = axios.create({ baseURL: this.baseUrl });
   protected token: string | null = getUserToken();
   protected routes = apiRoutes;
-  protected request = async (config: AxiosRequestConfig) => {
+  protected request = async (
+    config: AxiosRequestConfig,
+    options?: { isPrivateRoute?: boolean },
+  ) => {
     try {
+      if (options?.isPrivateRoute && this.token) {
+        config.headers = { ...config.headers, Authorization: this.token };
+      }
       const { data } = await this.instance.request(config);
       return data;
     } catch (error) {

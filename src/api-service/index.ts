@@ -1,6 +1,4 @@
-import { AuthService } from './Auth';
-import { MediaService } from './Media';
-import { UserService } from './User';
+import { AuthService, MediaService, UserService } from './service';
 
 export const service = {
   auth: new AuthService(),
