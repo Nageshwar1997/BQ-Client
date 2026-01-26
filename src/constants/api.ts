@@ -97,3 +97,91 @@ export const apiRoutes = {
     get_blog_by_id: { method: 'GET', url: '/blogs/blog' },
   },
 };
+
+export const QUERY_KEYS = {
+  auth: {
+    register: {
+      send_otp: ['register_send_otp'],
+      resend_otp: ['register_resend_otp'],
+      verify_otp: ['verify_otp_and_register'],
+    },
+    login: ['login'],
+    logout: ['logout'],
+  },
+  users: {
+    user: {
+      details: ['get_user'],
+      update: ['update_user'],
+      password: {
+        change: ['change_password'],
+        update: ['update_password'],
+        reset: ['reset_password'],
+        forgot: ['forgot_password'],
+        link: {
+          reset_password_send: ['send_reset_password_link'],
+          forgot_password_send: ['send_forgot_password_link'],
+          forgot_password_resend: ['resend_forgot_password_link'],
+        },
+        token_validity: {
+          reset_password_check: ['reset_password_token_validity'],
+          forgot_password_check: ['forgot_password_token_validity'],
+        },
+      },
+    },
+    seller: { apply: ['apply_seller'] },
+    wishlist: {
+      add: ['add_product_to_wishlist'],
+      remove: ['remove_product_from_wishlist'],
+      get: ['get_user_wishlist'],
+    },
+  },
+  products: {
+    upload: ['upload_product'],
+    update: ['update_product'],
+    delete: ['delete_product'],
+    all: ['get_all_products'],
+    product: ['get_product_by_id'],
+  },
+  media: {
+    image: {
+      upload_single: ['upload_single_image'],
+      upload_multiple: ['upload_multiple_image'],
+      delete_single: ['delete_single_image'],
+      delete_multiple: ['delete_multiple_image'],
+    },
+    video: {
+      upload_single: ['upload_single_video'],
+      upload_multiple: ['upload_multiple_video'],
+      delete_single: ['delete_single_video'],
+      delete_multiple: ['delete_multiple_video'],
+      home_videos: ['home_videos'],
+    },
+  },
+  reviews: {
+    add_review: ['add_review'],
+    update_like_dislike_helpful: ['update_like_dislike_helpful'],
+    update_review: ['update_review'],
+    delete_review: ['delete_review'],
+    get_reviews: ['get_reviews'],
+  },
+  cart_products: {
+    add: ['add_to_cart'],
+    update_quantity: ['update_cart_quantity'],
+    remove: ['remove_from_cart'],
+  },
+  carts: { get: ['get_cart'], clear: ['clear_cart'] },
+  addresses: {
+    add: ['add_address'],
+    update: ['update_address'],
+    delete: ['delete_address'],
+    get: ['get_addresses'],
+  },
+  orders: {
+    create_order: ['create_order'],
+    cancel_order: ['cancel_order'],
+    cancel_payment: ['cancel_payment'],
+    get_all_orders: ['get_all_orders'],
+    get_order_by_id: ['get_order_by_id'],
+  },
+  blogs: { get_all_blogs: ['get_all_blogs'], get_blog_by_id: ['get_blog_by_id'] },
+} as const;
