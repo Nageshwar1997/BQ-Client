@@ -8,13 +8,14 @@ import { store } from '../../store';
 
 export class UserService extends UserApi {
   public GetUserDetails = (enabled: boolean = true) => {
+    const token = getUserToken();
     return useQuery({
-      queryKey: [...QUERY_KEYS.users.user.details, !!this.token],
+      queryKey: [...QUERY_KEYS.users.user.details, !!token],
       queryFn: this.get_user,
       retry: false,
       staleTime: Infinity,
       gcTime: Infinity,
-      enabled,
+      enabled: !!(token && enabled),
       placeholderData: keepPreviousData,
     });
   };

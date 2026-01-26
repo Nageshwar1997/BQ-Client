@@ -4,16 +4,24 @@ import { getUserToken } from '../utils';
 
 export class ApiRequest {
   private baseUrl = `${BACKEND_URL}/api`;
-  private instance: AxiosInstance = axios.create({ baseURL: this.baseUrl });
-  protected token: string | null = getUserToken();
+  private instance: AxiosInstance;
+
+  constructor(url?: string) {
+    const baseURL = url ?? this.baseUrl;
+    this.instance = axios.create({ baseURL });
+  }
+
   protected routes = apiRoutes;
   protected request = async (
     config: AxiosRequestConfig,
     options?: { isPrivateRoute?: boolean },
   ) => {
     try {
-      if (options?.isPrivateRoute && this.token) {
-        config.headers = { ...config.headers, Authorization: this.token };
+      if (options?.isPrivateRoute) {
+        const token = getUserToken();
+        if (token) {
+          config.headers = { ...config.headers, Authorization: token };
+        }
       }
       const { data } = await this.instance.request(config);
       return data;
@@ -24,7 +32,7 @@ export class ApiRequest {
       } else if (error instanceof Error) {
         message = error.message;
       }
-      throw message;
+      throw new Error(message);
     }
   };
 }

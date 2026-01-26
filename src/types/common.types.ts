@@ -42,6 +42,8 @@ export type TIcon = SVGProps<SVGSVGElement>;
 
 export type TStringRecord = Record<string, string>;
 
+export type TPagination = Partial<Record<'page' | 'limit', number>>;
+
 export type TParams = TStringRecord;
 
 export type TFile = 'image' | 'video';
