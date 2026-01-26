@@ -7,23 +7,21 @@ export class UserApi extends ApiRequest {
   };
 
   protected update_user = (data: FormData) => {
-    return this.request({ ...this.routes.users.user.update, data, ...{ isPrivateRoute: true } });
+    return this.request({ ...this.routes.users.user.update, data }, { isPrivateRoute: true });
   };
 
   protected change_password = (data: TStringRecord) => {
-    return this.request({
-      ...this.routes.users.user.password.change,
-      data,
-      ...{ isPrivateRoute: true },
-    });
+    return this.request(
+      { ...this.routes.users.user.password.change, data },
+      { isPrivateRoute: true },
+    );
   };
 
   protected update_password = (data: TStringRecord) => {
-    return this.request({
-      ...this.routes.users.user.password.update,
-      data,
-      ...{ isPrivateRoute: true },
-    });
+    return this.request(
+      { ...this.routes.users.user.password.update, data },
+      { isPrivateRoute: true },
+    );
   };
 
   protected reset_password_token_validity_check = (token: string) => {
