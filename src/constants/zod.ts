@@ -56,7 +56,6 @@ export const emailValidationOptions: IZodStringConfigs = {
 };
 
 export const nameValidationOptions: Partial<IZodStringConfigs> = {
-  allowSpace: true,
   min: 2,
   max: 50,
   customRegexes: [

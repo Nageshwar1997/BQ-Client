@@ -96,6 +96,10 @@ export const apiRoutes = {
     get_all_blogs: { method: 'GET', url: '/blogs/all' },
     get_blog_by_id: { method: 'GET', url: '/blogs/blog' },
   },
+  g_form: {
+    contact_us: { method: 'POST', url: '/forms/contact-us' },
+    job_application: { method: 'POST', url: '/forms/job-application' },
+  },
 };
 
 export const QUERY_KEYS = {
@@ -184,4 +188,5 @@ export const QUERY_KEYS = {
     get_order_by_id: ['get_order_by_id'],
   },
   blogs: { get_all_blogs: ['get_all_blogs'], get_blog_by_id: ['get_blog_by_id'] },
+  g_form: { contact_us: ['contact_us'], job_application: ['job_application'] },
 } as const;
