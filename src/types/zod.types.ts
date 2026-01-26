@@ -7,10 +7,6 @@ type TZodCommonBaseConfigs = {
   parentLabel?: string;
 };
 
-export interface IZodCommonConfigs extends TZodCommonBaseConfigs {
-  required?: boolean;
-}
-
 export type TZodCompareConfigs = { min?: number; max?: number };
 export type TZodRegex = { regex: RegExp; message: string };
 
@@ -18,7 +14,8 @@ export interface IZodEnumsConfigs extends TZodCommonBaseConfigs {
   enumValues: readonly string[];
 }
 
-export interface IZodSingleFileConfigs extends IZodCommonConfigs {
+export interface IZodSingleFileConfigs extends TZodCommonBaseConfigs {
+  required?: boolean;
   maxVideoFileSize?: number;
   maxImageFileSize?: number;
 }
@@ -36,7 +33,7 @@ export interface IZodStringConfigs extends TZodCommonBaseConfigs, TZodCompareCon
   lowerOrUpper?: 'upper' | 'lower';
 }
 
-export interface ZodNumberConfigs extends IZodCommonConfigs, TZodCompareConfigs {
+export interface ZodNumberConfigs extends TZodCommonBaseConfigs, TZodCompareConfigs {
   int?: boolean;
   positive?: boolean;
 }

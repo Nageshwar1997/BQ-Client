@@ -11,6 +11,8 @@ export const ALLOWED_IMAGE_FORMATS = ['image/jpeg', 'image/png', 'image/webp', '
 export const ALLOWED_VIDEO_FORMATS = ['video/mp4', 'video/webm'];
 export const DEFAULT_POSTER = '/images/logo/BQ_gradient_logo.webp';
 
+export const ADDRESS_TYPES = ['shipping', 'billing', 'both'];
+
 export const LOADING_RINGS_DATA = [
   {
     border: { side: 'borderBottomWidth', color: 'red' },
@@ -72,3 +74,44 @@ export const AUTH_PROVIDER = {
   LINKEDIN: 'LINKEDIN',
   GITHUB: 'GITHUB',
 } as const;
+
+export const ALLOWED_COUNTRIES = ['India'];
+export const STATES_AND_UNION_TERRITORIES = [
+  'Andhra Pradesh',
+  'Arunachal Pradesh',
+  'Assam',
+  'Bihar',
+  'Chhattisgarh',
+  'Goa',
+  'Gujarat',
+  'Haryana',
+  'Himachal Pradesh',
+  'Jharkhand',
+  'Karnataka',
+  'Kerala',
+  'Madhya Pradesh',
+  'Maharashtra',
+  'Manipur',
+  'Meghalaya',
+  'Mizoram',
+  'Nagaland',
+  'Odisha',
+  'Punjab',
+  'Rajasthan',
+  'Sikkim',
+  'Tamil Nadu',
+  'Telangana',
+  'Tripura',
+  'Uttar Pradesh',
+  'Uttarakhand',
+  'West Bengal',
+  // Union Territories
+  'Andaman and Nicobar Islands',
+  'Chandigarh',
+  'Dadra and Nagar Haveli and Daman and Diu',
+  'Delhi (National Capital Territory of Delhi)',
+  'Jammu and Kashmir',
+  'Ladakh',
+  'Lakshadweep',
+  'Puducherry',
+];

@@ -1,4 +1,5 @@
 import type { IZodStringConfigs } from '../types';
+import { zodString } from '../utils/zod';
 import { regexes } from './common';
 
 export const passwordValidationOptions: IZodStringConfigs = {
@@ -76,3 +77,19 @@ export const otpValidationOptions: IZodStringConfigs = {
     { regex: regexes.otp, message: 'must be a valid 6 digit number. It can contain only digits' },
   ],
 };
+
+export const firstNameValidation = zodString({
+  ...nameValidationOptions,
+  field: 'firstName',
+  label: 'First Name',
+});
+
+export const lastNameValidation = zodString({
+  ...nameValidationOptions,
+  field: 'lastName',
+  label: 'Last Name',
+});
+
+export const emailValidation = zodString(emailValidationOptions);
+
+export const phoneNumberValidation = zodString(phoneValidationOptions);

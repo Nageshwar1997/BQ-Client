@@ -1,10 +1,12 @@
 import { boolean, object } from 'zod';
 import { zodCustomIssue, zodEnum, zodSingleFileOrUrl, zodString } from '../utils/zod';
 import {
-  emailValidationOptions,
-  nameValidationOptions,
+  emailValidation,
+  firstNameValidation,
+  lastNameValidation,
   otpValidationOptions,
   passwordValidationOptions,
+  phoneNumberValidation,
   phoneValidationOptions,
 } from '../constants';
 
@@ -14,7 +16,7 @@ export const loginSchema = object({
     label: 'Login method',
     enumValues: ['email', 'phoneNumber'],
   }),
-  email: zodString(emailValidationOptions).optional(),
+  email: emailValidation.optional(),
   phoneNumber: zodString(phoneValidationOptions).optional(),
   password: zodString(passwordValidationOptions),
   remember: boolean().optional().default(false),
@@ -31,9 +33,7 @@ export const loginSchema = object({
   }
 });
 
-export const sendOtpSchema = object({
-  email: zodString(emailValidationOptions),
-});
+export const sendOtpSchema = object({ email: emailValidation });
 
 export const registerSchema = object({
   profilePic: zodSingleFileOrUrl({
@@ -42,18 +42,10 @@ export const registerSchema = object({
     required: true,
   }),
   otp: zodString(otpValidationOptions),
-  firstName: zodString({
-    ...nameValidationOptions,
-    field: 'firstName',
-    label: 'First Name',
-  }),
-  lastName: zodString({
-    ...nameValidationOptions,
-    field: 'lastName',
-    label: 'Last Name',
-  }),
-  email: zodString(emailValidationOptions),
-  phoneNumber: zodString(phoneValidationOptions),
+  firstName: firstNameValidation,
+  lastName: lastNameValidation,
+  email: emailValidation,
+  phoneNumber: phoneNumberValidation,
   password: zodString(passwordValidationOptions),
   confirmPassword: zodString({
     ...passwordValidationOptions,

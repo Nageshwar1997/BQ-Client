@@ -98,7 +98,6 @@ export const zodNumber = ({
   parentLabel,
   min,
   max,
-  required,
   int = false,
   positive = true,
 }: ZodNumberConfigs) => {
@@ -136,7 +135,7 @@ export const zodNumber = ({
     schema = schema.max(max, { message: messages.max });
   }
 
-  return required ? schema : schema.optional();
+  return schema;
 };
 
 export const zodEnum = ({

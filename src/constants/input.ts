@@ -1,9 +1,9 @@
-import type { TLogin, TRecordString, TRegister } from '../types';
+import type { TLogin, TStringRecord, TRegister } from '../types';
 
-interface TLoginInput extends TRecordString {
+interface TLoginInput extends TStringRecord {
   name: keyof TLogin;
 }
-interface TRegisterInput extends TRecordString {
+interface TRegisterInput extends TStringRecord {
   name: keyof TRegister;
 }
 

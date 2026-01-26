@@ -11,8 +11,8 @@ import type {
 } from 'react';
 
 import type { UseFormRegisterReturn } from 'react-hook-form';
-import type { TRegister } from './api';
 import type { AUTH_PROVIDER } from '../constants';
+import type { TRegister } from './schema.types';
 
 export type TClassName = {
   className?: string;
@@ -40,9 +40,9 @@ export interface IGradientText extends TClassName, TChildren {
 
 export type TIcon = SVGProps<SVGSVGElement>;
 
-export type TRecordString = Record<string, string>;
+export type TStringRecord = Record<string, string>;
 
-export type TParams = TRecordString;
+export type TParams = TStringRecord;
 
 export type TFile = 'image' | 'video';
 
@@ -182,7 +182,7 @@ export type TRegexes =
   | 'only_letters_and_spaces_and_dots'
   | 'pan';
 
-type TCategoryBaseL = {
+export type TCategoryBaseL = {
   id: number;
   path?: string;
   level: number;
@@ -191,9 +191,7 @@ type TCategoryBaseL = {
 };
 
 export interface ICategoryL1 extends TCategoryBaseL {
-  icon: FC<TIcon>;
   component: FC;
-  description: string;
   subCategories: ICategoryL2[];
 }
 
@@ -205,4 +203,7 @@ export interface ICategoryL2 extends TCategoryBaseL {
   description?: string;
 }
 
-export interface ICategoryL3 extends ICategoryL1 {}
+export interface ICategoryL3 extends TCategoryBaseL {
+  icon: FC<TIcon>;
+  description: string;
+}

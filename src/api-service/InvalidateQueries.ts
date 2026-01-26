@@ -35,6 +35,10 @@ export class InvalidateQueries {
     this.invalidateQuery(this.authQueries[2]);
   }
 
+  addresses() {
+    this.invalidateQuery(QUERY_KEYS.addresses.get);
+  }
+
   multiple(keys: readonly QueryKey[]) {
     keys.forEach(this.invalidateQuery);
   }

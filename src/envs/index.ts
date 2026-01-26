@@ -1,4 +1,4 @@
-import type { TRecordString } from '../types';
+import type { TStringRecord } from '../types';
 
 export const {
   // A
@@ -48,4 +48,4 @@ export const {
   // X
   // Y
   // Z
-} = import.meta.env as TRecordString;
+} = import.meta.env as TStringRecord;
