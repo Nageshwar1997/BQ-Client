@@ -9,7 +9,6 @@ export class MediaService extends MediaApi {
       queryFn: this.get_home_videos,
       staleTime: Infinity,
       gcTime: Infinity,
-      refetchOnWindowFocus: false,
       placeholderData: keepPreviousData,
     });
   };

@@ -10,7 +10,6 @@ export class AddressService extends AddressApi {
       queryKey: QUERY_KEYS.addresses.get,
       queryFn: this.get_user_addresses,
       retry: false,
-      enabled: true,
       staleTime: Infinity,
       gcTime: Infinity,
       placeholderData: keepPreviousData,
