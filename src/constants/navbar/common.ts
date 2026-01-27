@@ -1,4 +1,4 @@
-import ForYou from '../../components/layout/navbar/ForYou';
+import { ForYou } from '../../components';
 import {
   CareIcon,
   CashIcon,

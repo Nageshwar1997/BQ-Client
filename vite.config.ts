@@ -17,14 +17,7 @@ export default defineConfig(({ mode }) => ({
   ].filter(Boolean),
   server: { port: 3001 },
   build: {
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          react: ['react', 'react-dom'],
-          motion: ['framer-motion'],
-        },
-      },
-    },
+    rollupOptions: { output: { manualChunks: { react: ['react', 'react-dom'] } } },
     // Optionally, adjust the chunk size warning limit (set to 1 MB here)
     chunkSizeWarningLimit: 1000, // 1 MB
   },
