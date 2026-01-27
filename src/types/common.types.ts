@@ -190,19 +190,29 @@ export interface ICategoryL3 extends TCategoryBaseL {
   description: string;
 }
 
-export type TProductPossibleKeys = {
-  requiredFields?: (keyof IProduct)[];
-  populateFields?: {
-    shades?: (keyof IShade)[];
-    seller?: Exclude<keyof IUser, 'password'>[];
-    category?: (keyof ICategory)[];
-    reviews?: (keyof IReview)[];
-  };
-};
-
-export type TAllProductsQuery = {
-  data: TProductPossibleKeys;
+export type TApiQueryProps = {
   pageParams?: TPagination;
   queryParams?: TParams;
   enabled?: boolean;
+};
+
+export interface IApiProductQueryProps extends TApiQueryProps {
+  requiredFields?: (keyof IProduct)[];
+  populateFields?: {
+    shades?: (keyof IShade)[];
+    seller?: Omit<keyof IUser, 'password'>[];
+    category?: (keyof ICategory)[];
+    reviews?: (keyof IReview)[];
+  };
+}
+
+export interface IApiReviewQueryProps extends TApiQueryProps {
+  requiredFields?: (keyof IReview)[];
+  populateFields?: { user?: Omit<keyof IUser, 'password'>[] };
+}
+
+export type TLikeDislikeHelpfulReview = {
+  liked?: boolean;
+  disliked?: boolean;
+  isHelpful?: boolean;
 };

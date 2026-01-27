@@ -4,7 +4,7 @@ import { VITE_ENCRYPTION_SECRET_KEY } from '../envs';
 import { DEFAULT_POSTER } from '../constants';
 import type { IButton } from '../types';
 
-export const toaster = (type: 'success' | 'error' = 'success', error: unknown) => {
+export const toaster = (type: 'success' | 'error' = 'success', error: string | Error) => {
   const message = error instanceof Error ? error.message : String(error);
   if (type === 'error') {
     toast.error(message);

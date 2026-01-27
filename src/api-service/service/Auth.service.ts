@@ -9,38 +9,32 @@ export class AuthService extends AuthApi {
     return useMutation({
       mutationKey: QUERY_KEYS.auth.login,
       mutationFn: this.login,
-      onSuccess: (data) => toaster('success', data?.message),
-      onError: (error) => toaster('error', error),
+      onSuccess: ({ message }) => toaster('success', message),
+      onError: ({ message }) => toaster('error', message),
     });
   };
   public SendOtp = () => {
     return useMutation({
       mutationKey: QUERY_KEYS.auth.register.send_otp,
       mutationFn: this.send_otp,
-      onSuccess: (data) => toaster('success', data?.message),
-      onError: (error) => toaster('error', error),
+      onSuccess: ({ message }) => toaster('success', message),
+      onError: ({ message }) => toaster('error', message),
     });
   };
   public ResendOtp = () => {
     return useMutation({
       mutationKey: QUERY_KEYS.auth.register.resend_otp,
       mutationFn: this.resend_otp,
-      onSuccess: (data) => toaster('success', data?.message),
-      onError: (error) => {
-        if (typeof error === 'string') {
-          toaster('error', (error as string).replace(' Go Back', ''));
-        } else {
-          toaster('error', error);
-        }
-      },
+      onSuccess: ({ message }) => toaster('success', message),
+      onError: ({ message }) => toaster('error', message.replace(' Go Back', '')),
     });
   };
   public VerifyOtpAndRegister = () => {
     return useMutation({
       mutationKey: QUERY_KEYS.auth.register.verify_otp,
       mutationFn: this.verify_otp_and_register,
-      onSuccess: (data) => toaster('success', data?.message),
-      onError: (error) => toaster('error', error),
+      onSuccess: ({ message }) => toaster('success', message),
+      onError: ({ message }) => toaster('error', message),
     });
   };
   public Logout = () => {

@@ -24,8 +24,8 @@ export class UserService extends UserApi {
     return useMutation({
       mutationKey: QUERY_KEYS.users.user.update,
       mutationFn: this.update_user,
-      onSuccess: (data) => toaster('success', data?.message),
-      onError: (error) => toaster('error', error),
+      onSuccess: ({ message }) => toaster('success', message),
+      onError: ({ message }) => toaster('error', message),
     });
   };
 
@@ -33,8 +33,8 @@ export class UserService extends UserApi {
     return useMutation({
       mutationKey: QUERY_KEYS.users.user.password.change,
       mutationFn: this.change_password,
-      onSuccess: (data) => toaster('success', data?.message),
-      onError: (error) => toaster('error', error),
+      onSuccess: ({ message }) => toaster('success', message),
+      onError: ({ message }) => toaster('error', message),
     });
   };
 
@@ -44,8 +44,8 @@ export class UserService extends UserApi {
     return useMutation({
       mutationKey: QUERY_KEYS.users.user.password.update,
       mutationFn: this.update_password,
-      onSuccess: (data) => (toaster('success', data?.message), invalidate.user()),
-      onError: (error) => toaster('error', error),
+      onSuccess: ({ message }) => (toaster('success', message), invalidate.user()),
+      onError: ({ message }) => toaster('error', message),
     });
   };
 
@@ -71,8 +71,8 @@ export class UserService extends UserApi {
     return useMutation({
       mutationKey: QUERY_KEYS.users.user.password.link.reset_password_send,
       mutationFn: this.reset_password_send_link,
-      onSuccess: (data) => toaster('success', data?.message),
-      onError: (error) => toaster('error', error),
+      onSuccess: ({ message }) => toaster('success', message),
+      onError: ({ message }) => toaster('error', message),
     });
   };
 
@@ -80,8 +80,8 @@ export class UserService extends UserApi {
     return useMutation({
       mutationKey: QUERY_KEYS.users.user.password.link.forgot_password_send,
       mutationFn: this.forgot_password_send_link,
-      onSuccess: (data) => toaster('success', data?.message),
-      onError: (error) => toaster('error', error),
+      onSuccess: ({ message }) => toaster('success', message),
+      onError: ({ message }) => toaster('error', message),
     });
   };
 
@@ -89,8 +89,8 @@ export class UserService extends UserApi {
     return useMutation({
       mutationKey: QUERY_KEYS.users.user.password.link.forgot_password_resend,
       mutationFn: this.forgot_password_resend_link,
-      onSuccess: (data) => toaster('success', data?.message),
-      onError: (error) => toaster('error', error),
+      onSuccess: ({ message }) => toaster('success', message),
+      onError: ({ message }) => toaster('error', message),
     });
   };
 
@@ -98,8 +98,8 @@ export class UserService extends UserApi {
     return useMutation({
       mutationKey: QUERY_KEYS.users.user.password.reset,
       mutationFn: this.reset_password,
-      onSuccess: (data) => toaster('success', data?.message),
-      onError: (error) => toaster('error', error),
+      onSuccess: ({ message }) => toaster('success', message),
+      onError: ({ message }) => toaster('error', message),
     });
   };
 
@@ -107,8 +107,8 @@ export class UserService extends UserApi {
     return useMutation({
       mutationKey: QUERY_KEYS.users.user.password.forgot,
       mutationFn: this.forgot_password,
-      onSuccess: (data) => toaster('success', data?.message),
-      onError: (error) => toaster('error', error),
+      onSuccess: ({ message }) => toaster('success', message),
+      onError: ({ message }) => toaster('error', message),
     });
   };
 
@@ -116,8 +116,8 @@ export class UserService extends UserApi {
     return useMutation({
       mutationKey: QUERY_KEYS.users.seller.apply,
       mutationFn: this.apply_seller,
-      onSuccess: (data) => toaster('success', data?.message),
-      onError: (error) => toaster('error', error),
+      onSuccess: ({ message }) => toaster('success', message),
+      onError: ({ message }) => toaster('error', message),
     });
   };
 
@@ -143,8 +143,8 @@ export class UserService extends UserApi {
     return useMutation({
       mutationKey: QUERY_KEYS.users.wishlist.add,
       mutationFn: this.add_product_to_wishlist,
-      onSuccess: (data) => (toaster('success', data?.message), invalidate.wishlist()),
-      onError: (error) => toaster('error', error),
+      onSuccess: ({ message }) => (toaster('success', message), invalidate.wishlist()),
+      onError: ({ message }) => toaster('error', message),
     });
   };
 
@@ -154,8 +154,8 @@ export class UserService extends UserApi {
     return useMutation({
       mutationKey: QUERY_KEYS.users.wishlist.remove,
       mutationFn: this.remove_product_from_wishlist,
-      onSuccess: (data) => (toaster('success', data?.message), invalidate.wishlist()),
-      onError: (error) => toaster('error', error),
+      onSuccess: ({ message }) => (toaster('success', message), invalidate.wishlist()),
+      onError: ({ message }) => toaster('error', message),
     });
   };
 }

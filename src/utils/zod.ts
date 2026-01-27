@@ -2,7 +2,7 @@ import z, { type RefinementCtx } from 'zod';
 import type {
   IZodEnumsConfigs,
   IZodFileConfigs,
-  IZodMultipleFileConfigs,
+  IZodMultipleFilesConfigs,
   IZodSingleFileConfigs,
   IZodStringConfigs,
   ZodNumberConfigs,
@@ -156,7 +156,7 @@ export const zodEnum = ({
   });
 };
 
-export function zodFileOrUrl(props: IZodFileConfigs) {
+export const zodFileOrUrl = (props: IZodFileConfigs) => {
   const {
     fileOrUrl,
     field,
@@ -226,7 +226,7 @@ export function zodFileOrUrl(props: IZodFileConfigs) {
   } else {
     zodCustomIssue(ctx, `Item ${name} must be a File or a valid media URL`, path);
   }
-}
+};
 
 export const zodSingleFileOrUrl = ({
   field,
@@ -279,35 +279,63 @@ export const zodMultipleFileOrUrl = ({
   maxVideos = 5,
   maxImageFileSize = MAX_IMAGE_FILE_SIZE,
   maxVideoFileSize = MAX_VIDEO_FILE_SIZE,
-}: IZodMultipleFileConfigs) => {
+}: IZodMultipleFilesConfigs) => {
   const baseName = label ?? field;
   const parentName = parentLabel ?? parentField;
-
   const name = parentName ? `${parentName}: ${baseName}` : baseName;
+
   return z.unknown().superRefine((value, ctx) => {
-    let fileOrUrl = value;
+    let filesOrUrls: Array<File | string> = [];
 
     if (typeof FileList !== 'undefined' && value instanceof FileList) {
-      if (value.length === 0) {
-        fileOrUrl = undefined;
-      } else if (value.length > 1) {
-        zodCustomIssue(ctx, `${name} allows only one file.`);
-        return;
-      } else {
-        fileOrUrl = value[0];
-      }
+      filesOrUrls = Array.from(value);
+    } else if (Array.isArray(value)) {
+      filesOrUrls = value;
+    } else if (!value) {
+      filesOrUrls = [];
+    } else {
+      zodCustomIssue(ctx, `${name} must be files or URLs.`);
+      return;
     }
 
-    zodFileOrUrl({
-      fileOrUrl,
-      ctx,
-      field,
-      label,
-      maxImageFileSize,
-      maxVideoFileSize,
-      parentLabel,
-      parentField,
-      required,
+    if (required && filesOrUrls.length === 0) {
+      zodCustomIssue(ctx, `${name} is required.`);
+      return;
+    }
+
+    if (!required && filesOrUrls.length === 0) return;
+
+    let imageCount = 0;
+    let videoCount = 0;
+
+    filesOrUrls.forEach((fileOrUrl, index) => {
+      if (fileOrUrl instanceof File) {
+        if (ALLOWED_IMAGE_FORMATS.includes(fileOrUrl.type)) imageCount++;
+        else if (ALLOWED_VIDEO_FORMATS.includes(fileOrUrl.type)) videoCount++;
+      }
+
+      zodFileOrUrl({
+        fileOrUrl,
+        ctx,
+        field,
+        index,
+        label,
+        maxImageFileSize,
+        maxVideoFileSize,
+        parentLabel,
+        parentField,
+        required,
+      });
     });
+
+    // Image limit
+    if (maxImages !== undefined && imageCount > maxImages) {
+      zodCustomIssue(ctx, `${name} allows maximum ${maxImages} image${maxImages > 1 ? 's' : ''}.`);
+    }
+
+    // Video limit
+    if (maxVideos !== undefined && videoCount > maxVideos) {
+      zodCustomIssue(ctx, `${name} allows maximum ${maxVideos} video${maxVideos > 1 ? 's' : ''}.`);
+    }
   });
 };

@@ -7,3 +7,4 @@ export * from './Cart.api';
 export * from './G-Form.api';
 export * from './Order.api';
 export * from './Product.api';
+export * from './Review.api';

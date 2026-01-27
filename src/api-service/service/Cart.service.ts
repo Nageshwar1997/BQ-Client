@@ -14,8 +14,8 @@ export class CartService extends CartApi {
     return useMutation({
       mutationKey: QUERY_KEYS.cart_products.add,
       mutationFn: this.add_product_to_cart,
-      onSuccess: (data) => toaster('success', data?.message),
-      onError: (error) => toaster('error', error),
+      onSuccess: ({ message }) => toaster('success', message),
+      onError: ({ message }) => toaster('error', message),
       onSettled: invalidate.cart,
     });
   };
@@ -27,8 +27,8 @@ export class CartService extends CartApi {
     return useMutation({
       mutationKey: QUERY_KEYS.cart_products.update_quantity,
       mutationFn: this.update_cart_product_quantity,
-      onSuccess: (data) => toaster('success', data?.message),
-      onError: (error) => toaster('error', error),
+      onSuccess: ({ message }) => toaster('success', message),
+      onError: ({ message }) => toaster('error', message),
       onSettled: invalidate.cart,
     });
   };
@@ -40,8 +40,8 @@ export class CartService extends CartApi {
     return useMutation({
       mutationKey: QUERY_KEYS.cart_products.remove,
       mutationFn: this.remove_product_from_cart,
-      onSuccess: (data) => toaster('success', data?.message),
-      onError: (error) => toaster('error', error),
+      onSuccess: ({ message }) => toaster('success', message),
+      onError: ({ message }) => toaster('error', message),
       onSettled: invalidate.cart,
     });
   };
@@ -53,8 +53,8 @@ export class CartService extends CartApi {
     return useMutation({
       mutationKey: QUERY_KEYS.carts.clear,
       mutationFn: this.clear_cart,
-      onSuccess: (data) => toaster('success', data?.message),
-      onError: (error) => toaster('error', error),
+      onSuccess: ({ message }) => toaster('success', message),
+      onError: ({ message }) => toaster('error', message),
       onSettled: invalidate.cart,
     });
   };

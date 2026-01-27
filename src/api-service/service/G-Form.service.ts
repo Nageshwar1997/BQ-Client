@@ -8,8 +8,8 @@ export class GFormService extends GFormApi {
     return useMutation({
       mutationKey: QUERY_KEYS.g_form.contact_us,
       mutationFn: this.contact_us,
-      onSuccess: (data) => toaster('success', data?.message),
-      onError: (error) => toaster('error', error),
+      onSuccess: ({ message }) => toaster('success', message),
+      onError: ({ message }) => toaster('error', message),
     });
   };
 
@@ -17,8 +17,8 @@ export class GFormService extends GFormApi {
     return useMutation({
       mutationKey: QUERY_KEYS.g_form.job_application,
       mutationFn: this.job_application,
-      onSuccess: (data) => toaster('success', data?.message),
-      onError: (error) => toaster('error', error),
+      onSuccess: ({ message }) => toaster('success', message),
+      onError: ({ message }) => toaster('error', message),
     });
   };
 }

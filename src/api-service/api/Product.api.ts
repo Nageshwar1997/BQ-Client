@@ -1,27 +1,19 @@
-import type { TAllProductsQuery } from '../../types';
+import type { IApiProductQueryProps } from '../../types';
 import { ApiRequest } from '../ApiRequest';
 
 export class ProductApi extends ApiRequest {
-  protected get_all_products = ({
-    data,
-    pageParams,
-    queryParams,
-  }: Omit<TAllProductsQuery, 'enabled'>) => {
-    return this.request({
-      ...this.routes.products.all,
-      params: { ...pageParams, ...queryParams, ...data },
-    });
+  protected get_all_products = (params: Omit<IApiProductQueryProps, 'enabled'>) => {
+    return this.request({ ...this.routes.products.all, params });
   };
 
-  protected get_product_by_id = ({
-    data,
-    queryParams,
-  }: Pick<TAllProductsQuery, 'queryParams' | 'data'>) => {
+  protected get_product_by_id = (params: Omit<IApiProductQueryProps, 'enabled' | 'pageParams'>) => {
     const { method, url } = this.routes.products.product;
+    const { queryParams, ...restParams } = params;
+    const { productId, ...restQueryParams } = queryParams ?? {};
     return this.request({
       method,
-      url: `${url}/${queryParams?.productId ?? ''}`,
-      params: { ...queryParams, ...data },
+      url: `${url}/${productId ?? ''}`,
+      params: { ...restQueryParams, ...restParams },
     });
   };
 }

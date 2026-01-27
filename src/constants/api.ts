@@ -65,10 +65,10 @@ export const apiRoutes = {
   },
   reviews: {
     add_review: { method: 'POST', url: '/reviews/add' }, // NOTE - productId will be sent as param
-    update_like_dislike_helpful: { method: 'PATCH', url: '/reviews/update-like-dislike-helpful' }, // NOTE - reviewId will be sent as param
+    like_dislike_helpful: { method: 'PATCH', url: '/reviews/update-like-dislike-helpful' }, // NOTE - reviewId will be sent as param
     update_review: { method: 'PATCH', url: '/reviews/update' }, // NOTE - productId/reviewId will be sent as param
     delete_review: { method: 'DELETE', url: '/reviews/delete' }, // NOTE - productId/reviewId will be sent as param
-    get_reviews: { method: 'GET', url: '/reviews/get' }, // NOTE - productId will be sent as param
+    get_reviews_by_product_id: { method: 'GET', url: '/reviews/get' }, // NOTE - productId will be sent as param
   },
   cart_products: {
     add: { method: 'POST', url: '/cart-products/add' },
@@ -163,10 +163,10 @@ export const QUERY_KEYS = {
   },
   reviews: {
     add_review: ['add_review'],
-    update_like_dislike_helpful: ['update_like_dislike_helpful'],
+    like_dislike_helpful: ['like_dislike_helpful'],
     update_review: ['update_review'],
     delete_review: ['delete_review'],
-    get_reviews: ['get_reviews'],
+    get_reviews_by_product_id: ['get_reviews_by_product_id'],
   },
   cart_products: {
     add: ['add_to_cart'],
