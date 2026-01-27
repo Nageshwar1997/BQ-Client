@@ -1,6 +1,6 @@
-import { useActionStore } from './action';
-import { useThemeStore } from './theme';
-import { useUserStore } from './user';
+import { useActionStore } from './action.store';
+import { useThemeStore } from './theme.store';
+import { useUserStore } from './user.store';
 
 class Store {
   public theme = useThemeStore;
