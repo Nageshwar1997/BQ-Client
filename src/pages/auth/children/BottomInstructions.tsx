@@ -1,6 +1,6 @@
-import GradientText from '../../../components/ui/GradientText';
+import { GradientText } from '../../../components';
 
-const BottomInstructions = () => {
+export const BottomInstructions = () => {
   return (
     <p className="text-tertiary text-xs">
       Your entry or registration on the site means acceptance of the{' '}
@@ -21,5 +21,3 @@ const BottomInstructions = () => {
     </p>
   );
 };
-
-export default BottomInstructions;

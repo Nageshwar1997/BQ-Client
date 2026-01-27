@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import type { IModalWrapper } from '../../../types';
 import { CloseIcon } from '../../../icons';
-import ScrollableGradientContainer from '../containers/ScrollableGradientContainer';
-import GradientText from '../../ui/GradientText';
+import { ScrollableGradientContainer } from '../containers';
+import { GradientText } from '../../ui';
 
-const ModalWrapper = ({
+export const ModalWrapper = ({
   isOpen,
   onClose,
   children,
@@ -65,5 +65,3 @@ const ModalWrapper = ({
     </div>
   );
 };
-
-export default ModalWrapper;

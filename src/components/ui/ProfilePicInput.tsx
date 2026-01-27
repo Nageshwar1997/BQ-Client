@@ -1,14 +1,13 @@
 import { ImageUpIcon, UserCircleIcon } from '../../icons';
 import type { IBaseInput, IFileInput } from '../../types';
-import FileInput from '../input/FileInput';
-import InputError from './InputError';
+import { FileInput, InputError } from './Input';
 
 interface ProfilePicInputProps extends Pick<IBaseInput, 'register' | 'error' | 'className'> {
   fileInputProps: Omit<IFileInput['fileInputProps'], 'value'>;
   src?: string;
 }
 
-const ProfilePicInput = ({
+export const ProfilePicInput = ({
   src,
   error,
   register,
@@ -36,5 +35,3 @@ const ProfilePicInput = ({
     </label>
   );
 };
-
-export default ProfilePicInput;

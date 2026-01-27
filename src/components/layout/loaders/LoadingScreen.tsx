@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { BEAUTY_FACTS } from '../../../constants';
-import Teddy from './teddy/Teddy';
+import { Teddy } from './Teddy';
 
 export const LoadingScreen = () => {
   const TEXT_CHANGE_INTERVAL = 5000;

@@ -1,4 +1,4 @@
+export * from './Teddy';
 export * from './LoadingPage';
+export * from './LoadingRings';
 export * from './LoadingScreen';
-export * from './loading/index';
-export * from './teddy/Teddy';

@@ -1,7 +1,7 @@
-import { InfoIcon } from '../../icons';
-import type { TClassName } from '../../types';
+import { InfoIcon } from '../../../../icons';
+import type { TClassName } from '../../../../types';
 
-const InputError = ({ error, className = '' }: { error?: string } & TClassName) => {
+export const InputError = ({ error, className = '' }: { error?: string } & TClassName) => {
   if (!error) return null;
   return (
     <p
@@ -12,5 +12,3 @@ const InputError = ({ error, className = '' }: { error?: string } & TClassName) 
     </p>
   );
 };
-
-export default InputError;

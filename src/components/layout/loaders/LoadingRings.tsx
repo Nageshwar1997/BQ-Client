@@ -1,7 +1,7 @@
-import { LOADING_RINGS_DATA } from '../../../../constants';
-import type { ILoading } from '../../../../types';
+import { LOADING_RINGS_DATA } from '../../../constants';
+import type { ILoading } from '../../../types';
 
-const Loading = ({ className = '', text = 'Loading....' }: ILoading) => {
+export const LoadingRings = ({ className = '', text = 'Loading....' }: ILoading) => {
   return (
     <div className={`flex h-full w-full items-center justify-center ${className}`}>
       <div className="relative flex flex-col items-center">
@@ -36,5 +36,3 @@ const Loading = ({ className = '', text = 'Loading....' }: ILoading) => {
     </div>
   );
 };
-
-export default Loading;

@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import type { TClassName, TMediaOption } from '../../../types';
-import ModalWrapper from './ModalWrapper';
-import MediaCarouselWithParentMedia from '../carousels/MediaCarouselWithParentMedia';
+import { ModalWrapper } from './ModalWrapper';
+import { MediaCarouselWithParentMedia } from '../carousels';
 
-const MediaModal = ({
+export const MediaModal = ({
   media,
   currentIndex,
   className = '',
@@ -53,5 +53,3 @@ const MediaModal = ({
     </ModalWrapper>
   );
 };
-
-export default MediaModal;

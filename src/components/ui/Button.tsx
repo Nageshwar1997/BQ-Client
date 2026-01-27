@@ -2,7 +2,7 @@ import type { MouseEvent } from 'react';
 import type { IButton } from '../../types';
 import { getButtonCss } from '../../utils';
 
-const Button = ({
+export const Button = ({
   pattern,
   content,
   className = '',
@@ -34,5 +34,3 @@ const Button = ({
     </button>
   );
 };
-
-export default Button;

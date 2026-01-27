@@ -3,7 +3,6 @@ import {
   SVG24WH_VB,
   SVG24WH_VB_LC_LJ_R,
   SVG_F_C_RULE,
-  SVG_LC_LJ_ROUND,
   SVG_PATH_FR_CR,
   XMLNS,
 } from '../constants';
@@ -51,22 +50,6 @@ export const PlayIcon = (props: TIcon) => (
       {...SVG_PATH_FR_CR}
       d="M0 2.73774V19.2637C0 20.8611 1.78029 21.8138 3.1094 20.9278L15.5038 12.6648C16.6913 11.8732 16.6913 10.1282 15.5038 9.3366L3.1094 1.07364C1.78029 0.187564 0 1.14035 0 2.73774ZM14 11.0007L2 3.0007V19.0007L14 11.0007Z"
     />
-  </svg>
-);
-
-export const DropdownIcon = (props: TIcon) => (
-  <svg
-    width="20"
-    height="20"
-    viewBox="0 0 20 20"
-    fill="none"
-    stroke="black"
-    strokeWidth="2"
-    {...XMLNS}
-    {...SVG_LC_LJ_ROUND}
-    {...props}
-  >
-    <path d="M5.91669 7.5L9.91076 11.4941C10.2362 11.8195 10.7638 11.8195 11.0893 11.4941L15.0834 7.5" />
   </svg>
 );
 

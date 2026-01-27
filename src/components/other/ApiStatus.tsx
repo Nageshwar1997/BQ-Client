@@ -1,8 +1,7 @@
 import { ContainerIcon, InfoIcon } from '../../icons';
 import type { IApiStatus } from '../../types';
-import Loading from '../layout/loaders/loading';
-import GradientText from '../ui/GradientText';
-import HR from '../ui/HR';
+import { LoadingRings } from '../layout';
+import { GradientText, HR } from '../ui';
 
 const ApiDescription = ({ status, empty, error, showHrLine }: IApiStatus) => {
   const title = status === 'empty' ? empty?.title : status === 'error' ? error?.title : '';
@@ -38,18 +37,16 @@ const ApiDescription = ({ status, empty, error, showHrLine }: IApiStatus) => {
   );
 };
 
-const ApiStatus = ({ className = '', status, loading, ...rest }: IApiStatus) => {
+export const ApiStatus = ({ className = '', status, loading, ...rest }: IApiStatus) => {
   return (
     <div
       className={`m-auto flex h-full w-full flex-col items-center justify-center gap-2 p-4 ${className}`}
     >
       {status === 'loading' && loading?.title ? (
-        <Loading text={loading.title} />
+        <LoadingRings text={loading.title} />
       ) : (
         <ApiDescription {...rest} status={status} />
       )}
     </div>
   );
 };
-
-export default ApiStatus;

@@ -8,7 +8,7 @@ const Text = ({ text, type, className, children }: IGradientText) => (
     {children ? children : text}
   </span>
 );
-const GradientText = (props: IGradientText) => {
+export const GradientText = (props: IGradientText) => {
   const { path, className, ...rest } = props;
   return path ? (
     <Link to={path} className={`${className ?? ''}`}>
@@ -18,5 +18,3 @@ const GradientText = (props: IGradientText) => {
     <Text {...rest} className={className} />
   );
 };
-
-export default GradientText;

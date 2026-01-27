@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import GradientText from './GradientText';
+import { GradientText } from './GradientText';
 
 type TResendOtp = { label: string; count: number; onResend?: () => void };
 
-const Resend = ({ onResend, count, label = 'Not received?' }: TResendOtp) => {
+export const Resend = ({ onResend, count, label = 'Not received?' }: TResendOtp) => {
   const [counter, setCounter] = useState(count);
 
   useEffect(() => {
@@ -43,5 +43,3 @@ const Resend = ({ onResend, count, label = 'Not received?' }: TResendOtp) => {
     </p>
   );
 };
-
-export default Resend;

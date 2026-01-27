@@ -1,7 +1,7 @@
-import type { ICheckbox } from '../../types';
-import InputError from '../ui/InputError';
+import type { ICheckbox } from '../../../types';
+import { InputError } from './children';
 
-const Checkbox = ({
+export const Checkbox = ({
   register,
   className = '',
   rightText,
@@ -38,5 +38,3 @@ const Checkbox = ({
     </div>
   );
 };
-
-export default Checkbox;

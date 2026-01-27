@@ -1,6 +1,6 @@
-import type { TInputIcon } from '../../../types';
+import type { TInputIcon } from '../../../../types';
 
-const InputIcon = ({ onClick, icon, text }: TInputIcon) => {
+export const InputIcon = ({ onClick, icon, text }: TInputIcon) => {
   if (!icon && !text) return null;
   return text ? (
     <p className="text-primary/50 border-r-primary/10 flex h-full items-center justify-center border-r p-3 text-sm capitalize">
@@ -15,5 +15,3 @@ const InputIcon = ({ onClick, icon, text }: TInputIcon) => {
     </span>
   );
 };
-
-export default InputIcon;

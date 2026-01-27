@@ -3,7 +3,7 @@ import { useOutsideClick } from '../../../hooks';
 import type { TDropdown } from '../../../types';
 import { ChevronDownIcon } from '../../../icons';
 
-const Dropdown: FC<TDropdown> = ({
+export const Dropdown: FC<TDropdown> = ({
   title,
   icons,
   children,
@@ -76,5 +76,3 @@ const Dropdown: FC<TDropdown> = ({
     </div>
   );
 };
-
-export default Dropdown;

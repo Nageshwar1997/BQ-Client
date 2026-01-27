@@ -1,8 +1,8 @@
 import { useScrollable } from '../../../hooks';
 import type { IScrollableGradientContainer, TGradientPos } from '../../../types';
-import { LinearGradient } from '../../ui/LinearGradient';
+import { LinearGradient } from '../../ui';
 
-const ScrollableGradientContainer = ({
+export const ScrollableGradientContainer = ({
   className = '',
   children,
   containerClassName = '',
@@ -30,7 +30,7 @@ const ScrollableGradientContainer = ({
         className={`relative w-full flex-1 scroll-smooth ${isVertical ? 'overflow-y-auto' : ''} ${isHorizontal ? 'overflow-x-auto whitespace-nowrap' : ''} ${className} `}
       >
         <div
-          className={`w-full h-full flex gap-2 ${isVertical ? 'flex-col' : 'flex-row'} ${
+          className={`flex h-full w-full gap-2 ${isVertical ? 'flex-col' : 'flex-row'} ${
             isVertical
               ? !gradients.top && !gradients.bottom
                 ? 'items-center justify-center'
@@ -46,5 +46,3 @@ const ScrollableGradientContainer = ({
     </div>
   );
 };
-
-export default ScrollableGradientContainer;

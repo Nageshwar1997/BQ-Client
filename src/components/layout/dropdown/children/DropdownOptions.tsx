@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import { ChevronDownIcon } from '../../../../icons';
 import type { IDropdownOptions } from '../../../../types';
 
-const DropdownOptions: FC<IDropdownOptions> = ({
+export const DropdownOptions: FC<IDropdownOptions> = ({
   options,
   selected,
   onChange,
@@ -34,5 +34,3 @@ const DropdownOptions: FC<IDropdownOptions> = ({
     </div>
   );
 };
-
-export default DropdownOptions;

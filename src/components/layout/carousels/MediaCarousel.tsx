@@ -1,9 +1,9 @@
 import { CloseIcon, PlayIcon } from '../../../icons';
 import type { IMediaCarousel } from '../../../types';
-import VideoPlayer from '../media/VideoPlayer';
-import ScrollableGradientContainer from '../containers/ScrollableGradientContainer';
+import { VideoPlayer } from '../media';
+import { ScrollableGradientContainer } from '../containers';
 
-const MediaCarousel = ({
+export const MediaCarousel = ({
   className = '',
   media,
   selected,
@@ -74,5 +74,3 @@ const MediaCarousel = ({
     </ScrollableGradientContainer>
   );
 };
-
-export default MediaCarousel;

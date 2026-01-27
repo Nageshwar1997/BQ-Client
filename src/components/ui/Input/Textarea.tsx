@@ -1,9 +1,8 @@
 import { useEffect, useRef, type ChangeEvent } from 'react';
-import type { ITextArea } from '../../types';
-import InputLabel from './children/InputLabel';
-import InputError from '../ui/InputError';
+import type { ITextArea } from '../../../types';
+import { InputError, InputLabel } from './children';
 
-const Textarea = ({
+export const Textarea = ({
   label = '',
   register,
   className = '',
@@ -49,5 +48,3 @@ const Textarea = ({
     </div>
   );
 };
-
-export default Textarea;

@@ -1,6 +1,6 @@
-import { type IRadio } from '../../types';
+import type { IRadio } from '../../../types';
 
-const Radio = ({ value, onChange, options, className = '' }: IRadio) => {
+export const Radio = ({ value, onChange, options, className = '' }: IRadio) => {
   const index = options.findIndex((opt) => opt.value === value);
   const translatePercent = `${index * 100}%`;
 
@@ -40,5 +40,3 @@ const Radio = ({ value, onChange, options, className = '' }: IRadio) => {
     </div>
   );
 };
-
-export default Radio;

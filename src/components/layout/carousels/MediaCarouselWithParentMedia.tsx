@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import MediaCarousel from './MediaCarousel';
+import { MediaCarousel } from './MediaCarousel';
 import type { IMediaCarouselWithParent, TClassName } from '../../../types';
-import VideoPlayer from '../media/VideoPlayer';
-import { DropdownIcon } from '../../../icons';
-import HR from '../../ui/HR';
+import { VideoPlayer } from '../media';
+import { ChevronDownIcon } from '../../../icons';
+import { HR } from '../../ui';
 
 const ChevronButton = ({ onClick, className = '' }: { onClick: () => void } & TClassName) => {
   return (
@@ -12,12 +12,12 @@ const ChevronButton = ({ onClick, className = '' }: { onClick: () => void } & TC
       onClick={onClick}
       className={`border-primary/50 bg-primary-invert/50 cursor-pointer rounded-sm border p-1.25 ${className}`}
     >
-      <DropdownIcon className="stroke-primary rotate-90" />
+      <ChevronDownIcon className="stroke-primary rotate-90" />
     </button>
   );
 };
 
-const MediaCarouselWithParentMedia = ({
+export const MediaCarouselWithParentMedia = ({
   className,
   media,
   selected = 0,
@@ -115,5 +115,3 @@ const MediaCarouselWithParentMedia = ({
     </div>
   );
 };
-
-export default MediaCarouselWithParentMedia;

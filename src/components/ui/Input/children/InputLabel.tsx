@@ -1,4 +1,4 @@
-const InputLabel = ({ name, label }: { name?: string; label: string }) => {
+export const InputLabel = ({ name, label }: { name?: string; label: string }) => {
   if (!label) return null;
   return (
     <label
@@ -9,5 +9,3 @@ const InputLabel = ({ name, label }: { name?: string; label: string }) => {
     </label>
   );
 };
-
-export default InputLabel;

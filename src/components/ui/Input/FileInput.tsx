@@ -1,11 +1,8 @@
 import { useState, type ChangeEvent, type ReactNode } from 'react';
-import type { IFileInput } from '../../types';
-import InputIcon from './children/InputIcon';
-import { ALLOWED_IMAGE_FORMATS } from '../../constants';
-import InputError from '../ui/InputError';
-import InputLabel from './children/InputLabel';
-import MediaCarousel from '../layout/carousels/MediaCarousel';
-import MediaModal from '../layout/modals/MediaModal';
+import type { IFileInput } from '../../../types';
+import { ALLOWED_IMAGE_FORMATS } from '../../../constants';
+import { InputError, InputIcon, InputLabel } from './children';
+import { MediaCarousel, MediaModal } from '../../layout';
 
 const InputWrapper = ({
   children,
@@ -106,7 +103,7 @@ const MainSection = ({
   );
 };
 
-const FileInput = ({
+export const FileInput = ({
   label = '',
   containerClassName = '',
   mediaModalClassName = '',
@@ -159,5 +156,3 @@ const FileInput = ({
     </div>
   );
 };
-
-export default FileInput;

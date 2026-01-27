@@ -2,13 +2,13 @@ import { Link } from 'react-router-dom';
 import { Fragment, useState } from 'react';
 import { usePathParams } from '../../../hooks';
 import { for_you } from '../../../constants';
-import VideoPlayer from '../media/VideoPlayer';
+import { VideoPlayer } from '../media';
 import { PlayIcon } from '../../../icons';
 import { socialCommunity } from '../../../constants/navbar/for-you';
-import Button from '../../ui/Button';
-import { CategoryLabel } from './children/CategoryLabel';
+import { Button } from '../../ui';
+import { CategoryLabel } from './children';
 
-const ForYou = () => {
+export const ForYou = () => {
   const { navigate } = usePathParams();
   const [playingVideoIndex, setPlayingVideoIndex] = useState<null | number>(null);
   return (
@@ -138,5 +138,3 @@ const ForYou = () => {
     </div>
   );
 };
-
-export default ForYou;

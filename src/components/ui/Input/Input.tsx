@@ -1,9 +1,6 @@
 import { useEffect, useRef, type ChangeEvent } from 'react';
-
-import type { IInput } from '../../types';
-import InputError from '../ui/InputError';
-import InputIcon from './children/InputIcon';
-import InputLabel from './children/InputLabel';
+import type { IInput } from '../../../types';
+import { InputError, InputIcon, InputLabel } from './children';
 
 export const Input = ({
   label = '',

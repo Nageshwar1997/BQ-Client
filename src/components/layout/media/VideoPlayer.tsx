@@ -3,7 +3,7 @@ import Hls from 'hls.js';
 import { convertVideoToPoster } from '../../../utils';
 import type { IVideoPlayer } from '../../../types';
 
-const VideoPlayer = ({ className = '', videoProps = {}, ref }: IVideoPlayer) => {
+export const VideoPlayer = ({ className = '', videoProps = {}, ref }: IVideoPlayer) => {
   const videoRef = useRef<HTMLVideoElement | null>(ref?.current ?? null);
   const [poster, setPoster] = useState<string | undefined>(videoProps.poster);
 
@@ -68,5 +68,3 @@ const VideoPlayer = ({ className = '', videoProps = {}, ref }: IVideoPlayer) => 
     </div>
   );
 };
-
-export default VideoPlayer;

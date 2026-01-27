@@ -1,7 +1,7 @@
 import { type ReactNode } from 'react';
 import type { TClassName } from '../../types';
 
-const BorderGradient = ({
+export const BorderGradient = ({
   children,
   className = '',
   containerClassName = '',
@@ -16,5 +16,3 @@ const BorderGradient = ({
     </div>
   );
 };
-
-export default BorderGradient;
