@@ -1,6 +1,8 @@
 // Theme Types
 
-import type { IUser } from './common.types';
+import type { IUser } from "./api.types";
+
+
 
 export type TTheme = 'light' | 'dark';
 

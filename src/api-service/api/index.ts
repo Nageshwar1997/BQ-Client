@@ -6,3 +6,4 @@ export * from './Blog.api';
 export * from './Cart.api';
 export * from './G-Form.api';
 export * from './Order.api';
+export * from './Product.api';

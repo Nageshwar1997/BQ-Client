@@ -2,6 +2,7 @@ import z, { type RefinementCtx } from 'zod';
 import type {
   IZodEnumsConfigs,
   IZodFileConfigs,
+  IZodMultipleFileConfigs,
   IZodSingleFileConfigs,
   IZodStringConfigs,
   ZodNumberConfigs,
@@ -236,6 +237,49 @@ export const zodSingleFileOrUrl = ({
   maxImageFileSize = MAX_IMAGE_FILE_SIZE,
   maxVideoFileSize = MAX_VIDEO_FILE_SIZE,
 }: IZodSingleFileConfigs) => {
+  const baseName = label ?? field;
+  const parentName = parentLabel ?? parentField;
+
+  const name = parentName ? `${parentName}: ${baseName}` : baseName;
+  return z.unknown().superRefine((value, ctx) => {
+    let fileOrUrl = value;
+
+    if (typeof FileList !== 'undefined' && value instanceof FileList) {
+      if (value.length === 0) {
+        fileOrUrl = undefined;
+      } else if (value.length > 1) {
+        zodCustomIssue(ctx, `${name} allows only one file.`);
+        return;
+      } else {
+        fileOrUrl = value[0];
+      }
+    }
+
+    zodFileOrUrl({
+      fileOrUrl,
+      ctx,
+      field,
+      label,
+      maxImageFileSize,
+      maxVideoFileSize,
+      parentLabel,
+      parentField,
+      required,
+    });
+  });
+};
+
+export const zodMultipleFileOrUrl = ({
+  field,
+  label,
+  required = true,
+  parentLabel,
+  parentField,
+  maxImages = 5,
+  maxVideos = 5,
+  maxImageFileSize = MAX_IMAGE_FILE_SIZE,
+  maxVideoFileSize = MAX_VIDEO_FILE_SIZE,
+}: IZodMultipleFileConfigs) => {
   const baseName = label ?? field;
   const parentName = parentLabel ?? parentField;
 

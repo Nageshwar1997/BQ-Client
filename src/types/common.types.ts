@@ -11,20 +11,9 @@ import type {
 } from 'react';
 
 import type { UseFormRegisterReturn } from 'react-hook-form';
-import type { AUTH_PROVIDER } from '../constants';
-import type { TRegister } from './schema.types';
+import type { ICategory, IProduct, IReview, IShade, IUser } from './api.types';
 
-export type TClassName = {
-  className?: string;
-};
-
-type TTimeStamp = {
-  createdAt: string;
-  updatedAt: string;
-};
-type TId = {
-  _id: string;
-};
+export type TClassName = { className?: string };
 
 export type TChildren = { children?: ReactNode };
 
@@ -148,15 +137,6 @@ export interface IApiStatus extends TClassName {
   status: 'error' | 'empty' | 'loading';
 }
 
-export interface IUser
-  extends
-    TId,
-    TTimeStamp,
-    Omit<TRegister, 'confirmPassword' | 'otp' | 'password' | 'profilePic' | 'remember'> {
-  profilePic: string;
-  providers: (typeof AUTH_PROVIDER)[keyof typeof AUTH_PROVIDER];
-}
-
 export type TRegexes =
   | 'noSpace'
   | 'singleSpace'
@@ -209,3 +189,20 @@ export interface ICategoryL3 extends TCategoryBaseL {
   icon: FC<TIcon>;
   description: string;
 }
+
+export type TProductPossibleKeys = {
+  requiredFields?: (keyof IProduct)[];
+  populateFields?: {
+    shades?: (keyof IShade)[];
+    seller?: Exclude<keyof IUser, 'password'>[];
+    category?: (keyof ICategory)[];
+    reviews?: (keyof IReview)[];
+  };
+};
+
+export type TAllProductsQuery = {
+  data: TProductPossibleKeys;
+  pageParams?: TPagination;
+  queryParams?: TParams;
+  enabled?: boolean;
+};

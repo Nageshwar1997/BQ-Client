@@ -6,3 +6,4 @@ export * from './Address.service';
 export * from './Cart.service';
 export * from './G-Form.service';
 export * from './Order.service';
+export * from './Product.service';

@@ -20,6 +20,14 @@ export interface IZodSingleFileConfigs extends TZodCommonBaseConfigs {
   maxImageFileSize?: number;
 }
 
+export interface IZodMultipleFilesConfigs extends IZodSingleFileConfigs {
+  required?: boolean;
+  maxVideoFileSize?: number;
+  maxImageFileSize?: number;
+  maxImages?: number;
+  maxVideos?: number;
+}
+
 export interface IZodFileConfigs extends IZodSingleFileConfigs {
   fileOrUrl: unknown;
   index?: number;
