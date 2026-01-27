@@ -3,6 +3,7 @@ import type {
   FC,
   InputHTMLAttributes,
   JSX,
+  ReactElement,
   ReactNode,
   RefObject,
   SVGProps,
@@ -216,3 +217,28 @@ export type TLikeDislikeHelpfulReview = {
   disliked?: boolean;
   isHelpful?: boolean;
 };
+
+export type TDropdownOption = {
+  name: string;
+  value: string;
+  disabled?: boolean;
+};
+
+export interface IDropdownOptions extends TClassName {
+  options: TDropdownOption[];
+  selected: string;
+  onChange: (opt: TDropdownOption) => void;
+  onSelect?: () => void;
+}
+
+export interface TDropdown extends TClassName, Partial<Pick<IDropdownOptions, 'options'>> {
+  title: string | ReactElement;
+  icons?: Partial<Record<'left' | 'right', ReactElement>>;
+  children: ReactElement<{ onSelect?: () => void }>;
+  closeOnOutsideClick?: boolean;
+  isAbsolute?: boolean;
+  showShadow?: boolean;
+  closeOnOptionClick?: boolean;
+  isRounded?: boolean;
+  defaultOpen?: boolean;
+}
