@@ -6,7 +6,7 @@ import type { TLogin } from '../../types';
 import { loginSchema } from '../../schemas';
 import { store } from '../../store';
 import { service } from '../../api-service';
-import { useQueryParams } from '../../hooks';
+import { customHooks } from '../../hooks';
 import { BorderGradient, Button, Checkbox, GradientText, Input, Radio } from '../../components';
 import { LOGIN_INPUT_MAP_DATA } from '../../constants/input';
 import { EyeIcon, EyeOffIcon } from '../../icons';
@@ -14,7 +14,7 @@ import { BottomInstructions, SocialAuth } from './children';
 
 export const Login = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const { removeParam, queryParams } = useQueryParams();
+  const { removeParam, queryParams } = customHooks.QueryParams();
   const { setUser } = store.user();
   const { mutateAsync, isPending } = service.auth.Login();
 

@@ -1,6 +1,18 @@
-export * from './useAuthCheck';
-export * from './useIsMobile';
-export * from './useOutsideClick';
-export * from './useParams';
-export * from './useRequireAuth';
-export * from './useScrollable';
+import { useAuthCheck } from './useAuthCheck';
+import { useIsMobile } from './useIsMobile';
+import { useOutsideClick } from './useOutsideClick';
+import { usePathParams, useQueryParams } from './useParams';
+import { useRequireAuth } from './useRequireAuth';
+import { useScrollable } from './useScrollable';
+
+class Hooks {
+  public AuthCheck = useAuthCheck;
+  public IsMobile = useIsMobile;
+  public OutsideClick = useOutsideClick;
+  public QueryParams = useQueryParams;
+  public PathParams = usePathParams;
+  public RequireAuth = useRequireAuth;
+  public Scrollable = useScrollable;
+}
+
+export const customHooks = new Hooks();

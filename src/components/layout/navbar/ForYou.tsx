@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Fragment, useState } from 'react';
-import { usePathParams } from '../../../hooks';
+import { customHooks } from '../../../hooks';
 import { for_you } from '../../../constants';
 import { VideoPlayer } from '../media';
 import { PlayIcon } from '../../../icons';
@@ -9,7 +9,7 @@ import { Button } from '../../ui';
 import { CategoryLabel } from './children';
 
 export const ForYou = () => {
-  const { navigate } = usePathParams();
+  const { navigate } = customHooks.PathParams();
   const [playingVideoIndex, setPlayingVideoIndex] = useState<null | number>(null);
   return (
     <div className="h-full w-full space-y-4 p-4 lg:p-0">

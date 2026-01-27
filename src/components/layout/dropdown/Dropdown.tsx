@@ -1,5 +1,5 @@
 import { cloneElement, isValidElement, useEffect, useRef, useState, type FC } from 'react';
-import { useOutsideClick } from '../../../hooks';
+import { customHooks } from '../../../hooks';
 import type { TDropdown } from '../../../types';
 import { ChevronDownIcon } from '../../../icons';
 
@@ -18,7 +18,7 @@ export const Dropdown: FC<TDropdown> = ({
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(defaultOpen);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const ref = useOutsideClick<HTMLDivElement>(() => (isOpen ? setIsOpen(false) : null), {
+  const ref = customHooks.OutsideClick<HTMLDivElement>(() => (isOpen ? setIsOpen(false) : null), {
     enabled: closeOnOutsideClick,
   });
 

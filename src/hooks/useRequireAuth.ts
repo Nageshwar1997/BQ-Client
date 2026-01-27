@@ -1,9 +1,9 @@
+import { customHooks } from '.';
 import { store } from '../store';
-import { useQueryParams } from './useParams';
 
-const useRequireAuth = () => {
+export const useRequireAuth = () => {
   const { authenticated } = store.user();
-  const { setParams } = useQueryParams();
+  const { setParams } = customHooks.QueryParams();
   const { setAction } = store.action();
 
   const requireAuth = (action: () => void) => {
@@ -17,5 +17,3 @@ const useRequireAuth = () => {
 
   return requireAuth;
 };
-
-export default useRequireAuth;
