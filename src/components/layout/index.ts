@@ -4,3 +4,4 @@ export * from './dropdown';
 export * from './loaders';
 export * from './media';
 export * from './modals';
+export * from './navbar';

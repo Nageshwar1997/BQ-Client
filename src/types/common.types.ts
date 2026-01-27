@@ -13,6 +13,7 @@ import type {
 
 import type { UseFormRegisterReturn } from 'react-hook-form';
 import type { ICategory, IProduct, IReview, IShade, IUser } from './api.types';
+import type { TLogin, TRegister } from './schema.types';
 
 export type TClassName = { className?: string };
 
@@ -79,6 +80,13 @@ export interface IBaseInput extends TClassName {
   register?: UseFormRegisterReturn;
   label?: string;
   error?: string;
+}
+
+export interface TLoginInput extends TStringRecord {
+  name: keyof TLogin;
+}
+export interface TRegisterInput extends TStringRecord {
+  name: keyof TRegister;
 }
 
 export interface IInput extends IBaseInput {

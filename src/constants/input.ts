@@ -1,11 +1,4 @@
-import type { TLogin, TStringRecord, TRegister } from '../types';
-
-interface TLoginInput extends TStringRecord {
-  name: keyof TLogin;
-}
-interface TRegisterInput extends TStringRecord {
-  name: keyof TRegister;
-}
+import type { TLoginInput, TRegisterInput } from "../types";
 
 export const PASSWORD_KEYS = ['password', 'confirmPassword'];
 
