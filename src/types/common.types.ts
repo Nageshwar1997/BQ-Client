@@ -14,6 +14,7 @@ import type {
 import type { UseFormRegisterReturn } from 'react-hook-form';
 import type { ICategory, IProduct, IReview, IShade, IUser } from './api.types';
 import type { TLogin, TRegister } from './schema.types';
+import type { FOOTER_CATEGORIES } from '../constants';
 
 export type TClassName = { className?: string };
 
@@ -249,4 +250,10 @@ export interface TDropdown extends TClassName, Partial<Pick<IDropdownOptions, 'o
   closeOnOptionClick?: boolean;
   isRounded?: boolean;
   defaultOpen?: boolean;
+}
+
+export interface IFooterOptionList {
+  options: (typeof FOOTER_CATEGORIES)[number]['options'];
+  title?: string;
+  isFirst?: boolean;
 }

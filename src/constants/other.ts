@@ -1,3 +1,12 @@
+import {
+  FaceBookFillIcon,
+  GitHubFillIcon,
+  InstagramFillIcon,
+  LinkedInBoxFillIcon,
+  WhatsappFillIcon,
+  YoutubeFillIcon,
+} from '../icons';
+
 export const BEAUTY_FACTS = [
   `The term <span class=gradient-text-accent>"Clean Beauty"</span> refers to skincare and makeup products made without harmful chemicals and toxins.`,
   `In <span class=gradient-text-accent>"1915"</span>, Maurice Levy invented the first <span class=gradient-text-accent>"twist-up lipstick"</span>, revolutionizing the beauty industry.`,
@@ -44,4 +53,106 @@ export const BEAUTY_FACTS = [
   `The first commercial <span class=gradient-text-accent>nail polish</span> was inspired by automobile paint and introduced in <span class=gradient-text-accent>1932</span>.`,
   ` The term <span class=gradient-text-accent>"blue beauty"</span> refers to eco-conscious products designed to protect ocean ecosystems.`,
   ` <span class=gradient-text-accent>Glass packaging</span> is being used more in luxury beauty to reduce plastic waste and enhance sustainability.`,
+];
+
+export const FOOTER_CATEGORIES = [
+  {
+    title: 'Company',
+    options: [
+      { title: 'About Us', path: 'about-us' },
+      { title: 'Partner With Us', path: 'partner-with-us' },
+      { title: 'Careers', path: 'careers' },
+      { title: 'Sustainability', path: 'sustainability' },
+      { title: 'Ethics', path: 'ethics' },
+      { title: 'Press/Media', path: 'press-media' },
+    ],
+  },
+  {
+    title: 'Quick Links',
+    options: [
+      { title: 'My Account', path: 'account', private: true },
+      { title: 'Order History', path: 'orders', private: true },
+      { title: 'Wishlist', path: 'wishlist', private: true },
+      { title: 'Refer a Friend', path: 'refer', private: true },
+      { title: 'Store Locator', path: 'store-locator' },
+      {
+        title: 'Become a Seller',
+        path: 'become-seller',
+        private: true,
+      },
+    ],
+  },
+  {
+    title: 'Products',
+    options: [
+      { title: 'For You', path: 'products/for_you' },
+      { title: 'Lip Care', path: 'products/lips' },
+      { title: 'Special Collection', path: 'products/collections' },
+      { title: 'Face Care', path: 'products/face' },
+      { title: 'Skin Care', path: 'products/skin' },
+      { title: 'Eye Care', path: 'products/eyes' },
+    ],
+  },
+  {
+    title: 'Services',
+    options: [
+      { title: 'Contact Us', path: 'contact' },
+      { title: 'Help Center/FAQ', path: 'help-center-faq' },
+      { title: 'Shipping Info', path: 'shipping-info' },
+      {
+        title: 'Returns & Refunds',
+        path: 'orders/return-refund',
+        private: true,
+      },
+      { title: 'Track My Orders', path: 'orders/track', private: true },
+    ],
+  },
+  {
+    title: 'Legal & Policies',
+    options: [
+      { title: 'Privacy Policy', path: 'privacy-policy' },
+      { title: 'Cookie Policy', path: 'cookie-policy' },
+      { title: 'Terms & Conditions', path: 'terms-conditions' },
+      { title: 'Disclaimer', path: 'disclaimer' },
+      { title: 'Accessibility', path: 'accessibility' },
+    ],
+  },
+];
+
+export const SOCIAL_MEDIA_LINKS = [
+  {
+    id: 1,
+    icon: YoutubeFillIcon,
+    url: 'https://www.youtube.com/@nageshpawar1997',
+  },
+  {
+    id: 2,
+    icon: InstagramFillIcon,
+    url: 'https://www.instagram.com/aspiring_web_developer',
+  },
+  {
+    id: 3,
+    icon: LinkedInBoxFillIcon,
+    url: 'https://www.linkedin.com/in/nageshwar-pawar-a25041289',
+  },
+  {
+    id: 4,
+    icon: FaceBookFillIcon,
+    url: 'https://www.facebook.com/nageshwar1997',
+  },
+  {
+    id: 5,
+    icon: GitHubFillIcon,
+    url: 'https://github.com/nageshwar1997',
+  },
+  {
+    id: 6,
+    icon: WhatsappFillIcon,
+    url: 'https://wa.me/+919730870409',
+  },
+];
+
+export const FOOTER_AWARDS = [
+  { name: 'Forbes', key: 'forbes' },
+  { name: 'Talent Award', key: 'talent-award' },
 ];
