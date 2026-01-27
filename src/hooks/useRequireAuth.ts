@@ -1,15 +1,14 @@
-import { useUserStore } from "../store/user.store";
-import useQueryParams from "./useQueryParams";
-import useActionStore from "../store/action.store";
+import { store } from '../store';
+import { useQueryParams } from './useParams';
 
 const useRequireAuth = () => {
-  const { isAuthenticated } = useUserStore();
+  const { authenticated } = store.user();
   const { setParams } = useQueryParams();
-  const { setAction } = useActionStore();
+  const { setAction } = store.action();
 
   const requireAuth = (action: () => void) => {
-    if (!isAuthenticated) {
-      setParams({ login: "true" }); // open login modal
+    if (!authenticated) {
+      setParams({ login: 'true' }); // open login modal
       setAction(action); // store action for after login
       return false;
     }
