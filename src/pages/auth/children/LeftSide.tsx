@@ -1,4 +1,4 @@
-const LeftSide = () => {
+export const LeftSide = () => {
   return (
     <div className="hidden w-full rounded-2xl bg-linear-90 from-[#00F] to-transparent p-10 lg:block">
       <img
@@ -8,5 +8,3 @@ const LeftSide = () => {
     </div>
   );
 };
-
-export default LeftSide;

@@ -5,7 +5,7 @@ import { store } from '../store';
 import { LoadingScreen } from '../components';
 import { getUserToken } from '../utils';
 
-const AuthRedirect = ({ children }: { children: JSX.Element }) => {
+export const AuthRedirect = ({ children }: { children: JSX.Element }) => {
   const token = getUserToken();
   const { authenticated } = store.user();
   const { isLoading } = useAuthCheck(!!token);
@@ -23,5 +23,3 @@ const AuthRedirect = ({ children }: { children: JSX.Element }) => {
     </>
   );
 };
-
-export default AuthRedirect;

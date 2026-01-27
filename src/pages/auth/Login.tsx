@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { saveLocalToken, saveSessionToken } from '../../utils';
@@ -6,19 +7,12 @@ import { loginSchema } from '../../schemas';
 import { store } from '../../store';
 import { service } from '../../api-service';
 import { useQueryParams } from '../../hooks';
-import { useState } from 'react';
-import GradientText from '../../components/ui/GradientText';
-import BorderGradient from '../../components/ui/BorderGradient';
-import Radio from '../../components/input/Radio';
+import { BorderGradient, Button, Checkbox, GradientText, Input, Radio } from '../../components';
 import { LOGIN_INPUT_MAP_DATA } from '../../constants/input';
-import { Input } from '../../components/input/Input';
 import { EyeIcon, EyeOffIcon } from '../../icons';
-import Checkbox from '../../components/input/Checkbox';
-import Button from '../../components/ui/Button';
-import SocialAuth from './children/SocialAuth';
-import BottomInstructions from './children/BottomInstructions';
+import { BottomInstructions, SocialAuth } from './children';
 
-const Login = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
+export const Login = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { removeParam, queryParams } = useQueryParams();
   const { setUser } = store.user();
@@ -187,5 +181,3 @@ const Login = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
     </form>
   );
 };
-
-export default Login;

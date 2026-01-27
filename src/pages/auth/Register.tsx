@@ -5,20 +5,21 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { emailData, PASSWORD_KEYS, REGISTER_INPUT_MAP_DATA } from '../../constants/input';
 import type { IInput, TRegister } from '../../types';
-import BottomInstructions from './children/BottomInstructions';
-import ProfilePicInput from '../../components/ui/ProfilePicInput';
-import GradientText from '../../components/ui/GradientText';
-import SocialAuth from './children/SocialAuth';
-import { Input } from '../../components/input/Input';
-import Button from '../../components/ui/Button';
+import {
+  BorderGradient,
+  Button,
+  Checkbox,
+  GradientText,
+  Input,
+  ProfilePicInput,
+  Resend,
+} from '../../components';
 import { EyeIcon, EyeOffIcon } from '../../icons';
-import Checkbox from '../../components/input/Checkbox';
-import BorderGradient from '../../components/ui/BorderGradient';
+import { BottomInstructions, SocialAuth } from './children';
 import { getFileFromFileList, saveLocalToken, saveSessionToken } from '../../utils';
 import { registerSchema, sendOtpSchema } from '../../schemas';
 import { store } from '../../store';
 import { service } from '../../api-service';
-import Resend from '../../components/ui/Resend';
 
 type TRegisterInput = {
   input: (typeof REGISTER_INPUT_MAP_DATA)[number];
@@ -230,7 +231,7 @@ const RegisterForm = ({
   );
 };
 
-const Register = () => {
+export const Register = () => {
   const { mutateAsync, isPending, data, reset } = service.auth.SendOtp();
 
   const {
@@ -300,5 +301,3 @@ const Register = () => {
     </div>
   );
 };
-
-export default Register;

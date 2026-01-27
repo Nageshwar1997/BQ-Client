@@ -4,7 +4,7 @@ import { LoadingScreen } from '../components';
 import { useAuthCheck } from '../hooks';
 import { store } from '../store';
 
-const PrivateRoute = ({ children }: { children: JSX.Element }) => {
+export const PrivateRoute = ({ children }: { children: JSX.Element }) => {
   const { isLoading } = useAuthCheck();
   const { authenticated } = store.user();
   const location = useLocation();
@@ -17,5 +17,3 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
 
   return children;
 };
-
-export default PrivateRoute;

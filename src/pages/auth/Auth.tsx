@@ -1,10 +1,9 @@
 import { Outlet } from 'react-router-dom';
 
-import ScrollableGradientContainer from '../../components/layout/containers/ScrollableGradientContainer';
-import LeftSide from './children/LeftSide';
-import { Theme } from '../../components';
+import { ScrollableGradientContainer, Theme } from '../../components';
+import { LeftSide } from './children';
 
-const Auth = () => {
+export const Auth = () => {
   return (
     <div className="relative flex h-dvh w-full gap-4 overflow-hidden p-4">
       <LeftSide />
@@ -17,5 +16,3 @@ const Auth = () => {
     </div>
   );
 };
-
-export default Auth;
