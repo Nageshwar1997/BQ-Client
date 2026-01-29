@@ -120,7 +120,7 @@ export const FileInput = ({
   return (
     <div className={`flex w-full flex-col gap-1.5 ${containerClassName}`}>
       <div className="relative h-10 lg:h-12">
-        <InputLabel label={label} name={fileInputProps.name} />
+        <InputLabel children={label} htmlFor={fileInputProps.name} />
         <MainSection fileInputProps={fileInputProps} {...props} />
       </div>
       {errors?.length > 0 && (

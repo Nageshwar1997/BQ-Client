@@ -27,7 +27,7 @@ export const Input = ({
   return (
     <div className={`flex w-full flex-col gap-1.5 ${containerClassName}`}>
       <div className="relative h-10 lg:h-12">
-        <InputLabel label={label} name={inputProps?.name} />
+        <InputLabel children={label} htmlFor={inputProps?.name} />
         <div
           className={`border-primary/10 bg-smoke-eerie flex h-full w-full items-center gap-1 overflow-hidden rounded-lg border ${className}`}
         >

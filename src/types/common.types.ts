@@ -6,6 +6,7 @@ import type {
   ReactElement,
   ReactNode,
   RefObject,
+  SelectHTMLAttributes,
   SVGProps,
   TextareaHTMLAttributes,
   VideoHTMLAttributes,
@@ -13,7 +14,7 @@ import type {
 
 import type { UseFormRegisterReturn } from 'react-hook-form';
 import type { ICategory, IProduct, IReview, IShade, IUser } from './api.types';
-import type { TLogin, TRegister } from './schema.types';
+import type { TAddress, TLogin, TRegister } from './schema.types';
 import type { FOOTER_CATEGORIES } from '../constants';
 
 export type TClassName = { className?: string };
@@ -90,6 +91,12 @@ export interface TRegisterInput extends TStringRecord {
   name: keyof TRegister;
 }
 
+export interface TAddressInput extends InputHTMLAttributes<HTMLInputElement> {
+  name: keyof TAddress;
+  label: string;
+  options?: TDropdownOption[];
+}
+
 export interface IInput extends IBaseInput {
   inputProps: InputHTMLAttributes<HTMLInputElement>;
 }
@@ -114,6 +121,15 @@ export interface IRadio extends TClassName {
   value: string;
   onChange: (value: string) => void;
   options: { label: string; value: string }[];
+}
+
+export interface ISelect extends Omit<IBaseInput, 'icons' | 'needRef' | 'register'> {
+  selectProps: SelectHTMLAttributes<HTMLSelectElement> &
+    Partial<Pick<InputHTMLAttributes<HTMLInputElement>, 'placeholder'>>;
+  icons?: { left?: Omit<TInputIcon, 'text'> };
+  options: TDropdownOption[];
+  optionsClassName?: string;
+  optionsPosition?: 'top' | 'bottom';
 }
 
 export type TAuthAction = {

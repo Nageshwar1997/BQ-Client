@@ -28,7 +28,7 @@ export const Textarea = ({
   return (
     <div className={`flex w-full flex-col gap-1.5 ${containerClassName}`}>
       <div className="relative h-20 lg:h-24">
-        <InputLabel label={label} name={textAreaProps?.name} />
+        <InputLabel children={label} htmlFor={textAreaProps?.name} />
         <div
           className={`border-primary/10 bg-smoke-eerie flex h-full w-full items-center gap-1 overflow-hidden rounded-lg border p-3 ${className}`}
         >
