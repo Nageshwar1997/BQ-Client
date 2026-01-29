@@ -31,3 +31,7 @@ export interface ICategory extends IL {
 }
 
 export interface IReview extends TReview, TId, TTS {}
+
+export interface IWishlist extends TId, TTS {
+  products: IProduct[];
+}

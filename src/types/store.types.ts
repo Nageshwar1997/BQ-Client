@@ -1,4 +1,4 @@
-import type { IUser } from './api.types';
+import type { IUser, IWishlist } from './api.types';
 
 export type TTheme = 'light' | 'dark';
 
@@ -12,4 +12,13 @@ export type TUserStore = {
   authenticated: boolean;
   setUser: (user: IUser) => void;
   localLogout: () => void;
+};
+
+export type TWishlistStore = {
+  wishlist: IWishlist | null;
+  setWishlist: (wishlist: IWishlist | null) => void;
+  updateWishlist: {
+    addProduct?: (product: IWishlist['products'][number]) => void;
+    removeProduct?: (productId: string) => void;
+  };
 };
