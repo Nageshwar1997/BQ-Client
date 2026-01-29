@@ -3,11 +3,7 @@ import { STATES_AND_UNION_TERRITORIES } from './common';
 
 export const PASSWORD_KEYS = ['password', 'confirmPassword'];
 
-const nameData = {
-  type: 'text',
-  autoComplete: 'given-name',
-  placeholder: 'Enter first name',
-};
+const nameData = { type: 'text', autoComplete: 'given-name' };
 
 export const emailData = {
   name: 'email',
@@ -17,8 +13,18 @@ export const emailData = {
   placeholder: 'Enter your email',
 };
 
-const firstNameData = { ...nameData, name: 'firstName', label: 'First Name' };
-const lastNameData = { ...nameData, name: 'lastName', label: 'Last Name' };
+const firstNameData = {
+  ...nameData,
+  name: 'firstName',
+  label: 'First Name',
+  placeholder: 'Enter first name',
+};
+const lastNameData = {
+  ...nameData,
+  name: 'lastName',
+  label: 'Last Name',
+  placeholder: 'Enter last name',
+};
 
 const phoneNumberData = {
   name: 'phoneNumber',
@@ -37,13 +43,13 @@ const passwordData = {
 };
 
 export const LOGIN_INPUT_MAP_DATA: TLoginInput[] = [
-  emailData,
-  phoneNumberData,
-  passwordData,
-] as TLoginInput[];
+  { ...emailData, name: 'email' },
+  { ...phoneNumberData, name: 'phoneNumber' },
+  { ...passwordData, name: 'password' },
+];
 
 export const REGISTER_INPUT_MAP_DATA: TRegisterInput[] = [
-  emailData,
+  { ...emailData, name: 'email' },
   {
     label: 'OTP',
     name: 'otp',
@@ -51,22 +57,22 @@ export const REGISTER_INPUT_MAP_DATA: TRegisterInput[] = [
     autoComplete: 'tel',
     placeholder: 'Enter your OTP',
   },
-  firstNameData,
-  lastNameData,
-  phoneNumberData,
-  passwordData,
+  { ...firstNameData, name: 'firstName' },
+  { ...lastNameData, name: 'lastName' },
+  { ...phoneNumberData, name: 'phoneNumber' },
+  { ...passwordData, name: 'password' },
   {
     ...passwordData,
     name: 'confirmPassword',
     label: 'Confirm Password',
     placeholder: 'Reenter password',
   },
-] as TRegisterInput[];
+];
 
 export const ADD_ADDRESS_INPUT_MAP_DATA: TAddressInput[] = [
-  firstNameData,
-  lastNameData,
-  phoneNumberData,
+  { ...firstNameData, name: 'firstName' },
+  { ...lastNameData, name: 'lastName' },
+  { ...phoneNumberData, name: 'phoneNumber' },
   {
     ...phoneNumberData,
     name: 'altPhoneNumber',
@@ -94,7 +100,7 @@ export const ADD_ADDRESS_INPUT_MAP_DATA: TAddressInput[] = [
     autoComplete: 'address-level2',
     type: 'text',
   },
-  emailData,
+  { ...emailData, name: 'email' },
   {
     name: 'pinCode',
     label: 'Pin Code',
@@ -114,6 +120,7 @@ export const ADD_ADDRESS_INPUT_MAP_DATA: TAddressInput[] = [
     label: 'State/Province',
     placeholder: 'Select state/Province',
     autoComplete: 'address-level1',
+    type: '',
     options: STATES_AND_UNION_TERRITORIES.map((state) => ({ label: state, value: state })),
   },
   {
@@ -121,6 +128,7 @@ export const ADD_ADDRESS_INPUT_MAP_DATA: TAddressInput[] = [
     label: 'Country',
     placeholder: 'Select country',
     autoComplete: 'country',
+    type: '',
     options: [{ label: 'India', value: 'India' }],
   },
-] as TAddressInput[];
+];

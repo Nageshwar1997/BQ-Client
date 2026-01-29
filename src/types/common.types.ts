@@ -84,16 +84,22 @@ export interface IBaseInput extends TClassName {
   error?: string;
 }
 
-export interface TLoginInput extends TStringRecord {
+type TFormInputMap = {
+  label: string;
+  type: string;
+  autoComplete: string;
+  placeholder: string;
+};
+
+export interface TLoginInput extends TFormInputMap {
   name: keyof TLogin;
 }
-export interface TRegisterInput extends TStringRecord {
+export interface TRegisterInput extends TFormInputMap {
   name: keyof TRegister;
 }
 
-export interface TAddressInput extends InputHTMLAttributes<HTMLInputElement> {
+export interface TAddressInput extends TFormInputMap {
   name: keyof TAddress;
-  label: string;
   options?: TDropdownOption[];
 }
 
