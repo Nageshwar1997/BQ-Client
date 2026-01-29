@@ -48,7 +48,7 @@ export const ModalWrapper = ({
             {header?.showCloseIcon && (
               <CloseIcon
                 onClick={onClose}
-                className="stroke-tertiary hover:stroke-primary h-4 w-4 cursor-pointer transition-transform duration-300 hover:scale-110 sm:h-5 sm:w-5 lg:h-6 lg:w-6"
+                className="stroke-tertiary hover:stroke-primary size-4 cursor-pointer transition-transform duration-300 hover:scale-110 sm:size-5 lg:size-6"
               />
             )}
           </div>

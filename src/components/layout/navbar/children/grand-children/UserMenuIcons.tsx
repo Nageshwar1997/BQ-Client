@@ -65,13 +65,13 @@ export const UserMenuIcons = ({
         {!paths.includes('search') && (
           <SearchIcon
             onClick={() => setIsOpen((prev) => ({ ...prev, search: true }))}
-            className="stroke-tertiary h-5 w-5 cursor-pointer md:h-6 md:w-6"
+            className="stroke-tertiary size-5 cursor-pointer md:h-6 md:w-6"
           />
         )}
         <div className="relative" ref={userPopupRef}>
           <UserCircleIcon
             onClick={() => setIsOpen((prev) => ({ ...prev, user: true }))}
-            className={`h-5 w-5 cursor-pointer md:h-6 md:w-6 ${
+            className={`size-5 cursor-pointer md:h-6 md:w-6 ${
               isOpen.user ? 'stroke-blue-crayola-c' : 'stroke-tertiary hover:stroke-secondary'
             }`}
           />
@@ -81,19 +81,19 @@ export const UserMenuIcons = ({
           />
         </div>
         <BuildingIcon
-          className="stroke-tertiary h-5 w-5 cursor-pointer md:h-6 md:w-6"
+          className="stroke-tertiary size-5 cursor-pointer md:h-6 md:w-6"
           onClick={() => navigate('/become-seller')}
         />
         <div className="relative">
           <ShoppingBag
             onClick={() => handleAuthNavigation('/cart')}
-            className="stroke-tertiary h-5 w-5 cursor-pointer md:h-6 md:w-6"
+            className="stroke-tertiary size-5 cursor-pointer md:h-6 md:w-6"
           />
           {/* <CountBadge count={cart?.products?.length} /> */}
         </div>
         <div className="relative flex items-center justify-center">
           <HeartIcon
-            className="stroke-tertiary h-5 w-5 cursor-pointer md:h-6 md:w-6"
+            className="stroke-tertiary size-5 cursor-pointer md:h-6 md:w-6"
             onClick={() => handleAuthNavigation('/wishlist')}
           />
           {/* <CountBadge count={wishlist?.products?.length > 9 ? '9+' : wishlist?.products?.length} /> */}

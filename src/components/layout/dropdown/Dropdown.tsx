@@ -50,7 +50,7 @@ export const Dropdown: FC<TDropdown> = ({
           {icons?.right && <span>{icons.right}</span>}
         </div>
         <ChevronDownIcon
-          className={`stroke-primary h-5 w-5 transition-transform duration-300 ease-in-out ${
+          className={`stroke-primary size-5 transition-transform duration-300 ease-in-out ${
             isOpen ? 'rotate-180' : 'rotate-0'
           }`}
         />

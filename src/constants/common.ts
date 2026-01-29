@@ -1,5 +1,6 @@
 import { VITE_IS_DEV, VITE_LOCALHOST_BACKEND_URL, VITE_PRODUCTION_BACKEND_URL } from '../envs';
-import type { TRegexes } from '../types';
+import type { ICategoryL1, TRegexes } from '../types';
+import { for_you } from './navbar';
 
 export const BACKEND_URL =
   VITE_IS_DEV === 'true' ? VITE_LOCALHOST_BACKEND_URL : VITE_PRODUCTION_BACKEND_URL;
@@ -114,4 +115,16 @@ export const STATES_AND_UNION_TERRITORIES = [
   'Ladakh',
   'Lakshadweep',
   'Puducherry',
+];
+
+export const DEFAULT_FILTER = { label: 'All', value: 'all', default: true };
+
+export const NAVBAR_CATEGORIES_DATA: ICategoryL1[] = [
+  for_you,
+  // lips,
+  // eyes,
+  // face,
+  // skin,
+  // collections,
+  // about,
 ];

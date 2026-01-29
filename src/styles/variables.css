@@ -49,6 +49,7 @@
   --color-silver: var(--silver);
   --color-silver-jet: var(--silver-jet);
   --color-silver-jet-2: var(--silver-jet-2);
+  --color-platinum-jet: var(--platinum-jet);
 
   /* Common */
   --color-picton-blue-c: var(--picton-blue-c);
@@ -150,6 +151,7 @@
   --silver: #b3b3b3;
   --silver-jet: #bfbfbf;
   --silver-jet-2: #7e7e7e;
+  --platinum-jet: #333333;
 
   /* Background Images & Gradients */
   --accent-duo: linear-gradient(
@@ -198,6 +200,7 @@
   --silver: #464545;
   --silver-jet: #333333;
   --silver-jet-2: #787777;
+  --platinum-jet: #e5e5e5;
 
   /* Background Images & Gradients */
   --accent-duo: linear-gradient(114deg, var(--picton-blue-c) 6.19%, var(--blue-crayola-c) 41.65%);

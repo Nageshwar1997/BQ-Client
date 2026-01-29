@@ -99,7 +99,7 @@ export const blogs: ICategoryL2 = {
   ],
 };
 
-export const socialCommunity = [
+export const SOCIAL_COMMUNITY = [
   { icon: PlayIcon, label: "Founder's Story: Watch Now", path: '/press-media#watch' },
   { icon: ChatIcon, label: 'Chat with our team', path: '/contact' },
 ];

@@ -228,7 +228,7 @@ export type TLikeDislikeHelpfulReview = {
 };
 
 export type TDropdownOption = {
-  name: string;
+  label: string;
   value: string;
   disabled?: boolean;
 };
