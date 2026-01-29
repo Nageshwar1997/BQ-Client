@@ -1,4 +1,4 @@
-import { useScrollable } from '../../../hooks';
+import { customHooks } from '../../../hooks';
 import type { IScrollableGradientContainer, TGradientPos } from '../../../types';
 import { LinearGradient } from '../../ui';
 
@@ -9,7 +9,7 @@ export const ScrollableGradientContainer = ({
   gradientClassNames = {},
   direction,
 }: IScrollableGradientContainer) => {
-  const { showH_Gradient, showV_Gradient, containerRef } = useScrollable(direction);
+  const { showH_Gradient, showV_Gradient, containerRef } = customHooks.Scrollable(direction);
 
   const isHorizontal = direction === 'horizontal';
   const isVertical = direction === 'vertical';
