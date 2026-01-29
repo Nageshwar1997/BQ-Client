@@ -1,2 +1,2 @@
-export * from './ForYou';
+export * from './Navbar';
 export * from './children';

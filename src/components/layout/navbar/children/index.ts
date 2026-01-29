@@ -1,1 +1,2 @@
-export * from './CategoryLabel';
+export * from './ForYou';
+export * from './grand-children';

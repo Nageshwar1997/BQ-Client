@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import type { TCategoryBaseL, TClassName } from '../../../../types';
+import type { TCategoryBaseL, TClassName } from '../../../../../types';
 
 export const CategoryLabel = ({
   label,

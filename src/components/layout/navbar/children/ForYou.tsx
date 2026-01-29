@@ -1,12 +1,11 @@
 import { Link } from 'react-router-dom';
 import { Fragment, useState } from 'react';
-import { customHooks } from '../../../hooks';
-import { for_you } from '../../../constants';
-import { VideoPlayer } from '../media';
-import { PlayIcon } from '../../../icons';
-import { socialCommunity } from '../../../constants/navbar/for-you';
-import { Button } from '../../ui';
-import { CategoryLabel } from './children';
+import { customHooks } from '../../../../hooks';
+import { for_you, SOCIAL_COMMUNITY } from '../../../../constants';
+import { VideoPlayer } from '../../media';
+import { PlayIcon } from '../../../../icons';
+import { Button } from '../../../ui';
+import { CategoryLabel } from '.';
 
 export const ForYou = () => {
   const { navigate } = customHooks.PathParams();
@@ -115,7 +114,7 @@ export const ForYou = () => {
         <div className="bg-primary/50 my-6 h-px rounded-full" />
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <div className="flex items-center gap-6 text-sm">
-            {socialCommunity.map((data) => {
+            {SOCIAL_COMMUNITY.map((data) => {
               const Icon = data.icon;
               return (
                 <Link key={data.label} to={data.path} className="group flex items-center gap-2">

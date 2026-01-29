@@ -26,7 +26,7 @@ export const DropdownOptions: FC<IDropdownOptions> = ({
             }}
             disabled={opt.disabled}
           >
-            {opt.name}
+            {opt.label}
             {isSelected && <ChevronDownIcon className="stroke-primary h-5 w-5" />}
           </button>
         );
