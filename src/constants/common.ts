@@ -128,3 +128,20 @@ export const NAVBAR_CATEGORIES_DATA: ICategoryL1[] = [
   // collections,
   // about,
 ];
+
+export const ADDRESS_DEFAULT_VALUES = {
+  type: 'both',
+  firstName: '',
+  lastName: '',
+  phoneNumber: '',
+  address: '',
+  altPhoneNumber: '',
+  city: '',
+  country: 'India',
+  gst: '',
+  landmark: '',
+  pinCode: '',
+  state: '',
+  email: '',
+  isDefaultAddress: false,
+};
