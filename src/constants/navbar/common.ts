@@ -1,6 +1,7 @@
 import { ForYou } from '../../components';
 import Collections from '../../components/layout/navbar/children/Collection';
 import Eyes from '../../components/layout/navbar/children/Eyes';
+import Lips from '../../components/layout/navbar/children/Lips';
 import {
   CareIcon,
   CashIcon,
@@ -15,6 +16,14 @@ import type { ICategoryL1 } from '../../types';
 import { bath_and_body, gifting, hair_care, sugar_pop } from './collections';
 import { eye_value_set, eyebrows, eyeliners, eyeshadow, kohl_and_kajal, mascaras } from './eyes';
 import { blogs, new_new, offers, sugar_play } from './for-you';
+import {
+  finish_types,
+  lip_care,
+  lip_enhancers_and_other,
+  lipstick_forms,
+  lipstick_sets_and_combos,
+  long_lasting_lipsticks,
+} from './lips';
 
 export const NAVBAR_TOP_LAYER_DATA = [
   {
@@ -82,6 +91,23 @@ export const for_you: ICategoryL1 = {
   path: '/products/for_you',
   component: ForYou,
   subCategories: [new_new, sugar_play, offers, blogs], // NOTE -  only new is reserved keyword we can't use new so new_new used
+};
+
+export const lips: ICategoryL1 = {
+  id: 2,
+  level: 1,
+  label: 'Lips',
+  category: 'lips',
+  path: '/products/lips',
+  component: Lips,
+  subCategories: [
+    finish_types,
+    lipstick_forms,
+    long_lasting_lipsticks,
+    lip_care,
+    lip_enhancers_and_other,
+    lipstick_sets_and_combos,
+  ],
 };
 
 export const collections: ICategoryL1 = {

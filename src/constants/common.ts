@@ -1,6 +1,6 @@
 import { VITE_IS_DEV, VITE_LOCALHOST_BACKEND_URL, VITE_PRODUCTION_BACKEND_URL } from '../envs';
 import type { ICategoryL1, TRegexes } from '../types';
-import { collections, for_you } from './navbar';
+import { collections, for_you, lips } from './navbar';
 
 export const BACKEND_URL =
   VITE_IS_DEV === 'true' ? VITE_LOCALHOST_BACKEND_URL : VITE_PRODUCTION_BACKEND_URL;
@@ -131,7 +131,7 @@ export const DEFAULT_FILTER = { label: 'All', value: 'all', default: true };
 
 export const NAVBAR_CATEGORIES_DATA: ICategoryL1[] = [
   for_you,
-  // lips,
+  lips,
   // eyes,
   // face,
   // skin,
