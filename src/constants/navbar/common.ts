@@ -1,4 +1,5 @@
 import { ForYou } from '../../components';
+import Collections from '../../components/layout/navbar/children/Collection';
 import {
   CareIcon,
   CashIcon,
@@ -10,6 +11,7 @@ import {
   UserCircleIcon,
 } from '../../icons';
 import type { ICategoryL1 } from '../../types';
+import { bath_and_body, gifting, hair_care, sugar_pop } from './collections';
 import { blogs, new_new, offers, sugar_play } from './for-you';
 
 export const NAVBAR_TOP_LAYER_DATA = [
@@ -78,4 +80,14 @@ export const for_you: ICategoryL1 = {
   path: '/products/for_you',
   component: ForYou,
   subCategories: [new_new, sugar_play, offers, blogs], // NOTE -  only new is reserved keyword we can't use new so new_new used
+};
+
+export const collections: ICategoryL1 = {
+  id: 6,
+  level: 1,
+  label: 'Collections',
+  category: 'collections',
+  path: '/products/collections',
+  component: Collections,
+  subCategories: [bath_and_body, sugar_pop, hair_care, gifting],
 };

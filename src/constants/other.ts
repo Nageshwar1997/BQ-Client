@@ -156,3 +156,82 @@ export const FOOTER_AWARDS = [
   { name: 'Forbes', key: 'forbes' },
   { name: 'Talent Award', key: 'talent-award' },
 ];
+
+export const DUMMY_FEEDBACKS = [
+  [
+    { text: 'Great variety of lipsticks! Loved the' },
+    { text: 'shades', accent: true },
+    { text: 'and' },
+    { text: 'textures.', accent: true },
+    { text: 'Long-lasting', accent: true },
+    { text: 'and comfortable. Perfect for every occasion. Highly recommended!' },
+  ],
+  [
+    { text: 'Amazing' },
+    { text: 'pigmentation', accent: true },
+    { text: 'and' },
+    { text: 'smooth application.', accent: true },
+    { text: 'Stays on for hours' },
+    { text: 'without drying out lips. Definitely a' },
+    { text: 'must-have!', accent: true },
+    { text: 'Long-lasting and' },
+    { text: 'comfortable.', accent: true },
+  ],
+  [
+    { text: 'Beautiful' },
+    { text: 'shades', accent: true },
+    { text: 'and great' },
+    { text: 'texture!', accent: true },
+    { text: 'Perfect' },
+    { text: 'matte', accent: true },
+    { text: 'finish without feeling heavy. Love the' },
+    { text: 'Long-lasting', accent: true },
+    { text: 'effect! Amazing quality and' },
+    { text: 'pigmentation.', accent: true },
+  ],
+  [
+    { text: 'Excellent' },
+    { text: 'color payoff!', accent: true },
+    { text: 'Super' },
+    { text: 'comfortable', accent: true },
+    { text: 'to wear all day. My' },
+    { text: 'go-to face', accent: true },
+    {
+      text: 'for every event. Worth every penny! Absolutely stunning luxurious.',
+    },
+  ],
+  [
+    { text: 'Lovely' },
+    { text: 'shades', accent: true },
+    { text: 'with a' },
+    { text: 'creamy texture.', accent: true },
+    { text: 'No' },
+    { text: 'smudging', accent: true },
+    {
+      text: 'and lasts all day. Received so many compliments. Absolutely love them! Truly fantastic.',
+    },
+  ],
+
+  [
+    { text: 'The' },
+    { text: 'colors', accent: true },
+    { text: 'are vibrant and bold. Great for all' },
+    { text: 'skin tones.', accent: true },
+    { text: 'Stays' },
+    { text: 'intact', accent: true },
+    { text: 'and flawless' },
+    { text: 'even after meals. Highly recommended! Truly amazing.' },
+  ],
+  [
+    { text: 'Impressive' },
+    { text: 'quality', accent: true },
+    { text: 'and' },
+    { text: 'shade range.', accent: true },
+    { text: 'Glides' },
+    { text: 'so' },
+    { text: 'smoothly', accent: true },
+    {
+      text: 'and feels so lightweight. Absolutely perfect for both daily wear and special occasions!',
+    },
+  ],
+];
