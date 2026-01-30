@@ -1,21 +1,16 @@
-import { useEffect } from "react";
-import useRequireAuth from "./useRequireAuth";
-import { IWishlist } from "../types";
-import {
-  useAddProductToWishlist,
-  useGetUserWishlist,
-  useRemoveProductFromWishlist,
-} from "../api/user/user.service";
-import useWishlistStore from "../store/wishlist.store";
+import { useEffect } from 'react';
+import { store } from '../store';
+import { service } from '../api-service';
+import type { IWishlist } from '../types';
+import { customHooks } from '.';
 
 export const useUserWishlist = () => {
-  const { wishlist, setWishlist, addWishlistProduct, removeWishlistProduct } =
-    useWishlistStore();
-  const requireAuth = useRequireAuth();
+  const { wishlist, setWishlist, updateWishlist } = store.wishlist();
+  const requireAuth = customHooks.RequireAuth();
 
-  const { data, isLoading, isError } = useGetUserWishlist();
-  const { mutateAsync: addToWishlist, isPending } = useAddProductToWishlist();
-  const { mutateAsync: removeFromWishlist } = useRemoveProductFromWishlist();
+  const { data, isLoading, isError } = service.user.GetWishlist();
+  const { mutateAsync: addToWishlist, isPending } = service.user.AddProductToWishlist();
+  const { mutateAsync: removeFromWishlist } = service.user.RemoveProductFromWishlist();
 
   // ✅ Sync server wishlist with store
   useEffect(() => {
@@ -23,12 +18,12 @@ export const useUserWishlist = () => {
   }, [data, setWishlist]);
 
   // ✅ Add to wishlist with optimistic update
-  const handleAddToWishlist = (product: IWishlist["products"][number]) => {
+  const handleAddToWishlist = (product: IWishlist['products'][number]) => {
     const action = () => {
-      const latestWishlist = useWishlistStore.getState().wishlist;
+      const latestWishlist = store.wishlist.getState().wishlist;
 
       // local optimistic update
-      addWishlistProduct(product);
+      updateWishlist.addProduct(product);
 
       // server API call
       addToWishlist(product._id, {
@@ -42,7 +37,7 @@ export const useUserWishlist = () => {
 
   // ✅ Remove item
   const handleRemoveFromWishlist = (productId: string) => {
-    removeWishlistProduct(productId);
+    updateWishlist.removeProduct(productId);
     removeFromWishlist(productId);
   };
 
@@ -61,5 +56,3 @@ export const useUserWishlist = () => {
     isInWishlist,
   };
 };
-
-export default useUserWishlist;

@@ -5,6 +5,8 @@ import { usePathParams, useQueryParams } from './useParams';
 import { useRequireAuth } from './useRequireAuth';
 import { useScrollable } from './useScrollable';
 import { useSocket } from './useSocket';
+import { useUserCart } from './useUserCart';
+import { useUserWishlist } from './useUserWishlist';
 
 class Hooks {
   public AuthCheck = useAuthCheck;
@@ -15,6 +17,8 @@ class Hooks {
   public RequireAuth = useRequireAuth;
   public Scrollable = useScrollable;
   public Socket = useSocket;
+  public UserCart = useUserCart;
+  public UserWishlist = useUserWishlist;
 }
 
 export const customHooks = new Hooks();

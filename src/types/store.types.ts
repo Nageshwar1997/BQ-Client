@@ -18,8 +18,8 @@ export type TWishlistStore = {
   wishlist: IWishlist | null;
   setWishlist: (wishlist: IWishlist | null) => void;
   updateWishlist: {
-    addProduct?: (product: IWishlist['products'][number]) => void;
-    removeProduct?: (productId: string) => void;
+    addProduct: (product: IWishlist['products'][number]) => void;
+    removeProduct: (productId: string) => void;
   };
 };
 
