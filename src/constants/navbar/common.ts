@@ -2,6 +2,7 @@ import { ForYou } from '../../components';
 import Collections from '../../components/layout/navbar/children/Collection';
 import Eyes from '../../components/layout/navbar/children/Eyes';
 import Lips from '../../components/layout/navbar/children/Lips';
+import Skin from '../../components/layout/navbar/children/Skin';
 import {
   CareIcon,
   CashIcon,
@@ -24,6 +25,7 @@ import {
   lipstick_sets_and_combos,
   long_lasting_lipsticks,
 } from './lips';
+import { cleansing_and_exfoliation, face_mask, moisturizers, natures_blend } from './skin';
 
 export const NAVBAR_TOP_LAYER_DATA = [
   {
@@ -128,4 +130,14 @@ export const eyes: ICategoryL1 = {
   path: '/products/eyes',
   component: Eyes,
   subCategories: [kohl_and_kajal, mascaras, eyeliners, eyeshadow, eyebrows, eye_value_set],
+};
+
+export const skin: ICategoryL1 = {
+  id: 5,
+  level: 1,
+  label: 'Skin',
+  category: 'skin',
+  path: '/products/skin',
+  component: Skin,
+  subCategories: [moisturizers, cleansing_and_exfoliation, natures_blend, face_mask],
 };
