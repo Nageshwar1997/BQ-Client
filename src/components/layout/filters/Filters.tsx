@@ -1,27 +1,23 @@
-import { Fragment, useEffect, useRef, useState } from "react";
-import useQueryParams from "../../hooks/useQueryParams";
-import Dropdown from "../dropdown/Dropdown";
-import { CheckedIcon, PercentIcon, RupeesIcon } from "../../icons";
-import Checkbox from "../input/Checkbox";
-import Input from "../input/Input";
-import Range from "../input/Range";
-import CategoriesFilter from "./children/CategoriesFilter";
+import { Fragment, useEffect, useRef, useState } from 'react';
+import { customHooks } from '../../../hooks';
+import { CategoriesFilter } from './CategoriesFilter';
+import { Dropdown } from '../dropdown';
+import { CheckedIcon, PercentIcon, RupeesIcon } from '../../../icons';
+import { Checkbox, Input } from '../../ui';
+import Range from '../../ui/Input/Range';
 
 interface FiltersProps {
   className?: string;
   needCategoriesFilters?: boolean;
 }
-type TPriceRangeKeys = "min" | "max";
-type TRange = Record<TPriceRangeKeys | "discount", string>;
+type TPriceRangeKeys = 'min' | 'max';
+type TRange = Record<TPriceRangeKeys | 'discount', string>;
 
 const MAX_PRICE = 1500;
-const INITIAL_RANGES: TRange = { min: "0", max: `${MAX_PRICE}`, discount: "0" };
+const INITIAL_RANGES: TRange = { min: '0', max: `${MAX_PRICE}`, discount: '0' };
 
-function Filters({
-  className = "",
-  needCategoriesFilters = false,
-}: FiltersProps) {
-  const { queryParams, setParams, removeParam } = useQueryParams();
+export const Filters = ({ className = '', needCategoriesFilters = false }: FiltersProps) => {
+  const { queryParams, setParams, removeParam } = customHooks.QueryParams();
   const [ranges, setRanges] = useState<TRange>(INITIAL_RANGES);
 
   useEffect(() => {
@@ -57,19 +53,19 @@ function Filters({
       if (hasMaxChanged) prevMaxPrice.current = ranges.max;
 
       // Min Logic
-      if (ranges.min === "" || isNaN(parsedMin) || parsedMin === 0) {
-        removeParam("min");
+      if (ranges.min === '' || isNaN(parsedMin) || parsedMin === 0) {
+        removeParam('min');
       } else {
         setParams({ min: String(parsedMin) });
       }
 
       // Max Logic
       if (
-        ranges.max === "" ||
+        ranges.max === '' ||
         isNaN(parsedMax) ||
         (parsedMax === MAX_PRICE && !maxPriceRangeChangeRef.current)
       ) {
-        removeParam("max");
+        removeParam('max');
       } else if (maxPriceRangeChangeRef.current) {
         setParams({ max: String(parsedMax) });
       }
@@ -82,9 +78,7 @@ function Filters({
   }, [ranges.min, ranges.max]);
 
   // Debounce minDiscount
-  const debounceDiscountRef = useRef<ReturnType<typeof setTimeout> | null>(
-    null
-  );
+  const debounceDiscountRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const prevMinDiscount = useRef(ranges.discount);
 
   useEffect(() => {
@@ -96,23 +90,22 @@ function Filters({
       const hasMinChanged = prevMinDiscount.current !== ranges.discount;
       if (hasMinChanged) prevMinDiscount.current = ranges.discount;
 
-      if (ranges.discount === "" || isNaN(parsedMin) || parsedMin === 0) {
-        removeParam("discount");
+      if (ranges.discount === '' || isNaN(parsedMin) || parsedMin === 0) {
+        removeParam('discount');
       } else {
         setParams({ discount: String(parsedMin) });
       }
     }, 600);
 
     return () => {
-      if (debounceDiscountRef.current)
-        clearTimeout(debounceDiscountRef.current);
+      if (debounceDiscountRef.current) clearTimeout(debounceDiscountRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ranges.discount]);
 
   return (
-    <section className={`h-full bg-primary-inverted select-none ${className}`}>
-      <div className={`w-full flex flex-col gap-2 px-5 py-4`}>
+    <section className={`bg-primary-invert h-full select-none ${className}`}>
+      <div className={`flex w-full flex-col gap-2 px-5 py-4`}>
         {/* Categories Filter */}
         {needCategoriesFilters && <CategoriesFilter />}
         {/* Availability Filter */}
@@ -121,24 +114,24 @@ function Filters({
           icons={{
             right: (
               <div className="flex items-center">
-                (<CheckedIcon className="w-4 h-4 stroke-primary" />)
+                (<CheckedIcon className="stroke-primary h-4 w-4" />)
               </div>
             ),
           }}
-          className="border-b border-b-primary-50 [&>button]:px-0 [&>button]:py-3"
+          className="border-b-primary/50 border-b [&>button]:px-0 [&>button]:py-3"
         >
           <Checkbox
             containerClassName="-mt-2 px-1!"
             labelClassName="bg-primary!"
-            className="w-10! h-5! after:h-3! after:w-3!"
+            className="h-5! w-10! after:h-3! after:w-3!"
             checkboxProps={{
-              name: "inStock",
-              checked: queryParams.inStock === "true",
+              name: 'inStock',
+              checked: queryParams.inStock === 'true',
               onChange: (e) => {
                 if (e.target.checked) {
-                  setParams({ inStock: "true" });
+                  setParams({ inStock: 'true' });
                 } else {
-                  removeParam("inStock");
+                  removeParam('inStock');
                 }
               },
             }}
@@ -151,46 +144,41 @@ function Filters({
           icons={{
             right: (
               <div className="flex items-center">
-                (<RupeesIcon className="w-4 h-4 stroke-primary" />)
+                (<RupeesIcon className="stroke-primary size-4" />)
               </div>
             ),
           }}
-          className="border-b border-b-primary-50 [&>button]:px-0 [&>button]:py-3"
+          className="border-b-primary/50 border-b [&>button]:px-0 [&>button]:py-3"
         >
-          <div className="flex flex-col gap-2 -mt-2 px-1!">
-            <div className="h-9 flex justify-between gap-2">
-              {(["min", "max"] as TPriceRangeKeys[]).map((key, index) => {
-                const isMin = key === "min";
+          <div className="-mt-2 flex flex-col gap-2 px-1!">
+            <div className="flex h-9 justify-between gap-2">
+              {(['min', 'max'] as TPriceRangeKeys[]).map((key, index) => {
+                const isMin = key === 'min';
                 const minRange = Number(ranges.min);
                 const maxRange = Number(ranges.max);
                 return (
                   <Fragment key={index}>
                     <Input
                       containerClassName="h-full [&>div]:h-full"
-                      className="[&_p]:w-10 [&_p]:text-xs rounded-sm! border border-primary-30 [&_p]:border-r [&_p]:border-r-primary-30 [&_p]:bg-primary-10 [&_p]:text-primary"
+                      className="border-primary/30 [&_p]:border-r-primary/30 [&_p]:bg-primary/10 [&_p]:text-primary rounded-sm! border [&_p]:w-10 [&_p]:border-r [&_p]:text-xs"
                       icons={{ left: { text: key } }}
                       inputProps={{
                         name: key,
-                        type: "number",
+                        type: 'number',
                         min: isMin ? 0 : minRange + 1, // Ensure min value is not less than minRange
                         max: isMin ? maxRange - 1 : MAX_PRICE, // Ensure max value is not greater than maxRange
                         value: ranges[key],
                         onChange: (e) => {
                           const value = e.target.value;
-                          if (value === "") return;
+                          if (value === '') return;
                           const numVal = Number(value);
-                          if (
-                            (isMin && numVal < maxRange) ||
-                            (!isMin && numVal > minRange)
-                          ) {
+                          if ((isMin && numVal < maxRange) || (!isMin && numVal > minRange)) {
                             setRanges((prev) => ({ ...prev, [key]: value }));
                           }
                         },
                       }}
                     />
-                    {key === "min" && (
-                      <div className="w-px h-full bg-primary-50" />
-                    )}
+                    {key === 'min' && <div className="bg-primary/50 h-full w-px" />}
                   </Fragment>
                 );
               })}
@@ -202,20 +190,13 @@ function Filters({
               max={MAX_PRICE}
               step={10}
               value={{
-                dual: {
-                  min: Number(ranges.min) || 0,
-                  max: Number(ranges.max) || MAX_PRICE,
-                },
+                dual: { min: Number(ranges.min) || 0, max: Number(ranges.max) || MAX_PRICE },
               }}
               onChange={{
                 dual: ({ min, max }) => {
                   const minValue = Math.min(min, Number(ranges.max) - 1);
                   const maxValue = Math.max(max, Number(ranges.min) + 1);
-                  setRanges({
-                    ...ranges,
-                    min: `${minValue}`,
-                    max: `${maxValue}`,
-                  });
+                  setRanges({ ...ranges, min: `${minValue}`, max: `${maxValue}` });
                 },
               }}
             />
@@ -227,35 +208,29 @@ function Filters({
           icons={{
             right: (
               <div className="flex items-center">
-                (<PercentIcon className="w-4 h-4 stroke-primary" />)
+                (<PercentIcon className="stroke-primary size-4" />)
               </div>
             ),
           }}
-          className="border-b border-b-primary-50 [&>button]:px-0 [&>button]:py-3"
+          className="border-b-primary/50 border-b [&>button]:px-0 [&>button]:py-3"
         >
-          <div className="flex flex-col gap-2 -mt-2 px-1!">
+          <div className="-mt-2 flex flex-col gap-2 px-1!">
             <Input
               containerClassName="h-9 [&>div]:h-full"
-              className="[&_p]:w-14 [&_p]:text-xs rounded-sm! border border-primary-30 [&_p]:border-r [&_p]:border-r-primary-30 [&_p]:bg-primary-10 [&_p]:text-primary [&_p]:text-nowrap"
-              icons={{ left: { text: "0 - 100" } }}
+              className="border-primary/30 [&_p]:border-r-primary/30 [&_p]:bg-primary/10 [&_p]:text-primary rounded-sm! border [&_p]:w-14 [&_p]:border-r [&_p]:text-xs [&_p]:text-nowrap"
+              icons={{ left: { text: '0 - 100' } }}
               inputProps={{
-                name: "discount",
-                type: "number",
+                name: 'discount',
+                type: 'number',
                 min: 0,
                 max: 100,
                 value: ranges.discount,
                 onChange: (e) => {
                   const value = e.target.value;
-                  if (value === "" || Number(value) <= 100) {
-                    setRanges((prev) => ({
-                      ...prev,
-                      discount: value,
-                    }));
+                  if (value === '' || Number(value) <= 100) {
+                    setRanges((prev) => ({ ...prev, discount: value }));
                   } else if (Number(value) > 100) {
-                    setRanges((prev) => ({
-                      ...prev,
-                      discount: "100",
-                    }));
+                    setRanges((prev) => ({ ...prev, discount: '100' }));
                   }
                 },
               }}
@@ -280,6 +255,4 @@ function Filters({
       </div>
     </section>
   );
-}
-
-export default Filters;
+};
