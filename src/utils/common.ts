@@ -1,7 +1,7 @@
 import CryptoJS from 'crypto-js';
 import toast from 'react-hot-toast';
 import { VITE_ENCRYPTION_SECRET_KEY } from '../envs';
-import { DEFAULT_POSTER, HIGHLIGHTED_CATEGORIES } from '../constants';
+import { DEFAULT_POSTER, DUMMY_FEEDBACKS, HIGHLIGHTED_CATEGORIES } from '../constants';
 import type { IButton } from '../types';
 
 export const toaster = (type: 'success' | 'error' = 'success', error: string | Error) => {
@@ -221,3 +221,16 @@ export const isHighlightedCategory = (
   option: string,
   l1Cat?: keyof typeof HIGHLIGHTED_CATEGORIES,
 ) => (l1Cat ? HIGHLIGHTED_CATEGORIES[l1Cat].includes(option) : false);
+
+export const getTodaysFeedback = (forwardIndex: 0 | 1 | 2 | 3 | 4 | 5 | 6 = 0) => {
+  // Get the current date
+  const today = new Date();
+  // Get the day of the month (1 to 31)
+  const day = today.getDate();
+  // Calculate the feedback index for today
+  const feedbackIndex = (day + forwardIndex) % DUMMY_FEEDBACKS.length;
+  // Get the feedback for today
+  const todayFeedback = DUMMY_FEEDBACKS[feedbackIndex];
+
+  return todayFeedback;
+};

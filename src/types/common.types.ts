@@ -110,6 +110,18 @@ export interface ITextArea extends Omit<IBaseInput, 'icons'> {
   textAreaProps: TextareaHTMLAttributes<HTMLTextAreaElement>;
 }
 
+export interface IRange extends TClassName {
+  mode: 'single' | 'dual';
+  min: number;
+  max: number;
+  step?: number;
+  value: { single?: number; dual?: { min: number; max: number } };
+  onChange: {
+    single?: (next: number) => void;
+    dual?: (next: { min: number; max: number }) => void;
+  };
+}
+
 export interface IFileInput extends Omit<IBaseInput, 'error'> {
   fileInputProps: Omit<InputHTMLAttributes<HTMLInputElement>, 'type'>;
   errors?: string[];

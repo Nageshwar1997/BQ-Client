@@ -33,3 +33,15 @@
   color: transparent;
   background-clip: text;
 }
+
+@utility range-slider {
+  @apply pointer-events-none absolute z-20 h-full w-full appearance-none bg-transparent;
+
+  &::-webkit-slider-thumb {
+    @apply bg-primary pointer-events-auto relative z-30 h-3 w-3 cursor-pointer appearance-none rounded-full;
+  }
+
+  &::-moz-range-thumb {
+    @apply bg-primary pointer-events-auto relative z-30 h-3 w-3 cursor-pointer rounded-full;
+  }
+}

@@ -1,5 +1,6 @@
 import { ForYou } from '../../components';
 import Collections from '../../components/layout/navbar/children/Collection';
+import Eyes from '../../components/layout/navbar/children/Eyes';
 import {
   CareIcon,
   CashIcon,
@@ -12,6 +13,7 @@ import {
 } from '../../icons';
 import type { ICategoryL1 } from '../../types';
 import { bath_and_body, gifting, hair_care, sugar_pop } from './collections';
+import { eye_value_set, eyebrows, eyeliners, eyeshadow, kohl_and_kajal, mascaras } from './eyes';
 import { blogs, new_new, offers, sugar_play } from './for-you';
 
 export const NAVBAR_TOP_LAYER_DATA = [
@@ -90,4 +92,14 @@ export const collections: ICategoryL1 = {
   path: '/products/collections',
   component: Collections,
   subCategories: [bath_and_body, sugar_pop, hair_care, gifting],
+};
+
+export const eyes: ICategoryL1 = {
+  id: 3,
+  level: 1,
+  label: 'Eyes',
+  category: 'eyes',
+  path: '/products/eyes',
+  component: Eyes,
+  subCategories: [kohl_and_kajal, mascaras, eyeliners, eyeshadow, eyebrows, eye_value_set],
 };
