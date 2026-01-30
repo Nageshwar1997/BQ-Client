@@ -3,7 +3,7 @@ import { careers, company, press, TESTIMONIALS, trust_center } from '../../../..
 import { CategoryLabel } from './grand-children';
 import SubCategories from './grand-children/SubCategories';
 import { TestimonialCarousel } from '../../carousels';
-import { Button } from '../../../ui';
+import { Button, GradientText } from '../../../ui';
 
 const categories = [
   [company, press],
@@ -18,7 +18,7 @@ const About = () => {
           {item.map((subCat, index) => (
             <div
               key={i + index}
-              className={`border-primary-battleship-davys-gray max-w-75 min-w-50 space-y-4 border-b pb-4 lg:pb-0 ${
+              className={`border-battleship-davys-gray max-w-75 min-w-50 space-y-4 border-b pb-4 lg:pb-0 ${
                 ['press', 'trust_center_and_legal'].includes(subCat.category)
                   ? 'lg:border-none'
                   : 'lg:pb-2'
@@ -31,16 +31,18 @@ const About = () => {
         </div>
       ))}
       <div className="base:grid-cols-2 base:col-span-2 grid w-full gap-2 md:col-span-1 md:grid-cols-1">
-        <div className="border-primary-battleship-davys-gray max-w-75 min-w-50 space-y-4 border-b pb-4 lg:pb-2">
+        <div className="border-battleship-davys-gray max-w-75 min-w-50 space-y-4 border-b pb-4 lg:pb-2">
           <CategoryLabel label="Peoples Love BQ" className="cursor-default" />
           <TestimonialCarousel data={TESTIMONIALS} />
         </div>
-        <div className="border-primary-battleship-davys-gray max-w-75 min-w-50 space-y-4 border-b pb-4 lg:border-none lg:pb-2">
+        <div className="border-battleship-davys-gray max-w-75 min-w-50 space-y-4 border-b pb-4 lg:border-none lg:pb-2">
           <CategoryLabel label="Partner with us" className="cursor-default" />
           <div className="space-y-4 px-3">
-            <span className="bg-accent-duo block bg-clip-text text-sm leading-5 font-medium text-transparent italic">
-              Together, we're Unstoppable!
-            </span>
+            <GradientText
+              text="Together, we're Unstoppable!"
+              type="accent"
+              className="block text-sm leading-5 font-medium italic"
+            />
             <Link to="/partner-with-us" className="block w-fit">
               <Button
                 content="Team Up"
