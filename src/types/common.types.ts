@@ -291,3 +291,5 @@ export interface IFooterOptionList {
   title?: string;
   isFirst?: boolean;
 }
+
+export type TForwardIdx = 0 | 1 | 2 | 3 | 4 | 5 | 6;

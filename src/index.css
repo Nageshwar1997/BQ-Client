@@ -1,6 +1,7 @@
 /* index.css */
 
 @import 'tailwindcss';
+@plugin '@tailwindcss/typography';
 
 /*  !NOTE - Order matters (Don't change the order) */
 @import './styles/variables.css';
