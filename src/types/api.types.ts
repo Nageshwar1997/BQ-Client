@@ -58,3 +58,10 @@ export interface ICartItem extends TId {
 export interface ICart extends TId, TTS {
   products: ICartItem[];
 }
+
+export interface IChatMessage {
+  context: 'products' | 'orders';
+  description: string;
+  message: string;
+  suggestions: string[];
+}
