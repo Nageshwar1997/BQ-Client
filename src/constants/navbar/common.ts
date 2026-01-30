@@ -41,12 +41,7 @@ export const USER_MENU_POPUP_DATA = [
 
 export const HIGHLIGHTED_CATEGORIES = {
   about: ['mission_vision_values', 'retail_e_commerce'],
-  collections: [
-    'best_of_sugar_pop',
-    'soap',
-    // "serum", // already in skin->moisturizers
-    'sugar_set',
-  ],
+  collections: ['best_of_sugar_pop', 'soap', 'serum', 'sugar_set'],
   eyes: [
     'kohl',
     'curl_lengthening_mascara',

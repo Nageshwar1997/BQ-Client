@@ -1,7 +1,7 @@
 import CryptoJS from 'crypto-js';
 import toast from 'react-hot-toast';
 import { VITE_ENCRYPTION_SECRET_KEY } from '../envs';
-import { DEFAULT_POSTER } from '../constants';
+import { DEFAULT_POSTER, HIGHLIGHTED_CATEGORIES } from '../constants';
 import type { IButton } from '../types';
 
 export const toaster = (type: 'success' | 'error' = 'success', error: string | Error) => {
@@ -215,3 +215,9 @@ export const deepEqual = <T>(obj1: T, obj2: T): boolean => {
 
   return keys1.every((key) => deepEqual(obj1[key], obj2[key]));
 };
+
+// It return a boolean value is level 3 category option is highlighted or not
+export const isHighlightedCategory = (
+  option: string,
+  l1Cat?: keyof typeof HIGHLIGHTED_CATEGORIES,
+) => (l1Cat ? HIGHLIGHTED_CATEGORIES[l1Cat].includes(option) : false);

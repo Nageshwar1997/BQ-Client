@@ -158,7 +158,7 @@ export const trust_center: ICategoryL2 = {
   ],
 };
 
-export const testimonials = [
+export const TESTIMONIALS = [
   {
     content:
       'I absolutely love the range of products on this website! The quality is unmatched, and my skin has never felt better. I always get compliments!',

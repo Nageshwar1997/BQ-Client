@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { LeftArrowIcon, RightArrowIcon, YellowStarIcon } from '../../../icons';
-import { testimonials } from '../../../constants/navbar/about';
+import { TESTIMONIALS } from '../../../constants/navbar/about';
 
-export const TestimonialCarousel = ({ data }: { data: (typeof testimonials)[number][] }) => {
+export const TestimonialCarousel = ({ data }: { data: typeof TESTIMONIALS }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 

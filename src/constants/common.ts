@@ -6,7 +6,7 @@ export const BACKEND_URL =
   VITE_IS_DEV === 'true' ? VITE_LOCALHOST_BACKEND_URL : VITE_PRODUCTION_BACKEND_URL;
 
 export const MB = 1024 ** 2;
-export const MAX_IMAGE_FILE_SIZE = 0.1 * MB; // 2MB
+export const MAX_IMAGE_FILE_SIZE = 2 * MB; // 2MB
 export const MAX_VIDEO_FILE_SIZE = 50 * MB; // 50MB
 export const ALLOWED_IMAGE_FORMATS = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
 export const ALLOWED_VIDEO_FORMATS = ['video/mp4', 'video/webm'];
@@ -115,6 +115,16 @@ export const STATES_AND_UNION_TERRITORIES = [
   'Ladakh',
   'Lakshadweep',
   'Puducherry',
+];
+
+export const ALLOWED_BUSINESSES = [
+  'Individual',
+  'Freelance Seller',
+  'Small Business',
+  'Home-based Seller',
+  'Retail Store',
+  'Salon',
+  'Wholesale Distributor',
 ];
 
 export const DEFAULT_FILTER = { label: 'All', value: 'all', default: true };
