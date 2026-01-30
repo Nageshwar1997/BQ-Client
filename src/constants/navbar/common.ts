@@ -1,6 +1,7 @@
 import { ForYou } from '../../components';
 import Collections from '../../components/layout/navbar/children/Collection';
 import Eyes from '../../components/layout/navbar/children/Eyes';
+import Face from '../../components/layout/navbar/children/Face';
 import Lips from '../../components/layout/navbar/children/Lips';
 import Skin from '../../components/layout/navbar/children/Skin';
 import {
@@ -16,6 +17,17 @@ import {
 import type { ICategoryL1 } from '../../types';
 import { bath_and_body, gifting, hair_care, sugar_pop } from './collections';
 import { eye_value_set, eyebrows, eyeliners, eyeshadow, kohl_and_kajal, mascaras } from './eyes';
+import {
+  bronzers_and_contours,
+  cheeks_and_glow,
+  concealers_and_correctors,
+  face_makeup,
+  foundations_by_finish,
+  foundations_by_skin_type,
+  primers_and_removers,
+  setting_and_finishing,
+  traditional_and_essentials,
+} from './face';
 import { blogs, new_new, offers, sugar_play } from './for-you';
 import {
   finish_types,
@@ -112,16 +124,6 @@ export const lips: ICategoryL1 = {
   ],
 };
 
-export const collections: ICategoryL1 = {
-  id: 6,
-  level: 1,
-  label: 'Collections',
-  category: 'collections',
-  path: '/products/collections',
-  component: Collections,
-  subCategories: [bath_and_body, sugar_pop, hair_care, gifting],
-};
-
 export const eyes: ICategoryL1 = {
   id: 3,
   level: 1,
@@ -132,6 +134,26 @@ export const eyes: ICategoryL1 = {
   subCategories: [kohl_and_kajal, mascaras, eyeliners, eyeshadow, eyebrows, eye_value_set],
 };
 
+export const face: ICategoryL1 = {
+  id: 4,
+  level: 1,
+  label: 'Face',
+  category: 'face',
+  path: '/products/face',
+  component: Face,
+  subCategories: [
+    face_makeup,
+    traditional_and_essentials,
+    cheeks_and_glow,
+    setting_and_finishing,
+    primers_and_removers,
+    bronzers_and_contours,
+    concealers_and_correctors,
+    foundations_by_skin_type,
+    foundations_by_finish,
+  ],
+};
+
 export const skin: ICategoryL1 = {
   id: 5,
   level: 1,
@@ -140,4 +162,14 @@ export const skin: ICategoryL1 = {
   path: '/products/skin',
   component: Skin,
   subCategories: [moisturizers, cleansing_and_exfoliation, natures_blend, face_mask],
+};
+
+export const collections: ICategoryL1 = {
+  id: 6,
+  level: 1,
+  label: 'Collections',
+  category: 'collections',
+  path: '/products/collections',
+  component: Collections,
+  subCategories: [bath_and_body, sugar_pop, hair_care, gifting],
 };
