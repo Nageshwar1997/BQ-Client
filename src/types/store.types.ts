@@ -1,4 +1,4 @@
-import type { IUser, IWishlist } from './api.types';
+import type { ICart, ICartItem, IUser, IWishlist } from './api.types';
 
 export type TTheme = 'light' | 'dark';
 
@@ -20,5 +20,15 @@ export type TWishlistStore = {
   updateWishlist: {
     addProduct?: (product: IWishlist['products'][number]) => void;
     removeProduct?: (productId: string) => void;
+  };
+};
+
+export type TCartStore = {
+  cart: ICart | null;
+  setCart: (cart: ICart | null) => void;
+  updateCart: {
+    addProduct: (product: ICartItem['product'], shade?: ICartItem['shade']) => void;
+    updateQuantity: (cartItemId: string, quantity: number) => void;
+    removeProduct: (cartItemId: string) => void;
   };
 };

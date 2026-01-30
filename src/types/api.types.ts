@@ -13,7 +13,9 @@ export interface IUser
   providers: (typeof AUTH_PROVIDER)[keyof typeof AUTH_PROVIDER];
 }
 export interface IAddress extends TId, TTS {}
-export interface IShade extends TId, TTS, TShade {}
+export interface IShade extends TId, TTS, TShade {
+  images: string[];
+}
 export interface IProduct extends TId, TTS, TProduct {
   commonImages: string[];
   discount: number;
@@ -34,4 +36,25 @@ export interface IReview extends TReview, TId, TTS {}
 
 export interface IWishlist extends TId, TTS {
   products: IProduct[];
+}
+
+export interface ICartItem extends TId {
+  cart: string;
+  product: TId &
+    Pick<
+      IProduct,
+      | 'title'
+      | 'brand'
+      | 'originalPrice'
+      | 'sellingPrice'
+      | 'discount'
+      | 'commonImages'
+      | 'totalStock'
+    >;
+  shade?: TId & Pick<IShade, 'shadeName' | 'images' | 'stock'>;
+  quantity: number;
+}
+
+export interface ICart extends TId, TTS {
+  products: ICartItem[];
 }
