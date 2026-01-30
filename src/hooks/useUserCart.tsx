@@ -1,60 +1,42 @@
-import { useEffect } from "react";
-import {
-  useAddProductToCart,
-  useGetUserCart,
-  useRemoveProductFromCart,
-  useUpdateProductQuantityInCart,
-} from "../api/cart/cart.service";
-import useCartStore from "../store/cart.store";
-import { TCartProduct } from "../types";
-import useRequireAuth from "./useRequireAuth";
+import { useEffect } from 'react';
+import { store } from '../store';
+import { service } from '../api-service';
+import type { ICartItem } from '../types';
+import { customHooks } from '.';
 
 export const useUserCart = () => {
-  const { cart, setCart, updateProductQuantity, removeProductFromCart } =
-    useCartStore();
-  const requireAuth = useRequireAuth();
+  const { cart, setCart, updateCart } = store.cart();
+  const requireAuth = customHooks.RequireAuth();
 
-  const { data, isLoading, isError } = useGetUserCart();
-  const { mutateAsync: updateQuantity } = useUpdateProductQuantityInCart();
-  const { mutateAsync: removeProduct } = useRemoveProductFromCart();
-  const { mutateAsync: addToCart, isPending } = useAddProductToCart();
+  const { data, isLoading, isError } = service.cart.GetCart();
+  const { mutateAsync: updateQuantity } = service.cart.UpdateCartProductQuantity();
+  const { mutateAsync: removeProduct } = service.cart.RemoveProductFromCart();
+  const { mutateAsync: addToCart, isPending } = service.cart.AddProductToCart();
 
   useEffect(() => {
     if (data?.cart) setCart(data.cart);
   }, [data, setCart]);
 
   const handleQuantityChange = (id: string, newQty: number) => {
-    updateProductQuantity(id, newQty);
+    updateCart.updateQuantity(id, newQty);
     updateQuantity({ cartItemId: id, quantity: String(newQty) });
   };
 
   const handleRemoveItem = (id: string) => {
-    removeProductFromCart(id);
-    removeProduct({ cartItemId: id });
+    updateCart.removeProduct(id);
+    removeProduct(id);
   };
 
-  const handleAddToCart = (
-    product: TCartProduct["product"],
-    shade?: TCartProduct["shade"]
-  ) => {
+  const handleAddToCart = (product: ICartItem['product'], shade?: ICartItem['shade']) => {
     const action = () => {
-      const {
-        cart: latestCart,
-        addProductToCart,
-        setCart,
-      } = useCartStore.getState();
+      const { cart: latestCart, updateCart, setCart } = store.cart.getState();
 
-      addProductToCart(product, shade);
+      updateCart.addProduct(product, shade);
 
       // API call
       addToCart(
-        {
-          productId: product._id,
-          ...(shade?._id && { shadeId: shade._id }),
-        },
-        {
-          onError: () => setCart(latestCart), // rollback safely
-        }
+        { productId: product._id, ...(shade?._id && { shadeId: shade._id }) },
+        { onError: () => setCart(latestCart) }, // rollback safely
       );
     };
 
