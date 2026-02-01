@@ -1,4 +1,15 @@
 import { VITE_IS_DEV, VITE_LOCALHOST_BACKEND_URL, VITE_PRODUCTION_BACKEND_URL } from '../envs';
+import {
+  CareIcon,
+  DownloadIcon,
+  HandCoinIcon,
+  LogoutIcon,
+  ReviewIcon,
+  ShoppingBag,
+  TrackIcon,
+  TruckIcon,
+  UserCircleIcon,
+} from '../icons';
 import type { ICategoryL1, TRegexes } from '../types';
 import { collections, for_you, lips } from './navbar';
 
@@ -155,3 +166,68 @@ export const ADDRESS_DEFAULT_VALUES = {
   email: '',
   isDefaultAddress: false,
 };
+
+export const SIDEBAR_DATA = [
+  {
+    id: 1,
+    label: 'Account',
+    icon: UserCircleIcon,
+    path: '/account',
+    className: 'stroke-tertiary group-hover:stroke-primary',
+  },
+  {
+    id: 2,
+    label: 'Cart',
+    icon: ShoppingBag,
+    path: '/account/cart',
+    className: 'stroke-tertiary group-hover:stroke-primary',
+  },
+  {
+    id: 3,
+    label: 'Orders',
+    icon: TruckIcon,
+    path: '/account/orders',
+    className: 'stroke-tertiary group-hover:stroke-primary',
+  },
+  {
+    id: 4,
+    label: 'Track Orders',
+    icon: TrackIcon,
+    path: '/account/track',
+    className: 'stroke-tertiary group-hover:stroke-primary',
+  },
+  {
+    id: 5,
+    label: 'Refunds & Returns',
+    icon: HandCoinIcon,
+    path: '/account/orders/return-refund',
+    className: 'stroke-tertiary group-hover:stroke-primary',
+  },
+  {
+    id: 6,
+    label: 'Reviews & Ratings',
+    icon: ReviewIcon,
+    path: '/account/reviews-and-ratings',
+    className: 'stroke-tertiary group-hover:stroke-primary',
+  },
+  {
+    id: 7,
+    label: 'Customer Support',
+    icon: CareIcon,
+    path: '/account/contact',
+    className: 'fill-tertiary group-hover:fill-primary',
+  },
+  {
+    id: 8,
+    label: 'Change Password',
+    icon: DownloadIcon,
+    path: '',
+    className: '-rotate-90 stroke-tertiary group-hover:stroke-primary',
+  },
+  {
+    id: 9,
+    label: 'Logout',
+    icon: LogoutIcon,
+    className: 'stroke-tertiary group-hover:stroke-primary',
+  },
+];
