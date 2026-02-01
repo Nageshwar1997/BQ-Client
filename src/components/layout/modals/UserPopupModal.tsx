@@ -3,7 +3,7 @@ import { USER_MENU_POPUP_DATA } from '../../../constants';
 import { customHooks } from '../../../hooks';
 import { UserCircleIcon } from '../../../icons';
 import { store } from '../../../store';
-import { Button } from '../../ui';
+import { Button, HR } from '../../ui';
 import { ModalWrapper } from './ModalWrapper';
 
 export const UserPopupModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
@@ -51,7 +51,7 @@ export const UserPopupModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: 
               {user ? `${user.firstName} ${user.lastName}` : 'Guest'}
             </p>
           </div>
-          <hr className="bg-gradient-line block h-px border-none" />
+          <HR />
           <div className="flex flex-col gap-2.5 py-1">
             {USER_MENU_POPUP_DATA.map((item, i) => {
               const Icon = item.icon;

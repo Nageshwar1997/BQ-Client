@@ -1,4 +1,10 @@
-import type { TAddressInput, TLoginInput, TRegisterInput } from '../types';
+import type {
+  IChangePasswordInput,
+  IUpdatePasswordInput,
+  TAddressInput,
+  TLoginInput,
+  TRegisterInput,
+} from '../types';
 import { STATES_AND_UNION_TERRITORIES } from './common';
 
 export const PASSWORD_KEYS = ['password', 'confirmPassword'];
@@ -131,4 +137,29 @@ export const ADD_ADDRESS_INPUT_MAP_DATA: TAddressInput[] = [
     type: '',
     options: [{ label: 'India', value: 'India' }],
   },
+];
+
+export const updatePasswordFields: IUpdatePasswordInput[] = [
+  {
+    ...passwordData,
+    name: 'newPassword',
+    label: 'New Password',
+    placeholder: 'Enter new password',
+  },
+  {
+    ...passwordData,
+    name: 'confirmPassword',
+    label: 'Confirm Password',
+    placeholder: 'Confirm new password',
+  },
+];
+
+export const changePasswordFields: IChangePasswordInput[] = [
+  {
+    ...passwordData,
+    name: 'oldPassword',
+    label: 'Current Password',
+    placeholder: 'Enter current password',
+  },
+  ...updatePasswordFields,
 ];

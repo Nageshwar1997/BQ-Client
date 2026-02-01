@@ -14,7 +14,7 @@ import type {
 
 import type { UseFormRegisterReturn } from 'react-hook-form';
 import type { ICategory, IProduct, IReview, IShade, IUser } from './api.types';
-import type { TAddress, TLogin, TRegister } from './schema.types';
+import type { TAddress, TChangePassword, TLogin, TRegister, TUpdatePassword } from './schema.types';
 import type { FOOTER_CATEGORIES } from '../constants';
 
 export type TClassName = { className?: string };
@@ -101,6 +101,13 @@ export interface TRegisterInput extends TFormInputMap {
 export interface TAddressInput extends TFormInputMap {
   name: keyof TAddress;
   options?: TDropdownOption[];
+}
+
+export interface IChangePasswordInput extends TFormInputMap {
+  name: keyof TChangePassword;
+}
+export interface IUpdatePasswordInput extends TFormInputMap {
+  name: keyof TUpdatePassword;
 }
 
 export interface IInput extends IBaseInput {
