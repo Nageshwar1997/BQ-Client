@@ -1,4 +1,4 @@
-import Skeleton from '.';
+import { Skeleton } from '.';
 
 export const SearchModalSkeleton = ({ count }: { count: number }) => {
   return (
