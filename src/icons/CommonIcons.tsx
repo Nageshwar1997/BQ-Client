@@ -343,3 +343,39 @@ export const MessageIcon = (props: TIcon) => (
     </g>
   </svg>
 );
+
+export const UploadCloudIcon = (props: TIcon) => (
+  <svg fill="none" stroke="black" strokeWidth="2" {...SVG24WH_VB_LC_LJ_R} {...props}>
+    <path d="M8 16L12 12M12 12L16 16M12 12V21M20 16.7428C21.2215 15.734 22 14.2079 22 12.5C22 9.46243 19.5376 7 16.5 7C16.2815 7 16.0771 6.886 15.9661 6.69774C14.6621 4.48484 12.2544 3 9.5 3C5.35786 3 2 6.35786 2 10.5C2 12.5661 2.83545 14.4371 4.18695 15.7935" />
+  </svg>
+);
+
+export const StarFillIcon = (props: TIcon) => (
+  <svg fill="black" stroke="black" {...SVG24WH_VB} {...props}>
+    <path d="M12 2L14.94 8.64L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L9.06 8.64L12 2Z" />
+  </svg>
+);
+
+export const StarHalfFillIcon = (props: TIcon) => (
+  <svg fill="none" stroke="black" {...SVG24WH_VB} {...props}>
+    <defs>
+      <linearGradient id="half" x1="0" x2="24" y1="0" y2="0" gradientUnits="userSpaceOnUse">
+        <stop offset="50%" stopColor="var(--primary)" stopOpacity="1" />
+        <stop offset="50%" stopColor="var(--primary-inverted)" stopOpacity="0" />
+      </linearGradient>
+    </defs>
+    <path
+      d="M12 2L14.94 8.64L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L9.06 8.64L12 2Z"
+      fill="url(#half)"
+    />
+  </svg>
+);
+
+export const StarEmptyIcon = (props: TIcon) => (
+  <svg fill="none" stroke="black" {...SVG24WH_VB} {...props}>
+    <path
+      d="M12 2L14.94 8.64L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L9.06 8.64L12 2Z"
+      strokeWidth="1.5"
+    />
+  </svg>
+);

@@ -21,11 +21,14 @@ export class ReviewService extends ReviewApi {
     return useMutation({
       mutationKey: QUERY_KEYS.reviews.add_review,
       mutationFn: (data: FormData) => this.add_review(data, pathParams.productId ?? ''),
-      onSuccess: () =>
+      onSuccess: ({ message }) => {
+        toaster('success', message);
         invalidate.multiple([
           QUERY_KEYS.products.product,
           QUERY_KEYS.reviews.get_reviews_by_product_id,
-        ]),
+        ]);
+      },
+      onError: ({ message }) => toaster('error', message),
     });
   };
 
