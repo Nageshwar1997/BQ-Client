@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { customHooks } from '../../../../../hooks';
-import { ModalWrapper } from '../../../modals';
+import { SearchModal } from '../../../modals/SearchModal';
 import {
   BuildingIcon,
   HeartIcon,
@@ -53,14 +53,10 @@ export const UserMenuIcons = ({
 
   return (
     <>
-      <ModalWrapper
-        key={'search-modal'}
+      <SearchModal
         isOpen={isOpen.search}
         onClose={() => setIsOpen((prev) => ({ ...prev, search: false }))}
-      >
-        <div className=""></div>
-        {/* <SearchModal onClose={() => setIsOpen((prev) => ({ ...prev, search: false }))} /> */}
-      </ModalWrapper>
+      />
       <div className={`flex gap-2 md:gap-3 xl:gap-5 ${className}`}>
         {!paths.includes('search') && (
           <SearchIcon

@@ -234,3 +234,14 @@ export const getTodaysFeedback = (forwardIndex: 0 | 1 | 2 | 3 | 4 | 5 | 6 = 0) =
 
   return todayFeedback;
 };
+
+export const debounce = <Args extends unknown[]>(
+  fn: (...args: Args) => void,
+  delay = 300,
+): ((...args: Args) => void) => {
+  let timer: ReturnType<typeof setTimeout>;
+  return (...args: Args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), delay);
+  };
+};
