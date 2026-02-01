@@ -293,3 +293,15 @@ export interface IFooterOptionList {
 }
 
 export type TForwardIdx = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+
+export interface IConfirmModal {
+  type: 'success' | 'error' | 'warning' | 'custom';
+  title?: string;
+  description?: string;
+  children?: ReactNode;
+  modalProps?: Omit<IModalWrapper, 'children'>;
+  buttons?: {
+    left?: Omit<IButton, 'pattern'>;
+    right?: Omit<IButton, 'pattern'>;
+  };
+}
