@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { Hook } from '../../hooks';
-import type { IApiStatus } from '../../types';
-import { ContainerIcon, InfoIcon } from '../../icons';
+import { Hook } from '@/hooks';
+import type { IApiStatus } from '@/types';
+import { ContainerIcon, InfoIcon } from '@/icons';
 import { GradientText, HR } from '../ui';
 import { LoadingRings } from '../layout';
 

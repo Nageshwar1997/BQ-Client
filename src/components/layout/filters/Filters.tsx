@@ -1,9 +1,8 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
-import { Hook } from '../../../hooks';
+import { Hook } from '@/hooks';
 import { Dropdown } from '../dropdown';
-import { CheckedIcon, PercentIcon, RupeesIcon } from '../../../icons';
-import { Checkbox, Input } from '../../ui';
-import Range from '../../ui/Input/Range';
+import { CheckedIcon, PercentIcon, RupeesIcon } from '@/icons';
+import { Checkbox, Input, Range } from '@/components/ui';
 import { CategoriesFilter } from './CategoriesFilter';
 
 interface FiltersProps {

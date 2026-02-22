@@ -1,6 +1,6 @@
 import axios, { AxiosError, type AxiosInstance, type AxiosRequestConfig } from 'axios';
-import { apiRoutes, BACKEND_URL } from '../constants';
-import { getUserToken } from '../utils';
+import { apiRoutes, BACKEND_URL } from '@/constants';
+import { getUserToken } from '@/utils';
 
 export class ApiRequest {
   private baseUrl = `${BACKEND_URL}/api`;
