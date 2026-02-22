@@ -1,35 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect } from 'react';
+import { RouterProvider } from 'react-router-dom';
+import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Toaster } from 'react-hot-toast';
+import { router } from './Routes';
+import { Store } from './Store';
+import { VITE_IS_DEV } from './Envs';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { theme } = Store.Theme();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: { refetchOnWindowFocus: false, retry: (failureCount) => failureCount < 3 },
+      mutations: { retry: (failureCount) => failureCount < 3 },
+    },
+    queryCache: new QueryCache({ onSuccess: () => console.log('Query success') }),
+    mutationCache: new MutationCache({ onSuccess: () => console.log('Mutation success') }),
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('theme', theme);
+  }, [theme]);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <QueryClientProvider client={queryClient}>
+      <Toaster position="top-center" />
+      <div className="bg-primary-invert text-primary h-full max-h-dvh min-h-dvh w-full max-w-dvw min-w-dvw overflow-y-scroll">
+        <div className="mx-auto h-full w-full max-w-480">
+          <RouterProvider router={router} />
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      {/* React Query Devtools */}
+      {VITE_IS_DEV === 'true' && (
+        <ReactQueryDevtools initialIsOpen={false} position="bottom" buttonPosition="bottom-left" />
+      )}
+    </QueryClientProvider>
+  );
 }
 
-export default App
+export default App;
