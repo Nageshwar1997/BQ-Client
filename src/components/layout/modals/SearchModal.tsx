@@ -5,7 +5,7 @@ import { debounce } from '../../../utils';
 import type { IApiProductQueryProps, IModalWrapper, IProduct } from '../../../types';
 import { Service } from '../../../api-service';
 import { Input } from '../../ui';
-import { ApiStatus } from '../../other';
+import { ApiStatus } from '../../common';
 import { SearchModalSkeleton } from '../skeletons/SearchModalSkeleton';
 import { ModalWrapper } from './ModalWrapper';
 

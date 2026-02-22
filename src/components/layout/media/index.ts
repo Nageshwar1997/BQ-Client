@@ -1,1 +1,1 @@
-export * from './VideoPlayer';
+export { VideoPlayer } from './VideoPlayer';

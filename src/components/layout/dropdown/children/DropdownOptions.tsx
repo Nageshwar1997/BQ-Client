@@ -1,14 +1,13 @@
-import type { FC } from 'react';
 import { ChevronDownIcon } from '../../../../icons';
 import type { IDropdownOptions } from '../../../../types';
 
-export const DropdownOptions: FC<IDropdownOptions> = ({
+export const DropdownOptions = ({
   options,
   selected,
   onChange,
   className = '',
   onSelect,
-}) => {
+}: IDropdownOptions) => {
   return (
     <div className={`flex flex-col gap-0.5 ${className}`}>
       {options.map((opt, index) => {

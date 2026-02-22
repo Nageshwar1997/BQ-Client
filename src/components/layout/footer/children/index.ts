@@ -1,1 +1,1 @@
-export * from './FooterOptionList';
+export { FooterOptionList } from './FooterOptionList';

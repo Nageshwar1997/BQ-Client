@@ -1,4 +1,4 @@
-export * from './LoadingPage';
-export * from './LoadingRings';
-export * from './LoadingScreen';
-export * from './Teddy';
+export { LoadingPage } from './LoadingPage';
+export { LoadingRings } from './LoadingRings';
+export { LoadingScreen } from './LoadingScreen';
+export { Teddy } from './Teddy';

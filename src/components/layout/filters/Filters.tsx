@@ -1,10 +1,10 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { customHooks } from '../../../hooks';
-import { CategoriesFilter } from './CategoriesFilter';
 import { Dropdown } from '../dropdown';
 import { CheckedIcon, PercentIcon, RupeesIcon } from '../../../icons';
 import { Checkbox, Input } from '../../ui';
 import Range from '../../ui/Input/Range';
+import { CategoriesFilter } from './CategoriesFilter';
 
 interface FiltersProps {
   className?: string;

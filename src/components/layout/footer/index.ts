@@ -1,2 +1,2 @@
-export * from './Footer';
-export * from './children';
+export { Footer } from './Footer';
+export { FooterOptionList } from './children';

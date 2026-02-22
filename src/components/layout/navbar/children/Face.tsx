@@ -9,8 +9,7 @@ import {
   setting_and_finishing,
   traditional_and_essentials,
 } from '../../../../constants';
-import { CategoryLabel } from './grand-children';
-import SubCategories from './grand-children/SubCategories';
+import { CategoryLabel, SubCategories } from './grand-children';
 
 const categories = [
   [face_makeup, traditional_and_essentials],
@@ -19,7 +18,7 @@ const categories = [
   [primers_and_removers, bronzers_and_contours, concealers_and_correctors],
 ];
 
-const Face = () => {
+export const Face = () => {
   return (
     <div className="base:grid-cols-2 base:gap-3 grid h-full w-full grid-cols-1 content-center gap-2 p-4 md:grid-cols-3 md:gap-4 lg:grid-cols-4 lg:gap-5 lg:p-0">
       {categories.map((item, i) => (
@@ -54,5 +53,3 @@ const Face = () => {
     </div>
   );
 };
-
-export default Face;

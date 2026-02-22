@@ -13,7 +13,7 @@ import { Button, GradientText, HR, Input } from '../../ui';
 
 const baseDefaultValues = { newPassword: '', confirmPassword: '' };
 
-const PasswordConfirmationModal = () => {
+export const PasswordConfirmationModal = () => {
   const { queryParams, removeParam } = customHooks.QueryParams();
   const { setUser } = store.user();
 
@@ -175,5 +175,3 @@ const PasswordConfirmationModal = () => {
     </ConfirmModal>
   );
 };
-
-export default PasswordConfirmationModal;

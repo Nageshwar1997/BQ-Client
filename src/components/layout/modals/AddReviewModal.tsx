@@ -10,7 +10,7 @@ import { Button, FileInput, Input, Textarea } from '../../ui';
 import { UploadCloudIcon } from '../../../icons';
 import { SelectRating } from '../../ui/Input/SelectRating';
 
-export const reviewInitialValues = {
+const reviewInitialValues = {
   title: '',
   comment: '',
   rating: 1,
@@ -20,7 +20,7 @@ export const reviewInitialValues = {
 type TMediaState = { files: File[]; previews: TMediaOption[] };
 type TAddReviewModal = { isOpen: boolean; onClose: () => void };
 
-const AddReviewModal = ({ onClose, isOpen }: TAddReviewModal) => {
+export const AddReviewModal = ({ onClose, isOpen }: TAddReviewModal) => {
   const addReviewQuery = Service.Review.AddReview();
   const [media, setMedia] = useState<TMediaState>({ files: [], previews: [] });
 
@@ -143,5 +143,3 @@ const AddReviewModal = ({ onClose, isOpen }: TAddReviewModal) => {
     </ModalWrapper>
   );
 };
-
-export default AddReviewModal;

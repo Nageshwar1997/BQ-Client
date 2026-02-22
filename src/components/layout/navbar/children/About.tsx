@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { careers, company, press, TESTIMONIALS, trust_center } from '../../../../constants';
-import { CategoryLabel } from './grand-children';
-import SubCategories from './grand-children/SubCategories';
+import { CategoryLabel, SubCategories } from './grand-children';
 import { TestimonialCarousel } from '../../carousels';
 import { Button, GradientText } from '../../../ui';
 
@@ -10,7 +9,7 @@ const categories = [
   [careers, trust_center],
 ];
 
-const About = () => {
+export const About = () => {
   return (
     <div className="base:grid-cols-2 base:gap-3 grid grid-cols-1 content-start justify-start gap-2 p-4 md:grid-cols-3 md:gap-4 lg:gap-5 lg:p-0">
       {categories.map((item, i) => (
@@ -56,5 +55,3 @@ const About = () => {
     </div>
   );
 };
-
-export default About;

@@ -5,7 +5,7 @@ interface QuillContentProps extends TClassName {
   content: string;
 }
 
-const QuillContent = ({ content, className = '' }: QuillContentProps) => {
+export const QuillContent = ({ content, className = '' }: QuillContentProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -22,5 +22,3 @@ const QuillContent = ({ content, className = '' }: QuillContentProps) => {
     />
   );
 };
-
-export default QuillContent;

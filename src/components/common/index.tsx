@@ -1,7 +1,22 @@
-import { ContainerIcon, InfoIcon } from '../../icons';
+import { useEffect } from 'react';
+import { customHooks } from '../../hooks';
 import type { IApiStatus } from '../../types';
-import { LoadingRings } from '../layout';
+import { ContainerIcon, InfoIcon } from '../../icons';
 import { GradientText, HR } from '../ui';
+import { LoadingRings } from '../layout';
+
+export const ScrollToTop = () => {
+  const { pathname } = customHooks.PathParams();
+
+  useEffect(() => {
+    const el = document.getElementById('main');
+
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'auto', block: 'start' });
+  }, [pathname]);
+
+  return null;
+};
 
 const ApiDescription = ({ status, empty, error, showHrLine }: IApiStatus) => {
   const title = status === 'empty' ? empty?.title : status === 'error' ? error?.title : '';

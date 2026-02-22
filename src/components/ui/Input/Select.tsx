@@ -4,7 +4,7 @@ import type { ISelect } from '../../../types';
 import { CheckedIcon, ChevronDownIcon } from '../../../icons';
 import { InputError, InputIcon, InputLabel } from './children';
 
-const Select = ({
+export const Select = ({
   label = '',
   className = '',
   error = '',
@@ -109,5 +109,3 @@ const Select = ({
     </div>
   );
 };
-
-export default Select;

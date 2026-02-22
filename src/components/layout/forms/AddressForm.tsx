@@ -11,7 +11,10 @@ import { deepEqual, toaster } from '../../../utils';
 import { Button, Checkbox, HR, Input, Radio } from '../../ui';
 import Select from '../../ui/Input/Select';
 
-const AddressForm = ({ addresses, className = '' }: { addresses?: IAddress[] } & TClassName) => {
+export const AddressForm = ({
+  addresses,
+  className = '',
+}: { addresses?: IAddress[] } & TClassName) => {
   const { user, authenticated } = store.user();
   const { mutateAsync: addAddress } = Service.Address.AddAddress();
   const { mutateAsync: updateAddress } = Service.Address.UpdateAddress();
@@ -182,5 +185,3 @@ const AddressForm = ({ addresses, className = '' }: { addresses?: IAddress[] } &
     </form>
   );
 };
-
-export default AddressForm;

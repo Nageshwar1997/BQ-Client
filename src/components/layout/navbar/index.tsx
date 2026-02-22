@@ -1,11 +1,11 @@
-import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { customHooks } from '../../../hooks';
-import { NAVBAR_CATEGORIES_DATA, NAVBAR_TOP_LAYER_DATA } from '../../../constants';
-import { store } from '../../../store';
-import { ChevronDownIcon, CloseIcon, MenuIcon } from '../../../icons';
-import { Button, LinearGradient } from '../../ui';
-import { HoveredComponent, UserMenuIcons } from './children';
+import { useEffect, useRef, useState } from "react";
+import { NAVBAR_CATEGORIES_DATA, NAVBAR_TOP_LAYER_DATA } from "../../../constants";
+import { customHooks } from "../../../hooks";
+import { store } from "../../../store";
+import { Link } from "react-router-dom";
+import { ChevronDownIcon, CloseIcon, MenuIcon } from "../../../icons";
+import { HoveredComponent, UserMenuIcons } from "./children";
+import { Button, LinearGradient } from "../../ui";
 
 const TopLayer = () => {
   const requireAuth = customHooks.RequireAuth();

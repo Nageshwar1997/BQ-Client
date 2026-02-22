@@ -1,9 +1,7 @@
 import { skin } from '../../../../constants';
-import { CategoryLabel } from './grand-children';
-import Feedback from './grand-children/Feedback';
-import SubCategories from './grand-children/SubCategories';
+import { CategoryLabel, Feedback, SubCategories } from './grand-children';
 
-const Skin = () => {
+export const Skin = () => {
   return (
     <div className="h-full w-full space-y-4 p-4 lg:p-0">
       <div className="base:grid-cols-2 base:gap-3 grid w-full justify-start gap-2 md:grid-cols-3 md:gap-4 lg:grid-cols-4 lg:gap-5">
@@ -32,5 +30,3 @@ const Skin = () => {
     </div>
   );
 };
-
-export default Skin;

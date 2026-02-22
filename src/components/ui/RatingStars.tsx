@@ -6,7 +6,7 @@ interface RatingStarsProps {
   className?: string;
 }
 
-const RatingStars = ({ rating = 0, maxStars = 5, className = '' }: RatingStarsProps) => {
+export const RatingStars = ({ rating = 0, maxStars = 5, className = '' }: RatingStarsProps) => {
   const fullStars = Math.floor(rating);
   const hasHalfStar = rating % 1 !== 0;
   const emptyStars = maxStars - fullStars - (hasHalfStar ? 1 : 0);
@@ -22,5 +22,3 @@ const RatingStars = ({ rating = 0, maxStars = 5, className = '' }: RatingStarsPr
     </div>
   );
 };
-
-export default RatingStars;

@@ -5,7 +5,7 @@ import type { IRange } from '../../../types';
 /* helper: % position on track */
 const pct = (v: number, min: number, max: number) => ((v - min) / (max - min)) * 100;
 
-const Range = ({ mode, min, max, step = 1, className = '', value, onChange }: IRange) => {
+export const Range = ({ mode, min, max, step = 1, className = '', value, onChange }: IRange) => {
   const trackRef = useRef<HTMLDivElement>(null);
   /* paint coloured track */
   useEffect(() => {
@@ -81,5 +81,3 @@ const Range = ({ mode, min, max, step = 1, className = '', value, onChange }: IR
     </div>
   );
 };
-
-export default Range;

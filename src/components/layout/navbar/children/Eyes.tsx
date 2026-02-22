@@ -1,8 +1,7 @@
 import { eyes } from '../../../../constants';
-import { CategoryLabel } from './grand-children';
-import SubCategories from './grand-children/SubCategories';
+import { CategoryLabel, SubCategories } from './grand-children';
 
-const Eyes = () => {
+export const Eyes = () => {
   return (
     <div className="base:grid-cols-2 base:gap-3 grid w-full justify-start gap-2 p-4 md:grid-cols-3 md:gap-4 lg:grid-cols-4 lg:gap-5 lg:p-0">
       {eyes.subCategories.map((category, index) => (
@@ -35,5 +34,3 @@ const Eyes = () => {
     </div>
   );
 };
-
-export default Eyes;

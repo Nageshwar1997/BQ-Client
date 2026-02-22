@@ -2,7 +2,7 @@ import { Skeleton } from '.';
 import { HR } from '../../ui';
 import { ScrollableGradientContainer } from '../containers';
 
-const MediaCarouselSkeleton = ({
+export const MediaCarouselSkeleton = ({
   mainImage = true,
   hrLine = true,
   thumbnails = true,
@@ -37,5 +37,3 @@ const MediaCarouselSkeleton = ({
     </div>
   );
 };
-
-export default MediaCarouselSkeleton;

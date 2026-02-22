@@ -1,8 +1,7 @@
 import { lips } from '../../../../constants';
-import { CategoryLabel } from './grand-children';
-import SubCategories from './grand-children/SubCategories';
+import { CategoryLabel, SubCategories } from './grand-children';
 
-const Lips = () => {
+export const Lips = () => {
   return (
     <div className="base:grid-cols-2 base:gap-3 grid h-full w-full grid-cols-1 content-center gap-2 p-4 md:grid-cols-3 md:gap-4 lg:gap-5 lg:p-0 xl:grid-cols-4">
       {lips.subCategories.map((category, index) => {
@@ -38,5 +37,3 @@ const Lips = () => {
     </div>
   );
 };
-
-export default Lips;
