@@ -5,12 +5,12 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { ReviewApi } from '../api';
-import { Hook } from '../../hooks';
-import { QUERY_KEYS } from '../../constants';
+import { Hook } from '@/hooks';
+import { QUERY_KEYS } from '@/constants';
 import { InvalidateQueries } from '../InvalidateQueries';
-import { Store } from '../../store';
-import { toaster } from '../../utils';
-import type { IApiReviewQueryProps } from '../../types';
+import { Store } from '@/store';
+import { toaster } from '@/utils';
+import type { IApiReviewQueryProps } from '@/types';
 
 export class ReviewService extends ReviewApi {
   public AddReview = () => {

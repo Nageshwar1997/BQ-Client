@@ -1,9 +1,9 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { OrderApi } from '../api';
-import { QUERY_KEYS } from '../../constants';
+import { QUERY_KEYS } from '@/constants';
 import { InvalidateQueries } from '../InvalidateQueries';
-import type { TPagination, TParams } from '../../types';
-import { Hook } from '../../hooks';
+import type { TPagination, TParams } from '@/types';
+import { Hook } from '@/hooks';
 
 export class OrderService extends OrderApi {
   public CreateOrder = () => {
