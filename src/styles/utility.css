@@ -34,6 +34,17 @@
   background-clip: text;
 }
 
+@utility border-rounded-corners-gradient {
+  border: solid 1px transparent;
+  border-radius: 16px;
+  background:
+    linear-gradient(var(--primary-invert), var(--primary-invert)),
+    linear-gradient(rgba(var(--primary-rgb), 0.5) 10%, rgba(var(--primary-rgb), 0.1));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow: var(--primary-10) -4px 9px 25px -6px;
+}
+
 @utility range-slider {
   @apply pointer-events-none absolute z-20 h-full w-full appearance-none bg-transparent;
 
