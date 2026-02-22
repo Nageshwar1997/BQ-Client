@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { ModalWrapper } from './ModalWrapper';
-import { Login } from '../../../pages/auth';
+import { Login } from '../../../pages/Auth';
 import { customHooks } from '../../../hooks';
 import { store } from '../../../store';
 
