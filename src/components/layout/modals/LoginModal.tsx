@@ -2,12 +2,12 @@ import { useEffect } from 'react';
 import { ModalWrapper } from './ModalWrapper';
 import { Login } from '../../../pages/Auth';
 import { Hook } from '../../../hooks';
-import { store } from '../../../store';
+import { Store } from '../../../store';
 
 export const LoginModal = () => {
   const { queryParams, removeParam } = Hook.QueryParams();
-  const { authenticated } = store.user();
-  const { runAction, clearAction } = store.action();
+  const { authenticated } = Store.User();
+  const { runAction, clearAction } = store.Action();
 
   useEffect(() => {
     removeParam('login');

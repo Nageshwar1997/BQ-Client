@@ -8,7 +8,7 @@ import { ReviewApi } from '../api';
 import { Hook } from '../../hooks';
 import { QUERY_KEYS } from '../../constants';
 import { InvalidateQueries } from '../InvalidateQueries';
-import { store } from '../../store';
+import { Store } from '../../store';
 import { toaster } from '../../utils';
 import type { IApiReviewQueryProps } from '../../types';
 
@@ -33,7 +33,7 @@ export class ReviewService extends ReviewApi {
   };
 
   public LikeDislikeHelpful = () => {
-    const { authenticated } = store.user();
+    const { authenticated } = Store.User();
 
     return useMutation({
       mutationKey: [...QUERY_KEYS.reviews.like_dislike_helpful, authenticated],
@@ -46,7 +46,7 @@ export class ReviewService extends ReviewApi {
   public GetReviewsByProductId = (props: IApiReviewQueryProps) => {
     const { enabled, pageParams, ...restProps } = props;
     const { queryParams } = restProps ?? {};
-    const { authenticated } = store.user();
+    const { authenticated } = Store.User();
 
     return useInfiniteQuery({
       queryKey: [

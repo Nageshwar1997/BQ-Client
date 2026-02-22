@@ -3,10 +3,10 @@ import { io, Socket } from 'socket.io-client';
 import { v4 as uuidv4 } from 'uuid';
 import { BACKEND_URL } from '../constants';
 import type { IChatMessage } from '../types';
-import { store } from '../store';
+import { Store } from '../store';
 
 export const useSocket = (context: IChatMessage['context'] | null) => {
-  const { user } = store.user();
+  const { user } = Store.User();
   const [socket, setSocket] = useState<Socket | null>(null);
   const [connected, setConnected] = useState(false);
   const [userId, setUserId] = useState(() => sessionStorage.getItem('chat_userId') || uuidv4());

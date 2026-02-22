@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { saveLocalToken, saveSessionToken } from '../../utils';
 import type { TLogin } from '../../types';
 import { loginSchema } from '../../schemas';
-import { store } from '../../store';
+import { Store } from '../../store';
 import { Service } from '../../api-service';
 import { Hook } from '../../hooks';
 import { BorderGradient, Button, Checkbox, GradientText, Input, Radio } from '../../components';
@@ -15,7 +15,7 @@ import { BottomInstructions, SocialAuth } from './children';
 export const Login = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { removeParam, queryParams } = Hook.QueryParams();
-  const { setUser } = store.user();
+  const { setUser } = Store.User();
   const { mutateAsync, isPending } = Service.Auth.Login();
 
   const {

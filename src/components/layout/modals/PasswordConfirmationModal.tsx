@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Hook } from '../../../hooks';
-import { store } from '../../../store';
+import { Store } from '../../../store';
 import { Service } from '../../../api-service';
 import { useState } from 'react';
 import type { TChangePassword, TUpdatePassword } from '../../../types';
@@ -15,7 +15,7 @@ const baseDefaultValues = { newPassword: '', confirmPassword: '' };
 
 export const PasswordConfirmationModal = () => {
   const { queryParams, removeParam } = Hook.QueryParams();
-  const { setUser } = store.user();
+  const { setUser } = Store.User();
 
   const { mutateAsync: resetPasswordSendLinkAsync, isPending: isResetPasswordSendLinkPending } =
     Service.User.ResetPasswordSendLink();

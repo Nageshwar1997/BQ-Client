@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { store } from '../../../store';
+import { Store } from '../../../store';
 import { Service } from '../../../api-service';
 import type { IAddress, TAddress, TClassName } from '../../../types';
 import { Hook } from '../../../hooks';
@@ -15,7 +15,7 @@ export const AddressForm = ({
   addresses,
   className = '',
 }: { addresses?: IAddress[] } & TClassName) => {
-  const { user, authenticated } = store.user();
+  const { user, authenticated } = Store.User();
   const { mutateAsync: addAddress } = Service.Address.AddAddress();
   const { mutateAsync: updateAddress } = Service.Address.UpdateAddress();
   const { removeParam, queryParams } = Hook.QueryParams();

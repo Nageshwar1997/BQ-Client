@@ -1,13 +1,13 @@
 import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
-import { store } from '../../../store';
+import { Store } from '../../../store';
 import { FOOTER_AWARDS, FOOTER_CATEGORIES, SOCIAL_MEDIA_LINKS } from '../../../constants';
 import { FooterOptionList } from './children';
 import { GradientText, HR } from '../../ui';
 
 export const Footer = () => {
-  const { theme } = store.theme();
+  const { theme } = Store.Theme();
   return (
     <div className="w-full">
       <div className="border-y-primary/30 w-full space-y-6 border-y py-6 text-center md:px-4 lg:px-10 lg:py-10 xl:px-20">

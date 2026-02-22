@@ -18,7 +18,7 @@ import { EyeIcon, EyeOffIcon } from '../../icons';
 import { BottomInstructions, SocialAuth } from './children';
 import { getFileFromFileList, saveLocalToken, saveSessionToken } from '../../utils';
 import { registerSchema, sendOtpSchema } from '../../schemas';
-import { store } from '../../store';
+import { Store } from '../../store';
 import { Service } from '../../api-service';
 
 type TRegisterInput = {
@@ -89,7 +89,7 @@ const RegisterForm = ({
     Service.Auth.VerifyOtpAndRegister();
   const { mutateAsync: resendOtpAsync, isPending: isResendingOtp } = Service.Auth.ResendOtp();
 
-  const { setUser } = store.user();
+  const { setUser } = Store.User();
 
   const {
     watch,

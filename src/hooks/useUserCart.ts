@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
-import { store } from '../store';
+import { Store } from '../store';
 import { Service } from '../api-service';
 import type { ICartItem } from '../types';
 import { Hook } from '.';
 
 export const useUserCart = () => {
-  const { cart, setCart, updateCart } = store.cart();
+  const { cart, setCart, updateCart } = Store.Cart();
   const requireAuth = Hook.RequireAuth();
 
   const { data, isLoading, isError } = Service.Cart.GetCart();
@@ -29,7 +29,7 @@ export const useUserCart = () => {
 
   const handleAddToCart = (product: ICartItem['product'], shade?: ICartItem['shade']) => {
     const action = () => {
-      const { cart: latestCart, updateCart, setCart } = store.cart.getState();
+      const { cart: latestCart, updateCart, setCart } = Store.Cart.getState();
 
       updateCart.addProduct(product, shade);
 

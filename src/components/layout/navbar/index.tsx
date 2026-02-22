@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { NAVBAR_CATEGORIES_DATA, NAVBAR_TOP_LAYER_DATA } from '../../../constants';
 import { Hook } from '../../../hooks';
-import { store } from '../../../store';
+import { Store } from '../../../store';
 import { Link } from 'react-router-dom';
 import { ChevronDownIcon, CloseIcon, MenuIcon } from '../../../icons';
 import { HoveredComponent, UserMenuIcons } from './children';
@@ -42,7 +42,7 @@ export const Navbar = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navbarRef = useRef<HTMLDivElement>(null);
 
-  const { authenticated } = store.user();
+  const { authenticated } = Store.User();
 
   const { paths, pathname, navigate } = Hook.PathParams();
 

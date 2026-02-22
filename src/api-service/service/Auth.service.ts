@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { AuthApi } from '../api';
 import { QUERY_KEYS } from '../../constants';
 import { toaster } from '../../utils';
-import { store } from '../../store';
+import { Store } from '../../store';
 
 export class AuthService extends AuthApi {
   public Login = () => {
@@ -38,7 +38,7 @@ export class AuthService extends AuthApi {
     });
   };
   public Logout = () => {
-    const { user } = store.user();
+    const { user } = Store.User();
     return useMutation({
       mutationKey: QUERY_KEYS.auth.logout,
       mutationFn: () => this.logout(user?._id),

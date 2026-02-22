@@ -4,11 +4,11 @@ import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@ta
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'react-hot-toast';
 import { router } from './routes';
-import { store } from './store';
+import { Store } from './store';
 import { VITE_IS_DEV } from './envs';
 
 function App() {
-  const { theme } = store.theme();
+  const { theme } = Store.Theme();
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: { refetchOnWindowFocus: false, retry: (failureCount) => failureCount < 3 },

@@ -2,12 +2,12 @@ import { Service } from '../../../api-service';
 import { SIDEBAR_DATA } from '../../../constants';
 import { Hook } from '../../../hooks';
 import { ChevronDownIcon, UserCircleIcon } from '../../../icons';
-import { store } from '../../../store';
+import { Store } from '../../../store';
 import { GradientText, LinearGradient } from '../../ui';
 
 export const Sidebar = () => {
   const { navigate } = Hook.PathParams();
-  const { user } = store.user();
+  const { user } = Store.User();
   const { mutateAsync: logout } = Service.Auth.Logout();
   const { showV_Gradient, containerRef: vContainerRef } = Hook.Scrollable('vertical');
   const { showH_Gradient, containerRef: hContainerRef } = Hook.Scrollable('horizontal');

@@ -1,13 +1,13 @@
 import { type JSX } from 'react';
 import { Navigate } from 'react-router-dom';
 import { Hook } from '../hooks';
-import { store } from '../store';
+import { Store } from '../store';
 import { LoadingScreen } from '../components';
 import { getUserToken } from '../utils';
 
 export const AuthRedirect = ({ children }: { children: JSX.Element }) => {
   const token = getUserToken();
-  const { authenticated } = store.user();
+  const { authenticated } = Store.User();
   const { isLoading } = Hook.AuthCheck(!!token);
   const { state } = Hook.PathParams();
 

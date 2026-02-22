@@ -4,7 +4,7 @@ import { QUERY_KEYS } from '../../constants';
 import { getUserToken, toaster } from '../../utils';
 import { InvalidateQueries } from '../InvalidateQueries';
 import { Hook } from '../../hooks';
-import { store } from '../../store';
+import { Store } from '../../store';
 
 export class UserService extends UserApi {
   public GetUserDetails = (enabled: boolean = true) => {
@@ -123,7 +123,7 @@ export class UserService extends UserApi {
 
   public GetWishlist = () => {
     const token = getUserToken();
-    const { authenticated } = store.user.getState();
+    const { authenticated } = Store.User.getState();
     const { queryParams } = Hook.QueryParams();
 
     return useQuery({

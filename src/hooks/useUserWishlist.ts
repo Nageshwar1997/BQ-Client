@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
-import { store } from '../store';
+import { Store } from '../store';
 import { Service } from '../api-service';
 import type { IWishlist } from '../types';
 import { Hook } from '.';
 
 export const useUserWishlist = () => {
-  const { wishlist, setWishlist, updateWishlist } = store.wishlist();
+  const { wishlist, setWishlist, updateWishlist } = store.Wishlist();
   const requireAuth = Hook.RequireAuth();
 
   const { data, isLoading, isError } = Service.User.GetWishlist();
@@ -20,7 +20,7 @@ export const useUserWishlist = () => {
   // ✅ Add to wishlist with optimistic update
   const handleAddToWishlist = (product: IWishlist['products'][number]) => {
     const action = () => {
-      const latestWishlist = store.wishlist.getState().wishlist;
+      const latestWishlist = store.Wishlist.getState().wishlist;
 
       // local optimistic update
       updateWishlist.addProduct(product);
