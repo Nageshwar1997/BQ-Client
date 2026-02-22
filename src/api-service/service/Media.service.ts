@@ -1,6 +1,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { MediaApi } from '../api';
-import { QUERY_KEYS } from '../../constants';
+import { QUERY_KEYS } from '@/constants';
 
 export class MediaService extends MediaApi {
   public HomeVideos = () => {
