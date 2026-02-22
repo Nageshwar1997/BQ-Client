@@ -1,4 +1,4 @@
-import { service } from '../../../api-service';
+import { Service } from '../../../api-service';
 import { SIDEBAR_DATA } from '../../../constants';
 import { customHooks } from '../../../hooks';
 import { ChevronDownIcon, UserCircleIcon } from '../../../icons';
@@ -8,7 +8,7 @@ import { GradientText, LinearGradient } from '../../ui';
 export const Sidebar = () => {
   const { navigate } = customHooks.PathParams();
   const { user } = store.user();
-  const { mutateAsync: logout } = service.auth.Logout();
+  const { mutateAsync: logout } = Service.Auth.Logout();
   const { showV_Gradient, containerRef: vContainerRef } = customHooks.Scrollable('vertical');
   const { showH_Gradient, containerRef: hContainerRef } = customHooks.Scrollable('horizontal');
   const isMobile = customHooks.IsMobile(640);

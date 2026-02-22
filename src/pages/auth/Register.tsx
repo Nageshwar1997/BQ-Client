@@ -19,7 +19,7 @@ import { BottomInstructions, SocialAuth } from './children';
 import { getFileFromFileList, saveLocalToken, saveSessionToken } from '../../utils';
 import { registerSchema, sendOtpSchema } from '../../schemas';
 import { store } from '../../store';
-import { service } from '../../api-service';
+import { Service } from '../../api-service';
 
 type TRegisterInput = {
   input: (typeof REGISTER_INPUT_MAP_DATA)[number];
@@ -86,8 +86,8 @@ const RegisterForm = ({
   onReset?: () => void;
 }) => {
   const { mutateAsync: verifyOtpAsync, isPending: isVerifyingOtp } =
-    service.auth.VerifyOtpAndRegister();
-  const { mutateAsync: resendOtpAsync, isPending: isResendingOtp } = service.auth.ResendOtp();
+    Service.Auth.VerifyOtpAndRegister();
+  const { mutateAsync: resendOtpAsync, isPending: isResendingOtp } = Service.Auth.ResendOtp();
 
   const { setUser } = store.user();
 
@@ -232,7 +232,7 @@ const RegisterForm = ({
 };
 
 export const Register = () => {
-  const { mutateAsync, isPending, data, reset } = service.auth.SendOtp();
+  const { mutateAsync, isPending, data, reset } = Service.Auth.SendOtp();
 
   const {
     watch,

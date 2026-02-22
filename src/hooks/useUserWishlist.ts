@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { store } from '../store';
-import { service } from '../api-service';
+import { Service } from '../api-service';
 import type { IWishlist } from '../types';
 import { customHooks } from '.';
 
@@ -8,9 +8,9 @@ export const useUserWishlist = () => {
   const { wishlist, setWishlist, updateWishlist } = store.wishlist();
   const requireAuth = customHooks.RequireAuth();
 
-  const { data, isLoading, isError } = service.user.GetWishlist();
-  const { mutateAsync: addToWishlist, isPending } = service.user.AddProductToWishlist();
-  const { mutateAsync: removeFromWishlist } = service.user.RemoveProductFromWishlist();
+  const { data, isLoading, isError } = Service.User.GetWishlist();
+  const { mutateAsync: addToWishlist, isPending } = Service.User.AddProductToWishlist();
+  const { mutateAsync: removeFromWishlist } = Service.User.RemoveProductFromWishlist();
 
   // ✅ Sync server wishlist with store
   useEffect(() => {

@@ -1,18 +1,18 @@
 import { useEffect } from 'react';
 import { getUserToken } from '../utils';
 import { store } from '../store';
-import { service } from '../api-service';
+import { Service } from '../api-service';
 import { customHooks } from '.';
 
 export const useAuthCheck = (readyToCall?: boolean) => {
   const { setUser } = store.user();
-  const { mutateAsync: logout } = service.auth.Logout();
+  const { mutateAsync: logout } = Service.Auth.Logout();
   const { setCart } = store.cart();
   const { setWishlist } = store.wishlist();
   const { cart: cartData } = customHooks.UserCart();
   const { wishlist: wishlistData } = customHooks.UserWishlist();
 
-  const { data, isLoading, isError } = service.user.GetUserDetails(readyToCall);
+  const { data, isLoading, isError } = Service.User.GetUserDetails(readyToCall);
 
   useEffect(() => {
     try {

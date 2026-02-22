@@ -1,4 +1,4 @@
-import { service } from '../../../api-service';
+import { Service } from '../../../api-service';
 import { USER_MENU_POPUP_DATA } from '../../../constants';
 import { customHooks } from '../../../hooks';
 import { UserCircleIcon } from '../../../icons';
@@ -12,7 +12,7 @@ export const UserPopupModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: 
 
   const { setParams, queryParams } = customHooks.QueryParams();
   const { user, authenticated } = store.user();
-  const { mutateAsync } = service.auth.Logout();
+  const { mutateAsync } = Service.Auth.Logout();
 
   const handleNavigate = (path: string, isPrivateRoute?: boolean) => {
     const action = () => navigate(path); // wrap in a function

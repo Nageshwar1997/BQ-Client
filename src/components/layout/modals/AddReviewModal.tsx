@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { service } from '../../../api-service';
+import { Service } from '../../../api-service';
 import { Controller, useForm } from 'react-hook-form';
 import type { TMediaOption, TReview } from '../../../types';
 import { addReviewSchema } from '../../../schemas/review.schema';
@@ -21,7 +21,7 @@ type TMediaState = { files: File[]; previews: TMediaOption[] };
 type TAddReviewModal = { isOpen: boolean; onClose: () => void };
 
 const AddReviewModal = ({ onClose, isOpen }: TAddReviewModal) => {
-  const addReviewQuery = service.review.AddReview();
+  const addReviewQuery = Service.Review.AddReview();
   const [media, setMedia] = useState<TMediaState>({ files: [], previews: [] });
 
   const {

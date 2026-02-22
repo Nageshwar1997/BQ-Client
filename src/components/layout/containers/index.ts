@@ -1,1 +1,1 @@
-export * from './ScrollableGradientContainer';
+export { ScrollableGradientContainer } from './ScrollableGradientContainer';

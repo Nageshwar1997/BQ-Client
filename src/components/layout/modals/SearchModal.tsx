@@ -3,7 +3,7 @@ import { CloseIcon, SearchIcon } from '../../../icons';
 import { customHooks } from '../../../hooks';
 import { debounce } from '../../../utils';
 import type { IApiProductQueryProps, IModalWrapper, IProduct } from '../../../types';
-import { service } from '../../../api-service';
+import { Service } from '../../../api-service';
 import { Input } from '../../ui';
 import { ApiStatus } from '../../other';
 import { SearchModalSkeleton } from '../skeletons/SearchModalSkeleton';
@@ -46,7 +46,7 @@ export const SearchModal = (props: Omit<IModalWrapper, 'children'>) => {
     props.onClose();
   };
 
-  const productsQuery = service.product.GetAllProducts(queryParams);
+  const productsQuery = Service.Product.GetAllProducts(queryParams);
   const products: IProduct[] = productsQuery.data?.pages.flatMap((page) => page.products) || [];
 
   return (

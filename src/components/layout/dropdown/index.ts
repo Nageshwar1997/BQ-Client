@@ -1,2 +1,1 @@
-export * from './Dropdown';
-export * from './children';
+export { Dropdown } from './Dropdown';

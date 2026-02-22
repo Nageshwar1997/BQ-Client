@@ -5,7 +5,7 @@ import { saveLocalToken, saveSessionToken } from '../../utils';
 import type { TLogin } from '../../types';
 import { loginSchema } from '../../schemas';
 import { store } from '../../store';
-import { service } from '../../api-service';
+import { Service } from '../../api-service';
 import { customHooks } from '../../hooks';
 import { BorderGradient, Button, Checkbox, GradientText, Input, Radio } from '../../components';
 import { LOGIN_INPUT_MAP_DATA } from '../../constants/input';
@@ -16,7 +16,7 @@ export const Login = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { removeParam, queryParams } = customHooks.QueryParams();
   const { setUser } = store.user();
-  const { mutateAsync, isPending } = service.auth.Login();
+  const { mutateAsync, isPending } = Service.Auth.Login();
 
   const {
     control,

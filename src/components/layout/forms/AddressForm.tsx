@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { store } from '../../../store';
-import { service } from '../../../api-service';
+import { Service } from '../../../api-service';
 import type { IAddress, TAddress, TClassName } from '../../../types';
 import { customHooks } from '../../../hooks';
 import { ADD_ADDRESS_INPUT_MAP_DATA, ADDRESS_DEFAULT_VALUES } from '../../../constants';
@@ -13,8 +13,8 @@ import Select from '../../ui/Input/Select';
 
 const AddressForm = ({ addresses, className = '' }: { addresses?: IAddress[] } & TClassName) => {
   const { user, authenticated } = store.user();
-  const { mutateAsync: addAddress } = service.address.AddAddress();
-  const { mutateAsync: updateAddress } = service.address.UpdateAddress();
+  const { mutateAsync: addAddress } = Service.Address.AddAddress();
+  const { mutateAsync: updateAddress } = Service.Address.UpdateAddress();
   const { removeParam, queryParams } = customHooks.QueryParams();
 
   const defaultAddressValues: TAddress = useMemo(() => {

@@ -1,3 +1,3 @@
-export * from './MediaCarousel';
-export * from './MediaCarouselWithParentMedia';
-export * from './TestimonialCarousel';
+export { MediaCarousel } from './MediaCarousel';
+export { MediaCarouselWithParentMedia } from './MediaCarouselWithParentMedia';
+export { TestimonialCarousel } from './TestimonialCarousel';

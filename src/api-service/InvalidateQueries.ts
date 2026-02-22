@@ -1,7 +1,7 @@
 import { type QueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from '../constants';
 
-type QueryKey = readonly unknown[];
+type QueryKey = readonly string[];
 
 export class InvalidateQueries {
   private qc: QueryClient;
@@ -44,7 +44,7 @@ export class InvalidateQueries {
   }
 
   order_by_id(id?: string) {
-    this.invalidateQuery([...QUERY_KEYS.orders.get_order_by_id, id]);
+    this.invalidateQuery([...QUERY_KEYS.orders.get_order_by_id, id ?? '']);
   }
 
   multiple(keys: readonly QueryKey[]) {

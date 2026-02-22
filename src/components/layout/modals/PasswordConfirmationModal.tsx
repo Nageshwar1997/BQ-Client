@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { customHooks } from '../../../hooks';
 import { store } from '../../../store';
-import { service } from '../../../api-service';
+import { Service } from '../../../api-service';
 import { useState } from 'react';
 import type { TChangePassword, TUpdatePassword } from '../../../types';
 import { changePasswordSchema, updatePasswordSchema } from '../../../schemas/user.schema';
@@ -18,13 +18,13 @@ const PasswordConfirmationModal = () => {
   const { setUser } = store.user();
 
   const { mutateAsync: resetPasswordSendLinkAsync, isPending: isResetPasswordSendLinkPending } =
-    service.user.ResetPasswordSendLink();
+    Service.User.ResetPasswordSendLink();
 
   const { mutateAsync: changePasswordAsync, isPending: isChangePasswordPending } =
-    service.user.ChangePassword();
+    Service.User.ChangePassword();
 
   const { mutateAsync: updatePasswordAsync, isPending: isUpdatePasswordPending } =
-    service.user.UpdatePassword();
+    Service.User.UpdatePassword();
 
   const isChangePassword = queryParams.confirm === 'change-password';
 

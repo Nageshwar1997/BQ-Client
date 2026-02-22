@@ -11,15 +11,15 @@ import {
   UserService,
 } from './service';
 
-export const service = {
-  address: new AddressService(),
-  auth: new AuthService(),
-  blog: new BlogService(),
-  cart: new CartService(),
-  gForm: new GFormService(),
-  media: new MediaService(),
-  order: new OrderService(),
-  product: new ProductService(),
-  review: new ReviewService(),
-  user: new UserService(),
+export const Service = {
+  Address: new AddressService(),
+  Auth: new AuthService(),
+  Blog: new BlogService(),
+  Cart: new CartService(),
+  GForm: new GFormService(),
+  Media: new MediaService(),
+  Order: new OrderService(),
+  Product: new ProductService(),
+  Review: new ReviewService(),
+  User: new UserService(),
 };
