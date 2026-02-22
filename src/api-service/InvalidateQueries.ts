@@ -1,4 +1,4 @@
-import { QUERY_KEYS } from '@/constants';
+import { QUERY_KEYS } from '@/Constants';
 import { type QueryClient } from '@tanstack/react-query';
 
 type QueryKey = readonly string[];

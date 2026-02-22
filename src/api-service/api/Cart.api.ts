@@ -1,4 +1,4 @@
-import type { TParams } from '@/types';
+import type { TParams } from '@/Types';
 import { ApiRequest } from '../ApiRequest';
 
 export class CartApi extends ApiRequest {

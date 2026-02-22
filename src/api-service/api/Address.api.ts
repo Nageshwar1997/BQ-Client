@@ -1,4 +1,4 @@
-import type { IAddress, TAddress } from '@/types';
+import type { IAddress, TAddress } from '@/Types';
 import { ApiRequest } from '../ApiRequest';
 
 export class AddressApi extends ApiRequest {

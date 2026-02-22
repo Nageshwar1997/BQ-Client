@@ -1,8 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
-import { AuthApi } from '../api';
-import { QUERY_KEYS } from '@/constants';
-import { toaster } from '@/utils';
-import { Store } from '@/store';
+import { AuthApi } from '../API';
+import { QUERY_KEYS } from '@/Constants';
+import { toaster } from '@/Utils';
+import { Store } from '@/Store';
 
 export class AuthService extends AuthApi {
   public Login = () => {

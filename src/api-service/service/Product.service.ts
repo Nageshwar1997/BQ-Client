@@ -1,7 +1,7 @@
 import { keepPreviousData, useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { QUERY_KEYS } from '@/constants';
-import { ProductApi } from '../api';
-import type { IApiProductQueryProps } from '@/types';
+import { QUERY_KEYS } from '@/Constants';
+import { ProductApi } from '../API';
+import type { IApiProductQueryProps } from '@/Types';
 
 export class ProductService extends ProductApi {
   public GetAllProducts = (params: IApiProductQueryProps) => {

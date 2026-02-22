@@ -1,4 +1,4 @@
-import type { IApiReviewQueryProps, TLikeDislikeHelpfulReview } from '@/types';
+import type { IApiReviewQueryProps, TLikeDislikeHelpfulReview } from '@/Types';
 import { ApiRequest } from '../ApiRequest';
 
 export class ReviewApi extends ApiRequest {

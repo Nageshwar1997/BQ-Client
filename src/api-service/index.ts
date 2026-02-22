@@ -9,7 +9,7 @@ import {
   ProductService,
   ReviewService,
   UserService,
-} from './service';
+} from './Service';
 
 export const Service = {
   Address: new AddressService(),

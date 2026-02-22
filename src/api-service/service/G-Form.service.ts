@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
-import { GFormApi } from '../api';
-import { QUERY_KEYS } from '@/constants';
-import { toaster } from '@/utils';
+import { GFormApi } from '../API';
+import { QUERY_KEYS } from '@/Constants';
+import { toaster } from '@/Utils';
 
 export class GFormService extends GFormApi {
   public ContactUs = () => {

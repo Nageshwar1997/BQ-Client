@@ -4,13 +4,13 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
-import { ReviewApi } from '../api';
-import { Hook } from '@/hooks';
-import { QUERY_KEYS } from '@/constants';
+import { ReviewApi } from '../API';
+import { Hook } from '@/Hooks';
+import { QUERY_KEYS } from '@/Constants';
 import { InvalidateQueries } from '../InvalidateQueries';
-import { Store } from '@/store';
-import { toaster } from '@/utils';
-import type { IApiReviewQueryProps } from '@/types';
+import { Store } from '@/Store';
+import { toaster } from '@/Utils';
+import type { IApiReviewQueryProps } from '@/Types';
 
 export class ReviewService extends ReviewApi {
   public AddReview = () => {

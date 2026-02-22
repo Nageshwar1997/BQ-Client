@@ -1,10 +1,10 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { UserApi } from '../api';
-import { getUserToken, toaster } from '@/utils';
-import { QUERY_KEYS } from '@/constants';
+import { UserApi } from '../API';
+import { getUserToken, toaster } from '@/Utils';
+import { QUERY_KEYS } from '@/Constants';
 import { InvalidateQueries } from '../InvalidateQueries';
-import { Hook } from '@/hooks';
-import { Store } from '@/store';
+import { Hook } from '@/Hooks';
+import { Store } from '@/Store';
 
 export class UserService extends UserApi {
   public GetUserDetails = (enabled: boolean = true) => {

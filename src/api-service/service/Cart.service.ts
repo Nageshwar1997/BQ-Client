@@ -1,10 +1,10 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { CartApi } from '../api';
+import { CartApi } from '../API';
 import { InvalidateQueries } from '../InvalidateQueries';
-import { QUERY_KEYS } from '@/constants';
-import { toaster } from '@/utils';
-import { Hook } from '@/hooks';
-import { Store } from '@/store';
+import { QUERY_KEYS } from '@/Constants';
+import { toaster } from '@/Utils';
+import { Hook } from '@/Hooks';
+import { Store } from '@/Store';
 
 export class CartService extends CartApi {
   public AddProductToCart = () => {
