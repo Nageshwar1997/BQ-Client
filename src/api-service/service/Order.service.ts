@@ -3,7 +3,7 @@ import { OrderApi } from '../api';
 import { QUERY_KEYS } from '../../constants';
 import { InvalidateQueries } from '../InvalidateQueries';
 import type { TPagination, TParams } from '../../types';
-import { customHooks } from '../../hooks';
+import { Hook } from '../../hooks';
 
 export class OrderService extends OrderApi {
   public CreateOrder = () => {
@@ -30,7 +30,7 @@ export class OrderService extends OrderApi {
   };
 
   public OrderById = () => {
-    const { pathParams } = customHooks.PathParams();
+    const { pathParams } = Hook.PathParams();
 
     return useQuery({
       queryKey: [...QUERY_KEYS.orders.get_order_by_id, pathParams.orderId],
@@ -46,7 +46,7 @@ export class OrderService extends OrderApi {
   };
 
   public CancelOrder = () => {
-    const { pathParams } = customHooks.PathParams();
+    const { pathParams } = Hook.PathParams();
     const qc = useQueryClient();
     const invalidate = new InvalidateQueries(qc);
 

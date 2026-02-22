@@ -1,16 +1,16 @@
 import { Service } from '../../../api-service';
 import { USER_MENU_POPUP_DATA } from '../../../constants';
-import { customHooks } from '../../../hooks';
+import { Hook } from '../../../hooks';
 import { UserCircleIcon } from '../../../icons';
 import { store } from '../../../store';
 import { Button, HR } from '../../ui';
 import { ModalWrapper } from './ModalWrapper';
 
 export const UserPopupModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-  const { navigate } = customHooks.PathParams();
-  const requireAuth = customHooks.RequireAuth();
+  const { navigate } = Hook.PathParams();
+  const requireAuth = Hook.RequireAuth();
 
-  const { setParams, queryParams } = customHooks.QueryParams();
+  const { setParams, queryParams } = Hook.QueryParams();
   const { user, authenticated } = store.user();
   const { mutateAsync } = Service.Auth.Logout();
 

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { NAVBAR_CATEGORIES_DATA, NAVBAR_TOP_LAYER_DATA } from '../../../constants';
-import { customHooks } from '../../../hooks';
+import { Hook } from '../../../hooks';
 import { store } from '../../../store';
 import { Link } from 'react-router-dom';
 import { ChevronDownIcon, CloseIcon, MenuIcon } from '../../../icons';
@@ -8,8 +8,8 @@ import { HoveredComponent, UserMenuIcons } from './children';
 import { Button, LinearGradient } from '../../ui';
 
 const TopLayer = () => {
-  const requireAuth = customHooks.RequireAuth();
-  const { navigate } = customHooks.PathParams();
+  const requireAuth = Hook.RequireAuth();
+  const { navigate } = Hook.PathParams();
 
   const handleNavigate = (path: string, isPrivateRoute?: boolean) => {
     const action = () => navigate(path); // wrap in a function
@@ -44,7 +44,7 @@ export const Navbar = () => {
 
   const { authenticated } = store.user();
 
-  const { paths, pathname, navigate } = customHooks.PathParams();
+  const { paths, pathname, navigate } = Hook.PathParams();
 
   const [isMobileNavbarOpened, setIsMobileNavbarOpened] = useState<boolean>(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);

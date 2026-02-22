@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import type { IAddress } from '../../../types';
-import { customHooks } from '../../../hooks';
+import { Hook } from '../../../hooks';
 import { ModalWrapper } from './ModalWrapper';
 import AddressForm from '../forms/AddressForm';
 
@@ -11,7 +11,7 @@ export const AddressFormModal = ({
   onClose: () => void;
   addresses?: IAddress[];
 }) => {
-  const { queryParams, removeParam } = customHooks.QueryParams();
+  const { queryParams, removeParam } = Hook.QueryParams();
 
   useEffect(() => {
     removeParam('add');

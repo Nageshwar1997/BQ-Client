@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
-import { customHooks } from '../../../hooks';
+import { Hook } from '../../../hooks';
 import { DEFAULT_FILTER, NAVBAR_CATEGORIES_DATA } from '../../../constants';
 import type { TDropdownOption } from '../../../types';
 import { Dropdown, DropdownOptions } from '../dropdown';
 import { DoubleLayerIcon, SingleLayerIcon, TripleLayerIcon } from '../../../icons';
 
 export const CategoriesFilter = ({ className = '' }: { className?: string }) => {
-  const { queryParams, removeParam, setParams } = customHooks.QueryParams();
+  const { queryParams, removeParam, setParams } = Hook.QueryParams();
 
   const selectedCategories = useMemo(
     () => ({

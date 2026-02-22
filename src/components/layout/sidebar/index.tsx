@@ -1,17 +1,17 @@
 import { Service } from '../../../api-service';
 import { SIDEBAR_DATA } from '../../../constants';
-import { customHooks } from '../../../hooks';
+import { Hook } from '../../../hooks';
 import { ChevronDownIcon, UserCircleIcon } from '../../../icons';
 import { store } from '../../../store';
 import { GradientText, LinearGradient } from '../../ui';
 
 export const Sidebar = () => {
-  const { navigate } = customHooks.PathParams();
+  const { navigate } = Hook.PathParams();
   const { user } = store.user();
   const { mutateAsync: logout } = Service.Auth.Logout();
-  const { showV_Gradient, containerRef: vContainerRef } = customHooks.Scrollable('vertical');
-  const { showH_Gradient, containerRef: hContainerRef } = customHooks.Scrollable('horizontal');
-  const isMobile = customHooks.IsMobile(640);
+  const { showV_Gradient, containerRef: vContainerRef } = Hook.Scrollable('vertical');
+  const { showH_Gradient, containerRef: hContainerRef } = Hook.Scrollable('horizontal');
+  const isMobile = Hook.IsMobile(640);
 
   return (
     <div className="bg-tertiary-invert sm:bg-secondary-invert text-tertiary border-r-primary/30 fixed bottom-0 z-50 w-full grow sm:sticky sm:top-16 sm:bottom-auto sm:z-0 sm:max-h-[calc(100dvh-64px)] sm:max-w-20 sm:border-r lg:top-25 lg:max-h-[calc(100dvh-100px)] lg:max-w-62.5">

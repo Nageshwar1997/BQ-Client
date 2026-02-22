@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { customHooks } from '../../../hooks';
+import { Hook } from '../../../hooks';
 import type { ISelect } from '../../../types';
 import { CheckedIcon, ChevronDownIcon } from '../../../icons';
 import { InputError, InputIcon, InputLabel } from './children';
@@ -16,7 +16,7 @@ export const Select = ({
   optionsPosition = 'bottom',
 }: ISelect) => {
   const [isOpen, setIsOpen] = useState(false);
-  const containerRef = customHooks.OutsideClick<HTMLDivElement>(() => setIsOpen(false), {
+  const containerRef = Hook.OutsideClick<HTMLDivElement>(() => setIsOpen(false), {
     enabled: isOpen,
   });
   const selectRef = useRef<HTMLSelectElement | null>(null);

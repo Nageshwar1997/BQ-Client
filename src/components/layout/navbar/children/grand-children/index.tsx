@@ -11,7 +11,7 @@ import {
 } from '../../../../../icons';
 import { GradientText, Theme } from '../../../../ui';
 import { HIGHLIGHTED_CATEGORIES, NAVBAR_CATEGORIES_DATA } from '../../../../../constants';
-import { customHooks } from '../../../../../hooks';
+import { Hook } from '../../../../../hooks';
 import { useEffect, useState } from 'react';
 import { SearchModal, UserPopupModal } from '../../../modals';
 
@@ -75,7 +75,7 @@ export const SubCategories = ({
   subCategories: ICategoryL3[];
   l1Cat?: keyof typeof HIGHLIGHTED_CATEGORIES;
 }) => {
-  const { navigate } = customHooks.PathParams();
+  const { navigate } = Hook.PathParams();
   return (
     <div className={`flex flex-col gap-1 md:gap-2 ${className}`}>
       {subCategories.map((subCategory, index) => {
@@ -133,11 +133,11 @@ export const UserMenuIcons = ({
     search: false,
     user: false,
   });
-  const userPopupRef = customHooks.OutsideClick<HTMLDivElement>(() => {
+  const userPopupRef = Hook.OutsideClick<HTMLDivElement>(() => {
     setIsOpen((prev) => ({ ...prev, user: false }));
   });
-  const { paths, navigate } = customHooks.PathParams();
-  const requireAuth = customHooks.RequireAuth();
+  const { paths, navigate } = Hook.PathParams();
+  const requireAuth = Hook.RequireAuth();
   //   const { cart } = useCartStore();
   //   const { wishlist } = useWishlistStore();
 

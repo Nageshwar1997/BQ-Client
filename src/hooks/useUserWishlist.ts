@@ -2,11 +2,11 @@ import { useEffect } from 'react';
 import { store } from '../store';
 import { Service } from '../api-service';
 import type { IWishlist } from '../types';
-import { customHooks } from '.';
+import { Hook } from '.';
 
 export const useUserWishlist = () => {
   const { wishlist, setWishlist, updateWishlist } = store.wishlist();
-  const requireAuth = customHooks.RequireAuth();
+  const requireAuth = Hook.RequireAuth();
 
   const { data, isLoading, isError } = Service.User.GetWishlist();
   const { mutateAsync: addToWishlist, isPending } = Service.User.AddProductToWishlist();

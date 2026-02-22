@@ -4,7 +4,7 @@ import { QUERY_KEYS } from '../../constants';
 import { toaster } from '../../utils';
 import { InvalidateQueries } from '../InvalidateQueries';
 import { store } from '../../store';
-import { customHooks } from '../../hooks';
+import { Hook } from '../../hooks';
 
 export class CartService extends CartApi {
   public AddProductToCart = () => {
@@ -60,7 +60,7 @@ export class CartService extends CartApi {
   };
 
   public GetCart = () => {
-    const { queryParams } = customHooks.QueryParams();
+    const { queryParams } = Hook.QueryParams();
     const { authenticated } = store.user.getState();
     return useQuery({
       queryKey: ['get_user_cart', queryParams.login, authenticated],

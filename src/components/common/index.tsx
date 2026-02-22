@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
-import { customHooks } from '../../hooks';
+import { Hook } from '../../hooks';
 import type { IApiStatus } from '../../types';
 import { ContainerIcon, InfoIcon } from '../../icons';
 import { GradientText, HR } from '../ui';
 import { LoadingRings } from '../layout';
 
 export const ScrollToTop = () => {
-  const { pathname } = customHooks.PathParams();
+  const { pathname } = Hook.PathParams();
 
   useEffect(() => {
     const el = document.getElementById('main');

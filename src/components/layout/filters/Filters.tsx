@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
-import { customHooks } from '../../../hooks';
+import { Hook } from '../../../hooks';
 import { Dropdown } from '../dropdown';
 import { CheckedIcon, PercentIcon, RupeesIcon } from '../../../icons';
 import { Checkbox, Input } from '../../ui';
@@ -17,7 +17,7 @@ const MAX_PRICE = 1500;
 const INITIAL_RANGES: TRange = { min: '0', max: `${MAX_PRICE}`, discount: '0' };
 
 export const Filters = ({ className = '', needCategoriesFilters = false }: FiltersProps) => {
-  const { queryParams, setParams, removeParam } = customHooks.QueryParams();
+  const { queryParams, setParams, removeParam } = Hook.QueryParams();
   const [ranges, setRanges] = useState<TRange>(INITIAL_RANGES);
 
   useEffect(() => {

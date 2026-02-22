@@ -3,7 +3,7 @@ import { UserApi } from '../api';
 import { QUERY_KEYS } from '../../constants';
 import { getUserToken, toaster } from '../../utils';
 import { InvalidateQueries } from '../InvalidateQueries';
-import { customHooks } from '../../hooks';
+import { Hook } from '../../hooks';
 import { store } from '../../store';
 
 export class UserService extends UserApi {
@@ -50,7 +50,7 @@ export class UserService extends UserApi {
   };
 
   public ResetPasswordTokenValidityCheck = () => {
-    const { queryParams } = customHooks.QueryParams();
+    const { queryParams } = Hook.QueryParams();
     return useQuery({
       queryKey: QUERY_KEYS.users.user.password.token_validity.reset_password_check,
       queryFn: () => this.reset_password_token_validity_check(queryParams.token),
@@ -59,7 +59,7 @@ export class UserService extends UserApi {
   };
 
   public ForgotPasswordTokenValidityCheck = () => {
-    const { queryParams } = customHooks.QueryParams();
+    const { queryParams } = Hook.QueryParams();
     return useQuery({
       queryKey: QUERY_KEYS.users.user.password.token_validity.forgot_password_check,
       queryFn: () => this.forgot_password_token_validity_check(queryParams.token),
@@ -124,7 +124,7 @@ export class UserService extends UserApi {
   public GetWishlist = () => {
     const token = getUserToken();
     const { authenticated } = store.user.getState();
-    const { queryParams } = customHooks.QueryParams();
+    const { queryParams } = Hook.QueryParams();
 
     return useQuery({
       queryKey: [...QUERY_KEYS.users.wishlist.get, !!queryParams.login, authenticated, !!token],

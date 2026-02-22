@@ -1,11 +1,11 @@
 import { type JSX } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { LoadingScreen } from '../components';
-import { customHooks } from '../hooks';
+import { Hook } from '../hooks';
 import { store } from '../store';
 
 export const PrivateRoute = ({ children }: { children: JSX.Element }) => {
-  const { isLoading } = customHooks.AuthCheck();
+  const { isLoading } = Hook.AuthCheck();
   const { authenticated } = store.user();
   const location = useLocation();
 

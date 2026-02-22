@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { store } from '../../../store';
 import { Service } from '../../../api-service';
 import type { IAddress, TAddress, TClassName } from '../../../types';
-import { customHooks } from '../../../hooks';
+import { Hook } from '../../../hooks';
 import { ADD_ADDRESS_INPUT_MAP_DATA, ADDRESS_DEFAULT_VALUES } from '../../../constants';
 import { addressSchema } from '../../../schemas';
 import { deepEqual, toaster } from '../../../utils';
@@ -18,7 +18,7 @@ export const AddressForm = ({
   const { user, authenticated } = store.user();
   const { mutateAsync: addAddress } = Service.Address.AddAddress();
   const { mutateAsync: updateAddress } = Service.Address.UpdateAddress();
-  const { removeParam, queryParams } = customHooks.QueryParams();
+  const { removeParam, queryParams } = Hook.QueryParams();
 
   const defaultAddressValues: TAddress = useMemo(() => {
     return {

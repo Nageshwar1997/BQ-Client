@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { CloseIcon, SearchIcon } from '../../../icons';
-import { customHooks } from '../../../hooks';
+import { Hook } from '../../../hooks';
 import { debounce } from '../../../utils';
 import type { IApiProductQueryProps, IModalWrapper, IProduct } from '../../../types';
 import { Service } from '../../../api-service';
@@ -12,7 +12,7 @@ import { ModalWrapper } from './ModalWrapper';
 export const SearchModal = (props: Omit<IModalWrapper, 'children'>) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
-  const { navigate } = customHooks.PathParams();
+  const { navigate } = Hook.PathParams();
 
   const debouncedSetQuery = useMemo(
     () =>

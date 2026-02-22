@@ -1,4 +1,4 @@
-import { customHooks } from '../../../hooks';
+import { Hook } from '../../../hooks';
 import { InfoIcon } from '../../../icons';
 import type { IConfirmModal } from '../../../types';
 import { Button, GradientText } from '../../ui';
@@ -51,7 +51,7 @@ export const InitialNotCloseConfirmModal = ({
   modalProps,
   buttons,
 }: IConfirmModal) => {
-  const { queryParams, removeParam } = customHooks.QueryParams();
+  const { queryParams, removeParam } = Hook.QueryParams();
 
   return (
     <ModalWrapper

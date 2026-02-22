@@ -5,7 +5,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { ReviewApi } from '../api';
-import { customHooks } from '../../hooks';
+import { Hook } from '../../hooks';
 import { QUERY_KEYS } from '../../constants';
 import { InvalidateQueries } from '../InvalidateQueries';
 import { store } from '../../store';
@@ -14,7 +14,7 @@ import type { IApiReviewQueryProps } from '../../types';
 
 export class ReviewService extends ReviewApi {
   public AddReview = () => {
-    const { pathParams } = customHooks.PathParams();
+    const { pathParams } = Hook.PathParams();
     const qc = useQueryClient();
     const invalidate = new InvalidateQueries(qc);
 

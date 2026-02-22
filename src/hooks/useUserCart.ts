@@ -2,11 +2,11 @@ import { useEffect } from 'react';
 import { store } from '../store';
 import { Service } from '../api-service';
 import type { ICartItem } from '../types';
-import { customHooks } from '.';
+import { Hook } from '.';
 
 export const useUserCart = () => {
   const { cart, setCart, updateCart } = store.cart();
-  const requireAuth = customHooks.RequireAuth();
+  const requireAuth = Hook.RequireAuth();
 
   const { data, isLoading, isError } = Service.Cart.GetCart();
   const { mutateAsync: updateQuantity } = Service.Cart.UpdateCartProductQuantity();

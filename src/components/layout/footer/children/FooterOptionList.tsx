@@ -1,9 +1,9 @@
-import { customHooks } from '../../../../hooks';
+import { Hook } from '../../../../hooks';
 import type { IFooterOptionList } from '../../../../types';
 
 export const FooterOptionList = ({ isFirst = false, title, options }: IFooterOptionList) => {
-  const requireAuth = customHooks.RequireAuth();
-  const { navigate } = customHooks.PathParams();
+  const requireAuth = Hook.RequireAuth();
+  const { navigate } = Hook.PathParams();
 
   const handleNavigate = (path: string, isPrivateRoute?: boolean) => {
     const action = () => navigate(path); // wrap in a function

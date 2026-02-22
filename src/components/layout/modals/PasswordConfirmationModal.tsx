@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { customHooks } from '../../../hooks';
+import { Hook } from '../../../hooks';
 import { store } from '../../../store';
 import { Service } from '../../../api-service';
 import { useState } from 'react';
@@ -14,7 +14,7 @@ import { Button, GradientText, HR, Input } from '../../ui';
 const baseDefaultValues = { newPassword: '', confirmPassword: '' };
 
 export const PasswordConfirmationModal = () => {
-  const { queryParams, removeParam } = customHooks.QueryParams();
+  const { queryParams, removeParam } = Hook.QueryParams();
   const { setUser } = store.user();
 
   const { mutateAsync: resetPasswordSendLinkAsync, isPending: isResetPasswordSendLinkPending } =

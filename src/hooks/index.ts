@@ -8,7 +8,7 @@ import { useSocket } from './useSocket';
 import { useUserCart } from './useUserCart';
 import { useUserWishlist } from './useUserWishlist';
 
-class Hooks {
+class CustomHooks {
   public AuthCheck = useAuthCheck;
   public IsMobile = useIsMobile;
   public OutsideClick = useOutsideClick;
@@ -21,4 +21,4 @@ class Hooks {
   public UserWishlist = useUserWishlist;
 }
 
-export const customHooks = new Hooks();
+export const Hook = new CustomHooks();
