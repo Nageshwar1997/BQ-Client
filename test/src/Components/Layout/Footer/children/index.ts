@@ -1,1 +1,0 @@
-export { FooterOptionList } from './FooterOptionList';
