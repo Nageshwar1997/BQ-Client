@@ -1,4 +1,4 @@
-import type { TLogin, TParams } from '../../types';
+import type { TLogin, TParams } from '@/types';
 import { ApiRequest } from '../ApiRequest';
 
 export class AuthApi extends ApiRequest {

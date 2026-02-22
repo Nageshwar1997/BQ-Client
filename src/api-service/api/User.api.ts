@@ -1,4 +1,4 @@
-import type { TStringRecord } from '../../types';
+import type { TStringRecord } from '@/types';
 import { ApiRequest } from '../ApiRequest';
 
 export class UserApi extends ApiRequest {

@@ -1,4 +1,4 @@
-import type { TContactUs } from '../../types';
+import type { TContactUs } from '@/types';
 import { ApiRequest } from '../ApiRequest';
 
 export class GFormApi extends ApiRequest {

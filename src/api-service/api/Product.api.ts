@@ -1,4 +1,4 @@
-import type { IApiProductQueryProps } from '../../types';
+import type { IApiProductQueryProps } from '@/types';
 import { ApiRequest } from '../ApiRequest';
 
 export class ProductApi extends ApiRequest {
