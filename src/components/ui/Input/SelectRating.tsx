@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import type React from 'react';
-import { StarEmptyIcon, StarFillIcon } from '../../../Icons';
+import { StarEmptyIcon, StarFillIcon } from '@/Icons';
 import { InputError } from './children';
 import { Button } from '../Button';
-import RatingStars from '../RatingStars';
+import { RatingStars } from '../RatingStars';
 
 interface RatingProps {
   initialValue?: number;
