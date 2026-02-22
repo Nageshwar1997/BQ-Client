@@ -4,7 +4,6 @@ import { Button, GradientText } from '@/Components/UI';
 import { CategoryLabel, SubCategories } from './grand-children';
 import { TestimonialCarousel } from '../../Carousels';
 
-
 const categories = [
   [company, press],
   [careers, trust_center],
