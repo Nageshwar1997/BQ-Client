@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from "react";
-import { NAVBAR_CATEGORIES_DATA, NAVBAR_TOP_LAYER_DATA } from "../../../constants";
-import { customHooks } from "../../../hooks";
-import { store } from "../../../store";
-import { Link } from "react-router-dom";
-import { ChevronDownIcon, CloseIcon, MenuIcon } from "../../../icons";
-import { HoveredComponent, UserMenuIcons } from "./children";
-import { Button, LinearGradient } from "../../ui";
+import { useEffect, useRef, useState } from 'react';
+import { NAVBAR_CATEGORIES_DATA, NAVBAR_TOP_LAYER_DATA } from '../../../constants';
+import { customHooks } from '../../../hooks';
+import { store } from '../../../store';
+import { Link } from 'react-router-dom';
+import { ChevronDownIcon, CloseIcon, MenuIcon } from '../../../icons';
+import { HoveredComponent, UserMenuIcons } from './children';
+import { Button, LinearGradient } from '../../ui';
 
 const TopLayer = () => {
   const requireAuth = customHooks.RequireAuth();
@@ -317,3 +317,18 @@ export const Navbar = () => {
     </div>
   );
 };
+
+export {
+  About,
+  CategoryLabel,
+  Collections,
+  Eyes,
+  Face,
+  Feedback,
+  ForYou,
+  HoveredComponent,
+  Lips,
+  Skin,
+  SubCategories,
+  UserMenuIcons,
+} from './children';

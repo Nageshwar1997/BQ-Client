@@ -18,4 +18,18 @@ export {
   SearchModal,
   UserPopupModal,
 } from './modals';
-export { Navbar } from './Navbar';
+export {
+  About,
+  CategoryLabel,
+  Collections,
+  Eyes,
+  Face,
+  Feedback,
+  ForYou,
+  HoveredComponent,
+  Lips,
+  Navbar,
+  Skin,
+  SubCategories,
+  UserMenuIcons,
+} from './Navbar';

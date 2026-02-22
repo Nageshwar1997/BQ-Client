@@ -1,9 +1,4 @@
-import { ForYou } from '../../components';
-import Collections from '../../components/layout/navbar/children/Collection';
-import Eyes from '../../components/layout/navbar/children/Eyes';
-import Face from '../../components/layout/navbar/children/Face';
-import Lips from '../../components/layout/navbar/children/Lips';
-import Skin from '../../components/layout/navbar/children/Skin';
+import { Collections, Eyes, Face, ForYou, Lips, Skin } from '../../components/layout';
 import {
   CareIcon,
   CashIcon,
