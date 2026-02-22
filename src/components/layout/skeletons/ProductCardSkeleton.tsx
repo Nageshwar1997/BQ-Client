@@ -1,7 +1,7 @@
 import { Skeleton } from '.';
-import { StarFillIcon } from '../../../icons';
-import type { TClassName } from '../../../types';
-import { BorderGradient, HR } from '../../ui';
+import { StarFillIcon } from '../../../Icons';
+import type { TClassName } from '../../../Types';
+import { BorderGradient, HR } from '../../UI';
 
 export const ProductCardSkeleton = ({ className = '' }: TClassName) => {
   return (

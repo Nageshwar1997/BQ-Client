@@ -1,5 +1,5 @@
 import { Hook } from '.';
-import { Store } from '../store';
+import { Store } from '../Store';
 
 export const useRequireAuth = () => {
   const { authenticated } = Store.User();

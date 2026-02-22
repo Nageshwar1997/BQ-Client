@@ -1,9 +1,9 @@
 import { type JSX } from 'react';
 import { Navigate } from 'react-router-dom';
-import { Hook } from '../hooks';
-import { Store } from '../store';
-import { LoadingScreen } from '../components';
-import { getUserToken } from '../utils';
+import { Hook } from '../Hooks';
+import { Store } from '../Store';
+import { LoadingScreen } from '../Components';
+import { getUserToken } from '../Utils';
 
 export const AuthRedirect = ({ children }: { children: JSX.Element }) => {
   const token = getUserToken();

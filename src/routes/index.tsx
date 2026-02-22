@@ -1,8 +1,8 @@
 import { createBrowserRouter, Outlet } from 'react-router-dom';
 import { Suspense } from 'react';
-import { Auth, Login, Register } from '../pages/Auth';
+import { Auth, Login, Register } from '../Pages/Auth';
 import { AuthRedirect } from './AuthRedirect';
-import { LoadingScreen } from '../components';
+import { LoadingScreen } from '../Components';
 import { PrivateRoute } from './PrivateRoute';
 
 export const router = createBrowserRouter([

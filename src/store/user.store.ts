@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import type { IUser, TUserStore } from '../types';
-import { decryptData, encryptData, removeStorageToken } from '../utils';
+import type { IUser, TUserStore } from '../Types';
+import { decryptData, encryptData, removeStorageToken } from '../Utils';
 const SESSION_KEY = 'user';
 
 export const useUserStore = create<TUserStore>((set) => {

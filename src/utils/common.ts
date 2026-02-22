@@ -1,8 +1,8 @@
 import CryptoJS from 'crypto-js';
 import toast from 'react-hot-toast';
-import { VITE_ENCRYPTION_SECRET_KEY } from '../envs';
-import { DEFAULT_POSTER, DUMMY_FEEDBACKS, HIGHLIGHTED_CATEGORIES } from '../constants';
-import type { IButton } from '../types';
+import { VITE_ENCRYPTION_SECRET_KEY } from '../Envs';
+import { DEFAULT_POSTER, DUMMY_FEEDBACKS, HIGHLIGHTED_CATEGORIES } from '../Constants';
+import type { IButton } from '../Types';
 
 export const toaster = (type: 'success' | 'error' = 'success', error: string | Error) => {
   const message = error instanceof Error ? error.message : String(error);

@@ -1,4 +1,4 @@
-import { Collections, Eyes, Face, ForYou, Lips, Skin } from '../../components/layout';
+import { Collections, Eyes, Face, ForYou, Lips, Skin } from '../../Components/Layout';
 import {
   CareIcon,
   CashIcon,
@@ -8,8 +8,8 @@ import {
   TrackIcon,
   TruckIcon,
   UserCircleIcon,
-} from '../../icons';
-import type { ICategoryL1 } from '../../types';
+} from '../../Icons';
+import type { ICategoryL1 } from '@/Types';
 import { bath_and_body, gifting, hair_care, sugar_pop } from './collections';
 import { eye_value_set, eyebrows, eyeliners, eyeshadow, kohl_and_kajal, mascaras } from './eyes';
 import {

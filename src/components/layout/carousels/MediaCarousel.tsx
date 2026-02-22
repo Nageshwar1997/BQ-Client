@@ -1,7 +1,7 @@
-import { CloseIcon, PlayIcon } from '../../../icons';
-import type { IMediaCarousel } from '../../../types';
-import { VideoPlayer } from '../media';
-import { ScrollableGradientContainer } from '../containers';
+import type { IMediaCarousel } from '@/Types';
+import { ScrollableGradientContainer } from '../Containers';
+import { CloseIcon, PlayIcon } from '@/Icons';
+import { VideoPlayer } from '../Media';
 
 export const MediaCarousel = ({
   className = '',

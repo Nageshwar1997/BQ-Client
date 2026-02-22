@@ -1,4 +1,4 @@
-import type { AUTH_PROVIDER } from '../constants';
+import type { AUTH_PROVIDER } from '../Constants';
 import type { TCategoryBaseL } from './common.types';
 import type { TProduct, TRegister, TReview, TShade } from './schema.types';
 

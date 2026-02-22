@@ -1,4 +1,4 @@
-import type { ICheckbox } from '../../../types';
+import type { ICheckbox } from '../../../Types';
 import { InputError } from './children';
 
 export const Checkbox = ({

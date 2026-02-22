@@ -1,7 +1,7 @@
 import type z from 'zod';
-import type { addressSchema, contactUsSchema, loginSchema, registerSchema } from '../schemas';
-import type { addReviewSchema } from '../schemas/review.schema';
-import type { changePasswordSchema, updatePasswordSchema } from '../schemas/user.schema';
+import type { addressSchema, contactUsSchema, loginSchema, registerSchema } from '../Schemas';
+import type { addReviewSchema } from '../Schemas/review.schema';
+import type { changePasswordSchema, updatePasswordSchema } from '../Schemas/user.schema';
 
 export type TLogin = z.infer<typeof loginSchema>;
 export type TRegister = z.infer<typeof registerSchema>;

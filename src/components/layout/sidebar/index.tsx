@@ -1,9 +1,9 @@
-import { Service } from '../../../api-service';
-import { SIDEBAR_DATA } from '../../../constants';
-import { Hook } from '../../../hooks';
-import { ChevronDownIcon, UserCircleIcon } from '../../../icons';
-import { Store } from '../../../store';
-import { GradientText, LinearGradient } from '../../ui';
+import { Service } from '../../../Api-Service';
+import { SIDEBAR_DATA } from '../../../Constants';
+import { Hook } from '../../../Hooks';
+import { ChevronDownIcon, UserCircleIcon } from '../../../Icons';
+import { Store } from '../../../Store';
+import { GradientText, LinearGradient } from '../../UI';
 
 export const Sidebar = () => {
   const { navigate } = Hook.PathParams();

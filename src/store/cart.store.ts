@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { TCartStore } from '../types';
+import type { TCartStore } from '../Types';
 
 export const useCartStore = create<TCartStore>((set, get) => ({
   cart: null,

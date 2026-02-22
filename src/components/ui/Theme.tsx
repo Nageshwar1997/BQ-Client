@@ -1,6 +1,6 @@
-import type { TClassName } from '../../types';
-import { MoonIcon, SunIcon } from '../../icons';
-import { Store } from '../../store';
+import type { TClassName } from '@/Types';
+import { MoonIcon, SunIcon } from '../../Icons';
+import { Store } from '../../Store';
 
 export const Theme = ({ className }: TClassName) => {
   const { theme, toggleTheme } = Store.Theme();

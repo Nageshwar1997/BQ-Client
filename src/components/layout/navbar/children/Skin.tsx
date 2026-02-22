@@ -1,4 +1,4 @@
-import { skin } from '../../../../constants';
+import { skin } from '../../../../Constants';
 import { CategoryLabel, Feedback, SubCategories } from './grand-children';
 
 export const Skin = () => {

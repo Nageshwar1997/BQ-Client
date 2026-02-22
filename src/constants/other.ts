@@ -5,7 +5,7 @@ import {
   LinkedInBoxFillIcon,
   WhatsappFillIcon,
   YoutubeFillIcon,
-} from '../icons';
+} from '../Icons';
 
 export const BEAUTY_FACTS = [
   `The term <span class=gradient-text-accent>"Clean Beauty"</span> refers to skincare and makeup products made without harmful chemicals and toxins.`,

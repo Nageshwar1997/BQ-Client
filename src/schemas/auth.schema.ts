@@ -1,5 +1,5 @@
 import { boolean, object } from 'zod';
-import { zodCustomIssue, zodEnum, zodSingleFileOrUrl, zodString } from '../utils/zod';
+import { zodCustomIssue, zodEnum, zodSingleFileOrUrl, zodString } from '../Utils/zod';
 import {
   emailValidation,
   firstNameValidation,
@@ -8,7 +8,7 @@ import {
   passwordValidationOptions,
   phoneNumberValidation,
   phoneValidationOptions,
-} from '../constants';
+} from '../Constants';
 
 export const loginSchema = object({
   loginMethod: zodEnum({

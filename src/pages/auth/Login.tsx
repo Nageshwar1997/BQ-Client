@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { saveLocalToken, saveSessionToken } from '../../utils';
-import type { TLogin } from '../../types';
-import { loginSchema } from '../../schemas';
-import { Store } from '../../store';
-import { Service } from '../../api-service';
-import { Hook } from '../../hooks';
-import { BorderGradient, Button, Checkbox, GradientText, Input, Radio } from '../../components';
-import { LOGIN_INPUT_MAP_DATA } from '../../constants/input';
-import { EyeIcon, EyeOffIcon } from '../../icons';
+import { saveLocalToken, saveSessionToken } from '../../Utils';
+import type { TLogin } from '@/Types';
+import { loginSchema } from '../../Schemas';
+import { Store } from '../../Store';
+import { Service } from '../../Api-Service';
+import { Hook } from '../../Hooks';
+import { BorderGradient, Button, Checkbox, GradientText, Input, Radio } from '../../Components';
+import { LOGIN_INPUT_MAP_DATA } from '../../Constants/input';
+import { EyeIcon, EyeOffIcon } from '../../Icons';
 import { BottomInstructions, SocialAuth } from './children';
 
 export const Login = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {

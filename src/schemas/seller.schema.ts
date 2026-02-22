@@ -1,5 +1,5 @@
 import { boolean, object } from 'zod';
-import { zodEnum, zodSingleFileOrUrl, zodString } from '../utils/zod';
+import { zodEnum, zodSingleFileOrUrl, zodString } from '../Utils/zod';
 import {
   ALLOWED_BUSINESSES,
   ALLOWED_COUNTRIES,
@@ -9,7 +9,7 @@ import {
   phoneNumberValidation,
   regexes,
   STATES_AND_UNION_TERRITORIES,
-} from '../constants';
+} from '../Constants';
 
 export const personalDetailsSchema = object({
   name: zodString({ ...nameValidationOptions, field: 'name', label: 'Name' }),

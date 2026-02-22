@@ -1,6 +1,6 @@
 import type { LabelHTMLAttributes } from 'react';
-import { InfoIcon } from '../../../../icons';
-import type { TClassName, TInputIcon } from '../../../../types';
+import { InfoIcon } from '../../../../Icons';
+import type { TClassName, TInputIcon } from '../../../../Types';
 
 export const InputError = ({ error, className = '' }: { error?: string } & TClassName) => {
   if (!error) return null;

@@ -1,5 +1,5 @@
 import { object } from 'zod';
-import { zodMultipleFileOrUrl, zodNumber, zodString } from '../utils/zod';
+import { zodMultipleFileOrUrl, zodNumber, zodString } from '../Utils/zod';
 
 export const addReviewSchema = object({
   rating: zodNumber({ field: 'rating', label: 'Rating', max: 5, min: 1 }),

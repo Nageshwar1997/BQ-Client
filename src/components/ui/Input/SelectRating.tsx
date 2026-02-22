@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type React from 'react';
-import { StarEmptyIcon, StarFillIcon } from '../../../icons';
+import { StarEmptyIcon, StarFillIcon } from '../../../Icons';
 import { InputError } from './children';
 import { Button } from '../Button';
 import RatingStars from '../RatingStars';

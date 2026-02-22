@@ -1,5 +1,5 @@
-import { ChevronDownIcon } from '../../../../icons';
-import type { IDropdownOptions } from '../../../../types';
+import { ChevronDownIcon } from '@/Icons';
+import type { IDropdownOptions } from '@/Types';
 
 export const DropdownOptions = ({
   options,

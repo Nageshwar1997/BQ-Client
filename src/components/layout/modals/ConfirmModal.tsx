@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import type { IConfirmModal } from '../../../types';
-import { Hook } from '../../../hooks';
 import { InitialNotCloseConfirmModal } from './InitialNotCloseConfirmModal';
+import { Hook } from '@/Hooks';
+import type { IConfirmModal } from '@/Types';
 
 export const ConfirmModal = (props: IConfirmModal) => {
   const { removeParam } = Hook.QueryParams();

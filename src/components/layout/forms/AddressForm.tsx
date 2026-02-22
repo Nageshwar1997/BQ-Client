@@ -1,15 +1,14 @@
 import { useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Store } from '../../../store';
-import { Service } from '../../../api-service';
-import type { IAddress, TAddress, TClassName } from '../../../types';
-import { Hook } from '../../../hooks';
-import { ADD_ADDRESS_INPUT_MAP_DATA, ADDRESS_DEFAULT_VALUES } from '../../../constants';
-import { addressSchema } from '../../../schemas';
-import { deepEqual, toaster } from '../../../utils';
-import { Button, Checkbox, HR, Input, Radio } from '../../ui';
-import Select from '../../ui/Input/Select';
+import type { IAddress, TAddress, TClassName } from '@/Types';
+import { Store } from '@/Store';
+import { Service } from '@/Api-Service';
+import { Hook } from '@/Hooks';
+import { ADD_ADDRESS_INPUT_MAP_DATA, ADDRESS_DEFAULT_VALUES } from '@/Constants';
+import { addressSchema } from '@/Schemas';
+import { deepEqual, toaster } from '@/Utils';
+import { Button, Checkbox, HR, Input, Radio, Select } from '@/Components/UI';
 
 export const AddressForm = ({
   addresses,

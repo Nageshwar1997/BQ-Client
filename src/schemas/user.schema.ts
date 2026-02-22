@@ -1,6 +1,6 @@
 import { object } from 'zod';
-import { zodCustomIssue, zodString } from '../utils/zod';
-import { passwordValidationOptions } from '../constants';
+import { zodCustomIssue, zodString } from '../Utils/zod';
+import { passwordValidationOptions } from '../Constants';
 
 const baseNewConfirmSchema = object({
   newPassword: zodString({

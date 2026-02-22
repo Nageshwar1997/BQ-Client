@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { BACKEND_URL } from '../../../constants';
+import { BACKEND_URL } from '../../../Constants';
 
 export const SocialAuth = () => {
   return (

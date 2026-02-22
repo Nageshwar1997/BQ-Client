@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { Store } from '../store';
-import { Service } from '../api-service';
-import type { IWishlist } from '../types';
+import { Store } from '../Store';
+import { Service } from '../Api-Service';
+import type { IWishlist } from '../Types';
 import { Hook } from '.';
 
 export const useUserWishlist = () => {

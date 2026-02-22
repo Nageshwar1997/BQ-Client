@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { v4 as uuidv4 } from 'uuid';
-import { BACKEND_URL } from '../constants';
-import type { IChatMessage } from '../types';
-import { Store } from '../store';
+import { BACKEND_URL } from '../Constants';
+import type { IChatMessage } from '../Types';
+import { Store } from '../Store';
 
 export const useSocket = (context: IChatMessage['context'] | null) => {
   const { user } = Store.User();

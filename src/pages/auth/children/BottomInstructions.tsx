@@ -1,4 +1,4 @@
-import { GradientText } from '../../../components';
+import { GradientText } from '../../../Components';
 
 export const BottomInstructions = () => {
   return (

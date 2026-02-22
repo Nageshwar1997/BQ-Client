@@ -1,11 +1,11 @@
-export { MediaCarousel, MediaCarouselWithParentMedia, TestimonialCarousel } from './carousels';
-export { ScrollableGradientContainer } from './containers';
-export { Dropdown, DropdownOptions } from './dropdown';
-export { CategoriesFilter, Filters } from './filters';
-export { Footer } from './footer';
-export { AddressForm } from './forms';
-export { LoadingRings, LoadingScreen, LoadingPage, Teddy } from './loaders';
-export { VideoPlayer } from './media';
+export { MediaCarousel, MediaCarouselWithParentMedia, TestimonialCarousel } from './Carousels';
+export { ScrollableGradientContainer } from './Containers';
+export { Dropdown, DropdownOptions } from './Dropdown';
+export { CategoriesFilter, Filters } from './Filters';
+export { Footer } from './Footer';
+export { AddressForm } from './Forms';
+export { LoadingRings, LoadingScreen, LoadingPage, Teddy } from './Loaders';
+export { VideoPlayer } from './Media';
 export {
   AddReviewModal,
   AddressFormModal,
@@ -17,7 +17,7 @@ export {
   PasswordConfirmationModal,
   SearchModal,
   UserPopupModal,
-} from './modals';
+} from './Modals';
 export {
   About,
   CategoryLabel,

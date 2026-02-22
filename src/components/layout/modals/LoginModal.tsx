@@ -1,13 +1,13 @@
+import { Hook } from '@/Hooks';
+import { Store } from '@/Store';
 import { useEffect } from 'react';
 import { ModalWrapper } from './ModalWrapper';
-import { Login } from '../../../pages/Auth';
-import { Hook } from '../../../hooks';
-import { Store } from '../../../store';
+import { Login } from '@/Pages/Auth';
 
 export const LoginModal = () => {
   const { queryParams, removeParam } = Hook.QueryParams();
   const { authenticated } = Store.User();
-  const { runAction, clearAction } = store.Action();
+  const { runAction, clearAction } = Store.Action();
 
   useEffect(() => {
     removeParam('login');

@@ -11,8 +11,8 @@ import {
   TeamIcon,
   TermsAndConditionsIcon,
   ValuesAndCultureIcon,
-} from '../../icons';
-import type { ICategoryL2 } from '../../types';
+} from '../../Icons';
+import type { ICategoryL2 } from '@/Types';
 
 export const company: ICategoryL2 = {
   id: 1,

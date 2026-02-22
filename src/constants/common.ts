@@ -1,4 +1,4 @@
-import { VITE_IS_DEV, VITE_LOCALHOST_BACKEND_URL, VITE_PRODUCTION_BACKEND_URL } from '../envs';
+import { VITE_IS_DEV, VITE_LOCALHOST_BACKEND_URL, VITE_PRODUCTION_BACKEND_URL } from '../Envs';
 import {
   CareIcon,
   DownloadIcon,
@@ -9,9 +9,9 @@ import {
   TrackIcon,
   TruckIcon,
   UserCircleIcon,
-} from '../icons';
-import type { ICategoryL1, TRegexes } from '../types';
-import { collections, for_you, lips } from './navbar';
+} from '../Icons';
+import type { ICategoryL1, TRegexes } from '../Types';
+import { collections, for_you, lips } from './Navbar';
 
 export const BACKEND_URL =
   VITE_IS_DEV === 'true' ? VITE_LOCALHOST_BACKEND_URL : VITE_PRODUCTION_BACKEND_URL;

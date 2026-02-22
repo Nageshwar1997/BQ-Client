@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import { Hook } from '../../../hooks';
-import type { ISelect } from '../../../types';
-import { CheckedIcon, ChevronDownIcon } from '../../../icons';
+import { Hook } from '../../../Hooks';
+import type { ISelect } from '../../../Types';
+import { CheckedIcon, ChevronDownIcon } from '../../../Icons';
 import { InputError, InputIcon, InputLabel } from './children';
 
 export const Select = ({

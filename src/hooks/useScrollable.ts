@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import type { TScrollDirection } from '../types';
+import type { TScrollDirection } from '../Types';
 
 type THorizontal = { left: boolean; right: boolean };
 type TVertical = { top: boolean; bottom: boolean };

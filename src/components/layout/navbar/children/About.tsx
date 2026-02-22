@@ -1,8 +1,9 @@
+import { careers, company, press, TESTIMONIALS, trust_center } from '@/Constants';
 import { Link } from 'react-router-dom';
-import { careers, company, press, TESTIMONIALS, trust_center } from '../../../../constants';
+import { Button, GradientText } from '@/Components/UI';
 import { CategoryLabel, SubCategories } from './grand-children';
-import { TestimonialCarousel } from '../../carousels';
-import { Button, GradientText } from '../../../ui';
+import { TestimonialCarousel } from '../../Carousels';
+
 
 const categories = [
   [company, press],

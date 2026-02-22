@@ -1,6 +1,6 @@
 import { Skeleton } from '.';
-import { HR } from '../../ui';
-import { ScrollableGradientContainer } from '../containers';
+import { HR } from '../../UI';
+import { ScrollableGradientContainer } from '../Containers';
 
 export const MediaCarouselSkeleton = ({
   mainImage = true,

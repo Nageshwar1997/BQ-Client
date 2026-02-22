@@ -1,6 +1,6 @@
 /* components/input/Range.tsx */
 import { useEffect, useRef } from 'react';
-import type { IRange } from '../../../types';
+import type { IRange } from '../../../Types';
 
 /* helper: % position on track */
 const pct = (v: number, min: number, max: number) => ((v - min) / (max - min)) * 100;

@@ -3,8 +3,8 @@ import { type FieldErrors, useForm } from 'react-hook-form';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { emailData, PASSWORD_KEYS, REGISTER_INPUT_MAP_DATA } from '../../constants/input';
-import type { IInput, TRegister } from '../../types';
+import { emailData, PASSWORD_KEYS, REGISTER_INPUT_MAP_DATA } from '../../Constants/input';
+import type { IInput, TRegister } from '@/Types';
 import {
   BorderGradient,
   Button,
@@ -13,13 +13,13 @@ import {
   Input,
   ProfilePicInput,
   Resend,
-} from '../../components';
-import { EyeIcon, EyeOffIcon } from '../../icons';
+} from '../../Components';
+import { EyeIcon, EyeOffIcon } from '../../Icons';
 import { BottomInstructions, SocialAuth } from './children';
-import { getFileFromFileList, saveLocalToken, saveSessionToken } from '../../utils';
-import { registerSchema, sendOtpSchema } from '../../schemas';
-import { Store } from '../../store';
-import { Service } from '../../api-service';
+import { getFileFromFileList, saveLocalToken, saveSessionToken } from '../../Utils';
+import { registerSchema, sendOtpSchema } from '../../Schemas';
+import { Store } from '../../Store';
+import { Service } from '../../Api-Service';
 
 type TRegisterInput = {
   input: (typeof REGISTER_INPUT_MAP_DATA)[number];

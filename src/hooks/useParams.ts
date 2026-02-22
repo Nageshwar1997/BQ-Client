@@ -1,5 +1,5 @@
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import type { TParams } from '../types';
+import type { TParams } from '../Types';
 
 export const usePathParams = () => {
   const navigate = useNavigate();

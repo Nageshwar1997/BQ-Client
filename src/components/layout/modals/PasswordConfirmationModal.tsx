@@ -1,15 +1,15 @@
+import { Service } from '@/Api-Service';
+import { Hook } from '@/Hooks';
+import { changePasswordSchema, updatePasswordSchema } from '@/Schemas/user.schema';
+import { Store } from '@/Store';
+import type { TChangePassword, TUpdatePassword } from '@/Types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Hook } from '../../../hooks';
-import { Store } from '../../../store';
-import { Service } from '../../../api-service';
 import { useState } from 'react';
-import type { TChangePassword, TUpdatePassword } from '../../../types';
-import { changePasswordSchema, updatePasswordSchema } from '../../../schemas/user.schema';
 import { useForm, type FieldErrors } from 'react-hook-form';
-import { EyeIcon, EyeOffIcon } from '../../../icons';
 import { ConfirmModal } from './ConfirmModal';
-import { changePasswordFields, updatePasswordFields } from '../../../constants';
-import { Button, GradientText, HR, Input } from '../../ui';
+import { Button, GradientText, HR, Input } from '@/Components/UI';
+import { changePasswordFields, updatePasswordFields } from '@/Constants';
+import { EyeIcon, EyeOffIcon } from '@/Icons';
 
 const baseDefaultValues = { newPassword: '', confirmPassword: '' };
 

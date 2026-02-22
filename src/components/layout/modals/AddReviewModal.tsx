@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Service } from '../../../api-service';
 import { Controller, useForm } from 'react-hook-form';
-import type { TMediaOption, TReview } from '../../../types';
-import { addReviewSchema } from '../../../schemas/review.schema';
-import { ALLOWED_IMAGE_FORMATS, ALLOWED_VIDEO_FORMATS } from '../../../constants';
+import type { TMediaOption, TReview } from '@/Types';
+import { Service } from '@/Api-Service';
+import { addReviewSchema } from '@/Schemas/review.schema';
+import { ALLOWED_IMAGE_FORMATS, ALLOWED_VIDEO_FORMATS } from '@/Constants';
 import { ModalWrapper } from './ModalWrapper';
-import { Button, FileInput, Input, Textarea } from '../../ui';
-import { UploadCloudIcon } from '../../../icons';
-import { SelectRating } from '../../ui/Input/SelectRating';
+import { Button, FileInput, Input, SelectRating, Textarea } from '@/Components/UI';
+import { UploadCloudIcon } from '@/Icons';
 
 const reviewInitialValues = {
   title: '',

@@ -9,8 +9,8 @@ import {
   phoneValidationOptions,
   regexes,
   STATES_AND_UNION_TERRITORIES,
-} from '../constants';
-import { zodEnum, zodString } from '../utils/zod';
+} from '../Constants';
+import { zodEnum, zodString } from '../Utils/zod';
 
 export const addressSchema = object({
   type: zodEnum({ field: 'type', label: 'Address Type', enumValues: ADDRESS_TYPES }),

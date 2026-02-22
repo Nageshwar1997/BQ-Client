@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { NAVBAR_CATEGORIES_DATA, NAVBAR_TOP_LAYER_DATA } from '../../../constants';
-import { Hook } from '../../../hooks';
-import { Store } from '../../../store';
+import { NAVBAR_CATEGORIES_DATA, NAVBAR_TOP_LAYER_DATA } from '../../../Constants';
+import { Hook } from '../../../Hooks';
+import { Store } from '../../../Store';
 import { Link } from 'react-router-dom';
-import { ChevronDownIcon, CloseIcon, MenuIcon } from '../../../icons';
-import { HoveredComponent, UserMenuIcons } from './children';
-import { Button, LinearGradient } from '../../ui';
+import { ChevronDownIcon, CloseIcon, MenuIcon } from '../../../Icons';
+import { HoveredComponent, UserMenuIcons } from './Children';
+import { Button, LinearGradient } from '@/Components/UI';
 
 const TopLayer = () => {
   const requireAuth = Hook.RequireAuth();
@@ -331,4 +331,4 @@ export {
   Skin,
   SubCategories,
   UserMenuIcons,
-} from './children';
+} from './Children';

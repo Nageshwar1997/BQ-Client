@@ -1,5 +1,5 @@
-import type { IZodStringConfigs } from '../types';
-import { zodString } from '../utils/zod';
+import type { IZodStringConfigs } from '../Types';
+import { zodString } from '../Utils/zod';
 import { regexes } from './common';
 
 export const passwordValidationOptions: IZodStringConfigs = {

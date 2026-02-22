@@ -1,11 +1,10 @@
 import { Link } from 'react-router-dom';
 import { Fragment, useState } from 'react';
-import { Hook } from '../../../../hooks';
-import { for_you, SOCIAL_COMMUNITY } from '../../../../constants';
-import { VideoPlayer } from '../../media';
-import { PlayIcon } from '../../../../icons';
-import { Button } from '../../../ui';
-import { CategoryLabel } from '.';
+import { Hook } from '@/Hooks';
+import { for_you } from '@/Constants';
+import { CategoryLabel } from './grand-children';
+import { VideoPlayer } from '../../Media';
+import { PlayIcon } from '@/Icons';
 
 export const ForYou = () => {
   const { navigate } = Hook.PathParams();

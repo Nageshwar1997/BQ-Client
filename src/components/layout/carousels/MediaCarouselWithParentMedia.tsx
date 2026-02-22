@@ -1,9 +1,9 @@
+import { ChevronDownIcon } from '@/Icons';
+import type { IMediaCarouselWithParent, TClassName } from '@/Types';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { VideoPlayer } from '../Media';
 import { MediaCarousel } from './MediaCarousel';
-import type { IMediaCarouselWithParent, TClassName } from '../../../types';
-import { VideoPlayer } from '../media';
-import { ChevronDownIcon } from '../../../icons';
-import { HR } from '../../ui';
+import { HR } from '@/Components/UI';
 
 const ChevronButton = ({ onClick, className = '' }: { onClick: () => void } & TClassName) => {
   return (

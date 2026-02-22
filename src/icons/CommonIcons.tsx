@@ -5,8 +5,8 @@ import {
   SVG_F_C_RULE,
   SVG_PATH_FR_CR,
   XMLNS,
-} from '../constants';
-import type { TIcon } from '../types';
+} from '../Constants';
+import type { TIcon } from '../Types';
 
 export const SunIcon = (props: TIcon) => (
   <svg fill="none" stroke="black" strokeWidth="2" {...SVG24WH_VB_LC_LJ_R} {...props}>

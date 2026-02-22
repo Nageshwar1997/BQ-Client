@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import { Hook } from '@/hooks';
-import type { IApiStatus } from '@/types';
-import { ContainerIcon, InfoIcon } from '@/icons';
-import { GradientText, HR } from '../ui';
-import { LoadingRings } from '../layout';
+import { Hook } from '@/Hooks';
+import type { IApiStatus } from '@/Types';
+import { ContainerIcon, InfoIcon } from '@/Icons';
+import { GradientText, HR } from '../UI';
+import { LoadingRings } from '../Layout';
 
 export const ScrollToTop = () => {
   const { pathname } = Hook.PathParams();

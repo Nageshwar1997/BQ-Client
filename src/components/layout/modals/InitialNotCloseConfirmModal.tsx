@@ -1,8 +1,8 @@
-import { Hook } from '../../../hooks';
-import { InfoIcon } from '../../../icons';
-import type { IConfirmModal } from '../../../types';
-import { Button, GradientText } from '../../ui';
+import { Hook } from '@/Hooks';
+import { InfoIcon } from '@/Icons';
+import type { IConfirmModal } from '@/Types';
 import { ModalWrapper } from './ModalWrapper';
+import { Button, GradientText } from '@/Components/UI';
 
 const TopIconLayer = ({ type }: { type: IConfirmModal['type'] }) => (
   <div

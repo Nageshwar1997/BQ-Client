@@ -1,8 +1,8 @@
 import { type JSX } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { LoadingScreen } from '../components';
-import { Hook } from '../hooks';
-import { Store } from '../store';
+import { LoadingScreen } from '../Components';
+import { Hook } from '../Hooks';
+import { Store } from '../Store';
 
 export const PrivateRoute = ({ children }: { children: JSX.Element }) => {
   const { isLoading } = Hook.AuthCheck();

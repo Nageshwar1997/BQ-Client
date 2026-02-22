@@ -1,6 +1,6 @@
+import type { TESTIMONIALS } from '@/Constants';
+import { LeftArrowIcon, RightArrowIcon, YellowStarIcon } from '@/Icons';
 import { useEffect, useState } from 'react';
-import { LeftArrowIcon, RightArrowIcon, YellowStarIcon } from '../../../icons';
-import { TESTIMONIALS } from '../../../constants/navbar/about';
 
 export const TestimonialCarousel = ({ data }: { data: typeof TESTIMONIALS }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

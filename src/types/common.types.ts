@@ -15,7 +15,7 @@ import type {
 import type { UseFormRegisterReturn } from 'react-hook-form';
 import type { ICategory, IProduct, IReview, IShade, IUser } from './api.types';
 import type { TAddress, TChangePassword, TLogin, TRegister, TUpdatePassword } from './schema.types';
-import type { FOOTER_CATEGORIES } from '../constants';
+import type { FOOTER_CATEGORIES } from '../Constants';
 
 export type TClassName = { className?: string };
 

@@ -1,13 +1,13 @@
+import { Service } from '@/Api-Service';
+import { Hook } from '@/Hooks';
+import type { IApiProductQueryProps, IModalWrapper, IProduct } from '@/Types';
+import { debounce } from '@/Utils';
 import { useEffect, useMemo, useState } from 'react';
-import { CloseIcon, SearchIcon } from '../../../icons';
-import { Hook } from '../../../hooks';
-import { debounce } from '../../../utils';
-import type { IApiProductQueryProps, IModalWrapper, IProduct } from '../../../types';
-import { Service } from '../../../api-service';
-import { Input } from '../../ui';
-import { ApiStatus } from '../../common';
-import { SearchModalSkeleton } from '../skeletons/SearchModalSkeleton';
 import { ModalWrapper } from './ModalWrapper';
+import { Input } from '@/Components/UI';
+import { CloseIcon, SearchIcon } from '@/Icons';
+import { SearchModalSkeleton } from '../Skeletons/SearchModalSkeleton';
+import { ApiStatus } from '@/Components/Common';
 
 export const SearchModal = (props: Omit<IModalWrapper, 'children'>) => {
   const [searchQuery, setSearchQuery] = useState('');

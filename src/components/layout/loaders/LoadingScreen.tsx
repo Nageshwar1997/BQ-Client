@@ -1,5 +1,5 @@
+import { BEAUTY_FACTS } from '@/Constants';
 import { useEffect, useMemo, useState } from 'react';
-import { BEAUTY_FACTS } from '../../../constants';
 import { Teddy } from './Teddy';
 
 export const LoadingScreen = () => {

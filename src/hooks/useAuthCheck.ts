@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { getUserToken } from '../utils';
-import { Store } from '../store';
-import { Service } from '../api-service';
+import { getUserToken } from '../Utils';
+import { Store } from '../Store';
+import { Service } from '../Api-Service';
 import { Hook } from '.';
 
 export const useAuthCheck = (readyToCall?: boolean) => {

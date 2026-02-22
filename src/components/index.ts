@@ -1,4 +1,4 @@
-export { ApiStatus, ScrollToTop } from './common';
+export { ApiStatus, ScrollToTop } from './Common';
 export {
   AddReviewModal,
   AddressForm,
@@ -26,7 +26,7 @@ export {
   TestimonialCarousel,
   UserPopupModal,
   VideoPlayer,
-} from './layout';
+} from './Layout';
 export {
   BorderGradient,
   Button,
@@ -49,4 +49,4 @@ export {
   SelectRating,
   Textarea,
   Theme,
-} from './ui';
+} from './UI';

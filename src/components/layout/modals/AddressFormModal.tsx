@@ -1,8 +1,8 @@
+import { Hook } from '@/Hooks';
+import type { IAddress } from '@/Types';
 import { useEffect } from 'react';
-import type { IAddress } from '../../../types';
-import { Hook } from '../../../hooks';
 import { ModalWrapper } from './ModalWrapper';
-import AddressForm from '../forms/AddressForm';
+import { AddressForm } from '../Forms';
 
 export const AddressFormModal = ({
   onClose,

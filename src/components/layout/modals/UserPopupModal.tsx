@@ -1,9 +1,9 @@
-import { Service } from '../../../api-service';
-import { USER_MENU_POPUP_DATA } from '../../../constants';
-import { Hook } from '../../../hooks';
-import { UserCircleIcon } from '../../../icons';
-import { Store } from '../../../store';
-import { Button, HR } from '../../ui';
+import { Service } from '@/Api-Service';
+import { HR, Button } from '@/Components/UI';
+import { USER_MENU_POPUP_DATA } from '@/Constants';
+import { Hook } from '@/Hooks';
+import { UserCircleIcon } from '@/Icons';
+import { Store } from '@/Store';
 import { ModalWrapper } from './ModalWrapper';
 
 export const UserPopupModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {

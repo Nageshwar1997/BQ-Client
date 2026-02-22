@@ -1,5 +1,5 @@
 import { useEffect, useRef, type ChangeEvent } from 'react';
-import type { ITextArea } from '../../../types';
+import type { ITextArea } from '../../../Types';
 import { InputError, InputLabel } from './children';
 
 export const Textarea = ({

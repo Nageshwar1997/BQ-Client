@@ -1,4 +1,4 @@
-import { collections } from '../../../../constants';
+import { collections } from '../../../../Constants';
 import { CategoryLabel, Feedback, SubCategories } from './grand-children';
 
 export const Collections = () => {

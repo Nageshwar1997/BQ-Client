@@ -1,4 +1,4 @@
-import { eyes } from '../../../../constants';
+import { eyes } from '../../../../Constants';
 import { CategoryLabel, SubCategories } from './grand-children';
 
 export const Eyes = () => {

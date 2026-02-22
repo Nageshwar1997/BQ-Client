@@ -1,8 +1,8 @@
+import { GradientText } from '@/Components/UI';
+import { CloseIcon } from '@/Icons';
+import type { IModalWrapper } from '@/Types';
 import { useEffect } from 'react';
-import type { IModalWrapper } from '../../../types';
-import { CloseIcon } from '../../../icons';
-import { ScrollableGradientContainer } from '../containers';
-import { GradientText } from '../../ui';
+import { ScrollableGradientContainer } from '../Containers';
 
 export const ModalWrapper = ({
   isOpen,

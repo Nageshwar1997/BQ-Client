@@ -1,10 +1,10 @@
 import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Store } from '../../../store';
-import { FOOTER_AWARDS, FOOTER_CATEGORIES, SOCIAL_MEDIA_LINKS } from '../../../constants';
+import { Store } from '@/Store';
+import { FOOTER_AWARDS, FOOTER_CATEGORIES, SOCIAL_MEDIA_LINKS } from '@/Constants';
 import { FooterOptionList } from './children';
-import { GradientText, HR } from '../../ui';
+import { GradientText, HR } from '@/Components/UI';
 
 export const Footer = () => {
   const { theme } = Store.Theme();

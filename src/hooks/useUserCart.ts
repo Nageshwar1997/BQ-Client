@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { Store } from '../store';
-import { Service } from '../api-service';
-import type { ICartItem } from '../types';
+import { Store } from '../Store';
+import { Service } from '../Api-Service';
+import type { ICartItem } from '../Types';
 import { Hook } from '.';
 
 export const useUserCart = () => {

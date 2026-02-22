@@ -6,7 +6,7 @@ import type {
   IZodSingleFileConfigs,
   IZodStringConfigs,
   ZodNumberConfigs,
-} from '../types';
+} from '../Types';
 import {
   ALLOWED_IMAGE_FORMATS,
   ALLOWED_VIDEO_FORMATS,
@@ -14,7 +14,7 @@ import {
   MAX_VIDEO_FILE_SIZE,
   MB,
   regexes,
-} from '../constants';
+} from '../Constants';
 import { nullCheck } from './common';
 
 export const zodCustomIssue = (

@@ -1,5 +1,5 @@
-import { Hook } from '../../../../hooks';
-import type { IFooterOptionList } from '../../../../types';
+import { Hook } from '@/Hooks';
+import type { IFooterOptionList } from '@/Types';
 
 export const FooterOptionList = ({ isFirst = false, title, options }: IFooterOptionList) => {
   const requireAuth = Hook.RequireAuth();

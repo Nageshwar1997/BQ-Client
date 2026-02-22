@@ -13,8 +13,8 @@ import {
   SheetMaskIcon,
   SkinCareKitIcon,
   SunscreenIcon,
-} from '../../icons';
-import type { ICategoryL2 } from '../../types';
+} from '../../Icons';
+import type { ICategoryL2 } from '@/Types';
 
 const basePath = '/products/skin';
 

@@ -1,4 +1,4 @@
-import type { TStringRecord } from '../types';
+import type { TStringRecord } from '../Types';
 
 export const {
   // A

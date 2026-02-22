@@ -1,7 +1,7 @@
+import type { TClassName, TMediaOption } from '@/Types';
 import { useEffect } from 'react';
-import type { TClassName, TMediaOption } from '../../../types';
 import { ModalWrapper } from './ModalWrapper';
-import { MediaCarouselWithParentMedia } from '../carousels';
+import { MediaCarouselWithParentMedia } from '../Carousels';
 
 export const MediaModal = ({
   media,

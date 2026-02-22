@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Hls from 'hls.js';
-import { convertVideoToPoster } from '../../../utils';
-import type { IVideoPlayer } from '../../../types';
+import { convertVideoToPoster } from '@/Utils';
+import type { IVideoPlayer } from '@/Types';
 
 export const VideoPlayer = ({ className = '', videoProps = {}, ref }: IVideoPlayer) => {
   const videoRef = useRef<HTMLVideoElement | null>(ref?.current ?? null);
