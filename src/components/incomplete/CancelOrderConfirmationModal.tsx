@@ -1,20 +1,21 @@
-import { Controller, useForm } from "react-hook-form";
-import { useCancelOrder } from "../../../api/order/order.service";
-import usePathParams from "../../../hooks/usePathParams";
-import useQueryParams from "../../../hooks/useQueryParams";
-import { toastErrorMessage, toastSuccessMessage } from "../../../utils/toasts";
-import ConfirmModal from "./ConfirmModal";
-import { ORDER_CANCEL_REASONS } from "../../../constants";
-import Textarea from "../../input/Textarea";
-import Button from "../../button/Button";
+import { Controller, useForm } from 'react-hook-form';
+import { useCancelOrder } from '../../../api/order/order.service';
+import usePathParams from '../../../hooks/usePathParams';
+import useQueryParams from '../../../hooks/useQueryParams';
+import { toastErrorMessage, toastSuccessMessage } from '../../../utils/toasts';
+import ConfirmModal from './ConfirmModal';
+import { ORDER_CANCEL_REASONS } from '../../../constants';
+import Textarea from '../../input/Textarea';
+import Button from '../../button/Button';
 
 type TReason = { cancelReason: string; otherReason?: string };
 
 const CancelOrderConfirmationModal = ({ orderId }: { orderId: string }) => {
   const { queryParams, removeParam } = useQueryParams();
   const { pathParams } = usePathParams();
-  const { mutateAsync: cancelOrder, isPending: isCancelPending } =
-    useCancelOrder(pathParams.orderId!);
+  const { mutateAsync: cancelOrder, isPending: isCancelPending } = useCancelOrder(
+    pathParams.orderId!,
+  );
 
   const {
     handleSubmit,
@@ -24,31 +25,30 @@ const CancelOrderConfirmationModal = ({ orderId }: { orderId: string }) => {
     formState: { isSubmitting },
   } = useForm<TReason>({
     defaultValues: {
-      cancelReason: "",
-      otherReason: "",
+      cancelReason: '',
+      otherReason: '',
     },
   });
 
-  const selectedReason = watch("cancelReason");
+  const selectedReason = watch('cancelReason');
 
   const handleClose = () => {
     reset();
-    removeParam("confirm");
+    removeParam('confirm');
   };
   const handleCancelOrder = async (data: TReason) => {
-    const reason =
-      data.cancelReason === "Other" ? data.otherReason : data.cancelReason;
-    if (!reason) return toastErrorMessage("Please provide a cancel reason");
+    const reason = data.cancelReason === 'Other' ? data.otherReason : data.cancelReason;
+    if (!reason) return toastErrorMessage('Please provide a cancel reason');
 
     await cancelOrder(
       { orderId, reason },
       {
         onSuccess: () => {
-          toastSuccessMessage("Order cancelled successfully");
+          toastSuccessMessage('Order cancelled successfully');
           handleClose();
         },
         onError: (error) => toastErrorMessage(error),
-      }
+      },
     );
   };
 
@@ -62,7 +62,7 @@ const CancelOrderConfirmationModal = ({ orderId }: { orderId: string }) => {
         onSubmit={handleSubmit(handleCancelOrder)}
       >
         <div className="flex flex-col gap-2 text-center">
-          <h4 className="text-lg/5 md:text-xl/6 lg:text-2xl/6 font-semibold bg-clip-text text-transparent bg-silver-duo">
+          <h4 className="bg-silver-duo bg-clip-text text-lg/5 font-semibold text-transparent md:text-xl/6 lg:text-2xl/6">
             Why do you want to cancel this order?
           </h4>
 
@@ -70,11 +70,11 @@ const CancelOrderConfirmationModal = ({ orderId }: { orderId: string }) => {
             control={control}
             name="cancelReason"
             render={({ field }) => (
-              <ul className="flex flex-col gap-2 items-start mt-4">
+              <ul className="mt-4 flex flex-col items-start gap-2">
                 {ORDER_CANCEL_REASONS.map((reason) => (
                   <li
                     key={reason}
-                    className="text-xs/4 md:text-sm/5 lg:text-base/5 font-light text-tertiary flex items-center gap-2 cursor-pointer"
+                    className="text-tertiary flex cursor-pointer items-center gap-2 text-xs/4 font-light md:text-sm/5 lg:text-base/5"
                     onClick={() => field.onChange(reason)}
                   >
                     <input
@@ -97,12 +97,12 @@ const CancelOrderConfirmationModal = ({ orderId }: { orderId: string }) => {
               <Textarea
                 textAreaProps={{
                   rows: 3,
-                  placeholder: "Write reason here...",
+                  placeholder: 'Write reason here...',
                   disabled:
                     isSubmitting ||
                     isCancelPending ||
                     !selectedReason ||
-                    selectedReason !== "Other",
+                    selectedReason !== 'Other',
                   ...field,
                 }}
                 containerClassName="mt-4"
@@ -110,13 +110,13 @@ const CancelOrderConfirmationModal = ({ orderId }: { orderId: string }) => {
             )}
           />
         </div>
-        <div className="w-full flex items-center justify-center gap-4">
+        <div className="flex w-full items-center justify-center gap-4">
           <Button
             content="Cancel"
             pattern="secondary"
             className={`max-h-10 rounded-md!`}
             buttonProps={{
-              type: "button",
+              type: 'button',
               onClick: handleClose,
             }}
           />
@@ -126,7 +126,7 @@ const CancelOrderConfirmationModal = ({ orderId }: { orderId: string }) => {
             className={`max-h-10 rounded-md!`}
             buttonProps={{
               disabled: isSubmitting || isCancelPending || !selectedReason,
-              type: "submit",
+              type: 'submit',
             }}
           />
         </div>
