@@ -1,5 +1,5 @@
 import { keepPreviousData, useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { BlogApi } from '../Api';
+import { BlogApi } from '../Api/Blog.api';
 import { QUERY_KEYS } from '@/Constants';
 
 export class BlogService extends BlogApi {

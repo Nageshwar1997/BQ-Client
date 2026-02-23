@@ -1,5 +1,5 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { MediaApi } from '../Api';
+import { MediaApi } from '../Api/Media.api';
 import { QUERY_KEYS } from '@/Constants';
 
 export class MediaService extends MediaApi {

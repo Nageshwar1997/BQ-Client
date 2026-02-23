@@ -4,7 +4,7 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
-import { ReviewApi } from '../Api';
+import { ReviewApi } from '../Api/Review.api';
 import { Hook } from '@/Hooks';
 import { InvalidateQueries } from '../InvalidateQueries';
 import type { IApiReviewQueryProps } from '@/Types';

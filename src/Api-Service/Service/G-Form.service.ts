@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { GFormApi } from '../Api';
+import { GFormApi } from '../Api/G-Form.api';
 import { QUERY_KEYS } from '@/Constants';
 import { toaster } from '@/Utils';
 

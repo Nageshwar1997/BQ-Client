@@ -1,5 +1,5 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { UserApi } from '../Api';
+import { UserApi } from '../Api/User.api';
 import { QUERY_KEYS } from '@/Constants';
 import { InvalidateQueries } from '../InvalidateQueries';
 import { Hook } from '@/Hooks';

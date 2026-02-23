@@ -1,5 +1,5 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { AddressApi } from '../Api';
+import { AddressApi } from '../Api/Address.api';
 import { InvalidateQueries } from '../InvalidateQueries';
 import { QUERY_KEYS } from '@/Constants';
 import { toaster } from '@/Utils';

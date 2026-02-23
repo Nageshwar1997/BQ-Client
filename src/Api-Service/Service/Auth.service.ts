@@ -1,6 +1,6 @@
 import { QUERY_KEYS } from '@/Constants';
 import { useMutation } from '@tanstack/react-query';
-import { AuthApi } from '../Api';
+import { AuthApi } from '../Api/Auth.api';
 import { toaster } from '@/Utils';
 import { Store } from '@/Stores';
 
