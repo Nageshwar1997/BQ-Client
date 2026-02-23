@@ -6,6 +6,8 @@ export {
   Teddy,
   MediaCarousel,
   MediaCarouselWithParentMedia,
+  ScrollableGradientContainer,
   TestimonialCarousel,
+  VideoPlayer,
 } from './Layout';
-export { GradientText, Hr } from './Ui';
+export { GradientText, Hr, LinearGradient } from './Ui';
