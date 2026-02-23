@@ -3,8 +3,8 @@ import { RouterProvider } from 'react-router-dom';
 import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'react-hot-toast';
-import { router } from './Routes';
-import { Store } from './Store';
+import { Routes } from './Routes';
+import { Store } from './Stores';
 import { VITE_IS_DEV } from './Envs';
 
 function App() {
@@ -27,7 +27,7 @@ function App() {
       <Toaster position="top-center" />
       <div className="bg-primary-invert text-primary h-full max-h-dvh min-h-dvh w-full max-w-dvw min-w-dvw overflow-y-scroll">
         <div className="mx-auto h-full w-full max-w-480">
-          <RouterProvider router={router} />
+          <RouterProvider router={Routes} />
         </div>
       </div>
       {/* React Query Devtools */}
