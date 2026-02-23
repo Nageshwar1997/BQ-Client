@@ -54,7 +54,9 @@ export const emailValidationOptions: IZodStringConfigs = {
   customRegexes: [{ regex: regexes.email, message: 'must be valid' }],
 };
 
-export const nameValidationOptions: Partial<IZodStringConfigs> = {
+export const nameValidationOptions: IZodStringConfigs = {
+  field: 'name',
+  label: 'Name',
   min: 2,
   max: 50,
   customRegexes: [

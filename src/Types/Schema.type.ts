@@ -1,3 +1,12 @@
+import type {
+  addressSchema,
+  addReviewSchema,
+  changePasswordSchema,
+  contactUsSchema,
+  loginSchema,
+  registerSchema,
+  updatePasswordSchema,
+} from '@/Schemas';
 import type z from 'zod';
 
 export type TLogin = z.infer<typeof loginSchema>;
