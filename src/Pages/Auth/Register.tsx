@@ -231,7 +231,7 @@ const RegisterForm = ({
   );
 };
 
-export const Register = () => {
+const Register = () => {
   const { mutateAsync, isPending, data, reset } = Service.Auth.SendOtp();
 
   const {
@@ -301,3 +301,5 @@ export const Register = () => {
     </div>
   );
 };
+
+export default Register;

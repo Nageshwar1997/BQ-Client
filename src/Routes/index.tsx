@@ -1,15 +1,20 @@
-import { LoadingScreen } from '@/Components';
-import { Suspense } from 'react';
+import { LoadingScreen, Teddy } from '@/Components';
+import { lazy, Suspense } from 'react';
 import { createBrowserRouter, Outlet } from 'react-router-dom';
-import { AuthRedirect } from './AuthRedirect';
-import { PrivateRoute } from './PrivateRoute';
+
+const AuthRedirect = lazy(() => import('./AuthRedirect'));
+const PrivateRoute = lazy(() => import('./PrivateRoute'));
+
+const Auth = lazy(() => import('@/Pages/Auth'));
+const Login = lazy(() => import('@/Pages/Auth/Login'));
+const Register = lazy(() => import('@/Pages/Auth/Register'));
 
 export const Routes = createBrowserRouter([
   {
     path: '/',
     element: (
       <Suspense fallback={<LoadingScreen />}>
-        <div>Main</div>
+        <Teddy />
       </Suspense>
     ),
     errorElement: <div>Error Page</div>,
@@ -120,12 +125,44 @@ export const Routes = createBrowserRouter([
   },
   {
     path: 'auth',
-    element: <div>Auth</div>,
+    element: (
+      <Suspense fallback={<LoadingScreen />}>
+        <Auth />
+      </Suspense>
+    ),
     children: [
-      { index: true, element: <AuthRedirect children={<div>Login</div>} /> },
-      { path: 'register', element: <AuthRedirect children={<div>Register</div>} /> },
-      { path: 'oauth', element: <AuthRedirect children={<div>OAuth Success/Error</div>} /> },
-      { path: 'password', element: <AuthRedirect children={<div>Password</div>} /> },
+      {
+        index: true,
+        element: (
+          <AuthRedirect>
+            <Login />
+          </AuthRedirect>
+        ),
+      },
+      {
+        path: 'register',
+        element: (
+          <AuthRedirect>
+            <Register />
+          </AuthRedirect>
+        ),
+      },
+      {
+        path: 'oauth',
+        element: (
+          <AuthRedirect>
+            <div>OAuth Success/Error</div>
+          </AuthRedirect>
+        ),
+      },
+      {
+        path: 'password',
+        element: (
+          <AuthRedirect>
+            <div>Password</div>
+          </AuthRedirect>
+        ),
+      },
     ],
   },
 ]);

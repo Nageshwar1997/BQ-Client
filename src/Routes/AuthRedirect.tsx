@@ -6,7 +6,7 @@ import { getUserToken } from '@/Utils';
 import { Hook } from '@/Hooks';
 import { LoadingScreen } from '@/Components';
 
-export const AuthRedirect = ({ children }: { children: JSX.Element }) => {
+const AuthRedirect = ({ children }: { children: JSX.Element }) => {
   const token = getUserToken();
   const { authenticated } = Store.User();
   const { isLoading } = Hook.AuthCheck(!!token);
@@ -24,3 +24,4 @@ export const AuthRedirect = ({ children }: { children: JSX.Element }) => {
     </>
   );
 };
+export default AuthRedirect;

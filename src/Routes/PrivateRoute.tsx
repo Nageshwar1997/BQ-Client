@@ -4,7 +4,7 @@ import { Store } from '@/Stores';
 import { type JSX } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 
-export const PrivateRoute = ({ children }: { children: JSX.Element }) => {
+const PrivateRoute = ({ children }: { children: JSX.Element }) => {
   const { isLoading } = Hook.AuthCheck();
   const { authenticated } = Store.User();
   const location = useLocation();
@@ -17,3 +17,5 @@ export const PrivateRoute = ({ children }: { children: JSX.Element }) => {
 
   return children;
 };
+
+export default PrivateRoute;
