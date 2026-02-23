@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Hook } from '@/Hooks';
 import { ModalWrapper } from './ModalWrapper';
 import { Store } from '@/Stores';
-import { LoginForm } from '../Forms/LoginForm';
+import { LoginForm } from '../Forms';
 
 export const LoginModal = () => {
   const { queryParams, removeParam } = Hook.QueryParams();

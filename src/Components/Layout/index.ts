@@ -11,7 +11,7 @@ export {
   InitialNotCloseConfirmModal,
   PasswordConfirmationModal,
 } from './Modals';
-export { AddressForm } from './Forms';
+export { AddressForm, } from './Forms';
 export {
   BlogCardSkeleton,
   BlogCardsSkeleton,
