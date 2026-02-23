@@ -44,6 +44,16 @@ import {
   lip_enhancers_and_other,
   lipstick_sets_and_combos,
 } from './Lips.navbar.constant';
+import {
+  About,
+  Collections,
+  Eyes,
+  Face,
+  ForYou,
+  Lips,
+  Skin,
+} from '@/Components/Layout/Navbar/Children';
+import { careers, company, press, trust_center } from './About.navbar.constant';
 
 export const NAVBAR_TOP_LAYER_DATA = [
   {
@@ -109,7 +119,7 @@ export const for_you: ICategoryL1 = {
   label: 'For You',
   category: 'for_you',
   path: '/products/for_you',
-  component: () => 'ForYou', // TODO - add actual component
+  component: ForYou, // TODO - add actual component
   subCategories: [new_new, sugar_play, offers, blogs], // NOTE -  only new is reserved keyword we can't use new so new_new used
 };
 
@@ -119,7 +129,7 @@ export const lips: ICategoryL1 = {
   label: 'Lips',
   category: 'lips',
   path: '/products/lips',
-  component: () => 'Lips', // TODO - add actual component
+  component: Lips, // TODO - add actual component
   subCategories: [
     finish_types,
     lipstick_forms,
@@ -136,7 +146,7 @@ export const eyes: ICategoryL1 = {
   label: 'Eyes',
   category: 'eyes',
   path: '/products/eyes',
-  component: () => 'Eyes', // TODO - add actual component
+  component: Eyes, // TODO - add actual component
   subCategories: [kohl_and_kajal, mascaras, eyeliners, eyeshadow, eyebrows, eye_value_set],
 };
 
@@ -146,7 +156,7 @@ export const face: ICategoryL1 = {
   label: 'Face',
   category: 'face',
   path: '/products/face',
-  component: () => 'Face', // TODO - add actual component
+  component: Face, // TODO - add actual component
   subCategories: [
     face_makeup,
     traditional_and_essentials,
@@ -166,7 +176,7 @@ export const skin: ICategoryL1 = {
   label: 'Skin',
   category: 'skin',
   path: '/products/skin',
-  component: () => 'Skin', // TODO - add actual component
+  component: Skin, // TODO - add actual component
   subCategories: [moisturizers, cleansing_and_exfoliation, natures_blend, face_mask],
 };
 
@@ -176,6 +186,15 @@ export const collections: ICategoryL1 = {
   label: 'Collections',
   category: 'collections',
   path: '/products/collections',
-  component: () => 'Collections', // TODO - add actual component
+  component: Collections, // TODO - add actual component
   subCategories: [bath_and_body, sugar_pop, hair_care, gifting],
+};
+
+export const about: ICategoryL1 = {
+  id: 7,
+  level: 1,
+  label: 'About',
+  category: 'about',
+  component: About,
+  subCategories: [company, careers, press, trust_center],
 };
