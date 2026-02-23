@@ -1,0 +1,38 @@
+import { API_ROUTES_AND_METHODS, BACKEND_URL } from '@/Constants';
+import { getUserToken } from '@/Utils';
+import axios, { AxiosError, type AxiosInstance, type AxiosRequestConfig } from 'axios';
+
+export class ApiRequest {
+  private baseUrl = `${BACKEND_URL}/api`;
+  private instance: AxiosInstance;
+
+  constructor(url?: string) {
+    const baseURL = url ?? this.baseUrl;
+    this.instance = axios.create({ baseURL });
+  }
+
+  protected routes = API_ROUTES_AND_METHODS;
+  protected request = async (
+    config: AxiosRequestConfig,
+    options?: { isPrivateRoute?: boolean },
+  ) => {
+    try {
+      if (options?.isPrivateRoute) {
+        const token = getUserToken();
+        if (token) {
+          config.headers = { ...config.headers, Authorization: token };
+        }
+      }
+      const { data } = await this.instance.request(config);
+      return data;
+    } catch (error) {
+      let message = 'Something went wrong!';
+      if (error instanceof AxiosError) {
+        message = error.response?.data?.message || 'API Error occurred';
+      } else if (error instanceof Error) {
+        message = error.message;
+      }
+      throw new Error(message);
+    }
+  };
+}
