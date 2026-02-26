@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import type { TClassName } from '@/Types';
+import type { TClassName } from '@/Types/Common.type';
 
 interface QuillContentProps extends TClassName {
   content: string;

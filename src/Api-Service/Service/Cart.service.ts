@@ -3,9 +3,9 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tansta
 import { CartApi } from '../Api/Cart.api';
 import { InvalidateQueries } from '../InvalidateQueries';
 import { QUERY_KEYS } from '@/Constants';
-import { toaster } from '@/Utils';
+import { toaster } from '@/Utils/Common.util';
 import { Hook } from '@/Hooks';
-import { Store } from '@/Stores';
+import { UserStore } from '@/Stores';
 
 export class CartService extends CartApi {
   public AddProductToCart = () => {
@@ -62,7 +62,7 @@ export class CartService extends CartApi {
 
   public GetCart = () => {
     const { queryParams } = Hook.QueryParams();
-    const { authenticated } = Store.User.getState();
+    const { authenticated } = UserStore.getState();
     return useQuery({
       queryKey: ['get_user_cart', queryParams.login, authenticated],
       queryFn: this.get_cart,

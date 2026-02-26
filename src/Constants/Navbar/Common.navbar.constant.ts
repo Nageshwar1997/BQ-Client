@@ -8,7 +8,7 @@ import {
   TruckIcon,
   UserCircleIcon,
 } from '@/Icons';
-import type { ICategoryL1 } from '@/Types';
+import type { ICategoryL1 } from '@/Types/Common.type';
 import { bath_and_body, gifting, hair_care, sugar_pop } from './Collection.navbar.constant';
 import { blogs, new_new, offers, sugar_play } from './ForYou.navbar.constant';
 import {

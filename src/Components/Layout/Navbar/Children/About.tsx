@@ -1,4 +1,4 @@
-import { careers, company, press, TESTIMONIALS, trust_center } from '@/Constants';
+import { careers, company, press, TESTIMONIALS, trust_center } from '@/Constants/Navbar';
 import { Link } from 'react-router-dom';
 import { CategoryLabel, SubCategories } from './Grand-Children';
 import { Button, GradientText } from '@/Components/Ui';

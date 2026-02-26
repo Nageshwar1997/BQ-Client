@@ -1,6 +1,6 @@
 import { Hook } from '@/Hooks';
 import { InfoIcon } from '@/Icons';
-import type { IConfirmModal } from '@/Types';
+import type { IConfirmModal } from '@/Types/Common.type';
 import { ModalWrapper } from './ModalWrapper';
 import { Button, GradientText } from '@/Components/Ui';
 

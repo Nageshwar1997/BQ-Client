@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Hook } from '@/Hooks';
 import { DEFAULT_FILTER, NAVBAR_CATEGORIES_DATA } from '@/Constants';
-import type { TDropdownOption } from '@/Types';
+import type { TDropdownOption } from '@/Types/Common.type';
 import { Dropdown, DropdownOptions } from '../Dropdown';
 import { DoubleLayerIcon, SingleLayerIcon, TripleLayerIcon } from '@/Icons';
 

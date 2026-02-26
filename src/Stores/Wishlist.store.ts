@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { TWishlistStore } from '@/Types';
+import type { TWishlistStore } from '@/Types/Store.type';
 
 export const useWishlistStore = create<TWishlistStore>((set) => ({
   wishlist: null,

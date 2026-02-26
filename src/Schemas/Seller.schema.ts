@@ -1,4 +1,4 @@
-import { zodEnum, zodSingleFileOrUrl, zodString } from '@/Utils';
+import { zodEnum, zodSingleFileOrUrl, zodString } from '@/Utils/Zod.util';
 import { contactUsSchema } from './Contact-us.schema';
 import { ALLOWED_BUSINESSES, MB, regexes } from '@/Constants';
 import { addressSchema } from './Address.schema';

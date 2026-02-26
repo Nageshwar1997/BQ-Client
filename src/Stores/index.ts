@@ -4,12 +4,8 @@ import { useThemeStore } from './Theme.store';
 import { useUserStore } from './User.store';
 import { useWishlistStore } from './Wishlist.store';
 
-class StoreClass {
-  public Theme = useThemeStore;
-  public Action = useActionStore;
-  public User = useUserStore;
-  public Wishlist = useWishlistStore;
-  public Cart = useCartStore;
-}
-
-export const Store = new StoreClass();
+export const ThemeStore = useThemeStore;
+export const ActionStore = useActionStore;
+export const UserStore = useUserStore;
+export const WishlistStore = useWishlistStore;
+export const CartStore = useCartStore;

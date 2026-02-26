@@ -1,6 +1,6 @@
 import { LinearGradient } from '@/Components/Ui';
 import { Hook } from '@/Hooks';
-import type { IScrollableGradientContainer, TGradientPos } from '@/Types';
+import type { IScrollableGradientContainer, TGradientPos } from '@/Types/Common.type';
 
 export const ScrollableGradientContainer = ({
   className = '',

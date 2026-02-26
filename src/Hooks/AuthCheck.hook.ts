@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { Hook } from '.';
-import { Store } from '@/Stores';
+import { CartStore, UserStore, WishlistStore } from '@/Stores';
 import { Service } from '@/Api-Service';
-import { getUserToken } from '@/Utils';
+import { getUserToken } from '@/Utils/Storage.util';
 
 export const useAuthCheck = (readyToCall?: boolean) => {
-  const { setUser } = Store.User();
+  const { setUser } = UserStore();
   const { mutateAsync: logout } = Service.Auth.Logout();
-  const { setCart } = Store.Cart();
-  const { setWishlist } = Store.Wishlist();
+  const { setCart } = CartStore();
+  const { setWishlist } = WishlistStore();
   const { cart: cartData } = Hook.Cart();
   const { wishlist: wishlistData } = Hook.Wishlist();
 

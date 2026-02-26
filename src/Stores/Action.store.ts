@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { TAuthAction } from '@/Types';
+import type { TAuthAction } from '@/Types/Common.type';
 
 export const useActionStore = create<TAuthAction>((set, get) => ({
   action: null,

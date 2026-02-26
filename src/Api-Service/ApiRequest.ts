@@ -1,5 +1,5 @@
 import { API_ROUTES_AND_METHODS, BACKEND_URL } from '@/Constants';
-import { getUserToken } from '@/Utils';
+import { getUserToken } from '@/Utils/Storage.util';
 import axios, { AxiosError, type AxiosInstance, type AxiosRequestConfig } from 'axios';
 
 export class ApiRequest {

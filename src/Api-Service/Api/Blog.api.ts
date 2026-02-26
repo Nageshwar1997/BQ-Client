@@ -1,4 +1,4 @@
-import type { TPagination } from '@/Types';
+import type { TPagination } from '@/Types/Common.type';
 import { ApiRequest } from '../ApiRequest';
 
 export class BlogApi extends ApiRequest {

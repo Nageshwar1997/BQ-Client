@@ -1,5 +1,5 @@
 import { Hook } from '@/Hooks';
-import type { IAddress } from '@/Types';
+import type { IAddress } from '@/Types/Api.type';
 import { useEffect } from 'react';
 import { ModalWrapper } from './ModalWrapper';
 import { AddressForm } from '../Forms';

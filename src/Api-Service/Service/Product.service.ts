@@ -1,6 +1,6 @@
 import { keepPreviousData, useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { ProductApi } from '../Api/Product.api';
-import type { IApiProductQueryProps } from '@/Types';
+import type { IApiProductQueryProps } from '@/Types/Common.type';
 import { QUERY_KEYS } from '@/Constants';
 
 export class ProductService extends ProductApi {

@@ -1,5 +1,5 @@
 import { ImageUpIcon, UserCircleIcon } from '@/Icons';
-import type { IBaseInput, IFileInput } from '@/Types';
+import type { IBaseInput, IFileInput } from '@/Types/Common.type';
 import { FileInput, InputError } from './Input';
 
 interface ProfilePicInputProps extends Pick<IBaseInput, 'register' | 'error' | 'className'> {

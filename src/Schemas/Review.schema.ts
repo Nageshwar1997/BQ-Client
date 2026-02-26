@@ -1,4 +1,4 @@
-import { zodMultipleFileOrUrl, zodNumber, zodString } from '@/Utils';
+import { zodMultipleFileOrUrl, zodNumber, zodString } from '@/Utils/Zod.util';
 import { object } from 'zod';
 
 export const addReviewSchema = object({

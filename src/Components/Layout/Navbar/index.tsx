@@ -1,11 +1,12 @@
-import { NAVBAR_CATEGORIES_DATA, NAVBAR_TOP_LAYER_DATA } from '@/Constants';
+import { NAVBAR_CATEGORIES_DATA } from '@/Constants';
 import { Hook } from '@/Hooks';
 import { ChevronDownIcon, CloseIcon, MenuIcon } from '@/Icons';
-import { Store } from '@/Stores';
+import { UserStore } from '@/Stores';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { HoveredComponent, UserMenuIcons } from './Children';
 import { Button, LinearGradient } from '@/Components/Ui';
+import { NAVBAR_TOP_LAYER_DATA } from '@/Constants/Navbar';
 
 const TopLayer = () => {
   const requireAuth = Hook.RequireAuth();
@@ -42,7 +43,7 @@ export const Navbar = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navbarRef = useRef<HTMLDivElement>(null);
 
-  const { authenticated } = Store.User();
+  const { authenticated } = UserStore();
 
   const { paths, pathname, navigate } = Hook.PathParams();
 

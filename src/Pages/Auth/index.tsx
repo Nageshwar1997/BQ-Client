@@ -1,4 +1,5 @@
-import { LoadingScreen, ScrollableGradientContainer, Theme } from '@/Components';
+import { LoadingScreen, ScrollableGradientContainer } from '@/Components/Layout';
+import { Theme } from '@/Components/Ui';
 import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 

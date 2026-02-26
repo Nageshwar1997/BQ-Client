@@ -1,4 +1,4 @@
-import type { TPagination, TParams } from '@/Types';
+import type { TPagination, TParams } from '@/Types/Common.type';
 import { ApiRequest } from '../ApiRequest';
 
 export class OrderApi extends ApiRequest {

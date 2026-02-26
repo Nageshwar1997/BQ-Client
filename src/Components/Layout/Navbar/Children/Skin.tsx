@@ -1,4 +1,4 @@
-import { skin } from '@/Constants';
+import { skin } from '@/Constants/Navbar';
 import { CategoryLabel, Feedback, SubCategories } from './Grand-Children';
 
 export const Skin = () => {

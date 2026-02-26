@@ -3,11 +3,11 @@ import { GradientText, LinearGradient } from '@/Components/Ui';
 import { SIDEBAR_DATA } from '@/Constants';
 import { Hook } from '@/Hooks';
 import { ChevronDownIcon, UserCircleIcon } from '@/Icons';
-import { Store } from '@/Stores';
+import { UserStore } from '@/Stores';
 
 export const Sidebar = () => {
   const { navigate } = Hook.PathParams();
-  const { user } = Store.User();
+  const { user } = UserStore();
   const { mutateAsync: logout } = Service.Auth.Logout();
   const { showV_Gradient, containerRef: vContainerRef } = Hook.Scrollable('vertical');
   const { showH_Gradient, containerRef: hContainerRef } = Hook.Scrollable('horizontal');

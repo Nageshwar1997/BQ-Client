@@ -1,5 +1,5 @@
+import type { TTheme, TThemeStore } from '@/Types/Store.type';
 import { create } from 'zustand';
-import type { TTheme, TThemeStore } from '@/Types';
 
 export const useThemeStore = create<TThemeStore>((set) => {
   const currentTheme = localStorage.getItem('theme') || '';

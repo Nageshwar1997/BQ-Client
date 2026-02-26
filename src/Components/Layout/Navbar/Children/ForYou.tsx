@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Fragment, useState } from 'react';
 import { Hook } from '@/Hooks';
-import { for_you, SOCIAL_COMMUNITY } from '@/Constants';
+import { for_you, SOCIAL_COMMUNITY } from '@/Constants/Navbar';
 import { CategoryLabel } from './Grand-Children';
 import { VideoPlayer } from '../../Media';
 import { PlayIcon } from '@/Icons';

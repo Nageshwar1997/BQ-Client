@@ -1,6 +1,6 @@
 import { cloneElement, isValidElement, useEffect, useRef, useState } from 'react';
 import { Hook } from '@/Hooks';
-import type { IDropdownOptions, TDropdown } from '@/Types';
+import type { IDropdownOptions, TDropdown } from '@/Types/Common.type';
 import { ChevronDownIcon } from '@/Icons';
 
 export const DropdownOptions = ({

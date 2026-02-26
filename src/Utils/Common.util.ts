@@ -1,8 +1,7 @@
-import CryptoJS from 'crypto-js';
-import { VITE_ENCRYPTION_SECRET_KEY } from '@/Envs';
 import toast from 'react-hot-toast';
-import { DEFAULT_POSTER, DUMMY_FEEDBACKS, HIGHLIGHTED_CATEGORIES } from '@/Constants';
-import type { IButton } from '@/Types';
+import { DEFAULT_POSTER, DUMMY_FEEDBACKS } from '@/Constants';
+import { HIGHLIGHTED_CATEGORIES } from '@/Constants/Navbar';
+import type { IButton } from '@/Types/Common.type';
 
 export const toaster = (type: 'success' | 'error' = 'success', error: string | Error) => {
   const message = error instanceof Error ? error.message : String(error);
@@ -10,81 +9,6 @@ export const toaster = (type: 'success' | 'error' = 'success', error: string | E
     toast.error(message);
   } else {
     toast.success(message);
-  }
-};
-
-export const encryptData = (data: object | string) => {
-  const stringData = typeof data === 'string' ? data : JSON.stringify(data);
-  const encrypted = CryptoJS.AES.encrypt(stringData, VITE_ENCRYPTION_SECRET_KEY);
-  return encrypted.toString();
-};
-
-export const decryptData = (encryptedData: string | null): object | string | null => {
-  if (!encryptedData) return null;
-
-  const bytes = CryptoJS.AES.decrypt(encryptedData, VITE_ENCRYPTION_SECRET_KEY);
-  const decrypted = bytes.toString(CryptoJS.enc.Utf8);
-
-  if (decrypted) {
-    try {
-      return JSON.parse(decrypted);
-    } catch {
-      return decrypted;
-    }
-  }
-
-  return null;
-};
-
-const TOKEN_KEY = 'user_token';
-
-const getLocalToken = () => localStorage.getItem(TOKEN_KEY);
-const getSessionToken = () => sessionStorage.getItem(TOKEN_KEY);
-
-const removeLocalToken = () => localStorage.removeItem(TOKEN_KEY);
-const removeSessionToken = () => sessionStorage.removeItem(TOKEN_KEY);
-
-export const saveLocalToken = (token: string) => {
-  const encryptedToken = encryptData(token);
-  localStorage.setItem(TOKEN_KEY, encryptedToken);
-  removeSessionToken();
-};
-export const saveSessionToken = (token: string) => {
-  const encryptedToken = encryptData(token);
-  sessionStorage.setItem(TOKEN_KEY, encryptedToken);
-  removeLocalToken();
-};
-
-const getStorageToken = () => {
-  let token: string | null = null;
-  const LToken = getLocalToken();
-  const SToken = getSessionToken();
-  if (LToken) {
-    token = LToken;
-  } else if (SToken) {
-    token = SToken;
-  }
-
-  return token;
-};
-
-export const removeStorageToken = (): void => {
-  removeLocalToken();
-  removeSessionToken();
-};
-
-export const getUserToken = (): string | null => {
-  try {
-    const raw_token = getStorageToken();
-    if (!raw_token) return null;
-
-    const token = decryptData(raw_token) as string | null;
-    if (!token) return null;
-
-    return token;
-  } catch (err) {
-    console.error('Error fetching token:', err);
-    return null;
   }
 };
 

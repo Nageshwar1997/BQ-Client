@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import type { ICategoryL3, TCategoryBaseL, TClassName, TForwardIdx } from '@/Types';
+import type { ICategoryL3, TCategoryBaseL, TClassName, TForwardIdx } from '@/Types/Common.type';
 import {
   BuildingIcon,
   HeartIcon,
@@ -9,10 +9,12 @@ import {
   ShoppingBag,
   UserCircleIcon,
 } from '@/Icons';
-import { getTodaysFeedback, isHighlightedCategory } from '@/Utils';
-import { HIGHLIGHTED_CATEGORIES, NAVBAR_CATEGORIES_DATA } from '@/Constants';
+import { getTodaysFeedback, isHighlightedCategory } from '@/Utils/Common.util';
+import { NAVBAR_CATEGORIES_DATA } from '@/Constants';
+import { HIGHLIGHTED_CATEGORIES } from '@/Constants/Navbar';
 import { GradientText, Theme } from '@/Components/Ui';
 import { Hook } from '@/Hooks';
+import { SearchModal, UserPopupModal } from '@/Components/Layout/Modals';
 
 export const CategoryLabel = ({
   label,

@@ -27,7 +27,7 @@ import {
   StickFoundationIcon,
   WaterResistantFoundationIcon,
 } from '@/Icons';
-import type { ICategoryL2 } from '@/Types';
+import type { ICategoryL2 } from '@/Types/Common.type';
 
 const basePath = '/products/face';
 

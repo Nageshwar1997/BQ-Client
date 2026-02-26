@@ -1,4 +1,4 @@
-import type { IRadio } from '@/Types';
+import type { IRadio } from '@/Types/Common.type';
 
 export const Radio = ({ value, onChange, options, className = '' }: IRadio) => {
   const index = options.findIndex((opt) => opt.value === value);

@@ -1,6 +1,6 @@
 import { nameValidation } from './Common.schema';
 import { registerSchema } from './Auth.schema';
-import { zodString } from '@/Utils';
+import { zodString } from '@/Utils/Zod.util';
 
 export const contactUsSchema = registerSchema.pick({ email: true, phoneNumber: true }).extend({
   name: nameValidation,

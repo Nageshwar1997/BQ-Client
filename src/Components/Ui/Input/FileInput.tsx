@@ -1,8 +1,8 @@
-import type { IFileInput } from '@/Types';
 import { useState, type ChangeEvent, type ReactNode } from 'react';
 import { InputError, InputIcon, InputLabel } from './Children';
 import { ALLOWED_IMAGE_FORMATS } from '@/Constants';
 import { MediaCarousel, MediaModal } from '@/Components/Layout';
+import type { IFileInput } from '@/Types/Common.type';
 
 const InputWrapper = ({
   children,

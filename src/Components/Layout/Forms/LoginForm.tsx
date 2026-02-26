@@ -3,19 +3,17 @@ import {
   AuthBottomInstructions,
   BorderGradient,
   Button,
-  Checkbox,
   GradientText,
-  Input,
-  Radio,
   SocialAuth,
 } from '@/Components/Ui';
+import { Checkbox, Input, Radio } from '@/Components/Ui/Input';
 import { LOGIN_INPUT_MAP_DATA } from '@/Constants';
 import { Hook } from '@/Hooks';
 import { EyeIcon, EyeOffIcon } from '@/Icons';
 import { loginSchema } from '@/Schemas';
-import { Store } from '@/Stores';
-import type { TLogin } from '@/Types';
-import { saveLocalToken, saveSessionToken } from '@/Utils';
+import { UserStore } from '@/Stores';
+import type { TLogin } from '@/Types/Schema.type';
+import { saveLocalToken, saveSessionToken } from '@/Utils/Storage.util';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -23,7 +21,7 @@ import { Controller, useForm } from 'react-hook-form';
 export const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { removeParam, queryParams } = Hook.QueryParams();
-  const { setUser } = Store.User();
+  const { setUser } = UserStore();
   const { mutateAsync, isPending } = Service.Auth.Login();
 
   const {

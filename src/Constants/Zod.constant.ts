@@ -1,4 +1,4 @@
-import type { IZodStringConfigs } from '@/Types';
+import type { IZodStringConfigs } from '@/Types/Zod.type';
 import { regexes } from './Common.constant';
 
 export const passwordValidationOptions: IZodStringConfigs = {

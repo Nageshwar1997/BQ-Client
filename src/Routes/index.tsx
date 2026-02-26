@@ -1,4 +1,5 @@
-import { LoadingScreen, Teddy } from '@/Components';
+import { LoadingScreen, Teddy } from '@/Components/Layout';
+import Main from '@/Pages/Main';
 import { lazy, Suspense } from 'react';
 import { createBrowserRouter, Outlet } from 'react-router-dom';
 
@@ -14,7 +15,7 @@ export const Routes = createBrowserRouter([
     path: '/',
     element: (
       <Suspense fallback={<LoadingScreen />}>
-        <Teddy />
+        <Main />
       </Suspense>
     ),
     errorElement: <div>Error Page</div>,

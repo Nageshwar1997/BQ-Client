@@ -2,19 +2,6 @@ export { BorderGradient } from './BorderGradient';
 export { Button } from './Button';
 export { GradientText } from './GradientText';
 export { Hr } from './Hr';
-export {
-  Checkbox,
-  FileInput,
-  Input,
-  Radio,
-  Select,
-  SelectRating,
-  Textarea,
-  InputError,
-  InputIcon,
-  InputLabel,
-  Range,
-} from './Input';
 export { LinearGradient } from './LinearGradient';
 export { ProfilePicInput } from './ProfilePicInput';
 export { QuillContent } from './QuillContent';

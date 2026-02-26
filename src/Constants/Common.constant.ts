@@ -10,7 +10,7 @@ import {
   TruckIcon,
   UserCircleIcon,
 } from '@/Icons';
-import type { ICategoryL1, TRegexes } from '@/Types';
+import type { ICategoryL1, TRegexes } from '@/Types/Common.type';
 
 export const BACKEND_URL =
   VITE_IS_DEV === 'true' ? VITE_LOCALHOST_BACKEND_URL : VITE_PRODUCTION_BACKEND_URL;

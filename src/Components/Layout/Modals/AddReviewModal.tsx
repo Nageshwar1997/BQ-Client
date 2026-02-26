@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
-import type { TMediaOption, TReview } from '@/Types';
+import type { TMediaOption } from '@/Types/Common.type';
+import type { TReview } from '@/Types/Schema.type';
 import { Service } from '@/Api-Service';
 import { addReviewSchema } from '@/Schemas';
 import { ALLOWED_IMAGE_FORMATS, ALLOWED_VIDEO_FORMATS } from '@/Constants';
 import { ModalWrapper } from './ModalWrapper';
-import { Button, FileInput, Input, SelectRating, Textarea } from '@/Components/Ui';
+import { Button } from '@/Components/Ui';
+import { FileInput, Input, SelectRating, Textarea } from '@/Components/Ui/Input';
 import { UploadCloudIcon } from '@/Icons';
 
 const reviewInitialValues = {
@@ -35,22 +37,23 @@ export const AddReviewModal = ({ onClose, isOpen }: TAddReviewModal) => {
   });
 
   const handleAddReview = (data: TReview) => {
+    console.log("🚀 ~ handleAddReview ~ data:", data)
     const formData = new FormData();
     formData.append('title', data.title);
     formData.append('rating', data.rating.toString());
     formData.append('comment', data.comment);
     //   TODO: check file type
-    data.media?.forEach((file) => {
-      if (file instanceof File) {
-        if (ALLOWED_IMAGE_FORMATS.includes(file.type)) {
-          formData.append('images', file);
-        } else if (ALLOWED_VIDEO_FORMATS.includes(file.type)) {
-          formData.append('videos', file);
-        }
-      }
-    });
+    // data.media?.forEach((file) => {
+    //   if (file instanceof File) {
+    //     if (ALLOWED_IMAGE_FORMATS.includes(file.type)) {
+    //       formData.append('images', file);
+    //     } else if (ALLOWED_VIDEO_FORMATS.includes(file.type)) {
+    //       formData.append('videos', file);
+    //     }
+    //   }
+    // });
 
-    addReviewQuery.mutateAsync(formData, { onSuccess: onClose });
+    // addReviewQuery.mutateAsync(formData, { onSuccess: onClose });
   };
   return (
     <ModalWrapper onClose={onClose} isOpen={isOpen} header={{ title: 'Add Review' }}>

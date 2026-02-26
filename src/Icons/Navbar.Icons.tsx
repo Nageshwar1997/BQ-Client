@@ -1,5 +1,5 @@
 import { SVG24WH, SVG24WH_VB, SVG_F_C_RULE } from '@/Constants';
-import type { TIcon } from '@/Types';
+import type { TIcon } from '@/Types/Common.type';
 
 export const AboutUsIcon = (props: TIcon) => (
   <svg viewBox="0 0 472.612 472.612" {...SVG24WH} {...props}>

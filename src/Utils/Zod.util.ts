@@ -13,7 +13,7 @@ import type {
   IZodSingleFileConfigs,
   IZodStringConfigs,
   ZodNumberConfigs,
-} from '@/Types';
+} from '@/Types/Zod.type';
 import z, { type RefinementCtx } from 'zod';
 import { nullCheck } from './Common.util';
 
@@ -156,22 +156,19 @@ export const zodEnum = ({
   });
 };
 
-export const zodFileOrUrl = (props: IZodFileConfigs) => {
-  const {
-    fileOrUrl,
-    field,
-    index,
-    ctx,
-    label,
-    parentField,
-    parentLabel,
-    required = true,
-    maxImageFileSize = MAX_IMAGE_FILE_SIZE,
-    maxVideoFileSize = MAX_VIDEO_FILE_SIZE,
-  } = props;
-  let isVideo = false;
+export const zodFileOrUrl = ({
+  fileOrUrl,
+  field,
+  index,
+  ctx,
+  label,
+  parentField,
+  parentLabel,
+  required = true,
+  maxImageFileSize = MAX_IMAGE_FILE_SIZE,
+  maxVideoFileSize = MAX_VIDEO_FILE_SIZE,
+}: IZodFileConfigs) => {
   const path = nullCheck(index) ? index : undefined;
-
   const baseName = label ?? field;
   const parentName = parentLabel ?? parentField;
 
@@ -193,12 +190,13 @@ export const zodFileOrUrl = (props: IZodFileConfigs) => {
     return;
   }
 
-  if (typeof File !== 'undefined' && fileOrUrl instanceof File) {
+  if (fileOrUrl instanceof File) {
     // detect type
-    isVideo = ALLOWED_VIDEO_FORMATS.includes(fileOrUrl.type);
+    const isVideo = ALLOWED_VIDEO_FORMATS.includes(fileOrUrl.type);
 
     // type check
     const allowedTypes = isVideo ? ALLOWED_VIDEO_FORMATS : ALLOWED_IMAGE_FORMATS;
+
     if (!allowedTypes.includes(fileOrUrl.type)) {
       zodCustomIssue(
         ctx,
@@ -209,22 +207,18 @@ export const zodFileOrUrl = (props: IZodFileConfigs) => {
       );
     }
 
-    // size check
     const maxSize = isVideo ? maxVideoFileSize : maxImageFileSize;
     if (fileOrUrl.size > maxSize) {
-      const sizeInMB = (fileOrUrl.size / MB).toFixed(2);
       zodCustomIssue(
         ctx,
-        `${
-          isVideo ? 'Video' : 'Image'
-        } ${name} is too large (${sizeInMB} MB). Max allowed is ${maxSize / MB} MB.`,
+        `${isVideo ? 'Video' : 'Image'} ${name} is too large (${(fileOrUrl.size / MB).toFixed(
+          2,
+        )} MB). Max allowed is ${maxSize / MB} MB.`,
         path,
       );
     }
   } else if (typeof fileOrUrl === 'string' && !regexes.url.test(fileOrUrl)) {
     zodCustomIssue(ctx, `Media ${name} is not a valid URL`, path);
-  } else {
-    zodCustomIssue(ctx, `Item ${name} must be a File or a valid media URL`, path);
   }
 };
 
@@ -241,19 +235,19 @@ export const zodSingleFileOrUrl = ({
   const parentName = parentLabel ?? parentField;
 
   const name = parentName ? `${parentName}: ${baseName}` : baseName;
-  return z.unknown().superRefine((value, ctx) => {
-    let fileOrUrl = value;
 
-    if (typeof FileList !== 'undefined' && value instanceof FileList) {
-      if (value.length === 0) {
-        fileOrUrl = undefined;
-      } else if (value.length > 1) {
-        zodCustomIssue(ctx, `${name} allows only one file.`);
-        return;
-      } else {
-        fileOrUrl = value[0];
-      }
+  return z.array(z.union([z.instanceof(File), z.string()])).superRefine((filesOrUrls, ctx) => {
+    if (required && filesOrUrls.length === 0) {
+      zodCustomIssue(ctx, `${name} is required.`);
+      return;
     }
+
+    if (filesOrUrls.length > 1) {
+      zodCustomIssue(ctx, `${name} allows only one file.`);
+      return;
+    }
+    // validate that single item
+    const fileOrUrl = filesOrUrls[0];
 
     zodFileOrUrl({
       fileOrUrl,
@@ -284,26 +278,11 @@ export const zodMultipleFileOrUrl = ({
   const parentName = parentLabel ?? parentField;
   const name = parentName ? `${parentName}: ${baseName}` : baseName;
 
-  return z.unknown().superRefine((value, ctx) => {
-    let filesOrUrls: Array<File | string> = [];
-
-    if (typeof FileList !== 'undefined' && value instanceof FileList) {
-      filesOrUrls = Array.from(value);
-    } else if (Array.isArray(value)) {
-      filesOrUrls = value;
-    } else if (!value) {
-      filesOrUrls = [];
-    } else {
-      zodCustomIssue(ctx, `${name} must be files or URLs.`);
-      return;
-    }
-
+  return z.array(z.union([z.instanceof(File), z.string()])).superRefine((filesOrUrls, ctx) => {
     if (required && filesOrUrls.length === 0) {
       zodCustomIssue(ctx, `${name} is required.`);
       return;
     }
-
-    if (!required && filesOrUrls.length === 0) return;
 
     let imageCount = 0;
     let videoCount = 0;

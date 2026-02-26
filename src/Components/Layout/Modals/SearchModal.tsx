@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
-import type { IApiProductQueryProps, IModalWrapper, IProduct } from '@/Types';
+import type { IApiProductQueryProps, IModalWrapper } from '@/Types/Common.type';
+import type { IProduct } from '@/Types/Api.type';
 import { Hook } from '@/Hooks';
-import { debounce } from '@/Utils';
+import { debounce } from '@/Utils/Common.util';
 import { Service } from '@/Api-Service';
 import { ModalWrapper } from './ModalWrapper';
-import { Input } from '@/Components/Ui';
+import { Input } from '@/Components/Ui/Input';
 import { CloseIcon, SearchIcon } from '@/Icons';
 import { ApiStatus } from '@/Components/Common';
 import { SearchModalSkeleton } from '../Skeletons';

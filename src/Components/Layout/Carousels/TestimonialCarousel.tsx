@@ -1,4 +1,4 @@
-import type { TESTIMONIALS } from '@/Constants';
+import type { TESTIMONIALS } from '@/Constants/Navbar';
 import { LeftArrowIcon, RightArrowIcon, YellowStarIcon } from '@/Icons';
 import { useEffect, useState } from 'react';
 

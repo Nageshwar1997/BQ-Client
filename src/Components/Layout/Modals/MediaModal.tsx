@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import type { TClassName, TMediaOption } from '@/Types';
+import type { TClassName, TMediaOption } from '@/Types/Common.type';
 import { ModalWrapper } from './ModalWrapper';
 import { MediaCarouselWithParentMedia } from '../Carousels';
 

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import type { IGradientText } from '@/Types';
+import type { IGradientText } from '@/Types/Common.type';
 
 const Text = ({ text, type, className, children }: IGradientText) => (
   <span

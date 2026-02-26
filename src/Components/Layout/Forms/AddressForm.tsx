@@ -1,20 +1,23 @@
 import { useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import type { IAddress, TAddress, TClassName } from '@/Types';
-import { Store } from '@/Stores';
+import type { TClassName } from '@/Types/Common.type';
+import type { IAddress } from '@/Types/Api.type';
+import type { TAddress } from '@/Types/Schema.type';
+import { UserStore } from '@/Stores';
 import { Service } from '@/Api-Service';
 import { Hook } from '@/Hooks';
 import { ADD_ADDRESS_INPUT_MAP_DATA, ADDRESS_DEFAULT_VALUES } from '@/Constants';
 import { addressSchema } from '@/Schemas';
-import { deepEqual, toaster } from '@/Utils';
-import { Button, Checkbox, Hr, Input, Radio, Select } from '@/Components/Ui';
+import { deepEqual, toaster } from '@/Utils/Common.util';
+import { Button, Hr } from '@/Components/Ui';
+import { Checkbox, Input, Radio, Select } from '@/Components/Ui/Input';
 
 export const AddressForm = ({
   addresses,
   className = '',
 }: { addresses?: IAddress[] } & TClassName) => {
-  const { user, authenticated } = Store.User();
+  const { user, authenticated } = UserStore();
   const { mutateAsync: addAddress } = Service.Address.AddAddress();
   const { mutateAsync: updateAddress } = Service.Address.UpdateAddress();
   const { removeParam, queryParams } = Hook.QueryParams();

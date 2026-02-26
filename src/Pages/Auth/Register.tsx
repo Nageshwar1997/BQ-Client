@@ -3,23 +3,24 @@ import { type FieldErrors, useForm } from 'react-hook-form';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { emailData, PASSWORD_KEYS, REGISTER_INPUT_MAP_DATA } from '@/Constants';
-import type { IInput, TRegister } from '@/Types';
+import { EyeIcon, EyeOffIcon } from '@/Icons';
+import { Service } from '@/Api-Service';
+import { UserStore } from '@/Stores';
+import { registerSchema, sendOtpSchema } from '@/Schemas';
+import { getFileFromFileList } from '@/Utils/Common.util';
 import {
   AuthBottomInstructions,
   BorderGradient,
   Button,
-  Checkbox,
   GradientText,
-  Input,
   ProfilePicInput,
   Resend,
   SocialAuth,
-} from '@/Components';
-import { EyeIcon, EyeOffIcon } from '@/Icons';
-import { Service } from '@/Api-Service';
-import { Store } from '@/Stores';
-import { registerSchema, sendOtpSchema } from '@/Schemas';
-import { getFileFromFileList, saveLocalToken, saveSessionToken } from '@/Utils';
+} from '@/Components/Ui';
+import { Checkbox, Input } from '@/Components/Ui/Input';
+import type { TRegister } from '@/Types/Schema.type';
+import type { IInput } from '@/Types/Common.type';
+import { saveLocalToken, saveSessionToken } from '@/Utils/Storage.util';
 
 type TRegisterInput = {
   input: (typeof REGISTER_INPUT_MAP_DATA)[number];
@@ -89,7 +90,7 @@ const RegisterForm = ({
     Service.Auth.VerifyOtpAndRegister();
   const { mutateAsync: resendOtpAsync, isPending: isResendingOtp } = Service.Auth.ResendOtp();
 
-  const { setUser } = Store.User();
+  const { setUser } = UserStore();
 
   const {
     watch,

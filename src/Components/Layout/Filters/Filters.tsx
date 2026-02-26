@@ -3,7 +3,7 @@ import { Hook } from '@/Hooks';
 import { CheckedIcon, PercentIcon, RupeesIcon } from '@/Icons';
 import { CategoriesFilter } from './CategoriesFilter';
 import { Dropdown } from '../Dropdown';
-import { Checkbox, Input, Range } from '@/Components/Ui';
+import { Checkbox, Input, Range } from '@/Components/Ui/Input';
 
 interface FiltersProps {
   className?: string;

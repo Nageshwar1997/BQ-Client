@@ -1,5 +1,5 @@
 import { boolean, object } from 'zod';
-import { zodCustomIssue, zodEnum, zodSingleFileOrUrl, zodString } from '@/Utils';
+import { zodCustomIssue, zodEnum, zodSingleFileOrUrl, zodString } from '@/Utils/Zod.util';
 import {
   emailValidation,
   firstNameValidation,

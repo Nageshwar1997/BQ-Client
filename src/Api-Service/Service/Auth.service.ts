@@ -1,8 +1,8 @@
 import { QUERY_KEYS } from '@/Constants';
 import { useMutation } from '@tanstack/react-query';
 import { AuthApi } from '../Api/Auth.api';
-import { toaster } from '@/Utils';
-import { Store } from '@/Stores';
+import { toaster } from '@/Utils/Common.util';
+import { UserStore } from '@/Stores';
 
 export class AuthService extends AuthApi {
   public Login = () => {
@@ -38,7 +38,7 @@ export class AuthService extends AuthApi {
     });
   };
   public Logout = () => {
-    const { user } = Store.User();
+    const { user } = UserStore();
     return useMutation({
       mutationKey: QUERY_KEYS.auth.logout,
       mutationFn: () => this.logout(user?._id),

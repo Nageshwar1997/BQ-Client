@@ -1,5 +1,5 @@
 import { InfoIcon } from '@/Icons';
-import type { TClassName, TInputIcon } from '@/Types';
+import type { TClassName, TInputIcon } from '@/Types/Common.type';
 import type { LabelHTMLAttributes } from 'react';
 
 export const InputError = ({ error, className = '' }: { error?: string } & TClassName) => {

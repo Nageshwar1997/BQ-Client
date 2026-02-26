@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { io, Socket } from 'socket.io-client';
-import type { IChatMessage } from '@/Types';
-import { Store } from '@/Stores';
+import type { IChatMessage } from '@/Types/Api.type';
+import { UserStore } from '@/Stores';
 import { BACKEND_URL } from '@/Constants';
 
 export const useSocket = (context: IChatMessage['context'] | null) => {
-  const { user } = Store.User();
+  const { user } = UserStore();
   const [socket, setSocket] = useState<Socket | null>(null);
   const [connected, setConnected] = useState(false);
   const [userId, setUserId] = useState(() => sessionStorage.getItem('chat_userId') || uuidv4());

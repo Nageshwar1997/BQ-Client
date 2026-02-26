@@ -1,10 +1,10 @@
-import { Store } from '@/Stores';
+import { ActionStore, UserStore } from '@/Stores';
 import { Hook } from '.';
 
 export const useRequireAuth = () => {
-  const { authenticated } = Store.User();
+  const { authenticated } = UserStore();
   const { setParams } = Hook.QueryParams();
-  const { setAction } = Store.Action();
+  const { setAction } = ActionStore();
 
   const requireAuth = (action: () => void) => {
     if (!authenticated) {

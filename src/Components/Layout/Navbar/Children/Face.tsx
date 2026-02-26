@@ -8,7 +8,7 @@ import {
   primers_and_removers,
   setting_and_finishing,
   traditional_and_essentials,
-} from '@/Constants';
+} from '@/Constants/Navbar';
 import { CategoryLabel, SubCategories } from './Grand-Children';
 
 const categories = [

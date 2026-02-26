@@ -1,6 +1,6 @@
 import { Hook } from '@/Hooks';
 import { ContainerIcon, InfoIcon } from '@/Icons';
-import type { IApiStatus } from '@/Types';
+import type { IApiStatus } from '@/Types/Common.type';
 import { useEffect } from 'react';
 import { GradientText, Hr } from '../Ui';
 import { LoadingRings } from '../Layout';

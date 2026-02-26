@@ -1,4 +1,4 @@
-import type { TClassName } from '@/Types';
+import type { TClassName } from '@/Types/Common.type';
 import { Skeleton } from './Skeleton';
 import { BorderGradient, Hr } from '@/Components/Ui';
 import { StarFillIcon } from '@/Icons';

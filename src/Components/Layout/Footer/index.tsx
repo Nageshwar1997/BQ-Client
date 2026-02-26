@@ -1,8 +1,8 @@
 import { GradientText, Hr } from '@/Components/Ui';
 import { FOOTER_AWARDS, FOOTER_CATEGORIES, SOCIAL_MEDIA_LINKS } from '@/Constants';
 import { Hook } from '@/Hooks';
-import { Store } from '@/Stores';
-import type { IFooterOptionList } from '@/Types';
+import { ThemeStore } from '@/Stores';
+import type { IFooterOptionList } from '@/Types/Common.type';
 import { Link } from 'react-router-dom';
 import { Fragment } from 'react/jsx-runtime';
 
@@ -41,7 +41,7 @@ const FooterOptionList = ({ isFirst = false, title, options }: IFooterOptionList
 };
 
 export const Footer = () => {
-  const { theme } = Store.Theme();
+  const { theme } = ThemeStore();
   return (
     <div className="w-full">
       <div className="border-y-primary/30 w-full space-y-6 border-y py-6 text-center md:px-4 lg:px-10 lg:py-10 xl:px-20">

@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react';
-import type { TClassName } from '@/Types';
+import type { TClassName } from '@/Types/Common.type';
 
 export const BorderGradient = ({
   children,

@@ -4,7 +4,7 @@ import type {
   TAddressInput,
   TLoginInput,
   TRegisterInput,
-} from '@/Types';
+} from '@/Types/Common.type';
 import { STATES_AND_UNION_TERRITORIES } from './Common.constant';
 
 export const PASSWORD_KEYS = ['password', 'confirmPassword'];

@@ -1,4 +1,4 @@
-import { lips } from '@/Constants';
+import { lips } from '@/Constants/Navbar';
 import { CategoryLabel, SubCategories } from './Grand-Children';
 
 export const Lips = () => {

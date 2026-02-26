@@ -1,7 +1,7 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { OrderApi } from '../Api/Order.api';
 import { QUERY_KEYS } from '@/Constants';
-import type { TPagination, TParams } from '@/Types';
+import type { TPagination, TParams } from '@/Types/Common.type';
 import { Hook } from '@/Hooks';
 import { InvalidateQueries } from '../InvalidateQueries';
 

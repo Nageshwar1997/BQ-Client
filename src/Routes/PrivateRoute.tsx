@@ -1,12 +1,12 @@
-import { LoadingScreen } from '@/Components';
-import { Hook } from '@/Hooks';
-import { Store } from '@/Stores';
 import { type JSX } from 'react';
+import { LoadingScreen } from '@/Components/Layout';
+import { Hook } from '@/Hooks';
+import { UserStore } from '@/Stores';
 import { Navigate, useLocation } from 'react-router-dom';
 
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
   const { isLoading } = Hook.AuthCheck();
-  const { authenticated } = Store.User();
+  const { authenticated } = UserStore();
   const location = useLocation();
 
   if (isLoading) return <LoadingScreen />;

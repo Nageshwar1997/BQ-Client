@@ -4,7 +4,7 @@ import {
   passwordValidationOptions,
   phoneValidationOptions,
 } from '@/Constants';
-import { zodString } from '@/Utils';
+import { zodString } from '@/Utils/Zod.util';
 
 export const nameValidation = zodString(nameValidationOptions);
 

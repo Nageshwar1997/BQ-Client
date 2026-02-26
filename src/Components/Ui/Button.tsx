@@ -1,6 +1,6 @@
 import type { MouseEvent } from 'react';
-import type { IButton } from '@/Types';
-import { getButtonCss } from '@/Utils';
+import type { IButton } from '@/Types/Common.type';
+import { getButtonCss } from '@/Utils/Common.util';
 
 export const Button = ({
   pattern,

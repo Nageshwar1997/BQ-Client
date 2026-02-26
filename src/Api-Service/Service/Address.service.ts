@@ -2,7 +2,7 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tansta
 import { AddressApi } from '../Api/Address.api';
 import { InvalidateQueries } from '../InvalidateQueries';
 import { QUERY_KEYS } from '@/Constants';
-import { toaster } from '@/Utils';
+import { toaster } from '@/Utils/Common.util';
 
 export class AddressService extends AddressApi {
   public GetAddresses = () => {

@@ -1,5 +1,5 @@
 import { boolean } from 'zod';
-import { zodEnum, zodString } from '@/Utils';
+import { zodEnum, zodString } from '@/Utils/Zod.util';
 import { registerSchema } from './Auth.schema';
 import {
   ADDRESS_TYPES,

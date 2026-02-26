@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Hook } from '@/Hooks';
-import type { ISelect } from '@/Types';
+import type { ISelect } from '@/Types/Common.type';
 import { CheckedIcon, ChevronDownIcon } from '@/Icons';
 import { InputError, InputIcon, InputLabel } from './Children';
 

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import type { TClassName, TGradientPos } from '@/Types';
+import type { TClassName, TGradientPos } from '@/Types/Common.type';
 
 export const LinearGradient = ({
   className = '',

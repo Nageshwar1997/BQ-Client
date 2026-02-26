@@ -1,13 +1,14 @@
 import { Service } from '@/Api-Service';
 import { Hook } from '@/Hooks';
 import { changePasswordSchema, updatePasswordSchema } from '@/Schemas';
-import { Store } from '@/Stores';
-import type { TChangePassword, TUpdatePassword } from '@/Types';
+import { UserStore } from '@/Stores';
+import type { TChangePassword, TUpdatePassword } from '@/Types/Schema.type';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm, type FieldErrors } from 'react-hook-form';
 import { ConfirmModal } from './ConfirmModal';
-import { Button, GradientText, Hr, Input } from '@/Components/Ui';
+import { Button, GradientText, Hr } from '@/Components/Ui';
+import { Input } from '@/Components/Ui/Input';
 import { changePasswordFields, updatePasswordFields } from '@/Constants';
 import { EyeIcon, EyeOffIcon } from '@/Icons';
 
@@ -15,7 +16,7 @@ const baseDefaultValues = { newPassword: '', confirmPassword: '' };
 
 export const PasswordConfirmationModal = () => {
   const { queryParams, removeParam } = Hook.QueryParams();
-  const { setUser } = Store.User();
+  const { setUser } = UserStore();
 
   const { mutateAsync: resetPasswordSendLinkAsync, isPending: isResetPasswordSendLinkPending } =
     Service.User.ResetPasswordSendLink();

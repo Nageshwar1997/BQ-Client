@@ -1,5 +1,5 @@
 import { ChatIcon, PlayIcon } from '@/Icons';
-import type { ICategoryL2 } from '@/Types';
+import type { ICategoryL2 } from '@/Types/Common.type';
 
 export const new_new: ICategoryL2 = {
   id: 1,
