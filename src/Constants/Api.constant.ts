@@ -38,7 +38,7 @@ export const API_ROUTES_AND_METHODS = {
     wishlist: {
       add: { method: 'POST', url: '/users/wishlist/add' },
       remove: { method: 'DELETE', url: '/users/wishlist/remove' },
-      get: { method: 'GET', url: '/users/wishlist/get' },
+      get: { method: 'GET', url: '/users/wishlist' },
     },
   },
   products: {
@@ -76,7 +76,7 @@ export const API_ROUTES_AND_METHODS = {
     remove: { method: 'DELETE', url: '/cart-products/remove' },
   },
   carts: {
-    get: { method: 'GET', url: '/carts/get' },
+    get: { method: 'GET', url: '/carts' },
     clear: { method: 'PATCH', url: '/carts/clear' },
   },
   addresses: {
