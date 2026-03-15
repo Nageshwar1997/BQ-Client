@@ -1,4 +1,4 @@
-import { LoadingScreen, Teddy } from '@/Components/Layout';
+import { LoadingScreen } from '@/Components/Layout';
 import Main from '@/Pages/Main';
 import { lazy, Suspense } from 'react';
 import { createBrowserRouter, Outlet } from 'react-router-dom';
