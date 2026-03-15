@@ -3,6 +3,7 @@ import { Hook } from '.';
 import { CartStore, UserStore, WishlistStore } from '@/Stores';
 import { Service } from '@/Api-Service';
 import { getUserToken } from '@/Utils/Storage.util';
+import type { IUser } from '@/Types/Api.type';
 
 export const useAuthCheck = (readyToCall?: boolean) => {
   const { setUser } = UserStore();
@@ -30,5 +31,5 @@ export const useAuthCheck = (readyToCall?: boolean) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.user, cartData, wishlistData]);
 
-  return { isLoading, isError, user: data?.user };
+  return { isLoading, isError, user: data?.user as IUser };
 };

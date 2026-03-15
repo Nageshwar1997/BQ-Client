@@ -1,4 +1,5 @@
 import { LoadingScreen } from '@/Components/Layout';
+import OAuth from '@/Pages/Auth/OAuth';
 import Main from '@/Pages/Main';
 import { lazy, Suspense } from 'react';
 import { createBrowserRouter, Outlet } from 'react-router-dom';
@@ -152,7 +153,7 @@ export const Routes = createBrowserRouter([
         path: 'oauth',
         element: (
           <AuthRedirect>
-            <div>OAuth Success/Error</div>
+            <OAuth />
           </AuthRedirect>
         ),
       },
