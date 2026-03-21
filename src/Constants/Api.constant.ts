@@ -7,6 +7,24 @@ export const API_ROUTES_AND_METHODS = {
     },
     login: { method: 'POST', url: '/auth/login' },
     logout: { method: 'DELETE', url: '/auth/logout' },
+    password: {
+      send_forgot_password_link_and_otp: {
+        method: 'POST',
+        url: '/auth/send-forgot-password-link-and-otp',
+      },
+      resend_forgot_password_link_and_otp: {
+        method: 'POST',
+        url: '/auth/resend-forgot-password-link-and-otp',
+      },
+      verify_forgot_password_link_and_otp: {
+        method: 'POST',
+        url: '/auth/verify-forgot-password-link-and-otp',
+      },
+      set_forgot_password_link_and_otp: {
+        method: 'POST',
+        url: '/auth/set-forgot-password-link-and-otp',
+      },
+    },
   },
   users: {
     user: {
@@ -111,6 +129,12 @@ export const QUERY_KEYS = {
     },
     login: ['login'],
     logout: ['logout'],
+    password: {
+      send_forgot_password_link_and_otp: ['send_forgot_password_link_and_otp'],
+      resend_forgot_password_link_and_otp: ['resend_forgot_password_link_and_otp'],
+      verify_forgot_password_link_and_otp: ['verify_forgot_password_link_and_otp'],
+      set_forgot_password_link_and_otp: ['set_forgot_password_link_and_otp'],
+    },
   },
   users: {
     user: {

@@ -45,4 +45,36 @@ export class AuthService extends AuthApi {
       onError: (error) => console.log('Error from logout user:', error),
     });
   };
+  public SendForgotPasswordLinkAndOtp = () => {
+    return useMutation({
+      mutationKey: QUERY_KEYS.auth.password.send_forgot_password_link_and_otp,
+      mutationFn: this.send_forgot_password_link_and_otp,
+      onSuccess: ({ message }) => toaster('success', message),
+      onError: ({ message }) => toaster('error', message),
+    });
+  };
+  public ResendForgotPasswordLinkAndOtp = () => {
+    return useMutation({
+      mutationKey: QUERY_KEYS.auth.password.resend_forgot_password_link_and_otp,
+      mutationFn: this.resend_forgot_password_link_and_otp,
+      onSuccess: ({ message }) => toaster('success', message),
+      onError: ({ message }) => toaster('error', message),
+    });
+  };
+  public VerifyForgotPasswordLinkAndOtp = () => {
+    return useMutation({
+      mutationKey: QUERY_KEYS.auth.password.verify_forgot_password_link_and_otp,
+      mutationFn: this.verify_forgot_password_link_and_otp,
+      onSuccess: ({ message }) => toaster('success', message),
+      onError: ({ message }) => toaster('error', message),
+    });
+  };
+  public SetForgotPasswordLinkAndOtp = () => {
+    return useMutation({
+      mutationKey: QUERY_KEYS.auth.password.set_forgot_password_link_and_otp,
+      mutationFn: this.set_forgot_password_link_and_otp,
+      onSuccess: ({ message }) => toaster('success', message),
+      onError: ({ message }) => toaster('error', message),
+    });
+  };
 }

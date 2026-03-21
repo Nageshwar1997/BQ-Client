@@ -222,6 +222,24 @@ export const zodFileOrUrl = ({
   }
 };
 
+const fileOrUrlSchema = z.union([z.instanceof(File), z.string()]);
+
+const filesOrUrlsSchema = z.preprocess((value) => {
+  if (typeof FileList !== 'undefined' && value instanceof FileList) {
+    return Array.from(value);
+  }
+
+  if (value === undefined || value === null) {
+    return [];
+  }
+
+  if (value instanceof File || typeof value === 'string') {
+    return [value];
+  }
+
+  return value;
+}, z.array(fileOrUrlSchema));
+
 export const zodSingleFileOrUrl = ({
   field,
   label,
@@ -236,7 +254,7 @@ export const zodSingleFileOrUrl = ({
 
   const name = parentName ? `${parentName}: ${baseName}` : baseName;
 
-  return z.array(z.union([z.instanceof(File), z.string()])).superRefine((filesOrUrls, ctx) => {
+  return filesOrUrlsSchema.superRefine((filesOrUrls, ctx) => {
     if (required && filesOrUrls.length === 0) {
       zodCustomIssue(ctx, `${name} is required.`);
       return;
@@ -278,7 +296,7 @@ export const zodMultipleFileOrUrl = ({
   const parentName = parentLabel ?? parentField;
   const name = parentName ? `${parentName}: ${baseName}` : baseName;
 
-  return z.array(z.union([z.instanceof(File), z.string()])).superRefine((filesOrUrls, ctx) => {
+  return filesOrUrlsSchema.superRefine((filesOrUrls, ctx) => {
     if (required && filesOrUrls.length === 0) {
       zodCustomIssue(ctx, `${name} is required.`);
       return;

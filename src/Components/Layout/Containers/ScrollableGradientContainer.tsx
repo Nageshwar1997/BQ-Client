@@ -15,6 +15,9 @@ export const ScrollableGradientContainer = ({
   const isVertical = direction === 'vertical';
 
   const gradients = { ...showH_Gradient, ...showV_Gradient };
+  const isScrollable = isVertical
+    ? !!(gradients.top || gradients.bottom)
+    : !!(gradients.left || gradients.right);
 
   const gradientKeys = Object.entries(gradients)
     .filter(([, value]) => value === true)
@@ -30,15 +33,9 @@ export const ScrollableGradientContainer = ({
         className={`relative w-full flex-1 scroll-smooth ${isVertical ? 'overflow-y-auto' : ''} ${isHorizontal ? 'overflow-x-auto whitespace-nowrap' : ''} ${className} `}
       >
         <div
-          className={`flex h-full w-full gap-2 ${isVertical ? 'flex-col' : 'flex-row'} ${
-            isVertical
-              ? !gradients.top && !gradients.bottom
-                ? 'items-center justify-center'
-                : 'items-start justify-start'
-              : !gradients.left && !gradients.right
-                ? 'items-center justify-center'
-                : 'items-start justify-start'
-          } `}
+          className={`flex w-full gap-2 ${isVertical ? 'min-h-full flex-col' : 'min-w-full flex-row'} ${
+            isScrollable ? 'items-start justify-start' : 'items-center justify-center'
+          }`}
         >
           {children}
         </div>

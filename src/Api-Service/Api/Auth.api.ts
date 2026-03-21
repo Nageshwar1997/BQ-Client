@@ -28,4 +28,28 @@ export class AuthApi extends ApiRequest {
     const { method, url } = this.routes.auth.register.verify_otp;
     return this.request({ method, url, params: { otpToken }, data });
   };
+  protected send_forgot_password_link_and_otp = (email: string) => {
+    const { method, url } = this.routes.auth.password.send_forgot_password_link_and_otp;
+    return this.request({ method, url, data: { email } });
+  };
+  protected resend_forgot_password_link_and_otp = (params: TParams) => {
+    const { method, url } = this.routes.auth.password.resend_forgot_password_link_and_otp;
+    return this.request({ method, url, params });
+  };
+  protected verify_forgot_password_link_and_otp = (data: TParams) => {
+    // NOTE: otpToken is coming from the previous response
+    // NOTE: otp is coming from the user input
+    const { method, url } = this.routes.auth.password.verify_forgot_password_link_and_otp;
+    return this.request({ method, url, data });
+  };
+  protected set_forgot_password_link_and_otp = ({
+    otpToken,
+    data,
+  }: {
+    otpToken: string;
+    data: FormData;
+  }) => {
+    const { method, url } = this.routes.auth.password.set_forgot_password_link_and_otp;
+    return this.request({ method, url, params: { otpToken }, data });
+  };
 }

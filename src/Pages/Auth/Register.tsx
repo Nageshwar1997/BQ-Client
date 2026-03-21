@@ -112,7 +112,10 @@ const RegisterForm = ({
     },
   });
 
+  console.log('errors', errors);
+
   const profilePicFile = getFileFromFileList(watch('profilePic'));
+  console.log('🚀 ~ RegisterForm ~ profilePicFile:', profilePicFile);
 
   const profilePicURL =
     profilePicFile instanceof File ? URL.createObjectURL(profilePicFile) : undefined;

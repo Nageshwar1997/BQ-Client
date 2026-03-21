@@ -99,3 +99,6 @@ export const changePasswordSchema = baseNewConfirmSchema
       zodCustomIssue(ctx, 'Confirm password does not match new password', 'confirmPassword');
     }
   });
+
+export const sendForgotPasswordLinkAndOtpSchema = registerSchema.pick({ email: true });
+export const verifyForgotPasswordOtpSchema = registerSchema.pick({ otp: true });

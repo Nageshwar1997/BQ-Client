@@ -1,4 +1,5 @@
 import { LoadingScreen } from '@/Components/Layout';
+import ForgotPassword from '@/Pages/Auth/ForgotPassword';
 import OAuth from '@/Pages/Auth/OAuth';
 import Main from '@/Pages/Main';
 import { lazy, Suspense } from 'react';
@@ -158,11 +159,11 @@ export const Routes = createBrowserRouter([
         ),
       },
       {
-        path: 'password',
+        path: 'forgot-password',
         element: (
-          <AuthRedirect>
-            <div>Password</div>
-          </AuthRedirect>
+          // <AuthRedirect>
+          <ForgotPassword />
+          // </AuthRedirect>
         ),
       },
     ],

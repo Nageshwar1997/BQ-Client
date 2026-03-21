@@ -18,13 +18,15 @@ export const useScrollable = (direction: TScrollDirection) => {
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+    const SCROLL_EPSILON = 4;
 
     const checkScroll = () => {
       if (direction === 'horizontal') {
-        const hasScroll = container.scrollWidth > container.clientWidth;
-        const isAtLeft = container.scrollLeft <= 0;
-        const isAtRight =
-          Math.ceil(container.scrollLeft + container.clientWidth) >= container.scrollWidth;
+        const maxScrollLeft = Math.max(0, container.scrollWidth - container.clientWidth);
+        const rightGap = container.scrollWidth - (container.scrollLeft + container.clientWidth);
+        const hasScroll = maxScrollLeft > SCROLL_EPSILON;
+        const isAtLeft = container.scrollLeft <= SCROLL_EPSILON;
+        const isAtRight = rightGap <= SCROLL_EPSILON;
 
         setShowGradient({
           direction: 'horizontal',
@@ -32,10 +34,11 @@ export const useScrollable = (direction: TScrollDirection) => {
           right: hasScroll && !isAtRight,
         });
       } else {
-        const hasScroll = container.scrollHeight > container.clientHeight;
-        const isAtTop = container.scrollTop <= 0;
-        const isAtBottom =
-          Math.ceil(container.scrollTop + container.clientHeight) >= container.scrollHeight;
+        const maxScrollTop = Math.max(0, container.scrollHeight - container.clientHeight);
+        const bottomGap = container.scrollHeight - (container.scrollTop + container.clientHeight);
+        const hasScroll = maxScrollTop > SCROLL_EPSILON;
+        const isAtTop = container.scrollTop <= SCROLL_EPSILON;
+        const isAtBottom = bottomGap <= SCROLL_EPSILON;
 
         setShowGradient({
           direction: 'vertical',
@@ -48,10 +51,16 @@ export const useScrollable = (direction: TScrollDirection) => {
     checkScroll();
     container.addEventListener('scroll', checkScroll);
     window.addEventListener('resize', checkScroll);
+    const resizeObserver = new ResizeObserver(checkScroll);
+    resizeObserver.observe(container);
+    if (container.firstElementChild instanceof Element) {
+      resizeObserver.observe(container.firstElementChild);
+    }
 
     return () => {
       container.removeEventListener('scroll', checkScroll);
       window.removeEventListener('resize', checkScroll);
+      resizeObserver.disconnect();
     };
   }, [direction]);
 
