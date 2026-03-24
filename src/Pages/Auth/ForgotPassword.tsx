@@ -7,14 +7,18 @@ import {
   verifyForgotPasswordOtpSchema,
 } from '@/Schemas/Auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useRef, useState, type RefObject } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import type z from 'zod';
 
-export const SendForgotPasswordLinkAndOtp = ({ onContinue }: { onContinue: () => void }) => {
-  const { setParams } = Hook.QueryParams();
-
+export const SendForgotPasswordLinkAndOtp = ({
+  onContinue,
+  otpTokenRef,
+}: {
+  onContinue: () => void;
+  otpTokenRef: RefObject<string | null>;
+}) => {
   const {
     mutateAsync: sendAsync,
     isPending: isSendPending,
@@ -36,7 +40,7 @@ export const SendForgotPasswordLinkAndOtp = ({ onContinue }: { onContinue: () =>
   const handleSend = async (data: z.infer<typeof sendForgotPasswordLinkAndOtpSchema>) => {
     await sendAsync(data.email, {
       onSuccess: (respData) => {
-        return setParams({ otpToken: respData?.token });
+        otpTokenRef.current = respData?.token;
       },
     });
   };
@@ -111,16 +115,14 @@ export const SendForgotPasswordLinkAndOtp = ({ onContinue }: { onContinue: () =>
 export const VerifyForgotPasswordOtp = ({
   onContinue,
   onBack,
+  otpTokenRef,
 }: {
   onContinue: () => void;
   onBack: () => void;
+  otpTokenRef: RefObject<string | null>;
 }) => {
-  const { queryParams } = Hook.QueryParams();
-  const {
-    mutateAsync: sendAsync,
-    isPending: isSendPending,
-    data: sendData,
-  } = Service.Auth.VerifyForgotPasswordLinkAndOtp();
+  const { mutateAsync: sendAsync, isPending: isSendPending } =
+    Service.Auth.VerifyForgotPasswordLinkAndOtp();
 
   const {
     register,
@@ -132,7 +134,19 @@ export const VerifyForgotPasswordOtp = ({
   });
 
   const handleSend = async (data: z.infer<typeof verifyForgotPasswordOtpSchema>) => {
-    await sendAsync({ ...data, otpToken: queryParams.otpToken });
+    if (!otpTokenRef.current) return;
+    await sendAsync(
+      {
+        ...data,
+        otpToken: otpTokenRef.current,
+      },
+      {
+        onSuccess: (respData) => {
+          otpTokenRef.current = respData?.token;
+          onContinue();
+        },
+      },
+    );
   };
 
   return (
@@ -266,20 +280,25 @@ export const SetForgotPassword = ({ onClose }: { onClose?: () => void }) => {
 
 const ForgotPassword = () => {
   const [currentStep, setCurrentStep] = useState<'send' | 'verify' | 'set'>('send');
+  const { queryParams } = Hook.QueryParams();
+  const otpTokenRef = useRef<string | null>(null);
 
   return (
     <BorderGradient className="space-y-6">
-      {currentStep === 'send' ? (
-        <SendForgotPasswordLinkAndOtp onContinue={() => setCurrentStep('verify')} />
+      {currentStep === 'set' || queryParams.otpToken ? (
+        <SetForgotPassword />
+      ) : currentStep === 'send' ? (
+        <SendForgotPasswordLinkAndOtp
+          otpTokenRef={otpTokenRef}
+          onContinue={() => setCurrentStep('verify')}
+        />
       ) : currentStep === 'verify' ? (
         <VerifyForgotPasswordOtp
+          otpTokenRef={otpTokenRef}
           onContinue={() => setCurrentStep('set')}
           onBack={() => setCurrentStep('send')}
         />
-      ) : currentStep === 'set' ? (
-        <SetForgotPassword />
       ) : null}
-      <AuthBottomInstructions />
     </BorderGradient>
   );
 };

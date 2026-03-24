@@ -142,7 +142,7 @@ export const ADD_ADDRESS_INPUT_MAP_DATA: TAddressInput[] = [
 export const updatePasswordFields: IUpdatePasswordInput[] = [
   {
     ...passwordData,
-    name: 'newPassword',
+    name: 'password',
     label: 'New Password',
     placeholder: 'Enter new password',
   },

@@ -12,7 +12,7 @@ import { Input } from '@/Components/Ui/Input';
 import { changePasswordFields, updatePasswordFields } from '@/Constants';
 import { EyeIcon, EyeOffIcon } from '@/Icons';
 
-const baseDefaultValues = { newPassword: '', confirmPassword: '' };
+const baseDefaultValues = { password: '', confirmPassword: '' };
 
 export const PasswordConfirmationModal = () => {
   const { queryParams, removeParam } = Hook.QueryParams();
@@ -33,7 +33,7 @@ export const PasswordConfirmationModal = () => {
     Record<keyof (TChangePassword & TUpdatePassword), boolean>
   >({
     confirmPassword: false,
-    newPassword: false,
+    password: false,
     oldPassword: false,
   });
 

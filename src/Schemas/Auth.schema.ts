@@ -55,16 +55,12 @@ export const loginSchema = object({
 export const sendOtpSchema = registerSchema.pick({ email: true });
 
 const baseNewConfirmSchema = object({
-  newPassword: zodString({
-    ...passwordValidationOptions,
-    field: 'newPassword',
-    label: 'New password',
-  }),
+  password: registerSchema.shape.password,
   confirmPassword: registerSchema.shape.confirmPassword,
 });
 
 export const updatePasswordSchema = baseNewConfirmSchema.superRefine((data, ctx) => {
-  if (data.newPassword !== data.confirmPassword) {
+  if (data.password !== data.confirmPassword) {
     zodCustomIssue(ctx, 'Confirm password does not match new password', 'confirmPassword');
   }
 });
@@ -78,11 +74,11 @@ export const changePasswordSchema = baseNewConfirmSchema
     }),
   })
   .superRefine((data, ctx) => {
-    const { oldPassword, newPassword, confirmPassword } = data ?? {};
+    const { oldPassword, password, confirmPassword } = data ?? {};
 
     // Old & New must not be same
-    if (oldPassword === newPassword) {
-      zodCustomIssue(ctx, 'New password must be different from current password', 'newPassword');
+    if (oldPassword === password) {
+      zodCustomIssue(ctx, 'New password must be different from current password', 'password');
     }
 
     // Old & Confirm must not be same
@@ -95,7 +91,7 @@ export const changePasswordSchema = baseNewConfirmSchema
     }
 
     // New & Confirm must match
-    if (newPassword !== confirmPassword) {
+    if (password !== confirmPassword) {
       zodCustomIssue(ctx, 'Confirm password does not match new password', 'confirmPassword');
     }
   });
