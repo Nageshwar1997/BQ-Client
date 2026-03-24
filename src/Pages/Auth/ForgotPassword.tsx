@@ -18,6 +18,7 @@ import type {
   TVerifyForgotPasswordOtp,
 } from '@/Types/Schema.type';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { toaster } from '@/Utils/Common.util';
 
 export const SendForgotPasswordLinkAndOtp = ({
   onContinue,
@@ -256,17 +257,27 @@ export const SetForgotPassword = () => {
 };
 
 const ForgotPassword = () => {
-  const { queryParams } = Hook.QueryParams();
+  const { queryParams, removeParam } = Hook.QueryParams();
   const [currentStep, setCurrentStep] = useState<'send' | 'verify' | 'set'>('send');
-  const { data: isValidToken, isLoading: isValidatingToken } =
-    Service.Auth.ValidateForgotPasswordToken(currentStep === 'set' ? queryParams.token || '' : '');
+  const {
+    data: isValidToken,
+    isLoading: isValidatingToken,
+    isError: isTokenError,
+    error: tokenError,
+  } = Service.Auth.ValidateForgotPasswordToken(
+    currentStep !== 'set' ? queryParams.token || '' : '',
+  );
   const otpTokenRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (isValidToken) {
       setCurrentStep('set');
+    } else if (isTokenError) {
+      setCurrentStep('send');
+      removeParam('token');
+      toaster('error', tokenError?.message);
     }
-  }, [isValidToken]);
+  }, [isValidToken, isTokenError]);
 
   return (
     <BorderGradient className="space-y-6">
