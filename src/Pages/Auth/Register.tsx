@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { type FieldErrors, useForm } from 'react-hook-form';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { emailData, PASSWORD_KEYS, REGISTER_INPUT_MAP_DATA } from '@/Constants';
+import { EMAIL_INPUT_DATA, PASSWORD_KEYS, REGISTER_INPUT_MAP_DATA } from '@/Constants';
 import { EyeIcon, EyeOffIcon } from '@/Icons';
 import { Service } from '@/Api-Service';
 import { UserStore } from '@/Stores';
@@ -267,13 +267,13 @@ const Register = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <Input
               inputProps={{
-                name: emailData.name,
-                placeholder: emailData.placeholder,
-                autoComplete: emailData.autoComplete,
-                type: emailData.type,
+                name: EMAIL_INPUT_DATA.name,
+                placeholder: EMAIL_INPUT_DATA.placeholder,
+                autoComplete: EMAIL_INPUT_DATA.autoComplete,
+                type: EMAIL_INPUT_DATA.type,
                 disabled: isPending,
               }}
-              label={emailData.label}
+              label={EMAIL_INPUT_DATA.label}
               register={register('email')}
               error={errors.email?.message}
             />

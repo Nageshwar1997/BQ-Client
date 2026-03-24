@@ -7,8 +7,11 @@ import type {
   registerSchema,
   updatePasswordSchema,
 } from '@/Schemas';
+import type { sendForgotPasswordLinkAndOtpSchema, setPasswordSchema, verifyForgotPasswordOtpSchema } from '@/Schemas/Auth.schema';
 import type z from 'zod';
 
+export type TSendForgotPasswordLinkAndOtp = z.infer<typeof sendForgotPasswordLinkAndOtpSchema>;
+export type TVerifyForgotPasswordOtp = z.infer<typeof verifyForgotPasswordOtpSchema>;
 export type TLogin = z.infer<typeof loginSchema>;
 export type TRegister = z.infer<typeof registerSchema>;
 export type TAddress = z.infer<typeof addressSchema>;
@@ -18,3 +21,4 @@ export type TShade = { stock: number; shadeName: string };
 export type TReview = z.infer<typeof addReviewSchema>;
 export type TChangePassword = z.infer<typeof changePasswordSchema>;
 export type TUpdatePassword = z.infer<typeof updatePasswordSchema>;
+export type TSetPassword = z.infer<typeof setPasswordSchema>;

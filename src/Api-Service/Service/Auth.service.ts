@@ -1,5 +1,5 @@
 import { QUERY_KEYS } from '@/Constants';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { AuthApi } from '../Api/Auth.api';
 import { toaster } from '@/Utils/Common.util';
 import { UserStore } from '@/Stores';
@@ -61,18 +61,26 @@ export class AuthService extends AuthApi {
       onError: ({ message }) => toaster('error', message),
     });
   };
-  public VerifyForgotPasswordLinkAndOtp = () => {
+  public VerifyForgotPasswordOtp = () => {
     return useMutation({
-      mutationKey: QUERY_KEYS.auth.password.verify_forgot_password_link_and_otp,
-      mutationFn: this.verify_forgot_password_link_and_otp,
+      mutationKey: QUERY_KEYS.auth.password.verify_forgot_password_otp,
+      mutationFn: this.verify_forgot_password_otp,
       onSuccess: ({ message }) => toaster('success', message),
       onError: ({ message }) => toaster('error', message),
     });
   };
-  public SetForgotPasswordLinkAndOtp = () => {
+  public ValidateForgotPasswordToken = (token: string) => {
+    return useQuery({
+      queryKey: QUERY_KEYS.auth.password.validate_forgot_password_token,
+      queryFn: () => this.validate_forgot_password_token(token),
+      enabled: !!token,
+      retry: false,
+    });
+  };
+  public SetForgotPassword = () => {
     return useMutation({
-      mutationKey: QUERY_KEYS.auth.password.set_forgot_password_link_and_otp,
-      mutationFn: this.set_forgot_password_link_and_otp,
+      mutationKey: QUERY_KEYS.auth.password.set_forgot_password,
+      mutationFn: this.set_forgot_password,
       onSuccess: ({ message }) => toaster('success', message),
       onError: ({ message }) => toaster('error', message),
     });

@@ -13,7 +13,7 @@ import type {
 } from 'react';
 
 import type { UseFormRegisterReturn } from 'react-hook-form';
-import type { TAddress, TChangePassword, TLogin, TRegister, TUpdatePassword } from './Schema.type';
+import type { TAddress, TChangePassword, TLogin, TRegister, TSendForgotPasswordLinkAndOtp, TSetPassword, TUpdatePassword, TVerifyForgotPasswordOtp } from './Schema.type';
 import type { ICategory, IProduct, IReview, IShade, IUser } from './Api.type';
 import type { FOOTER_CATEGORIES } from '@/Constants';
 
@@ -50,7 +50,7 @@ export interface IVideo {
   ref?: RefObject<HTMLVideoElement | null>;
 }
 
-export interface IVideoPlayer extends TClassName, IVideo {}
+export interface IVideoPlayer extends TClassName, IVideo { }
 
 export type TScrollDirection = 'horizontal' | 'vertical';
 
@@ -91,9 +91,18 @@ type TFormInputMap = {
   placeholder: string;
 };
 
+export interface TSendForgotPasswordLinkAndOtpInput extends TFormInputMap {
+  name: keyof TSendForgotPasswordLinkAndOtp;
+}
+
+export interface TVerifyForgotPasswordOtpInput extends TFormInputMap {
+  name: keyof TVerifyForgotPasswordOtp;
+}
+
 export interface TLoginInput extends TFormInputMap {
   name: keyof TLogin;
 }
+
 export interface TRegisterInput extends TFormInputMap {
   name: keyof TRegister;
 }
@@ -106,8 +115,13 @@ export interface TAddressInput extends TFormInputMap {
 export interface IChangePasswordInput extends TFormInputMap {
   name: keyof TChangePassword;
 }
+
 export interface IUpdatePasswordInput extends TFormInputMap {
   name: keyof TUpdatePassword;
+}
+
+export interface ISetPasswordInput extends TFormInputMap {
+  name: keyof TSetPassword;
 }
 
 export interface IInput extends IBaseInput {
@@ -150,7 +164,7 @@ export interface IRadio extends TClassName {
 
 export interface ISelect extends Omit<IBaseInput, 'icons' | 'needRef' | 'register'> {
   selectProps: SelectHTMLAttributes<HTMLSelectElement> &
-    Partial<Pick<InputHTMLAttributes<HTMLInputElement>, 'placeholder'>>;
+  Partial<Pick<InputHTMLAttributes<HTMLInputElement>, 'placeholder'>>;
   icons?: { left?: Omit<TInputIcon, 'text'> };
   options: TDropdownOption[];
   optionsClassName?: string;

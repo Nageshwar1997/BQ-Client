@@ -34,7 +34,7 @@ export {
   PASSWORD_KEYS,
   REGISTER_INPUT_MAP_DATA,
   changePasswordFields,
-  emailData,
+  EMAIL_INPUT_DATA,
   updatePasswordFields,
 } from './Input.constant';
 

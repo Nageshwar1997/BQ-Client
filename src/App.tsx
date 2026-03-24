@@ -12,7 +12,7 @@ function App() {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: { refetchOnWindowFocus: false, retry: (failureCount) => failureCount < 3 },
-      mutations: { retry: (failureCount) => failureCount < 3 },
+      mutations: { retry: false },
     },
     queryCache: new QueryCache({ onSuccess: () => console.log('Query success') }),
     mutationCache: new MutationCache({ onSuccess: () => console.log('Mutation success') }),

@@ -1,9 +1,12 @@
 import type {
   IChangePasswordInput,
+  ISetPasswordInput,
   IUpdatePasswordInput,
   TAddressInput,
   TLoginInput,
   TRegisterInput,
+  TSendForgotPasswordLinkAndOtpInput,
+  TVerifyForgotPasswordOtpInput,
 } from '@/Types/Common.type';
 import { STATES_AND_UNION_TERRITORIES } from './Common.constant';
 
@@ -11,13 +14,21 @@ export const PASSWORD_KEYS = ['password', 'confirmPassword'];
 
 const nameData = { type: 'text', autoComplete: 'given-name' };
 
-export const emailData = {
+export const EMAIL_INPUT_DATA: TSendForgotPasswordLinkAndOtpInput = {
   name: 'email',
   label: 'Email',
   type: 'text',
   autoComplete: 'email',
   placeholder: 'Enter your email',
 };
+
+export const OTP_INPUT_DATA: TVerifyForgotPasswordOtpInput = {
+  label: 'OTP',
+  name: 'otp',
+  type: 'number',
+  autoComplete: 'tel',
+  placeholder: 'Enter your OTP',
+}
 
 const firstNameData = {
   ...nameData,
@@ -49,23 +60,12 @@ const passwordData = {
 };
 
 export const LOGIN_INPUT_MAP_DATA: TLoginInput[] = [
-  { ...emailData, name: 'email' },
+  { ...EMAIL_INPUT_DATA, name: 'email' },
   { ...phoneNumberData, name: 'phoneNumber' },
   { ...passwordData, name: 'password' },
 ];
 
-export const REGISTER_INPUT_MAP_DATA: TRegisterInput[] = [
-  { ...emailData, name: 'email' },
-  {
-    label: 'OTP',
-    name: 'otp',
-    type: 'number',
-    autoComplete: 'tel',
-    placeholder: 'Enter your OTP',
-  },
-  { ...firstNameData, name: 'firstName' },
-  { ...lastNameData, name: 'lastName' },
-  { ...phoneNumberData, name: 'phoneNumber' },
+export const SET_PASSWORDS_FIELDS: ISetPasswordInput[] = [
   { ...passwordData, name: 'password' },
   {
     ...passwordData,
@@ -73,6 +73,15 @@ export const REGISTER_INPUT_MAP_DATA: TRegisterInput[] = [
     label: 'Confirm Password',
     placeholder: 'Reenter password',
   },
+];
+
+export const REGISTER_INPUT_MAP_DATA: TRegisterInput[] = [
+  EMAIL_INPUT_DATA,
+  OTP_INPUT_DATA,
+  { ...firstNameData, name: 'firstName' },
+  { ...lastNameData, name: 'lastName' },
+  { ...phoneNumberData, name: 'phoneNumber' },
+  ...SET_PASSWORDS_FIELDS
 ];
 
 export const ADD_ADDRESS_INPUT_MAP_DATA: TAddressInput[] = [
@@ -106,7 +115,7 @@ export const ADD_ADDRESS_INPUT_MAP_DATA: TAddressInput[] = [
     autoComplete: 'address-level2',
     type: 'text',
   },
-  { ...emailData, name: 'email' },
+  { ...EMAIL_INPUT_DATA, name: 'email' },
   {
     name: 'pinCode',
     label: 'Pin Code',

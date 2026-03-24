@@ -16,14 +16,12 @@ export const API_ROUTES_AND_METHODS = {
         method: 'POST',
         url: '/auth/resend-forgot-password-link-and-otp',
       },
-      verify_forgot_password_link_and_otp: {
-        method: 'POST',
-        url: '/auth/verify-forgot-password-link-and-otp',
+      verify_forgot_password_otp: { method: 'POST', url: '/auth/verify-forgot-password-otp' },
+      validate_forgot_password_token: {
+        method: 'GET',
+        url: '/auth/validate-forgot-password-token',
       },
-      set_forgot_password_link_and_otp: {
-        method: 'POST',
-        url: '/auth/set-forgot-password-link-and-otp',
-      },
+      set_forgot_password: { method: 'PATCH', url: '/auth/set-forgot-password' },
     },
   },
   users: {
@@ -132,8 +130,9 @@ export const QUERY_KEYS = {
     password: {
       send_forgot_password_link_and_otp: ['send_forgot_password_link_and_otp'],
       resend_forgot_password_link_and_otp: ['resend_forgot_password_link_and_otp'],
-      verify_forgot_password_link_and_otp: ['verify_forgot_password_link_and_otp'],
-      set_forgot_password_link_and_otp: ['set_forgot_password_link_and_otp'],
+      verify_forgot_password_otp: ['verify_forgot_password_otp'],
+      validate_forgot_password_token: ['validate_forgot_password_token'],
+      set_forgot_password: ['set_forgot_password'],
     },
   },
   users: {

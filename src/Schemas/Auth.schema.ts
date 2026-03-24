@@ -64,6 +64,11 @@ export const updatePasswordSchema = baseNewConfirmSchema.superRefine((data, ctx)
     zodCustomIssue(ctx, 'Confirm password does not match new password', 'confirmPassword');
   }
 });
+export const setPasswordSchema = baseNewConfirmSchema.superRefine((data, ctx) => {
+  if (data.password !== data.confirmPassword) {
+    zodCustomIssue(ctx, 'Confirm password does not match new password', 'confirmPassword');
+  }
+});
 
 export const changePasswordSchema = baseNewConfirmSchema
   .extend({
