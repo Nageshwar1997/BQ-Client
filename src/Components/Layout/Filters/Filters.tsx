@@ -16,7 +16,7 @@ const MAX_PRICE = 1500;
 const INITIAL_RANGES: TRange = { min: '0', max: `${MAX_PRICE}`, discount: '0' };
 
 export const Filters = ({ className = '', needCategoriesFilters = false }: FiltersProps) => {
-  const { queryParams, setParams, removeParam } = Hook.QueryParams();
+  const { queryParams, setParams, removeParams } = Hook.QueryParams();
   const [ranges, setRanges] = useState<TRange>(INITIAL_RANGES);
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export const Filters = ({ className = '', needCategoriesFilters = false }: Filte
 
       // Min Logic
       if (ranges.min === '' || isNaN(parsedMin) || parsedMin === 0) {
-        removeParam('min');
+        removeParams('min');
       } else {
         setParams({ min: String(parsedMin) });
       }
@@ -64,7 +64,7 @@ export const Filters = ({ className = '', needCategoriesFilters = false }: Filte
         isNaN(parsedMax) ||
         (parsedMax === MAX_PRICE && !maxPriceRangeChangeRef.current)
       ) {
-        removeParam('max');
+        removeParams('max');
       } else if (maxPriceRangeChangeRef.current) {
         setParams({ max: String(parsedMax) });
       }
@@ -90,7 +90,7 @@ export const Filters = ({ className = '', needCategoriesFilters = false }: Filte
       if (hasMinChanged) prevMinDiscount.current = ranges.discount;
 
       if (ranges.discount === '' || isNaN(parsedMin) || parsedMin === 0) {
-        removeParam('discount');
+        removeParams('discount');
       } else {
         setParams({ discount: String(parsedMin) });
       }
@@ -130,7 +130,7 @@ export const Filters = ({ className = '', needCategoriesFilters = false }: Filte
                 if (e.target.checked) {
                   setParams({ inStock: 'true' });
                 } else {
-                  removeParam('inStock');
+                  removeParams('inStock');
                 }
               },
             }}

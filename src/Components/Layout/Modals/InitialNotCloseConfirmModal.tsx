@@ -51,12 +51,12 @@ export const InitialNotCloseConfirmModal = ({
   modalProps,
   buttons,
 }: IConfirmModal) => {
-  const { queryParams, removeParam } = Hook.QueryParams();
+  const { queryParams, removeParams } = Hook.QueryParams();
 
   return (
     <ModalWrapper
       {...modalProps}
-      onClose={() => modalProps?.onClose ?? removeParam('confirm')}
+      onClose={() => modalProps?.onClose ?? removeParams('confirm')}
       isOpen={modalProps?.isOpen ?? !!queryParams.confirm}
       containerProps={{
         ...modalProps?.containerProps,

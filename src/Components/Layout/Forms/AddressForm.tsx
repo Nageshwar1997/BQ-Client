@@ -20,7 +20,7 @@ export const AddressForm = ({
   const { user, authenticated } = UserStore();
   const { mutateAsync: addAddress } = Service.Address.AddAddress();
   const { mutateAsync: updateAddress } = Service.Address.UpdateAddress();
-  const { removeParam, queryParams } = Hook.QueryParams();
+  const { removeParams, queryParams } = Hook.QueryParams();
 
   const defaultAddressValues: TAddress = useMemo(() => {
     return {
@@ -89,7 +89,7 @@ export const AddressForm = ({
           ...changedFields,
           ...(removedOptionalFields.length > 0 && { removedOptionalFields }),
         },
-        { onSuccess: () => (removeParam('edit'), handleReset(defaultAddressValues)) },
+        { onSuccess: () => (removeParams('edit'), handleReset(defaultAddressValues)) },
       );
     } else {
       const finalizedData = data;
@@ -102,7 +102,7 @@ export const AddressForm = ({
         }
       });
       addAddress(finalizedData, {
-        onSuccess: () => (removeParam('add'), handleReset()),
+        onSuccess: () => (removeParams('add'), handleReset()),
       });
     }
   };

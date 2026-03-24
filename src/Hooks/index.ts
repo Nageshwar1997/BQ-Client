@@ -7,6 +7,7 @@ import { useScrollable } from './Scrollable.hook';
 import { useSocket } from './Socket.hook';
 import { useCart } from './Cart.hook';
 import { useWishlist } from './Wishlist.hook';
+import { useForgotPasswordFlow } from './ForgotPasswordFlow';
 
 class CustomHooks {
   public AuthCheck = useAuthCheck;
@@ -19,6 +20,7 @@ class CustomHooks {
   public Socket = useSocket;
   public Cart = useCart;
   public Wishlist = useWishlist;
+  public ForgotPasswordFlow = useForgotPasswordFlow;
 }
 
 export const Hook = new CustomHooks();

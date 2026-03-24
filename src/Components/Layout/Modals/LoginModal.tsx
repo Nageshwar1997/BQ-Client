@@ -5,12 +5,12 @@ import { ActionStore, UserStore } from '@/Stores';
 import { LoginForm } from '../Forms';
 
 export const LoginModal = () => {
-  const { queryParams, removeParam } = Hook.QueryParams();
+  const { queryParams, removeParams } = Hook.QueryParams();
   const { authenticated } = UserStore();
   const { runAction, clearAction } = ActionStore();
 
   useEffect(() => {
-    removeParam('login');
+    removeParams('login');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -19,9 +19,9 @@ export const LoginModal = () => {
   return (
     <ModalWrapper
       isOpen={queryParams.login === 'true'}
-      onClose={() => (removeParam('login'), clearAction())}
+      onClose={() => (removeParams('login'), clearAction())}
     >
-      <LoginForm onLoginSuccess={() => (removeParam('login'), runAction())} />
+      <LoginForm onLoginSuccess={() => (removeParams('login'), runAction())} />
     </ModalWrapper>
   );
 };

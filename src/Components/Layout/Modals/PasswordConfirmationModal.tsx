@@ -15,7 +15,7 @@ import { EyeIcon, EyeOffIcon } from '@/Icons';
 const baseDefaultValues = { password: '', confirmPassword: '' };
 
 export const PasswordConfirmationModal = () => {
-  const { queryParams, removeParam } = Hook.QueryParams();
+  const { queryParams, removeParams } = Hook.QueryParams();
   const { setUser } = UserStore();
 
   const { mutateAsync: resetPasswordSendLinkAsync, isPending: isResetPasswordSendLinkPending } =
@@ -59,7 +59,7 @@ export const PasswordConfirmationModal = () => {
   };
 
   const handleClose = () => {
-    removeParam('confirm');
+    removeParams('confirm');
     reset();
   };
 

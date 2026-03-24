@@ -4,10 +4,10 @@ import { Hook } from '@/Hooks';
 import type { IConfirmModal } from '@/Types/Common.type';
 
 export const ConfirmModal = (props: IConfirmModal) => {
-  const { removeParam } = Hook.QueryParams();
+  const { removeParams } = Hook.QueryParams();
 
   useEffect(() => {
-    removeParam('confirm');
+    removeParams('confirm');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

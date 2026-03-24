@@ -6,7 +6,7 @@ import { Dropdown, DropdownOptions } from '../Dropdown';
 import { DoubleLayerIcon, SingleLayerIcon, TripleLayerIcon } from '@/Icons';
 
 export const CategoriesFilter = ({ className = '' }: { className?: string }) => {
-  const { queryParams, removeParam, setParams } = Hook.QueryParams();
+  const { queryParams, removeParams, setParams } = Hook.QueryParams();
 
   const selectedCategories = useMemo(
     () => ({
@@ -36,24 +36,23 @@ export const CategoriesFilter = ({ className = '' }: { className?: string }) => 
     () => ({
       category_1: (val: string) => {
         if (val === queryParams.category_1 || val === DEFAULT_FILTER.value) {
-          removeParam('category_1');
+          removeParams('category_1');
         } else {
           setParams({ category_1: val });
         }
-        removeParam('category_2');
-        removeParam('category_3');
+        removeParams(['category_2', 'category_3']);
       },
       category_2: (val: string) => {
         if (val === queryParams.category_2 || val === DEFAULT_FILTER.value) {
-          removeParam('category_2');
+          removeParams('category_2');
         } else {
           setParams({ category_2: val });
         }
-        removeParam('category_3');
+        removeParams('category_3');
       },
       category_3: (val: string) => {
         if (val === queryParams.category_3 || val === DEFAULT_FILTER.value) {
-          removeParam('category_3');
+          removeParams('category_3');
         } else {
           setParams({ category_3: val });
         }

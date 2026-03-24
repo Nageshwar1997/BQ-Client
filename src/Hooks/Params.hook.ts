@@ -4,42 +4,58 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 export const usePathParams = () => {
   const navigate = useNavigate();
   const pathParams = useParams();
-  const location = useLocation();
-  const paths = location.pathname.split('/').filter((path) => path !== '');
+  const { pathname, ...restLocation } = useLocation();
+  const paths = pathname.split('/').filter((path) => path !== '');
 
-  return { pathParams, ...location, paths, navigate };
+  return { pathParams, pathname, ...restLocation, paths, navigate };
 };
 
 export const useQueryParams = () => {
-  const { navigate } = usePathParams();
+  const { navigate, search, pathname } = usePathParams();
 
   const getParams = (): TParams => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const Q_Params: TParams = {};
+    const searchParams = new URLSearchParams(search);
+    const params: TParams = {};
+
     for (const [key, value] of searchParams.entries()) {
-      Q_Params[key] = value;
+      params[key] = value;
     }
-    return Q_Params;
+
+    return params;
   };
+
   const setParams = (params: TParams): void => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const newSearchParams = new URLSearchParams(searchParams.toString());
-    for (const key in params) {
-      if (Object.prototype.hasOwnProperty.call(params, key)) {
-        newSearchParams.set(key, params[key]);
+    const searchParams = new URLSearchParams(search);
+
+    Object.entries(params).forEach(([key, value]) => {
+      if (value === undefined || value === null || value === '') {
+        searchParams.delete(key);
+      } else {
+        searchParams.set(key, value);
       }
-    }
-    navigate({ search: newSearchParams.toString() });
+    });
+
+    navigate({ pathname, search: searchParams.toString() });
   };
-  const removeParam = (paramKey: string): void => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const newSearchParams = new URLSearchParams(searchParams.toString());
-    newSearchParams.delete(paramKey);
-    navigate({ search: newSearchParams.toString() });
+
+  const removeParams = (keys: string | string[]): void => {
+    const searchParams = new URLSearchParams(search);
+
+    (Array.isArray(keys) ? keys : [keys]).forEach((key) => {
+      searchParams.delete(key);
+    });
+
+    navigate({ pathname, search: searchParams.toString() });
   };
+
+  const clearParams = (): void => {
+    navigate({ pathname, search: '' });
+  };
+
   return {
     queryParams: getParams(),
     setParams,
-    removeParam,
+    removeParams,
+    clearParams,
   };
 };

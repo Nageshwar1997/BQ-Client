@@ -11,11 +11,10 @@ export const AddressFormModal = ({
   onClose: () => void;
   addresses?: IAddress[];
 }) => {
-  const { queryParams, removeParam } = Hook.QueryParams();
+  const { queryParams, removeParams } = Hook.QueryParams();
 
   useEffect(() => {
-    removeParam('add');
-    removeParam('edit');
+    removeParams(['add', 'edit']);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (

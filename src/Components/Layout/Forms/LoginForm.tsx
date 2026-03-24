@@ -20,7 +20,7 @@ import { Controller, useForm } from 'react-hook-form';
 
 export const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const { removeParam, queryParams } = Hook.QueryParams();
+  const { removeParams, queryParams } = Hook.QueryParams();
   const { setUser } = UserStore();
   const { mutateAsync, isPending } = Service.Auth.Login();
 
@@ -77,7 +77,7 @@ export const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) =
           saveSessionToken(data?.token);
         }
         if (queryParams.login === 'true') {
-          removeParam('login');
+          removeParams('login');
         }
       },
     });
