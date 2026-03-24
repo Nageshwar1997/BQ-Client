@@ -19,6 +19,8 @@ import type {
 } from '@/Types/Schema.type';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toaster } from '@/Utils/Common.util';
+import { saveSessionToken } from '@/Utils/Storage.util';
+import { UserStore } from '@/Stores';
 
 export const SendForgotPasswordLinkAndOtp = () => {
   const { goToVerify } = Hook.ForgotPasswordFlow();
@@ -166,6 +168,7 @@ export const VerifyForgotPasswordOtp = () => {
 };
 
 export const SetForgotPassword = () => {
+  const { setUser } = UserStore();
   const { token, goToSend } = Hook.ForgotPasswordFlow();
   const { mutateAsync, isPending } = Service.Auth.SetForgotPassword();
 
@@ -181,7 +184,15 @@ export const SetForgotPassword = () => {
   const onSubmit = async (data: TSetPassword) => {
     if (!token) return;
 
-    await mutateAsync({ ...data, token });
+    await mutateAsync(
+      { ...data, token },
+      {
+        onSuccess: (data) => {
+          saveSessionToken(data.token);
+          setUser(data.user);
+        },
+      },
+    );
   };
 
   return (
