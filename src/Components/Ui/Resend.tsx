@@ -32,7 +32,7 @@ export const Resend = ({ onResend, count, label = 'Not received?' }: TResendOtp)
           <GradientText text={`${counter}s`} type="accent" className="font-bold" />
         </span>
       ) : (
-        <button onClick={handleResend}>
+        <button onClick={handleResend} className="cursor-pointer" type="button">
           <GradientText
             type="accent"
             text="Resend"

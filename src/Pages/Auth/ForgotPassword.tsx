@@ -35,7 +35,9 @@ export const SendForgotPasswordLinkAndOtp = ({ onContinue }: { onContinue: () =>
 
   const handleSend = async (data: z.infer<typeof sendForgotPasswordLinkAndOtpSchema>) => {
     await sendAsync(data.email, {
-      onSuccess: () => setParams({ otpToken: sendData?.token }),
+      onSuccess: (respData) => {
+        return setParams({ otpToken: respData?.token });
+      },
     });
   };
 
@@ -85,12 +87,12 @@ export const SendForgotPasswordLinkAndOtp = ({ onContinue }: { onContinue: () =>
         </Link>
         <Button
           content={
-            sendData?.token
-              ? 'Continue'
-              : isSendPending
-                ? 'Sending...'
-                : isResendPending
-                  ? 'Resending...'
+            isSendPending
+              ? 'Sending...'
+              : isResendPending
+                ? 'Resending...'
+                : sendData?.token
+                  ? 'Continue'
                   : 'Send'
           }
           pattern="primary"

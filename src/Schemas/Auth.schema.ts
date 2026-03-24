@@ -1,4 +1,4 @@
-import { boolean, object } from 'zod';
+import { boolean, literal, object } from 'zod';
 import { zodCustomIssue, zodEnum, zodSingleFileOrUrl, zodString } from '@/Utils/Zod.util';
 import {
   emailValidation,
@@ -35,8 +35,8 @@ export const loginSchema = object({
     label: 'Login method',
     enumValues: ['email', 'phoneNumber'],
   }),
-  email: registerSchema.shape.email.optional(),
-  phoneNumber: registerSchema.shape.phoneNumber.optional(),
+  email: registerSchema.shape.email.optional().or(literal(undefined)),
+  phoneNumber: registerSchema.shape.phoneNumber.optional().or(literal(undefined)),
   password: registerSchema.shape.password,
   remember: registerSchema.shape.remember,
 }).superRefine((data, ctx) => {

@@ -35,8 +35,8 @@ export const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) =
     resolver: zodResolver(loginSchema),
     defaultValues: {
       loginMethod: 'email',
-      email: '',
-      phoneNumber: '',
+      email: undefined,
+      phoneNumber: undefined,
       password: '',
       remember: false,
     },
@@ -159,7 +159,7 @@ export const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) =
             <GradientText
               text="Forgot Password?"
               type="accent"
-              path="/forgot-password"
+              path="/auth/forgot-password"
               className="mr-2 text-[10px] whitespace-nowrap hover:underline sm:text-[13px] md:text-sm"
             />
           </div>

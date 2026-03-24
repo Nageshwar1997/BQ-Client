@@ -1,11 +1,10 @@
-import { LoadingScreen, ScrollableGradientContainer } from '@/Components/Layout';
-import { Theme } from '@/Components/Ui';
-import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
+import { ScrollableGradientContainer } from '@/Components/Layout';
+import { Theme } from '@/Components/Ui';
 
 const Auth = () => {
   return (
-    <div className="relative flex min-h-dvh h-dvh outline-hidden w-full gap-4 p-4">
+    <div className="relative flex h-dvh min-h-dvh w-full gap-4 p-4 outline-hidden">
       <div className="hidden w-full rounded-2xl bg-linear-90 from-[#00F] to-transparent p-10 lg:block">
         <img
           src="/images/auth/auth-left-side.webp"
@@ -16,12 +15,8 @@ const Auth = () => {
 
       <ScrollableGradientContainer
         direction="vertical"
-        className="mx-auto max-w-md border border-[red]"
-        children={
-          <Suspense fallback={<LoadingScreen />}>
-            <Outlet />
-          </Suspense>
-        }
+        className="mx-auto max-w-md"
+        children={<Outlet />}
       />
     </div>
   );

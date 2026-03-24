@@ -161,9 +161,9 @@ export const Routes = createBrowserRouter([
       {
         path: 'forgot-password',
         element: (
-          // <AuthRedirect>
-          <ForgotPassword />
-          // </AuthRedirect>
+          <AuthRedirect>
+            <ForgotPassword />
+          </AuthRedirect>
         ),
       },
     ],

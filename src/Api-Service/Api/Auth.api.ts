@@ -32,9 +32,9 @@ export class AuthApi extends ApiRequest {
     const { method, url } = this.routes.auth.password.send_forgot_password_link_and_otp;
     return this.request({ method, url, data: { email } });
   };
-  protected resend_forgot_password_link_and_otp = (params: TParams) => {
+  protected resend_forgot_password_link_and_otp = (otpLinkToken: string) => {
     const { method, url } = this.routes.auth.password.resend_forgot_password_link_and_otp;
-    return this.request({ method, url, params });
+    return this.request({ method, url, headers: { Authorization: otpLinkToken } });
   };
   protected verify_forgot_password_link_and_otp = (data: TParams) => {
     // NOTE: otpToken is coming from the previous response
