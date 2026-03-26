@@ -86,7 +86,7 @@ export const Toaster = (props: TToast) => {
 
   return (
     <div
-      className={`base:max-w-sm right-2 bottom-2 z-999 w-full max-w-xs rounded-xl border-2 transition-all duration-300 ease-in-out sm:max-w-md md:right-4 md:bottom-4 md:max-w-lg lg:right-8 lg:bottom-8 lg:max-w-xl ${
+      className={`base:max-w-sm fixed right-2 bottom-2 z-999 w-full max-w-xs rounded-xl border-2 transition-all duration-300 ease-in-out sm:max-w-md md:right-4 md:bottom-4 md:max-w-lg lg:right-8 lg:bottom-8 lg:max-w-xl ${
         visible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
       } ${className}`}
       style={{
