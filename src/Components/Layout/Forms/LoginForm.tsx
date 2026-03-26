@@ -5,6 +5,7 @@ import {
   Button,
   GradientText,
   SocialAuth,
+  Toaster,
 } from '@/Components/Ui';
 import { Checkbox, Input, Radio } from '@/Components/Ui/Input';
 import { LOGIN_INPUT_MAP_DATA } from '@/Constants';
@@ -16,13 +17,61 @@ import type { TLogin } from '@/Types/Schema.type';
 import { saveLocalToken, saveSessionToken } from '@/Utils/Storage.util';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, type UseFormSetError } from 'react-hook-form';
+
+const formatErrors = (errors: any[]) => {
+  const errorMap: Record<string, string[]> = {};
+  let globalErrors: string[] = [];
+
+  errors.forEach((err) => {
+    if (!err.field) {
+      globalErrors.push(err.message);
+      return;
+    }
+
+    if (!errorMap[err.field]) {
+      errorMap[err.field] = [];
+    }
+
+    errorMap[err.field].push(err.message);
+  });
+
+  return { errorMap, globalErrors };
+};
+
+const applyServerErrors = (
+  setError: UseFormSetError<any>,
+  errors?: { field: string; message: string }[],
+) => {
+  if (!errors) return;
+  const { errorMap, globalErrors } = formatErrors(errors);
+  console.log('🚀 ~ applyServerErrors ~ errorMap:', errorMap);
+
+  // field errors
+  Object.entries(errorMap).forEach(([field, messages]) => {
+    setError(field, {
+      type: 'server',
+      message: messages.join('\n'), // 👈 multiple messages combine
+    });
+  });
+
+  // global errors (no field)
+  if (globalErrors.length) {
+    setError('root.serverError', {
+      type: 'server',
+      message: globalErrors.join('\n'),
+    });
+    console.log('🚀 ~ applyServerErrors ~ globalErrors:', globalErrors);
+  }
+};
 
 export const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { removeParams, queryParams } = Hook.QueryParams();
   const { setUser } = UserStore();
-  const { mutateAsync, isPending } = Service.Auth.Login();
+  const { mutateAsync, isPending, error: apiError, isSuccess, data } = Service.Auth.Login();
+  console.log("🚀 ~ LoginForm ~ data:", data)
+  // console.log('🚀 ~ LoginForm ~ error:', );
 
   const {
     control,
@@ -31,6 +80,7 @@ export const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) =
     reset,
     register,
     watch,
+    setError,
   } = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -41,6 +91,7 @@ export const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) =
       remember: false,
     },
   });
+  console.log('🚀 ~ LoginForm ~ errors:', errors.root?.serverError?.message);
 
   const selectedMethod = watch('loginMethod');
 
@@ -80,8 +131,14 @@ export const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) =
           removeParams('login');
         }
       },
+      onError(error) {
+        console.log('🚀 ~ onSubmit ~ error:', error.errors);
+        applyServerErrors(setError, error.errors);
+      },
     });
   };
+
+  const rootError = errors.root?.serverError?.message || apiError?.message;
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-4">
       <GradientText
@@ -184,6 +241,8 @@ export const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) =
         </div>
         <AuthBottomInstructions />
       </BorderGradient>
+      {rootError && <Toaster type="error" title="Validation Error" description={rootError} />}
+      {isSuccess && <Toaster type="success" title="Login Success" description={data?.message} />}
     </form>
   );
 };
