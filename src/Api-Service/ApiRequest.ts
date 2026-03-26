@@ -1,6 +1,7 @@
 import { API_ROUTES_AND_METHODS, BACKEND_URL } from '@/Constants';
 import { getUserToken } from '@/Utils/Storage.util';
 import axios, { AxiosError, type AxiosInstance, type AxiosRequestConfig } from 'axios';
+import { ApiError } from './ApiError';
 
 export class ApiRequest {
   private baseUrl = `${BACKEND_URL}/api`;
@@ -26,13 +27,15 @@ export class ApiRequest {
       const { data } = await this.instance.request(config);
       return data;
     } catch (error) {
-      let message = 'Something went wrong!';
       if (error instanceof AxiosError) {
-        message = error.response?.data?.message || 'API Error occurred';
-      } else if (error instanceof Error) {
-        message = error.message;
+        const message = error.response?.data?.message || 'API Error occurred';
+        const errors = error.response?.data?.errors;
+        throw new ApiError(message, errors);
       }
-      throw new Error(message);
+      if (error instanceof Error) {
+        throw new ApiError(error.message);
+      }
+      throw new ApiError('Something went wrong!');
     }
   };
 }
