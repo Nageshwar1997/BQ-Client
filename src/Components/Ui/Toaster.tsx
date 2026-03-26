@@ -1,9 +1,9 @@
-import type { TToast, TToastKey } from '@/Types/Common.type';
+import type { TToast } from '@/Types/Common.type';
 import { Icon } from '@iconify/react';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from './Button';
 
-const cardConfig = (type: TToastKey) => {
+const cardConfig = (type: TToast['type']) => {
   switch (type) {
     case 'success':
       return {
@@ -136,7 +136,7 @@ export const Toaster = (props: TToast) => {
         {resolvedIsClosable && (
           <Icon
             icon="lucide:x"
-            className="text-neutral-gray-900 size-4 md:size-5 cursor-pointer"
+            className="text-neutral-gray-900 size-4 cursor-pointer md:size-5"
             onClick={handleClose}
           />
         )}

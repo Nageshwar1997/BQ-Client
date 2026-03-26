@@ -336,27 +336,37 @@ export interface IConfirmModal {
   };
 }
 
-export type TToastKey = 'success' | 'error' | 'warning' | 'default' | 'custom' | 'loading';
-
 interface IBaseToast extends TClassName {
   icon?: ReactNode;
-  isClosable?: boolean;
-  autoClose?: boolean;
-  closeTimer?: number;
   buttonProps?: Partial<IButton>;
 }
 
-export interface IDefaultToast extends IBaseToast {
+interface IDefaultToast extends IBaseToast {
+  type: 'success' | 'error' | 'warning' | 'default';
   title: string;
   description: string;
-  type: Exclude<TToastKey, 'custom'>;
+  isClosable?: boolean;
+  autoClose?: boolean;
+  closeTimer?: number;
 }
 
-export interface ICustomToast extends IBaseToast {
-  title?: never;
-  description?: never;
+interface ICustomToast extends IBaseToast {
   type: 'custom';
   children: ReactNode;
+  title?: never;
+  description?: never;
+  isClosable?: boolean;
+  autoClose?: boolean;
+  closeTimer?: number;
 }
 
-export type TToast = IDefaultToast | ICustomToast;
+interface ILoadingToast extends IBaseToast {
+  type: 'loading';
+  title: string;
+  description: string;
+  isClosable?: never;
+  autoClose?: never;
+  closeTimer?: never;
+}
+
+export type TToast = IDefaultToast | ICustomToast | ILoadingToast;
