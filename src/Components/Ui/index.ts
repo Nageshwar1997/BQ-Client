@@ -10,3 +10,4 @@ export { Resend } from './Resend';
 export { Theme } from './Theme';
 export { AuthBottomInstructions } from './AuthBottomInstructions';
 export { SocialAuth } from './SocialAuth';
+export { Toaster } from './Toaster';

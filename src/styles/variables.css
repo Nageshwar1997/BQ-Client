@@ -64,6 +64,9 @@
   --color-rose-c: var(--rose-c);
   --color-electric-purple-c: var(--electric-purple-c);
   --color-red-c: #ff0000;
+  --color-primary-red: rgb(var(--primary-red-rgb));
+  --color-primary-green: rgb(var(--primary-green-rgb));
+  --color-primary-yellow: rgb(var(--primary-yellow-rgb));
 
   /* Background Images & Gradients */
   --background-image-accent-duo: var(--accent-duo);
@@ -125,6 +128,9 @@
   --primary: rgb(var(--primary-rgb));
   --primary-invert-rgb: 0, 0, 0;
   --primary-invert: rgb(var(--primary-invert-rgb));
+  --primary-red-rgb: 248, 113, 113;
+  --primary-green-rgb: 74, 222, 128;
+  --primary-yellow-rgb: 253, 224, 71;
 
   /* Secondary */
   --secondary-rgb: 245, 245, 245;
@@ -174,6 +180,9 @@
   --primary: rgb(var(--primary-rgb));
   --primary-invert-rgb: 255, 255, 255;
   --primary-invert: rgb(var(--primary-invert-rgb));
+  --primary-red-rgb: 220, 38, 38;
+  --primary-green-rgb: 22, 163, 74;
+  --primary-yellow-rgb: 234, 179, 8;
 
   /* Secondary */
   --secondary-rgb: 28, 28, 28;

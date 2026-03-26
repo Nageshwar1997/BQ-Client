@@ -13,7 +13,16 @@ import type {
 } from 'react';
 
 import type { UseFormRegisterReturn } from 'react-hook-form';
-import type { TAddress, TChangePassword, TLogin, TRegister, TSendForgotPasswordLinkAndOtp, TSetPassword, TUpdatePassword, TVerifyForgotPasswordOtp } from './Schema.type';
+import type {
+  TAddress,
+  TChangePassword,
+  TLogin,
+  TRegister,
+  TSendForgotPasswordLinkAndOtp,
+  TSetPassword,
+  TUpdatePassword,
+  TVerifyForgotPasswordOtp,
+} from './Schema.type';
 import type { ICategory, IProduct, IReview, IShade, IUser } from './Api.type';
 import type { FOOTER_CATEGORIES } from '@/Constants';
 
@@ -50,7 +59,7 @@ export interface IVideo {
   ref?: RefObject<HTMLVideoElement | null>;
 }
 
-export interface IVideoPlayer extends TClassName, IVideo { }
+export interface IVideoPlayer extends TClassName, IVideo {}
 
 export type TScrollDirection = 'horizontal' | 'vertical';
 
@@ -164,7 +173,7 @@ export interface IRadio extends TClassName {
 
 export interface ISelect extends Omit<IBaseInput, 'icons' | 'needRef' | 'register'> {
   selectProps: SelectHTMLAttributes<HTMLSelectElement> &
-  Partial<Pick<InputHTMLAttributes<HTMLInputElement>, 'placeholder'>>;
+    Partial<Pick<InputHTMLAttributes<HTMLInputElement>, 'placeholder'>>;
   icons?: { left?: Omit<TInputIcon, 'text'> };
   options: TDropdownOption[];
   optionsClassName?: string;
@@ -326,3 +335,28 @@ export interface IConfirmModal {
     right?: Omit<IButton, 'pattern'>;
   };
 }
+
+export type TToastKey = 'success' | 'error' | 'warning' | 'default' | 'custom' | 'loading';
+
+interface IBaseToast extends TClassName {
+  icon?: ReactNode;
+  isClosable?: boolean;
+  autoClose?: boolean;
+  closeTimer?: number;
+  buttonProps?: Partial<IButton>;
+}
+
+export interface IDefaultToast extends IBaseToast {
+  title: string;
+  description: string;
+  type: Exclude<TToastKey, 'custom'>;
+}
+
+export interface ICustomToast extends IBaseToast {
+  title?: never;
+  description?: never;
+  type: 'custom';
+  children: ReactNode;
+}
+
+export type TToast = IDefaultToast | ICustomToast;
