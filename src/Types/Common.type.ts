@@ -341,29 +341,30 @@ interface IBaseToast extends TClassName {
   buttonProps?: Partial<IButton>;
 }
 
-interface IDefaultToast extends IBaseToast {
-  type: 'success' | 'error' | 'warning' | 'default';
-  title: string;
-  description: string;
+type TToastClosable = {
   isClosable?: boolean;
   autoClose?: boolean;
   closeTimer?: number;
+};
+
+type TTitleDescription = {
+  title: string;
+  description: string;
+};
+
+interface IDefaultToast extends IBaseToast, TToastClosable, TTitleDescription {
+  type: 'success' | 'error' | 'warning' | 'default';
 }
 
-interface ICustomToast extends IBaseToast {
+interface ICustomToast extends IBaseToast, TToastClosable {
   type: 'custom';
   children: ReactNode;
   title?: never;
   description?: never;
-  isClosable?: boolean;
-  autoClose?: boolean;
-  closeTimer?: number;
 }
 
-interface ILoadingToast extends IBaseToast {
+interface ILoadingToast extends IBaseToast, TTitleDescription {
   type: 'loading';
-  title: string;
-  description: string;
   isClosable?: never;
   autoClose?: never;
   closeTimer?: never;
