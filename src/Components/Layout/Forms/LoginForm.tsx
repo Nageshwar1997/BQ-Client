@@ -70,8 +70,6 @@ export const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) =
   const { removeParams, queryParams } = Hook.QueryParams();
   const { setUser } = UserStore();
   const { mutateAsync, isPending, error: apiError, isSuccess, data } = Service.Auth.Login();
-  console.log("🚀 ~ LoginForm ~ data:", data)
-  // console.log('🚀 ~ LoginForm ~ error:', );
 
   const {
     control,
@@ -118,18 +116,20 @@ export const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) =
 
     mutateAsync(finalData, {
       onSuccess(data) {
-        onLoginSuccess?.();
-        if (data.user) {
-          setUser(data.user);
-        }
-        if (bodyData.remember) {
-          saveLocalToken(data?.token);
-        } else {
-          saveSessionToken(data?.token);
-        }
-        if (queryParams.login === 'true') {
-          removeParams('login');
-        }
+        setTimeout(() => {
+          onLoginSuccess?.();
+          if (data.user) {
+            setUser(data.user);
+          }
+          if (bodyData.remember) {
+            saveLocalToken(data?.token);
+          } else {
+            saveSessionToken(data?.token);
+          }
+          if (queryParams.login === 'true') {
+            removeParams('login');
+          }
+        }, 1500);
       },
       onError(error) {
         console.log('🚀 ~ onSubmit ~ error:', error.errors);
