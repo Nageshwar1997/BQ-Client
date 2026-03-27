@@ -1,3 +1,4 @@
+import type { UseFormSetError } from 'react-hook-form';
 import {
   ALLOWED_IMAGE_FORMATS,
   ALLOWED_VIDEO_FORMATS,
@@ -335,4 +336,45 @@ export const zodMultipleFileOrUrl = ({
       zodCustomIssue(ctx, `${name} allows maximum ${maxVideos} video${maxVideos > 1 ? 's' : ''}.`);
     }
   });
+};
+
+export const formatZodErrors = (errors: { field: string; message: string }[]) => {
+  const errorMap: Record<string, string[]> = {};
+  let globalErrors: string[] = [];
+
+  errors.forEach((err) => {
+    if (!err.field) {
+      globalErrors.push(err.message);
+      return;
+    }
+
+    if (!errorMap[err.field]) {
+      errorMap[err.field] = [];
+    }
+
+    errorMap[err.field].push(err.message);
+  });
+
+  return { errorMap, globalErrors };
+};
+
+export const applyServerErrorsToForm = (
+  setter: UseFormSetError<any>,
+  errors?: { field: string; message: string }[],
+) => {
+  if (!errors) return;
+  const { errorMap, globalErrors } = formatZodErrors(errors);
+
+  // field errors
+  Object.entries(errorMap).forEach(([field, messages]) => {
+    setter(field, { type: 'server', message: messages.join('\n') });
+  });
+
+  // global errors (no field)
+  if (globalErrors.length) {
+    setter('root.serverError', {
+      type: 'server',
+      message: globalErrors.join('\n'),
+    });
+  }
 };

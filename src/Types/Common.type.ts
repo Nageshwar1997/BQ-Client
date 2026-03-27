@@ -352,18 +352,18 @@ type TTitleDescription = {
   description: string;
 };
 
-interface IDefaultToast extends IBaseToast, TToastClosable, TTitleDescription {
+export interface IDefaultToast extends IBaseToast, TToastClosable, TTitleDescription {
   type: 'success' | 'error' | 'warning' | 'default';
 }
 
-interface ICustomToast extends IBaseToast, TToastClosable {
+export interface ICustomToast extends IBaseToast, TToastClosable {
   type: 'custom';
   children: ReactNode;
   title?: never;
   description?: never;
 }
 
-interface ILoadingToast extends IBaseToast, TTitleDescription {
+export interface ILoadingToast extends IBaseToast, TTitleDescription {
   type: 'loading';
   isClosable?: never;
   autoClose?: never;

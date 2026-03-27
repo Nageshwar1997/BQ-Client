@@ -1,16 +1,26 @@
 import { QUERY_KEYS } from '@/Constants';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AuthApi } from '../Api/Auth.api';
-import { toaster } from '@/Utils/Common.util';
+import { custom_toast, toaster } from '@/Utils/Common.util';
 import { UserStore } from '@/Stores';
+import { formatZodErrors } from '@/Utils/Zod.util';
 
 export class AuthService extends AuthApi {
   public Login = () => {
     return useMutation({
       mutationKey: QUERY_KEYS.auth.login,
       mutationFn: this.login,
-      onSuccess: ({ message }) => toaster('success', message),
-      onError: ({ message }) => toaster('error', message),
+      onSuccess: ({ message }) => {
+        custom_toast.success({
+          title: 'Login Success',
+          description: message,
+        });
+      },
+      onError: ({ errors, message }) => {
+        const { globalErrors } = formatZodErrors(errors || []);
+        const errMsg = globalErrors.join('\n') || message || 'Something went wrong';
+        custom_toast.error({ title: 'Login Failed', description: errMsg });
+      },
     });
   };
   public SendOtp = () => {

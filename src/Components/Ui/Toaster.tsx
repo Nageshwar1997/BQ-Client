@@ -1,41 +1,29 @@
-import type { TToast } from '@/Types/Common.type';
 import { Icon } from '@iconify/react';
 import { useEffect, useRef, useState } from 'react';
+import type { TToast } from '@/Types/Common.type';
 import { Button } from './Button';
+import { ToastStore } from '@/Stores';
+
+type Props = TToast & { id: string };
 
 const cardConfig = (type: TToast['type']) => {
   switch (type) {
     case 'success':
-      return {
-        iconName: 'solar:check-circle-linear',
-        rgb: 'var(--primary-green-rgb)',
-      };
+      return { iconName: 'solar:check-circle-linear', rgb: 'var(--primary-green-rgb)' };
     case 'error':
-      return {
-        iconName: 'solar:danger-triangle-linear',
-        rgb: 'var(--primary-red-rgb)',
-      };
+      return { iconName: 'solar:danger-triangle-linear', rgb: 'var(--primary-red-rgb)' };
     case 'warning':
-      return {
-        iconName: 'solar:danger-triangle-linear',
-        rgb: 'var(--primary-yellow-rgb)',
-      };
+      return { iconName: 'solar:danger-triangle-linear', rgb: 'var(--primary-yellow-rgb)' };
     case 'loading':
-      return {
-        iconName: 'quill:loading-spin',
-        rgb: 'var(--primary-rgb)',
-      };
+      return { iconName: 'quill:loading-spin', rgb: 'var(--primary-rgb)' };
     case 'default':
     case 'custom':
     default:
-      return {
-        iconName: 'solar:info-circle-outline',
-        rgb: 'var(--primary-rgb)',
-      };
+      return { iconName: 'solar:info-circle-outline', rgb: 'var(--primary-rgb)' };
   }
 };
 
-export const Toaster = (props: TToast) => {
+export const Toaster = (props: Props) => {
   const {
     className = '',
     type,
@@ -45,6 +33,8 @@ export const Toaster = (props: TToast) => {
     autoClose = true,
     closeTimer = 5000,
   } = props;
+
+  const { removeToast } = ToastStore();
 
   const [visible, setVisible] = useState(false);
   const [mounted, setMounted] = useState(true);
@@ -59,6 +49,7 @@ export const Toaster = (props: TToast) => {
 
     timeoutRef.current = setTimeout(() => {
       setMounted(false);
+      removeToast(props.id);
     }, 300);
   };
 
@@ -86,7 +77,7 @@ export const Toaster = (props: TToast) => {
 
   return (
     <div
-      className={`base:max-w-sm fixed right-2 bottom-2 z-999 w-full max-w-xs rounded-xl border-2 transition-all duration-300 ease-in-out sm:max-w-md md:right-4 md:bottom-4 md:max-w-lg lg:right-8 lg:bottom-8 lg:max-w-xl ${
+      className={`rounded-xl border-2 transition-all duration-300 ease-in-out ${
         visible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
       } ${className}`}
       style={{
@@ -115,7 +106,7 @@ export const Toaster = (props: TToast) => {
             )}
 
             {!isCustom && 'description' in props && (
-              <p className="text-tertiary line-clamp-2 text-[9px]/3 md:text-xs">
+              <p className="text-tertiary line-clamp-2 text-[9px]/3 whitespace-pre-line md:text-xs">
                 {props.description}
               </p>
             )}
@@ -136,7 +127,7 @@ export const Toaster = (props: TToast) => {
         {resolvedIsClosable && (
           <Icon
             icon="lucide:x"
-            className="text-neutral-gray-900 size-4 cursor-pointer md:size-5"
+            className="text-primary cursor-pointer md:size-5"
             onClick={handleClose}
           />
         )}
@@ -144,3 +135,19 @@ export const Toaster = (props: TToast) => {
     </div>
   );
 };
+
+export const ToastContainer = () => {
+  const { toasts } = ToastStore();
+
+  if (toasts.length === 0) return null;
+
+  return (
+    <div className="base:max-w-sm fixed right-2 bottom-2 z-999 flex w-full max-w-xs flex-col gap-2 sm:max-w-md md:right-4 md:bottom-4 md:max-w-lg lg:right-8 lg:bottom-8 lg:max-w-xl">
+      {toasts.map((toast) => (
+        <Toaster key={toast.id} {...toast} id={toast.id} />
+      ))}
+    </div>
+  );
+};
+
+//

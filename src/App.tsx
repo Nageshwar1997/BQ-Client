@@ -6,6 +6,7 @@ import { Toaster } from 'react-hot-toast';
 import { Routes } from './Routes';
 import { ThemeStore } from './Stores';
 import { VITE_IS_DEV } from './Envs';
+import { ToastContainer } from './Components/Ui/Toaster';
 
 function App() {
   const { theme } = ThemeStore();
@@ -25,6 +26,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Toaster position="top-center" />
+      <ToastContainer />
       <div className="bg-primary-invert text-primary h-full max-h-dvh min-h-dvh w-full max-w-dvw min-w-dvw overflow-y-scroll">
         <div className="mx-auto h-full w-full max-w-480">
           <RouterProvider router={Routes} />

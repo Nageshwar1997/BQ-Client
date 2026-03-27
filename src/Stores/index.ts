@@ -1,6 +1,7 @@
 import { useActionStore } from './Action.store';
 import { useCartStore } from './Cart.store';
 import { useThemeStore } from './Theme.store';
+import { useToastStore } from './Toast.store';
 import { useUserStore } from './User.store';
 import { useWishlistStore } from './Wishlist.store';
 
@@ -9,3 +10,4 @@ export const ActionStore = useActionStore;
 export const UserStore = useUserStore;
 export const WishlistStore = useWishlistStore;
 export const CartStore = useCartStore;
+export const ToastStore = useToastStore;

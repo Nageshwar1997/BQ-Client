@@ -1,7 +1,8 @@
-import toast from 'react-hot-toast';
+import toast  from 'react-hot-toast';
 import { DEFAULT_POSTER, DUMMY_FEEDBACKS } from '@/Constants';
 import { HIGHLIGHTED_CATEGORIES } from '@/Constants/Navbar';
-import type { IButton } from '@/Types/Common.type';
+import type { IButton, IDefaultToast, ILoadingToast, TToast } from '@/Types/Common.type';
+import { useToastStore } from '@/Stores/Toast.store';
 
 export const toaster = (type: 'success' | 'error' = 'success', error: string | Error) => {
   const message = error instanceof Error ? error.message : String(error);
@@ -168,4 +169,19 @@ export const debounce = <Args extends unknown[]>(
     clearTimeout(timer);
     timer = setTimeout(() => fn(...args), delay);
   };
+};
+
+const { addToast } = useToastStore.getState();
+
+export const custom_toast = {
+  
+  success: (data: Omit<TToast, 'type'>) => addToast({ ...data, type: 'success' } as IDefaultToast),
+
+  error: (data: Omit<TToast, 'type'>) => addToast({ ...data, type: 'error' } as IDefaultToast),
+
+  warning: (data: Omit<TToast, 'type'>) => addToast({ ...data, type: 'warning' } as IDefaultToast),
+
+  loading: (data: Omit<TToast, 'type'>) => addToast({ ...data, type: 'loading' } as ILoadingToast),
+
+  custom: (data: TToast) => addToast(data),
 };
