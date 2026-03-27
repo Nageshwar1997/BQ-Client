@@ -9,7 +9,7 @@ import { Hook } from '@/Hooks';
 import { InvalidateQueries } from '../InvalidateQueries';
 import type { IApiReviewQueryProps } from '@/Types/Common.type';
 import { QUERY_KEYS } from '@/Constants';
-import { toaster } from '@/Utils/Common.util';
+import { oldToaster } from '@/Utils/Common.util';
 import { UserStore } from '@/Stores';
 
 export class ReviewService extends ReviewApi {
@@ -22,13 +22,13 @@ export class ReviewService extends ReviewApi {
       mutationKey: QUERY_KEYS.reviews.add_review,
       mutationFn: (data: FormData) => this.add_review(data, pathParams.productId ?? ''),
       onSuccess: ({ message }) => {
-        toaster('success', message);
+        oldToaster('success', message);
         invalidate.multiple([
           QUERY_KEYS.products.product,
           QUERY_KEYS.reviews.get_reviews_by_product_id,
         ]);
       },
-      onError: ({ message }) => toaster('error', message),
+      onError: ({ message }) => oldToaster('error', message),
     });
   };
 
@@ -38,8 +38,8 @@ export class ReviewService extends ReviewApi {
     return useMutation({
       mutationKey: [...QUERY_KEYS.reviews.like_dislike_helpful, authenticated],
       mutationFn: this.like_dislike_helpful,
-      onSuccess: ({ message }) => toaster('success', message),
-      onError: ({ message }) => toaster('error', message),
+      onSuccess: ({ message }) => oldToaster('success', message),
+      onError: ({ message }) => oldToaster('error', message),
     });
   };
 

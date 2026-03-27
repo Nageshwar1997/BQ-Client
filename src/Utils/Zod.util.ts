@@ -1,4 +1,4 @@
-import type { UseFormSetError } from 'react-hook-form';
+import type { FieldValues, Path, UseFormSetError } from 'react-hook-form';
 import {
   ALLOWED_IMAGE_FORMATS,
   ALLOWED_VIDEO_FORMATS,
@@ -16,7 +16,7 @@ import type {
   ZodNumberConfigs,
 } from '@/Types/Zod.type';
 import z, { type RefinementCtx } from 'zod';
-import { nullCheck } from './Common.util';
+import { formatErrors, nullCheck } from './Common.util';
 
 export const zodCustomIssue = (
   ctx: RefinementCtx,
@@ -338,41 +338,25 @@ export const zodMultipleFileOrUrl = ({
   });
 };
 
-export const formatZodErrors = (errors: { field: string; message: string }[]) => {
-  const errorMap: Record<string, string[]> = {};
-  let globalErrors: string[] = [];
-
-  errors.forEach((err) => {
-    if (!err.field) {
-      globalErrors.push(err.message);
-      return;
-    }
-
-    if (!errorMap[err.field]) {
-      errorMap[err.field] = [];
-    }
-
-    errorMap[err.field].push(err.message);
-  });
-
-  return { errorMap, globalErrors };
-};
-
-export const applyServerErrorsToForm = (
-  setter: UseFormSetError<any>,
+export const applyServerErrorsToFormFields = <T extends FieldValues>(
+  setError: UseFormSetError<T>,
   errors?: { field: string; message: string }[],
 ) => {
   if (!errors) return;
-  const { errorMap, globalErrors } = formatZodErrors(errors);
+
+  const { fieldErrors, globalErrors } = formatErrors(errors);
 
   // field errors
-  Object.entries(errorMap).forEach(([field, messages]) => {
-    setter(field, { type: 'server', message: messages.join('\n') });
+  Object.entries(fieldErrors).forEach(([field, messages]) => {
+    setError(field as Path<T>, {
+      type: 'server',
+      message: messages.join('\n'),
+    });
   });
 
-  // global errors (no field)
+  // root/global errors
   if (globalErrors.length) {
-    setter('root.serverError', {
+    setError('root.serverError' as `root.${string}`, {
       type: 'server',
       message: globalErrors.join('\n'),
     });

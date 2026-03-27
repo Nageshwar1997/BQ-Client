@@ -9,7 +9,7 @@ import { Service } from '@/Api-Service';
 import { Hook } from '@/Hooks';
 import { ADD_ADDRESS_INPUT_MAP_DATA, ADDRESS_DEFAULT_VALUES } from '@/Constants';
 import { addressSchema } from '@/Schemas';
-import { deepEqual, toaster } from '@/Utils/Common.util';
+import { deepEqual, oldToaster } from '@/Utils/Common.util';
 import { Button, Hr } from '@/Components/Ui';
 import { Checkbox, Input, Radio, Select } from '@/Components/Ui/Input';
 
@@ -79,7 +79,7 @@ export const AddressForm = ({
       });
 
       if (!Object.keys(changedFields).length && !removedOptionalFields.length) {
-        toaster('error', 'No changes made to update address!');
+        oldToaster('error', 'No changes made to update address!');
         return;
       }
 

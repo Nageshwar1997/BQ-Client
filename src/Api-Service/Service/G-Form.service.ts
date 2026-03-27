@@ -1,15 +1,15 @@
 import { useMutation } from '@tanstack/react-query';
 import { GFormApi } from '../Api/G-Form.api';
 import { QUERY_KEYS } from '@/Constants';
-import { toaster } from '@/Utils/Common.util';
+import { oldToaster } from '@/Utils/Common.util';
 
 export class GFormService extends GFormApi {
   public ContactUs = () => {
     return useMutation({
       mutationKey: QUERY_KEYS.g_form.contact_us,
       mutationFn: this.contact_us,
-      onSuccess: ({ message }) => toaster('success', message),
-      onError: ({ message }) => toaster('error', message),
+      onSuccess: ({ message }) => oldToaster('success', message),
+      onError: ({ message }) => oldToaster('error', message),
     });
   };
 
@@ -17,8 +17,8 @@ export class GFormService extends GFormApi {
     return useMutation({
       mutationKey: QUERY_KEYS.g_form.job_application,
       mutationFn: this.job_application,
-      onSuccess: ({ message }) => toaster('success', message),
-      onError: ({ message }) => toaster('error', message),
+      onSuccess: ({ message }) => oldToaster('success', message),
+      onError: ({ message }) => oldToaster('error', message),
     });
   };
 }

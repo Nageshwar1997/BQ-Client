@@ -2,7 +2,7 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tansta
 import { AddressApi } from '../Api/Address.api';
 import { InvalidateQueries } from '../InvalidateQueries';
 import { QUERY_KEYS } from '@/Constants';
-import { toaster } from '@/Utils/Common.util';
+import { oldToaster } from '@/Utils/Common.util';
 
 export class AddressService extends AddressApi {
   public GetAddresses = () => {
@@ -22,8 +22,8 @@ export class AddressService extends AddressApi {
     return useMutation({
       mutationKey: QUERY_KEYS.addresses.add,
       mutationFn: this.add_address,
-      onSuccess: ({ message }) => (toaster('success', message), invalidate.addresses()),
-      onError: ({ message }) => toaster('error', message),
+      onSuccess: ({ message }) => (oldToaster('success', message), invalidate.addresses()),
+      onError: ({ message }) => oldToaster('error', message),
     });
   };
 
@@ -33,8 +33,8 @@ export class AddressService extends AddressApi {
     return useMutation({
       mutationKey: QUERY_KEYS.addresses.update,
       mutationFn: this.update_address,
-      onSuccess: ({ message }) => (toaster('success', message), invalidate.addresses()),
-      onError: ({ message }) => toaster('error', message.replace(' Go Back', '')),
+      onSuccess: ({ message }) => (oldToaster('success', message), invalidate.addresses()),
+      onError: ({ message }) => oldToaster('error', message.replace(' Go Back', '')),
     });
   };
 
@@ -44,8 +44,8 @@ export class AddressService extends AddressApi {
     return useMutation({
       mutationKey: QUERY_KEYS.addresses.delete,
       mutationFn: this.delete_address,
-      onSuccess: ({ message }) => (toaster('success', message), invalidate.addresses()),
-      onError: ({ message }) => toaster('error', message),
+      onSuccess: ({ message }) => (oldToaster('success', message), invalidate.addresses()),
+      onError: ({ message }) => oldToaster('error', message),
     });
   };
 }

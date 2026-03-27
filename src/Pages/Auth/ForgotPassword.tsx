@@ -18,7 +18,7 @@ import type {
   TVerifyForgotPasswordOtp,
 } from '@/Types/Schema.type';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { toaster } from '@/Utils/Common.util';
+import { oldToaster } from '@/Utils/Common.util';
 import { saveSessionToken } from '@/Utils/Storage.util';
 import { UserStore } from '@/Stores';
 
@@ -251,7 +251,7 @@ const ForgotPassword = () => {
 
   useEffect(() => {
     if ((step === 'verify' || step === 'set') && !token) {
-      toaster('error', 'Session expired. Please start again.');
+      oldToaster('error', 'Session expired. Please start again.');
       goToSend();
       return;
     }
@@ -260,7 +260,7 @@ const ForgotPassword = () => {
       if (isValidToken) return;
 
       if (isError) {
-        toaster('error', error?.message);
+        oldToaster('error', error?.message);
         goToSend();
       }
     }

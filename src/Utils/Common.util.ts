@@ -1,10 +1,10 @@
-import toast  from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { DEFAULT_POSTER, DUMMY_FEEDBACKS } from '@/Constants';
 import { HIGHLIGHTED_CATEGORIES } from '@/Constants/Navbar';
-import type { IButton, IDefaultToast, ILoadingToast, TToast } from '@/Types/Common.type';
-import { useToastStore } from '@/Stores/Toast.store';
+import type { IButton, ICustomToast, IDefaultToast, ILoadingToast } from '@/Types/Common.type';
+import { ToastStore } from '@/Stores';
 
-export const toaster = (type: 'success' | 'error' = 'success', error: string | Error) => {
+export const oldToaster = (type: 'success' | 'error' = 'success', error: string | Error) => {
   const message = error instanceof Error ? error.message : String(error);
   if (type === 'error') {
     toast.error(message);
@@ -171,17 +171,35 @@ export const debounce = <Args extends unknown[]>(
   };
 };
 
-const { addToast } = useToastStore.getState();
+export const formatErrors = (errors?: { field: string; message: string }[]) => {
+  const fieldErrors: Record<string, string[]> = {};
+  let globalErrors: string[] = [];
 
-export const custom_toast = {
-  
-  success: (data: Omit<TToast, 'type'>) => addToast({ ...data, type: 'success' } as IDefaultToast),
+  errors?.forEach((err) => {
+    if (!err.field) {
+      globalErrors.push(err.message);
+      return;
+    }
 
-  error: (data: Omit<TToast, 'type'>) => addToast({ ...data, type: 'error' } as IDefaultToast),
+    if (!fieldErrors[err.field]) {
+      fieldErrors[err.field] = [];
+    }
 
-  warning: (data: Omit<TToast, 'type'>) => addToast({ ...data, type: 'warning' } as IDefaultToast),
+    fieldErrors[err.field].push(err.message);
+  });
 
-  loading: (data: Omit<TToast, 'type'>) => addToast({ ...data, type: 'loading' } as ILoadingToast),
+  return { fieldErrors, globalErrors };
+};
 
-  custom: (data: TToast) => addToast(data),
+const { addToast } = ToastStore.getState();
+export const toaster = {
+  success: (data: Omit<IDefaultToast, 'type'>) => addToast({ ...data, type: 'success' }),
+
+  error: (data: Omit<IDefaultToast, 'type'>) => addToast({ ...data, type: 'error' }),
+
+  warning: (data: Omit<IDefaultToast, 'type'>) => addToast({ ...data, type: 'warning' }),
+
+  loading: (data: Omit<ILoadingToast, 'type'>) => addToast({ ...data, type: 'loading' }),
+
+  custom: (data: ICustomToast) => addToast(data),
 };

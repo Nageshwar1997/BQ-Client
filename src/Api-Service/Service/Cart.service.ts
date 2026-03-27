@@ -3,7 +3,7 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tansta
 import { CartApi } from '../Api/Cart.api';
 import { InvalidateQueries } from '../InvalidateQueries';
 import { QUERY_KEYS } from '@/Constants';
-import { toaster } from '@/Utils/Common.util';
+import { oldToaster } from '@/Utils/Common.util';
 import { Hook } from '@/Hooks';
 import { UserStore } from '@/Stores';
 
@@ -15,8 +15,8 @@ export class CartService extends CartApi {
     return useMutation({
       mutationKey: QUERY_KEYS.cart_products.add,
       mutationFn: this.add_product_to_cart,
-      onSuccess: ({ message }) => toaster('success', message),
-      onError: ({ message }) => toaster('error', message),
+      onSuccess: ({ message }) => oldToaster('success', message),
+      onError: ({ message }) => oldToaster('error', message),
       onSettled: invalidate.cart,
     });
   };
@@ -28,8 +28,8 @@ export class CartService extends CartApi {
     return useMutation({
       mutationKey: QUERY_KEYS.cart_products.update_quantity,
       mutationFn: this.update_cart_product_quantity,
-      onSuccess: ({ message }) => toaster('success', message),
-      onError: ({ message }) => toaster('error', message),
+      onSuccess: ({ message }) => oldToaster('success', message),
+      onError: ({ message }) => oldToaster('error', message),
       onSettled: invalidate.cart,
     });
   };
@@ -41,8 +41,8 @@ export class CartService extends CartApi {
     return useMutation({
       mutationKey: QUERY_KEYS.cart_products.remove,
       mutationFn: this.remove_product_from_cart,
-      onSuccess: ({ message }) => toaster('success', message),
-      onError: ({ message }) => toaster('error', message),
+      onSuccess: ({ message }) => oldToaster('success', message),
+      onError: ({ message }) => oldToaster('error', message),
       onSettled: invalidate.cart,
     });
   };
@@ -54,8 +54,8 @@ export class CartService extends CartApi {
     return useMutation({
       mutationKey: QUERY_KEYS.carts.clear,
       mutationFn: this.clear_cart,
-      onSuccess: ({ message }) => toaster('success', message),
-      onError: ({ message }) => toaster('error', message),
+      onSuccess: ({ message }) => oldToaster('success', message),
+      onError: ({ message }) => oldToaster('error', message),
       onSettled: invalidate.cart,
     });
   };

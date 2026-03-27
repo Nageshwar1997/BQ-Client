@@ -1,25 +1,24 @@
 import { QUERY_KEYS } from '@/Constants';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AuthApi } from '../Api/Auth.api';
-import { custom_toast, toaster } from '@/Utils/Common.util';
+import { toaster, oldToaster, formatErrors } from '@/Utils/Common.util';
 import { UserStore } from '@/Stores';
-import { formatZodErrors } from '@/Utils/Zod.util';
 
 export class AuthService extends AuthApi {
   public Login = () => {
     return useMutation({
       mutationKey: QUERY_KEYS.auth.login,
       mutationFn: this.login,
-      onSuccess: ({ message }) => {
-        custom_toast.success({
-          title: 'Login Success',
-          description: message,
-        });
-      },
+      onSuccess: ({ message }) => toaster.success({ title: 'Login Success', description: message }),
       onError: ({ errors, message }) => {
-        const { globalErrors } = formatZodErrors(errors || []);
-        const errMsg = globalErrors.join('\n') || message || 'Something went wrong';
-        custom_toast.error({ title: 'Login Failed', description: errMsg });
+        const { globalErrors } = formatErrors(errors);
+        if (globalErrors.length) {
+          globalErrors.forEach((error) => {
+            toaster.error({ title: 'Login Failed', description: error });
+          });
+        } else {
+          toaster.error({ title: 'Login Failed', description: message });
+        }
       },
     });
   };
@@ -27,24 +26,24 @@ export class AuthService extends AuthApi {
     return useMutation({
       mutationKey: QUERY_KEYS.auth.register.send_otp,
       mutationFn: this.send_otp,
-      onSuccess: ({ message }) => toaster('success', message),
-      onError: ({ message }) => toaster('error', message),
+      onSuccess: ({ message }) => oldToaster('success', message),
+      onError: ({ message }) => oldToaster('error', message),
     });
   };
   public ResendOtp = () => {
     return useMutation({
       mutationKey: QUERY_KEYS.auth.register.resend_otp,
       mutationFn: this.resend_otp,
-      onSuccess: ({ message }) => toaster('success', message),
-      onError: ({ message }) => toaster('error', message.replace(' Go Back', '')),
+      onSuccess: ({ message }) => oldToaster('success', message),
+      onError: ({ message }) => oldToaster('error', message.replace(' Go Back', '')),
     });
   };
   public VerifyOtpAndRegister = () => {
     return useMutation({
       mutationKey: QUERY_KEYS.auth.register.verify_otp,
       mutationFn: this.verify_otp_and_register,
-      onSuccess: ({ message }) => toaster('success', message),
-      onError: ({ message }) => toaster('error', message),
+      onSuccess: ({ message }) => oldToaster('success', message),
+      onError: ({ message }) => oldToaster('error', message),
     });
   };
   public Logout = () => {
@@ -59,24 +58,24 @@ export class AuthService extends AuthApi {
     return useMutation({
       mutationKey: QUERY_KEYS.auth.password.send_forgot_password_link_and_otp,
       mutationFn: this.send_forgot_password_link_and_otp,
-      onSuccess: ({ message }) => toaster('success', message),
-      onError: ({ message }) => toaster('error', message),
+      onSuccess: ({ message }) => oldToaster('success', message),
+      onError: ({ message }) => oldToaster('error', message),
     });
   };
   public ResendForgotPasswordLinkAndOtp = () => {
     return useMutation({
       mutationKey: QUERY_KEYS.auth.password.resend_forgot_password_link_and_otp,
       mutationFn: this.resend_forgot_password_link_and_otp,
-      onSuccess: ({ message }) => toaster('success', message),
-      onError: ({ message }) => toaster('error', message),
+      onSuccess: ({ message }) => oldToaster('success', message),
+      onError: ({ message }) => oldToaster('error', message),
     });
   };
   public VerifyForgotPasswordOtp = () => {
     return useMutation({
       mutationKey: QUERY_KEYS.auth.password.verify_forgot_password_otp,
       mutationFn: this.verify_forgot_password_otp,
-      onSuccess: ({ message }) => toaster('success', message),
-      onError: ({ message }) => toaster('error', message),
+      onSuccess: ({ message }) => oldToaster('success', message),
+      onError: ({ message }) => oldToaster('error', message),
     });
   };
   public ValidateForgotPasswordToken = (token: string) => {
@@ -91,8 +90,8 @@ export class AuthService extends AuthApi {
     return useMutation({
       mutationKey: QUERY_KEYS.auth.password.set_forgot_password,
       mutationFn: this.set_forgot_password,
-      onSuccess: ({ message }) => toaster('success', message),
-      onError: ({ message }) => toaster('error', message),
+      onSuccess: ({ message }) => oldToaster('success', message),
+      onError: ({ message }) => oldToaster('error', message),
     });
   };
 }

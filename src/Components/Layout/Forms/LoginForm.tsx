@@ -17,7 +17,7 @@ import { saveLocalToken, saveSessionToken } from '@/Utils/Storage.util';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { applyServerErrorsToForm } from '@/Utils/Zod.util';
+import { applyServerErrorsToFormFields } from '@/Utils/Zod.util';
 
 export const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -84,7 +84,7 @@ export const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) =
         }
       },
       onError(error) {
-        applyServerErrorsToForm(setError, error.errors);
+        applyServerErrorsToFormFields(setError, error.errors);
       },
     });
   };
