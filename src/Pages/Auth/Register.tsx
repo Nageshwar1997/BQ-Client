@@ -245,8 +245,8 @@ const Register = () => {
     defaultValues: { email: '' },
   });
 
-  const onSubmit = async (bodyData: z.infer<typeof sendOtpSchema>) => {
-    await mutateAsync(bodyData.email);
+  const onSubmit = async (data: z.infer<typeof sendOtpSchema>) => {
+    await mutateAsync(data);
   };
 
   const email = watch('email');
