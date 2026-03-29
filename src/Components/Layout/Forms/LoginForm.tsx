@@ -60,6 +60,7 @@ export const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) =
   const onSubmit = async (bodyData: TLogin) => {
     const finalData: Partial<TLogin> = {
       password: bodyData.password,
+      loginMethod: bodyData.loginMethod,
     };
 
     if (bodyData.loginMethod === 'email' && bodyData.email) {
@@ -84,7 +85,7 @@ export const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) =
         }
       },
       onError(error) {
-        applyServerErrorsToFormFields(setError, error.errors);
+        applyServerErrorsToFormFields(setError, error.fieldErrors);
       },
     });
   };

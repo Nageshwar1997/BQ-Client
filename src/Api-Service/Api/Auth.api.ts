@@ -1,4 +1,4 @@
-import type { TLogin } from '@/Types/Schema.type';
+import type { TLogin, TRegister } from '@/Types/Schema.type';
 import type { TParams } from '@/Types/Common.type';
 import { ApiRequest } from '../ApiRequest';
 
@@ -10,9 +10,9 @@ export class AuthApi extends ApiRequest {
     const { method, url } = this.routes.auth.logout;
     return this.request({ method, url: `${url}/${userId}` });
   };
-  protected send_otp = (email: string) => {
+  protected send_otp = (data: Pick<TRegister, 'email'>) => {
     const { method, url } = this.routes.auth.register.send_otp;
-    return this.request({ method, url, params: { email } });
+    return this.request({ method, url, data });
   };
   protected resend_otp = (params: TParams) => {
     const { method, url } = this.routes.auth.register.resend_otp;

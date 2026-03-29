@@ -12,10 +12,10 @@ const AuthRedirect = ({ children }: { children: JSX.Element }) => {
   const { isLoading } = Hook.AuthCheck(!!token);
   const { state } = Hook.PathParams();
 
-  if (authenticated) {
-    const from = state?.from?.pathname || '/';
-    return <Navigate to={from} replace />;
-  }
+  // if (authenticated) {
+  //   const from = state?.from?.pathname || '/';
+  //   return <Navigate to={from} replace />;
+  // }
 
   return (
     <>

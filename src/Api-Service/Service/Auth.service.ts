@@ -1,7 +1,7 @@
 import { QUERY_KEYS } from '@/Constants';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AuthApi } from '../Api/Auth.api';
-import { toaster, oldToaster, formatErrors } from '@/Utils/Common.util';
+import { toaster, oldToaster } from '@/Utils/Common.util';
 import { UserStore } from '@/Stores';
 
 export class AuthService extends AuthApi {
@@ -10,9 +10,8 @@ export class AuthService extends AuthApi {
       mutationKey: QUERY_KEYS.auth.login,
       mutationFn: this.login,
       onSuccess: ({ message }) => toaster.success({ title: 'Login Success', description: message }),
-      onError: ({ errors, message }) => {
-        const { globalErrors } = formatErrors(errors);
-        if (globalErrors.length) {
+      onError: ({ globalErrors, message }) => {
+        if (globalErrors?.length) {
           globalErrors.forEach((error) => {
             toaster.error({ title: 'Login Failed', description: error });
           });

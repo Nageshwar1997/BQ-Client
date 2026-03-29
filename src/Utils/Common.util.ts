@@ -171,26 +171,6 @@ export const debounce = <Args extends unknown[]>(
   };
 };
 
-export const formatErrors = (errors?: { field: string; message: string }[]) => {
-  const fieldErrors: Record<string, string[]> = {};
-  let globalErrors: string[] = [];
-
-  errors?.forEach((err) => {
-    if (!err.field) {
-      globalErrors.push(err.message);
-      return;
-    }
-
-    if (!fieldErrors[err.field]) {
-      fieldErrors[err.field] = [];
-    }
-
-    fieldErrors[err.field].push(err.message);
-  });
-
-  return { fieldErrors, globalErrors };
-};
-
 const { addToast } = ToastStore.getState();
 export const toaster = {
   success: (data: Omit<IDefaultToast, 'type'>) => addToast({ ...data, type: 'success' }),

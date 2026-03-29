@@ -16,7 +16,8 @@ import type {
   ZodNumberConfigs,
 } from '@/Types/Zod.type';
 import z, { type RefinementCtx } from 'zod';
-import { formatErrors, nullCheck } from './Common.util';
+import { nullCheck } from './Common.util';
+import type { TFieldErrors } from '@/Api-Service/ApiError';
 
 export const zodCustomIssue = (
   ctx: RefinementCtx,
@@ -340,25 +341,15 @@ export const zodMultipleFileOrUrl = ({
 
 export const applyServerErrorsToFormFields = <T extends FieldValues>(
   setError: UseFormSetError<T>,
-  errors?: { field: string; message: string }[],
+  errors?: TFieldErrors,
 ) => {
-  if (!errors) return;
-
-  const { fieldErrors, globalErrors } = formatErrors(errors);
+  if (!errors?.length) return;
 
   // field errors
-  Object.entries(fieldErrors).forEach(([field, messages]) => {
+  Object.entries(errors).forEach(([field, messages]) => {
     setError(field as Path<T>, {
       type: 'server',
       message: messages.join('\n'),
     });
   });
-
-  // root/global errors
-  if (globalErrors.length) {
-    setError('root.serverError' as `root.${string}`, {
-      type: 'server',
-      message: globalErrors.join('\n'),
-    });
-  }
 };

@@ -1,8 +1,13 @@
-export class ApiError extends Error {
-  errors?: { field: string; message: string }[];
+export type TFieldErrors = Record<string, string[]>;
 
-  constructor(message: string, errors?: { field: string; message: string }[]) {
-    super(message);
-    this.errors = errors;
+export class ApiError extends Error {
+  fieldErrors?: TFieldErrors;
+  globalErrors?: string[];
+
+  constructor(params: { message: string; fieldErrors?: TFieldErrors; globalErrors?: string[] }) {
+    super(params.message);
+
+    this.fieldErrors = params.fieldErrors;
+    this.globalErrors = params.globalErrors;
   }
 }

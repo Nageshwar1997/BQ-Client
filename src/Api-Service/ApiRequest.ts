@@ -29,13 +29,14 @@ export class ApiRequest {
     } catch (error) {
       if (error instanceof AxiosError) {
         const message = error.response?.data?.message || 'API Error occurred';
-        const errors = error.response?.data?.errors;
-        throw new ApiError(message, errors);
+        const globalErrors = error.response?.data?.globalErrors;
+        const fieldErrors = error.response?.data?.fieldErrors;
+        throw new ApiError({ message, globalErrors, fieldErrors });
       }
       if (error instanceof Error) {
-        throw new ApiError(error.message);
+        throw new ApiError({ message: error.message });
       }
-      throw new ApiError('Something went wrong!');
+      throw new ApiError({ message: 'Something went wrong!' });
     }
   };
 }
