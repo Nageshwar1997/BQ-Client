@@ -31,12 +31,13 @@ export class ApiRequest {
         const message = error.response?.data?.message || 'API Error occurred';
         const globalErrors = error.response?.data?.globalErrors;
         const fieldErrors = error.response?.data?.fieldErrors;
-        throw new ApiError({ message, globalErrors, fieldErrors });
+        const statusCode = error.response?.status;
+        throw new ApiError({ message, globalErrors, fieldErrors, statusCode });
       }
       if (error instanceof Error) {
-        throw new ApiError({ message: error.message });
+        throw new ApiError({ message: error.message, statusCode: 500 });
       }
-      throw new ApiError({ message: 'Something went wrong!' });
+      throw new ApiError({ message: 'Something went wrong!', statusCode: 500 });
     }
   };
 }
