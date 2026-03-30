@@ -152,8 +152,8 @@ const RegisterForm = ({
     await resendOtpAsync(
       { otpToken, email },
       {
-        onError: (error) => {
-          if (typeof error === 'string' && (error as string).includes('Go Back')) {
+        onError: ({ statusCode }) => {
+          if (statusCode === 410) {
             onReset?.();
           }
         },

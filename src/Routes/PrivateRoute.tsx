@@ -12,7 +12,7 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
   if (isLoading) return <LoadingScreen />;
 
   if (!authenticated) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/auth" state={{ from: location }} replace />;
   }
 
   return children;

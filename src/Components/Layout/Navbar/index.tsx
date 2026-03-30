@@ -300,10 +300,10 @@ export const Navbar = () => {
             {!authenticated && (
               <div className="fixed bottom-0 left-0 z-51 flex w-full items-center justify-center gap-5 px-6 py-2 pt-8 md:gap-10">
                 <LinearGradient position="bottom" className="w-full!" />
-                <Link to={'/login'} className="z-51 w-1/2 sm:w-1/3 md:w-1/4">
+                <Link to={'/auth'} className="z-51 w-1/2 sm:w-1/3 md:w-1/4">
                   <Button content="Login" pattern="primary" className="rounded-lg! px-6! py-3!" />
                 </Link>
-                <Link to={'/register'} className="z-51 w-1/2 sm:w-1/3 md:w-1/4">
+                <Link to={'/auth/register'} className="z-51 w-1/2 sm:w-1/3 md:w-1/4">
                   <Button
                     content="Register"
                     pattern="secondary"

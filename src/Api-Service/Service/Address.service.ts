@@ -34,7 +34,7 @@ export class AddressService extends AddressApi {
       mutationKey: QUERY_KEYS.addresses.update,
       mutationFn: this.update_address,
       onSuccess: ({ message }) => (oldToaster('success', message), invalidate.addresses()),
-      onError: ({ message }) => oldToaster('error', message.replace(' Go Back', '')),
+      onError: ({ message }) => oldToaster('error', message),
     });
   };
 

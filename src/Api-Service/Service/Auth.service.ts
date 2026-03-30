@@ -3,6 +3,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { AuthApi } from '../Api/Auth.api';
 import { toaster, oldToaster } from '@/Utils/Common.util';
 import { UserStore } from '@/Stores';
+import { VITE_IS_DEV } from '@/Envs';
 
 export class AuthService extends AuthApi {
   public Login = () => {
@@ -25,24 +26,48 @@ export class AuthService extends AuthApi {
     return useMutation({
       mutationKey: QUERY_KEYS.auth.register.send_otp,
       mutationFn: this.send_otp,
-      onSuccess: ({ message }) => oldToaster('success', message),
-      onError: ({ message }) => oldToaster('error', message),
+      onSuccess: ({ message }) => toaster.success({ title: 'OTP Sent', description: message }),
+      onError: ({ globalErrors, message }) => {
+        if (globalErrors?.length) {
+          globalErrors.forEach((error) => {
+            toaster.error({ title: 'Failed to send OTP', description: error });
+          });
+        } else {
+          toaster.error({ title: 'Failed to send OTP', description: message });
+        }
+      },
     });
   };
   public ResendOtp = () => {
     return useMutation({
       mutationKey: QUERY_KEYS.auth.register.resend_otp,
       mutationFn: this.resend_otp,
-      onSuccess: ({ message }) => oldToaster('success', message),
-      onError: ({ message }) => oldToaster('error', message.replace(' Go Back', '')),
+      onSuccess: ({ message }) => toaster.success({ title: 'OTP Resend', description: message }),
+      onError: ({ globalErrors, message }) => {
+        if (globalErrors?.length) {
+          globalErrors.forEach((error) => {
+            toaster.error({ title: 'Failed to Resend OTP', description: error });
+          });
+        } else {
+          toaster.error({ title: 'Failed to Resend OTP', description: message });
+        }
+      },
     });
   };
   public VerifyOtpAndRegister = () => {
     return useMutation({
       mutationKey: QUERY_KEYS.auth.register.verify_otp,
       mutationFn: this.verify_otp_and_register,
-      onSuccess: ({ message }) => oldToaster('success', message),
-      onError: ({ message }) => oldToaster('error', message),
+      onSuccess: ({ message }) => toaster.success({ title: 'Registration Success', description: message }),
+      onError: ({ globalErrors, message }) => {
+        if (globalErrors?.length) {
+          globalErrors.forEach((error) => {
+            toaster.error({ title: 'Failed to Register', description: error });
+          });
+        } else {
+          toaster.error({ title: 'Failed to Register', description: message });
+        }
+      },
     });
   };
   public Logout = () => {
@@ -50,7 +75,9 @@ export class AuthService extends AuthApi {
     return useMutation({
       mutationKey: QUERY_KEYS.auth.logout,
       mutationFn: () => this.logout(user?._id),
-      onError: (error) => console.log('Error from logout user:', error),
+      ...(VITE_IS_DEV === 'true' && {
+        onError: (error) => console.log('Error from logout user:', error),
+      }),
     });
   };
   public SendForgotPasswordLinkAndOtp = () => {
