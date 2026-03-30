@@ -343,7 +343,7 @@ export const applyServerErrorsToFormFields = <T extends FieldValues>(
   setError: UseFormSetError<T>,
   errors?: TFieldErrors,
 ) => {
-  if (!errors?.length) return;
+  if (!errors || Object.keys(errors).length === 0) return;
 
   // field errors
   Object.entries(errors).forEach(([field, messages]) => {

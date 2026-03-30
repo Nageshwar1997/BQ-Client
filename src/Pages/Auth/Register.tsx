@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { type FieldErrors, useForm } from 'react-hook-form';
-import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { EMAIL_INPUT_DATA, PASSWORD_KEYS, REGISTER_INPUT_MAP_DATA } from '@/Constants';
 import { EyeIcon, EyeOffIcon } from '@/Icons';
@@ -21,6 +20,7 @@ import { Checkbox, Input } from '@/Components/Ui/Input';
 import type { TRegister } from '@/Types/Schema.type';
 import type { IInput } from '@/Types/Common.type';
 import { saveLocalToken, saveSessionToken } from '@/Utils/Storage.util';
+import { applyServerErrorsToFormFields } from '@/Utils/Zod.util';
 
 type TRegisterInput = {
   input: (typeof REGISTER_INPUT_MAP_DATA)[number];
@@ -239,16 +239,18 @@ const Register = () => {
     watch,
     register,
     handleSubmit,
+    setError,
     formState: { errors, isDirty },
   } = useForm({
     resolver: zodResolver(sendOtpSchema),
     defaultValues: { email: '' },
   });
 
-  const onSubmit = async (data: z.infer<typeof sendOtpSchema>) => {
-    await mutateAsync(data);
+  const onSubmit = async (data: Pick<TRegister, 'email'>) => {
+    await mutateAsync(data, {
+      onError: ({ fieldErrors }) => applyServerErrorsToFormFields(setError, fieldErrors),
+    });
   };
-
   const email = watch('email');
   const detailsPage = !!(data?.otpToken && email);
 
