@@ -1,5 +1,5 @@
 import '@tanstack/react-query';
-import type { ApiError } from './Api-Service/ApiError';
+import type { ApiError } from './classes/ApiError';
 
 declare module '@tanstack/react-query' {
   interface Register {

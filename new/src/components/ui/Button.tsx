@@ -1,6 +1,7 @@
 import { type MouseEvent } from 'react';
-import { getButtonCss } from '@/utils';
+import { getButtonCss } from '@/utils/common.util';
 import type { IButton } from '@/types/component.type';
+import { Icon } from '@iconify/react';
 
 const Button = ({
   pattern,
@@ -17,8 +18,6 @@ const Button = ({
     buttonProps?.onClick?.(e);
   };
 
-  const mapData = [leftIcon, content, rightIcon].filter((item) => item);
-
   return (
     <button
       {...buttonProps}
@@ -28,9 +27,9 @@ const Button = ({
       type={buttonProps?.type || 'button'}
       onClick={handleClick}
     >
-      {mapData.map((item, i) => (
-        <span key={i}>{item}</span>
-      ))}
+      {leftIcon && <Icon {...leftIcon} />}
+      {typeof content === 'object' ? <Icon {...content} /> : content}
+      {rightIcon && <Icon {...rightIcon} />}
     </button>
   );
 };

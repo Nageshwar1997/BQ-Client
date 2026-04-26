@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@iconify/react": "^6.0.2",
-    "axios": "^1.13.5",
+    "axios": "^1.15.2",
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.19",
     "hls.js": "^1.6.15",

@@ -11,6 +11,7 @@ const router = createBrowserRouter([
       const { default: Main } = await import('@/pages/main');
       return { Component: Main };
     },
+    children: [],
   },
 ]);
 

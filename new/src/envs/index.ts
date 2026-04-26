@@ -12,6 +12,9 @@ const {
 
   // F
   // G
+
+  VITE_GATEWAY_DEV_URL,
+  VITE_GATEWAY_PROD_URL,
   VITE_GOOGLE_MAPS_API_KEY,
 
   // H
@@ -21,9 +24,14 @@ const {
   // J
   // K
   // L
-  VITE_LOCALHOST_BACKEND_URL,
-
   // M
+
+  VITE_MAIL_SERVICE_DEV_URL,
+  VITE_MAIL_SERVICE_PROD_URL,
+
+  VITE_MEDIA_SERVICE_DEV_URL,
+  VITE_MEDIA_SERVICE_PROD_URL,
+
   // N
   // O
   VITE_OPENING_GOOGLE_APP_SCRIPTS_URL,
@@ -31,8 +39,6 @@ const {
   // VITE_OPENING_GOOGLE_SHEET_URL, // NOTE - This is not used anywhere It's just for convenience
 
   // P
-  VITE_PRODUCTION_BACKEND_URL,
-
   // Q
   // R
   VITE_RAZORPAY_KEY_ID,
@@ -41,8 +47,16 @@ const {
   // S
   // T
   // U
+
+  VITE_USER_SERVICE_DEV_URL,
+  VITE_USER_SERVICE_PROD_URL,
+
   // V
   // W
+
+  VITE_WORKER_SERVICE_DEV_URL,
+  VITE_WORKER_SERVICE_PROD_URL,
+
   // X
   // Y
   // Z
@@ -54,6 +68,7 @@ const envs = {
   // C
   // D
   // E
+  encryption_secret_key: VITE_ENCRYPTION_SECRET_KEY,
   // F
   // G
   // H
@@ -73,6 +88,15 @@ const envs = {
   // S
   // T
   // U
+  urls: {
+    gateway: is_dev ? VITE_GATEWAY_DEV_URL : VITE_GATEWAY_PROD_URL,
+    services: {
+      mail: is_dev ? VITE_MAIL_SERVICE_DEV_URL : VITE_MAIL_SERVICE_PROD_URL,
+      media: is_dev ? VITE_MEDIA_SERVICE_DEV_URL : VITE_MEDIA_SERVICE_PROD_URL,
+      user: is_dev ? VITE_USER_SERVICE_DEV_URL : VITE_USER_SERVICE_PROD_URL,
+      worker: is_dev ? VITE_WORKER_SERVICE_DEV_URL : VITE_WORKER_SERVICE_PROD_URL,
+    },
+  },
   // V
   // W
   // X
