@@ -11,3 +11,7 @@ export interface IButton extends TClassName {
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
 }
+
+export interface ILoading extends TClassName {
+  text: string;
+}

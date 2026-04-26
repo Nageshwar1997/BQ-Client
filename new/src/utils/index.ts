@@ -1,4 +1,4 @@
-import type { IButton } from '@/types';
+import type { IButton } from "@/types/component.type";
 
 export const getButtonCss = (pattern: IButton['pattern']) => {
   switch (pattern) {

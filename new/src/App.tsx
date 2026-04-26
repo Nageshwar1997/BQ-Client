@@ -1,13 +1,11 @@
 import { useEffect } from 'react';
-import { RouterProvider } from 'react-router';
+import { RouterProvider } from 'react-router-dom';
 import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { Toaster } from 'react-hot-toast';
-import { router } from './router';
-import { envs } from './envs';
-import { ToastContainer } from './components';
-import { useThemeStore } from './stores';
-
+import router from './router';
+import envs from './envs';
+import ToastContainer from './components/ui/Toaster';
+import useThemeStore from './stores/theme.store';
 function App() {
   const { theme } = useThemeStore();
   const queryClient = new QueryClient({
@@ -25,7 +23,6 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Toaster position="top-center" />
       <ToastContainer />
       <div className="bg-primary-invert text-primary h-full max-h-dvh min-h-dvh w-full max-w-dvw min-w-dvw overflow-y-scroll">
         <div className="mx-auto h-full w-full max-w-480">

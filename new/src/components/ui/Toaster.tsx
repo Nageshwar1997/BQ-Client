@@ -1,8 +1,9 @@
+import useToastStore from '@/stores/toast.store';
+import type { TClassName } from '@/types/component.type';
+import type { TToast, TToastItem } from '@/types/store.type';
 import { Icon } from '@iconify/react';
 import { useEffect, useRef, useState } from 'react';
-import type { TToast, TToastItem } from '@/types';
-import { useToastStore } from '@/stores';
-import { Button } from './Button';
+import Button from './Button';
 
 const cardConfig = (type: TToast['type']) => {
   switch (type) {
@@ -21,7 +22,7 @@ const cardConfig = (type: TToast['type']) => {
   }
 };
 
-export const Toaster = (props: TToastItem) => {
+const Toaster = (props: TToastItem & TClassName) => {
   const {
     className = '',
     type,
@@ -134,7 +135,7 @@ export const Toaster = (props: TToastItem) => {
   );
 };
 
-export const ToastContainer = () => {
+const ToastContainer = () => {
   const { toasts } = useToastStore();
 
   if (toasts.length === 0) return null;
@@ -147,3 +148,5 @@ export const ToastContainer = () => {
     </div>
   );
 };
+
+export default ToastContainer;

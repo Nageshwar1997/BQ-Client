@@ -1,9 +1,17 @@
-import { createBrowserRouter } from 'react-router';
+import LoadingScreen from '@/components/layout/loaders/LoadingScreen';
+import ErrorBoundary from '@/pages/error/ErrorBoundary';
+import { createBrowserRouter } from 'react-router-dom';
 
-export const router = createBrowserRouter([
+const router = createBrowserRouter([
   {
     path: '/',
-    element: 'Home',
-    errorElement: 'Error Page',
+    HydrateFallback: LoadingScreen,
+    ErrorBoundary,
+    lazy: async () => {
+      const { default: Main } = await import('@/pages/main');
+      return { Component: Main };
+    },
   },
 ]);
+
+export default router;

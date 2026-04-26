@@ -48,7 +48,7 @@ const {
   // Z
 } = import.meta.env as Record<string, string>;
 const is_dev = VITE_IS_DEV === 'true';
-export const envs = {
+const envs = {
   // A
   // B
   // C
@@ -79,3 +79,5 @@ export const envs = {
   // Y
   // Z
 };
+
+export default envs;

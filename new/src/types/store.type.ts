@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { IButton, TClassName } from '.';
+import type { IButton, TClassName } from './component.type';
 
 interface IBaseToast extends TClassName {
   icon?: ReactNode;

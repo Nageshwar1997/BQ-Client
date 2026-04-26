@@ -1,8 +1,8 @@
-import type { MouseEvent } from 'react';
-import type { IButton } from '@/types';
+import { type MouseEvent } from 'react';
 import { getButtonCss } from '@/utils';
+import type { IButton } from '@/types/component.type';
 
-export const Button = ({
+const Button = ({
   pattern,
   content,
   className = '',
@@ -34,3 +34,5 @@ export const Button = ({
     </button>
   );
 };
+
+export default Button;
