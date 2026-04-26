@@ -1,10 +1,8 @@
 import { Icon } from '@iconify/react';
 import { useEffect, useRef, useState } from 'react';
-import type { TToast } from '@/Types/Common.type';
+import type { TToast, TToastItem } from '@/types';
+import { useToastStore } from '@/stores';
 import { Button } from './Button';
-import { ToastStore } from '@/Stores';
-
-type Props = TToast & { id: string };
 
 const cardConfig = (type: TToast['type']) => {
   switch (type) {
@@ -23,7 +21,7 @@ const cardConfig = (type: TToast['type']) => {
   }
 };
 
-export const Toaster = (props: Props) => {
+export const Toaster = (props: TToastItem) => {
   const {
     className = '',
     type,
@@ -34,7 +32,7 @@ export const Toaster = (props: Props) => {
     closeTimer = 5000,
   } = props;
 
-  const { removeToast } = ToastStore();
+  const { removeToast } = useToastStore();
 
   const [visible, setVisible] = useState(false);
   const [mounted, setMounted] = useState(true);
@@ -137,7 +135,7 @@ export const Toaster = (props: Props) => {
 };
 
 export const ToastContainer = () => {
-  const { toasts } = ToastStore();
+  const { toasts } = useToastStore();
 
   if (toasts.length === 0) return null;
 
