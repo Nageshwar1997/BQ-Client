@@ -109,14 +109,21 @@ const Register = () => {
 
   const handleBack = () => {
     switch (currentStep) {
-      case 'verify':
+      case 'verify': {
+        verifyOtpForm.reset(DEFAULT_VALUES.otp);
+        setCurrentStep('send');
+        break;
+      }
+
       case 'save': {
+        registerAndSaveForm.reset(DEFAULT_VALUES.register);
         setCurrentStep('send');
         break;
       }
 
       case 'send':
       default: {
+        sendOtpForm.reset(DEFAULT_VALUES.email);
         navigate('/');
         break;
       }
@@ -209,7 +216,17 @@ const Register = () => {
           )}
 
           <div className="flex gap-4">
-            <Button pattern="secondary" buttonProps={{ onClick: handleBack }} content={'Back'} />
+            <Button
+              pattern="secondary"
+              buttonProps={{ onClick: handleBack }}
+              content={
+                currentStep === 'send'
+                  ? 'Home'
+                  : currentStep === 'verify'
+                    ? 'Change Email'
+                    : 'Cancel'
+              }
+            />
             <Button pattern="primary" buttonProps={{ type: 'submit' }} content={'Continue'} />
           </div>
         </form>

@@ -1,4 +1,4 @@
-import { ScrollableGradientContainer } from '@/components/layout/containers/ScrollableGradientContainer';
+import ScrollableGradientContainer from '@/components/layout/containers/ScrollableGradientContainer';
 import Theme from '@/components/ui/Theme';
 import { Outlet } from 'react-router-dom';
 

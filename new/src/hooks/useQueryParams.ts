@@ -1,7 +1,7 @@
 import type { TParams } from '@/types/hook.type';
 import usePathParams from './usePathParams';
 
-export const useQueryParams = () => {
+const useQueryParams = () => {
   const { navigate, search, pathname } = usePathParams();
 
   const getParams = (): TParams => {
@@ -50,3 +50,5 @@ export const useQueryParams = () => {
     clearParams,
   };
 };
+
+export default useQueryParams;

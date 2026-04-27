@@ -7,7 +7,7 @@ type TScroll =
   | ({ direction: 'horizontal' } & THorizontal)
   | ({ direction: 'vertical' } & TVertical);
 
-export const useScrollable = (direction: TScrollDirection) => {
+const useScrollable = (direction: TScrollDirection) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [showGradient, setShowGradient] = useState<TScroll>(
     direction === 'horizontal'
@@ -79,3 +79,5 @@ export const useScrollable = (direction: TScrollDirection) => {
 
   return { showV_Gradient, showH_Gradient, containerRef } as const;
 };
+
+export default useScrollable;

@@ -1,9 +1,9 @@
-import { LinearGradient } from '@/components/ui/LinearGradient';
-import { useScrollable } from '@/hooks/useScrollable';
+import LinearGradient from '@/components/ui/LinearGradient';
+import useScrollable from '@/hooks/useScrollable';
 import type { IScrollableGradientContainer } from '@/types/component.type';
 import type { TGradientPos } from '@/types/hook.type';
 
-export const ScrollableGradientContainer = ({
+const ScrollableGradientContainer = ({
   className = '',
   children,
   containerClassName = '',
@@ -44,3 +44,5 @@ export const ScrollableGradientContainer = ({
     </div>
   );
 };
+
+export default ScrollableGradientContainer;
