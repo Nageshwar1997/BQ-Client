@@ -13,6 +13,32 @@ const router = createBrowserRouter([
     },
     children: [],
   },
+  {
+    path: 'auth',
+    HydrateFallback: LoadingScreen,
+    ErrorBoundary,
+    lazy: async () => {
+      const { default: Auth } = await import('@/pages/auth');
+      return { Component: Auth };
+    },
+    children: [
+      {
+        index: true,
+        lazy: async () => {
+          const { default: Register } = await import('@/pages/auth/Register');
+          return { Component: Register };
+        },
+      },
+      {
+        path: 'register',
+        index: true,
+        lazy: async () => {
+          const { default: Register } = await import('@/pages/auth/Register');
+          return { Component: Register };
+        },
+      },
+    ],
+  },
 ]);
 
 export default router;

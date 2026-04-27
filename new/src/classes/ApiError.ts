@@ -1,6 +1,6 @@
 import type { TFieldErrors } from '@/types/api.type';
 
-export class ApiError extends Error {
+class ApiError extends Error {
   fieldErrors?: TFieldErrors;
   globalErrors?: string[];
   statusCode?: number;
@@ -18,3 +18,5 @@ export class ApiError extends Error {
     this.statusCode = params.statusCode ?? 500;
   }
 }
+
+export default ApiError;

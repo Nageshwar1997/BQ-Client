@@ -1,24 +1,28 @@
+import type { TRegister, TRegisterEmail, TRegisterOtp } from '@/types/schema.type';
 import { ApiRequest } from '../ApiRequest';
+import { API_METHODS_AND_URLS } from '@/constants/api.constant';
 
 export class AuthApi extends ApiRequest {
+  private routes = API_METHODS_AND_URLS.gateway.user_service.auth;
+
   constructor() {
     super('gateway-user-service');
   }
 
   /* ===================== REGISTER API ===================== */
-  public registerSendOtp() {
-    return this.request(this.routes.gateway.user_service.auth.register.send_otp);
+  public registerSendOtp(data: TRegisterEmail) {
+    return this.request({ ...this.routes.register.send_otp, data });
   }
-  public registerResendOtp() {
-    return this.request(this.routes.gateway.user_service.auth.register.resend_otp);
-  }
-
-  public registerVerifyOtp() {
-    return this.request(this.routes.gateway.user_service.auth.register.verify_otp);
+  public registerResendOtp(data: TRegisterEmail) {
+    return this.request({ ...this.routes.register.resend_otp, data });
   }
 
-  public registerSaveUser() {
-    return this.request(this.routes.gateway.user_service.auth.register.save_user);
+  public registerVerifyOtp(data: TRegisterOtp) {
+    return this.request({ ...this.routes.register.verify_otp, data });
+  }
+
+  public registerSaveUser(data: TRegister) {
+    return this.request({ ...this.routes.register.save_user, data });
   }
 
   /* ===================== LOGIN API ===================== */

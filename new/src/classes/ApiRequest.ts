@@ -1,13 +1,8 @@
 import { getUserToken } from '@/utils/common.util';
 import axios, { AxiosError, type AxiosInstance, type AxiosRequestConfig } from 'axios';
-import { ApiError } from './ApiError';
-import envs from '@/envs';
-import { API_BASE_URLS, API_METHODS_AND_URLS } from '@/constants/api.constant';
-import { ApiSuccess } from './ApiSuccess';
+import ApiError from './ApiError';
+import { API_BASE_URLS } from '@/constants/api.constant';
 
-export const SERVICES_BASE_URLS = {
-  'user-service': `${envs.urls.gateway}/user-service/api/v1`,
-} as const;
 export class ApiRequest {
   private baseUrls = API_BASE_URLS;
   private instance: AxiosInstance;
@@ -17,11 +12,10 @@ export class ApiRequest {
     this.instance = axios.create({ baseURL });
   }
 
-  protected routes = API_METHODS_AND_URLS;
-  protected request = async <T = unknown>(
+  protected request = async (
     config: AxiosRequestConfig,
     options?: { isPrivateRoute?: boolean },
-  ): Promise<ApiSuccess<T>> => {
+  ) => {
     try {
       if (options?.isPrivateRoute) {
         const token = getUserToken();
@@ -29,14 +23,8 @@ export class ApiRequest {
           config.headers = { ...config.headers, Authorization: token };
         }
       }
-
       const { data } = await this.instance.request(config);
-
-      return new ApiSuccess<T>({
-        message: data?.message || 'Success',
-        data: data?.data ?? data,
-        statusCode: data?.statusCode,
-      });
+      return data;
     } catch (error) {
       if (error instanceof AxiosError) {
         const message = error.response?.data?.message || 'API Error occurred';

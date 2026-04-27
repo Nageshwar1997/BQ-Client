@@ -26,17 +26,19 @@ export const API_BASE_URLS = {
   'gateway-user-service': `${envs.urls.gateway}/gateway/api/v1/user-service`,
 };
 
+export const GATEWAY_USER_SERVICE_QUERY_KEYS = {
+  auth: {
+    register: {
+      send_otp: ['register_send_otp'],
+      resend_otp: ['register_resend_otp'],
+      verify_otp: ['register_verify_otp'],
+      save_user: ['register_save_user'],
+    },
+  },
+} as const;
+
 export const QUERY_KEYS = {
   gateway: {
-    user_service: {
-      auth: {
-        register: {
-          send_otp: ['register_send_otp'],
-          resend_otp: ['register_resend_otp'],
-          verify_otp: ['register_verify_otp'],
-          save_user: ['register_save_user'],
-        },
-      },
-    },
+    user_service: GATEWAY_USER_SERVICE_QUERY_KEYS,
   },
 } as const;
