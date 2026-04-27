@@ -41,7 +41,7 @@ export type TToastItem = TToast & { id: string };
 
 export interface IToastStore {
   toasts: TToastItem[];
-  addToast: (toast: TToast) => void;
+  addToast: (toast: TToast) => string;
   removeToast: (id: string) => void;
 }
 

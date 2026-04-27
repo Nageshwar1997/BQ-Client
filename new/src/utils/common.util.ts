@@ -70,15 +70,16 @@ export const getUserToken = (): string | null => {
   }
 };
 
-const { addToast } = useToastStore.getState();
+const { addToast, removeToast } = useToastStore.getState();
 export const toaster = {
   success: (data: Omit<IDefaultToast, 'type'>) => addToast({ ...data, type: 'success' }),
 
   error: (data: Omit<IDefaultToast, 'type'>) => addToast({ ...data, type: 'error' }),
 
   warning: (data: Omit<IDefaultToast, 'type'>) => addToast({ ...data, type: 'warning' }),
-
   loading: (data: Omit<ILoadingToast, 'type'>) => addToast({ ...data, type: 'loading' }),
 
   custom: (data: ICustomToast) => addToast(data),
+
+  remove: (toastId: string) => removeToast(toastId),
 };

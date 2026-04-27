@@ -17,7 +17,7 @@ import {
   useRegisterSendOtp,
   useRegisterVerifyOtp,
 } from '@/services/user-service/auth.service.query';
-import { applyServerErrorsToFormFields } from '@/utils/form.util';
+import { setErrorToForm } from '@/utils/form.util';
 import {
   EMAIL_INPUT_DATA,
   OTP_INPUT_DATA,
@@ -73,8 +73,7 @@ const Login = () => {
   const handleSendOtp = async (data: TRegisterEmail) => {
     await sendOtpQuery.mutateAsync(data, {
       onSuccess: () => setCurrentStep('verify'),
-      onError: ({ fieldErrors }) =>
-        applyServerErrorsToFormFields(sendOtpForm.setError, fieldErrors),
+      onError: ({ fieldErrors }) => setErrorToForm(sendOtpForm.setError, fieldErrors),
     });
   };
   const handleVerifyOtp = async (data: TRegisterOtp) => {
@@ -82,15 +81,13 @@ const Login = () => {
       { ...data, otpToken },
       {
         onSuccess: () => setCurrentStep('save'),
-        onError: ({ fieldErrors }) =>
-          applyServerErrorsToFormFields(verifyOtpForm.setError, fieldErrors),
+        onError: ({ fieldErrors }) => setErrorToForm(verifyOtpForm.setError, fieldErrors),
       },
     );
   };
   const handleRegisterAndSave = async (data: TRegister) => {
     await registerAndSaveQuery.mutateAsync(data, {
-      onError: ({ fieldErrors }) =>
-        applyServerErrorsToFormFields(registerAndSaveForm.setError, fieldErrors),
+      onError: ({ fieldErrors }) => setErrorToForm(registerAndSaveForm.setError, fieldErrors),
     });
   };
 
