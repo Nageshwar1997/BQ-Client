@@ -180,6 +180,7 @@ const Register = () => {
                   placeholder: EMAIL_INPUT_DATA.placeholder,
                   autoComplete: EMAIL_INPUT_DATA.autoComplete,
                   disabled: sendOtpQuery.isPending || currentStep === 'verify',
+                  readOnly: currentStep === 'verify',
                 }}
                 register={sendOtpForm.register(EMAIL_INPUT_DATA.name)}
                 error={sendOtpForm.formState.errors[EMAIL_INPUT_DATA.name]?.message}
@@ -230,7 +231,7 @@ const Register = () => {
                         : input.type,
                       placeholder: input.placeholder,
                       autoComplete: input.autoComplete,
-                      disabled: registerAndSaveQuery.isPending,
+                      disabled: registerAndSaveQuery.isPending || input.name === 'email',
                     }}
                     icons={
                       input.name === 'phoneNumber'
@@ -250,10 +251,9 @@ const Register = () => {
                   />
                 );
               })}
-
               <Checkbox
                 register={registerAndSaveForm.register('remember')}
-                checkboxProps={{ name: 'remember' }}
+                checkboxProps={{ name: 'remember', disabled: registerAndSaveQuery.isPending }}
                 content="Remember me"
                 containerClassName="sm:col-span-2"
               />
@@ -273,7 +273,17 @@ const Register = () => {
                     : 'Cancel'
               }
             />
-            <Button pattern="primary" buttonProps={{ type: 'submit' }} content="Continue" />
+            <Button
+              pattern="primary"
+              buttonProps={{ type: 'submit' }}
+              content={
+                currentStep === 'send'
+                  ? 'Send OTP'
+                  : currentStep === 'verify'
+                    ? 'Verify OTP'
+                    : 'Register'
+              }
+            />
           </div>
         </form>
         <div className="flex items-center justify-center gap-2">
