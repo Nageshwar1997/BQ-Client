@@ -15,27 +15,38 @@ export const InputError = ({ error, className = '' }: { error?: string } & TClas
   );
 };
 
-export const InputIcon = (props: IInput['icons']) => {
+export const InputIcon = ({
+  position,
+  ...props
+}: IInput['icons'] & { position: 'left' | 'right' }) => {
   if (!props) return null;
 
   // 👉 LEFT
-  if ('left' in props && props.left) {
+  if ('left' in props && props.left && position === 'left') {
     const value = props.left;
 
     if (typeof value === 'string') {
       return (
-        <p className="text-primary/50 border-r-primary/10 flex h-full items-center border-r px-3 text-sm capitalize">
+        <p className="text-primary/50 border-r-primary/10 flex h-full items-center border-r p-3 text-xs leading-none capitalize">
           {value}
         </p>
       );
     }
 
-    return <Icon {...value} />;
+    return (
+      <span className="flex h-full items-center p-3">
+        <Icon {...value} />
+      </span>
+    );
   }
 
   // 👉 RIGHT
-  if ('right' in props && props.right) {
-    return <Icon {...props.right} />;
+  if ('right' in props && props.right && position === 'right') {
+    return (
+      <p className="flex h-full items-center p-3">
+        <Icon {...props.right} />
+      </p>
+    );
   }
 
   return null;

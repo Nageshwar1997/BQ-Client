@@ -21,6 +21,7 @@ import { applyServerErrorsToFormFields } from '@/utils/form.util';
 import {
   EMAIL_INPUT_DATA,
   OTP_INPUT_DATA,
+  PASSWORD_KEYS,
   REGISTER_INPUT_MAP_DATA,
 } from '@/constants/input.constant';
 import { toaster } from '@/utils/common.util';
@@ -42,6 +43,10 @@ const DEFAULT_VALUES = {
 
 const Register = () => {
   const [currentStep, setCurrentStep] = useState<'send' | 'verify' | 'save'>('send');
+  const [showPasswords, setShowPasswords] = useState<Partial<Record<keyof TRegister, boolean>>>({
+    password: false,
+    confirmPassword: false,
+  });
 
   const { navigate } = usePathParams();
 
@@ -130,6 +135,14 @@ const Register = () => {
     }
   };
 
+  const togglePasswordVisibility = (field: keyof TRegister) => {
+    if (!PASSWORD_KEYS.includes(field)) return;
+    setShowPasswords((prevState) => ({
+      ...prevState,
+      [field]: !prevState[field],
+    }));
+  };
+
   return (
     <div className="flex w-full flex-col items-center justify-center gap-4">
       <GradientText
@@ -147,8 +160,9 @@ const Register = () => {
                 ? verifyOtpForm.handleSubmit(handleVerifyOtp)
                 : registerAndSaveForm.handleSubmit(handleRegisterAndSave)
           }
-          className={`grid grid-cols-1 gap-x-4 gap-y-5 lg:gap-y-6 ${currentStep === 'save' ? 'lg:grid-cols-2' : ''}`}
+          className="grid grid-cols-1 gap-x-4 gap-y-5 sm:grid-cols-2 sm:gap-y-6"
         >
+          {/* ================= SEND / VERIFY ================= */}
           {(currentStep === 'send' || currentStep === 'verify') && (
             <>
               <Input
@@ -163,7 +177,7 @@ const Register = () => {
                 }}
                 register={sendOtpForm.register(EMAIL_INPUT_DATA.name)}
                 error={sendOtpForm.formState.errors[EMAIL_INPUT_DATA.name]?.message}
-                containerClassName="col-span-2"
+                containerClassName="sm:col-span-2"
               />
               {currentStep === 'verify' && (
                 <>
@@ -179,10 +193,10 @@ const Register = () => {
                     }}
                     register={verifyOtpForm.register(OTP_INPUT_DATA.name)}
                     error={verifyOtpForm.formState.errors[OTP_INPUT_DATA.name]?.message}
-                    containerClassName="col-span-2"
+                    containerClassName="sm:col-span-2"
                   />
                   <Resend
-                    className='col-span-2'
+                    className="sm:col-span-2"
                     label="Not received OTP?"
                     count={sendCount >= 3 ? 0 : 30}
                     onResend={handleResendOtp}
@@ -191,35 +205,57 @@ const Register = () => {
               )}
             </>
           )}
+
+          {/* ================= REGISTER ================= */}
           {currentStep === 'save' && (
             <>
               {REGISTER_INPUT_MAP_DATA.map((input) => {
+                const isFullWidth = ['email', 'phoneNumber'].includes(input.name);
                 return (
                   <Input
                     key={input.name}
                     label={input.label}
                     inputProps={{
                       name: input.name,
-                      type: input.type,
+                      type: PASSWORD_KEYS.includes(input.name)
+                        ? showPasswords[input.name]
+                          ? 'text'
+                          : input.type
+                        : input.type,
                       placeholder: input.placeholder,
                       autoComplete: input.autoComplete,
-                      disabled: verifyOtpQuery.isPending || resendOtpQuery.isPending,
+                      disabled: registerAndSaveQuery.isPending,
                     }}
+                    icons={
+                      input.name === 'phoneNumber'
+                        ? { left: '+91' }
+                        : PASSWORD_KEYS.includes(input.name)
+                          ? {
+                              right: {
+                                icon: showPasswords[input.name] ? 'lucide:eye' : 'lucide:eye-off',
+                                onClick: () => togglePasswordVisibility(input.name),
+                              },
+                            }
+                          : undefined
+                    }
                     register={registerAndSaveForm.register(input.name)}
                     error={registerAndSaveForm.formState.errors[input.name]?.message}
+                    containerClassName={isFullWidth ? 'sm:col-span-2' : ''}
                   />
                 );
               })}
+
               <Checkbox
                 register={registerAndSaveForm.register('remember')}
                 checkboxProps={{ name: 'remember' }}
                 content="Remember me"
-                containerClassName="col-span-2"
+                containerClassName="sm:col-span-2"
               />
             </>
           )}
 
-          <div className="col-span-2 flex gap-4">
+          {/* ================= BUTTONS ================= */}
+          <div className="flex gap-4 sm:col-span-2">
             <Button
               pattern="secondary"
               buttonProps={{ onClick: handleBack }}
@@ -231,7 +267,7 @@ const Register = () => {
                     : 'Cancel'
               }
             />
-            <Button pattern="primary" buttonProps={{ type: 'submit' }} content={'Continue'} />
+            <Button pattern="primary" buttonProps={{ type: 'submit' }} content="Continue" />
           </div>
         </form>
         <div className="flex items-center justify-center gap-2">
