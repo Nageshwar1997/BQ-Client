@@ -2,7 +2,7 @@ import { useEffect, useRef, type ChangeEvent } from 'react';
 import { InputError, InputIcon, InputLabel } from './children';
 import type { IInput } from '@/types/input.type';
 
-export const Input = ({
+const Input = ({
   label = '',
   register,
   className = '',
@@ -52,3 +52,5 @@ export const Input = ({
     </div>
   );
 };
+
+export default Input;

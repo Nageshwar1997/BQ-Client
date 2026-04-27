@@ -3,25 +3,25 @@ import GradientText from './GradientText';
 
 type TResendOtp = { label: string; count: number; onResend?: () => void };
 
-export const Resend = ({ onResend, count, label = 'Not received?' }: TResendOtp) => {
+const Resend = ({ onResend, count, label = 'Not received?' }: TResendOtp) => {
   const [counter, setCounter] = useState(count);
 
-useEffect(() => {
-  if (counter <= 0) return;
+  useEffect(() => {
+    if (counter <= 0) return;
 
-  const timer = setInterval(() => {
-    setCounter((prev) => prev - 1);
-  }, 1000);
+    const timer = setInterval(() => {
+      setCounter((prev) => prev - 1);
+    }, 1000);
 
-  return () => clearInterval(timer);
-}, [counter > 0]);
+    return () => clearInterval(timer);
+  }, [counter > 0]);
 
-const handleResend = async () => {
-  if (counter > 0) return;
+  const handleResend = async () => {
+    if (counter > 0) return;
 
     onResend?.();
     setCounter(count); // reset timer after resend
-};
+  };
 
   return (
     <p className="space-x-2">
@@ -43,3 +43,5 @@ const handleResend = async () => {
     </p>
   );
 };
+
+export default Resend;
