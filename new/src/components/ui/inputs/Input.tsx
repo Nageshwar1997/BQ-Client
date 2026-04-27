@@ -42,7 +42,7 @@ export const Input = ({
             id={inputProps.id || inputProps.name}
             onChange={handleChange}
             onWheel={(event) => (inputProps?.type === 'number' ? event.currentTarget.blur() : null)}
-            className={`text-primary placeholder:text-primary/50 autofill-effect line-clamp-1 h-full w-full flex-1 border-none bg-transparent p-3 text-sm font-normal outline-hidden placeholder:text-sm focus:border-none focus:outline-hidden disabled:cursor-not-allowed ${inputProps?.className || ''}`}
+            className={`text-primary placeholder:text-primary/30 autofill-effect line-clamp-1 h-full w-full flex-1 border-none bg-transparent p-3 text-sm font-normal outline-hidden placeholder:text-xs focus:border-none focus:outline-hidden disabled:cursor-not-allowed ${inputProps?.className || ''}`}
           />
           {/* Right Icon */}
           <InputIcon {...icons} />

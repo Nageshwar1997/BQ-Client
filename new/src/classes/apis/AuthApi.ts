@@ -21,12 +21,19 @@ export class AuthApi extends ApiRequest {
     });
   };
 
-  public registerVerifyOtp = (data: TRegisterOtp) => {
-    return this.request({ ...this.routes.register.verify_otp, data });
+  public registerVerifyOtp = ({ otpToken, ...data }: TRegisterOtp & { otpToken: string }) => {
+    return this.request({
+      ...this.routes.register.verify_otp,
+      data,
+      headers: { Authorization: otpToken },
+    });
   };
 
   public registerSaveUser = (data: TRegister) => {
-    return this.request({ ...this.routes.register.save_user, data });
+    return this.request({
+      ...this.routes.register.save_user,
+      data,
+    });
   };
 
   /* ===================== LOGIN API ===================== */

@@ -23,8 +23,7 @@ export interface IInput extends IBaseInput {
   inputProps: InputHTMLAttributes<HTMLInputElement>;
 }
 
-export interface ICheckbox extends IBaseInput {
-  labelClassName?: string;
+export interface ICheckbox extends Omit<IBaseInput, 'needRef' | 'icons' | 'label'> {
   content?: string | ReactNode;
   checkboxProps: Omit<InputHTMLAttributes<HTMLInputElement>, 'type'>;
 }

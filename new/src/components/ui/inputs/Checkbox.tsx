@@ -1,11 +1,10 @@
 import type { ICheckbox } from '@/types/input.type';
 import { InputError } from './children';
 
-export const Checkbox = ({
+const Checkbox = ({
   register,
   className = '',
   content,
-  labelClassName = '',
   checkboxProps,
   containerClassName = '',
   error,
@@ -13,19 +12,16 @@ export const Checkbox = ({
   return (
     <div className={`flex w-full flex-col gap-1.5 ${containerClassName}`}>
       <div className="flex items-center gap-2 sm:gap-3">
-        <label
-          className={`border-primary/10 bg-smoke-eerie relative inline-flex w-fit cursor-pointer items-center rounded-full border ${labelClassName}`}
-        >
+        <label className="relative inline-block h-6 w-12">
           <input
-            name="remember"
             type="checkbox"
             className="peer sr-only outline-hidden"
             {...register}
             {...checkboxProps}
             id={checkboxProps?.id || checkboxProps?.name}
           />
-          <div
-            className={`after:bg-silver after:border-primary/10 peer-checked:bg-accent-duo h-5 w-10 rounded-full after:absolute after:top-1 after:left-1 after:h-3 after:w-3 after:rounded-full after:border after:transition-all after:content-[''] peer-checked:after:translate-x-5 peer-checked:after:bg-white md:h-6 md:w-11 md:after:h-4 md:after:w-4 ${className}`}
+          <span
+            className={`border-primary/10 bg-tertiary-invert peer-checked:border-blue-crayola-c before:bg-silver-duo peer-checked:before:bg-accent-duo absolute inset-0 cursor-pointer rounded-full border transition-all duration-400 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] peer-checked:shadow-[0_0_10px_rgba(var(--blue-crayola-c-rgb),0.8)] before:absolute before:top-1/2 before:left-1 before:aspect-square before:h-[70%] before:-translate-y-1/2 before:rounded-full before:transition-all before:duration-400 before:ease-[cubic-bezier(0.23,1,0.32,1)] before:content-[''] peer-checked:before:translate-x-[calc(150%)] ${className}`}
           />
         </label>
         {content && (
@@ -38,3 +34,5 @@ export const Checkbox = ({
     </div>
   );
 };
+
+export default Checkbox;

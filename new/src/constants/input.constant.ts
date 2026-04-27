@@ -24,6 +24,7 @@ const FIRST_NAME_INPUT_DATA = {
   label: 'First Name',
   placeholder: 'Enter first name',
 } as const;
+
 const LAST_NAME_INPUT_DATA = {
   ...NAME_DATA,
   name: 'lastName',
@@ -61,13 +62,12 @@ export const SET_PASSWORDS_FIELDS = [
     label: 'Confirm Password',
     placeholder: 'Reenter password',
   },
-];
+] as const;
 
 export const REGISTER_INPUT_MAP_DATA = [
   EMAIL_INPUT_DATA,
-  OTP_INPUT_DATA,
   FIRST_NAME_INPUT_DATA,
   LAST_NAME_INPUT_DATA,
   PHONE_NUMBER_INPUT_DATA,
   ...SET_PASSWORDS_FIELDS,
-];
+] as const;

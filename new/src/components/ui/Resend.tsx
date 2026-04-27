@@ -6,26 +6,26 @@ type TResendOtp = { label: string; count: number; onResend?: () => void };
 export const Resend = ({ onResend, count, label = 'Not received?' }: TResendOtp) => {
   const [counter, setCounter] = useState(count);
 
-  useEffect(() => {
-    if (counter <= 0) return;
+useEffect(() => {
+  if (counter <= 0) return;
 
-    const timer = setInterval(() => {
-      setCounter((prev) => prev - 1);
-    }, 1000);
+  const timer = setInterval(() => {
+    setCounter((prev) => prev - 1);
+  }, 1000);
 
-    return () => clearInterval(timer);
-  }, [counter]);
+  return () => clearInterval(timer);
+}, [counter > 0]);
 
-  const handleResend = async () => {
-    if (counter > 0) return;
+const handleResend = async () => {
+  if (counter > 0) return;
 
     onResend?.();
     setCounter(count); // reset timer after resend
-  };
+};
 
   return (
     <p className="space-x-2">
-      <GradientText text={label} type="silver" className="md:text-sm" />
+      <GradientText text={label} type="silver" className="text-xs md:text-sm" />
       {counter > 0 ? (
         <span className="text-muted text-xs md:text-sm">
           <GradientText text="Resend in" type="silver" />{' '}
@@ -36,7 +36,7 @@ export const Resend = ({ onResend, count, label = 'Not received?' }: TResendOtp)
           <GradientText
             type="accent"
             text="Resend"
-            className="text-sm hover:font-medium md:text-base"
+            className="text-xs hover:font-medium md:text-sm"
           />
         </button>
       )}
