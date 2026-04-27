@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import GradientText from './GradientText';
+import type { IResend } from '@/types/component.type';
 
-type TResendOtp = { label: string; count: number; onResend?: () => void };
-
-const Resend = ({ onResend, count, label = 'Not received?' }: TResendOtp) => {
+const Resend = ({ onResend, count, label = 'Not received?', className }: IResend) => {
   const [counter, setCounter] = useState(count);
 
   useEffect(() => {
@@ -24,7 +23,7 @@ const Resend = ({ onResend, count, label = 'Not received?' }: TResendOtp) => {
   };
 
   return (
-    <p className="space-x-2">
+    <p className={`space-x-2 ${className || ''}`}>
       <GradientText text={label} type="silver" className="text-xs md:text-sm" />
       {counter > 0 ? (
         <span className="text-muted text-xs md:text-sm">

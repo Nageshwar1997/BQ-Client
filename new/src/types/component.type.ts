@@ -34,3 +34,9 @@ export interface IGradientText extends TClassName, TChildren {
   type: 'accent' | 'silver';
   path?: string;
 }
+
+export interface IResend extends TClassName {
+  label: string;
+  count: number;
+  onResend?: () => void;
+}

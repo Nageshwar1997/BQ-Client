@@ -138,7 +138,7 @@ const Register = () => {
         className="mx-auto text-2xl leading-tight font-semibold sm:text-3xl md:text-4xl lg:text-5xl"
       />
       <SocialAuth />
-      <BorderGradient className="grid gap-y-5 lg:gap-y-6">
+      <BorderGradient className="flex flex-col gap-5 lg:gap-6">
         <form
           onSubmit={
             currentStep === 'send'
@@ -147,7 +147,7 @@ const Register = () => {
                 ? verifyOtpForm.handleSubmit(handleVerifyOtp)
                 : registerAndSaveForm.handleSubmit(handleRegisterAndSave)
           }
-          className="grid grid-cols-1 gap-x-4 gap-y-5 lg:grid-cols-2 lg:gap-y-6"
+          className={`grid grid-cols-1 gap-x-4 gap-y-5 lg:gap-y-6 ${currentStep === 'save' ? 'lg:grid-cols-2' : ''}`}
         >
           {(currentStep === 'send' || currentStep === 'verify') && (
             <>
@@ -163,6 +163,7 @@ const Register = () => {
                 }}
                 register={sendOtpForm.register(EMAIL_INPUT_DATA.name)}
                 error={sendOtpForm.formState.errors[EMAIL_INPUT_DATA.name]?.message}
+                containerClassName="col-span-2"
               />
               {currentStep === 'verify' && (
                 <>
@@ -178,8 +179,10 @@ const Register = () => {
                     }}
                     register={verifyOtpForm.register(OTP_INPUT_DATA.name)}
                     error={verifyOtpForm.formState.errors[OTP_INPUT_DATA.name]?.message}
+                    containerClassName="col-span-2"
                   />
                   <Resend
+                    className='col-span-2'
                     label="Not received OTP?"
                     count={sendCount >= 3 ? 0 : 30}
                     onResend={handleResendOtp}
@@ -211,11 +214,12 @@ const Register = () => {
                 register={registerAndSaveForm.register('remember')}
                 checkboxProps={{ name: 'remember' }}
                 content="Remember me"
+                containerClassName="col-span-2"
               />
             </>
           )}
 
-          <div className="flex gap-4">
+          <div className="col-span-2 flex gap-4">
             <Button
               pattern="secondary"
               buttonProps={{ onClick: handleBack }}
