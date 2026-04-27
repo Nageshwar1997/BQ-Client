@@ -25,8 +25,8 @@ const router = createBrowserRouter([
       {
         index: true,
         lazy: async () => {
-          const { default: Register } = await import('@/pages/auth/Register');
-          return { Component: Register };
+          const { default: Login } = await import('@/pages/auth/Login');
+          return { Component: Login };
         },
       },
       {
