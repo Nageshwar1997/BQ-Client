@@ -24,6 +24,7 @@ import {
   REGISTER_INPUT_MAP_DATA,
 } from '@/constants/input.constant';
 import { toaster } from '@/utils/common.util';
+import usePathParams from '@/hooks/usePathParams';
 
 const DEFAULT_VALUES = {
   email: { email: '' },
@@ -41,6 +42,8 @@ const DEFAULT_VALUES = {
 
 const Register = () => {
   const [currentStep, setCurrentStep] = useState<'send' | 'verify' | 'save'>('send');
+
+  const { navigate } = usePathParams();
 
   const sendOtpQuery = useRegisterSendOtp();
   const resendOtpQuery = useRegisterResendOtp();
@@ -104,6 +107,22 @@ const Register = () => {
     await resendOtpQuery.mutateAsync({ email, otpToken });
   };
 
+  const handleBack = () => {
+    switch (currentStep) {
+      case 'verify':
+      case 'save': {
+        setCurrentStep('send');
+        break;
+      }
+
+      case 'send':
+      default: {
+        navigate('/');
+        break;
+      }
+    }
+  };
+
   return (
     <div className="flex w-full flex-col items-center justify-center gap-4">
       <GradientText
@@ -162,32 +181,35 @@ const Register = () => {
               )}
             </>
           )}
-          {currentStep === 'save' &&
-            REGISTER_INPUT_MAP_DATA.map((input) => {
-              return (
-                <Input
-                  key={input.name}
-                  label={input.label}
-                  inputProps={{
-                    name: input.name,
-                    type: input.type,
-                    placeholder: input.placeholder,
-                    autoComplete: input.autoComplete,
-                    disabled: verifyOtpQuery.isPending || resendOtpQuery.isPending,
-                  }}
-                  register={registerAndSaveForm.register(input.name)}
-                  error={registerAndSaveForm.formState.errors[input.name]?.message}
-                />
-              );
-            })}
+          {currentStep === 'save' && (
+            <>
+              {REGISTER_INPUT_MAP_DATA.map((input) => {
+                return (
+                  <Input
+                    key={input.name}
+                    label={input.label}
+                    inputProps={{
+                      name: input.name,
+                      type: input.type,
+                      placeholder: input.placeholder,
+                      autoComplete: input.autoComplete,
+                      disabled: verifyOtpQuery.isPending || resendOtpQuery.isPending,
+                    }}
+                    register={registerAndSaveForm.register(input.name)}
+                    error={registerAndSaveForm.formState.errors[input.name]?.message}
+                  />
+                );
+              })}
+              <Checkbox
+                register={registerAndSaveForm.register('remember')}
+                checkboxProps={{ name: 'remember' }}
+                content="Remember me"
+              />
+            </>
+          )}
 
-          <Checkbox
-            register={registerAndSaveForm.register('remember')}
-            checkboxProps={{ name: 'remember' }}
-            content="Remember me"
-          />
           <div className="flex gap-4">
-            <Button pattern="secondary" buttonProps={{}} content={'Back'} />
+            <Button pattern="secondary" buttonProps={{ onClick: handleBack }} content={'Back'} />
             <Button pattern="primary" buttonProps={{ type: 'submit' }} content={'Continue'} />
           </div>
         </form>

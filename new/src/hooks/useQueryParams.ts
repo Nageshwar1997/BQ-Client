@@ -1,15 +1,5 @@
-import type { TParams } from '@/Types/Common.type';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-
-
-export const usePathParams = () => {
-  const navigate = useNavigate();
-  const pathParams = useParams();
-  const { pathname, ...restLocation } = useLocation();
-  const paths = pathname.split('/').filter((path) => path !== '');
-
-  return { pathParams, pathname, ...restLocation, paths, navigate };
-};
+import type { TParams } from '@/types/hook.type';
+import usePathParams from './usePathParams';
 
 export const useQueryParams = () => {
   const { navigate, search, pathname } = usePathParams();
