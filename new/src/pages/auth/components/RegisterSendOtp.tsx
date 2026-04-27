@@ -41,7 +41,7 @@ const RegisterSendOtp = () => {
         }}
         label={EMAIL_INPUT_DATA.label}
         register={register(EMAIL_INPUT_DATA.name)}
-        error={errors.email?.message}
+        error={errors[EMAIL_INPUT_DATA.name]?.message}
       />
       <Button
         pattern="primary"

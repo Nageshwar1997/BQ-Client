@@ -10,20 +10,24 @@ export class AuthApi extends ApiRequest {
   }
 
   /* ===================== REGISTER API ===================== */
-  public registerSendOtp(data: TRegisterEmail) {
+  public registerSendOtp = (data: TRegisterEmail) => {
     return this.request({ ...this.routes.register.send_otp, data });
-  }
-  public registerResendOtp(data: TRegisterEmail) {
-    return this.request({ ...this.routes.register.resend_otp, data });
-  }
+  };
+  public registerResendOtp = ({ otpToken, ...data }: TRegisterEmail & { otpToken: string }) => {
+    return this.request({
+      ...this.routes.register.resend_otp,
+      data,
+      headers: { Authorization: otpToken },
+    });
+  };
 
-  public registerVerifyOtp(data: TRegisterOtp) {
+  public registerVerifyOtp = (data: TRegisterOtp) => {
     return this.request({ ...this.routes.register.verify_otp, data });
-  }
+  };
 
-  public registerSaveUser(data: TRegister) {
+  public registerSaveUser = (data: TRegister) => {
     return this.request({ ...this.routes.register.save_user, data });
-  }
+  };
 
   /* ===================== LOGIN API ===================== */
 }
