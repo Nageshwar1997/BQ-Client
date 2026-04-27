@@ -272,7 +272,17 @@ const Register = () => {
             />
             <Button
               pattern="primary"
-              buttonProps={{ type: 'submit' }}
+              buttonProps={{
+                type: 'submit',
+                disabled:
+                  currentStep === 'send'
+                    ? sendOtpQuery.isPending
+                    : currentStep === 'verify'
+                      ? verifyOtpQuery.isPending || resendOtpQuery.isPending
+                      : currentStep === 'save'
+                        ? registerAndSaveQuery.isPending
+                        : false,
+              }}
               content={
                 currentStep === 'send'
                   ? 'Send OTP'
