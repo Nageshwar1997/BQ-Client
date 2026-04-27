@@ -77,7 +77,10 @@ const Register = () => {
 
   const handleSendOtp = async (data: TRegisterEmail) => {
     await sendOtpQuery.mutateAsync(data, {
-      onSuccess: () => setCurrentStep('verify'),
+      onSuccess: ({ data }) => {
+        registerAndSaveForm.setValue('email', data.email);
+        setCurrentStep('verify');
+      },
       onError: ({ fieldErrors }) =>
         applyServerErrorsToFormFields(sendOtpForm.setError, fieldErrors),
     });
@@ -86,7 +89,10 @@ const Register = () => {
     await verifyOtpQuery.mutateAsync(
       { ...data, otpToken },
       {
-        onSuccess: () => setCurrentStep('save'),
+        onSuccess: ({ data }) => {
+          registerAndSaveForm.setValue('email', data.email);
+          setCurrentStep('save');
+        },
         onError: ({ fieldErrors }) =>
           applyServerErrorsToFormFields(verifyOtpForm.setError, fieldErrors),
       },
