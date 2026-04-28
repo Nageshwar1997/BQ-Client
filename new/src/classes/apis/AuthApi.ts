@@ -10,14 +10,16 @@ export class AuthApi extends ApiRequest {
   }
 
   /* ===================== REGISTER API ===================== */
+
   public registerSendOtp = (data: TRegisterEmail) => {
     return this.request({ ...this.routes.register.send_otp, data });
   };
+
   public registerResendOtp = ({ otpToken, ...data }: TRegisterEmail & { otpToken: string }) => {
     return this.request({
       ...this.routes.register.resend_otp,
       data,
-      headers: { Authorization: otpToken },
+      headers: { Authorization: `Bearer ${otpToken}` },
     });
   };
 
@@ -25,7 +27,7 @@ export class AuthApi extends ApiRequest {
     return this.request({
       ...this.routes.register.verify_otp,
       data,
-      headers: { Authorization: otpToken },
+      headers: { Authorization: `Bearer ${otpToken}` },
     });
   };
 
@@ -37,4 +39,27 @@ export class AuthApi extends ApiRequest {
   };
 
   /* ===================== LOGIN API ===================== */
+
+  // public login = (data: { email: string; password: string }) => {
+  //   return this.request({
+  //     ...this.routes.,
+  //     data,
+  //   });
+  // };
+
+  /* ===================== USER ===================== */
+
+  // public getMe = () => {
+  //   return this.request({
+  //     method: 'GET',
+  //     url: '/auth/me',
+  //   });
+  // };
+
+  // public logout = () => {
+  //   return this.request({
+  //     method: 'POST',
+  //     url: '/auth/logout',
+  //   });
+  // };
 }

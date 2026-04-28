@@ -7,6 +7,11 @@ const METHODS = {
   PATCH: 'PATCH',
   DELETE: 'DELETE',
 };
+
+export const API_BASE_URLS = {
+  'gateway-user-service': `${envs.urls.gateway}/gateway/api/v1/user-service`,
+};
+
 export const API_METHODS_AND_URLS = {
   gateway: {
     user_service: {
@@ -17,14 +22,17 @@ export const API_METHODS_AND_URLS = {
           verify_otp: { method: METHODS.POST, url: '/auth/register/verify-otp' },
           save_user: { method: METHODS.POST, url: '/auth/register/save-user' },
         },
+        token: {
+          refresh: {
+            baseURL: API_BASE_URLS['gateway-user-service'],
+            method: METHODS.POST,
+            url: '/auth/token/refresh-access-token',
+          },
+        },
       },
     },
   },
 } as const;
-
-export const API_BASE_URLS = {
-  'gateway-user-service': `${envs.urls.gateway}/gateway/api/v1/user-service`,
-};
 
 export const GATEWAY_USER_SERVICE_QUERY_KEYS = {
   auth: {
