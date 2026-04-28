@@ -2,7 +2,7 @@ import { authApi } from '@/classes/apis';
 import { GATEWAY_USER_SERVICE_QUERY_KEYS } from '@/constants/api.constant';
 import { handleApiErrorToaster, handleApiSuccessToaster } from '@/utils/api.util';
 import { toaster } from '@/utils/common.util';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const useRegisterSendOtp = () => {
   return useMutation({
@@ -63,6 +63,8 @@ export const useRegisterVerifyOtp = () => {
 };
 
 export const useRegisterAndSaveUser = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationKey: GATEWAY_USER_SERVICE_QUERY_KEYS.auth.register.verify_otp,
     mutationFn: authApi.registerSaveUser,
@@ -73,7 +75,12 @@ export const useRegisterAndSaveUser = () => {
       });
       return { toastId };
     },
-    onSuccess: ({ message }) => handleApiSuccessToaster(message),
+    onSuccess: async ({ message }) => {
+      handleApiSuccessToaster(message);
+      await queryClient.invalidateQueries({
+        queryKey: GATEWAY_USER_SERVICE_QUERY_KEYS.user.session,
+      });
+    },
     onError: (error) => handleApiErrorToaster(error),
     onSettled: (_data, _error, _variables, context) => {
       if (context?.toastId) toaster.remove(context.toastId);

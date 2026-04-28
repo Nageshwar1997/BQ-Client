@@ -22,13 +22,13 @@ export const useGetSessionUser = () => {
 
   useEffect(() => {
     console.log('query.data useEffect', query.data);
-    if (query.isSuccess) {
-      setUser(query.data);
-    }
+    // if (query.isSuccess) {
+    //   setUser(query.data);
+    // }
 
-    if (query.isError) {
-      setUser(null);
-    }
+    // if (query.isError) {
+    //   setUser(null);
+    // }
   }, [query.isSuccess, query.isError, query.data, setUser]);
 
   return query;

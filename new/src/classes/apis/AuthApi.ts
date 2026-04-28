@@ -31,10 +31,11 @@ export class AuthApi extends ApiRequest {
     });
   };
 
-  public registerSaveUser = (data: TRegister) => {
+  public registerSaveUser = ({ otpToken, ...data }: TRegister & { otpToken: string }) => {
     return this.request({
       ...this.routes.register.save_user,
       data,
+      headers: { Authorization: `Bearer ${otpToken}` },
     });
   };
 

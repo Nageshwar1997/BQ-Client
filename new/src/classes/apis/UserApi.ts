@@ -11,6 +11,6 @@ export class UserApi extends ApiRequest {
   /* ===================== GET API ===================== */
 
   public getSessionUser = async () => {
-    return this.request({ ...this.routes.session, withCredentials: true });
+    return this.request({ ...this.routes.session });
   };
 }

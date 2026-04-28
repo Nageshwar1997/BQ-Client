@@ -97,9 +97,12 @@ const Register = () => {
     );
   };
   const handleRegisterAndSave = async (data: TRegister) => {
-    await registerAndSaveQuery.mutateAsync(data, {
-      onError: ({ fieldErrors }) => setErrorToForm(registerAndSaveForm.setError, fieldErrors),
-    });
+    await registerAndSaveQuery.mutateAsync(
+      { ...data, otpToken },
+      {
+        onError: ({ fieldErrors }) => setErrorToForm(registerAndSaveForm.setError, fieldErrors),
+      },
+    );
   };
 
   const handleResendOtp = async () => {
