@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import type { IButton, TClassName } from './component.type';
+import type { IUser } from './api.type';
 
 interface IBaseToast extends TClassName {
   icon?: ReactNode;
@@ -50,4 +51,12 @@ export type TTheme = 'light' | 'dark';
 export type TThemeStore = {
   theme: TTheme;
   toggleTheme: () => void;
+};
+
+export type TUserStore = {
+  user: IUser | null;
+  authenticated: boolean;
+
+  setUser: (user: IUser | null) => void;
+  logout: () => void;
 };

@@ -30,6 +30,7 @@ export const API_METHODS_AND_URLS = {
           },
         },
       },
+      user: { session: { method: METHODS.GET, url: '/user/session' } },
     },
   },
 } as const;
@@ -43,6 +44,9 @@ export const GATEWAY_USER_SERVICE_QUERY_KEYS = {
       save_user: ['register_save_user'],
     },
   },
+  user: {
+    session: ['get_session_user'],
+  },
 } as const;
 
 export const QUERY_KEYS = {
@@ -50,3 +54,7 @@ export const QUERY_KEYS = {
     user_service: GATEWAY_USER_SERVICE_QUERY_KEYS,
   },
 } as const;
+
+export const AUTH_PROVIDERS = ['MANUAL', 'GOOGLE', 'LINKEDIN', 'GITHUB'] as const;
+
+export const ROLES = ['USER', 'SELLER', 'ADMIN', 'MASTER'] as const;
