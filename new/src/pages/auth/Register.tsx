@@ -57,23 +57,31 @@ const Register = () => {
   const { navigate } = usePathParams();
 
   /* ================= 3. API/Queries Hooks ================= */
-  const sendOtpQuery = useRegisterSendOtp();
-  const resendOtpQuery = useRegisterResendOtp();
-  const verifyOtpQuery = useRegisterVerifyOtp();
-  const registerAndSaveQuery = useRegisterAndSaveUser();
+  const {
+    data: sendOtpData,
+    isPending: isSendingOtp,
+    mutateAsync: sendOtpAsync,
+  } = useRegisterSendOtp();
+  const {
+    data: resendOtpData,
+    isPending: isResendingOtp,
+    mutateAsync: resendOtpAsync,
+  } = useRegisterResendOtp();
+  const { isPending: isVerifyingOtp, mutateAsync: verifyOtpAsync } = useRegisterVerifyOtp();
+  const { isPending: isRegistering, mutateAsync: registerAndSaveAsync } = useRegisterAndSaveUser();
 
   /* ================= 4. Forms ================= */
-  const sendOtpForm = useForm({
+  const sendOtpForm = useForm<TRegisterEmail>({
     resolver: zodResolver(registerEmailSchema),
     defaultValues: FORM_DEFAULT_VALUES.email,
   });
 
-  const verifyOtpForm = useForm({
+  const verifyOtpForm = useForm<TRegisterOtp>({
     resolver: zodResolver(registerOtpSchema),
     defaultValues: FORM_DEFAULT_VALUES.otp,
   });
 
-  const registerAndSaveForm = useForm({
+  const registerAndSaveForm = useForm<TRegister>({
     resolver: zodResolver(registerSchema),
     defaultValues: FORM_DEFAULT_VALUES.register,
   });
@@ -87,25 +95,20 @@ const Register = () => {
   });
 
   /* ================= 6. Derived Values ================= */
-  const token = sendOtpQuery.data?.token || '';
-  const sendCount = resendOtpQuery.data?.sendCount || 1;
-
-  const isSendingOtp = sendOtpQuery.isPending;
-  const isVerifyingOtp = verifyOtpQuery.isPending;
-  const isResendingOtp = resendOtpQuery.isPending;
-  const isRegistering = registerAndSaveQuery.isPending;
+  const token = sendOtpData?.token || '';
+  const sendCount = resendOtpData?.sendCount || 1;
 
   /* ================= 7. Handlers ================= */
 
   const handleSendOtp = async (data: TRegisterEmail) => {
-    await sendOtpQuery.mutateAsync(data, {
+    await sendOtpAsync(data, {
       onSuccess: () => setCurrentStep('verify'),
       onError: ({ fieldErrors }) => setErrorToForm(sendOtpForm.setError, fieldErrors),
     });
   };
 
   const handleVerifyOtp = async (data: TRegisterOtp) => {
-    await verifyOtpQuery.mutateAsync(
+    await verifyOtpAsync(
       { ...data, token },
       {
         onSuccess: () => setCurrentStep('save'),
@@ -115,7 +118,7 @@ const Register = () => {
   };
 
   const handleRegisterAndSave = async (data: TRegister) => {
-    await registerAndSaveQuery.mutateAsync(
+    await registerAndSaveAsync(
       { ...data, token },
       {
         onSuccess: ({ user }) => setUser(user),
@@ -134,7 +137,7 @@ const Register = () => {
 
     if (isSendingOtp || isVerifyingOtp || isResendingOtp) return;
 
-    await resendOtpQuery.mutateAsync(token);
+    await resendOtpAsync(token);
   };
 
   const handleBack = () => {
