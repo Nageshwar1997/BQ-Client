@@ -27,3 +27,9 @@ export interface ICheckbox extends Omit<IBaseInput, 'needRef' | 'icons' | 'label
   content?: string | ReactNode;
   checkboxProps: Omit<InputHTMLAttributes<HTMLInputElement>, 'type'>;
 }
+
+export interface IRadio extends TClassName, Pick<IBaseInput, 'error'> {
+  value: string;
+  onChange: (value: string) => void;
+  options: { label: string | ReactNode; value: string }[];
+}

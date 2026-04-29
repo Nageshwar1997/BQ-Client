@@ -24,18 +24,18 @@ const Resend = ({ onResend, count, label = 'Not received?', className }: IResend
 
   return (
     <p className={`space-x-2 ${className || ''}`}>
-      <GradientText text={label} type="silver" className="text-xs md:text-sm" />
+      <GradientText text={label} type="silver" className="text-xs sm:text-sm" />
       {counter > 0 ? (
-        <span className="text-muted text-xs md:text-sm">
+        <span className="text-muted text-xs sm:text-sm">
           <GradientText text="Resend in" type="silver" />{' '}
-          <GradientText text={`${counter}s`} type="accent" className="font-bold" />
+          <GradientText text={`${counter}s`} type="accent" className="font-semibold" />
         </span>
       ) : (
         <button onClick={handleResend} className="cursor-pointer" type="button">
           <GradientText
             type="accent"
             text="Resend"
-            className="text-xs hover:font-medium md:text-sm"
+            className="text-xs font-semibold sm:text-sm"
           />
         </button>
       )}

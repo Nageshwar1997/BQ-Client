@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { TLogin } from '@/types/schema.type';
 import { loginSchema } from '@/schemas/user.schema';
@@ -13,6 +13,7 @@ import { useManualLogin } from '@/services/user-service/auth.service.query';
 import { setErrorToForm } from '@/utils/form.util';
 import { LOGIN_INPUT_MAP_DATA, PASSWORD_KEYS } from '@/constants/input.constant';
 import { Link } from 'react-router-dom';
+import Radio from '@/components/ui/inputs/Radio';
 
 const DEFAULT_VALUES = {
   loginMethod: 'email',
@@ -26,20 +27,41 @@ const Login = () => {
 
   const manualLoginQuery = useManualLogin();
 
-  const manualLoginForm = useForm({
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+    register,
+    reset,
+    setError,
+  } = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: DEFAULT_VALUES,
   });
 
+  const selectedMethod = useWatch({ control, name: 'loginMethod' });
+  console.log('🚀 ~ Login ~ selectedMethod:', selectedMethod);
+
   const handleManualLogin = async (data: TLogin) => {
     await manualLoginQuery.mutateAsync(data, {
-      onError: ({ fieldErrors }) => setErrorToForm(manualLoginForm.setError, fieldErrors),
+      onError: ({ fieldErrors }) => setErrorToForm(setError, fieldErrors),
     });
   };
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
+
+  const handleLoginMethodChange = (method: TLogin['loginMethod']) => {
+    reset({
+      loginMethod: method,
+      email: method === 'email' ? '' : undefined,
+      phoneNumber: method === 'phoneNumber' ? '' : undefined,
+      password: '',
+    });
+  };
+
+  console.log('errors', errors);
 
   return (
     <div className="flex w-full flex-col items-center justify-center gap-4">
@@ -50,13 +72,34 @@ const Login = () => {
       />
       <SocialAuth />
       <BorderGradient className="flex flex-col gap-5 lg:gap-6">
-        <form
-          onSubmit={manualLoginForm.handleSubmit(handleManualLogin)}
-          className="grid grid-cols-1 gap-x-4 gap-y-5 sm:grid-cols-2 sm:gap-y-6"
-        >
+        <form onSubmit={handleSubmit(handleManualLogin)} className="space-y-5 sm:space-y-6">
+          <Controller
+            name="loginMethod"
+            control={control}
+            render={({ field }) => (
+              <Radio
+                value={field.value}
+                onChange={(value) => {
+                  handleLoginMethodChange(value);
+                  field.onChange(value);
+                }}
+                options={[
+                  { label: 'Email', value: 'email' },
+                  { label: 'Phone', value: 'phoneNumber' },
+                ]}
+                className="w-50!"
+                error={errors.loginMethod?.message}
+              />
+            )}
+          />
           {/* ================= LOGIN ================= */}
           {LOGIN_INPUT_MAP_DATA.map((input) => {
-            const isFullWidth = ['email', 'phoneNumber'].includes(input.name);
+            const isPassword = PASSWORD_KEYS.includes(input.name);
+            const isPhone = input.name === 'phoneNumber';
+            const isEmail = input.name === 'email';
+            const isEmailSelected = selectedMethod === 'email';
+            if (isPhone && isEmailSelected) return null;
+            if (isEmail && !isEmailSelected) return null;
             return (
               <Input
                 key={input.name}
@@ -75,7 +118,7 @@ const Login = () => {
                 icons={
                   input.name === 'phoneNumber'
                     ? { left: '+91' }
-                    : PASSWORD_KEYS.includes(input.name)
+                    : isPassword
                       ? {
                           right: {
                             icon: showPassword ? 'lucide:eye-off' : 'lucide:eye',
@@ -84,9 +127,8 @@ const Login = () => {
                         }
                       : undefined
                 }
-                register={manualLoginForm.register(input.name)}
-                error={manualLoginForm.formState.errors[input.name]?.message}
-                containerClassName={isFullWidth ? 'sm:col-span-2' : ''}
+                register={register(input.name)}
+                error={errors[input.name]?.message}
               />
             );
           })}
@@ -113,7 +155,7 @@ const Login = () => {
             text="Register"
             type="accent"
             path="/auth/register"
-            className="text-sm hover:font-medium md:text-base"
+            className="text-xs font-semibold md:text-sm"
           />
         </div>
         <AuthBottomInstructions />

@@ -40,7 +40,7 @@ const DEFAULT_VALUES = {
 };
 
 const Register = () => {
-  const [currentStep, setCurrentStep] = useState<'send' | 'verify' | 'save'>('send');
+  const [currentStep, setCurrentStep] = useState<'send' | 'verify' | 'save'>('verify');
   const [showPasswords, setShowPasswords] = useState<Partial<Record<keyof TRegister, boolean>>>({
     password: false,
     confirmPassword: false,
@@ -285,7 +285,7 @@ const Register = () => {
             text="Login"
             type="accent"
             path="/auth"
-            className="text-sm hover:font-medium md:text-base"
+            className="text-xs font-semibold md:text-sm"
           />
         </div>
         <AuthBottomInstructions />
