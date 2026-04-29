@@ -9,7 +9,6 @@ import GradientText from '@/components/ui/GradientText';
 import SocialAuth from './components/SocialAuth';
 import AuthBottomInstructions from './components/AuthBottomInstructions';
 import Resend from '@/components/ui/Resend';
-import Checkbox from '@/components/ui/inputs/Checkbox';
 import Input from '@/components/ui/inputs/Input';
 import {
   useRegisterAndSaveUser,
@@ -37,7 +36,6 @@ const DEFAULT_VALUES = {
     lastName: '',
     password: '',
     phoneNumber: '',
-    remember: false,
   },
 };
 
@@ -214,51 +212,42 @@ const Register = () => {
           )}
 
           {/* ================= REGISTER ================= */}
-          {currentStep === 'save' && (
-            <>
-              {REGISTER_INPUT_MAP_DATA.map((input) => {
-                const isFullWidth = ['email', 'phoneNumber'].includes(input.name);
-                return (
-                  <Input
-                    key={input.name}
-                    label={input.label}
-                    inputProps={{
-                      name: input.name,
-                      type: PASSWORD_KEYS.includes(input.name)
-                        ? showPasswords[input.name]
-                          ? 'text'
-                          : input.type
-                        : input.type,
-                      placeholder: input.placeholder,
-                      autoComplete: input.autoComplete,
-                      disabled: registerAndSaveQuery.isPending || input.name === 'email',
-                    }}
-                    icons={
-                      input.name === 'phoneNumber'
-                        ? { left: '+91' }
-                        : PASSWORD_KEYS.includes(input.name)
-                          ? {
-                              right: {
-                                icon: showPasswords[input.name] ? 'lucide:eye' : 'lucide:eye-off',
-                                onClick: () => togglePasswordVisibility(input.name),
-                              },
-                            }
-                          : undefined
-                    }
-                    register={registerAndSaveForm.register(input.name)}
-                    error={registerAndSaveForm.formState.errors[input.name]?.message}
-                    containerClassName={isFullWidth ? 'sm:col-span-2' : ''}
-                  />
-                );
-              })}
-              <Checkbox
-                register={registerAndSaveForm.register('remember')}
-                checkboxProps={{ name: 'remember', disabled: registerAndSaveQuery.isPending }}
-                content="Remember me"
-                containerClassName="sm:col-span-2"
-              />
-            </>
-          )}
+          {currentStep === 'save' &&
+            REGISTER_INPUT_MAP_DATA.map((input) => {
+              const isFullWidth = ['email', 'phoneNumber'].includes(input.name);
+              return (
+                <Input
+                  key={input.name}
+                  label={input.label}
+                  inputProps={{
+                    name: input.name,
+                    type: PASSWORD_KEYS.includes(input.name)
+                      ? showPasswords[input.name]
+                        ? 'text'
+                        : input.type
+                      : input.type,
+                    placeholder: input.placeholder,
+                    autoComplete: input.autoComplete,
+                    disabled: registerAndSaveQuery.isPending || input.name === 'email',
+                  }}
+                  icons={
+                    input.name === 'phoneNumber'
+                      ? { left: '+91' }
+                      : PASSWORD_KEYS.includes(input.name)
+                        ? {
+                            right: {
+                              icon: showPasswords[input.name] ? 'lucide:eye-off' : 'lucide:eye',
+                              onClick: () => togglePasswordVisibility(input.name),
+                            },
+                          }
+                        : undefined
+                  }
+                  register={registerAndSaveForm.register(input.name)}
+                  error={registerAndSaveForm.formState.errors[input.name]?.message}
+                  containerClassName={isFullWidth ? 'sm:col-span-2' : ''}
+                />
+              );
+            })}
 
           {/* ================= BUTTONS ================= */}
           <div className="flex gap-4 sm:col-span-2">

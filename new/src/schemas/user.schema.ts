@@ -6,7 +6,7 @@ import {
   PHONE_OPTIONS,
 } from '@/constants/zod.constant';
 import { appendCustomIssue, validateEnum, validateString } from '@/utils/zod.util';
-import { boolean, object, type RefinementCtx } from 'zod';
+import { object, type RefinementCtx } from 'zod';
 
 const passwordMatchValidation = (
   data: { password: string; confirmPassword: string; oldPassword?: string },
@@ -61,7 +61,6 @@ export const registerSchema = passwordsSchema
     lastName: lastNameValidation,
     email: emailValidation,
     phoneNumber: phoneValidation,
-    remember: boolean(),
   })
   .superRefine(passwordMatchValidation);
 

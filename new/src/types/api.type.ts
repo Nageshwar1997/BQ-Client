@@ -16,8 +16,7 @@ export type TAuthProvider = (typeof AUTH_PROVIDERS)[number];
 
 export type TRole = (typeof ROLES)[number];
 
-export interface IUser
-  extends Omit<TRegister, 'confirmPassword' | 'password' | 'remember'>, IId, ITimeStamp {
+export interface IUser extends Omit<TRegister, 'confirmPassword' | 'password'>, IId, ITimeStamp {
   providers: TAuthProvider[];
   role: TRole;
 }
