@@ -1,32 +1,49 @@
+// ================= 1. External Libraries =================
 import { useState } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Link } from 'react-router-dom';
+
+// ================= 2. Types =================
 import type { TLogin } from '@/types/schema.type';
+
+// ================= 3. Schemas =================
 import { loginSchema } from '@/schemas/user.schema';
+
+// ================= 4. Services / API =================
+import { useManualLogin } from '@/services/user-service/auth.service.query';
+
+// ================= 5. Global Store =================
+import useUserStore from '@/stores/user.store';
+
+// ================= 6. Utilities =================
+import { setErrorToForm } from '@/utils/form.util';
+
+// ================= 7. Constants =================
+import { LOGIN_INPUT_MAP_DATA, PASSWORD_KEYS } from '@/constants/input.constant';
+import { FORM_DEFAULT_VALUES } from '@/constants/form.constants';
+
+// ================= 8. UI Components =================
 import Button from '@/components/ui/Button';
-import BorderGradient from '@/components/layout/containers/BorderGradient';
+import Input from '@/components/ui/inputs/Input';
+import Radio from '@/components/ui/inputs/Radio';
 import GradientText from '@/components/ui/GradientText';
+
+// ================= 9. Layout Components =================
+import BorderGradient from '@/components/layout/containers/BorderGradient';
+
+// ================= 10. Feature Components =================
 import SocialAuth from './components/SocialAuth';
 import AuthBottomInstructions from './components/AuthBottomInstructions';
-import Input from '@/components/ui/inputs/Input';
-import { useManualLogin } from '@/services/user-service/auth.service.query';
-import { setErrorToForm } from '@/utils/form.util';
-import { LOGIN_INPUT_MAP_DATA, PASSWORD_KEYS } from '@/constants/input.constant';
-import { Link } from 'react-router-dom';
-import Radio from '@/components/ui/inputs/Radio';
-
-const DEFAULT_VALUES = {
-  loginMethod: 'email',
-  email: undefined,
-  phoneNumber: undefined,
-  password: '',
-};
 
 const Login = () => {
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+  /* ================= 1. External / Store Hooks ================= */
+  const setUser = useUserStore((s) => s.setUser);
 
-  const manualLoginQuery = useManualLogin();
+  /* ================= 2. API / Query Hooks ================= */
+  const { isPending, mutateAsync } = useManualLogin();
 
+  /* ================= 3. Form Hooks ================= */
   const {
     control,
     formState: { errors },
@@ -36,22 +53,30 @@ const Login = () => {
     setError,
   } = useForm({
     resolver: zodResolver(loginSchema),
-    defaultValues: DEFAULT_VALUES,
+    defaultValues: FORM_DEFAULT_VALUES.login,
   });
 
   const selectedMethod = useWatch({ control, name: 'loginMethod' });
-  console.log('🚀 ~ Login ~ selectedMethod:', selectedMethod);
 
+  /* ================= 4. Local State ================= */
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  /* ================= 5. Handlers ================= */
+
+  // -------- Handle Login Submit --------
   const handleManualLogin = async (data: TLogin) => {
-    await manualLoginQuery.mutateAsync(data, {
+    await mutateAsync(data, {
+      onSuccess: ({ user }) => setUser(user),
       onError: ({ fieldErrors }) => setErrorToForm(setError, fieldErrors),
     });
   };
 
+  // -------- Toggle Password Visibility --------
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   };
 
+  // -------- Handle Login Method Change (Email / Phone) --------
   const handleLoginMethodChange = (method: TLogin['loginMethod']) => {
     reset({
       loginMethod: method,
@@ -61,18 +86,24 @@ const Login = () => {
     });
   };
 
-  console.log('errors', errors);
-
+  /* ================= 6. JSX ================= */
   return (
     <div className="flex w-full flex-col items-center justify-center gap-4">
+      {/* ================= HEADER ================= */}
       <GradientText
         type="accent"
         text="Login"
         className="mx-auto text-2xl leading-tight font-semibold sm:text-3xl md:text-4xl lg:text-5xl"
       />
+
+      {/* ================= SOCIAL AUTH ================= */}
       <SocialAuth />
+
+      {/* ================= FORM CONTAINER ================= */}
       <BorderGradient className="flex flex-col gap-5 lg:gap-6">
+        {/* ================= MAIN FORM ================= */}
         <form onSubmit={handleSubmit(handleManualLogin)} className="space-y-5 sm:space-y-6">
+          {/* -------- Login Method Toggle (Radio) -------- */}
           <Controller
             name="loginMethod"
             control={control}
@@ -92,31 +123,31 @@ const Login = () => {
               />
             )}
           />
-          {/* ================= LOGIN ================= */}
+
+          {/* ================= INPUTS ================= */}
           {LOGIN_INPUT_MAP_DATA.map((input) => {
             const isPassword = PASSWORD_KEYS.includes(input.name);
             const isPhone = input.name === 'phoneNumber';
             const isEmail = input.name === 'email';
             const isEmailSelected = selectedMethod === 'email';
+
+            // -------- Conditional Rendering --------
             if (isPhone && isEmailSelected) return null;
             if (isEmail && !isEmailSelected) return null;
+
             return (
               <Input
                 key={input.name}
                 label={input.label}
                 inputProps={{
                   name: input.name,
-                  type: PASSWORD_KEYS.includes(input.name)
-                    ? showPassword
-                      ? 'text'
-                      : input.type
-                    : input.type,
+                  type: isPassword ? (showPassword ? 'text' : input.type) : input.type,
                   placeholder: input.placeholder,
                   autoComplete: input.autoComplete,
-                  disabled: manualLoginQuery.isPending,
+                  disabled: isPending,
                 }}
                 icons={
-                  input.name === 'phoneNumber'
+                  isPhone
                     ? { left: '+91' }
                     : isPassword
                       ? {
@@ -133,18 +164,23 @@ const Login = () => {
             );
           })}
 
-          {/* ================= BUTTONS ================= */}
+          {/* ================= ACTION BUTTONS ================= */}
           <div className="flex gap-4 sm:col-span-2">
+            {/* -------- Back Button -------- */}
             <Link to="/" className="w-full">
               <Button pattern="secondary" content="Back" />
             </Link>
+
+            {/* -------- Submit Button -------- */}
             <Button
               pattern="primary"
-              buttonProps={{ type: 'submit', disabled: manualLoginQuery.isPending }}
+              buttonProps={{ type: 'submit', disabled: isPending }}
               content="Login"
             />
           </div>
         </form>
+
+        {/* ================= FOOTER ================= */}
         <div className="flex items-center justify-center gap-2">
           <GradientText
             text="Don't have an account?"
@@ -158,6 +194,8 @@ const Login = () => {
             className="text-xs font-semibold md:text-sm"
           />
         </div>
+
+        {/* ================= EXTRA INFO ================= */}
         <AuthBottomInstructions />
       </BorderGradient>
     </div>
