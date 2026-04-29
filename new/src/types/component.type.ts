@@ -40,3 +40,15 @@ export interface IResend extends TClassName {
   count: number;
   onResend?: () => void;
 }
+
+type TBaseStatus = TClassName & {
+  title: string | ReactNode;
+  description?: string | ReactNode;
+  divider?: boolean;
+};
+
+type TErrorStatus = TBaseStatus & { status: 'error' };
+type TEmptyStatus = TBaseStatus & { status: 'empty' };
+type TLoadingStatus = TClassName & { status: 'loading'; text?: string };
+
+export type TApiStatus = TErrorStatus | TEmptyStatus | TLoadingStatus;
