@@ -1,4 +1,4 @@
-import type { TRegister, TRegisterEmail, TRegisterOtp } from '@/types/schema.type';
+import type { TLogin, TRegister, TRegisterEmail, TRegisterOtp } from '@/types/schema.type';
 import { ApiRequest } from '../ApiRequest';
 import { API_METHODS_AND_URLS } from '@/constants/api.constant';
 
@@ -41,12 +41,9 @@ export class AuthApi extends ApiRequest {
 
   /* ===================== LOGIN API ===================== */
 
-  // public login = (data: { email: string; password: string }) => {
-  //   return this.request({
-  //     ...this.routes.,
-  //     data,
-  //   });
-  // };
+  public manualLogin = (data: TLogin) => {
+    return this.request({ ...this.routes.login.manual, data });
+  };
 
   /* ===================== USER ===================== */
 

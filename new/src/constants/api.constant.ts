@@ -22,6 +22,9 @@ export const API_METHODS_AND_URLS = {
           verify_otp: { method: METHODS.POST, url: '/auth/register/verify-otp' },
           save_user: { method: METHODS.POST, url: '/auth/register/save-user' },
         },
+        login: {
+          manual: { method: METHODS.POST, url: '/auth/login/manual' },
+        },
         token: {
           refresh: {
             baseURL: API_BASE_URLS['gateway-user-service'],
@@ -42,6 +45,9 @@ export const GATEWAY_USER_SERVICE_QUERY_KEYS = {
       resend_otp: ['register_resend_otp'],
       verify_otp: ['register_verify_otp'],
       save_user: ['register_save_user'],
+    },
+    login: {
+      manual: ['manual_login'],
     },
   },
   user: {

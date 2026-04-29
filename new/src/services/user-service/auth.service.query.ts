@@ -4,6 +4,8 @@ import { handleApiErrorToaster, handleApiSuccessToaster } from '@/utils/api.util
 import { toaster } from '@/utils/common.util';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+/* ===================== REGISTER QUERIES ===================== */
+
 export const useRegisterSendOtp = () => {
   return useMutation({
     mutationKey: GATEWAY_USER_SERVICE_QUERY_KEYS.auth.register.send_otp,
@@ -66,7 +68,7 @@ export const useRegisterAndSaveUser = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: GATEWAY_USER_SERVICE_QUERY_KEYS.auth.register.verify_otp,
+    mutationKey: GATEWAY_USER_SERVICE_QUERY_KEYS.auth.register.save_user,
     mutationFn: authApi.registerSaveUser,
     onMutate: () => {
       const toastId = toaster.loading({
@@ -77,7 +79,35 @@ export const useRegisterAndSaveUser = () => {
     },
     onSuccess: async ({ message }) => {
       handleApiSuccessToaster(message);
-      await queryClient.invalidateQueries({
+      await queryClient.refetchQueries({
+        queryKey: GATEWAY_USER_SERVICE_QUERY_KEYS.user.session,
+      });
+    },
+    onError: (error) => handleApiErrorToaster(error),
+    onSettled: (_data, _error, _variables, context) => {
+      if (context?.toastId) toaster.remove(context.toastId);
+    },
+  });
+};
+
+/* ===================== LOGIN QUERIES ===================== */
+
+export const useManualLogin = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: GATEWAY_USER_SERVICE_QUERY_KEYS.auth.login.manual,
+    mutationFn: authApi.manualLogin,
+    onMutate: () => {
+      const toastId = toaster.loading({
+        title: 'Please wait...',
+        description: 'Logging in...',
+      });
+      return { toastId };
+    },
+    onSuccess: async ({ message }) => {
+      handleApiSuccessToaster(message);
+      await queryClient.refetchQueries({
         queryKey: GATEWAY_USER_SERVICE_QUERY_KEYS.user.session,
       });
     },

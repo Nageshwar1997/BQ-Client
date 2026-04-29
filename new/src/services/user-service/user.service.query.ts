@@ -14,6 +14,7 @@ export const useGetSessionUser = () => {
     queryFn: userApi.getSessionUser,
     staleTime: 5 * 60 * 1000, // 5 min
     gcTime: 15 * 60 * 1000, // 15 min
+    enabled: true,
     retry: false,
     refetchOnWindowFocus: false,
     refetchOnMount: true,

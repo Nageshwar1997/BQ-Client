@@ -49,9 +49,9 @@ const PASSWORD_INPUT_DATA = {
 } as const;
 
 export const LOGIN_INPUT_MAP_DATA = [
-  { ...EMAIL_INPUT_DATA, name: 'email' },
-  { ...PHONE_NUMBER_INPUT_DATA, name: 'phoneNumber' },
-  { ...PASSWORD_INPUT_DATA, name: 'password' },
+  EMAIL_INPUT_DATA,
+  PHONE_NUMBER_INPUT_DATA,
+  PASSWORD_INPUT_DATA,
 ] as const;
 
 export const SET_PASSWORDS_FIELDS = [
