@@ -51,7 +51,7 @@ const Login = () => {
     register,
     reset,
     setError,
-  } = useForm({
+  } = useForm<TLogin>({
     resolver: zodResolver(loginSchema),
     defaultValues: FORM_DEFAULT_VALUES.login,
   });
