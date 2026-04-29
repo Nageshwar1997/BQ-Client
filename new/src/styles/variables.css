@@ -212,7 +212,11 @@
   --platinum-jet: #e5e5e5;
 
   /* Background Images & Gradients */
-  --accent-duo: linear-gradient(114deg, var(--picton-blue-c) 6.19%, var(--color-blue-crayola-c) 41.65%);
+  --accent-duo: linear-gradient(
+    114deg,
+    var(--picton-blue-c) 6.19%,
+    var(--color-blue-crayola-c) 41.65%
+  );
   --silver-duo: linear-gradient(
     180deg,
     var(--battleship-davys-gray-invert) 24.54%,

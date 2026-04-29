@@ -56,3 +56,19 @@
     @apply bg-primary pointer-events-auto relative z-30 h-3 w-3 cursor-pointer rounded-full;
   }
 }
+
+@utility loading-text {
+  background: radial-gradient(circle closest-side, var(--primary) 94%, rgba(var(--primary-rgb), 0))
+    right/calc(200% - 1em) 100%;
+  animation: loading-text var(--loading-text-duration) infinite alternate linear;
+  &::after {
+    background: inherit;
+    background-image: radial-gradient(
+      circle closest-side,
+      var(--primary-invert) 94%,
+      var(--primary)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+}

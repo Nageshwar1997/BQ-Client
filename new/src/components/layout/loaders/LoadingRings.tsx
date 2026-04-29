@@ -21,17 +21,11 @@ const LoadingRings = ({ className = '', text = 'Loading....' }: ILoading) => {
             />
           ))}
         </div>
-        <div className="mt-[4vmin] flex gap-[0.2vmin] text-[3vmin] font-medium">
-          {text.split('').map((char, index) => (
-            <span
-              key={index}
-              className="bg-accent-duo translate-y-2 animate-[loading-text_3s_ease-in-out_infinite] bg-clip-text text-transparent opacity-0"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              {char === ' ' ? '\u00A0' : char}
-            </span>
-          ))}
-        </div>
+        <div
+          data-text={text}
+          className="loading-text after:text-primary/0 mt-[2vmin] w-fit font-mono text-[3.5vmin] font-extrabold after:content-[attr(data-text)]"
+          style={{ ['--loading-text-duration' as string]: `${Math.max(1, text.length * 0.08)}s` }}
+        />
       </div>
     </div>
   );
