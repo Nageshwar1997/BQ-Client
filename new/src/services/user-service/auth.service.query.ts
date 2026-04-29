@@ -2,7 +2,7 @@ import { authApi } from '@/classes/apis';
 import { GATEWAY_USER_SERVICE_QUERY_KEYS } from '@/constants/api.constant';
 import { handleApiErrorToaster, handleApiSuccessToaster } from '@/utils/api.util';
 import { toaster } from '@/utils/common.util';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 
 /* ===================== REGISTER QUERIES ===================== */
 
@@ -65,8 +65,6 @@ export const useRegisterVerifyOtp = () => {
 };
 
 export const useRegisterAndSaveUser = () => {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationKey: GATEWAY_USER_SERVICE_QUERY_KEYS.auth.register.save_user,
     mutationFn: authApi.registerSaveUser,
@@ -77,12 +75,7 @@ export const useRegisterAndSaveUser = () => {
       });
       return { toastId };
     },
-    onSuccess: async ({ message }) => {
-      handleApiSuccessToaster(message);
-      await queryClient.refetchQueries({
-        queryKey: GATEWAY_USER_SERVICE_QUERY_KEYS.user.session,
-      });
-    },
+    onSuccess: async ({ message }) => handleApiSuccessToaster(message),
     onError: (error) => handleApiErrorToaster(error),
     onSettled: (_data, _error, _variables, context) => {
       if (context?.toastId) toaster.remove(context.toastId);
@@ -93,8 +86,6 @@ export const useRegisterAndSaveUser = () => {
 /* ===================== LOGIN QUERIES ===================== */
 
 export const useManualLogin = () => {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationKey: GATEWAY_USER_SERVICE_QUERY_KEYS.auth.login.manual,
     mutationFn: authApi.manualLogin,
@@ -105,12 +96,7 @@ export const useManualLogin = () => {
       });
       return { toastId };
     },
-    onSuccess: async ({ message }) => {
-      handleApiSuccessToaster(message);
-      await queryClient.refetchQueries({
-        queryKey: GATEWAY_USER_SERVICE_QUERY_KEYS.user.session,
-      });
-    },
+    onSuccess: async ({ message }) => handleApiSuccessToaster(message),
     onError: (error) => handleApiErrorToaster(error),
     onSettled: (_data, _error, _variables, context) => {
       if (context?.toastId) toaster.remove(context.toastId);

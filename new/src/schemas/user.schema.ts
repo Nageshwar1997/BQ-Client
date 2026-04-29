@@ -59,7 +59,6 @@ export const registerSchema = passwordsSchema
   .extend({
     firstName: firstNameValidation,
     lastName: lastNameValidation,
-    email: emailValidation,
     phoneNumber: phoneValidation,
   })
   .superRefine(passwordMatchValidation);

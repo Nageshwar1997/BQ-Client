@@ -19,4 +19,5 @@ export type TRole = (typeof ROLES)[number];
 export interface IUser extends Omit<TRegister, 'confirmPassword' | 'password'>, IId, ITimeStamp {
   providers: TAuthProvider[];
   role: TRole;
+  avatar?: string;
 }

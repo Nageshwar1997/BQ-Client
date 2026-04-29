@@ -15,27 +15,26 @@ export class AuthApi extends ApiRequest {
     return this.request({ ...this.routes.register.send_otp, data });
   };
 
-  public registerResendOtp = ({ otpToken, ...data }: TRegisterEmail & { otpToken: string }) => {
+  public registerResendOtp = (token: string) => {
     return this.request({
       ...this.routes.register.resend_otp,
-      data,
-      headers: { Authorization: `Bearer ${otpToken}` },
+      headers: { Authorization: `Bearer ${token}` },
     });
   };
 
-  public registerVerifyOtp = ({ otpToken, ...data }: TRegisterOtp & { otpToken: string }) => {
+  public registerVerifyOtp = ({ token, ...data }: TRegisterOtp & { token: string }) => {
     return this.request({
       ...this.routes.register.verify_otp,
       data,
-      headers: { Authorization: `Bearer ${otpToken}` },
+      headers: { Authorization: `Bearer ${token}` },
     });
   };
 
-  public registerSaveUser = ({ otpToken, ...data }: TRegister & { otpToken: string }) => {
+  public registerSaveUser = ({ token, ...data }: TRegister & { token: string }) => {
     return this.request({
       ...this.routes.register.save_user,
       data,
-      headers: { Authorization: `Bearer ${otpToken}` },
+      headers: { Authorization: `Bearer ${token}` },
     });
   };
 

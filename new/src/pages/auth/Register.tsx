@@ -53,12 +53,9 @@ const Register = () => {
   const verifyOtpQuery = useRegisterVerifyOtp();
   const registerAndSaveQuery = useRegisterAndSaveUser();
 
-  const otpToken =
-    verifyOtpQuery.data?.data?.otpToken ||
-    resendOtpQuery.data?.data?.otpToken ||
-    sendOtpQuery.data?.data?.otpToken ||
-    '';
-  const sendCount = resendOtpQuery.data?.data?.sendCount || sendOtpQuery.data?.data?.sendCount || 1;
+  const token = sendOtpQuery.data?.token || '';
+  const sendCount = resendOtpQuery.data?.sendCount || 1;
+  console.log('🚀 ~ Register ~ registerAndSaveQuery.data:', registerAndSaveQuery.data);
 
   const sendOtpForm = useForm({
     resolver: zodResolver(registerEmailSchema),
@@ -75,28 +72,22 @@ const Register = () => {
 
   const handleSendOtp = async (data: TRegisterEmail) => {
     await sendOtpQuery.mutateAsync(data, {
-      onSuccess: ({ data }) => {
-        registerAndSaveForm.setValue('email', data.email);
-        setCurrentStep('verify');
-      },
+      onSuccess: () => setCurrentStep('verify'),
       onError: ({ fieldErrors }) => setErrorToForm(sendOtpForm.setError, fieldErrors),
     });
   };
   const handleVerifyOtp = async (data: TRegisterOtp) => {
     await verifyOtpQuery.mutateAsync(
-      { ...data, otpToken },
+      { ...data, token },
       {
-        onSuccess: ({ data }) => {
-          registerAndSaveForm.setValue('email', data.email);
-          setCurrentStep('save');
-        },
+        onSuccess: () => setCurrentStep('save'),
         onError: ({ fieldErrors }) => setErrorToForm(verifyOtpForm.setError, fieldErrors),
       },
     );
   };
   const handleRegisterAndSave = async (data: TRegister) => {
     await registerAndSaveQuery.mutateAsync(
-      { ...data, otpToken },
+      { ...data, token },
       {
         onError: ({ fieldErrors }) => setErrorToForm(registerAndSaveForm.setError, fieldErrors),
       },
@@ -104,7 +95,6 @@ const Register = () => {
   };
 
   const handleResendOtp = async () => {
-    const { email } = sendOtpQuery.data?.data ?? {};
     if (sendCount >= 3) {
       return toaster.error({
         title: 'Resend Failed',
@@ -113,7 +103,7 @@ const Register = () => {
     }
     if (verifyOtpQuery.isPending || resendOtpQuery.isPending || sendOtpQuery.isPending) return;
 
-    await resendOtpQuery.mutateAsync({ email, otpToken });
+    await resendOtpQuery.mutateAsync(token);
   };
 
   const handleBack = () => {
@@ -228,7 +218,7 @@ const Register = () => {
                       : input.type,
                     placeholder: input.placeholder,
                     autoComplete: input.autoComplete,
-                    disabled: registerAndSaveQuery.isPending || input.name === 'email',
+                    disabled: registerAndSaveQuery.isPending,
                   }}
                   icons={
                     input.name === 'phoneNumber'
