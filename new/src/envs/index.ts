@@ -2,7 +2,7 @@ const {
   // A
   // B
   // C
-  VITE_CONTACT_US_GOOGLE_APP_SCRIPTS_URL,
+  // VITE_CONTACT_US_GOOGLE_APP_SCRIPTS_URL,
   // VITE_CONTACT_US_GOOGLE_DEPLOYMENT_ID, // NOTE - This is not used anywhere It's just for convenience
   // VITE_CONTACT_US_GOOGLE_SHEET_URL, // NOTE - This is not used anywhere It's just for convenience
 
@@ -15,7 +15,7 @@ const {
 
   VITE_GATEWAY_DEV_URL,
   VITE_GATEWAY_PROD_URL,
-  VITE_GOOGLE_MAPS_API_KEY,
+  // VITE_GOOGLE_MAPS_API_KEY,
 
   // H
   // I
@@ -34,14 +34,14 @@ const {
 
   // N
   // O
-  VITE_OPENING_GOOGLE_APP_SCRIPTS_URL,
+  // VITE_OPENING_GOOGLE_APP_SCRIPTS_URL,
   // VITE_OPENING_GOOGLE_DEPLOYMENT_ID, // NOTE - This is not used anywhere It's just for convenience
   // VITE_OPENING_GOOGLE_SHEET_URL, // NOTE - This is not used anywhere It's just for convenience
 
   // P
   // Q
   // R
-  VITE_RAZORPAY_KEY_ID,
+  // VITE_RAZORPAY_KEY_ID,
   // VITE_RAZORPAY_KEY_SECRET, // NOTE - This is not used anywhere It's just for convenience
 
   // S
