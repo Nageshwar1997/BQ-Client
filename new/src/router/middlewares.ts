@@ -1,6 +1,6 @@
-import { LAST_PATH_KEY } from '@/constants/common.constant';
+import { LAST_NON_AUTH_PATH_KEY } from '@/constants/common.constant';
 import useUserStore from '@/stores/user.store';
-import { getSafePath } from '@/utils/common.util';
+import { getSafeNonAuthPath } from '@/utils/common.util';
 import { redirect, type MiddlewareFunction } from 'react-router-dom';
 
 export const authCheck: MiddlewareFunction = (_args, next) => {
@@ -16,7 +16,7 @@ export const authRedirect: MiddlewareFunction = (_args, next) => {
 
   if (!user) return next();
 
-  const lastPath = getSafePath(sessionStorage.getItem(LAST_PATH_KEY));
+  const lastPath = getSafeNonAuthPath(sessionStorage.getItem(LAST_NON_AUTH_PATH_KEY));
 
   return redirect(lastPath ?? '/');
 };

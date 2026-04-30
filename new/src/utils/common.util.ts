@@ -2,7 +2,6 @@ import type { IButton } from '@/types/component.type';
 import { decryptData, encryptData } from './crypto.util';
 import useToastStore from '@/stores/toast.store';
 import type { ICustomToast, IDefaultToast, ILoadingToast } from '@/types/store.type';
-import { LAST_PATH_KEY } from '@/constants/common.constant';
 
 export const getButtonCss = (pattern: IButton['pattern']) => {
   switch (pattern) {
@@ -85,33 +84,13 @@ export const toaster = {
   remove: (toastId: string) => removeToast(toastId),
 };
 
-const getPath = ({
-  pathname,
-  search = '',
-  hash = '',
-}: Pick<Location, 'pathname' | 'search' | 'hash'>) => `${pathname}${search}${hash}`;
-
-export const getSafePath = (path: string | null) => {
+export const getSafeNonAuthPath = (path: string | null) => {
   if (!path || !path.startsWith('/')) return null;
 
-  const url = new URL(path, window.location.origin);
+  const { origin, pathname, search = '', hash = '' } = new URL(path, window.location.origin);
 
-  if (
-    url.origin !== window.location.origin ||
-    url.pathname === '/auth' ||
-    url.pathname.startsWith('/auth/')
-  )
+  if (origin !== window.location.origin || pathname === '/auth' || pathname.startsWith('/auth/'))
     return null;
 
-  return getPath(url);
-};
-
-export const rememberLastNonAuthPath = (
-  location: Pick<Location, 'pathname' | 'search' | 'hash'> = window.location,
-) => {
-  const path = getPath(location);
-
-  if (getSafePath(path)) {
-    sessionStorage.setItem(LAST_PATH_KEY, path);
-  }
+  return `${pathname}${search}${hash}`;
 };
