@@ -5,13 +5,15 @@ import useQueryParams from '@/hooks/useQueryParams';
 import ApiStatus from '@/components/layout/ApiStatus';
 import GradientText from '@/components/ui/GradientText';
 import { useGetSessionUser } from '@/services/user-service/user.service.query';
+import useUserStore from '@/stores/user.store';
 
 const OAuth = () => {
   const [readyToCall, setReadyToCall] = useState(false);
   const { navigate } = usePathParams();
   const { queryParams } = useQueryParams();
-  const { isLoading, isError } = useGetSessionUser({ enabled: readyToCall });
+  const setUser = useUserStore((s) => s.setUser);
 
+  const { isLoading, isError, data } = useGetSessionUser({ enabled: readyToCall });
   useEffect(() => {
     if (!Boolean(queryParams.success) && !Boolean(queryParams.error)) {
       navigate('/auth');
@@ -22,6 +24,12 @@ const OAuth = () => {
       setReadyToCall(true);
     }
   }, [queryParams.success, queryParams.error, navigate]);
+
+  useEffect(() => {
+    if (data?.user) {
+      setUser(data.user);
+    }
+  }, [data?.user]);
 
   const showLoading = !queryParams.error && (!readyToCall || isLoading);
   const showError = isError || queryParams.error;

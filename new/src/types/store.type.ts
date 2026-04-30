@@ -56,7 +56,5 @@ export type TThemeStore = {
 export type TUserStore = {
   user: IUser | null;
   authenticated: boolean;
-
   setUser: (user: IUser | null) => void;
-  logout: () => void;
 };

@@ -9,7 +9,7 @@ import useThemeStore from './stores/theme.store';
 import { queryClient } from './configs/queryClient';
 
 function App() {
-  const { theme } = useThemeStore();
+  const theme = useThemeStore((s) => s.theme);
 
   useEffect(() => {
     document.documentElement.setAttribute('theme', theme);
