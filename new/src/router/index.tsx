@@ -16,10 +16,19 @@ const router = createBrowserRouter([
   {
     path: 'auth',
     HydrateFallback: LoadingScreen,
-    ErrorBoundary,
+    ErrorBoundary: ErrorBoundary,
     lazy: async () => {
       const { default: Auth } = await import('@/pages/auth');
-      return { Component: Auth };
+      const { default: AuthRedirect } = await import('./AuthRedirect');
+      const Wrapper = () => {
+        return (
+          <AuthRedirect>
+            <Auth />
+          </AuthRedirect>
+        );
+      };
+
+      return { Component: Wrapper };
     },
     children: [
       {
