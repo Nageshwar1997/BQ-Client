@@ -7,7 +7,7 @@ import envs from './envs';
 import ToastContainer from './components/ui/Toaster';
 import useThemeStore from './stores/theme.store';
 import { queryClient } from './configs/queryClient';
-import { rememberLastPath } from './utils/common.util';
+import { rememberLastNonAuthPath } from './utils/common.util';
 
 function App() {
   const theme = useThemeStore((s) => s.theme);
@@ -17,8 +17,8 @@ function App() {
   }, [theme]);
 
   useEffect(() => {
-    rememberLastPath();
-    return router.subscribe((state) => rememberLastPath(state.location));
+    rememberLastNonAuthPath();
+    return router.subscribe((state) => rememberLastNonAuthPath(state.location));
   }, []);
 
   return (

@@ -106,7 +106,7 @@ export const getSafePath = (path: string | null) => {
   return getPath(url);
 };
 
-export const rememberLastPath = (
+export const rememberLastNonAuthPath = (
   location: Pick<Location, 'pathname' | 'search' | 'hash'> = window.location,
 ) => {
   const path = getPath(location);
