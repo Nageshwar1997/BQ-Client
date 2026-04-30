@@ -7,6 +7,7 @@ import envs from './envs';
 import ToastContainer from './components/ui/Toaster';
 import useThemeStore from './stores/theme.store';
 import { queryClient } from './configs/queryClient';
+import { rememberLastPath } from './utils/common.util';
 
 function App() {
   const theme = useThemeStore((s) => s.theme);
@@ -14,6 +15,11 @@ function App() {
   useEffect(() => {
     document.documentElement.setAttribute('theme', theme);
   }, [theme]);
+
+  useEffect(() => {
+    rememberLastPath();
+    return router.subscribe((state) => rememberLastPath(state.location));
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

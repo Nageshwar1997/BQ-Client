@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import LoadingScreen from '@/components/layout/loaders/LoadingScreen';
 import ErrorBoundary from '@/pages/error/ErrorBoundary';
+import { authRedirect } from './middlewares';
 
 const router = createBrowserRouter([
   {
@@ -15,20 +16,13 @@ const router = createBrowserRouter([
   },
   {
     path: 'auth',
+    middleware: [authRedirect],
     HydrateFallback: LoadingScreen,
     ErrorBoundary: ErrorBoundary,
     lazy: async () => {
       const { default: Auth } = await import('@/pages/auth');
-      const { default: AuthRedirect } = await import('./AuthRedirect');
-      const Wrapper = () => {
-        return (
-          <AuthRedirect>
-            <Auth />
-          </AuthRedirect>
-        );
-      };
 
-      return { Component: Wrapper };
+      return { Component: Auth };
     },
     children: [
       {
