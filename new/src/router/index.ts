@@ -31,13 +31,26 @@ const router = createBrowserRouter([
       },
       {
         path: 'register',
-        index: true,
         lazy: async () => {
           const { default: Register } = await import('@/pages/auth/Register');
           return { Component: Register };
         },
       },
+      {
+        path: 'oauth',
+        lazy: async () => {
+          const { default: OAuth } = await import('@/pages/auth/OAuth');
+          return { Component: OAuth };
+        },
+      },
     ],
+  },
+  {
+    path: '*',
+    lazy: async () => {
+      const { default: NotFound } = await import('@/pages/error/NotFound');
+      return { Component: NotFound };
+    },
   },
 ]);
 

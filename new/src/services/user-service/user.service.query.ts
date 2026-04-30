@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 
 const { session } = GATEWAY_USER_SERVICE_QUERY_KEYS.user;
 
-export const useGetSessionUser = () => {
+export const useGetSessionUser = ({ enabled = true }) => {
   const setUser = useUserStore((s) => s.setUser);
 
   const query = useQuery({
@@ -14,7 +14,7 @@ export const useGetSessionUser = () => {
     queryFn: userApi.getSessionUser,
     staleTime: 5 * 60 * 1000, // 5 min
     gcTime: 15 * 60 * 1000, // 15 min
-    enabled: true,
+    enabled,
     retry: false,
     refetchOnWindowFocus: false,
     refetchOnMount: true,
@@ -22,14 +22,13 @@ export const useGetSessionUser = () => {
   });
 
   useEffect(() => {
-    console.log('query.data useEffect', query.data);
-    // if (query.isSuccess) {
-    //   setUser(query.data);
-    // }
+    if (query.isSuccess && query.data?.user) {
+      setUser(query.data.user);
+    }
 
-    // if (query.isError) {
-    //   setUser(null);
-    // }
+    if (query.isError && !query.data?.user) {
+      setUser(null);
+    }
   }, [query.isSuccess, query.isError, query.data, setUser]);
 
   return query;

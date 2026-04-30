@@ -42,7 +42,11 @@ export class ApiRequest {
 
         const originalRequest = axiosError.config as AxiosRequestConfigWithRetry;
 
-        if (originalRequest.url?.includes('/auth/refresh')) {
+        if (
+          originalRequest.url?.includes(
+            API_METHODS_AND_URLS.gateway.user_service.auth.token.refresh.url,
+          )
+        ) {
           return Promise.reject(error);
         }
 
