@@ -1,6 +1,6 @@
+import { createBrowserRouter } from 'react-router-dom';
 import LoadingScreen from '@/components/layout/loaders/LoadingScreen';
 import ErrorBoundary from '@/pages/error/ErrorBoundary';
-import { createBrowserRouter } from 'react-router-dom';
 
 const router = createBrowserRouter([
   {

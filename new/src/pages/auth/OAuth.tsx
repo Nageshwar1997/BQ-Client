@@ -18,15 +18,9 @@ const OAuth = () => {
       return;
     }
 
-    let timer: ReturnType<typeof setTimeout> | null = null;
-
     if (Boolean(queryParams.success)) {
       setReadyToCall(true);
     }
-
-    return () => {
-      if (timer) clearTimeout(timer); // 🔥 cleanup
-    };
   }, [queryParams.success, queryParams.error, navigate]);
 
   const showLoading = !queryParams.error && (!readyToCall || isLoading);
