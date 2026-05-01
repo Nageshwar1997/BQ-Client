@@ -246,7 +246,7 @@ const ForgotPassword = () => {
               buttonProps={{ onClick: handleBack }}
               content={
                 currentStep === 'send'
-                  ? 'Home'
+                  ? 'Back'
                   : currentStep === 'verify'
                     ? 'Change Email'
                     : 'Cancel'

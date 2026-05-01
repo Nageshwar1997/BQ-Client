@@ -145,6 +145,15 @@ const Login = () => {
             );
           })}
 
+          <p className="inline-flex w-full justify-end pr-2">
+            <GradientText
+              text="Forgot Password?"
+              type="accent"
+              path="/auth/forgot-password"
+              className="text-xs font-semibold whitespace-nowrap hover:underline"
+            />
+          </p>
+
           {/* ================= ACTION BUTTONS ================= */}
           <div className="flex gap-4 sm:col-span-2">
             {/* -------- Back Button -------- */}

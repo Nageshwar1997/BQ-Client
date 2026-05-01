@@ -34,10 +34,10 @@ export const API_METHODS_AND_URLS = {
         },
         password: {
           forgot: {
-            send_otp: { method: METHODS.POST, url: '/auth/password-forgot/send-otp' },
-            resend_otp: { method: METHODS.PATCH, url: '/auth/password-forgot/resend-otp' },
-            verify_otp: { method: METHODS.POST, url: '/auth/password-forgot/verify-otp' },
-            save: { method: METHODS.POST, url: '/auth/password-forgot/save' },
+            send_otp: { method: METHODS.POST, url: '/auth/password/forgot-send-otp' },
+            resend_otp: { method: METHODS.PATCH, url: '/auth/password/forgot-resend-otp' },
+            verify_otp: { method: METHODS.POST, url: '/auth/password/forgot-verify-otp' },
+            save: { method: METHODS.POST, url: '/auth/password/forgot-save' },
           },
         },
       },
