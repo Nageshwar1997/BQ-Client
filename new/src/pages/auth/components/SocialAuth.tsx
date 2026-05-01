@@ -6,7 +6,7 @@ const SocialAuth = () => {
     <div className="flex items-center justify-center gap-4">
       {['Google', 'Github', 'Linkedin'].map((name, index) => (
         <Link
-          to={`${envs.urls.gateway}/gateway/api/v1/user-service/auth/login/oauth/${name.toLowerCase()}/redirect`}
+          to={`${envs.urls.gateway}/api/v1/user-service/auth/login/oauth/${name.toLowerCase()}/redirect`}
           key={index}
           className="border-primary/40 shadow-primary/50 mb-2.5 h-12 w-12 rounded-xl border bg-white p-2.5 shadow-sm backdrop-blur-sm transition-transform duration-500 hover:scale-110"
         >

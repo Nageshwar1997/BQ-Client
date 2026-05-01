@@ -9,7 +9,7 @@ const METHODS = {
 };
 
 export const API_BASE_URLS = {
-  'gateway-user-service': `${envs.urls.gateway}/gateway/api/v1/user-service`,
+  'gateway-user-service': `${envs.urls.gateway}/api/v1/user-service`,
 };
 
 export const API_METHODS_AND_URLS = {
