@@ -1,17 +1,17 @@
 import type {
   changePasswordSchema,
+  emailSchema,
   loginSchema,
+  otpSchema,
   passwordsSchema,
-  registerEmailSchema,
-  registerOtpSchema,
   registerSchema,
   setPasswordSchema,
 } from '@/schemas/user.schema';
 import type { infer as zodInfer } from 'zod';
 
-export type TRegisterOtp = zodInfer<typeof registerOtpSchema>;
+export type TOtp = zodInfer<typeof otpSchema>;
 
-export type TRegisterEmail = zodInfer<typeof registerEmailSchema>;
+export type TEmail = zodInfer<typeof emailSchema>;
 
 export type TPasswords = zodInfer<typeof passwordsSchema>;
 

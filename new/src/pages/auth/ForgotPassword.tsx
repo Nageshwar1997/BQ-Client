@@ -8,10 +8,10 @@ import {
   EMAIL_INPUT_DATA,
   OTP_INPUT_DATA,
   PASSWORD_KEYS,
-  REGISTER_INPUT_MAP_DATA,
+  PASSWORDS_INPUT_MAP_DATA,
 } from '@/constants/input.constant';
 import usePathParams from '@/hooks/usePathParams';
-import { emailSchema, otpSchema, registerSchema } from '@/schemas/user.schema';
+import { emailSchema, otpSchema, passwordsSchema } from '@/schemas/user.schema';
 import {
   useRegisterAndSaveUser,
   useRegisterResendOtp,
@@ -19,16 +19,15 @@ import {
   useRegisterVerifyOtp,
 } from '@/services/user-service/auth.service.query';
 import useUserStore from '@/stores/user.store';
-import type { TEmail, TOtp, TRegister } from '@/types/schema.type';
+import type { TEmail, TOtp, TPasswords } from '@/types/schema.type';
 import { toaster } from '@/utils/common.util';
 import { setErrorToForm } from '@/utils/form.util';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import AuthBottomInstructions from './components/AuthBottomInstructions';
-import SocialAuth from './components/SocialAuth';
 
-const Register = () => {
+const ForgotPassword = () => {
   /* ================= 1. Store Hooks ================= */
   const setUser = useUserStore((s) => s.setUser);
 
@@ -60,15 +59,15 @@ const Register = () => {
     defaultValues: FORM_DEFAULT_VALUES.otp,
   });
 
-  const registerAndSaveForm = useForm<TRegister>({
-    resolver: zodResolver(registerSchema),
-    defaultValues: FORM_DEFAULT_VALUES.register,
+  const passwordForm = useForm<TPasswords>({
+    resolver: zodResolver(passwordsSchema),
+    defaultValues: FORM_DEFAULT_VALUES.passwords,
   });
 
   /* ================= 5. Local State ================= */
   const [currentStep, setCurrentStep] = useState<'send' | 'verify' | 'save'>('send');
 
-  const [showPasswords, setShowPasswords] = useState<Partial<Record<keyof TRegister, boolean>>>({
+  const [showPasswords, setShowPasswords] = useState<Record<keyof TPasswords, boolean>>({
     password: false,
     confirmPassword: false,
   });
@@ -96,14 +95,11 @@ const Register = () => {
     );
   };
 
-  const handleRegisterAndSave = async (data: TRegister) => {
-    await registerAndSaveAsync(
-      { ...data, token },
-      {
-        onSuccess: ({ user }) => setUser(user),
-        onError: ({ fieldErrors }) => setErrorToForm(registerAndSaveForm.setError, fieldErrors),
-      },
-    );
+  const handleForgotPassword = async (data: TPasswords) => {
+    await registerAndSaveAsync({ ...data, token } as any, {
+      onSuccess: ({ user }) => setUser(user),
+      onError: ({ fieldErrors }) => setErrorToForm(passwordForm.setError, fieldErrors),
+    });
   };
 
   const handleResendOtp = async () => {
@@ -127,19 +123,19 @@ const Register = () => {
         break;
 
       case 'save':
-        registerAndSaveForm.reset(FORM_DEFAULT_VALUES.register);
+        passwordForm.reset(FORM_DEFAULT_VALUES.register);
         setCurrentStep('send');
         break;
 
       case 'send':
       default:
         sendOtpForm.reset(FORM_DEFAULT_VALUES.email);
-        navigate('/');
+        navigate(-1);
         break;
     }
   };
 
-  const togglePasswordVisibility = (field: keyof TRegister) => {
+  const togglePasswordVisibility = (field: keyof TPasswords) => {
     if (!PASSWORD_KEYS.includes(field)) return;
 
     setShowPasswords((prev) => ({ ...prev, [field]: !prev[field] }));
@@ -152,12 +148,9 @@ const Register = () => {
       {/* ================= HEADER ================= */}
       <GradientText
         type="accent"
-        text="Register"
+        text="Forgot Password?"
         className="mx-auto text-2xl leading-tight font-semibold sm:text-3xl md:text-4xl lg:text-5xl"
       />
-
-      {/* ================= SOCIAL AUTH ================= */}
-      <SocialAuth />
 
       {/* ================= FORM CONTAINER ================= */}
       <BorderGradient className="flex flex-col gap-5 py-6 lg:gap-6">
@@ -168,9 +161,9 @@ const Register = () => {
               ? sendOtpForm.handleSubmit(handleSendOtp)
               : currentStep === 'verify'
                 ? verifyOtpForm.handleSubmit(handleVerifyOtp)
-                : registerAndSaveForm.handleSubmit(handleRegisterAndSave)
+                : passwordForm.handleSubmit(handleForgotPassword)
           }
-          className="grid grid-cols-1 gap-x-4 gap-y-5 sm:grid-cols-2 sm:gap-y-6"
+          className="space-y-5 sm:space-y-6"
         >
           {/* ================= STEP: SEND / VERIFY ================= */}
           {(currentStep === 'send' || currentStep === 'verify') && (
@@ -189,7 +182,6 @@ const Register = () => {
                 }}
                 register={sendOtpForm.register(EMAIL_INPUT_DATA.name)}
                 error={sendOtpForm.formState.errors[EMAIL_INPUT_DATA.name]?.message}
-                containerClassName="sm:col-span-2"
               />
 
               {/* -------- OTP Section (only in verify step) -------- */}
@@ -207,12 +199,10 @@ const Register = () => {
                     }}
                     register={verifyOtpForm.register(OTP_INPUT_DATA.name)}
                     error={verifyOtpForm.formState.errors[OTP_INPUT_DATA.name]?.message}
-                    containerClassName="sm:col-span-2"
                   />
 
                   {/* -------- Resend OTP -------- */}
                   <Resend
-                    className="sm:col-span-2"
                     label="Not received OTP?"
                     count={sendCount >= 3 ? 0 : 30}
                     onResend={handleResendOtp}
@@ -224,45 +214,32 @@ const Register = () => {
 
           {/* ================= STEP: REGISTER DETAILS ================= */}
           {currentStep === 'save' &&
-            REGISTER_INPUT_MAP_DATA.map((input) => {
-              const isPassword = PASSWORD_KEYS.includes(input.name);
-              const isPhone = input.name === 'phoneNumber';
+            PASSWORDS_INPUT_MAP_DATA.map((input) => {
               return (
                 <Input
                   key={input.name}
                   label={input.label}
                   inputProps={{
                     name: input.name,
-                    type: isPassword
-                      ? showPasswords[input.name]
-                        ? 'text'
-                        : input.type
-                      : input.type,
+                    type: showPasswords[input.name] ? 'text' : input.type,
                     placeholder: input.placeholder,
                     autoComplete: input.autoComplete,
                     disabled: isRegistering,
                   }}
-                  icons={
-                    input.name === 'phoneNumber'
-                      ? { left: '+91' }
-                      : PASSWORD_KEYS.includes(input.name)
-                        ? {
-                            right: {
-                              icon: showPasswords[input.name] ? 'lucide:eye-off' : 'lucide:eye',
-                              onClick: () => togglePasswordVisibility(input.name),
-                            },
-                          }
-                        : undefined
-                  }
-                  register={registerAndSaveForm.register(input.name)}
-                  error={registerAndSaveForm.formState.errors[input.name]?.message}
-                  containerClassName={isPhone ? 'sm:col-span-2' : ''}
+                  icons={{
+                    right: {
+                      icon: showPasswords[input.name] ? 'lucide:eye-off' : 'lucide:eye',
+                      onClick: () => togglePasswordVisibility(input.name),
+                    },
+                  }}
+                  register={passwordForm.register(input.name)}
+                  error={passwordForm.formState.errors[input.name]?.message}
                 />
               );
             })}
 
           {/* ================= ACTION BUTTONS ================= */}
-          <div className="flex gap-4 sm:col-span-2">
+          <div className="flex gap-4">
             {/* -------- Back / Cancel Button -------- */}
             <Button
               pattern="secondary"
@@ -299,21 +276,6 @@ const Register = () => {
           </div>
         </form>
 
-        {/* ================= FOOTER ================= */}
-        <div className="flex items-center justify-center gap-2">
-          <GradientText
-            text="Already have an account?"
-            type="silver"
-            className="text-xs md:text-sm"
-          />
-          <GradientText
-            text="Login"
-            type="accent"
-            path="/auth"
-            className="text-xs font-semibold md:text-sm"
-          />
-        </div>
-
         {/* ================= EXTRA INFO ================= */}
         <AuthBottomInstructions />
       </BorderGradient>
@@ -321,4 +283,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default ForgotPassword;

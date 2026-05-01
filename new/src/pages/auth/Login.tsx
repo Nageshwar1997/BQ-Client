@@ -1,40 +1,21 @@
-// ================= 1. External Libraries =================
-import { useState } from 'react';
-import { Controller, useForm, useWatch } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Link } from 'react-router-dom';
-
-// ================= 2. Types =================
-import type { TLogin } from '@/types/schema.type';
-
-// ================= 3. Schemas =================
-import { loginSchema } from '@/schemas/user.schema';
-
-// ================= 4. Services / API =================
-import { useManualLogin } from '@/services/user-service/auth.service.query';
-
-// ================= 5. Global Store =================
-import useUserStore from '@/stores/user.store';
-
-// ================= 6. Utilities =================
-import { setErrorToForm } from '@/utils/form.util';
-
-// ================= 7. Constants =================
-import { LOGIN_INPUT_MAP_DATA, PASSWORD_KEYS } from '@/constants/input.constant';
-import { FORM_DEFAULT_VALUES } from '@/constants/form.constants';
-
-// ================= 8. UI Components =================
+import BorderGradient from '@/components/layout/containers/BorderGradient';
 import Button from '@/components/ui/Button';
+import GradientText from '@/components/ui/GradientText';
 import Input from '@/components/ui/inputs/Input';
 import Radio from '@/components/ui/inputs/Radio';
-import GradientText from '@/components/ui/GradientText';
-
-// ================= 9. Layout Components =================
-import BorderGradient from '@/components/layout/containers/BorderGradient';
-
-// ================= 10. Feature Components =================
-import SocialAuth from './components/SocialAuth';
+import { FORM_DEFAULT_VALUES } from '@/constants/form.constants';
+import { LOGIN_INPUT_MAP_DATA, PASSWORD_KEYS } from '@/constants/input.constant';
+import { loginSchema } from '@/schemas/user.schema';
+import { useManualLogin } from '@/services/user-service/auth.service.query';
+import useUserStore from '@/stores/user.store';
+import type { TLogin } from '@/types/schema.type';
+import { setErrorToForm } from '@/utils/form.util';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { Controller, useForm, useWatch } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 import AuthBottomInstructions from './components/AuthBottomInstructions';
+import SocialAuth from './components/SocialAuth';
 
 const Login = () => {
   /* ================= 1. External / Store Hooks ================= */

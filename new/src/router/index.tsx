@@ -1,6 +1,6 @@
-import { createBrowserRouter } from 'react-router-dom';
 import LoadingScreen from '@/components/layout/loaders/LoadingScreen';
 import ErrorBoundary from '@/pages/error/ErrorBoundary';
+import { createBrowserRouter } from 'react-router-dom';
 import { authRedirect } from './middlewares';
 
 const router = createBrowserRouter([
@@ -44,6 +44,13 @@ const router = createBrowserRouter([
         lazy: async () => {
           const { default: OAuth } = await import('@/pages/auth/OAuth');
           return { Component: OAuth };
+        },
+      },
+      {
+        path: 'forgot-password',
+        lazy: async () => {
+          const { default: ForgotPassword } = await import('@/pages/auth/ForgotPassword');
+          return { Component: ForgotPassword };
         },
       },
     ],

@@ -46,9 +46,9 @@ const lastNameValidation = validateString({
 
 const phoneValidation = validateString(PHONE_OPTIONS);
 
-export const registerOtpSchema = object({ otp: otpValidation });
+export const otpSchema = object({ otp: otpValidation });
 
-export const registerEmailSchema = object({ email: emailValidation });
+export const emailSchema = object({ email: emailValidation });
 
 export const passwordsSchema = object({
   password: passwordValidation,

@@ -1,6 +1,6 @@
-import type { TLogin, TRegister, TRegisterEmail, TRegisterOtp } from '@/types/schema.type';
-import { ApiRequest } from '../ApiRequest';
 import { API_METHODS_AND_URLS } from '@/constants/api.constant';
+import type { TEmail, TLogin, TOtp, TRegister } from '@/types/schema.type';
+import { ApiRequest } from '../ApiRequest';
 
 export class AuthApi extends ApiRequest {
   private routes = API_METHODS_AND_URLS.gateway.user_service.auth;
@@ -11,7 +11,7 @@ export class AuthApi extends ApiRequest {
 
   /* ===================== REGISTER API ===================== */
 
-  public registerSendOtp = (data: TRegisterEmail) => {
+  public registerSendOtp = (data: TEmail) => {
     return this.request({ ...this.routes.register.send_otp, data });
   };
 
@@ -22,7 +22,7 @@ export class AuthApi extends ApiRequest {
     });
   };
 
-  public registerVerifyOtp = ({ token, ...data }: TRegisterOtp & { token: string }) => {
+  public registerVerifyOtp = ({ token, ...data }: TOtp & { token: string }) => {
     return this.request({
       ...this.routes.register.verify_otp,
       data,
