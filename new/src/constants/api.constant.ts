@@ -32,6 +32,14 @@ export const API_METHODS_AND_URLS = {
             url: '/auth/token/refresh-access-token',
           },
         },
+        password: {
+          forgot: {
+            send_otp: { method: METHODS.POST, url: '/auth/password/send-otp' },
+            resend_otp: { method: METHODS.PATCH, url: '/auth/password/resend-otp' },
+            verify_otp: { method: METHODS.POST, url: '/auth/password/verify-otp' },
+            save: { method: METHODS.POST, url: '/auth/password/save-save' },
+          },
+        },
       },
       user: { session: { method: METHODS.GET, url: '/user/session' } },
     },
@@ -45,6 +53,14 @@ export const GATEWAY_USER_SERVICE_QUERY_KEYS = {
       resend_otp: ['register_resend_otp'],
       verify_otp: ['register_verify_otp'],
       save_user: ['register_save_user'],
+    },
+    password: {
+      forgot: {
+        send_otp: ['password_send_otp'],
+        resend_otp: ['password_resend_otp'],
+        verify_otp: ['password_verify_otp'],
+        save: ['password_save'],
+      },
     },
     login: {
       manual: ['manual_login'],

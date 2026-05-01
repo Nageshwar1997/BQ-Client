@@ -7,16 +7,15 @@ import { FORM_DEFAULT_VALUES } from '@/constants/form.constants';
 import {
   EMAIL_INPUT_DATA,
   OTP_INPUT_DATA,
-  PASSWORD_KEYS,
   PASSWORDS_INPUT_MAP_DATA,
 } from '@/constants/input.constant';
 import usePathParams from '@/hooks/usePathParams';
 import { emailSchema, otpSchema, passwordsSchema } from '@/schemas/user.schema';
 import {
-  useRegisterAndSaveUser,
-  useRegisterResendOtp,
-  useRegisterSendOtp,
-  useRegisterVerifyOtp,
+  useForgotPasswordResendOtp,
+  useForgotPasswordSave,
+  useForgotPasswordSendOtp,
+  useForgotPasswordVerifyOtp,
 } from '@/services/user-service/auth.service.query';
 import useUserStore from '@/stores/user.store';
 import type { TEmail, TOtp, TPasswords } from '@/types/schema.type';
@@ -39,14 +38,14 @@ const ForgotPassword = () => {
     data: sendOtpData,
     isPending: isSendingOtp,
     mutateAsync: sendOtpAsync,
-  } = useRegisterSendOtp();
+  } = useForgotPasswordSendOtp();
   const {
     data: resendOtpData,
     isPending: isResendingOtp,
     mutateAsync: resendOtpAsync,
-  } = useRegisterResendOtp();
-  const { isPending: isVerifyingOtp, mutateAsync: verifyOtpAsync } = useRegisterVerifyOtp();
-  const { isPending: isRegistering, mutateAsync: registerAndSaveAsync } = useRegisterAndSaveUser();
+  } = useForgotPasswordResendOtp();
+  const { isPending: isVerifyingOtp, mutateAsync: verifyOtpAsync } = useForgotPasswordVerifyOtp();
+  const { isPending: isRegistering, mutateAsync: registerAndSaveAsync } = useForgotPasswordSave();
 
   /* ================= 4. Forms ================= */
   const sendOtpForm = useForm<TEmail>({
@@ -96,10 +95,13 @@ const ForgotPassword = () => {
   };
 
   const handleForgotPassword = async (data: TPasswords) => {
-    await registerAndSaveAsync({ ...data, token } as any, {
-      onSuccess: ({ user }) => setUser(user),
-      onError: ({ fieldErrors }) => setErrorToForm(passwordForm.setError, fieldErrors),
-    });
+    await registerAndSaveAsync(
+      { ...data, token },
+      {
+        onSuccess: ({ user }) => setUser(user),
+        onError: ({ fieldErrors }) => setErrorToForm(passwordForm.setError, fieldErrors),
+      },
+    );
   };
 
   const handleResendOtp = async () => {
@@ -136,8 +138,6 @@ const ForgotPassword = () => {
   };
 
   const togglePasswordVisibility = (field: keyof TPasswords) => {
-    if (!PASSWORD_KEYS.includes(field)) return;
-
     setShowPasswords((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 

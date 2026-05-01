@@ -1,5 +1,5 @@
 import { API_METHODS_AND_URLS } from '@/constants/api.constant';
-import type { TEmail, TLogin, TOtp, TRegister } from '@/types/schema.type';
+import type { TEmail, TLogin, TOtp, TPasswords, TRegister } from '@/types/schema.type';
 import { ApiRequest } from '../ApiRequest';
 
 export class AuthApi extends ApiRequest {
@@ -42,6 +42,35 @@ export class AuthApi extends ApiRequest {
 
   public manualLogin = (data: TLogin) => {
     return this.request({ ...this.routes.login.manual, data });
+  };
+
+  /* ===================== PASSWORD API ===================== */
+
+  public forgotPasswordSendOtp = (data: TEmail) => {
+    return this.request({ ...this.routes.password.forgot.send_otp, data });
+  };
+
+  public forgotPasswordResendOtp = (token: string) => {
+    return this.request({
+      ...this.routes.password.forgot.resend_otp,
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  };
+
+  public forgotPasswordVerifyOtp = ({ token, ...data }: TOtp & { token: string }) => {
+    return this.request({
+      ...this.routes.password.forgot.verify_otp,
+      data,
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  };
+
+  public forgotPasswordSave = ({ token, ...data }: TPasswords & { token: string }) => {
+    return this.request({
+      ...this.routes.password.forgot.save,
+      data,
+      headers: { Authorization: `Bearer ${token}` },
+    });
   };
 
   /* ===================== USER ===================== */
