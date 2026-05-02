@@ -58,10 +58,10 @@ export const GATEWAY_USER_SERVICE_QUERY_KEYS = {
     },
     password: {
       forgot: {
-        send_otp: ['password_send_otp'],
-        resend_otp: ['password_resend_otp'],
-        verify_otp: ['password_verify_otp'],
-        save: ['password_save'],
+        send_otp: ['password_forgot_send_otp'],
+        resend_otp: ['password_forgot_resend_otp'],
+        verify_otp: ['password_forgot_verify_otp'],
+        save: ['password_forgot_save'],
       },
       change: ['password_change'],
       set: ['password_set'],
