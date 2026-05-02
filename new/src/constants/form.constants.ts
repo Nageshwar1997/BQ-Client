@@ -1,6 +1,6 @@
 const passwords = { password: '', confirmPassword: '' };
 
-const changePassword = { ...passwords, oldPassword: '' };
+const changePassword = { ...passwords, currentPassword: '' };
 
 export const FORM_DEFAULT_VALUES = {
   passwords,

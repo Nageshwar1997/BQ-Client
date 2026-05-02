@@ -184,3 +184,22 @@ export const useForgotPasswordSave = () => {
     },
   });
 };
+
+export const useChangePassword = () => {
+  return useMutation({
+    mutationKey: QUERY_KEY.password.change,
+    mutationFn: authApi.changePassword,
+    onMutate: () => {
+      const toastId = toaster.loading({
+        title: 'Please wait...',
+        description: 'Changing your password...',
+      });
+      return { toastId };
+    },
+    onSuccess: async ({ message }) => handleApiSuccessToaster(message),
+    onError: (error) => handleApiErrorToaster(error),
+    onSettled: (_data, _error, _variables, context) => {
+      if (context?.toastId) toaster.remove(context.toastId);
+    },
+  });
+};

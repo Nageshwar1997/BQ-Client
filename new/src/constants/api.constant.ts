@@ -39,6 +39,7 @@ export const API_METHODS_AND_URLS = {
             verify_otp: { method: METHODS.POST, url: '/auth/password/forgot-verify-otp' },
             save: { method: METHODS.POST, url: '/auth/password/forgot-save' },
           },
+          change: { method: METHODS.PATCH, url: '/auth/password/change' },
         },
       },
       user: { session: { method: METHODS.GET, url: '/user/session' } },
@@ -61,6 +62,7 @@ export const GATEWAY_USER_SERVICE_QUERY_KEYS = {
         verify_otp: ['password_verify_otp'],
         save: ['password_save'],
       },
+      change: ['password_change'],
     },
     login: {
       manual: ['manual_login'],

@@ -250,6 +250,7 @@ const Register = () => {
                             right: {
                               icon: showPasswords[input.name] ? 'lucide:eye-off' : 'lucide:eye',
                               onClick: () => togglePasswordVisibility(input.name),
+                              className: 'cursor-pointer',
                             },
                           }
                         : undefined

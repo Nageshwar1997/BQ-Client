@@ -1,5 +1,12 @@
 import { API_METHODS_AND_URLS } from '@/constants/api.constant';
-import type { TEmail, TLogin, TOtp, TPasswords, TRegister } from '@/types/schema.type';
+import type {
+  TChangePassword,
+  TEmail,
+  TLogin,
+  TOtp,
+  TPasswords,
+  TRegister,
+} from '@/types/schema.type';
 import { ApiRequest } from '../ApiRequest';
 
 export class AuthApi extends ApiRequest {
@@ -71,6 +78,10 @@ export class AuthApi extends ApiRequest {
       data,
       headers: { Authorization: `Bearer ${token}` },
     });
+  };
+
+  public changePassword = (data: TChangePassword) => {
+    return this.request({ ...this.routes.password.change, data });
   };
 
   /* ===================== USER ===================== */

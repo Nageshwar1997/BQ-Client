@@ -135,6 +135,7 @@ const Login = () => {
                           right: {
                             icon: showPassword ? 'lucide:eye-off' : 'lucide:eye',
                             onClick: togglePasswordVisibility,
+                            className: 'cursor-pointer',
                           },
                         }
                       : undefined
