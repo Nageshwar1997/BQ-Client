@@ -50,7 +50,7 @@ const SetPassword = () => {
     await mutateAsync(
       { ...data },
       {
-        onSuccess: ({ user }) => setUser(user),
+        onSuccess: ({ user }) => (setUser(user), navigate(-1)),
         onError: ({ fieldErrors }) => setErrorToForm(setError, fieldErrors),
       },
     );
