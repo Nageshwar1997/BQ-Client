@@ -53,7 +53,7 @@ export const emailSchema = object({ email: emailValidation });
 export const passwordsSchema = object({
   password: passwordValidation,
   confirmPassword: confirmPasswordValidation,
-});
+}).superRefine(passwordMatchValidation);
 
 export const registerSchema = passwordsSchema
   .extend({
