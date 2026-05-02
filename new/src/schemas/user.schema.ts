@@ -85,10 +85,10 @@ export const setPasswordSchema = passwordsSchema.superRefine(passwordMatchValida
 
 export const changePasswordSchema = passwordsSchema
   .extend({
-    oldPassword: validateString({
+    currentPassword: validateString({
       ...PASSWORD_OPTIONS,
-      field: 'oldPassword',
-      label: 'Old Password',
+      field: 'currentPassword',
+      label: 'Current Password',
     }),
   })
   .superRefine(passwordMatchValidation);

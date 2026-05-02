@@ -64,6 +64,26 @@ export const PASSWORDS_INPUT_MAP_DATA = [
   },
 ] as const;
 
+export const CHANGE_PASSWORD_INPUT_MAP_DATA = [
+  {
+    ...PASSWORD_INPUT_DATA,
+    name: 'currentPassword',
+    label: 'Current Password',
+    placeholder: 'Enter current password',
+  },
+  {
+    ...PASSWORD_INPUT_DATA,
+    label: 'New Password',
+    placeholder: 'Enter new password',
+  },
+  {
+    ...PASSWORD_INPUT_DATA,
+    name: 'confirmPassword',
+    label: 'Confirm Password',
+    placeholder: 'Reenter password',
+  },
+] as const;
+
 export const REGISTER_INPUT_MAP_DATA = [
   FIRST_NAME_INPUT_DATA,
   LAST_NAME_INPUT_DATA,
