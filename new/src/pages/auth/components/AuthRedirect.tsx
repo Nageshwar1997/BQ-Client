@@ -8,10 +8,12 @@ import useUserStore from '@/stores/user.store';
 const AuthRedirect = ({ children }: { children: JSX.Element }) => {
   const user = useUserStore((s) => s.user);
 
-  const { state } = usePathParams();
+  const { state, paths } = usePathParams();
 
-  // ✅ logged-in → redirect back
-  if (user) {
+  const isAllowedRoute = ['change-password', 'set-password'].some((route) => paths.includes(route));
+
+  // ✅ logged-in → redirect back (except allowed routes)
+  if (user && !isAllowedRoute) {
     const from = state?.from?.pathname || sessionStorage.getItem(LAST_NON_AUTH_PATH_KEY);
 
     const safeRedirect = from && !from.startsWith('/auth') ? from : '/';

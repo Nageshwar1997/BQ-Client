@@ -1,7 +1,7 @@
 import LoadingScreen from '@/components/layout/loaders/LoadingScreen';
 import ErrorBoundary from '@/pages/error/ErrorBoundary';
 import { createBrowserRouter } from 'react-router-dom';
-import { authRedirect } from './middlewares';
+import { authCheck, authRedirect } from './middlewares';
 
 const router = createBrowserRouter([
   {
@@ -16,7 +16,6 @@ const router = createBrowserRouter([
   },
   {
     path: 'auth',
-    middleware: [authRedirect],
     HydrateFallback: LoadingScreen,
     ErrorBoundary: ErrorBoundary,
     lazy: async () => {
@@ -27,6 +26,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+        middleware: [authRedirect],
         lazy: async () => {
           const { default: Login } = await import('@/pages/auth/Login');
           return { Component: Login };
@@ -41,6 +41,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'oauth',
+        middleware: [authRedirect],
         lazy: async () => {
           const { default: OAuth } = await import('@/pages/auth/OAuth');
           return { Component: OAuth };
@@ -48,6 +49,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'forgot-password',
+        middleware: [authRedirect],
         lazy: async () => {
           const { default: ForgotPassword } = await import('@/pages/auth/ForgotPassword');
           return { Component: ForgotPassword };
@@ -55,9 +57,18 @@ const router = createBrowserRouter([
       },
       {
         path: 'change-password',
+        middleware: [authCheck],
         lazy: async () => {
           const { default: ChangePassword } = await import('@/pages/auth/ChangePassword');
           return { Component: ChangePassword };
+        },
+      },
+      {
+        path: 'set-password',
+        middleware: [authCheck],
+        lazy: async () => {
+          const { default: SetPassword } = await import('@/pages/auth/SetPassword');
+          return { Component: SetPassword };
         },
       },
     ],

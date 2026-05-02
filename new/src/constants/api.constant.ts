@@ -40,6 +40,7 @@ export const API_METHODS_AND_URLS = {
             save: { method: METHODS.POST, url: '/auth/password/forgot-save' },
           },
           change: { method: METHODS.PATCH, url: '/auth/password/change' },
+          set: { method: METHODS.PATCH, url: '/auth/password/set' },
         },
       },
       user: { session: { method: METHODS.GET, url: '/user/session' } },
@@ -63,6 +64,7 @@ export const GATEWAY_USER_SERVICE_QUERY_KEYS = {
         save: ['password_save'],
       },
       change: ['password_change'],
+      set: ['password_set'],
     },
     login: {
       manual: ['manual_login'],

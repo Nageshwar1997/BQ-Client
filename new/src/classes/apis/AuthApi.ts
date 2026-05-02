@@ -6,6 +6,7 @@ import type {
   TOtp,
   TPasswords,
   TRegister,
+  TSetPassword,
 } from '@/types/schema.type';
 import { ApiRequest } from '../ApiRequest';
 
@@ -82,6 +83,10 @@ export class AuthApi extends ApiRequest {
 
   public changePassword = (data: TChangePassword) => {
     return this.request({ ...this.routes.password.change, data });
+  };
+
+  public setPassword = (data: TSetPassword) => {
+    return this.request({ ...this.routes.password.set, data });
   };
 
   /* ===================== USER ===================== */
