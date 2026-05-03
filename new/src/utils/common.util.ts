@@ -88,3 +88,18 @@ export const toaster = {
 export const getLastRoute = () => {
   return sessionStorage.getItem(LAST_ROUTE_KEY) || '/';
 };
+
+export const matchRoute = (routes: readonly string[], path: string) => {
+  return routes.some((route) => {
+    // exact match
+    if (route === path) return true;
+
+    // ⚠️ special case for base route like /auth
+    if (route === '/auth') {
+      return path === '/auth';
+    }
+
+    // nested routes
+    return path.startsWith(route + '/');
+  });
+};

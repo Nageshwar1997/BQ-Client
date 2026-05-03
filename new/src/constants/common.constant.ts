@@ -64,5 +64,11 @@ export const BEAUTY_FACTS = [
   `<span class=gradient-text-accent>Glass packaging</span> is being used more in luxury beauty to reduce plastic waste and enhance sustainability.`,
 ];
 
-export const LAST_ROUTE_KEY = 'lastRoute';
-export const USER_KEY = 'user';
+export const LAST_ROUTE_KEY = 'lastRoute' as const;
+export const USER_KEY = 'user' as const;
+
+export const ROUTE_ACCESS = {
+  PRIVATE: ['/auth/change-password', '/auth/set-password'],
+  SOCIAL_ONLY: ['/auth/set-password'],
+  GUEST: ['/auth', '/auth/register', '/auth/forgot-password', '/auth/oauth'],
+};

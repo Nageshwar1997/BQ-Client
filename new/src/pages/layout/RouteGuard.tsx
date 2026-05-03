@@ -1,12 +1,10 @@
+import { ROUTE_ACCESS } from '@/constants/common.constant';
 import usePathParams from '@/hooks/usePathParams';
 import useQueryParams from '@/hooks/useQueryParams';
 import useUserStore from '@/stores/user.store';
-import { getLastRoute } from '@/utils/common.util';
+import { getLastRoute, matchRoute } from '@/utils/common.util';
 import { useEffect } from 'react';
 import { useBlocker } from 'react-router-dom';
-
-const PROTECTED_ROUTES = ['/auth/change-password', '/auth/set-password'];
-const GUEST_ONLY_ROUTES = ['/auth', '/auth/register', '/auth/forgot-password', '/auth/oauth'];
 
 const RouteGuard = () => {
   const { navigate } = usePathParams();
@@ -16,23 +14,26 @@ const RouteGuard = () => {
   const blocker = useBlocker(({ nextLocation }) => {
     const nextPath = nextLocation.pathname;
 
-    // 🔒 NOT logged in → block protected routes
+    const isPrivate = matchRoute(ROUTE_ACCESS.PRIVATE, nextPath);
+    const isGuest = matchRoute(ROUTE_ACCESS.GUEST, nextPath);
+    const isSocialOnly = matchRoute(ROUTE_ACCESS.SOCIAL_ONLY, nextPath);
+
+    // 🔒 NOT logged in → block PRIVATE
     if (!user) {
-      return PROTECTED_ROUTES.some((route) => nextPath.startsWith(route));
+      return isPrivate;
     }
 
     // 🚫 Logged in cases
     if (user) {
-      // ❌ MANUAL users cannot access set-password
-      if (nextPath.startsWith('/auth/set-password') && user.providers.includes('MANUAL')) {
+      // ❌ MANUAL users cannot access social-only routes
+      if (isSocialOnly && user.providers.includes('MANUAL')) {
         return true;
       }
 
-      // ❌ block guest-only routes
-      return GUEST_ONLY_ROUTES.some((route) => {
-        if (route === '/auth') return nextPath === '/auth';
-        return nextPath === route || nextPath.startsWith(route + '/');
-      });
+      // ❌ block guest routes
+      if (isGuest) {
+        return true;
+      }
     }
 
     return false;
@@ -41,7 +42,7 @@ const RouteGuard = () => {
   useEffect(() => {
     if (blocker.state !== 'blocked') return;
 
-    // 🔒 NOT logged in → open login modal
+    // 🔒 not logged in → open login modal
     if (!user) {
       if (!queryParams.login) {
         setParams({ login: 'true' });

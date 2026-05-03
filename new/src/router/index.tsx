@@ -1,6 +1,7 @@
 import LoadingScreen from '@/components/layout/loaders/LoadingScreen';
 import ErrorBoundary from '@/pages/error/ErrorBoundary';
 import { createBrowserRouter } from 'react-router-dom';
+import routeAccess from './middlewares';
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
+            middleware: [routeAccess],
             lazy: async () => {
               const { default: Login } = await import('@/pages/auth/Login');
               return { Component: Login };
@@ -45,6 +47,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'register',
+            middleware: [routeAccess],
             lazy: async () => {
               const { default: Register } = await import('@/pages/auth/Register');
               return { Component: Register };
@@ -52,6 +55,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'oauth',
+            middleware: [routeAccess],
             lazy: async () => {
               const { default: OAuth } = await import('@/pages/auth/OAuth');
               return { Component: OAuth };
@@ -59,6 +63,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'forgot-password',
+            middleware: [routeAccess],
             lazy: async () => {
               const { default: ForgotPassword } = await import('@/pages/auth/ForgotPassword');
               return { Component: ForgotPassword };
@@ -66,6 +71,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'change-password',
+            middleware: [routeAccess],
             lazy: async () => {
               const { default: ChangePassword } = await import('@/pages/auth/ChangePassword');
 
@@ -74,6 +80,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'set-password',
+            middleware: [routeAccess],
             lazy: async () => {
               const { default: SetPassword } = await import('@/pages/auth/SetPassword');
 
