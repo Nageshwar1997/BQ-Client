@@ -1,14 +1,12 @@
+import { USER_KEY } from '@/constants/common.constant';
+import type { IUser } from '@/types/api.type';
+import type { TUserStore } from '@/types/store.type';
+import { decryptData, encryptData } from '@/utils/crypto.util';
 import { create } from 'zustand';
-import type { IUser } from '@/Types/Api.type';
-import type { TUserStore } from '@/Types/Store.type';
-import { decryptData, encryptData } from '@/Utils/Crypto.util';
-import { removeStorageToken } from '@/Utils/Storage.util';
 
-const SESSION_KEY = 'user';
-
-export const useUserStore = create<TUserStore>((set) => {
+const useUserStore = create<TUserStore>((set) => {
   const getInitialUser = (): IUser | null => {
-    const encrypted = sessionStorage.getItem(SESSION_KEY);
+    const encrypted = sessionStorage.getItem(USER_KEY);
     const decrypted = decryptData(encrypted ?? '');
     return decrypted && typeof decrypted === 'object' ? (decrypted as IUser) : null;
   };
@@ -20,19 +18,12 @@ export const useUserStore = create<TUserStore>((set) => {
     authenticated: !!user,
 
     setUser: (user) => {
-      sessionStorage.setItem(SESSION_KEY, encryptData(user));
-      set({ user, authenticated: true });
-    },
+      if (user) sessionStorage.setItem(USER_KEY, encryptData(user));
+      else sessionStorage.removeItem(USER_KEY);
 
-    localLogout: () => {
-      sessionStorage.removeItem(SESSION_KEY);
-      removeStorageToken();
-      set({ user: null, authenticated: false });
-      // Reset cart on logout
-      //   const { setCart } = useCartStore.getState();
-      //   const { setWishlist } = useWishlistStore.getState();
-      //   setCart(null);
-      //   setWishlist(null);
+      set({ user, authenticated: !!user });
     },
   };
 });
+
+export default useUserStore;

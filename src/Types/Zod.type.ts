@@ -1,6 +1,6 @@
-import type { RefinementCtx } from 'zod';
+import { ZodType } from 'zod';
 
-type TZodCommonBaseConfigs = {
+export type TZodCommonBaseConfigs = {
   field: string;
   parentField?: string;
   label: string;
@@ -10,38 +10,34 @@ type TZodCommonBaseConfigs = {
 export type TZodCompareConfigs = { min?: number; max?: number };
 export type TZodRegex = { regex: RegExp; message: string };
 
-export interface IZodEnumsConfigs extends TZodCommonBaseConfigs {
-  enumValues: readonly string[];
-}
-
-export interface IZodSingleFileConfigs extends TZodCommonBaseConfigs {
-  required?: boolean;
-  maxVideoFileSize?: number;
-  maxImageFileSize?: number;
-}
-
-export interface IZodMultipleFilesConfigs extends IZodSingleFileConfigs {
-  required?: boolean;
-  maxVideoFileSize?: number;
-  maxImageFileSize?: number;
-  maxImages?: number;
-  maxVideos?: number;
-}
-
-export interface IZodFileConfigs extends IZodSingleFileConfigs {
-  fileOrUrl: unknown;
-  index?: number;
-  ctx: RefinementCtx;
-}
-
 export interface IZodStringConfigs extends TZodCommonBaseConfigs, TZodCompareConfigs {
-  allowSpace?: boolean;
+  allowSpace?: 'noSpace' | 'singleSpace' | 'anySpace';
   nonEmpty?: boolean;
   customRegexes?: TZodRegex[];
+  customRegex?: TZodRegex;
   lowerOrUpper?: 'upper' | 'lower';
 }
 
-export interface ZodNumberConfigs extends TZodCommonBaseConfigs, TZodCompareConfigs {
-  int?: boolean;
-  positive?: boolean;
+export interface IZodNumberConfigs extends TZodCommonBaseConfigs, TZodCompareConfigs {
+  isInt?: boolean;
+  isPositive?: boolean;
+  isNegative?: boolean;
+}
+
+export interface IZodEnumsConfigs<
+  T extends readonly [string, ...string[]],
+> extends TZodCommonBaseConfigs {
+  enumValues: T;
+}
+
+export interface IZodDateConfigs extends TZodCommonBaseConfigs {
+  minDate?: Date;
+  maxDate?: Date;
+}
+
+export interface IZodArrayConfigs<T> extends TZodCommonBaseConfigs {
+  schema: ZodType<T>;
+  min?: number;
+  max?: number;
+  nonEmpty?: boolean;
 }

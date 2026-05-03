@@ -1,6 +1,6 @@
 :root {
   --picton-blue-c: #25adf9;
-  --blue-crayola-c: #07f;
+  --blue-crayola-c-rgb: 0, 119, 255;
   --dodger-blue-c: #2e90fa;
   --princeton-orange-c: #f79009;
   --naples-yellow-c: #f7d158;
@@ -53,7 +53,7 @@
 
   /* Common */
   --color-picton-blue-c: var(--picton-blue-c);
-  --color-blue-crayola-c: var(--blue-crayola-c);
+  --color-blue-crayola-c: rgb(var(--blue-crayola-c-rgb));
   --color-dodger-blue-c: var(--dodger-blue-c);
   --color-princeton-orange-c: var(--princeton-orange-c);
   --color-naples-yellow-c: var(--naples-yellow-c);
@@ -88,7 +88,7 @@
       rgba(var(--primary-invert-rgb), 0.2) 0%,
       rgba(var(--primary-invert-rgb), 0) 100%
     ),
-    linear-gradient(107deg, var(--blue-crayola-c) -65.15%, var(--blue-crayola-c) 90.95%);
+    linear-gradient(107deg, var(--color-blue-crayola-c) -65.15%, var(--color-blue-crayola-c) 90.95%);
 
   /* Box Shadows */
   --shadow-light-dark-soft:
@@ -164,7 +164,7 @@
     114deg,
     var(--turquoise-c) 6.19%,
     var(--picton-blue-c) 37.23%,
-    var(--blue-crayola-c) 94.85%
+    var(--color-blue-crayola-c) 94.85%
   );
   --silver-duo: linear-gradient(
     180deg,
@@ -212,7 +212,11 @@
   --platinum-jet: #e5e5e5;
 
   /* Background Images & Gradients */
-  --accent-duo: linear-gradient(114deg, var(--picton-blue-c) 6.19%, var(--blue-crayola-c) 41.65%);
+  --accent-duo: linear-gradient(
+    114deg,
+    var(--picton-blue-c) 6.19%,
+    var(--color-blue-crayola-c) 41.65%
+  );
   --silver-duo: linear-gradient(
     180deg,
     var(--battleship-davys-gray-invert) 24.54%,

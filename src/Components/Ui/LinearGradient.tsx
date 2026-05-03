@@ -1,10 +1,7 @@
+import type { ILinerGradient } from '@/types/component.type';
 import { useMemo } from 'react';
-import type { TClassName, TGradientPos } from '@/Types/Common.type';
 
-export const LinearGradient = ({
-  className = '',
-  position,
-}: TClassName & { position: TGradientPos }) => {
+const LinearGradient = ({ className = '', position }: ILinerGradient) => {
   const positionClass = useMemo(() => {
     switch (position) {
       case 'top':
@@ -26,3 +23,5 @@ export const LinearGradient = ({
     />
   );
 };
+
+export default LinearGradient;

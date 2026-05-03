@@ -1,8 +1,8 @@
+import GradientText from '@/components/ui/GradientText';
+import type { IModalWrapper } from '@/types/component.type';
+import { Icon } from '@iconify/react';
 import { useEffect } from 'react';
-import type { IModalWrapper } from '@/Types/Common.type';
-import { GradientText } from '@/Components/Ui';
-import { CloseIcon } from '@/Icons';
-import { ScrollableGradientContainer } from '../Containers';
+import ScrollableGradientContainer from '../containers/ScrollableGradientContainer';
 
 export const ModalWrapper = ({
   isOpen,
@@ -46,9 +46,10 @@ export const ModalWrapper = ({
               </h2>
             )}
             {header?.showCloseIcon && (
-              <CloseIcon
+              <Icon
+                icon="lucide:x"
+                className="text-tertiary hover:text-primary size-4 cursor-pointer transition-transform duration-300 hover:scale-110 sm:size-5"
                 onClick={onClose}
-                className="stroke-tertiary hover:stroke-primary size-4 cursor-pointer transition-transform duration-300 hover:scale-110 sm:size-5 lg:size-6"
               />
             )}
           </div>

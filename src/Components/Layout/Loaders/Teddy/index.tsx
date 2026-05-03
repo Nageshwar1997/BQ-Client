@@ -1,5 +1,5 @@
 import './teddy.css';
-export const Teddy = () => {
+const Teddy = () => {
   return (
     <div aria-label="Loading Teddy" role="img" className="article">
       <div className="body">
@@ -27,3 +27,5 @@ export const Teddy = () => {
     </div>
   );
 };
+
+export default Teddy;

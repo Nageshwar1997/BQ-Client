@@ -1,29 +1,3 @@
-import { VITE_IS_DEV, VITE_LOCALHOST_BACKEND_URL, VITE_PRODUCTION_BACKEND_URL } from '@/Envs';
-import {
-  CareIcon,
-  DownloadIcon,
-  HandCoinIcon,
-  LogoutIcon,
-  ReviewIcon,
-  ShoppingBag,
-  TrackIcon,
-  TruckIcon,
-  UserCircleIcon,
-} from '@/Icons';
-import type { ICategoryL1, TRegexes } from '@/Types/Common.type';
-
-export const BACKEND_URL =
-  VITE_IS_DEV === 'true' ? VITE_LOCALHOST_BACKEND_URL : VITE_PRODUCTION_BACKEND_URL;
-
-export const MB = 1024 ** 2;
-export const MAX_IMAGE_FILE_SIZE = 2 * MB; // 2MB
-export const MAX_VIDEO_FILE_SIZE = 50 * MB; // 50MB
-export const ALLOWED_IMAGE_FORMATS = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
-export const ALLOWED_VIDEO_FORMATS = ['video/mp4', 'video/webm'];
-export const DEFAULT_POSTER = '/images/logo/BQ_gradient_logo.webp';
-
-export const ADDRESS_TYPES = ['shipping', 'billing', 'both'];
-
 export const LOADING_RINGS_DATA = [
   {
     border: { side: 'borderBottomWidth', color: 'red' },
@@ -43,190 +17,58 @@ export const LOADING_RINGS_DATA = [
   },
 ] as const;
 
-export const regexes: Record<TRegexes, RegExp> = {
-  noSpace: /^\S+$/, // No spaces allowed
-  singleSpace: /^(?!.* {2,}).*$/s, // Single space allowed
-  hexCode: /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/, // Hex color code
-  date: /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(?:\.\d+)?(Z|([+-]\d{2}:\d{2}))?)?$/, // Date e.g. 2022-01-01T12:00:00Z
-  name: /^(?!.*\d)(?!.* {2})([A-Za-z]+( [A-Za-z]+)*)$/, // Only letters & single space
-  password: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&#])(?=\S.*$).{6,20}$/, // Password must contain at least one uppercase letter, one lowercase letter, one number, one special character, and be at least 6 characters long
-  email: /^[a-zA-Z0-9]+([._%+-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(-?[a-zA-Z0-9]+)*(\.[a-zA-Z]{2,})+$/, // Email e.g. 3oYQK@example.com
-  phoneStart: /^[6-9]/, // Starts with 6, 7, 8, or 9
-  phoneExactLength: /^\d{10}$/, // Exactly 10 digits
-  phone: /^[6-9][0-9]{9}$/, // Phone number e.g. 9876543210
-  atLeastOneUppercaseLetter: /[A-Z]/, // At least one uppercase letter
-  atLeastOneLowercaseLetter: /[a-z]/, // At least one lowercase letter
-  atLeastOneDigit: /\d/, // At least one digit
-  atLeastOneSpecialCharacter: /[@$!%*?&#]/, // At least one special character
-  onlyDigits: /^\d+$/, // All characters are digits
-  onlyUppercase: /^[A-Z]+$/, // All characters are uppercase
-  onlyLowercase: /^[a-z]+$/, // All characters are lowercase
-  onlyLetters: /^[a-zA-Z]+$/, // All characters are letters
-  onlyLettersAndSpaces: /^[a-zA-Z\s]+$/, // All characters are letters and spaces
-  only_letters_and_spaces_and_dots: /^[a-zA-Z\s.]+$/, // Only letters, spaces, and dots
-  pin_code: /^[1-9][0-9]{5}$/, // Check valid pin code
-  otp: /^[0-9]{6}$/,
-  gst: /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/i, // Check valid GST number
-  url: /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/[\w\-._~:/?#[\]@!$&'()*+,;=%]*)?$/i,
-  pan: /^[A-Za-z]{5}[0-9]{4}[A-Za-z]$/,
+export const BEAUTY_FACTS = [
+  `The term <span class=gradient-text-accent>"Clean Beauty"</span> refers to skincare and makeup products made without harmful chemicals and toxins.`,
+  `In <span class=gradient-text-accent>"1915"</span>, Maurice Levy invented the first <span class=gradient-text-accent>"twist-up lipstick"</span>, revolutionizing the beauty industry.`,
+  `The first-ever commercial mascara, <span class=gradient-text-accent>"Maybelline Cake Mascara"</span>, was introduced in <span class=gradient-text-accent>"1917"</span>.`,
+  `<span class=gradient-text-accent>BB Cream (2011)</span> became a global sensation by combining skincare and foundation into one product.`,
+  `The first <span class=gradient-text-accent>cruelty-free certification</span> was introduced in <span class=gradient-text-accent>"1996"</span> to support ethical beauty practices.`,
+  `<span class=gradient-text-accent>Vegan beauty</span> is on the rise, with brands formulating products without any animal-derived ingredients.`,
+  `Dermatologists recommend <span class=gradient-text-accent>SPF 30+</span> for daily sun protection to prevent premature aging and skin damage.`,
+  `<span class=gradient-text-accent>Serums</span> contain concentrated active ingredients that penetrate deeper into the skin for enhanced benefits.`,
+  `<span class=gradient-text-accent>Micellar Water</span> is a gentle yet effective way to cleanse the skin without rinsing, perfect for all skin types.`,
+  `The world's first <span class=gradient-text-accent>organic beauty brand</span> was founded in <span class=gradient-text-accent>1978</span>, paving the way for natural cosmetics.`,
+  `Some beauty brands use <span class=gradient-text-accent>AI-powered tools</span> to personalize skincare recommendations based on user preferences.`,
+  `<span class=gradient-text-accent>Hyaluronic Acid</span> is a powerful hydrating ingredient that can hold up to 1,000 times its weight in water.`,
+  `<span class=gradient-text-accent>Retinol</span> is a dermatologist-approved ingredient known for reducing fine lines and improving skin texture.`,
+  `<span class=gradient-text-accent>Green Beauty</span> focuses on sustainable packaging and eco-friendly formulations to reduce environmental impact.`,
+  `<span class=gradient-text-accent>Sheet masks</span> originated in Indian and have become a staple in self-care and skincare routines worldwide.`,
+  `The global <span class=gradient-text-accent>cosmetic industry</span> is expected to reach <span class=gradient-text-accent>$500 billion</span> by <span class=gradient-text-accent>2026</span>.`,
+  `The first-ever <span class=gradient-text-accent>waterproof mascara</span> was developed in <span class=gradient-text-accent>1938</span> and changed the beauty game.`,
+  `The first <span class=gradient-text-accent>liquid foundation</span> was launched in the <span class=gradient-text-accent>1950s</span>, offering a more natural finish.`,
+  `The term "glass skin" was popularized by <span class=gradient-text-accent>Indian beauty</span> trends, emphasizing dewy, radiant skin.`,
+  `The first commercial <span class=gradient-text-accent>lip gloss</span> was introduced by Max Factor in <span class=gradient-text-accent>1930</span>.`,
+  `In the early <span class=gradient-text-accent>2000s</span>, mineral makeup became a sought-after trend for its natural ingredients and skin benefits.`,
+  `The <span class=gradient-text-accent>Beauty Blender,</span> launched in <span class=gradient-text-accent>2007</span>, transformed the way people applied foundation.`,
+  `<span class=gradient-text-accent>Facial oils</span> have gained popularity for their nourishing and hydrating properties, even for oily skin types.`,
+  `Some brands are experimenting with <span class=gradient-text-accent>AI makeup try-ons</span> to help users choose the perfect shade before purchasing.`,
+  `The concept of a <span class=gradient-text-accent>beauty subscription box</span> allows customers to try new products every month.`,
+  `Some experts believe that <span class=gradient-text-accent>customized skincare</span> could be the future of the beauty industry.`,
+  'Others caution about potential risks of certain <span class=gradient-text-accent>skincare ingredients,</span> such as parabens and sulfates.',
+  `The development of <span class=gradient-text-accent>sustainable beauty</span> aims to reduce plastic waste and promote ethical sourcing.`,
+  `Despite trends, timeless beauty practices like <span class=gradient-text-accent>hydration</span> and <span class=gradient-text-accent>healthy eating</span> remain essential for glowing skin.`,
+  `The first known use of the term <span class=gradient-text-accent>"cosmeceuticals"</span> was in <span class=gradient-text-accent>1984</span> to describe skincare products with medical benefits.`,
+  `<span class=gradient-text-accent>Fermented skincare</span> is gaining popularity for its probiotic benefits that improve skin health.`,
+  `<span class=gradient-text-accent>Beauty influencers</span> have a huge impact on the cosmetic industry, shaping trends and product demands.`,
+  '<span class=gradient-text-accent>AR beauty</span> apps are helping customers try on makeup virtually before making a purchase.',
+  `The concept of <span class=gradient-text-accent>smart skincare devices</span> is transforming beauty routines with AI-powered technology.`,
+  'Some companies are developing <span class=gradient-text-accent>biodegradable glitter</span> to make beauty more sustainable.',
+  `The future of <span class=gradient-text-accent>clean beauty</span> is focused on transparency, sustainability, and effective formulations.`,
+  `The first <span class=gradient-text-accent>fragrance-free makeup line</span> was launched in <span class=gradient-text-accent>1980</span> to cater to sensitive skin.`,
+  `The term <span class=gradient-text-accent>dermocosmetics</span> is used for products that bridge the gap between skincare and dermatology.`,
+  `The rise of <span class=gradient-text-accent>gender-neutral beauty</span> is redefining the industry with inclusive products for all.`,
+  `<span class=gradient-text-accent>Biodegradable packaging</span> is becoming more common in the beauty industry to reduce waste.`,
+  `<span class=gradient-text-accent>Refillable makeup</span> is a growing trend that allows users to reuse packaging and minimize waste.`,
+  `The first commercial <span class=gradient-text-accent>nail polish</span> was inspired by automobile paint and introduced in <span class=gradient-text-accent>1932</span>.`,
+  `The term <span class=gradient-text-accent>"blue beauty"</span> refers to eco-conscious products designed to protect ocean ecosystems.`,
+  `<span class=gradient-text-accent>Glass packaging</span> is being used more in luxury beauty to reduce plastic waste and enhance sustainability.`,
+];
+
+export const LAST_ROUTE_KEY = 'lastRoute' as const;
+export const USER_KEY = 'user' as const;
+
+export const ROUTE_ACCESS = {
+  PRIVATE: ['/auth/change-password', '/auth/set-password'],
+  SOCIAL_ONLY: ['/auth/set-password'],
+  GUEST_ONLY: ['/auth', '/auth/register', '/auth/forgot-password', '/auth/oauth'],
 };
-export const XMLNS = { xmlns: 'http://www.w3.org/2000/svg' } as const;
-export const SVG24WH = { ...XMLNS, width: '24', height: '24' } as const;
-export const SVG24VB = { viewBox: '0 0 24 24' } as const;
-export const SVG24WH_VB = { ...SVG24WH, ...SVG24VB } as const;
-export const SVG_LC_LJ_ROUND = { strokeLinecap: 'round', strokeLinejoin: 'round' } as const;
-export const SVG_PATH_FR_CR = { fillRule: 'evenodd', clipRule: 'evenodd' } as const;
-export const SVG24WH_VB_LC_LJ_R = { ...SVG24WH_VB, ...SVG_LC_LJ_ROUND } as const;
-export const SVG_F_C_RULE = { fillRule: 'evenodd', clipRule: 'evenodd' } as const;
-
-export const AUTH_PROVIDER = {
-  GOOGLE: 'GOOGLE',
-  MANUAL: 'MANUAL',
-  LINKEDIN: 'LINKEDIN',
-  GITHUB: 'GITHUB',
-} as const;
-
-export const ALLOWED_COUNTRIES = ['India'];
-export const STATES_AND_UNION_TERRITORIES = [
-  'Andhra Pradesh',
-  'Arunachal Pradesh',
-  'Assam',
-  'Bihar',
-  'Chhattisgarh',
-  'Goa',
-  'Gujarat',
-  'Haryana',
-  'Himachal Pradesh',
-  'Jharkhand',
-  'Karnataka',
-  'Kerala',
-  'Madhya Pradesh',
-  'Maharashtra',
-  'Manipur',
-  'Meghalaya',
-  'Mizoram',
-  'Nagaland',
-  'Odisha',
-  'Punjab',
-  'Rajasthan',
-  'Sikkim',
-  'Tamil Nadu',
-  'Telangana',
-  'Tripura',
-  'Uttar Pradesh',
-  'Uttarakhand',
-  'West Bengal',
-  // Union Territories
-  'Andaman and Nicobar Islands',
-  'Chandigarh',
-  'Dadra and Nagar Haveli and Daman and Diu',
-  'Delhi (National Capital Territory of Delhi)',
-  'Jammu and Kashmir',
-  'Ladakh',
-  'Lakshadweep',
-  'Puducherry',
-];
-
-export const ALLOWED_BUSINESSES = [
-  'Individual',
-  'Freelance Seller',
-  'Small Business',
-  'Home-based Seller',
-  'Retail Store',
-  'Salon',
-  'Wholesale Distributor',
-];
-
-export const DEFAULT_FILTER = { label: 'All', value: 'all', default: true };
-
-export const NAVBAR_CATEGORIES_DATA: ICategoryL1[] = [
-  //   for_you,
-  //   lips,
-  // eyes,
-  // face,
-  // skin,
-  //   collections,
-  // about,
-];
-
-export const ADDRESS_DEFAULT_VALUES = {
-  type: 'both',
-  firstName: '',
-  lastName: '',
-  phoneNumber: '',
-  address: '',
-  altPhoneNumber: '',
-  city: '',
-  country: 'India',
-  gst: '',
-  landmark: '',
-  pinCode: '',
-  state: '',
-  email: '',
-  isDefaultAddress: false,
-};
-
-export const SIDEBAR_DATA = [
-  {
-    id: 1,
-    label: 'Account',
-    icon: UserCircleIcon,
-    path: '/account',
-    className: 'stroke-tertiary group-hover:stroke-primary',
-  },
-  {
-    id: 2,
-    label: 'Cart',
-    icon: ShoppingBag,
-    path: '/account/cart',
-    className: 'stroke-tertiary group-hover:stroke-primary',
-  },
-  {
-    id: 3,
-    label: 'Orders',
-    icon: TruckIcon,
-    path: '/account/orders',
-    className: 'stroke-tertiary group-hover:stroke-primary',
-  },
-  {
-    id: 4,
-    label: 'Track Orders',
-    icon: TrackIcon,
-    path: '/account/track',
-    className: 'stroke-tertiary group-hover:stroke-primary',
-  },
-  {
-    id: 5,
-    label: 'Refunds & Returns',
-    icon: HandCoinIcon,
-    path: '/account/orders/return-refund',
-    className: 'stroke-tertiary group-hover:stroke-primary',
-  },
-  {
-    id: 6,
-    label: 'Reviews & Ratings',
-    icon: ReviewIcon,
-    path: '/account/reviews-and-ratings',
-    className: 'stroke-tertiary group-hover:stroke-primary',
-  },
-  {
-    id: 7,
-    label: 'Customer Support',
-    icon: CareIcon,
-    path: '/account/contact',
-    className: 'fill-tertiary group-hover:fill-primary',
-  },
-  {
-    id: 8,
-    label: 'Change Password',
-    icon: DownloadIcon,
-    path: '',
-    className: '-rotate-90 stroke-tertiary group-hover:stroke-primary',
-  },
-  {
-    id: 9,
-    label: 'Logout',
-    icon: LogoutIcon,
-    className: 'stroke-tertiary group-hover:stroke-primary',
-  },
-];

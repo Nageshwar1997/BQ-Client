@@ -1,5 +1,5 @@
+import type { IGradientText } from '@/types/component.type';
 import { Link } from 'react-router-dom';
-import type { IGradientText } from '@/Types/Common.type';
 
 const Text = ({ text, type, className, children }: IGradientText) => (
   <span
@@ -8,7 +8,7 @@ const Text = ({ text, type, className, children }: IGradientText) => (
     {children ? children : text}
   </span>
 );
-export const GradientText = (props: IGradientText) => {
+const GradientText = (props: IGradientText) => {
   const { path, className, ...rest } = props;
   return path ? (
     <Link to={path} className={`${className ?? ''}`}>
@@ -18,3 +18,5 @@ export const GradientText = (props: IGradientText) => {
     <Text {...rest} className={className} />
   );
 };
+
+export default GradientText;

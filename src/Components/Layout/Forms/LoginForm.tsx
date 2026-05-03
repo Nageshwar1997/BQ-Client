@@ -1,182 +1,188 @@
-import { Service } from '@/Api-Service';
-import {
-  AuthBottomInstructions,
-  BorderGradient,
-  Button,
-  GradientText,
-  SocialAuth,
-} from '@/Components/Ui';
-import { Checkbox, Input, Radio } from '@/Components/Ui/Input';
-import { LOGIN_INPUT_MAP_DATA } from '@/Constants';
-import { Hook } from '@/Hooks';
-import { EyeIcon, EyeOffIcon } from '@/Icons';
-import { loginSchema } from '@/Schemas';
-import { UserStore } from '@/Stores';
-import type { TLogin } from '@/Types/Schema.type';
-import { saveLocalToken, saveSessionToken } from '@/Utils/Storage.util';
+import Button from '@/components/ui/Button';
+import GradientText from '@/components/ui/GradientText';
+import Input from '@/components/ui/inputs/Input';
+import Radio from '@/components/ui/inputs/Radio';
+import { FORM_DEFAULT_VALUES } from '@/constants/form.constants';
+import { LOGIN_INPUT_MAP_DATA, PASSWORD_KEYS } from '@/constants/input.constant';
+import useQueryParams from '@/hooks/useQueryParams';
+import AuthBottomInstructions from '@/pages/auth/components/AuthBottomInstructions';
+import SocialAuth from '@/pages/auth/components/SocialAuth';
+import { loginSchema } from '@/schemas/user.schema';
+import { useManualLogin } from '@/services/user-service/auth.service.query';
+import useActionsStore from '@/stores/action.store';
+import useUserStore from '@/stores/user.store';
+import type { TLogin } from '@/types/schema.type';
+import { setErrorToForm } from '@/utils/form.util';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { applyServerErrorsToFormFields } from '@/Utils/Zod.util';
+import { Controller, useForm, useWatch } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+import BorderGradient from '../containers/BorderGradient';
 
-export const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const { removeParams, queryParams } = Hook.QueryParams();
-  const { setUser } = UserStore();
-  const { mutateAsync, isPending } = Service.Auth.Login();
+const LoginForm = () => {
+  /* ================= 1. External / Store Hooks ================= */
+  const setUser = useUserStore((s) => s.setUser);
+  const { queryParams, removeParams } = useQueryParams();
 
+  /* ================= 2. API / Query Hooks ================= */
+  const { isPending, mutateAsync } = useManualLogin();
+
+  /* ================= 3. Form Hooks ================= */
   const {
     control,
+    formState: { errors },
     handleSubmit,
-    formState: { errors, isDirty },
-    reset,
     register,
-    watch,
+    reset,
     setError,
-  } = useForm({
+  } = useForm<TLogin>({
     resolver: zodResolver(loginSchema),
-    defaultValues: {
-      loginMethod: 'email',
-      email: undefined,
-      phoneNumber: undefined,
-      password: '',
-      remember: false,
-    },
+    defaultValues: FORM_DEFAULT_VALUES.login,
   });
-  console.log('🚀 ~ LoginForm ~ errors:', errors.root?.serverError?.message);
 
-  const selectedMethod = watch('loginMethod');
+  const selectedMethod = useWatch({ control, name: 'loginMethod' });
 
+  /* ================= 4. Local State ================= */
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  /* ================= 5. Handlers ================= */
+
+  // -------- Handle Login Submit --------
+  const handleManualLogin = async (data: TLogin) => {
+    await mutateAsync(data, {
+      onSuccess: async ({ user }) => {
+        setUser(user);
+
+        const { runAllActions } = useActionsStore.getState();
+        await runAllActions();
+
+        if (queryParams.login) removeParams('login');
+      },
+
+      onError: ({ fieldErrors }) => setErrorToForm(setError, fieldErrors),
+    });
+  };
+
+  // -------- Toggle Password Visibility --------
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
+
+  // -------- Handle Login Method Change (Email / Phone) --------
   const handleLoginMethodChange = (method: TLogin['loginMethod']) => {
     reset({
       loginMethod: method,
       email: method === 'email' ? '' : undefined,
       phoneNumber: method === 'phoneNumber' ? '' : undefined,
       password: '',
-      remember: false,
     });
   };
 
-  const onSubmit = async (bodyData: TLogin) => {
-    const finalData: Partial<TLogin> = {
-      password: bodyData.password,
-      loginMethod: bodyData.loginMethod,
-    };
-
-    if (bodyData.loginMethod === 'email' && bodyData.email) {
-      finalData.email = bodyData.email;
-    } else if (bodyData.loginMethod === 'phoneNumber' && bodyData.phoneNumber) {
-      finalData.phoneNumber = bodyData.phoneNumber;
-    }
-
-    mutateAsync(finalData, {
-      onSuccess(data) {
-        onLoginSuccess?.();
-        if (data.user) {
-          setUser(data.user);
-        }
-        if (bodyData.remember) {
-          saveLocalToken(data?.token);
-        } else {
-          saveSessionToken(data?.token);
-        }
-        if (queryParams.login === 'true') {
-          removeParams('login');
-        }
-      },
-      onError(error) {
-        applyServerErrorsToFormFields(setError, error.fieldErrors);
-      },
-    });
-  };
-
+  /* ================= 6. JSX ================= */
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col gap-4">
+    <div className="flex w-full flex-col items-center justify-center gap-4">
+      {/* ================= HEADER ================= */}
       <GradientText
         type="accent"
         text="Login"
         className="mx-auto text-2xl leading-tight font-semibold sm:text-3xl md:text-4xl lg:text-5xl"
       />
+
+      {/* ================= SOCIAL AUTH ================= */}
       <SocialAuth />
-      <BorderGradient className="space-y-6">
-        <Controller
-          name="loginMethod"
-          control={control}
-          render={({ field }) => (
-            <Radio
-              value={field.value}
-              onChange={(value) => {
-                handleLoginMethodChange(value);
-                field.onChange(value);
-              }}
-              options={[
-                { label: 'Email', value: 'email' },
-                { label: 'Phone', value: 'phoneNumber' },
-              ]}
-              className="w-40!"
-            />
-          )}
-        />
-        <div className="flex flex-col gap-5 lg:gap-6">
-          {LOGIN_INPUT_MAP_DATA?.map((item, index) => {
-            const isPassword = item.name === 'password';
-            const isPhone = item.name === 'phoneNumber';
-            const isEmail = item.name === 'email';
+
+      {/* ================= FORM CONTAINER ================= */}
+      <BorderGradient className="flex flex-col gap-5 lg:gap-6">
+        {/* ================= MAIN FORM ================= */}
+        <form onSubmit={handleSubmit(handleManualLogin)} className="space-y-5 sm:space-y-6">
+          {/* -------- Login Method Toggle (Radio) -------- */}
+          <Controller
+            name="loginMethod"
+            control={control}
+            render={({ field }) => (
+              <Radio
+                value={field.value}
+                onChange={(value) => {
+                  handleLoginMethodChange(value);
+                  field.onChange(value);
+                }}
+                options={[
+                  { label: 'Email', value: 'email' },
+                  { label: 'Phone', value: 'phoneNumber' },
+                ]}
+                className="w-50!"
+                error={errors.loginMethod?.message}
+              />
+            )}
+          />
+
+          {/* ================= INPUTS ================= */}
+          {LOGIN_INPUT_MAP_DATA.map((input) => {
+            const isPassword = PASSWORD_KEYS.includes(input.name);
+            const isPhone = input.name === 'phoneNumber';
+            const isEmail = input.name === 'email';
             const isEmailSelected = selectedMethod === 'email';
+
+            // -------- Conditional Rendering --------
             if (isPhone && isEmailSelected) return null;
             if (isEmail && !isEmailSelected) return null;
-            return (
-              <div key={index}>
-                <Input
-                  label={item.label}
-                  register={register(item.name)}
-                  inputProps={{
-                    name: item.name,
-                    placeholder: item.placeholder,
-                    autoComplete: item.autoComplete,
-                    type: isPassword ? (showPassword ? 'text' : item.type) : item.type,
-                    disabled: isPending,
-                  }}
-                  icons={{
-                    ...(isPassword && {
-                      right: {
-                        icon: showPassword ? (
-                          <EyeOffIcon className="fill-primary h-full opacity-50 hover:opacity-100" />
-                        ) : (
-                          <EyeIcon className="fill-primary h-full opacity-50 hover:opacity-100" />
-                        ),
-                        onClick: () => setShowPassword((prev) => !prev),
-                      },
-                    }),
 
-                    ...(isPhone && { left: { text: '+91' } }),
-                  }}
-                  error={errors?.[item.name]?.message}
-                />
-              </div>
+            return (
+              <Input
+                key={input.name}
+                label={input.label}
+                inputProps={{
+                  name: input.name,
+                  type: isPassword ? (showPassword ? 'text' : input.type) : input.type,
+                  placeholder: input.placeholder,
+                  autoComplete: input.autoComplete,
+                  disabled: isPending,
+                }}
+                icons={
+                  isPhone
+                    ? { left: '+91' }
+                    : isPassword
+                      ? {
+                          right: {
+                            icon: showPassword ? 'lucide:eye-off' : 'lucide:eye',
+                            onClick: togglePasswordVisibility,
+                            className: 'cursor-pointer',
+                          },
+                        }
+                      : undefined
+                }
+                register={register(input.name)}
+                error={errors[input.name]?.message}
+              />
             );
           })}
-        </div>
-        <div className="space-y-3">
-          <div className="flex items-center justify-between gap-2">
-            <Checkbox
-              register={register('remember')}
-              checkboxProps={{ name: 'remember' }}
-              rightText="Remember"
-            />
+
+          <p className="inline-flex w-full justify-end pr-2">
             <GradientText
               text="Forgot Password?"
               type="accent"
               path="/auth/forgot-password"
-              className="mr-2 text-[10px] whitespace-nowrap hover:underline sm:text-[13px] md:text-sm"
+              className="text-xs font-semibold whitespace-nowrap hover:underline"
+            />
+          </p>
+
+          {/* ================= ACTION BUTTONS ================= */}
+          <div className="flex gap-4 sm:col-span-2">
+            {/* -------- Back Button -------- */}
+            <Link to="/" className="w-full">
+              <Button pattern="secondary" content="Back" />
+            </Link>
+
+            {/* -------- Submit Button -------- */}
+            <Button
+              pattern="primary"
+              buttonProps={{ type: 'submit', disabled: isPending }}
+              content="Login"
             />
           </div>
-          <Button
-            pattern="primary"
-            buttonProps={{ type: 'submit', disabled: isPending || !isDirty }}
-            content="Login"
-          />
-        </div>
+        </form>
+
+        {/* ================= FOOTER ================= */}
         <div className="flex items-center justify-center gap-2">
           <GradientText
             text="Don't have an account?"
@@ -187,11 +193,15 @@ export const LoginForm = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) =
             text="Register"
             type="accent"
             path="/auth/register"
-            className="text-sm hover:font-medium md:text-base"
+            className="text-xs font-semibold md:text-sm"
           />
         </div>
+
+        {/* ================= EXTRA INFO ================= */}
         <AuthBottomInstructions />
       </BorderGradient>
-    </form>
+    </div>
   );
 };
+
+export default LoginForm;

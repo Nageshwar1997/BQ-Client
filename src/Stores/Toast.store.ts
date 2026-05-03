@@ -1,17 +1,19 @@
 import { create } from 'zustand';
 import { nanoid } from 'nanoid';
-import type { TToast } from '@/Types/Common.type';
+import type { IToastStore } from '@/types/store.type';
 
-export type ToastItem = TToast & { id: string };
-
-interface ToastState {
-  toasts: ToastItem[];
-  addToast: (toast: TToast) => void;
-  removeToast: (id: string) => void;
-}
-
-export const useToastStore = create<ToastState>((set) => ({
+const useToastStore = create<IToastStore>((set) => ({
   toasts: [],
-  addToast: (toast) => set((state) => ({ toasts: [...state.toasts, { ...toast, id: nanoid() }] })),
+  addToast: (toast) => {
+    const id = nanoid();
+
+    set((state) => ({
+      toasts: [...state.toasts, { ...toast, id }],
+    }));
+
+    return id; // return the id of the toast for removal
+  },
   removeToast: (id) => set((state) => ({ toasts: state.toasts.filter((t) => t.id !== id) })),
 }));
+
+export default useToastStore;

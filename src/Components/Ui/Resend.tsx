@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { GradientText } from './GradientText';
+import GradientText from './GradientText';
+import type { IResend } from '@/types/component.type';
 
-type TResendOtp = { label: string; count: number; onResend?: () => void };
-
-export const Resend = ({ onResend, count, label = 'Not received?' }: TResendOtp) => {
+const Resend = ({ onResend, count, label = 'Not received?', className }: IResend) => {
   const [counter, setCounter] = useState(count);
 
   useEffect(() => {
@@ -14,7 +13,7 @@ export const Resend = ({ onResend, count, label = 'Not received?' }: TResendOtp)
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [counter]);
+  }, [counter > 0]);
 
   const handleResend = async () => {
     if (counter > 0) return;
@@ -24,22 +23,24 @@ export const Resend = ({ onResend, count, label = 'Not received?' }: TResendOtp)
   };
 
   return (
-    <p className="space-x-2">
-      <GradientText text={label} type="silver" className="md:text-sm" />
+    <p className={`space-x-2 ${className || ''}`}>
+      <GradientText text={label} type="silver" className="text-xs sm:text-sm" />
       {counter > 0 ? (
-        <span className="text-muted text-xs md:text-sm">
+        <span className="text-muted text-xs sm:text-sm">
           <GradientText text="Resend in" type="silver" />{' '}
-          <GradientText text={`${counter}s`} type="accent" className="font-bold" />
+          <GradientText text={`${counter}s`} type="accent" className="font-semibold" />
         </span>
       ) : (
         <button onClick={handleResend} className="cursor-pointer" type="button">
           <GradientText
             type="accent"
             text="Resend"
-            className="text-sm hover:font-medium md:text-base"
+            className="text-xs font-semibold sm:text-sm"
           />
         </button>
       )}
     </p>
   );
 };
+
+export default Resend;

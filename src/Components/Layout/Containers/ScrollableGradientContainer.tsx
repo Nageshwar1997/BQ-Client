@@ -1,15 +1,16 @@
-import { LinearGradient } from '@/Components/Ui';
-import { Hook } from '@/Hooks';
-import type { IScrollableGradientContainer, TGradientPos } from '@/Types/Common.type';
+import LinearGradient from '@/components/ui/LinearGradient';
+import useScrollable from '@/hooks/useScrollable';
+import type { IScrollableGradientContainer } from '@/types/component.type';
+import type { TGradientPos } from '@/types/hook.type';
 
-export const ScrollableGradientContainer = ({
+const ScrollableGradientContainer = ({
   className = '',
   children,
   containerClassName = '',
   gradientClassNames = {},
   direction,
 }: IScrollableGradientContainer) => {
-  const { showH_Gradient, showV_Gradient, containerRef } = Hook.Scrollable(direction);
+  const { showH_Gradient, showV_Gradient, containerRef } = useScrollable(direction);
 
   const isHorizontal = direction === 'horizontal';
   const isVertical = direction === 'vertical';
@@ -43,3 +44,5 @@ export const ScrollableGradientContainer = ({
     </div>
   );
 };
+
+export default ScrollableGradientContainer;

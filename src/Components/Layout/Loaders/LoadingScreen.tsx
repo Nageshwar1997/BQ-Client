@@ -1,9 +1,9 @@
+import { BEAUTY_FACTS } from '@/constants/common.constant';
+import type { TClassName } from '@/types/component.type';
 import { useEffect, useMemo, useState } from 'react';
-import { BEAUTY_FACTS } from '@/Constants';
-import { Teddy } from './Teddy';
-import type { TClassName } from '@/Types/Common.type';
+import Teddy from './teddy';
 
-export const LoadingScreen = ({ className = '' }: TClassName) => {
+const LoadingScreen = ({ className = '' }: TClassName) => {
   const TEXT_CHANGE_INTERVAL = 5000;
 
   const [fact, setFact] = useState(BEAUTY_FACTS[getRandomIndex(BEAUTY_FACTS)]);
@@ -39,3 +39,5 @@ export const LoadingScreen = ({ className = '' }: TClassName) => {
     </div>
   );
 };
+
+export default LoadingScreen;

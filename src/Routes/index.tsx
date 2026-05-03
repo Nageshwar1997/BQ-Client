@@ -1,171 +1,89 @@
-import { LoadingScreen } from '@/Components/Layout';
-import ForgotPassword from '@/Pages/Auth/ForgotPassword';
-import OAuth from '@/Pages/Auth/OAuth';
-import Main from '@/Pages/Main';
-import { lazy, Suspense } from 'react';
-import { createBrowserRouter, Outlet } from 'react-router-dom';
+import LoadingScreen from '@/components/layout/loaders/LoadingScreen';
+import ErrorBoundary from '@/pages/error/ErrorBoundary';
+import type { TRouteObject } from '@/types/common.type';
 
-const AuthRedirect = lazy(() => import('./AuthRedirect'));
-const PrivateRoute = lazy(() => import('./PrivateRoute'));
-
-const Auth = lazy(() => import('@/Pages/Auth'));
-const Login = lazy(() => import('@/Pages/Auth/Login'));
-const Register = lazy(() => import('@/Pages/Auth/Register'));
-
-export const Routes = createBrowserRouter([
+const routes: TRouteObject[] = [
   {
     path: '/',
-    element: (
-      <Suspense fallback={<LoadingScreen />}>
-        <Main />
-      </Suspense>
-    ),
-    errorElement: <div>Error Page</div>,
+    HydrateFallback: LoadingScreen,
+    ErrorBoundary,
+    lazy: async () => {
+      const { default: Layout } = await import('@/pages/layout');
+      return { Component: Layout };
+    },
     children: [
-      { index: true, element: <div>Home</div> },
-      { path: 'offers', element: <div>Offers</div> },
       {
-        path: 'blogs',
-        element: <Outlet />,
-        children: [
-          { index: true, element: <div>Blogs</div> },
-          { path: ':blogId', element: <div>Blog Details</div> },
-        ],
+        index: true,
+        lazy: async () => {
+          const { default: Main } = await import('@/pages/main');
+          return { Component: Main };
+        },
       },
-      { path: 'search', element: <div>Search Products</div> },
-      { path: 'product/:productId', element: <div>Product Details</div> },
-      { path: 'products/:levelOneCategory', element: <div>Category Products</div> },
-      {
-        path: 'products/:levelOneCategory/:levelTwoCategory',
-        element: <div>Category Products</div>,
-      },
-      {
-        path: 'products/:levelOneCategory/:levelTwoCategory/:levelThreeCategory',
-        element: <div>Category Products</div>,
-      },
-      { path: 'refer', element: <PrivateRoute children={<div>Refer Friend</div>} /> }, // Todo: Refer Part is Pending
-      { path: 'cart', element: <PrivateRoute children={<div>Cart</div>} /> },
-      { path: 'address', element: <PrivateRoute children={<div>Address</div>} /> },
-      { path: 'wishlist', element: <PrivateRoute children={<div>Wishlist</div>} /> },
-      {
-        path: 'become-seller',
-        element: <PrivateRoute children={<div>Become Seller</div>} />,
-      },
-      {
-        path: 'orders',
-        element: <PrivateRoute children={<Outlet />} />,
-        children: [
-          { index: true, element: <div>Orders</div> },
-          { path: ':orderId', element: <div>Order Details</div> }, // Todo: Cancel Order and Return Order Pending
-          { path: 'return-refund', element: <div>Order Return Refund</div> }, // Todo: Pending
-          {
-            path: 'track',
-            element: <Outlet />,
-            children: [
-              { index: true, element: <div>TrackMyOrders</div> },
-              { path: ':orderId', element: <div>TrackOrder</div> },
-            ],
-          },
-          { path: 'payment', element: <div>Payment</div> },
-        ],
-      },
-      {
-        path: 'account',
-        element: <PrivateRoute children={<div>Account</div>} />,
-        children: [
-          {
-            index: true,
-            element: <div>Profile</div>,
-          }, // Todo: Pending
-          { path: 'contact', element: <div>ContactUs</div> },
-          { path: 'cart', element: <div>Cart</div> },
-          { path: 'reviews-and-ratings', element: <div>MyReviewsAndRating</div> },
-          {
-            path: 'track',
-            element: <Outlet />,
-            children: [
-              { index: true, element: <div>TrackMyOrders</div> },
-              { path: ':orderId', element: <div>TrackOrder</div> },
-            ],
-          },
-          {
-            path: 'orders',
-            element: <PrivateRoute children={<Outlet />} />,
-            children: [
-              { index: true, element: <div>Orders</div> },
-              { path: ':orderId', element: <div>Order Details</div> }, // Todo: Cancel Order and Return Order Pending
-              { path: 'return-refund', element: <div>Order Return Refund</div> }, // Todo: Pending
-            ],
-          },
-        ],
-      },
-      // Company Pages
-      { path: 'about-us', element: <div>AboutUs</div> },
-      { path: 'partner-with-us', element: <div>PartnerWithUs</div> },
-      { path: 'careers', element: <div>Careers</div> },
-      { path: 'mission-vision', element: <div>MissionVisionValues</div> },
-      { path: 'sustainability', element: <div>Sustainability</div> },
-      { path: 'ethics', element: <div>Ethics</div> },
-      { path: 'teams', element: <div>Teams</div> },
-      { path: 'press-media', element: <div>PressMedia</div> },
-      { path: 'awards', element: <div>Awards</div> },
-      { path: 'values-and-culture', element: <div>ValuesAndCulture</div> },
-      { path: 'retail-and-e-commerce', element: <div>RetailAndECommerce</div> },
-
-      // Quick Link Pages
-      { path: 'store-locator', element: <div>StoreLocator</div> },
-      // Services Pages
-      { path: 'contact', element: <div>ContactUs</div> },
-      { path: 'help-center-faq', element: <div>HelpCenterFAQ</div> },
-      { path: 'shipping-info', element: <div>ShippingInfo</div> },
-      // Legal Policies Pages
-      { path: 'privacy-policy', element: <div>PrivacyPolicy</div> },
-      { path: 'cookie-policy', element: <div>CookiePolicy</div> },
-      { path: 'terms-conditions', element: <div>TermsAndConditions</div> },
-      { path: 'disclaimer', element: <div>Disclaimer</div> },
-      { path: 'accessibility', element: <div>Accessibility</div> },
     ],
   },
   {
     path: 'auth',
-    element: (
-      <Suspense fallback={<LoadingScreen />}>
-        <Auth />
-      </Suspense>
-    ),
+    HydrateFallback: LoadingScreen,
+    ErrorBoundary: ErrorBoundary,
+    lazy: async () => {
+      const { default: Auth } = await import('@/pages/auth');
+
+      return { Component: Auth };
+    },
     children: [
       {
         index: true,
-        element: (
-          <AuthRedirect>
-            <Login />
-          </AuthRedirect>
-        ),
+        lazy: async () => {
+          const { default: Login } = await import('@/pages/auth/Login');
+          return { Component: Login };
+        },
       },
       {
         path: 'register',
-        element: (
-          <AuthRedirect>
-            <Register />
-          </AuthRedirect>
-        ),
+        lazy: async () => {
+          const { default: Register } = await import('@/pages/auth/Register');
+          return { Component: Register };
+        },
       },
       {
         path: 'oauth',
-        element: (
-          <AuthRedirect>
-            <OAuth />
-          </AuthRedirect>
-        ),
+        lazy: async () => {
+          const { default: OAuth } = await import('@/pages/auth/OAuth');
+          return { Component: OAuth };
+        },
       },
       {
         path: 'forgot-password',
-        element: (
-          <AuthRedirect>
-            <ForgotPassword />
-          </AuthRedirect>
-        ),
+        lazy: async () => {
+          const { default: ForgotPassword } = await import('@/pages/auth/ForgotPassword');
+          return { Component: ForgotPassword };
+        },
+      },
+      {
+        path: 'change-password',
+        lazy: async () => {
+          const { default: ChangePassword } = await import('@/pages/auth/ChangePassword');
+
+          return { Component: ChangePassword };
+        },
+      },
+      {
+        path: 'set-password',
+        lazy: async () => {
+          const { default: SetPassword } = await import('@/pages/auth/SetPassword');
+
+          return { Component: SetPassword };
+        },
       },
     ],
   },
-]);
+  {
+    path: '*',
+    lazy: async () => {
+      const { default: NotFound } = await import('@/pages/error/NotFound');
+      return { Component: NotFound };
+    },
+  },
+];
+
+export default routes;

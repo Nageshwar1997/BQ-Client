@@ -1,8 +1,9 @@
-import type { MouseEvent } from 'react';
-import type { IButton } from '@/Types/Common.type';
-import { getButtonCss } from '@/Utils/Common.util';
+import { type MouseEvent } from 'react';
+import { getButtonCss } from '@/utils/common.util';
+import type { IButton } from '@/types/component.type';
+import { Icon } from '@iconify/react';
 
-export const Button = ({
+const Button = ({
   pattern,
   content,
   className = '',
@@ -17,8 +18,6 @@ export const Button = ({
     buttonProps?.onClick?.(e);
   };
 
-  const mapData = [leftIcon, content, rightIcon].filter((item) => item);
-
   return (
     <button
       {...buttonProps}
@@ -28,9 +27,11 @@ export const Button = ({
       type={buttonProps?.type || 'button'}
       onClick={handleClick}
     >
-      {mapData.map((item, i) => (
-        <span key={i}>{item}</span>
-      ))}
+      {leftIcon && <Icon {...leftIcon} />}
+      {typeof content === 'object' ? <Icon {...content} /> : content}
+      {rightIcon && <Icon {...rightIcon} />}
     </button>
   );
 };
+
+export default Button;

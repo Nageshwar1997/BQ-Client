@@ -1,53 +1,62 @@
-import { ApiStatus } from '@/Components/Common';
-import { GradientText } from '@/Components/Ui';
-import { Hook } from '@/Hooks';
-import { saveLocalToken } from '@/Utils/Storage.util';
 import { useEffect, useState } from 'react';
+
+import ApiStatus from '@/components/layout/ApiStatus';
+import GradientText from '@/components/ui/GradientText';
+import usePathParams from '@/hooks/usePathParams';
+import useQueryParams from '@/hooks/useQueryParams';
+import { useGetSessionUser } from '@/services/user-service/user.service.query';
+import useUserStore from '@/stores/user.store';
 
 const OAuth = () => {
   const [readyToCall, setReadyToCall] = useState(false);
-  const { navigate } = Hook.PathParams();
-  const { queryParams } = Hook.QueryParams();
-  const { isLoading, isError } = Hook.AuthCheck(readyToCall);
+  const { navigate } = usePathParams();
+  const { queryParams } = useQueryParams();
+  const setUser = useUserStore((s) => s.setUser);
+  const user = useUserStore((s) => s.user);
 
+  const { isLoading, isError, data } = useGetSessionUser({ enabled: readyToCall });
   useEffect(() => {
-    if (!queryParams.token && !queryParams.error) {
+    if (!queryParams || (!Boolean(queryParams.success) && !Boolean(queryParams.error))) {
       navigate('/auth');
       return;
     }
-    if (queryParams.token) {
-      saveLocalToken(queryParams.token);
+
+    if (Boolean(queryParams.success)) {
       setReadyToCall(true);
     }
-  }, [queryParams.token, queryParams.error, navigate]);
+  }, [queryParams.success, queryParams.error, navigate]);
+
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+      return;
+    }
+    if (data?.user) {
+      setUser(data.user);
+    }
+  }, [data?.user]);
 
   const showLoading = !queryParams.error && (!readyToCall || isLoading);
   const showError = isError || queryParams.error;
   return (
-    <div className="flex w-full flex-col gap-4">
-      <ApiStatus
-        status={showLoading ? 'loading' : showError ? 'error' : 'empty'}
-        loading={{ title: 'Loading in...' }}
-        error={{
-          title: 'Login failed...',
-          description: (
-            <>
-              There was a problem signing you in. Please{' '}
-              <GradientText type="accent" path="/auth" text="Try again" />.
-            </>
-          ),
-        }}
-        empty={{
-          title: 'User details not found.',
-          description: (
-            <>
-              There was a problem finding user details. Please{' '}
-              <GradientText type="silver" path="/contact" text="Contact Us" />.
-            </>
-          ),
-        }}
-      />
-    </div>
+    <ApiStatus
+      status={showLoading ? 'loading' : showError ? 'error' : 'empty'}
+      text="Logging in..."
+      title={showError ? 'Login failed...' : 'User details not found.'}
+      description={
+        showError ? (
+          <>
+            There was a problem signing you in. Please{' '}
+            <GradientText type="accent" path="/auth" text="Try again" />.
+          </>
+        ) : (
+          <>
+            There was a problem finding user details. Please{' '}
+            <GradientText type="silver" path="/contact" text="Contact Us" />.
+          </>
+        )
+      }
+    />
   );
 };
 

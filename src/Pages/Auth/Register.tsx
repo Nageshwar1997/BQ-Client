@@ -1,305 +1,322 @@
-import { useState } from 'react';
-import { type FieldErrors, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { EMAIL_INPUT_DATA, PASSWORD_KEYS, REGISTER_INPUT_MAP_DATA } from '@/Constants';
-import { EyeIcon, EyeOffIcon } from '@/Icons';
-import { Service } from '@/Api-Service';
-import { UserStore } from '@/Stores';
-import { registerSchema, sendOtpSchema } from '@/Schemas';
-import { getFileFromFileList } from '@/Utils/Common.util';
+import BorderGradient from '@/components/layout/containers/BorderGradient';
+import Button from '@/components/ui/Button';
+import GradientText from '@/components/ui/GradientText';
+import Input from '@/components/ui/inputs/Input';
+import Resend from '@/components/ui/Resend';
+import { FORM_DEFAULT_VALUES } from '@/constants/form.constants';
 import {
-  AuthBottomInstructions,
-  BorderGradient,
-  Button,
-  GradientText,
-  ProfilePicInput,
-  Resend,
-  SocialAuth,
-} from '@/Components/Ui';
-import { Checkbox, Input } from '@/Components/Ui/Input';
-import type { TRegister } from '@/Types/Schema.type';
-import type { IInput } from '@/Types/Common.type';
-import { saveLocalToken, saveSessionToken } from '@/Utils/Storage.util';
-import { applyServerErrorsToFormFields } from '@/Utils/Zod.util';
+  EMAIL_INPUT_DATA,
+  OTP_INPUT_DATA,
+  PASSWORD_KEYS,
+  REGISTER_INPUT_MAP_DATA,
+} from '@/constants/input.constant';
+import usePathParams from '@/hooks/usePathParams';
+import { emailSchema, otpSchema, registerSchema } from '@/schemas/user.schema';
+import {
+  useRegisterAndSaveUser,
+  useRegisterResendOtp,
+  useRegisterSendOtp,
+  useRegisterVerifyOtp,
+} from '@/services/user-service/auth.service.query';
+import useUserStore from '@/stores/user.store';
+import type { TEmail, TOtp, TRegister } from '@/types/schema.type';
+import { toaster } from '@/utils/common.util';
+import { setErrorToForm } from '@/utils/form.util';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import AuthBottomInstructions from './components/AuthBottomInstructions';
+import SocialAuth from './components/SocialAuth';
 
-type TRegisterInput = {
-  input: (typeof REGISTER_INPUT_MAP_DATA)[number];
-  isPending: boolean;
-  errors: FieldErrors<TRegister>;
-  register: IInput['register'];
-};
+const Register = () => {
+  /* ================= 1. Store Hooks ================= */
+  const setUser = useUserStore((s) => s.setUser);
 
-const RegisterInput = ({ input, register, isPending, errors }: TRegisterInput) => {
+  /* ================= 2. Custom Hooks ================= */
+  const { navigate } = usePathParams();
+
+  /* ================= 3. API/Queries Hooks ================= */
+  const {
+    data: sendOtpData,
+    isPending: isSendingOtp,
+    mutateAsync: sendOtpAsync,
+  } = useRegisterSendOtp();
+  const {
+    data: resendOtpData,
+    isPending: isResendingOtp,
+    mutateAsync: resendOtpAsync,
+  } = useRegisterResendOtp();
+  const { isPending: isVerifyingOtp, mutateAsync: verifyOtpAsync } = useRegisterVerifyOtp();
+  const { isPending: isRegistering, mutateAsync: registerAndSaveAsync } = useRegisterAndSaveUser();
+
+  /* ================= 4. Forms ================= */
+  const sendOtpForm = useForm<TEmail>({
+    resolver: zodResolver(emailSchema),
+    defaultValues: FORM_DEFAULT_VALUES.email,
+  });
+
+  const verifyOtpForm = useForm<TOtp>({
+    resolver: zodResolver(otpSchema),
+    defaultValues: FORM_DEFAULT_VALUES.otp,
+  });
+
+  const registerAndSaveForm = useForm<TRegister>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: FORM_DEFAULT_VALUES.register,
+  });
+
+  /* ================= 5. Local State ================= */
+  const [currentStep, setCurrentStep] = useState<'send' | 'verify' | 'save'>('send');
+
   const [showPasswords, setShowPasswords] = useState<Partial<Record<keyof TRegister, boolean>>>({
     password: false,
     confirmPassword: false,
   });
 
-  const togglePasswordVisibility = (field: keyof TRegister) => {
-    if (!PASSWORD_KEYS.includes(field)) return;
-    setShowPasswords((prevState) => ({
-      ...prevState,
-      [field]: !prevState[field],
-    }));
-  };
-  return (
-    <Input
-      inputProps={{
-        name: input.name,
-        placeholder: input.placeholder,
-        autoComplete: input.autoComplete,
-        type: PASSWORD_KEYS.includes(input.name)
-          ? showPasswords[input.name]
-            ? 'text'
-            : input.type
-          : input.type,
-        disabled: isPending,
-      }}
-      label={input.label}
-      register={register}
-      error={errors[input.name]?.message}
-      icons={{
-        ...(input.name === 'phoneNumber' && { left: { text: '+91' } }),
-        ...(PASSWORD_KEYS.includes(input.name) && {
-          right: {
-            icon:
-              PASSWORD_KEYS.includes(input.name) &&
-              (showPasswords[input.name] ? (
-                <EyeOffIcon className="fill-primary! h-full opacity-50 hover:opacity-100" />
-              ) : (
-                <EyeIcon className="fill-primary! h-full opacity-50 hover:opacity-100" />
-              )),
-            onClick: () => togglePasswordVisibility(input.name),
-          },
-        }),
-      }}
-    />
-  );
-};
+  /* ================= 6. Derived Values ================= */
+  const token = sendOtpData?.token || '';
+  const sendCount = resendOtpData?.sendCount || 1;
 
-const RegisterForm = ({
-  otpToken = '',
-  email = '',
-  onReset,
-}: {
-  otpToken: string;
-  email: string;
-  onReset?: () => void;
-}) => {
-  const { mutateAsync: verifyOtpAsync, isPending: isVerifyingOtp } =
-    Service.Auth.VerifyOtpAndRegister();
-  const { mutateAsync: resendOtpAsync, isPending: isResendingOtp } = Service.Auth.ResendOtp();
+  /* ================= 7. Handlers ================= */
 
-  const { setUser } = UserStore();
-
-  const {
-    watch,
-    register,
-    handleSubmit,
-    formState: { errors, isDirty },
-  } = useForm({
-    resolver: zodResolver(registerSchema),
-    defaultValues: {
-      confirmPassword: '',
-      email,
-      firstName: '',
-      lastName: '',
-      otp: '',
-      password: '',
-      phoneNumber: '',
-      profilePic: undefined,
-      remember: false,
-    },
-  });
-
-  const profilePicFile = getFileFromFileList(watch('profilePic'));
-
-  const profilePicURL =
-    profilePicFile instanceof File ? URL.createObjectURL(profilePicFile) : undefined;
-
-  const onSubmit = async (bodyData: TRegister) => {
-    const formData = new FormData();
-
-    formData.append('firstName', bodyData.firstName);
-    formData.append('lastName', bodyData.lastName);
-    formData.append('email', bodyData.email);
-    formData.append('password', bodyData.password);
-    formData.append('confirmPassword', bodyData.confirmPassword);
-    formData.append('phoneNumber', bodyData.phoneNumber);
-    formData.append('otp', bodyData.otp);
-
-    if (profilePicFile) {
-      formData.append('profilePic', profilePicFile);
-    }
-    await verifyOtpAsync(
-      { otpToken, data: formData },
-      {
-        onSuccess: (data) => {
-          if (data.user) {
-            setUser(data.user);
-          }
-          if (bodyData.remember) {
-            saveLocalToken(data?.token);
-          } else {
-            saveSessionToken(data?.token);
-          }
-        },
-      },
-    );
-  };
-
-  const handleResend = async () => {
-    await resendOtpAsync(
-      { otpToken, email },
-      {
-        onError: ({ statusCode }) => {
-          if (statusCode === 410) {
-            onReset?.();
-          }
-        },
-      },
-    );
-  };
-
-  const isPending = isVerifyingOtp || isResendingOtp;
-
-  return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-6 pt-2.5 pb-2">
-      <div className="flex gap-6">
-        <ProfilePicInput
-          className="max-w-24!"
-          src={profilePicURL}
-          error={errors.profilePic?.message}
-          register={register('profilePic')}
-          fileInputProps={{ name: 'profilePic' }}
-        />
-        <div className="flex-1 space-y-6">
-          {REGISTER_INPUT_MAP_DATA?.slice(0, 2).map((input, index) => (
-            <RegisterInput
-              key={index}
-              register={register(input.name)}
-              errors={errors}
-              input={input}
-              isPending={isPending}
-            />
-          ))}
-        </div>
-      </div>
-      <div className="grid grid-cols-1 gap-x-4 gap-y-5 lg:grid-cols-2 lg:gap-y-6">
-        {REGISTER_INPUT_MAP_DATA?.slice(2).map((input, index) => (
-          <div
-            key={index}
-            className={`${
-              !['firstName', 'lastName', ...PASSWORD_KEYS].includes(input.name)
-                ? 'lg:col-span-2'
-                : ''
-            }`}
-          >
-            <RegisterInput
-              register={register(input.name)}
-              errors={errors}
-              input={input}
-              isPending={isPending}
-            />
-          </div>
-        ))}
-      </div>
-      <Resend
-        label="Not received OTP?"
-        count={60}
-        onResend={!isPending ? handleResend : undefined}
-      />
-      <div className="space-y-3">
-        <Checkbox
-          register={register('remember')}
-          checkboxProps={{ name: 'remember' }}
-          rightText="Remember me"
-        />
-        <div className="flex gap-4">
-          <Button
-            pattern="secondary"
-            buttonProps={{ type: 'button', disabled: isPending, onClick: onReset }}
-            content="Go Back"
-          />
-          <Button
-            pattern="primary"
-            buttonProps={{ type: 'submit', disabled: isPending || !isDirty }}
-            content={isPending ? 'Submitting...' : 'Submit'}
-          />
-        </div>
-      </div>
-    </form>
-  );
-};
-
-const Register = () => {
-  const { mutateAsync, isPending, data, reset } = Service.Auth.SendOtp();
-
-  const {
-    watch,
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors, isDirty },
-  } = useForm({
-    resolver: zodResolver(sendOtpSchema),
-    defaultValues: { email: '' },
-  });
-
-  const onSubmit = async (data: Pick<TRegister, 'email'>) => {
-    await mutateAsync(data, {
-      onError: ({ fieldErrors }) => applyServerErrorsToFormFields(setError, fieldErrors),
+  const handleSendOtp = async (data: TEmail) => {
+    await sendOtpAsync(data, {
+      onSuccess: () => setCurrentStep('verify'),
+      onError: ({ fieldErrors }) => setErrorToForm(sendOtpForm.setError, fieldErrors),
     });
   };
-  const email = watch('email');
-  const detailsPage = !!(data?.otpToken && email);
+
+  const handleVerifyOtp = async (data: TOtp) => {
+    await verifyOtpAsync(
+      { ...data, token },
+      {
+        onSuccess: () => setCurrentStep('save'),
+        onError: ({ fieldErrors }) => setErrorToForm(verifyOtpForm.setError, fieldErrors),
+      },
+    );
+  };
+
+  const handleRegisterAndSave = async (data: TRegister) => {
+    await registerAndSaveAsync(
+      { ...data, token },
+      {
+        onSuccess: ({ user }) => setUser(user),
+        onError: ({ fieldErrors }) => setErrorToForm(registerAndSaveForm.setError, fieldErrors),
+      },
+    );
+  };
+
+  const handleResendOtp = async () => {
+    if (sendCount >= 3) {
+      return toaster.error({
+        title: 'Resend Failed',
+        description: 'You have reached the maximum number of attempts.',
+      });
+    }
+
+    if (isSendingOtp || isVerifyingOtp || isResendingOtp) return;
+
+    await resendOtpAsync(token);
+  };
+
+  const handleBack = () => {
+    switch (currentStep) {
+      case 'verify':
+        verifyOtpForm.reset(FORM_DEFAULT_VALUES.otp);
+        setCurrentStep('send');
+        break;
+
+      case 'save':
+        registerAndSaveForm.reset(FORM_DEFAULT_VALUES.register);
+        setCurrentStep('send');
+        break;
+
+      case 'send':
+      default:
+        sendOtpForm.reset(FORM_DEFAULT_VALUES.email);
+        navigate('/');
+        break;
+    }
+  };
+
+  const togglePasswordVisibility = (field: keyof TRegister) => {
+    if (!PASSWORD_KEYS.includes(field)) return;
+
+    setShowPasswords((prev) => ({ ...prev, [field]: !prev[field] }));
+  };
+
+  /* ================= 8. JSX ================= */
 
   return (
     <div className="flex w-full flex-col items-center justify-center gap-4">
+      {/* ================= HEADER ================= */}
       <GradientText
         type="accent"
         text="Register"
         className="mx-auto text-2xl leading-tight font-semibold sm:text-3xl md:text-4xl lg:text-5xl"
       />
-      {!detailsPage && <SocialAuth />}
-      <BorderGradient>
-        {detailsPage ? (
-          <RegisterForm otpToken={data.otpToken} email={email} onReset={reset} />
-        ) : (
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-            <Input
-              inputProps={{
-                name: EMAIL_INPUT_DATA.name,
-                placeholder: EMAIL_INPUT_DATA.placeholder,
-                autoComplete: EMAIL_INPUT_DATA.autoComplete,
-                type: EMAIL_INPUT_DATA.type,
-                disabled: isPending,
-              }}
-              label={EMAIL_INPUT_DATA.label}
-              register={register('email')}
-              error={errors.email?.message}
+
+      {/* ================= SOCIAL AUTH ================= */}
+      <SocialAuth />
+
+      {/* ================= FORM CONTAINER ================= */}
+      <BorderGradient className="flex flex-col gap-5 py-6 lg:gap-6">
+        {/* ================= MAIN FORM ================= */}
+        <form
+          onSubmit={
+            currentStep === 'send'
+              ? sendOtpForm.handleSubmit(handleSendOtp)
+              : currentStep === 'verify'
+                ? verifyOtpForm.handleSubmit(handleVerifyOtp)
+                : registerAndSaveForm.handleSubmit(handleRegisterAndSave)
+          }
+          className="grid grid-cols-1 gap-x-4 gap-y-5 sm:grid-cols-2 sm:gap-y-6"
+        >
+          {/* ================= STEP: SEND / VERIFY ================= */}
+          {(currentStep === 'send' || currentStep === 'verify') && (
+            <>
+              {/* -------- Email Input -------- */}
+              <Input
+                key={EMAIL_INPUT_DATA.name}
+                label={EMAIL_INPUT_DATA.label}
+                inputProps={{
+                  name: EMAIL_INPUT_DATA.name,
+                  type: EMAIL_INPUT_DATA.type,
+                  placeholder: EMAIL_INPUT_DATA.placeholder,
+                  autoComplete: EMAIL_INPUT_DATA.autoComplete,
+                  disabled: isSendingOtp || currentStep === 'verify',
+                  readOnly: currentStep === 'verify',
+                }}
+                register={sendOtpForm.register(EMAIL_INPUT_DATA.name)}
+                error={sendOtpForm.formState.errors[EMAIL_INPUT_DATA.name]?.message}
+                containerClassName="sm:col-span-2"
+              />
+
+              {/* -------- OTP Section (only in verify step) -------- */}
+              {currentStep === 'verify' && (
+                <>
+                  <Input
+                    key={OTP_INPUT_DATA.name}
+                    label={OTP_INPUT_DATA.label}
+                    inputProps={{
+                      name: OTP_INPUT_DATA.name,
+                      type: OTP_INPUT_DATA.type,
+                      placeholder: OTP_INPUT_DATA.placeholder,
+                      autoComplete: OTP_INPUT_DATA.autoComplete,
+                      disabled: isVerifyingOtp || isResendingOtp,
+                    }}
+                    register={verifyOtpForm.register(OTP_INPUT_DATA.name)}
+                    error={verifyOtpForm.formState.errors[OTP_INPUT_DATA.name]?.message}
+                    containerClassName="sm:col-span-2"
+                  />
+
+                  {/* -------- Resend OTP -------- */}
+                  <Resend
+                    className="sm:col-span-2"
+                    label="Not received OTP?"
+                    count={sendCount >= 3 ? 0 : 30}
+                    onResend={handleResendOtp}
+                  />
+                </>
+              )}
+            </>
+          )}
+
+          {/* ================= STEP: REGISTER DETAILS ================= */}
+          {currentStep === 'save' &&
+            REGISTER_INPUT_MAP_DATA.map((input) => {
+              const isPassword = PASSWORD_KEYS.includes(input.name);
+              const isPhone = input.name === 'phoneNumber';
+              return (
+                <Input
+                  key={input.name}
+                  label={input.label}
+                  inputProps={{
+                    name: input.name,
+                    type: isPassword
+                      ? showPasswords[input.name]
+                        ? 'text'
+                        : input.type
+                      : input.type,
+                    placeholder: input.placeholder,
+                    autoComplete: input.autoComplete,
+                    disabled: isRegistering,
+                  }}
+                  icons={
+                    input.name === 'phoneNumber'
+                      ? { left: '+91' }
+                      : PASSWORD_KEYS.includes(input.name)
+                        ? {
+                            right: {
+                              icon: showPasswords[input.name] ? 'lucide:eye-off' : 'lucide:eye',
+                              onClick: () => togglePasswordVisibility(input.name),
+                              className: 'cursor-pointer',
+                            },
+                          }
+                        : undefined
+                  }
+                  register={registerAndSaveForm.register(input.name)}
+                  error={registerAndSaveForm.formState.errors[input.name]?.message}
+                  containerClassName={isPhone ? 'sm:col-span-2' : ''}
+                />
+              );
+            })}
+
+          {/* ================= ACTION BUTTONS ================= */}
+          <div className="flex gap-4 sm:col-span-2">
+            {/* -------- Back / Cancel Button -------- */}
+            <Button
+              pattern="secondary"
+              buttonProps={{ onClick: handleBack }}
+              content={
+                currentStep === 'send'
+                  ? 'Home'
+                  : currentStep === 'verify'
+                    ? 'Change Email'
+                    : 'Cancel'
+              }
             />
+
+            {/* -------- Submit Button -------- */}
             <Button
               pattern="primary"
-              buttonProps={{ type: 'submit', disabled: isPending || !isDirty }}
-              content={isPending ? 'Sending...' : 'Send Otp'}
+              buttonProps={{
+                type: 'submit',
+                disabled:
+                  currentStep === 'send'
+                    ? isSendingOtp
+                    : currentStep === 'verify'
+                      ? isVerifyingOtp || isResendingOtp
+                      : isRegistering,
+              }}
+              content={
+                currentStep === 'send'
+                  ? 'Send OTP'
+                  : currentStep === 'verify'
+                    ? 'Verify OTP'
+                    : 'Register'
+              }
             />
-            <div className="flex items-center justify-center gap-2">
-              <GradientText
-                text="Already have an account?"
-                type="silver"
-                className="text-xs md:text-sm"
-              />
-              <GradientText
-                text="Login"
-                type="accent"
-                path="/auth"
-                className="text-sm hover:font-medium md:text-base"
-              />
-            </div>
-            <AuthBottomInstructions />
-          </form>
-        )}
+          </div>
+        </form>
+
+        {/* ================= FOOTER ================= */}
+        <div className="flex items-center justify-center gap-2">
+          <GradientText
+            text="Already have an account?"
+            type="silver"
+            className="text-xs md:text-sm"
+          />
+          <GradientText
+            text="Login"
+            type="accent"
+            path="/auth"
+            className="text-xs font-semibold md:text-sm"
+          />
+        </div>
+
+        {/* ================= EXTRA INFO ================= */}
+        <AuthBottomInstructions />
       </BorderGradient>
     </div>
   );

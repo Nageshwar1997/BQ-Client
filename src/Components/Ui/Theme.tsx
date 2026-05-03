@@ -1,9 +1,9 @@
-import { MoonIcon, SunIcon } from '@/Icons';
-import { ThemeStore } from '@/Stores';
-import type { TClassName } from '@/Types/Common.type';
+import useThemeStore from '@/stores/theme.store';
+import type { TClassName } from '@/types/component.type';
+import { Icon } from '@iconify/react';
 
-export const Theme = ({ className }: TClassName) => {
-  const { theme, toggleTheme } = ThemeStore();
+const Theme = ({ className = '' }: TClassName) => {
+  const { theme, toggleTheme } = useThemeStore();
 
   return (
     <button
@@ -11,7 +11,13 @@ export const Theme = ({ className }: TClassName) => {
       onClick={toggleTheme}
       className={`[&>svg]:stroke-tertiary cursor-pointer [&>svg]:size-5 md:[&>svg]:size-6 ${className}`}
     >
-      {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+      <Icon
+        icon={theme === 'dark' ? 'solar:sun-2-linear' : 'solar:moon-linear'}
+        className="text-primary [&_path]:stroke-primary size-6"
+        strokeWidth={0.1}
+      />
     </button>
   );
 };
+
+export default Theme;

@@ -1,23 +1,15 @@
 import { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
-import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { Toaster } from 'react-hot-toast';
-import { Routes } from './Routes';
-import { ThemeStore } from './Stores';
-import { VITE_IS_DEV } from './Envs';
-import { ToastContainer } from './Components/Ui/Toaster';
+import router from './router';
+import envs from './envs';
+import ToastContainer from './components/ui/Toaster';
+import useThemeStore from './stores/theme.store';
+import { queryClient } from './configs/queryClient';
 
 function App() {
-  const { theme } = ThemeStore();
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: { refetchOnWindowFocus: false, retry: (failureCount) => failureCount < 3 },
-      mutations: { retry: false },
-    },
-    queryCache: new QueryCache({ onSuccess: () => console.log('Query success') }),
-    mutationCache: new MutationCache({ onSuccess: () => console.log('Mutation success') }),
-  });
+  const theme = useThemeStore((s) => s.theme);
 
   useEffect(() => {
     document.documentElement.setAttribute('theme', theme);
@@ -25,15 +17,14 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Toaster position="top-center" />
       <ToastContainer />
       <div className="bg-primary-invert text-primary h-full max-h-dvh min-h-dvh w-full max-w-dvw min-w-dvw overflow-y-scroll">
         <div className="mx-auto h-full w-full max-w-480">
-          <RouterProvider router={Routes} />
+          <RouterProvider router={router} />
         </div>
       </div>
       {/* React Query Devtools */}
-      {VITE_IS_DEV === 'true' && (
+      {envs.is_dev && (
         <ReactQueryDevtools initialIsOpen={false} position="bottom" buttonPosition="bottom-left" />
       )}
     </QueryClientProvider>

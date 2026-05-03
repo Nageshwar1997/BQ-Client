@@ -1,9 +1,0 @@
-export { MediaModal } from './MediaModal';
-export { ModalWrapper } from './ModalWrapper';
-export { AddressFormModal } from './AddressFormModal';
-export { AddReviewModal } from './AddReviewModal';
-export { ConfirmModal } from './ConfirmModal';
-export { InitialNotCloseConfirmModal } from './InitialNotCloseConfirmModal';
-export { PasswordConfirmationModal } from './PasswordConfirmationModal';
-export { SearchModal } from './SearchModal';
-export { UserPopupModal } from './UserPopupModal';
