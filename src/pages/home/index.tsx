@@ -1,7 +1,7 @@
 import Theme from '@/components/ui/Theme';
 import { Link } from 'react-router-dom';
 
-const Main = () => {
+const Home = () => {
   return (
     <div className="grid gap-6">
       <Theme />
@@ -13,4 +13,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default Home;

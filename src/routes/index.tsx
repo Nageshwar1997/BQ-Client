@@ -19,8 +19,8 @@ const routes: TRouteObject[] = [
       {
         index: true,
         lazy: async () => {
-          const { default: Main } = await import('@/pages/main');
-          return { Component: Main };
+          const { default: Home } = await import('@/pages/home');
+          return { Component: Home };
         },
       },
     ],
