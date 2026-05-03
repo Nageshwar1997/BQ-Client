@@ -1,5 +1,5 @@
 import { authenticate, guestOnly, socialOnly } from '@/middlewares';
-import routes from '@/routes';
+import routes from '@/routess';
 import type { TRouteAccess, TRouteObject } from '@/types/common.type';
 import { createBrowserRouter, type MiddlewareFunction, type RouteObject } from 'react-router-dom';
 
