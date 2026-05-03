@@ -1,7 +1,7 @@
-import Button from '@/components/ui/Button';
-import GradientText from '@/components/ui/GradientText';
-import Input from '@/components/ui/inputs/Input';
-import Radio from '@/components/ui/inputs/Radio';
+import Button from '@/componentss/uis/Button';
+import GradientText from '@/componentss/uis/GradientText';
+import Input from '@/componentss/uis/inputs/Input';
+import Radio from '@/componentss/uis/inputs/Radio';
 import { FORM_DEFAULT_VALUES } from '@/constants/form.constants';
 import { LOGIN_INPUT_MAP_DATA, PASSWORD_KEYS } from '@/constants/input.constant';
 import useQueryParams from '@/hooks/useQueryParams';
@@ -17,7 +17,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import BorderGradient from '../containers/BorderGradient';
+import BorderGradient from '../containerss/BorderGradient';
 
 const LoginForm = () => {
   /* ================= 1. External / Store Hooks ================= */

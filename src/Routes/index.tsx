@@ -1,4 +1,4 @@
-import LoadingScreen from '@/components/layout/loaders/LoadingScreen';
+import LoadingScreen from '@/componentss/layouts/loaderss/LoadingScreen';
 import ErrorBoundary from '@/pages/error/ErrorBoundary';
 import type { TRouteObject } from '@/types/common.type';
 

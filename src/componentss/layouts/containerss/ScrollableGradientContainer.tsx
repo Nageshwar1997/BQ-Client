@@ -1,4 +1,4 @@
-import LinearGradient from '@/components/ui/LinearGradient';
+import LinearGradient from '@/componentss/uis/LinearGradient';
 import useScrollable from '@/hooks/useScrollable';
 import type { IScrollableGradientContainer } from '@/types/component.type';
 import type { TGradientPos } from '@/types/hook.type';

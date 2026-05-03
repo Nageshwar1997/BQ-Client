@@ -1,4 +1,4 @@
-import Button from '@/components/ui/Button';
+import Button from '@/componentss/uis/Button';
 import envs from '@/envs';
 import { isRouteErrorResponse, Link, useRouteError } from 'react-router-dom';
 

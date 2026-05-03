@@ -1,5 +1,5 @@
-import LastRouteTracker from '@/components/LastRouteTracker';
-import AuthModal from '@/components/layout/modals/AuthModal';
+import LastRouteTracker from '@/componentss/LastRouteTracker';
+import AuthModal from '@/componentss/layout/modals/AuthModal';
 import useAutoRetry from '@/hooks/useAutoRetry';
 import { Outlet } from 'react-router-dom';
 import RouteGuard from './RouteGuard';

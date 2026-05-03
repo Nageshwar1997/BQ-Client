@@ -1,5 +1,5 @@
-import ScrollableGradientContainer from '@/components/layout/containers/ScrollableGradientContainer';
-import Theme from '@/components/ui/Theme';
+import ScrollableGradientContainer from '@/componentss/layouts/containerss/ScrollableGradientContainer';
+import Theme from '@/componentss/uis/Theme';
 import { Outlet } from 'react-router-dom';
 
 const Auth = () => {

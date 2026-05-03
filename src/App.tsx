@@ -1,12 +1,12 @@
-import { useEffect } from 'react';
-import { RouterProvider } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import router from './router';
-import envs from './envs';
-import ToastContainer from './components/ui/Toaster';
-import useThemeStore from './stores/theme.store';
+import { useEffect } from 'react';
+import { RouterProvider } from 'react-router-dom';
+import ToastContainer from './componentss/uis/Toaster';
 import { queryClient } from './configs/queryClient';
+import envs from './envs';
+import router from './router';
+import useThemeStore from './stores/theme.store';
 
 function App() {
   const theme = useThemeStore((s) => s.theme);
