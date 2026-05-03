@@ -1,6 +1,6 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
-import type { TGradientPos, TScrollDirection } from './hook.type';
 import type { IconProps } from '@iconify/react';
+import type { ButtonHTMLAttributes, JSX, ReactNode } from 'react';
+import type { TGradientPos, TScrollDirection } from './hook.type';
 
 export type TClassName = { className?: string };
 
@@ -52,3 +52,11 @@ type TEmptyStatus = TBaseStatus & { status: 'empty' };
 type TLoadingStatus = TClassName & { status: 'loading'; text?: string };
 
 export type TApiStatus = TErrorStatus | TEmptyStatus | TLoadingStatus;
+
+export interface IModalWrapper extends TClassName {
+  isOpen: boolean;
+  onClose: () => void;
+  children: JSX.Element;
+  containerProps?: JSX.IntrinsicElements['div'];
+  header?: { title?: string; showCloseIcon?: boolean };
+}
