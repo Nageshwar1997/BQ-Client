@@ -1,6 +1,6 @@
 import type { DOMRouterOpts, RouteObject } from 'react-router-dom';
 
-export type TRouteAccess = 'public' | 'private' | 'guest-only' | 'social-only';
+export type TRouteAccess = 'PUBLIC' | 'PRIVATE' | 'GUEST_ONLY' | 'SOCIAL_ONLY';
 
 export type TRouteObject = Omit<RouteObject, 'children'> & {
   access?: TRouteAccess;

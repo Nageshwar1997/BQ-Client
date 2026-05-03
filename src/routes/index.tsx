@@ -1,10 +1,14 @@
 import LoadingScreen from '@/components/layout/loaders/LoadingScreen';
+import { ACCESS, ROUTES } from '@/constants/common.constants';
 import ErrorBoundary from '@/pages/error/ErrorBoundary';
 import type { TRouteObject } from '@/types/common.type';
 
+const { AUTH, HOME } = ROUTES;
+const { GUEST_ONLY, PRIVATE, SOCIAL_ONLY } = ACCESS;
+
 const routes: TRouteObject[] = [
   {
-    path: '/',
+    path: HOME,
     HydrateFallback: LoadingScreen,
     ErrorBoundary,
     lazy: async () => {
@@ -22,7 +26,7 @@ const routes: TRouteObject[] = [
     ],
   },
   {
-    path: 'auth',
+    path: AUTH.BASE,
     HydrateFallback: LoadingScreen,
     ErrorBoundary: ErrorBoundary,
     lazy: async () => {
@@ -33,39 +37,39 @@ const routes: TRouteObject[] = [
     children: [
       {
         index: true,
-        access: 'guest-only',
+        access: GUEST_ONLY,
         lazy: async () => {
           const { default: Login } = await import('@/pages/auth/Login');
           return { Component: Login };
         },
       },
       {
-        path: 'register',
-        access: 'guest-only',
+        path: AUTH.REGISTER,
+        access: GUEST_ONLY,
         lazy: async () => {
           const { default: Register } = await import('@/pages/auth/Register');
           return { Component: Register };
         },
       },
       {
-        path: 'oauth',
-        access: 'guest-only',
+        path: AUTH.OAUTH,
+        access: GUEST_ONLY,
         lazy: async () => {
           const { default: OAuth } = await import('@/pages/auth/OAuth');
           return { Component: OAuth };
         },
       },
       {
-        path: 'forgot-password',
-        access: 'guest-only',
+        path: AUTH.FORGOT_PASSWORD,
+        access: GUEST_ONLY,
         lazy: async () => {
           const { default: ForgotPassword } = await import('@/pages/auth/ForgotPassword');
           return { Component: ForgotPassword };
         },
       },
       {
-        path: 'change-password',
-        access: 'private',
+        path: AUTH.CHANGE_PASSWORD,
+        access: PRIVATE,
         lazy: async () => {
           const { default: ChangePassword } = await import('@/pages/auth/ChangePassword');
 
@@ -73,8 +77,8 @@ const routes: TRouteObject[] = [
         },
       },
       {
-        path: 'set-password',
-        access: 'social-only',
+        path: AUTH.SET_PASSWORD,
+        access: SOCIAL_ONLY,
         lazy: async () => {
           const { default: SetPassword } = await import('@/pages/auth/SetPassword');
 

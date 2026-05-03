@@ -1,3 +1,5 @@
+import type { TRouteAccess } from '@/types/common.type';
+
 export const LOADING_RINGS_DATA = [
   {
     border: { side: 'borderBottomWidth', color: 'red' },
@@ -72,3 +74,23 @@ export const ROUTE_ACCESS = {
   SOCIAL_ONLY: ['/auth/set-password'],
   GUEST_ONLY: ['/auth', '/auth/register', '/auth/forgot-password', '/auth/oauth'],
 };
+
+export const ROUTES = {
+  HOME: '/',
+  AUTH: {
+    BASE: 'auth',
+    LOGIN: 'login',
+    REGISTER: 'register',
+    FORGOT_PASSWORD: 'forgot-password',
+    CHANGE_PASSWORD: 'change-password',
+    SET_PASSWORD: 'set-password',
+    OAUTH: 'oauth',
+  },
+} as const;
+
+export const ACCESS: Record<TRouteAccess, TRouteAccess> = {
+  PRIVATE: 'PRIVATE',
+  SOCIAL_ONLY: 'SOCIAL_ONLY',
+  GUEST_ONLY: 'GUEST_ONLY',
+  PUBLIC: 'PUBLIC',
+} as const;
