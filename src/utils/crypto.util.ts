@@ -1,4 +1,4 @@
-import envs from '@/envss';
+import envs from '@/envs';
 import CryptoJS from 'crypto-js';
 
 export const encryptData = (data: object | string) => {

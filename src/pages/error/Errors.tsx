@@ -1,5 +1,5 @@
 import Button from '@/components/ui/Button';
-import envs from '@/envss';
+import envs from '@/envs';
 import { isRouteErrorResponse, Link, useRouteError } from 'react-router-dom';
 
 type TError = {

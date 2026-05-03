@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import ToastContainer from './components/ui/Toaster';
 import { queryClient } from './configs/queryClient';
-import envs from './envss';
+import envs from './envs';
 import router from './router';
 import useThemeStore from './stores/theme.store';
 
