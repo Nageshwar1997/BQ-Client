@@ -1,4 +1,4 @@
-import GradientText from '@/componentss/uis/GradientText';
+import GradientText from '@/components/ui/GradientText';
 
 const AuthBottomInstructions = () => {
   return (

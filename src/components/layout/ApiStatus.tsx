@@ -1,8 +1,8 @@
 import type { TApiStatus } from '@/types/component.type';
 import { Icon } from '@iconify/react';
-import Divider from '../uis/Divider';
-import GradientText from '../uis/GradientText';
-import LoadingRings from './loaderss/LoadingRings';
+import Divider from '../ui/Divider';
+import GradientText from '../ui/GradientText';
+import LoadingRings from './loaders/LoadingRings';
 
 const ApiDescription = ({ status, ...props }: TApiStatus) => {
   const title = 'title' in props && props.title;

@@ -1,7 +1,7 @@
 import { BEAUTY_FACTS } from '@/constants/common.constant';
 import type { TClassName } from '@/types/component.type';
 import { useEffect, useMemo, useState } from 'react';
-import Teddy from './teddys';
+import Teddy from './teddy';
 
 const LoadingScreen = ({ className = '' }: TClassName) => {
   const TEXT_CHANGE_INTERVAL = 5000;

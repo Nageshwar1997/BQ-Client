@@ -1,6 +1,6 @@
 import useQueryParams from '@/hooks/useQueryParams';
 import { useCallback, useEffect } from 'react';
-import LoginForm from '../formss/LoginForm';
+import LoginForm from '../forms/LoginForm';
 import { ModalWrapper } from './ModalWrapper';
 
 const AuthModal = () => {

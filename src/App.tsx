@@ -2,7 +2,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
-import ToastContainer from './componentss/uis/Toaster';
+import ToastContainer from './components/ui/Toaster';
 import { queryClient } from './configs/queryClient';
 import envs from './envs';
 import router from './router';

@@ -1,4 +1,4 @@
-import Theme from '@/componentss/uis/Theme';
+import Theme from '@/components/ui/Theme';
 import { Link } from 'react-router-dom';
 
 const Main = () => {

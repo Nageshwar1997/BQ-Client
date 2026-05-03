@@ -1,4 +1,4 @@
-import LastRouteTracker from '@/componentss/LastRouteTracker';
+import LastRouteTracker from '@/components/LastRouteTracker';
 import AuthModal from '@/componentss/layout/modals/AuthModal';
 import useAutoRetry from '@/hooks/useAutoRetry';
 import { Outlet } from 'react-router-dom';

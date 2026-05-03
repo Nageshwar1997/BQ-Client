@@ -1,8 +1,8 @@
-import BorderGradient from '@/componentss/layouts/containerss/BorderGradient';
-import Button from '@/componentss/uis/Button';
-import GradientText from '@/componentss/uis/GradientText';
-import Input from '@/componentss/uis/inputs/Input';
-import Resend from '@/componentss/uis/Resend';
+import BorderGradient from '@/components/layout/containers/BorderGradient';
+import Button from '@/components/ui/Button';
+import GradientText from '@/components/ui/GradientText';
+import Input from '@/components/ui/inputs/Input';
+import Resend from '@/components/ui/Resend';
 import { FORM_DEFAULT_VALUES } from '@/constants/form.constants';
 import {
   EMAIL_INPUT_DATA,

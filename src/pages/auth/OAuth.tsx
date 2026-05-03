@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import ApiStatus from '@/componentss/layouts/ApiStatus';
-import GradientText from '@/componentss/uis/GradientText';
+import ApiStatus from '@/components/layout/ApiStatus';
+import GradientText from '@/components/ui/GradientText';
 import usePathParams from '@/hooks/usePathParams';
 import useQueryParams from '@/hooks/useQueryParams';
 import { useGetSessionUser } from '@/services/user-service/user.service.query';
