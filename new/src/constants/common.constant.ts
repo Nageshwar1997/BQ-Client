@@ -70,5 +70,5 @@ export const USER_KEY = 'user' as const;
 export const ROUTE_ACCESS = {
   PRIVATE: ['/auth/change-password', '/auth/set-password'],
   SOCIAL_ONLY: ['/auth/set-password'],
-  GUEST: ['/auth', '/auth/register', '/auth/forgot-password', '/auth/oauth'],
+  GUEST_ONLY: ['/auth', '/auth/register', '/auth/forgot-password', '/auth/oauth'],
 };

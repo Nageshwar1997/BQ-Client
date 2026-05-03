@@ -12,10 +12,11 @@ const OAuth = () => {
   const { navigate } = usePathParams();
   const { queryParams } = useQueryParams();
   const setUser = useUserStore((s) => s.setUser);
+  const user = useUserStore((s) => s.user);
 
   const { isLoading, isError, data } = useGetSessionUser({ enabled: readyToCall });
   useEffect(() => {
-    if (!Boolean(queryParams.success) && !Boolean(queryParams.error)) {
+    if (!queryParams || (!Boolean(queryParams.success) && !Boolean(queryParams.error))) {
       navigate('/auth');
       return;
     }
@@ -26,6 +27,10 @@ const OAuth = () => {
   }, [queryParams.success, queryParams.error, navigate]);
 
   useEffect(() => {
+    if (user) {
+      navigate('/');
+      return;
+    }
     if (data?.user) {
       setUser(data.user);
     }

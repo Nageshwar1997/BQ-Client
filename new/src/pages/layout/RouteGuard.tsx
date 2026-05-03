@@ -15,7 +15,7 @@ const RouteGuard = () => {
     const nextPath = nextLocation.pathname;
 
     const isPrivate = matchRoute(ROUTE_ACCESS.PRIVATE, nextPath);
-    const isGuest = matchRoute(ROUTE_ACCESS.GUEST, nextPath);
+    const isGuest = matchRoute(ROUTE_ACCESS.GUEST_ONLY, nextPath);
     const isSocialOnly = matchRoute(ROUTE_ACCESS.SOCIAL_ONLY, nextPath);
 
     // 🔒 NOT logged in → block PRIVATE

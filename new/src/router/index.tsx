@@ -1,103 +1,31 @@
-import LoadingScreen from '@/components/layout/loaders/LoadingScreen';
-import ErrorBoundary from '@/pages/error/ErrorBoundary';
-import { createBrowserRouter } from 'react-router-dom';
-import routeAccess from './middlewares';
+import { authenticate, guestOnly, socialOnly } from '@/middlewares';
+import routes from '@/routes';
+import type { TRouteAccess, TRouteObject } from '@/types/common.type';
+import { createBrowserRouter, type MiddlewareFunction, type RouteObject } from 'react-router-dom';
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    HydrateFallback: LoadingScreen,
-    ErrorBoundary,
-    lazy: async () => {
-      const { default: Layout } = await import('@/pages/layout');
-      return { Component: Layout };
-    },
-    children: [
-      {
-        index: true,
-        lazy: async () => {
-          const { default: Main } = await import('@/pages/main');
-          return { Component: Main };
-        },
-      },
-      {
-        path: '/home',
-        lazy: async () => {
-          const { default: Main } = await import('@/pages/main');
-          return { Component: Main };
-        },
-      },
-      {
-        path: 'auth',
-        HydrateFallback: LoadingScreen,
-        ErrorBoundary: ErrorBoundary,
-        lazy: async () => {
-          const { default: Auth } = await import('@/pages/auth');
+const ACCESS_MIDDLEWARE_MAP: Record<TRouteAccess, MiddlewareFunction[]> = {
+  public: [],
+  private: [authenticate],
+  guest: [guestOnly],
+  social: [authenticate, socialOnly],
+};
 
-          return { Component: Auth };
-        },
-        children: [
-          {
-            index: true,
-            middleware: [routeAccess],
-            lazy: async () => {
-              const { default: Login } = await import('@/pages/auth/Login');
-              return { Component: Login };
-            },
-          },
-          {
-            path: 'register',
-            middleware: [routeAccess],
-            lazy: async () => {
-              const { default: Register } = await import('@/pages/auth/Register');
-              return { Component: Register };
-            },
-          },
-          {
-            path: 'oauth',
-            middleware: [routeAccess],
-            lazy: async () => {
-              const { default: OAuth } = await import('@/pages/auth/OAuth');
-              return { Component: OAuth };
-            },
-          },
-          {
-            path: 'forgot-password',
-            middleware: [routeAccess],
-            lazy: async () => {
-              const { default: ForgotPassword } = await import('@/pages/auth/ForgotPassword');
-              return { Component: ForgotPassword };
-            },
-          },
-          {
-            path: 'change-password',
-            middleware: [routeAccess],
-            lazy: async () => {
-              const { default: ChangePassword } = await import('@/pages/auth/ChangePassword');
+const applyMiddleware = (routes: TRouteObject[]): RouteObject[] => {
+  return routes.map((route) => {
+    const { access = 'public', children, index, ...rest } = route;
 
-              return { Component: ChangePassword };
-            },
-          },
-          {
-            path: 'set-password',
-            middleware: [routeAccess],
-            lazy: async () => {
-              const { default: SetPassword } = await import('@/pages/auth/SetPassword');
+    const middleware = ACCESS_MIDDLEWARE_MAP[access];
 
-              return { Component: SetPassword };
-            },
-          },
-        ],
-      },
-    ],
-  },
-  {
-    path: '*',
-    lazy: async () => {
-      const { default: NotFound } = await import('@/pages/error/NotFound');
-      return { Component: NotFound };
-    },
-  },
-]);
+    // 🔥 INDEX ROUTE
+    if (index) {
+      return { ...rest, index: true, middleware };
+    }
+
+    // 🔥 NORMAL ROUTE
+    return { ...rest, middleware, children: children ? applyMiddleware(children) : undefined };
+  });
+};
+
+const router = createBrowserRouter(applyMiddleware(routes));
 
 export default router;
