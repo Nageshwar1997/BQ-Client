@@ -1,4 +1,4 @@
-import envs from '@/envs';
+import envs from '@/envss';
 
 const METHODS = {
   GET: 'GET',
