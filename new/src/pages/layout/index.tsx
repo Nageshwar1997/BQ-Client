@@ -1,12 +1,12 @@
 import AuthModal from '@/components/layout/modals/AuthModal';
 import { Outlet } from 'react-router-dom';
-import GlobalAuthHandler from '../auth/components/GlobalAuthHandler';
+import RouteGuard from './RouteGuard';
 
 const Layout = () => {
   return (
     <>
       <AuthModal />
-      <GlobalAuthHandler />
+      <RouteGuard />
       <Outlet />
     </>
   );

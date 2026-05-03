@@ -1,32 +1,35 @@
 import usePathParams from '@/hooks/usePathParams';
 import useUserStore from '@/stores/user.store';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useBlocker } from 'react-router-dom';
 
 const PROTECTED_ROUTES = ['/auth/change-password', '/auth/set-password'];
 const GUEST_ONLY_ROUTES = ['/auth', '/auth/register', '/auth/forgot-password', '/auth/oauth'];
 
-const GlobalRouteGuard = () => {
+const RouteGuard = () => {
   const { location, navigate } = usePathParams();
   const user = useUserStore((s) => s.user);
+
+  // 🔥 previous path memory
+  const prevPathRef = useRef<string | null>(null);
+
+  // ✅ track last non-auth route
+  useEffect(() => {
+    if (!location.pathname.startsWith('/auth')) {
+      prevPathRef.current = location.pathname + location.search + location.hash;
+    }
+  }, [location]);
 
   const blocker = useBlocker(({ nextLocation }) => {
     const nextPath = nextLocation.pathname;
 
-    // 🔒 block protected routes if NOT logged in
     if (!user) {
       return PROTECTED_ROUTES.some((route) => nextPath.startsWith(route));
     }
 
-    // 🚫 block guest-only routes if logged in
     if (user) {
       return GUEST_ONLY_ROUTES.some((route) => {
-        // 🔥 exact match for /auth
-        if (route === '/auth') {
-          return nextPath === '/auth';
-        }
-
-        // 🔥 normal match for others
+        if (route === '/auth') return nextPath === '/auth';
         return nextPath === route || nextPath.startsWith(route + '/');
       });
     }
@@ -35,10 +38,12 @@ const GlobalRouteGuard = () => {
   });
 
   useEffect(() => {
+    if (blocker.state !== 'blocked') return;
+
     if (blocker.state === 'blocked') {
       const currentParams = new URLSearchParams(location.search);
 
-      // 🔒 case: user NOT logged in → open login modal
+      // 🔒 NOT logged in → open login modal
       if (!user) {
         if (!currentParams.has('login')) {
           currentParams.set('login', 'true');
@@ -50,11 +55,12 @@ const GlobalRouteGuard = () => {
         }
       }
 
-      // 🚫 case: user already logged in → redirect to home or last page
+      // 🚫 already logged in → go back to previous path
       if (user) {
-        navigate('/', { replace: true }); // ya lastPath use kar sakte ho
+        navigate(prevPathRef.current || '/', { replace: true });
       }
 
+      // 🔥 MUST: cancel navigation
       blocker.reset();
     }
   }, [blocker, navigate, location, user]);
@@ -62,4 +68,4 @@ const GlobalRouteGuard = () => {
   return null;
 };
 
-export default GlobalRouteGuard;
+export default RouteGuard;
