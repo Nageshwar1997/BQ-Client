@@ -1,35 +1,34 @@
 import usePathParams from '@/hooks/usePathParams';
 import useQueryParams from '@/hooks/useQueryParams';
 import useUserStore from '@/stores/user.store';
-import { useEffect, useRef } from 'react';
+import { getLastRoute } from '@/utils/common.util';
+import { useEffect } from 'react';
 import { useBlocker } from 'react-router-dom';
 
 const PROTECTED_ROUTES = ['/auth/change-password', '/auth/set-password'];
 const GUEST_ONLY_ROUTES = ['/auth', '/auth/register', '/auth/forgot-password', '/auth/oauth'];
 
 const RouteGuard = () => {
-  const { location, navigate } = usePathParams();
+  const { navigate } = usePathParams();
   const { queryParams, setParams } = useQueryParams();
   const user = useUserStore((s) => s.user);
-
-  // 🔥 previous path memory
-  const prevPathRef = useRef<string | null>(null);
-
-  // ✅ track last non-auth route
-  useEffect(() => {
-    if (!location.pathname.startsWith('/auth')) {
-      prevPathRef.current = location.pathname + location.search + location.hash;
-    }
-  }, [location]);
 
   const blocker = useBlocker(({ nextLocation }) => {
     const nextPath = nextLocation.pathname;
 
+    // 🔒 NOT logged in → block protected routes
     if (!user) {
       return PROTECTED_ROUTES.some((route) => nextPath.startsWith(route));
     }
 
+    // 🚫 Logged in cases
     if (user) {
+      // ❌ MANUAL users cannot access set-password
+      if (nextPath.startsWith('/auth/set-password') && user.providers.includes('MANUAL')) {
+        return true;
+      }
+
+      // ❌ block guest-only routes
       return GUEST_ONLY_ROUTES.some((route) => {
         if (route === '/auth') return nextPath === '/auth';
         return nextPath === route || nextPath.startsWith(route + '/');
@@ -48,15 +47,16 @@ const RouteGuard = () => {
         setParams({ login: 'true' });
       }
 
-      blocker.reset(); // 🔥 must
+      blocker.reset();
       return;
     }
 
-    // 🚫 already logged in → go back
-    navigate(prevPathRef.current || '/', { replace: true });
+    // 🚫 logged in → redirect to last route
+    navigate(getLastRoute(), { replace: true });
 
-    blocker.reset(); // 🔥 must
-  }, [blocker, navigate, user, queryParams.login, setParams]);
+    blocker.reset();
+  }, [blocker, user, queryParams.login, setParams, navigate]);
+
   return null;
 };
 

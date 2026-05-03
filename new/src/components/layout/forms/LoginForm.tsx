@@ -4,10 +4,12 @@ import Input from '@/components/ui/inputs/Input';
 import Radio from '@/components/ui/inputs/Radio';
 import { FORM_DEFAULT_VALUES } from '@/constants/form.constants';
 import { LOGIN_INPUT_MAP_DATA, PASSWORD_KEYS } from '@/constants/input.constant';
+import useQueryParams from '@/hooks/useQueryParams';
 import AuthBottomInstructions from '@/pages/auth/components/AuthBottomInstructions';
 import SocialAuth from '@/pages/auth/components/SocialAuth';
 import { loginSchema } from '@/schemas/user.schema';
 import { useManualLogin } from '@/services/user-service/auth.service.query';
+import useActionsStore from '@/stores/action.store';
 import useUserStore from '@/stores/user.store';
 import type { TLogin } from '@/types/schema.type';
 import { setErrorToForm } from '@/utils/form.util';
@@ -20,6 +22,7 @@ import BorderGradient from '../containers/BorderGradient';
 const LoginForm = () => {
   /* ================= 1. External / Store Hooks ================= */
   const setUser = useUserStore((s) => s.setUser);
+  const { queryParams, removeParams } = useQueryParams();
 
   /* ================= 2. API / Query Hooks ================= */
   const { isPending, mutateAsync } = useManualLogin();
@@ -47,7 +50,15 @@ const LoginForm = () => {
   // -------- Handle Login Submit --------
   const handleManualLogin = async (data: TLogin) => {
     await mutateAsync(data, {
-      onSuccess: ({ user }) => setUser(user),
+      onSuccess: async ({ user }) => {
+        setUser(user);
+
+        const { runAllActions } = useActionsStore.getState();
+        await runAllActions();
+
+        if (queryParams.login) removeParams('login');
+      },
+
       onError: ({ fieldErrors }) => setErrorToForm(setError, fieldErrors),
     });
   };

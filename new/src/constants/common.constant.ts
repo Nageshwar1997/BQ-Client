@@ -63,3 +63,6 @@ export const BEAUTY_FACTS = [
   `The term <span class=gradient-text-accent>"blue beauty"</span> refers to eco-conscious products designed to protect ocean ecosystems.`,
   `<span class=gradient-text-accent>Glass packaging</span> is being used more in luxury beauty to reduce plastic waste and enhance sustainability.`,
 ];
+
+export const LAST_ROUTE_KEY = 'lastRoute';
+export const USER_KEY = 'user';

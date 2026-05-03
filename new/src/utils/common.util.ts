@@ -1,7 +1,8 @@
-import type { IButton } from '@/types/component.type';
-import { decryptData, encryptData } from './crypto.util';
+import { LAST_ROUTE_KEY } from '@/constants/common.constant';
 import useToastStore from '@/stores/toast.store';
+import type { IButton } from '@/types/component.type';
 import type { ICustomToast, IDefaultToast, ILoadingToast } from '@/types/store.type';
+import { decryptData, encryptData } from './crypto.util';
 
 export const getButtonCss = (pattern: IButton['pattern']) => {
   switch (pattern) {
@@ -84,13 +85,6 @@ export const toaster = {
   remove: (toastId: string) => removeToast(toastId),
 };
 
-export const getSafeNonAuthPath = (path: string | null) => {
-  if (!path || !path.startsWith('/')) return null;
-
-  const { origin, pathname, search = '', hash = '' } = new URL(path, window.location.origin);
-
-  if (origin !== window.location.origin || pathname === '/auth' || pathname.startsWith('/auth/'))
-    return null;
-
-  return `${pathname}${search}${hash}`;
+export const getLastRoute = () => {
+  return sessionStorage.getItem(LAST_ROUTE_KEY) || '/';
 };
