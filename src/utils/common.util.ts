@@ -1,8 +1,8 @@
 import { LAST_ROUTE_KEY } from '@/constants/common.constants';
-import useToastStore from '@/storess/toast.store';
-import type { IButton } from '@/typess/component.type';
-import type { ICustomToast, IDefaultToast, ILoadingToast } from '@/typess/store.type';
-import { decryptData, encryptData } from './crypto.utilss';
+import useToastStore from '@/stores/toast.store';
+import type { IButton } from '@/types/component.type';
+import type { ICustomToast, IDefaultToast, ILoadingToast } from '@/types/store.type';
+import { decryptData, encryptData } from './crypto.util';
 
 export const getButtonCss = (pattern: IButton['pattern']) => {
   switch (pattern) {

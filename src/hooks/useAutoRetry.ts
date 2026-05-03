@@ -1,4 +1,4 @@
-import useActionsStore from '@/storess/action.store';
+import useActionsStore from '@/stores/action.store';
 import { useEffect } from 'react';
 
 const useAutoRetry = () => {

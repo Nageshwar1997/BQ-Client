@@ -1,4 +1,4 @@
-import type { IResend } from '@/typess/component.type';
+import type { IResend } from '@/types/component.type';
 import { useEffect, useState } from 'react';
 import GradientText from './GradientText';
 

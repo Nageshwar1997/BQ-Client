@@ -9,10 +9,10 @@ import AuthBottomInstructions from '@/pages/auth/components/AuthBottomInstructio
 import SocialAuth from '@/pages/auth/components/SocialAuth';
 import { loginSchema } from '@/schemas/user.schema';
 import { useManualLogin } from '@/services/user-service/auth.service.query';
-import useActionsStore from '@/storess/action.store';
-import useUserStore from '@/storess/user.store';
-import type { TLogin } from '@/typess/schema.type';
-import { setErrorToForm } from '@/utilss/form.util';
+import useActionsStore from '@/stores/action.store';
+import useUserStore from '@/stores/user.store';
+import type { TLogin } from '@/types/schema.type';
+import { setErrorToForm } from '@/utils/form.util';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';

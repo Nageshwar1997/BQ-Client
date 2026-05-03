@@ -7,7 +7,7 @@ import type {
   TPasswords,
   TRegister,
   TSetPassword,
-} from '@/typess/schema.type';
+} from '@/types/schema.type';
 import { ApiRequest } from '../ApiRequest';
 
 export class AuthApi extends ApiRequest {

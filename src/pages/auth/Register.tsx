@@ -18,10 +18,10 @@ import {
   useRegisterSendOtp,
   useRegisterVerifyOtp,
 } from '@/services/user-service/auth.service.query';
-import useUserStore from '@/storess/user.store';
-import type { TEmail, TOtp, TRegister } from '@/typess/schema.type';
-import { toaster } from '@/utilss/common.util';
-import { setErrorToForm } from '@/utilss/form.util';
+import useUserStore from '@/stores/user.store';
+import type { TEmail, TOtp, TRegister } from '@/types/schema.type';
+import { toaster } from '@/utils/common.util';
+import { setErrorToForm } from '@/utils/form.util';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';

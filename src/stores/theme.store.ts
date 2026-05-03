@@ -1,4 +1,4 @@
-import type { TTheme, TThemeStore } from '@/typess/store.type';
+import type { TTheme, TThemeStore } from '@/types/store.type';
 import { create } from 'zustand';
 
 const useThemeStore = create<TThemeStore>((set) => {

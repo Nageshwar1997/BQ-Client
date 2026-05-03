@@ -1,4 +1,4 @@
-import type { TScrollDirection } from '@/typess/hook.type';
+import type { TScrollDirection } from '@/types/hook.type';
 import { useEffect, useRef, useState } from 'react';
 
 type THorizontal = { left: boolean; right: boolean };

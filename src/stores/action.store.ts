@@ -1,4 +1,4 @@
-import type { ActionItem, TActionsStore } from '@/typess/store.type';
+import type { ActionItem, TActionsStore } from '@/types/store.type';
 import { create } from 'zustand';
 
 const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));

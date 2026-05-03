@@ -1,4 +1,4 @@
-import type { TFieldErrors } from '@/typess/api.type';
+import type { TFieldErrors } from '@/types/api.type';
 
 class ApiError extends Error {
   fieldErrors?: TFieldErrors;

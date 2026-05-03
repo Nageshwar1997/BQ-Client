@@ -5,7 +5,7 @@ import {
   PASSWORD_OPTIONS,
   PHONE_OPTIONS,
 } from '@/constants/zod.constantss';
-import { appendCustomIssue, validateEnum, validateString } from '@/utilss/zod.util';
+import { appendCustomIssue, validateEnum, validateString } from '@/utils/zod.util';
 import { object, type RefinementCtx } from 'zod';
 
 const passwordMatchValidation = (

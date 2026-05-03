@@ -5,7 +5,7 @@ import type {
   IZodEnumsConfigs,
   IZodNumberConfigs,
   IZodStringConfigs,
-} from '@/typess/zod.type';
+} from '@/types/zod.type';
 import {
   array,
   date,

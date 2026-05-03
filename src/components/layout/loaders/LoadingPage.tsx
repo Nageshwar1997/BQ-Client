@@ -1,4 +1,4 @@
-import type { ILoading } from '@/typess/component.type';
+import type { ILoading } from '@/types/component.type';
 import LoadingRings from './LoadingRings';
 
 const LoadingPage = ({ text, className = '' }: ILoading) => {

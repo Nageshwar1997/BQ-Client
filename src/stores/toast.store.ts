@@ -1,4 +1,4 @@
-import type { IToastStore } from '@/typess/store.type';
+import type { IToastStore } from '@/types/store.type';
 import { nanoid } from 'nanoid';
 import { create } from 'zustand';
 

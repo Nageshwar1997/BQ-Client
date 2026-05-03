@@ -1,5 +1,5 @@
 import GradientText from '@/components/ui/GradientText';
-import type { IModalWrapper } from '@/typess/component.type';
+import type { IModalWrapper } from '@/types/component.type';
 import { Icon } from '@iconify/react';
 import { useEffect } from 'react';
 import ScrollableGradientContainer from '../containers/ScrollableGradientContainer';

@@ -1,5 +1,5 @@
-import useThemeStore from '@/storess/theme.store';
-import type { TClassName } from '@/typess/component.type';
+import useThemeStore from '@/stores/theme.store';
+import type { TClassName } from '@/types/component.type';
 import { Icon } from '@iconify/react';
 
 const Theme = ({ className = '' }: TClassName) => {

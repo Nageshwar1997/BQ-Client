@@ -1,5 +1,5 @@
-import useActionsStore from '@/storess/action.store';
-import useUserStore from '@/storess/user.store';
+import useActionsStore from '@/stores/action.store';
+import useUserStore from '@/stores/user.store';
 import useQueryParams from './useQueryParams';
 
 export const useAuthAction = () => {

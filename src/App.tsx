@@ -6,7 +6,7 @@ import ToastContainer from './components/ui/Toaster';
 import { queryClient } from './configs/queryClient';
 import envs from './envss';
 import router from './router';
-import useThemeStore from './storess/theme.store';
+import useThemeStore from './stores/theme.store';
 
 function App() {
   const theme = useThemeStore((s) => s.theme);
