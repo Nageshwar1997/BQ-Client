@@ -33,6 +33,7 @@ const routes: TRouteObject[] = [
     children: [
       {
         index: true,
+        access: 'guest-only',
         lazy: async () => {
           const { default: Login } = await import('@/pages/auth/Login');
           return { Component: Login };
@@ -40,6 +41,7 @@ const routes: TRouteObject[] = [
       },
       {
         path: 'register',
+        access: 'guest-only',
         lazy: async () => {
           const { default: Register } = await import('@/pages/auth/Register');
           return { Component: Register };
@@ -47,6 +49,7 @@ const routes: TRouteObject[] = [
       },
       {
         path: 'oauth',
+        access: 'guest-only',
         lazy: async () => {
           const { default: OAuth } = await import('@/pages/auth/OAuth');
           return { Component: OAuth };
@@ -54,6 +57,7 @@ const routes: TRouteObject[] = [
       },
       {
         path: 'forgot-password',
+        access: 'guest-only',
         lazy: async () => {
           const { default: ForgotPassword } = await import('@/pages/auth/ForgotPassword');
           return { Component: ForgotPassword };
@@ -61,6 +65,7 @@ const routes: TRouteObject[] = [
       },
       {
         path: 'change-password',
+        access: 'private',
         lazy: async () => {
           const { default: ChangePassword } = await import('@/pages/auth/ChangePassword');
 
@@ -69,6 +74,7 @@ const routes: TRouteObject[] = [
       },
       {
         path: 'set-password',
+        access: 'social-only',
         lazy: async () => {
           const { default: SetPassword } = await import('@/pages/auth/SetPassword');
 
