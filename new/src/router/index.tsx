@@ -20,6 +20,13 @@ const router = createBrowserRouter([
         },
       },
       {
+        path: '/home',
+        lazy: async () => {
+          const { default: Main } = await import('@/pages/main');
+          return { Component: Main };
+        },
+      },
+      {
         path: 'auth',
         HydrateFallback: LoadingScreen,
         ErrorBoundary: ErrorBoundary,
