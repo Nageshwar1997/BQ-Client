@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
-import type { IButton, TClassName } from './component.type';
 import type { IUser } from './api.type';
+import type { IButton, TClassName } from './component.type';
 
 interface IBaseToast extends TClassName {
   icon?: ReactNode;
@@ -57,4 +57,13 @@ export type TUserStore = {
   user: IUser | null;
   authenticated: boolean;
   setUser: (user: IUser | null) => void;
+};
+
+type ActionFn = () => void | Promise<void>;
+
+export type TActionsStore = {
+  actions: ActionFn[];
+  addAction: (action: ActionFn) => void;
+  runNextAction: () => Promise<void>;
+  runAllActions: () => Promise<void>;
 };
