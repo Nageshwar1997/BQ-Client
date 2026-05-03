@@ -1,4 +1,4 @@
-import type { TApiStatus } from '@/types/component.type';
+import type { TApiStatus } from '@/typess/component.type';
 import { Icon } from '@iconify/react';
 import Divider from '../ui/Divider';
 import GradientText from '../ui/GradientText';

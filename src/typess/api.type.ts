@@ -1,4 +1,4 @@
-import type { AUTH_PROVIDERS, ROLES } from '@/constants/api.constant';
+import type { AUTH_PROVIDERS, ROLES } from '@/constants/api.constants';
 import type { TRegister } from './schema.type';
 
 export type TFieldErrors = Record<string, string[]>;

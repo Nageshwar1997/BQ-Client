@@ -1,6 +1,6 @@
-import { create } from 'zustand';
+import type { IToastStore } from '@/typess/store.type';
 import { nanoid } from 'nanoid';
-import type { IToastStore } from '@/types/store.type';
+import { create } from 'zustand';
 
 const useToastStore = create<IToastStore>((set) => ({
   toasts: [],

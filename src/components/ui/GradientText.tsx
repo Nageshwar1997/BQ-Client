@@ -1,4 +1,4 @@
-import type { IGradientText } from '@/types/component.type';
+import type { IGradientText } from '@/typess/component.type';
 import { Link } from 'react-router-dom';
 
 const Text = ({ text, type, className, children }: IGradientText) => (

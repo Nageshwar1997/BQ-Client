@@ -1,4 +1,4 @@
-import { API_BASE_URLS, API_METHODS_AND_URLS } from '@/constants/api.constant';
+import { API_BASE_URLS, API_METHODS_AND_URLS } from '@/constants/api.constants';
 import axios, { AxiosError, type AxiosInstance, type AxiosRequestConfig } from 'axios';
 import ApiError from './ApiError';
 

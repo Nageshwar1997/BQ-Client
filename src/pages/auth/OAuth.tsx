@@ -5,7 +5,7 @@ import GradientText from '@/components/ui/GradientText';
 import usePathParams from '@/hooks/usePathParams';
 import useQueryParams from '@/hooks/useQueryParams';
 import { useGetSessionUser } from '@/services/user-service/user.service.query';
-import useUserStore from '@/stores/user.store';
+import useUserStore from '@/storess/user.store';
 
 const OAuth = () => {
   const [readyToCall, setReadyToCall] = useState(false);

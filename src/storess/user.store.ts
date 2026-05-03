@@ -1,6 +1,6 @@
-import { USER_KEY } from '@/constants/common.constant';
-import type { IUser } from '@/types/api.type';
-import type { TUserStore } from '@/types/store.type';
+import { USER_KEY } from '@/constants/common.constants';
+import type { IUser } from '@/typess/api.type';
+import type { TUserStore } from '@/typess/store.type';
 import { decryptData, encryptData } from '@/utils/crypto.util';
 import { create } from 'zustand';
 

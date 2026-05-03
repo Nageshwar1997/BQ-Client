@@ -1,7 +1,7 @@
-import type { TClassName } from '@/types/component.type';
+import type { TClassName } from '@/typess/component.type';
 
 const Divider = ({ className = '' }: TClassName) => (
-  <hr className={`w-full bg-hr-line block h-px border-none ${className}`} />
+  <hr className={`bg-hr-line block h-px w-full border-none ${className}`} />
 );
 
 export default Divider;

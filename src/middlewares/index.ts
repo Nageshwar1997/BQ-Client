@@ -1,7 +1,7 @@
-import { ROUTE_ACCESS } from "@/constants/common.constant";
-import useUserStore from "@/stores/user.store";
-import { getLastRoute, matchRoute } from "@/utils/common.util";
-import { redirect, type MiddlewareFunction } from "react-router-dom";
+import { ROUTE_ACCESS } from '@/constants/common.constants';
+import useUserStore from '@/storess/user.store';
+import { getLastRoute, matchRoute } from '@/utilss/common.util';
+import { redirect, type MiddlewareFunction } from 'react-router-dom';
 
 export const authenticate: MiddlewareFunction = ({ request }, next) => {
   const { user } = useUserStore.getState();

@@ -1,5 +1,5 @@
+import { API_METHODS_AND_URLS } from '@/constants/api.constants';
 import { ApiRequest } from '../ApiRequest';
-import { API_METHODS_AND_URLS } from '@/constants/api.constant';
 
 export class UserApi extends ApiRequest {
   private routes = API_METHODS_AND_URLS.gateway.user_service.user;

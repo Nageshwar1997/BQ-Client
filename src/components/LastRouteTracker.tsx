@@ -1,4 +1,4 @@
-import { LAST_ROUTE_KEY } from '@/constants/common.constant';
+import { LAST_ROUTE_KEY } from '@/constants/common.constants';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 

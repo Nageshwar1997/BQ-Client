@@ -1,6 +1,6 @@
 import LoadingScreen from '@/components/layout/loaders/LoadingScreen';
 import ErrorBoundary from '@/pages/error/ErrorBoundary';
-import type { TRouteObject } from '@/types/common.type';
+import type { TRouteObject } from '@/typess/common.type';
 
 const routes: TRouteObject[] = [
   {

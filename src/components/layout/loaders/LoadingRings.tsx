@@ -1,5 +1,5 @@
-import { LOADING_RINGS_DATA } from '@/constants/common.constant';
-import type { ILoading } from '@/types/component.type';
+import { LOADING_RINGS_DATA } from '@/constants/common.constants';
+import type { ILoading } from '@/typess/component.type';
 
 const LoadingRings = ({ className = '', text = 'Loading....' }: ILoading) => {
   return (

@@ -1,4 +1,4 @@
-import type { TParams } from '@/types/hook.type';
+import type { TParams } from '@/typess/hook.type';
 import usePathParams from './usePathParams';
 
 const useQueryParams = () => {

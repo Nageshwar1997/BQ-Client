@@ -1,5 +1,5 @@
-import type { TClassName } from '@/types/component.type';
-import type { IInput } from '@/types/input.type';
+import type { TClassName } from '@/typess/component.type';
+import type { IInput } from '@/typess/input.type';
 import { Icon } from '@iconify/react';
 import type { LabelHTMLAttributes } from 'react';
 

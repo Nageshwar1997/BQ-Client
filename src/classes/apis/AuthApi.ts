@@ -1,4 +1,4 @@
-import { API_METHODS_AND_URLS } from '@/constants/api.constant';
+import { API_METHODS_AND_URLS } from '@/constants/api.constants';
 import type {
   TChangePassword,
   TEmail,
@@ -7,7 +7,7 @@ import type {
   TPasswords,
   TRegister,
   TSetPassword,
-} from '@/types/schema.type';
+} from '@/typess/schema.type';
 import { ApiRequest } from '../ApiRequest';
 
 export class AuthApi extends ApiRequest {

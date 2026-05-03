@@ -1,23 +1,23 @@
-import { REGEX } from '@/constants/regex.constant';
+import { REGEX } from '@/constants/regex.constants';
 import type {
   IZodArrayConfigs,
   IZodDateConfigs,
   IZodEnumsConfigs,
   IZodNumberConfigs,
   IZodStringConfigs,
-} from '@/types/zod.type';
+} from '@/typess/zod.type';
 import {
-  enum as z_enum,
+  array,
+  date,
   number,
   string,
+  union,
+  enum as z_enum,
+  ZodArray,
   ZodNumber,
   ZodString,
-  type RefinementCtx,
-  date,
   ZodType,
-  union,
-  ZodArray,
-  array,
+  type RefinementCtx,
 } from 'zod';
 
 export const appendCustomIssue = (

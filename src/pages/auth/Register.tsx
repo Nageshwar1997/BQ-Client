@@ -3,13 +3,13 @@ import Button from '@/components/ui/Button';
 import GradientText from '@/components/ui/GradientText';
 import Input from '@/components/ui/inputs/Input';
 import Resend from '@/components/ui/Resend';
-import { FORM_DEFAULT_VALUES } from '@/constants/form.constants';
+import { FORM_DEFAULT_VALUES } from '@/constants/form.constantss';
 import {
   EMAIL_INPUT_DATA,
   OTP_INPUT_DATA,
   PASSWORD_KEYS,
   REGISTER_INPUT_MAP_DATA,
-} from '@/constants/input.constant';
+} from '@/constants/input.constants';
 import usePathParams from '@/hooks/usePathParams';
 import { emailSchema, otpSchema, registerSchema } from '@/schemas/user.schema';
 import {
@@ -18,10 +18,10 @@ import {
   useRegisterSendOtp,
   useRegisterVerifyOtp,
 } from '@/services/user-service/auth.service.query';
-import useUserStore from '@/stores/user.store';
-import type { TEmail, TOtp, TRegister } from '@/types/schema.type';
-import { toaster } from '@/utils/common.util';
-import { setErrorToForm } from '@/utils/form.util';
+import useUserStore from '@/storess/user.store';
+import type { TEmail, TOtp, TRegister } from '@/typess/schema.type';
+import { toaster } from '@/utilss/common.util';
+import { setErrorToForm } from '@/utilss/form.util';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';

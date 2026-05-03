@@ -1,4 +1,4 @@
-import type { TFieldErrors } from '@/types/api.type';
+import type { TFieldErrors } from '@/typess/api.type';
 import type { FieldValues, Path, UseFormSetError } from 'react-hook-form';
 
 export const setErrorToForm = <T extends FieldValues>(

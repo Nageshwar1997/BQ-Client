@@ -1,4 +1,4 @@
-import envs from '@/envs';
+import envs from '@/envss';
 import { Link } from 'react-router-dom';
 
 const SocialAuth = () => {

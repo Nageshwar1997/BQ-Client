@@ -1,5 +1,5 @@
-import { BEAUTY_FACTS } from '@/constants/common.constant';
-import type { TClassName } from '@/types/component.type';
+import { BEAUTY_FACTS } from '@/constants/common.constants';
+import type { TClassName } from '@/typess/component.type';
 import { useEffect, useMemo, useState } from 'react';
 import Teddy from './teddy';
 

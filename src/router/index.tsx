@@ -1,6 +1,6 @@
 import { authenticate, guestOnly, socialOnly } from '@/middlewares';
 import routes from '@/routes';
-import type { TRouteAccess, TRouteObject } from '@/types/common.type';
+import type { TRouteAccess, TRouteObject } from '@/typess/common.type';
 import { createBrowserRouter, type MiddlewareFunction, type RouteObject } from 'react-router-dom';
 
 const ACCESS_MIDDLEWARE_MAP: Record<TRouteAccess, MiddlewareFunction[]> = {

@@ -1,7 +1,7 @@
 import { authApi } from '@/classes/apis';
-import { GATEWAY_USER_SERVICE_QUERY_KEYS } from '@/constants/api.constant';
-import { handleApiErrorToaster, handleApiSuccessToaster } from '@/utils/api.util';
-import { toaster } from '@/utils/common.util';
+import { GATEWAY_USER_SERVICE_QUERY_KEYS } from '@/constants/api.constants';
+import { handleApiErrorToaster, handleApiSuccessToaster } from '@/utilss/api.util';
+import { toaster } from '@/utilss/common.util';
 import { useMutation } from '@tanstack/react-query';
 
 const QUERY_KEY = GATEWAY_USER_SERVICE_QUERY_KEYS.auth;

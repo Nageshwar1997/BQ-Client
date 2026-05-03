@@ -1,4 +1,4 @@
-import type { IRadio } from '@/types/input.type';
+import type { IRadio } from '@/typess/input.type';
 import { InputError } from './children';
 
 const Radio = ({ value, onChange, options, className = '', error }: IRadio) => {

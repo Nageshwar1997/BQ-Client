@@ -4,9 +4,9 @@ import { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import ToastContainer from './components/ui/Toaster';
 import { queryClient } from './configs/queryClient';
-import envs from './envs';
+import envs from './envss';
 import router from './router';
-import useThemeStore from './stores/theme.store';
+import useThemeStore from './storess/theme.store';
 
 function App() {
   const theme = useThemeStore((s) => s.theme);

@@ -1,5 +1,5 @@
-import type { IZodStringConfigs } from '@/types/zod.type';
-import { REGEX } from './regex.constant';
+import type { IZodStringConfigs } from '@/typess/zod.type';
+import { REGEX } from './regex.constants';
 
 export const EMAIL_OPTIONS: IZodStringConfigs = {
   allowSpace: 'noSpace',

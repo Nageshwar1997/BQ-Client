@@ -1,6 +1,6 @@
-import useToastStore from '@/stores/toast.store';
-import type { TClassName } from '@/types/component.type';
-import type { TToast, TToastItem } from '@/types/store.type';
+import useToastStore from '@/storess/toast.store';
+import type { TClassName } from '@/typess/component.type';
+import type { TToast, TToastItem } from '@/typess/store.type';
 import { Icon } from '@iconify/react';
 import { useEffect, useRef, useState } from 'react';
 import Button from './Button';

@@ -1,6 +1,6 @@
+import type { IResend } from '@/typess/component.type';
 import { useEffect, useState } from 'react';
 import GradientText from './GradientText';
-import type { IResend } from '@/types/component.type';
 
 const Resend = ({ onResend, count, label = 'Not received?', className }: IResend) => {
   const [counter, setCounter] = useState(count);
@@ -32,11 +32,7 @@ const Resend = ({ onResend, count, label = 'Not received?', className }: IResend
         </span>
       ) : (
         <button onClick={handleResend} className="cursor-pointer" type="button">
-          <GradientText
-            type="accent"
-            text="Resend"
-            className="text-xs font-semibold sm:text-sm"
-          />
+          <GradientText type="accent" text="Resend" className="text-xs font-semibold sm:text-sm" />
         </button>
       )}
     </p>

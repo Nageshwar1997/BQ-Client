@@ -1,4 +1,4 @@
-import type { TClassName, TContainerClassName } from '@/types/component.type';
+import type { TClassName, TContainerClassName } from '@/typess/component.type';
 import type { ReactNode } from 'react';
 
 const BorderGradient = ({
