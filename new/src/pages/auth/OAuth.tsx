@@ -34,26 +34,24 @@ const OAuth = () => {
   const showLoading = !queryParams.error && (!readyToCall || isLoading);
   const showError = isError || queryParams.error;
   return (
-    <div className="flex w-full flex-col gap-4">
-      <ApiStatus
-        status={showLoading ? 'loading' : showError ? 'error' : 'empty'}
-        text="Logging in..."
-        title={showError ? 'Login failed...' : 'User details not found.'}
-        description={
-          showError ? (
-            <>
-              There was a problem signing you in. Please{' '}
-              <GradientText type="accent" path="/auth" text="Try again" />.
-            </>
-          ) : (
-            <>
-              There was a problem finding user details. Please{' '}
-              <GradientText type="silver" path="/contact" text="Contact Us" />.
-            </>
-          )
-        }
-      />
-    </div>
+    <ApiStatus
+      status={showLoading ? 'loading' : showError ? 'error' : 'empty'}
+      text="Logging in..."
+      title={showError ? 'Login failed...' : 'User details not found.'}
+      description={
+        showError ? (
+          <>
+            There was a problem signing you in. Please{' '}
+            <GradientText type="accent" path="/auth" text="Try again" />.
+          </>
+        ) : (
+          <>
+            There was a problem finding user details. Please{' '}
+            <GradientText type="silver" path="/contact" text="Contact Us" />.
+          </>
+        )
+      }
+    />
   );
 };
 
