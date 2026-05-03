@@ -1,6 +1,6 @@
+import { API_BASE_URLS, API_METHODS_AND_URLS } from '@/constants/api.constant';
 import axios, { AxiosError, type AxiosInstance, type AxiosRequestConfig } from 'axios';
 import ApiError from './ApiError';
-import { API_BASE_URLS, API_METHODS_AND_URLS } from '@/constants/api.constant';
 
 interface AxiosRequestConfigWithRetry extends AxiosRequestConfig {
   _retry?: boolean;
@@ -13,6 +13,27 @@ type FailedQueueItem = {
 
 let isRefreshing = false;
 let failedQueue: FailedQueueItem[] = [];
+let hasRedirected = false;
+
+const processQueue = (error?: unknown) => {
+  failedQueue.forEach((p) => {
+    if (error) p.reject(error);
+    else p.resolve();
+  });
+  failedQueue = [];
+};
+
+const triggerLogout = () => {
+  if (hasRedirected) return;
+
+  hasRedirected = true;
+
+  window.dispatchEvent(
+    new CustomEvent('auth:logout', {
+      detail: { reason: 'login' },
+    }),
+  );
+};
 
 export class ApiRequest {
   private baseUrls = API_BASE_URLS;
@@ -26,7 +47,6 @@ export class ApiRequest {
       withCredentials: true,
     });
 
-    // 🔥 RESPONSE INTERCEPTOR (AUTO REFRESH + QUEUE)
     this.instance.interceptors.response.use(
       (res) => res,
       async (error: unknown) => {
@@ -34,23 +54,21 @@ export class ApiRequest {
           return Promise.reject(error);
         }
 
-        const axiosError = error;
-
-        if (!axiosError.config) {
+        if (!error.config) {
           return Promise.reject(error);
         }
 
-        const originalRequest = axiosError.config as AxiosRequestConfigWithRetry;
+        const originalRequest = error.config as AxiosRequestConfigWithRetry;
 
-        if (
-          originalRequest.url?.includes(
-            API_METHODS_AND_URLS.gateway.user_service.auth.token.refresh.url,
-          )
-        ) {
+        const refreshUrl = API_METHODS_AND_URLS.gateway.user_service.auth.token.refresh.url;
+
+        if (originalRequest.url?.includes(refreshUrl)) {
+          triggerLogout();
           return Promise.reject(error);
         }
 
-        if (axiosError.response?.status === 401 && !originalRequest._retry) {
+        // 🔁 401 handling
+        if (error.response?.status === 401 && !originalRequest._retry) {
           if (isRefreshing) {
             return new Promise<void>((resolve, reject) => {
               failedQueue.push({ resolve, reject });
@@ -65,16 +83,12 @@ export class ApiRequest {
               API_METHODS_AND_URLS.gateway.user_service.auth.token.refresh,
             );
 
-            failedQueue.forEach((p) => p.resolve());
-            failedQueue = [];
+            processQueue();
 
             return this.instance.request(originalRequest);
           } catch (err) {
-            failedQueue.forEach((p) => p.reject(err));
-            failedQueue = [];
-
-            window.location.href = '/auth';
-
+            processQueue(err);
+            triggerLogout();
             return Promise.reject(err);
           } finally {
             isRefreshing = false;
@@ -92,12 +106,12 @@ export class ApiRequest {
       return data;
     } catch (error) {
       if (error instanceof AxiosError) {
-        const message = error.response?.data?.message || 'API Error occurred';
-        const globalErrors = error.response?.data?.globalErrors;
-        const fieldErrors = error.response?.data?.fieldErrors;
-        const statusCode = error.response?.status;
-
-        throw new ApiError({ message, globalErrors, fieldErrors, statusCode });
+        throw new ApiError({
+          message: error.response?.data?.message || 'API Error occurred',
+          globalErrors: error.response?.data?.globalErrors,
+          fieldErrors: error.response?.data?.fieldErrors,
+          statusCode: error.response?.status,
+        });
       }
 
       if (error instanceof Error) {

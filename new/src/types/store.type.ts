@@ -59,11 +59,23 @@ export type TUserStore = {
   setUser: (user: IUser | null) => void;
 };
 
-type ActionFn = () => void | Promise<void>;
+export type ActionFn = () => void | Promise<void>;
+
+export type ActionItem = {
+  id: string;
+  fn: ActionFn;
+  retries: number;
+  maxRetries: number;
+};
 
 export type TActionsStore = {
-  actions: ActionFn[];
-  addAction: (action: ActionFn) => void;
+  actions: ActionItem[];
+
+  addAction: (fn: ActionFn, options?: { maxRetries?: number }) => string;
+
+  removeAction: (id: string) => void;
+  clearActions: () => void;
+
   runNextAction: () => Promise<void>;
   runAllActions: () => Promise<void>;
 };
