@@ -19,8 +19,16 @@ export default defineConfig(({ mode }) => ({
   resolve: { alias: { '@': path.resolve(__dirname, './src') } },
   server: { port: 3001 },
   build: {
-    rollupOptions: { output: { manualChunks: { react: ['react', 'react-dom'] } } },
-    // Optionally, adjust the chunk size warning limit (set to 1 MB here)
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('react')) return 'react';
+            if (id.includes('react-dom')) return 'react';
+          }
+        },
+      },
+    },
     chunkSizeWarningLimit: 1000, // 1 MB
   },
 }));
