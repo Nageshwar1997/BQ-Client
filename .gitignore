@@ -13,6 +13,8 @@ node_modules
 dist
 dist-ssr
 *.local
+# Remove old-src later
+old-src
 
 stats.html
 

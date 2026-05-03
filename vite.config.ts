@@ -1,31 +1,34 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import { visualizer } from "rollup-plugin-visualizer";
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { visualizer } from 'rollup-plugin-visualizer';
+import tailwindcss from '@tailwindcss/vite';
+import path from 'path';
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
-    visualizer({
-      open: true,
-      filename: "stats.html",
-      gzipSize: true,
-      brotliSize: true,
-    }),
-  ],
+    tailwindcss(),
+    mode === 'analyze' &&
+      visualizer({
+        open: true,
+        filename: 'stats.html',
+        gzipSize: true,
+        brotliSize: true,
+      }),
+  ].filter(Boolean),
+  resolve: { alias: { '@': path.resolve(__dirname, './src') } },
   server: { port: 3001 },
   build: {
     rollupOptions: {
       output: {
-        // Use manualChunks to split code into multiple chunks
         manualChunks(id) {
-          // If it's from node_modules, place it in a vendor chunk
-          if (id.includes("node_modules")) {
-            return "vendor";
+          if (id.includes('node_modules')) {
+            if (id.includes('react')) return 'react';
+            if (id.includes('react-dom')) return 'react';
           }
         },
       },
     },
-    // Optionally, adjust the chunk size warning limit (set to 1 MB here)
     chunkSizeWarningLimit: 1000, // 1 MB
   },
-});
+}));
