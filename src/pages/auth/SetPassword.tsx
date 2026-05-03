@@ -1,8 +1,9 @@
 import BorderGradient from '@/components/layout/containers/BorderGradient';
+import AuthBottomInstructions from '@/components/ui/AuthBottomInstructions';
 import Button from '@/components/ui/Button';
 import GradientText from '@/components/ui/GradientText';
 import Input from '@/components/ui/inputs/Input';
-import { FORM_DEFAULT_VALUES } from '@/constants/form.constantss';
+import { FORM_DEFAULT_VALUES } from '@/constants/form.constants';
 import { PASSWORDS_INPUT_MAP_DATA } from '@/constants/input.constants';
 import usePathParams from '@/hooks/usePathParams';
 import { setPasswordSchema } from '@/schemas/user.schema';
@@ -13,7 +14,6 @@ import { setErrorToForm } from '@/utils/form.util';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import AuthBottomInstructions from './components/AuthBottomInstructions';
 
 const SetPassword = () => {
   /* ================= 1. Store Hooks ================= */

@@ -1,9 +1,10 @@
 import BorderGradient from '@/components/layout/containers/BorderGradient';
+import AuthBottomInstructions from '@/components/ui/AuthBottomInstructions';
 import Button from '@/components/ui/Button';
 import GradientText from '@/components/ui/GradientText';
 import Input from '@/components/ui/inputs/Input';
 import Resend from '@/components/ui/Resend';
-import { FORM_DEFAULT_VALUES } from '@/constants/form.constantss';
+import { FORM_DEFAULT_VALUES } from '@/constants/form.constants';
 import {
   EMAIL_INPUT_DATA,
   OTP_INPUT_DATA,
@@ -24,7 +25,6 @@ import { setErrorToForm } from '@/utils/form.util';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import AuthBottomInstructions from './components/AuthBottomInstructions';
 
 const ForgotPassword = () => {
   /* ================= 1. Store Hooks ================= */
