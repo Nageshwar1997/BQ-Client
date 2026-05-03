@@ -1,4 +1,5 @@
 import usePathParams from '@/hooks/usePathParams';
+import useQueryParams from '@/hooks/useQueryParams';
 import useUserStore from '@/stores/user.store';
 import { useEffect, useRef } from 'react';
 import { useBlocker } from 'react-router-dom';
@@ -8,6 +9,7 @@ const GUEST_ONLY_ROUTES = ['/auth', '/auth/register', '/auth/forgot-password', '
 
 const RouteGuard = () => {
   const { location, navigate } = usePathParams();
+  const { queryParams, setParams } = useQueryParams();
   const user = useUserStore((s) => s.user);
 
   // 🔥 previous path memory
@@ -40,31 +42,21 @@ const RouteGuard = () => {
   useEffect(() => {
     if (blocker.state !== 'blocked') return;
 
-    if (blocker.state === 'blocked') {
-      const currentParams = new URLSearchParams(location.search);
-
-      // 🔒 NOT logged in → open login modal
-      if (!user) {
-        if (!currentParams.has('login')) {
-          currentParams.set('login', 'true');
-
-          navigate(
-            { pathname: location.pathname, search: `?${currentParams.toString()}` },
-            { replace: true },
-          );
-        }
+    // 🔒 NOT logged in → open login modal
+    if (!user) {
+      if (!queryParams.login) {
+        setParams({ login: 'true' });
       }
 
-      // 🚫 already logged in → go back to previous path
-      if (user) {
-        navigate(prevPathRef.current || '/', { replace: true });
-      }
-
-      // 🔥 MUST: cancel navigation
-      blocker.reset();
+      blocker.reset(); // 🔥 must
+      return;
     }
-  }, [blocker, navigate, location, user]);
 
+    // 🚫 already logged in → go back
+    navigate(prevPathRef.current || '/', { replace: true });
+
+    blocker.reset(); // 🔥 must
+  }, [blocker, navigate, user, queryParams.login, setParams]);
   return null;
 };
 
