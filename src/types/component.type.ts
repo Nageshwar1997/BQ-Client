@@ -1,4 +1,4 @@
-import type { FOOTER_CATEGORIES } from '@/constants/common.constants';
+import type { FOOTER_CATEGORIES } from '@/constants/footer.constants';
 import type { IconProps } from '@iconify/react';
 import type { ButtonHTMLAttributes, JSX, ReactNode, RefObject, VideoHTMLAttributes } from 'react';
 import type { TGradientPos, TScrollDirection } from './hook.type';
