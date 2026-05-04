@@ -84,17 +84,6 @@ export const SubCategories = ({
               isHighlighted ? 'hover:border-blue-crayola-c' : 'hover:border-primary/8'
             } group`}
           >
-            {subCategory.icon && (
-              <div
-                className={`bg-secondary-invert group-hover:bg-primary-invert flex size-10 shrink-0 items-center justify-center rounded-lg xl:size-12 ${
-                  isHighlighted
-                    ? 'bg-accent-duo group-hover:shadow-primary-btn-hover [&>svg]:text-white'
-                    : 'shadow-battleship-davys-gray shadow-inner'
-                }`}
-              >
-                <Icon icon={subCategory.icon} className="text-secondary" />
-              </div>
-            )}
             <div className="flex w-full flex-col justify-center lg:justify-start">
               <p className="text-secondary group-hover:text-primary line-clamp-1 w-full text-left text-xs tracking-wide xl:text-sm">
                 {subCategory.label}

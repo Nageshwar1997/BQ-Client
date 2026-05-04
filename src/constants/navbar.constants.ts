@@ -180,7 +180,6 @@ export const NEW = {
       label: '',
       category: '',
       description: '',
-      icon: '',
     },
   ],
 } as const;
@@ -205,7 +204,6 @@ export const SUGAR_PLAY = {
       path: '/products/for_you/best_sellers/sugar_play',
       category: '',
       description: '',
-      icon: '',
     },
   ],
 } as const;
@@ -222,9 +220,7 @@ export const OFFERS = {
   thumbnail:
     'https://res.cloudinary.com/drbhw0nwt/image/upload/v1742736080/Beautinique/Posters/1742736077422_2_Glide_Peptide_Lip_Treatement.webp',
   description: 'Grab discounts on premium cosmetics for a limited time.',
-  subCategories: [
-    { id: 1, level: 3, label: '', path: '/offers', category: '', description: '', icon: '' },
-  ],
+  subCategories: [],
 } as const;
 
 export const BLOGS = {
@@ -237,9 +233,7 @@ export const BLOGS = {
   videoUrl: '/videos/company/values-culture/Get-Ready-With-BQ.mp4',
   thumbnail: '/images/navbar/blogs.png',
   description: 'Explore top beauty tips, trends, & skincare routines.',
-  subCategories: [
-    { id: 1, level: 3, path: '/blogs', label: '', category: '', description: '', icon: '' },
-  ],
+  subCategories: [],
 };
 
 export const FOR_YOU = {
@@ -268,7 +262,6 @@ export const COMPANY = {
       label: 'About Us',
       category: 'about_us',
       path: '/about-us',
-      icon: 'solar:infinity-bold',
       description: 'Learn about our journey, mission, and values that define our brand.',
     },
     {
@@ -277,7 +270,6 @@ export const COMPANY = {
       label: 'Mission Vision Values',
       category: 'mission_vision_values',
       path: '/mission-vision',
-      icon: 'solar:infinity-bold',
       description: "Discover our purpose, vision, and values driving our company's success.",
     },
     {
@@ -286,7 +278,6 @@ export const COMPANY = {
       label: 'Team',
       category: 'team',
       path: '/teams',
-      icon: 'solar:infinity-bold',
       description: 'Meet our talented team committed to delivering excellence every day.',
     },
     {
@@ -295,7 +286,6 @@ export const COMPANY = {
       label: 'Contact Us',
       category: 'contact_us',
       path: '/contact',
-      icon: 'solar:infinity-bold',
       description: 'Get in touch with us for inquiries, support, or collaboration opportunities.',
     },
   ],
@@ -313,7 +303,6 @@ export const PRESS = {
       label: 'Newsroom',
       category: 'newsroom',
       path: '/press-media',
-      icon: 'solar:infinity-bold',
       description: 'Stay updated with our latest news, events, and media announcements.',
     },
     {
@@ -322,7 +311,6 @@ export const PRESS = {
       label: 'Awards',
       category: 'awards',
       path: '/awards',
-      icon: 'solar:infinity-bold',
       description: 'Explore the recognitions and awards we have received for excellence.',
     },
   ],
@@ -340,7 +328,6 @@ export const CAREERS = {
       label: 'Values/Culture',
       category: 'values_culture',
       path: '/values-and-culture',
-      icon: 'solar:infinity-bold',
       description: 'Experience our vibrant culture driven by values of growth and innovation.',
     },
     {
@@ -349,7 +336,6 @@ export const CAREERS = {
       label: 'Openings',
       category: 'openings',
       path: '/careers',
-      icon: 'solar:infinity-bold',
       description: 'Discover exciting career opportunities and join our dynamic team today.',
     },
     {
@@ -358,7 +344,6 @@ export const CAREERS = {
       label: 'Retail/E-Commerce',
       category: 'retail_e_commerce',
       path: '/retail-and-e-commerce',
-      icon: 'solar:infinity-bold',
       description: 'Explore roles in retail and e-commerce driving our digital success.',
     },
   ],
@@ -376,7 +361,6 @@ export const TRUST_CENTER = {
       label: 'Compliance',
       category: 'compliance',
       path: '/cookie-policy',
-      icon: 'solar:infinity-bold',
       description: 'Understand our compliance standards ensuring trust and transparency.',
     },
     {
@@ -385,7 +369,6 @@ export const TRUST_CENTER = {
       label: 'Privacy/Policy',
       category: 'privacy_policy',
       path: '/privacy-policy',
-      icon: 'solar:infinity-bold',
       description: 'Learn about our privacy practices and data protection commitments.',
     },
     {
@@ -394,7 +377,6 @@ export const TRUST_CENTER = {
       label: 'Terms & Conditions',
       category: 'terms_and_conditions',
       path: '/terms-conditions',
-      icon: 'solar:infinity-bold',
       description: 'Review our terms and conditions for using our products and services.',
     },
   ],
@@ -428,7 +410,6 @@ export const BATH_AND_BODY = {
       level: 3,
       label: 'Shower Gel',
       category: 'shower_gel',
-      icon: 'solar:infinity-bold',
       path: `${basePath}/bath_and_body/shower_gel`,
       description: 'Refreshing shower gel that cleanses and hydrates for soft skin.',
     },
@@ -438,7 +419,6 @@ export const BATH_AND_BODY = {
       label: 'Soap',
       category: 'soap',
       path: `${basePath}/bath_and_body/soap`,
-      icon: 'solar:infinity-bold',
       description: 'Gentle soap for daily cleansing, leaving skin fresh and nourished.',
     },
     {
@@ -447,7 +427,6 @@ export const BATH_AND_BODY = {
       label: 'Body Lotion',
       category: 'body_lotion',
       path: `${basePath}/bath_and_body/body_lotion`,
-      icon: 'solar:infinity-bold',
       description: 'Moisturizing body lotion that keeps skin smooth and hydrated all day.',
     },
     {
@@ -456,7 +435,6 @@ export const BATH_AND_BODY = {
       label: 'Body Spray',
       category: 'body_spray',
       path: `${basePath}/bath_and_body/body_spray`,
-      icon: 'solar:infinity-bold',
       description: 'Light body spray with a refreshing fragrance for all-day freshness.',
     },
     {
@@ -465,7 +443,6 @@ export const BATH_AND_BODY = {
       label: 'Hand Wash',
       category: 'hand_wash',
       path: `${basePath}/bath_and_body/hand_wash`,
-      icon: 'solar:infinity-bold',
       description: 'Cleansing hand wash that leaves hands soft and hygienically clean.',
     },
     {
@@ -474,7 +451,6 @@ export const BATH_AND_BODY = {
       label: 'Foot Cream',
       category: 'foot_cream',
       path: `${basePath}/bath_and_body/foot_cream`,
-      icon: 'solar:infinity-bold',
       description: 'Nourishing foot cream that soothes and softens tired, dry feet.',
     },
     {
@@ -483,7 +459,6 @@ export const BATH_AND_BODY = {
       label: 'Hand Cream',
       category: 'hand_cream',
       path: `${basePath}/bath_and_body/hand_cream`,
-      icon: 'solar:infinity-bold',
       description: 'Hydrating hand cream for soft, smooth hands with lasting moisture.',
     },
   ],
@@ -502,7 +477,6 @@ export const SUGAR_POP = {
       label: 'Lips',
       category: 'lips',
       path: `${basePath}/sugar_pop/lips`,
-      icon: 'solar:infinity-bold',
       description: 'Lip products for bold, vibrant color and deep nourishing moisture.',
     },
     {
@@ -511,7 +485,6 @@ export const SUGAR_POP = {
       label: 'Eyes',
       category: 'eyes',
       path: `${basePath}/sugar_pop/eyes`,
-      icon: 'solar:infinity-bold',
       description: 'Eye makeup essentials for creating stunning looks that last all day.',
     },
     {
@@ -520,7 +493,6 @@ export const SUGAR_POP = {
       label: 'Face',
       category: 'face',
       path: `${basePath}/sugar_pop/face`,
-      icon: 'solar:infinity-bold',
       description: 'Face products to enhance complexion with flawless coverage.',
     },
     {
@@ -529,7 +501,6 @@ export const SUGAR_POP = {
       label: 'Nails',
       category: 'nails',
       path: `${basePath}/sugar_pop/nails`,
-      icon: 'solar:infinity-bold',
       description: 'Vibrant nail colors and effective treatments for stylish, healthy nails.',
     },
     {
@@ -538,7 +509,6 @@ export const SUGAR_POP = {
       label: 'Skincare',
       category: 'skincare',
       path: `${basePath}/sugar_pop/skincare`,
-      icon: 'solar:infinity-bold',
       description: 'Skincare essentials for a radiant, nourished, and clear complexion.',
     },
     {
@@ -547,7 +517,6 @@ export const SUGAR_POP = {
       label: 'Body Care',
       category: 'body_care',
       path: `${basePath}/sugar_pop/body_care`,
-      icon: 'solar:infinity-bold',
       description: 'Body care products for soft, smooth skin with lasting hydration.',
     },
     {
@@ -556,7 +525,6 @@ export const SUGAR_POP = {
       label: 'Best of Sugar Pop',
       category: 'best_of_sugar_pop',
       path: `${basePath}/sugar_pop/best_of_sugar_pop`,
-      icon: 'solar:infinity-bold',
       description: 'Top-rated Sugar Pop products loved for their quality and results.',
     },
   ],
@@ -575,7 +543,6 @@ export const HAIR_CARE = {
       label: 'Shampoo',
       category: 'shampoo',
       path: `${basePath}/hair_care/shampoo`,
-      icon: 'solar:infinity-bold',
       description: 'Cleansing shampoo that effectively revitalizes hair for healthy shine.',
     },
     {
@@ -584,7 +551,6 @@ export const HAIR_CARE = {
       label: 'Conditioner',
       category: 'conditioner',
       path: `${basePath}/hair_care/conditioner`,
-      icon: 'solar:infinity-bold',
       description: 'Nourishing conditioner that detangles and softens hair beautifully.',
     },
     {
@@ -593,7 +559,6 @@ export const HAIR_CARE = {
       label: 'Hair Oil',
       category: 'hair_oil',
       path: `${basePath}/hair_care/hair_oil`,
-      icon: 'solar:infinity-bold',
       description: 'Hair oil that deeply nourishes hair for strong, shiny, healthy hair.',
     },
     {
@@ -602,7 +567,6 @@ export const HAIR_CARE = {
       label: 'Serum',
       category: 'serum',
       path: `${basePath}/hair_care/serum`,
-      icon: 'solar:infinity-bold',
       description: 'Lightweight hair serum for frizz control and a silky, smooth finish.',
     },
     {
@@ -611,7 +575,6 @@ export const HAIR_CARE = {
       label: 'Hair Mask',
       category: 'hair_mask',
       path: `${basePath}/hair_care/hair_mask`,
-      icon: 'solar:infinity-bold',
       description: 'Deep conditioning hair mask for intense repair and hydration.',
     },
     {
@@ -620,7 +583,6 @@ export const HAIR_CARE = {
       label: 'Combo',
       category: 'combo',
       path: `${basePath}/hair_care/combo`,
-      icon: 'solar:infinity-bold',
       description: 'Value packs of hair care products for a complete hair routine.',
     },
     {
@@ -629,7 +591,6 @@ export const HAIR_CARE = {
       label: 'View All',
       category: 'view_all',
       path: `${basePath}/hair_care/view_all`,
-      icon: 'solar:infinity-bold',
       description: 'Browse all hair care products for your perfect hair solution.',
     },
   ],
@@ -648,7 +609,6 @@ export const GIFTING = {
       label: 'Lipstick Set',
       category: 'lipstick_set',
       path: `${basePath}/gifting/lipstick_set`,
-      icon: 'solar:infinity-bold',
       description: 'Beautiful lipstick sets perfect for gifting on any special occasion.',
     },
     {
@@ -657,7 +617,6 @@ export const GIFTING = {
       label: 'Sugar Merch',
       category: 'sugar_merch',
       path: `${basePath}/gifting/sugar_merch`,
-      icon: 'solar:infinity-bold',
       description: 'Trendy Sugar-branded merchandise for fans and beauty lovers.',
     },
     {
@@ -666,7 +625,6 @@ export const GIFTING = {
       label: 'Value Set',
       category: 'value_set',
       path: `${basePath}/gifting/value_set`,
-      icon: 'solar:infinity-bold',
       description: 'Curated value sets for a complete beauty experience and savings.',
     },
     {
@@ -675,7 +633,6 @@ export const GIFTING = {
       label: 'Makeup Kit',
       category: 'makeup_kit',
       path: `${basePath}/gifting/makeup_kit`,
-      icon: 'solar:infinity-bold',
       description: 'Comprehensive makeup kits with essentials for a flawless look.',
     },
     {
@@ -684,7 +641,6 @@ export const GIFTING = {
       label: 'Corporate Gifting',
       category: 'corporate_gifting',
       path: `${basePath}/gifting/corporate_gifting`,
-      icon: 'solar:infinity-bold',
       description: 'Elegant corporate gifts to leave a lasting impression with style.',
     },
     {
@@ -693,7 +649,6 @@ export const GIFTING = {
       label: 'Sugar Set',
       category: 'sugar_set',
       path: `${basePath}/gifting/sugar_set`,
-      icon: 'solar:infinity-bold',
       description: 'Exclusive Sugar sets curated for beauty enthusiasts and gifting.',
     },
   ],
@@ -726,7 +681,6 @@ export const MOISTURIZERS = {
       label: 'Night Cream',
       category: 'night_cream',
       path: `/products/skin/moisturizers/night_cream`,
-      icon: 'solar:infinity-bold',
       description: 'Deeply hydrates and repairs tired skin while you sleep.',
     },
     {
@@ -735,7 +689,6 @@ export const MOISTURIZERS = {
       label: 'Eye Cream',
       category: 'eye_cream',
       path: `/products/skin/moisturizers/eye_cream`,
-      icon: 'solar:infinity-bold',
       description: 'Reduces puffiness, dark circles, and fine lines quickly.',
     },
     {
@@ -744,7 +697,6 @@ export const MOISTURIZERS = {
       label: 'Serum',
       category: 'serum',
       path: `/products/skin/moisturizers/serum`,
-      icon: 'solar:infinity-bold',
       description: 'Nourishes skin with essential vitamins for a radiant glow.',
     },
     {
@@ -753,7 +705,6 @@ export const MOISTURIZERS = {
       label: 'Skincare Kit',
       category: 'skincare_kit',
       path: `/products/skin/moisturizers/skincare_kit`,
-      icon: 'solar:infinity-bold',
       description: 'Complete care sets for all skin types and beauty concerns.',
     },
   ],
@@ -772,7 +723,6 @@ export const CLEANSING_AND_EXFOLIATION = {
       label: 'Cleanser',
       category: 'cleanser',
       path: `/products/skin/cleansing_and_exfoliation/cleanser`,
-      icon: 'solar:infinity-bold',
       description: 'Gently removes dirt, excess oil, and makeup for clean skin.',
     },
     {
@@ -781,7 +731,6 @@ export const CLEANSING_AND_EXFOLIATION = {
       label: 'Face Wash',
       category: 'face_wash',
       path: `/products/skin/cleansing_and_exfoliation/face_wash`,
-      icon: 'solar:infinity-bold',
       description: 'Refreshing daily wash for soft and healthy-looking skin tone.',
     },
     {
@@ -790,7 +739,6 @@ export const CLEANSING_AND_EXFOLIATION = {
       label: 'Exfoliator & Scrub',
       category: 'exfoliator_and_scrub',
       path: `/products/skin/cleansing_and_exfoliation/exfoliator_and_scrub`,
-      icon: 'solar:infinity-bold',
       description: 'Removes dead skin cells to reveal a fresh and smooth glow.',
     },
     {
@@ -799,7 +747,6 @@ export const CLEANSING_AND_EXFOLIATION = {
       label: 'Sunscreen',
       category: 'sunscreen',
       path: `/products/skin/cleansing_and_exfoliation/sunscreen`,
-      icon: 'solar:infinity-bold',
       description: 'Shields skin from harmful UV rays and sun damage daily.',
     },
   ],
@@ -818,7 +765,6 @@ export const NATURES_BLEND = {
       label: 'Aquaholic',
       category: 'aquaholic',
       path: `/products/skin/natures_blend/aquaholic`,
-      icon: 'solar:infinity-bold',
       description: 'Hydration-rich formulas to deeply quench dry, dull skin.',
     },
     {
@@ -827,7 +773,6 @@ export const NATURES_BLEND = {
       label: 'Coffee Culture',
       category: 'coffee_culture',
       path: `/products/skin/natures_blend/coffee_culture`,
-      icon: 'solar:infinity-bold',
       description: 'Energizing coffee extracts for a firm, smooth, youthful feel.',
     },
     {
@@ -836,7 +781,6 @@ export const NATURES_BLEND = {
       label: 'Citrus Got Real',
       category: 'citrus_got_real',
       path: `/products/skin/natures_blend/citrus_got_real`,
-      icon: 'solar:infinity-bold',
       description: 'Vitamin C boost for brighter, fresher, healthier-looking skin.',
     },
     {
@@ -845,7 +789,6 @@ export const NATURES_BLEND = {
       label: 'View All',
       category: 'view_all',
       path: `/products/skin/natures_blend/view_all`,
-      icon: 'solar:infinity-bold',
       description: 'Explore all skincare essentials, perfectly tailored for you.',
     },
   ],
@@ -864,7 +807,6 @@ export const FACE_MASK = {
       label: 'Sheet Mask',
       category: 'sheet_mask',
       path: `/products/skin/face_mask/sheet_mask`,
-      icon: 'solar:infinity-bold',
       description: 'Instant hydration and glowing effect in just a few minutes.',
     },
     {
@@ -873,7 +815,6 @@ export const FACE_MASK = {
       label: 'Face Pack',
       category: 'face_pack',
       path: `/products/skin/face_mask/face_pack`,
-      icon: 'solar:infinity-bold',
       description: 'Detox and refresh your skin naturally with herbal extracts.',
     },
     {
@@ -882,7 +823,6 @@ export const FACE_MASK = {
       label: 'View All',
       category: 'view_all',
       path: `/products/skin/face_mask/view_all`,
-      icon: 'solar:infinity-bold',
       description: 'Browse all skincare must-haves for a flawless glowing look.',
     },
   ],
@@ -915,7 +855,6 @@ export const FACE_MAKEUP = {
       label: 'Foundation',
       category: 'foundation',
       path: `/products/face/face_makeup/foundation`,
-      icon: 'solar:infinity-bold',
       description: 'Provides coverage for a flawless base with a natural, smooth finish.',
     },
     {
@@ -924,7 +863,6 @@ export const FACE_MAKEUP = {
       label: 'BB Cream',
       category: 'bb_cream',
       path: `/products/face/face_makeup/bb_cream`,
-      icon: 'solar:infinity-bold',
       description: 'Lightweight formula that hydrates, evens skin tone, and protects skin.',
     },
     {
@@ -933,7 +871,6 @@ export const FACE_MAKEUP = {
       label: 'Compact Powder',
       category: 'compact_powder',
       path: `/products/face/face_makeup/compact_powder`,
-      icon: 'solar:infinity-bold',
       description: 'Sets makeup, reduces shine, and ensures a long-lasting matte finish.',
     },
     {
@@ -942,7 +879,6 @@ export const FACE_MAKEUP = {
       label: 'Loose Powder',
       category: 'loose_powder',
       path: `/products/face/face_makeup/loose_powder`,
-      icon: 'solar:infinity-bold',
       description: 'Finely milled powder for a smooth, shine-free finish that lasts all day.',
     },
     {
@@ -951,7 +887,6 @@ export const FACE_MAKEUP = {
       label: 'Banana Powder',
       category: 'banana_powder',
       path: `/products/face/face_makeup/banana_powder`,
-      icon: 'solar:infinity-bold',
       description: 'Brightens the complexion, reduces shine, and sets makeup beautifully.',
     },
     {
@@ -960,7 +895,6 @@ export const FACE_MAKEUP = {
       label: 'SPF Foundation',
       category: 'spf_foundation',
       path: `/products/face/face_makeup/spf_foundation`,
-      icon: 'solar:infinity-bold',
       description: 'Combines sun protection, coverage for a flawless, radiant look.',
     },
   ],
@@ -979,7 +913,6 @@ export const TRADITIONAL_AND_ESSENTIALS = {
       label: 'Sindoor',
       category: 'sindoor',
       path: `/products/face/traditional_and_essentials/sindoor`,
-      icon: 'solar:infinity-bold',
       description: 'Symbolic powder for the hairline, enhancing traditional elegance.',
     },
   ],
@@ -998,7 +931,6 @@ export const CHEEKS_AND_GLOW = {
       label: 'Highlighter',
       category: 'highlighter',
       path: `/products/face/cheeks_and_glow/highlighter`,
-      icon: 'solar:infinity-bold',
       description: 'Adds a radiant, enhancing features with a luminous, dewy look.',
     },
     {
@@ -1007,7 +939,6 @@ export const CHEEKS_AND_GLOW = {
       label: 'Liquid Highlighter',
       category: 'liquid_highlighter',
       path: `/products/face/cheeks_and_glow/liquid_highlighter`,
-      icon: 'solar:infinity-bold',
       description: 'Blendable liquid formula for a glowing, buildable, natural look.',
     },
     {
@@ -1016,7 +947,6 @@ export const CHEEKS_AND_GLOW = {
       label: 'Blush',
       category: 'blush',
       path: `/products/face/cheeks_and_glow/blush`,
-      icon: 'solar:infinity-bold',
       description: 'Adds a pop of color to cheeks, creating a youthful, healthy look.',
     },
     {
@@ -1025,7 +955,6 @@ export const CHEEKS_AND_GLOW = {
       label: 'Cheek Stain',
       category: 'cheek_stain',
       path: `/products/face/cheeks_and_glow/cheek_stain`,
-      icon: 'solar:infinity-bold',
       description: 'Long-lasting tint for a natural, flushed look that stays vibrant.',
     },
   ],
@@ -1044,7 +973,6 @@ export const SETTING_AND_FINISHING = {
       label: 'Setting Spray',
       category: 'setting_spray',
       path: `/products/face/setting_and_finishing/setting_spray`,
-      icon: 'solar:infinity-bold',
       description: 'Locks makeup for long wear, maintaining a fresh look without.',
     },
     {
@@ -1053,7 +981,6 @@ export const SETTING_AND_FINISHING = {
       label: 'Compact',
       category: 'compact',
       path: `/products/face/setting_and_finishing/compact`,
-      icon: 'solar:infinity-bold',
       description: 'Portable powder for touch-ups, controls shine, sets makeup place.',
     },
     {
@@ -1062,7 +989,6 @@ export const SETTING_AND_FINISHING = {
       label: 'Fixer',
       category: 'fixer',
       path: `/products/face/setting_and_finishing/fixer`,
-      icon: 'solar:infinity-bold',
       description: 'Enhances makeup longevity, ensuring a smudge-proof, flawless.',
     },
   ],
@@ -1081,7 +1007,6 @@ export const FOUNDATIONS_BY_FINISH = {
       label: 'Liquid Foundation',
       category: 'liquid_foundation',
       path: `/products/face/foundations_by_finish/liquid_foundation`,
-      icon: 'solar:infinity-bold',
       description: 'Buildable coverage with a natural finish that blends seamlessly skin.',
     },
     {
@@ -1090,7 +1015,6 @@ export const FOUNDATIONS_BY_FINISH = {
       label: 'Matte Foundation',
       category: 'matte_foundation',
       path: `/products/face/foundations_by_finish/matte_foundation`,
-      icon: 'solar:infinity-bold',
       description: 'Oil-absorbing formula for a shine-free, velvety matte look lasts.',
     },
     {
@@ -1099,7 +1023,6 @@ export const FOUNDATIONS_BY_FINISH = {
       label: 'Water Resistant Foundation',
       category: 'water_resistant_foundation',
       path: `/products/face/foundations_by_finish/water_resistant_foundation`,
-      icon: 'solar:infinity-bold',
       description: 'Long-wearing, water-resistant foundation that stays flawless day.',
     },
     {
@@ -1108,7 +1031,6 @@ export const FOUNDATIONS_BY_FINISH = {
       label: 'High Coverage Foundation',
       category: 'high_coverage_foundation',
       path: `/products/face/foundations_by_finish/high_coverage_foundation`,
-      icon: 'solar:infinity-bold',
       description: 'Conceals imperfections with full coverage, ensuring flawless look.',
     },
     {
@@ -1117,7 +1039,6 @@ export const FOUNDATIONS_BY_FINISH = {
       label: 'Stick Foundation',
       category: 'stick_foundation',
       path: `/products/face/foundations_by_finish/stick_foundation`,
-      icon: 'solar:infinity-bold',
       description: 'Convenient stick format for easy application and buildable coverage.',
     },
   ],
@@ -1136,7 +1057,6 @@ export const FOUNDATIONS_BY_SKIN_TYPE = {
       label: 'Best for Dry Skin',
       category: 'best_for_dry_skin',
       path: `/products/face/foundations_by_skin_type/best_for_dry_skin`,
-      icon: 'solar:infinity-bold',
       description: 'Hydrating formula that nourishes and enhances radiance for dry skin.',
     },
     {
@@ -1145,7 +1065,6 @@ export const FOUNDATIONS_BY_SKIN_TYPE = {
       label: 'Best for Oily Skin',
       category: 'best_for_oily_skin',
       path: `/products/face/foundations_by_skin_type/best_for_oily_skin`,
-      icon: 'solar:infinity-bold',
       description: 'Oil-controlling foundation that reduces shine, prevents breakouts.',
     },
   ],
@@ -1164,7 +1083,6 @@ export const PRIMERS_AND_REMOVERS = {
       label: 'Makeup Remover',
       category: 'makeup_remover',
       path: `/products/face/primers_and_removers/makeup_remover`,
-      icon: 'solar:infinity-bold',
       description: 'Gently removes makeup while hydrating and refreshing the skin.',
     },
     {
@@ -1173,7 +1091,6 @@ export const PRIMERS_AND_REMOVERS = {
       label: 'Primer',
       category: 'primer',
       path: `/products/face/primers_and_removers/primer`,
-      icon: 'solar:infinity-bold',
       description: 'Prepares skin, creating a smooth base for long-lasting makeup.',
     },
   ],
@@ -1192,7 +1109,6 @@ export const BRONZERS_AND_CONTOURS = {
       label: 'Bronzer',
       category: 'bronzer',
       path: `/products/face/bronzers_and_contours/bronzer`,
-      icon: 'solar:infinity-bold',
       description: 'Adds warmth and a sun-kissed glow for a radiant complexion.',
     },
     {
@@ -1201,7 +1117,6 @@ export const BRONZERS_AND_CONTOURS = {
       label: 'Contour',
       category: 'contour',
       path: `/products/face/bronzers_and_contours/contour`,
-      icon: 'solar:infinity-bold',
       description: 'Defines features with shadows, enhancing structure and depth.',
     },
   ],
@@ -1220,7 +1135,6 @@ export const CONCEALERS_AND_CORRECTORS = {
       label: 'Color Concealer',
       category: 'color_concealer',
       path: `/products/face/concealers_and_correctors/color_concealer`,
-      icon: 'solar:infinity-bold',
       description: 'It covers flaws with precision, delivering a flawless, airbrushed.',
     },
     {
@@ -1229,7 +1143,6 @@ export const CONCEALERS_AND_CORRECTORS = {
       label: 'Color Corrector',
       category: 'color_corrector',
       path: `/products/face/concealers_and_correctors/color_corrector`,
-      icon: 'solar:infinity-bold',
       description: 'Neutralizes discoloration, balancing skin tone for a radiant finish.',
     },
   ],
@@ -1272,7 +1185,6 @@ export const KOHL_AND_KAJAL = {
       label: 'Kohl',
       category: 'kohl',
       path: `/products/eyes/kohl_and_kajal/kohl`,
-      icon: 'solar:infinity-bold',
       description: 'Intensely pigmented kohls for bold, long-lasting eye definition all day.',
     },
     {
@@ -1281,7 +1193,6 @@ export const KOHL_AND_KAJAL = {
       label: 'Kajal',
       category: 'kajal',
       path: `/products/eyes/kohl_and_kajal/kajal`,
-      icon: 'solar:infinity-bold',
       description: 'Smooth kajals for a dramatic look, perfect for waterline application.',
     },
     {
@@ -1290,7 +1201,6 @@ export const KOHL_AND_KAJAL = {
       label: 'Smudge Proof Kajal',
       category: 'smudge_proof_kajal',
       path: `/products/eyes/kohl_and_kajal/smudge_proof_kajal`,
-      icon: 'solar:infinity-bold',
       description: 'Long-lasting, smudge-proof kajal for sharp, defined eyes all day long.',
     },
   ],
@@ -1309,7 +1219,6 @@ export const MASCARAS = {
       label: 'Volumizing Mascara',
       category: 'volumizing_mascara',
       path: `/products/eyes/mascaras/volumizing_mascara`,
-      icon: 'solar:infinity-bold',
       description: 'Boosts lash volume for a fuller, more dramatic look with each coat.',
     },
     {
@@ -1318,7 +1227,6 @@ export const MASCARAS = {
       label: 'Curl Lengthening Mascara',
       category: 'curl_lengthening_mascara',
       path: `/products/eyes/mascaras/curl_lengthening_mascara`,
-      icon: 'solar:infinity-bold',
       description: 'Lifts and curls lashes for a wide-eyed look with added length and volume.',
     },
     {
@@ -1327,7 +1235,6 @@ export const MASCARAS = {
       label: 'Waterproof Mascara',
       category: 'waterproof_mascara',
       path: `/products/eyes/mascaras/waterproof_mascara`,
-      icon: 'solar:infinity-bold',
       description: 'Water-resistant formula for long-lasting wear without smudging or flaking.',
     },
   ],
@@ -1346,7 +1253,6 @@ export const EYELINERS = {
       label: 'Liquid Eyeliner',
       category: 'liquid_eyeliner',
       path: `/products/eyes/eyeliners/liquid_eyeliner`,
-      icon: 'solar:infinity-bold',
       description: 'Precision tip for sharp lines, perfect for bold cat-eye or winged looks.',
     },
     {
@@ -1355,7 +1261,6 @@ export const EYELINERS = {
       label: 'Gel Eyeliner',
       category: 'gel_eyeliner',
       path: `/products/eyes/eyeliners/gel_eyeliner`,
-      icon: 'solar:infinity-bold',
       description: 'Creamy, blendable gel eyeliner for versatile looks, from bold to subtle.',
     },
     {
@@ -1364,7 +1269,6 @@ export const EYELINERS = {
       label: 'Pen Eyeliner',
       category: 'pen_eyeliner',
       path: `/products/eyes/eyeliners/pen_eyeliner`,
-      icon: 'solar:infinity-bold',
       description: 'Easy-to-use pen for precise lines, ideal for beginners and quick touch-ups.',
     },
   ],
@@ -1383,7 +1287,6 @@ export const EYESHADOW = {
       label: 'Eyeshadow Palette',
       category: 'eyeshadow_palette',
       path: `/products/eyes/eyeshadow/eyeshadow_palette`,
-      icon: 'solar:infinity-bold',
       description: 'Versatile palettes with coordinated shades for endless eye makeup looks.',
     },
     {
@@ -1392,7 +1295,6 @@ export const EYESHADOW = {
       label: 'Liquid Eyeshadow',
       category: 'liquid_eyeshadow',
       path: `/products/eyes/eyeshadow/liquid_eyeshadow`,
-      icon: 'solar:infinity-bold',
       description: 'High-pigment liquid shadows for easy application and long-lasting shimmer.',
     },
     {
@@ -1401,7 +1303,6 @@ export const EYESHADOW = {
       label: 'Glitter Eyeshadow',
       category: 'glitter_eyeshadow',
       path: `/products/eyes/eyeshadow/glitter_eyeshadow`,
-      icon: 'solar:infinity-bold',
       description: 'Sparkling glitter shadows for a bold, glamorous look on special occasions.',
     },
   ],
@@ -1420,7 +1321,6 @@ export const EYEBROWS = {
       label: 'Brow Definer',
       category: 'brow_definer',
       path: `/products/eyes/eyebrows/brow_definer`,
-      icon: 'solar:infinity-bold',
       description: 'Defines brows with precision for a well-groomed and polished appearance.',
     },
     {
@@ -1429,7 +1329,6 @@ export const EYEBROWS = {
       label: 'Brow Pencil',
       category: 'brow_pencil',
       path: `/products/eyes/eyebrows/brow_pencil`,
-      icon: 'solar:infinity-bold',
       description: 'Easy-to-use pencil for filling and shaping brows with natural-looking color.',
     },
     {
@@ -1438,7 +1337,6 @@ export const EYEBROWS = {
       label: 'Brow Gel',
       category: 'brow_gel',
       path: `/products/eyes/eyebrows/brow_gel`,
-      icon: 'solar:infinity-bold',
       description: 'Sets and tames brows, providing a long-lasting hold with a natural finish.',
     },
   ],
@@ -1457,7 +1355,6 @@ export const EYE_VALUE_SET = {
       label: 'Eyelashes',
       category: 'eyelashes',
       path: `/products/eyes/eye_value_set/eyelashes`,
-      icon: 'solar:infinity-bold',
       description: 'Enhance your eyes with faux lashes for added volume and captivating charm.',
     },
     {
@@ -1466,7 +1363,6 @@ export const EYE_VALUE_SET = {
       label: 'Eye Gift Set',
       category: 'eye_gift_set',
       path: `/products/eyes/eye_value_set/eye_gift_set`,
-      icon: 'solar:infinity-bold',
       description: "Perfect gift sets featuring popular eye products for makeup lovers' delight.",
     },
     {
@@ -1475,7 +1371,6 @@ export const EYE_VALUE_SET = {
       label: 'Eye Combo',
       category: 'eye_combo',
       path: `/products/eyes/eye_value_set/eye_combo`,
-      icon: 'solar:infinity-bold',
       description: 'Convenient sets with eye essentials for a complete, coordinated eye look.',
     },
   ],
@@ -1508,7 +1403,6 @@ export const FINISH_TYPES = {
       label: 'Matte Lipstick',
       category: 'matte_lipstick',
       path: `/products/lips/finish_types/matte_lipstick`,
-      icon: 'streamline-ultimate:make-up-lipstick',
       description: 'Velvety matte finish with long-lasting, intense color payoff everywhere.',
     },
     {
@@ -1517,7 +1411,6 @@ export const FINISH_TYPES = {
       label: 'Satin Lipstick',
       category: 'satin_lipstick',
       path: `/products/lips/finish_types/satin_lipstick`,
-      icon: 'streamline-plump:lipstick',
       description: 'Smooth, creamy texture with a luminous, semi-matte finish always.',
     },
     {
@@ -1526,7 +1419,6 @@ export const FINISH_TYPES = {
       label: 'Hi-Shine Lipstick',
       category: 'hi_shine_lipstick',
       path: `/products/lips/finish_types/hi_shine_lipstick`,
-      icon: 'icon-park-outline:lipstick',
       description: 'Glossy finish for a shiny, luscious look with rich pigment beautifully.',
     },
     {
@@ -1535,7 +1427,6 @@ export const FINISH_TYPES = {
       label: 'Lip Gloss',
       category: 'lip_gloss',
       path: `/products/lips/finish_types/lip_gloss`,
-      icon: 'emojione-v1:lipstick',
       description: 'Sheer to medium coverage with a high-shine, glossy finish flawlessly.',
     },
   ],
@@ -1554,7 +1445,6 @@ export const LIPSTICK_FORMS = {
       label: 'Liquid Lipstick',
       category: 'liquid_lipstick',
       path: `/products/lips/lipstick_forms/liquid_lipstick`,
-      icon: 'icon-park-twotone:lipstick',
       description: 'Rich, long-lasting color with a lightweight, matte finish beautifully.',
     },
     {
@@ -1563,7 +1453,6 @@ export const LIPSTICK_FORMS = {
       label: 'Powder Lipstick',
       category: 'powder_lipstick',
       path: `/products/lips/lipstick_forms/powder_lipstick`,
-      icon: 'streamline-ultimate-color:make-up-lipstick-1',
       description: 'Weightless powder formula with a soft-focus, matte effect perfectly.',
     },
     {
@@ -1572,7 +1461,6 @@ export const LIPSTICK_FORMS = {
       label: 'Crayon Lipstick',
       category: 'crayon_lipstick',
       path: `/products/lips/lipstick_forms/crayon_lipstick`,
-      icon: 'fluent-emoji-high-contrast:lipstick',
       description: 'Easy-to-apply crayon for precise lines and bold color payoff smoothly.',
     },
     {
@@ -1581,7 +1469,6 @@ export const LIPSTICK_FORMS = {
       label: 'Bullet Lipstick',
       category: 'bullet_lipstick',
       path: `/products/lips/lipstick_forms/bullet_lipstick`,
-      icon: 'icon-park-outline:lipstick-one',
       description: 'Classic bullet shape with smooth, creamy, full-coverage color always.',
     },
   ],
@@ -1600,7 +1487,6 @@ export const LONG_LASTING_LIPSTICKS = {
       label: 'Transfer Proof Lipstick',
       category: 'transfer_proof_lipstick',
       path: `/products/lips/long_lasting_lipsticks/transfer_proof_lipstick`,
-      icon: 'streamline-plump:lipstick-remix',
       description: 'Stays put all day without smudging or fading for long-lasting wear.',
     },
     {
@@ -1609,7 +1495,6 @@ export const LONG_LASTING_LIPSTICKS = {
       label: 'Water Proof Lipstick',
       category: 'water_proof_lipstick',
       path: `/products/lips/long_lasting_lipsticks/water_proof_lipstick`,
-      icon: 'streamline-ultimate-color:make-up-lipstick',
       description: 'Resistant to water and sweat, ensuring color stays vibrant always.',
     },
     {
@@ -1618,7 +1503,6 @@ export const LONG_LASTING_LIPSTICKS = {
       label: 'Lip Tint & Stain',
       category: 'lip_tint_and_stain',
       path: `/products/lips/long_lasting_lipsticks/lip_tint_and_stain`,
-      icon: 'temaki:lipstick',
       description: 'Lightweight tint with a natural finish that lasts for hours smoothly.',
     },
     {
@@ -1627,7 +1511,6 @@ export const LONG_LASTING_LIPSTICKS = {
       label: 'Smudge Proof',
       category: 'smudge_proof_lipstick',
       path: `/products/lips/long_lasting_lipsticks/smudge_proof_lipstick`,
-      icon: 'game-icons:lipstick',
       description: 'No smudging or transferring, providing a flawless look perfectly.',
     },
   ],
@@ -1646,7 +1529,6 @@ export const LIP_CARE = {
       label: 'Lip Primer & Scrub',
       category: 'lip_primer_and_scrub',
       path: `/products/lips/lip_care/lip_primer_and_scrub`,
-      icon: 'noto:lipstick',
       description: 'Preps lips for smooth application and enhances color beautifully.',
     },
     {
@@ -1655,7 +1537,6 @@ export const LIP_CARE = {
       label: 'Lipstick Fixer & Remover',
       category: 'lipstick_fixer_and_remover',
       path: `/products/lips/lip_care/lipstick_fixer_and_remover`,
-      icon: 'streamline:lipstick-remix',
       description: 'Ensures long wear and easy removal without residue effortlessly.',
     },
     {
@@ -1664,7 +1545,6 @@ export const LIP_CARE = {
       label: 'Lip Balm',
       category: 'lip_balm',
       path: `/products/lips/lip_care/lip_balm`,
-      icon: 'twemoji:lipstick',
       description: 'Deeply hydrates and protects lips from dryness and cracking.',
     },
     {
@@ -1673,7 +1553,6 @@ export const LIP_CARE = {
       label: 'Tinted Lip Balm',
       category: 'tinted_lip_balm',
       path: `/products/lips/lip_care/tinted_lip_balm`,
-      icon: 'streamline:lipstick-remix',
       description: 'Hydration with a hint of color for a natural, radiant look daily.',
     },
   ],
@@ -1692,7 +1571,6 @@ export const LIP_ENHANCERS_AND_OTHER = {
       label: 'Lip Liner',
       category: 'lip_liner',
       path: `/products/lips/lip_enhancers_and_other/lip_liner`,
-      icon: 'icon-park-solid:lipstick',
       description: 'Defines lips with precision, shaping and preventing feathering daily.',
     },
     {
@@ -1701,7 +1579,6 @@ export const LIP_ENHANCERS_AND_OTHER = {
       label: 'Lip Glitter',
       category: 'lip_glitter',
       path: `/products/lips/lip_enhancers_and_other/lip_glitter`,
-      icon: 'fluent-emoji-high-contrast:lipstick',
       description: 'Adds sparkle and shine for a glamorous, bold look on special occasions.',
     },
     {
@@ -1710,7 +1587,6 @@ export const LIP_ENHANCERS_AND_OTHER = {
       label: 'View All',
       category: 'view_all',
       path: `/products/lips/lip_enhancers_and_other/view_all`,
-      icon: 'emojione-monotone:lipstick',
       description: 'Explore the complete range of lip products for every need beautifully.',
     },
   ],
@@ -1729,7 +1605,6 @@ export const LIPSTICK_SETS_AND_COMBOS = {
       label: 'Lipstick Set',
       category: 'lipstick_set',
       path: `/products/lips/lipstick_set_and_combo/lipstick_set`,
-      icon: 'streamline-emojis:lipstick',
       description: 'Multiple shades in one set for versatile, everyday looks beautifully.',
     },
     {
@@ -1738,7 +1613,6 @@ export const LIPSTICK_SETS_AND_COMBOS = {
       label: 'Lipstick Combo',
       category: 'lipstick_combo',
       path: `/products/lips/lipstick_set_and_combo/lipstick_combo`,
-      icon: 'fxemoji:lipstick',
       description: 'Perfectly paired lip products for a complete, cohesive look always.',
     },
     {
@@ -1747,7 +1621,6 @@ export const LIPSTICK_SETS_AND_COMBOS = {
       label: 'Lip Palette',
       category: 'lip_palette',
       path: `/products/lips/lipstick_set_and_combo/lip_palette`,
-      icon: 'streamline-pixel:beauty-cosmatic-lip-stick',
       description: 'Versatile palette with various shades for creative, bold looks daily.',
     },
   ],
