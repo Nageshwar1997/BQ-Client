@@ -7,7 +7,23 @@ import useUserStore from '@/stores/user.store';
 import { Icon } from '@iconify/react';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { HoveredComponent, UserMenuIcons } from './children/grand-children';
+import { UserMenuIcons } from './children/grand-children';
+
+export const HoveredComponent = ({ index }: { index: number | null }) => {
+  if (index === null || index >= NAVBAR_CATEGORIES_DATA.length) {
+    return null;
+  }
+
+  const Component = NAVBAR_CATEGORIES_DATA[index].component;
+
+  return (
+    <div className="bg-battleship-davys-gray h-full max-w-325 rounded-xl p-px backdrop-blur-3xl">
+      <div className="text-secondary bg-secondary-invert rounded-xl p-5">
+        <Component />
+      </div>
+    </div>
+  );
+};
 
 const TopLayer = () => {
   const { runAction } = useAuthAction();
@@ -57,8 +73,6 @@ export const Navbar = () => {
   const [isContainerHovered, setIsContainerHovered] = useState<boolean>(false);
   const [isNavbarAtTop, setIsNavbarAtTop] = useState(false);
   const [isNavbarHovered, setIsNavbarHovered] = useState(false);
-
-  const levelOneCategories = NAVBAR_CATEGORIES_DATA.filter((item) => item.level === 1);
 
   // Sets the hovered index when mouse enters an element
   const handleMouseEnter = (index: number) => {
@@ -175,7 +189,7 @@ export const Navbar = () => {
           </Link>
           <div className="relative flex h-full w-full items-center justify-between gap-7 pl-4 xl:pl-6">
             <div className="flex h-full items-center gap-2" ref={navbarRef}>
-              {levelOneCategories.map((item, index) => (
+              {NAVBAR_CATEGORIES_DATA.map((item, index) => (
                 <div
                   onClick={() => item?.path && navigate(item.path)}
                   className="relative h-full"
@@ -272,10 +286,10 @@ export const Navbar = () => {
         {isMobileNavbarOpened && (
           <div className="bg-secondary-invert absolute top-16 left-0 z-50 flex h-dvh w-full flex-col">
             <div className="h-[calc(100%-64px)] grow overflow-hidden overflow-y-scroll">
-              {levelOneCategories.map((category, index) => {
+              {NAVBAR_CATEGORIES_DATA.map((category, index) => {
                 const AccordionContentComponent = category.component;
                 const isActive = activeIndices.includes(index);
-                const isLastItem = index === levelOneCategories.length - 1;
+                const isLastItem = index === NAVBAR_CATEGORIES_DATA.length - 1;
 
                 return (
                   <div key={category.id} className={`relative ${isLastItem && 'mb-36'}`}>

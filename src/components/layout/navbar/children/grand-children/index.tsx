@@ -47,22 +47,6 @@ export const Feedback = ({ forwardIndex = 0 }: { forwardIndex?: TForwardIdx }) =
   );
 };
 
-export const HoveredComponent = ({ index }: { index: number | null }) => {
-  if (index === null || index >= NAVBAR_CATEGORIES_DATA.length) {
-    return null;
-  }
-
-  const Component = NAVBAR_CATEGORIES_DATA[index].component;
-
-  return (
-    <div className="bg-battleship-davys-gray h-full max-w-325 rounded-xl p-px backdrop-blur-3xl">
-      <div className="text-secondary bg-secondary-invert rounded-xl p-5">
-        <Component />
-      </div>
-    </div>
-  );
-};
-
 export const SubCategories = ({
   subCategories,
   className = '',
