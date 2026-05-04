@@ -1,7 +1,7 @@
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
 import { FOOTER_AWARDS, FOOTER_CATEGORIES, SOCIAL_MEDIA_LINKS } from '@/constants/common.constants';
-import { useAuthAction } from '@/hooks/useAuthAction';
+import useAuthAction from '@/hooks/useAuthAction';
 import usePathParams from '@/hooks/usePathParams';
 import useThemeStore from '@/stores/theme.store';
 import { type IFooterOptionList } from '@/types/component.type';
