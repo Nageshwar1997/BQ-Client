@@ -12,7 +12,11 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { COMPONENT_MAP } from '../..';
 
-export const CategoryLabel = ({ label, path = '', className = '' }: any) => (
+export const CategoryLabel = ({
+  label,
+  path = '',
+  className = '',
+}: { label: string; path?: string } & TClassName) => (
   <p
     className={`text-battleship-davys-gray-invert mt-3 line-clamp-1 px-3 text-left text-sm leading-5 font-semibold tracking-wide uppercase md:mt-0 ${
       path ? 'cursor-pointer' : 'cursor-default'
@@ -67,7 +71,7 @@ export const SubCategories = ({
   className = '',
   l1Cat,
 }: TClassName & {
-  subCategories: (typeof NAVBAR_CATEGORIES_DATA)[number]['subCategories'][number]['subCategories'][number][];
+  subCategories: readonly (typeof NAVBAR_CATEGORIES_DATA)[number]['subCategories'][number]['subCategories'][number][];
   l1Cat?: keyof typeof HIGHLIGHTED_CATEGORIES;
 }) => {
   const { navigate } = usePathParams();

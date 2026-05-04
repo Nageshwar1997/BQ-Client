@@ -1,6 +1,7 @@
 import Button from '@/components/ui/Button';
 import LinearGradient from '@/components/ui/LinearGradient';
 import {
+  ABOUT,
   FOR_YOU,
   NAVBAR_CATEGORIES_DATA,
   NAVBAR_TOP_LAYER_DATA,
@@ -11,11 +12,13 @@ import useUserStore from '@/stores/user.store';
 import { Icon } from '@iconify/react';
 import { useEffect, useRef, useState, type FC } from 'react';
 import { Link } from 'react-router-dom';
+import About from './children/About';
 import ForYou from './children/ForYou';
 import { HoveredComponent, UserMenuIcons } from './children/grand-children';
 
 export const COMPONENT_MAP: Record<(typeof NAVBAR_CATEGORIES_DATA)[number]['category'], FC> = {
   [FOR_YOU.category]: ForYou,
+  [ABOUT.category]: About,
 } as const;
 
 const TopLayer = () => {

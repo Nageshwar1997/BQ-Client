@@ -1,3 +1,27 @@
+export const TESTIMONIALS = [
+  {
+    content:
+      'I absolutely love the range of products on this website! The quality is unmatched, and my skin has never felt better. I always get compliments!',
+    name: 'Nageshwar Pawar',
+    role: 'Founder',
+    image: '/images/company/teams/male/Nageshwar-Pawar.webp',
+  },
+  {
+    content:
+      'Finding the perfect shade was so easy. The product descriptions and customer reviews helped me make the right choice. Fast delivery too!',
+    name: 'Manjusha Magar',
+    role: 'Co-Founder',
+    image: '/images/company/teams/female/Manjusha-Magar.webp',
+  },
+  {
+    content:
+      'I love how the products feel on my skin. They are lightweight, long-lasting, and make me feel confident all day. Highly recommended!',
+    name: 'Deepika Padukone',
+    role: 'CEO',
+    image: '/images/company/teams/female/Deepika-Padukone.webp',
+  },
+] as const;
+
 export const SOCIAL_COMMUNITY = [
   { icon: 'solar:play-linear', label: "Founder's Story: Watch Now", path: '/press-media#watch' },
   { icon: 'solar:chat-dots-linear', label: 'Chat with our team', path: '/contact' },
@@ -126,6 +150,8 @@ export const HIGHLIGHTED_CATEGORIES = {
   skin: ['serum', 'sunscreen', 'aquaholic', 'face_pack'],
 };
 
+/* ================================ FOR YOU START ================================ */
+
 export const NEW = {
   id: 1,
   level: 2,
@@ -217,17 +243,11 @@ export const FOR_YOU = {
   subCategories: [NEW, SUGAR_PLAY, OFFERS, BLOGS],
 } as const;
 
-export const NAVBAR_CATEGORIES_DATA = [
-  FOR_YOU,
-  //   lips,
-  // eyes,
-  // face,
-  // skin,
-  //   collections,
-  // about,
-];
+/* ================================ FOR YOU END ================================ */
 
-export const company = {
+/* ================================ ABOUT START ================================ */
+
+export const COMPANY = {
   id: 1,
   level: 2,
   label: 'Company',
@@ -239,7 +259,7 @@ export const company = {
       label: 'About Us',
       category: 'about_us',
       path: '/about-us',
-      //   icon: AboutUsIcon,
+      icon: 'solar:infinity-bold',
       description: 'Learn about our journey, mission, and values that define our brand.',
     },
     {
@@ -248,7 +268,7 @@ export const company = {
       label: 'Mission Vision Values',
       category: 'mission_vision_values',
       path: '/mission-vision',
-      //   icon: MissionVisionValuesIcon,
+      icon: 'solar:infinity-bold',
       description: "Discover our purpose, vision, and values driving our company's success.",
     },
     {
@@ -257,7 +277,7 @@ export const company = {
       label: 'Team',
       category: 'team',
       path: '/teams',
-      //   icon: TeamIcon,
+      icon: 'solar:infinity-bold',
       description: 'Meet our talented team committed to delivering excellence every day.',
     },
     {
@@ -266,13 +286,13 @@ export const company = {
       label: 'Contact Us',
       category: 'contact_us',
       path: '/contact',
-      //   icon: ContactUsIcon,
+      icon: 'solar:infinity-bold',
       description: 'Get in touch with us for inquiries, support, or collaboration opportunities.',
     },
   ],
-};
+} as const;
 
-export const press = {
+export const PRESS = {
   id: 2,
   level: 2,
   label: 'Press',
@@ -284,7 +304,7 @@ export const press = {
       label: 'Newsroom',
       category: 'newsroom',
       path: '/press-media',
-      //   icon: NewsRoomIcon,
+      icon: 'solar:infinity-bold',
       description: 'Stay updated with our latest news, events, and media announcements.',
     },
     {
@@ -293,13 +313,13 @@ export const press = {
       label: 'Awards',
       category: 'awards',
       path: '/awards',
-      //   icon: AwardsIcon,
+      icon: 'solar:infinity-bold',
       description: 'Explore the recognitions and awards we have received for excellence.',
     },
   ],
-};
+} as const;
 
-export const careers = {
+export const CAREERS = {
   id: 3,
   level: 2,
   label: 'Careers',
@@ -311,7 +331,7 @@ export const careers = {
       label: 'Values/Culture',
       category: 'values_culture',
       path: '/values-and-culture',
-      //   icon: ValuesAndCultureIcon,
+      icon: 'solar:infinity-bold',
       description: 'Experience our vibrant culture driven by values of growth and innovation.',
     },
     {
@@ -320,7 +340,7 @@ export const careers = {
       label: 'Openings',
       category: 'openings',
       path: '/careers',
-      //   icon: OpeningsIcon,
+      icon: 'solar:infinity-bold',
       description: 'Discover exciting career opportunities and join our dynamic team today.',
     },
     {
@@ -329,13 +349,13 @@ export const careers = {
       label: 'Retail/E-Commerce',
       category: 'retail_e_commerce',
       path: '/retail-and-e-commerce',
-      //   icon: RetailECommerceIcon,
+      icon: 'solar:infinity-bold',
       description: 'Explore roles in retail and e-commerce driving our digital success.',
     },
   ],
-};
+} as const;
 
-export const trust_center = {
+export const TRUST_CENTER = {
   id: 4,
   level: 2,
   label: 'Trust Center & Legal',
@@ -347,7 +367,7 @@ export const trust_center = {
       label: 'Compliance',
       category: 'compliance',
       path: '/cookie-policy',
-      //   icon: ComplianceIcon,
+      icon: 'solar:infinity-bold',
       description: 'Understand our compliance standards ensuring trust and transparency.',
     },
     {
@@ -356,7 +376,7 @@ export const trust_center = {
       label: 'Privacy/Policy',
       category: 'privacy_policy',
       path: '/privacy-policy',
-      //   icon: PrivacyPolicyIcon,
+      icon: 'solar:infinity-bold',
       description: 'Learn about our privacy practices and data protection commitments.',
     },
     {
@@ -365,8 +385,29 @@ export const trust_center = {
       label: 'Terms & Conditions',
       category: 'terms_and_conditions',
       path: '/terms-conditions',
-      //   icon: TermsAndConditionsIcon,
+      icon: 'solar:infinity-bold',
       description: 'Review our terms and conditions for using our products and services.',
     },
   ],
-};
+} as const;
+
+export const ABOUT = {
+  id: 7,
+  level: 1,
+  label: 'About',
+  category: 'about',
+  path: '/about',
+  subCategories: [COMPANY, CAREERS, PRESS, TRUST_CENTER],
+} as const;
+
+/* ================================ ABOUT END ================================ */
+
+export const NAVBAR_CATEGORIES_DATA = [
+  FOR_YOU,
+  //   lips,
+  // eyes,
+  // face,
+  // skin,
+  //   collections,
+  ABOUT,
+];
