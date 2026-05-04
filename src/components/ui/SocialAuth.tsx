@@ -1,9 +1,11 @@
 import envs from '@/envs';
 import { Link } from 'react-router-dom';
+import LastRouteTracker from '../LastRouteTracker';
 
 const SocialAuth = () => {
   return (
     <div className="flex items-center justify-center gap-4">
+      <LastRouteTracker />
       {['Google', 'Github', 'Linkedin'].map((name, index) => (
         <Link
           to={`${envs.urls.gateway}/api/v1/user-service/auth/login/oauth/${name.toLowerCase()}/redirect`}
