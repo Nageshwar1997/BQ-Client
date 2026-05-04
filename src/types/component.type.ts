@@ -1,6 +1,6 @@
 import type { FOOTER_CATEGORIES } from '@/constants/common.constants';
 import type { IconProps } from '@iconify/react';
-import type { ButtonHTMLAttributes, JSX, ReactNode } from 'react';
+import type { ButtonHTMLAttributes, JSX, ReactNode, RefObject, VideoHTMLAttributes } from 'react';
 import type { TGradientPos, TScrollDirection } from './hook.type';
 
 export type TClassName = { className?: string };
@@ -68,7 +68,9 @@ export interface IFooterOptionList {
   isFirst?: boolean;
 }
 
-export const FOOTER_AWARDS = [
-  { name: 'Forbes', key: 'Forbes' },
-  { name: 'Talent Award', key: 'TalentAward' },
-];
+export type TForwardIdx = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+
+export interface IVideoPlayer extends TClassName {
+  videoProps: VideoHTMLAttributes<HTMLVideoElement>;
+  ref?: RefObject<HTMLVideoElement | null>;
+}
