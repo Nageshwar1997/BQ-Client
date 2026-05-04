@@ -1,10 +1,10 @@
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
-import { FOOTER_CATEGORIES, SOCIAL_MEDIA_LINKS } from '@/constants/common.constants';
+import { FOOTER_AWARDS, FOOTER_CATEGORIES, SOCIAL_MEDIA_LINKS } from '@/constants/common.constants';
 import { useAuthAction } from '@/hooks/useAuthAction';
 import usePathParams from '@/hooks/usePathParams';
 import useThemeStore from '@/stores/theme.store';
-import { FOOTER_AWARDS, type IFooterOptionList } from '@/types/component.type';
+import { type IFooterOptionList } from '@/types/component.type';
 import { Icon } from '@iconify/react';
 import { Link } from 'react-router-dom';
 import { Fragment } from 'react/jsx-runtime';
