@@ -3,7 +3,8 @@ import type { TClassName } from '@/types/component.type';
 import { Icon } from '@iconify/react';
 
 const Theme = ({ className }: TClassName) => {
-  const { theme, toggleTheme } = useThemeStore();
+  const theme = useThemeStore((s) => s.theme);
+  const toggleTheme = useThemeStore((s) => s.toggleTheme);
 
   return (
     <button type="button" onClick={toggleTheme} className={`cursor-pointer ${className || ''}`}>

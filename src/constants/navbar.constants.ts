@@ -5,7 +5,6 @@ import Face from '@/components/layout/navbar/children/Face';
 import ForYou from '@/components/layout/navbar/children/ForYou';
 import Lips from '@/components/layout/navbar/children/Lips';
 import Skin from '@/components/layout/navbar/children/Skin';
-import type { FC } from 'react';
 
 export const TESTIMONIALS = [
   {
@@ -149,7 +148,7 @@ export const HIGHLIGHTED_CATEGORIES = {
     'compact_powder',
   ],
   lips: [
-    'lip_gloss',
+    'hi_shine_lipstick',
     'liquid_lipstick',
     'lip_tint_and_stain',
     'lipstick_fixer_and_remover',
@@ -249,6 +248,7 @@ export const FOR_YOU = {
   label: 'For You',
   category: 'for_you',
   path: '/products/for_you',
+  component: ForYou,
   subCategories: [NEW, SUGAR_PLAY, OFFERS, BLOGS],
 } as const;
 
@@ -406,6 +406,7 @@ export const ABOUT = {
   label: 'About',
   category: 'about',
   path: '/about',
+  component: About,
   subCategories: [COMPANY, CAREERS, PRESS, TRUST_CENTER],
 } as const;
 
@@ -704,6 +705,7 @@ export const COLLECTIONS = {
   label: 'Collections',
   category: 'collections',
   path: '/products/collections',
+  component: Collections,
   subCategories: [BATH_AND_BODY, SUGAR_POP, HAIR_CARE, GIFTING],
 } as const;
 
@@ -892,6 +894,7 @@ export const SKIN = {
   label: 'Skin',
   category: 'skin',
   path: '/products/skin',
+  component: Skin,
   subCategories: [MOISTURIZERS, CLEANSING_AND_EXFOLIATION, NATURES_BLEND, FACE_MASK],
 } as const;
 
@@ -1238,6 +1241,7 @@ export const FACE = {
   label: 'Face',
   category: 'face',
   path: '/products/face',
+  component: Face,
   subCategories: [
     FACE_MAKEUP,
     TRADITIONAL_AND_ESSENTIALS,
@@ -1483,6 +1487,7 @@ export const EYES = {
   label: 'Eyes',
   category: 'eyes',
   path: '/products/eyes',
+  component: Eyes,
   subCategories: [KOHL_AND_KAJAL, MASCARAS, EYELINERS, EYESHADOW, EYEBROWS, EYE_VALUE_SET],
 };
 
@@ -1503,7 +1508,7 @@ export const FINISH_TYPES = {
       label: 'Matte Lipstick',
       category: 'matte_lipstick',
       path: `/products/lips/finish_types/matte_lipstick`,
-      icon: 'solar:infinity-bold',
+      icon: 'streamline-ultimate:make-up-lipstick',
       description: 'Velvety matte finish with long-lasting, intense color payoff everywhere.',
     },
     {
@@ -1512,7 +1517,7 @@ export const FINISH_TYPES = {
       label: 'Satin Lipstick',
       category: 'satin_lipstick',
       path: `/products/lips/finish_types/satin_lipstick`,
-      icon: 'solar:infinity-bold',
+      icon: 'streamline-plump:lipstick',
       description: 'Smooth, creamy texture with a luminous, semi-matte finish always.',
     },
     {
@@ -1521,7 +1526,7 @@ export const FINISH_TYPES = {
       label: 'Hi-Shine Lipstick',
       category: 'hi_shine_lipstick',
       path: `/products/lips/finish_types/hi_shine_lipstick`,
-      icon: 'solar:infinity-bold',
+      icon: 'icon-park-outline:lipstick',
       description: 'Glossy finish for a shiny, luscious look with rich pigment beautifully.',
     },
     {
@@ -1530,7 +1535,7 @@ export const FINISH_TYPES = {
       label: 'Lip Gloss',
       category: 'lip_gloss',
       path: `/products/lips/finish_types/lip_gloss`,
-      icon: 'solar:infinity-bold',
+      icon: 'emojione-v1:lipstick',
       description: 'Sheer to medium coverage with a high-shine, glossy finish flawlessly.',
     },
   ],
@@ -1549,7 +1554,7 @@ export const LIPSTICK_FORMS = {
       label: 'Liquid Lipstick',
       category: 'liquid_lipstick',
       path: `/products/lips/lipstick_forms/liquid_lipstick`,
-      icon: 'solar:infinity-bold',
+      icon: 'icon-park-twotone:lipstick',
       description: 'Rich, long-lasting color with a lightweight, matte finish beautifully.',
     },
     {
@@ -1558,7 +1563,7 @@ export const LIPSTICK_FORMS = {
       label: 'Powder Lipstick',
       category: 'powder_lipstick',
       path: `/products/lips/lipstick_forms/powder_lipstick`,
-      icon: 'solar:infinity-bold',
+      icon: 'streamline-ultimate-color:make-up-lipstick-1',
       description: 'Weightless powder formula with a soft-focus, matte effect perfectly.',
     },
     {
@@ -1567,7 +1572,7 @@ export const LIPSTICK_FORMS = {
       label: 'Crayon Lipstick',
       category: 'crayon_lipstick',
       path: `/products/lips/lipstick_forms/crayon_lipstick`,
-      icon: 'solar:infinity-bold',
+      icon: 'fluent-emoji-high-contrast:lipstick',
       description: 'Easy-to-apply crayon for precise lines and bold color payoff smoothly.',
     },
     {
@@ -1576,7 +1581,7 @@ export const LIPSTICK_FORMS = {
       label: 'Bullet Lipstick',
       category: 'bullet_lipstick',
       path: `/products/lips/lipstick_forms/bullet_lipstick`,
-      icon: 'solar:infinity-bold',
+      icon: 'icon-park-outline:lipstick-one',
       description: 'Classic bullet shape with smooth, creamy, full-coverage color always.',
     },
   ],
@@ -1595,7 +1600,7 @@ export const LONG_LASTING_LIPSTICKS = {
       label: 'Transfer Proof Lipstick',
       category: 'transfer_proof_lipstick',
       path: `/products/lips/long_lasting_lipsticks/transfer_proof_lipstick`,
-      icon: 'solar:infinity-bold',
+      icon: 'streamline-plump:lipstick-remix',
       description: 'Stays put all day without smudging or fading for long-lasting wear.',
     },
     {
@@ -1604,7 +1609,7 @@ export const LONG_LASTING_LIPSTICKS = {
       label: 'Water Proof Lipstick',
       category: 'water_proof_lipstick',
       path: `/products/lips/long_lasting_lipsticks/water_proof_lipstick`,
-      icon: 'solar:infinity-bold',
+      icon: 'streamline-ultimate-color:make-up-lipstick',
       description: 'Resistant to water and sweat, ensuring color stays vibrant always.',
     },
     {
@@ -1613,7 +1618,7 @@ export const LONG_LASTING_LIPSTICKS = {
       label: 'Lip Tint & Stain',
       category: 'lip_tint_and_stain',
       path: `/products/lips/long_lasting_lipsticks/lip_tint_and_stain`,
-      icon: 'solar:infinity-bold',
+      icon: 'temaki:lipstick',
       description: 'Lightweight tint with a natural finish that lasts for hours smoothly.',
     },
     {
@@ -1622,7 +1627,7 @@ export const LONG_LASTING_LIPSTICKS = {
       label: 'Smudge Proof',
       category: 'smudge_proof_lipstick',
       path: `/products/lips/long_lasting_lipsticks/smudge_proof_lipstick`,
-      icon: 'solar:infinity-bold',
+      icon: 'game-icons:lipstick',
       description: 'No smudging or transferring, providing a flawless look perfectly.',
     },
   ],
@@ -1641,7 +1646,7 @@ export const LIP_CARE = {
       label: 'Lip Primer & Scrub',
       category: 'lip_primer_and_scrub',
       path: `/products/lips/lip_care/lip_primer_and_scrub`,
-      icon: 'solar:infinity-bold',
+      icon: 'noto:lipstick',
       description: 'Preps lips for smooth application and enhances color beautifully.',
     },
     {
@@ -1650,7 +1655,7 @@ export const LIP_CARE = {
       label: 'Lipstick Fixer & Remover',
       category: 'lipstick_fixer_and_remover',
       path: `/products/lips/lip_care/lipstick_fixer_and_remover`,
-      icon: 'solar:infinity-bold',
+      icon: 'streamline:lipstick-remix',
       description: 'Ensures long wear and easy removal without residue effortlessly.',
     },
     {
@@ -1659,7 +1664,7 @@ export const LIP_CARE = {
       label: 'Lip Balm',
       category: 'lip_balm',
       path: `/products/lips/lip_care/lip_balm`,
-      icon: 'solar:infinity-bold',
+      icon: 'twemoji:lipstick',
       description: 'Deeply hydrates and protects lips from dryness and cracking.',
     },
     {
@@ -1668,7 +1673,7 @@ export const LIP_CARE = {
       label: 'Tinted Lip Balm',
       category: 'tinted_lip_balm',
       path: `/products/lips/lip_care/tinted_lip_balm`,
-      icon: 'solar:infinity-bold',
+      icon: 'streamline:lipstick-remix',
       description: 'Hydration with a hint of color for a natural, radiant look daily.',
     },
   ],
@@ -1687,7 +1692,7 @@ export const LIP_ENHANCERS_AND_OTHER = {
       label: 'Lip Liner',
       category: 'lip_liner',
       path: `/products/lips/lip_enhancers_and_other/lip_liner`,
-      icon: 'solar:infinity-bold',
+      icon: 'icon-park-solid:lipstick',
       description: 'Defines lips with precision, shaping and preventing feathering daily.',
     },
     {
@@ -1696,7 +1701,7 @@ export const LIP_ENHANCERS_AND_OTHER = {
       label: 'Lip Glitter',
       category: 'lip_glitter',
       path: `/products/lips/lip_enhancers_and_other/lip_glitter`,
-      icon: 'solar:infinity-bold',
+      icon: 'fluent-emoji-high-contrast:lipstick',
       description: 'Adds sparkle and shine for a glamorous, bold look on special occasions.',
     },
     {
@@ -1705,7 +1710,7 @@ export const LIP_ENHANCERS_AND_OTHER = {
       label: 'View All',
       category: 'view_all',
       path: `/products/lips/lip_enhancers_and_other/view_all`,
-      icon: 'solar:infinity-bold',
+      icon: 'emojione-monotone:lipstick',
       description: 'Explore the complete range of lip products for every need beautifully.',
     },
   ],
@@ -1724,7 +1729,7 @@ export const LIPSTICK_SETS_AND_COMBOS = {
       label: 'Lipstick Set',
       category: 'lipstick_set',
       path: `/products/lips/lipstick_set_and_combo/lipstick_set`,
-      icon: 'solar:infinity-bold',
+      icon: 'streamline-emojis:lipstick',
       description: 'Multiple shades in one set for versatile, everyday looks beautifully.',
     },
     {
@@ -1733,7 +1738,7 @@ export const LIPSTICK_SETS_AND_COMBOS = {
       label: 'Lipstick Combo',
       category: 'lipstick_combo',
       path: `/products/lips/lipstick_set_and_combo/lipstick_combo`,
-      icon: 'solar:infinity-bold',
+      icon: 'fxemoji:lipstick',
       description: 'Perfectly paired lip products for a complete, cohesive look always.',
     },
     {
@@ -1742,7 +1747,7 @@ export const LIPSTICK_SETS_AND_COMBOS = {
       label: 'Lip Palette',
       category: 'lip_palette',
       path: `/products/lips/lipstick_set_and_combo/lip_palette`,
-      icon: 'solar:infinity-bold',
+      icon: 'streamline-pixel:beauty-cosmatic-lip-stick',
       description: 'Versatile palette with various shades for creative, bold looks daily.',
     },
   ],
@@ -1754,6 +1759,7 @@ export const LIPS = {
   label: 'Lips',
   category: 'lips',
   path: '/products/lips',
+  component: Lips,
   subCategories: [
     FINISH_TYPES,
     LIPSTICK_FORMS,
@@ -1767,13 +1773,3 @@ export const LIPS = {
 /* ================================ LIPS END ================================ */
 
 export const NAVBAR_CATEGORIES_DATA = [FOR_YOU, LIPS, EYES, FACE, SKIN, COLLECTIONS, ABOUT];
-
-export const COMPONENT_MAP: Record<(typeof NAVBAR_CATEGORIES_DATA)[number]['category'], FC> = {
-  [FOR_YOU.category]: ForYou,
-  [SKIN.category]: Skin,
-  [FACE.category]: Face,
-  [EYES.category]: Eyes,
-  [LIPS.category]: Lips,
-  [COLLECTIONS.category]: Collections,
-  [ABOUT.category]: About,
-} as const;

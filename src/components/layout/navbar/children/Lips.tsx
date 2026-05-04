@@ -13,7 +13,7 @@ const Lips = () => {
                 category.category,
               )
                 ? category.category === 'lip_care'
-                  ? 'lg:border-transfer xl:border-battleship-davys-gray lg:pb-0 xl:pb-2'
+                  ? 'lg:border-transparent 2xl:border-battleship-davys-gray lg:pb-0 2xl:pb-2'
                   : 'lg:pb-2'
                 : 'lg:border-none'
             }`}
@@ -23,7 +23,7 @@ const Lips = () => {
           </div>
         );
       })}
-      <div className="shadow-secondary-invert col-span-2 hidden max-h-46 w-full items-center gap-5 shadow-lg lg:flex xl:max-h-62.5">
+      <div className="shadow-secondary-invert col-span-2 hidden max-h-46 w-full items-center gap-5 shadow-lg xl:flex xl:max-h-62.5">
         {['Lipstick1', 'Lipstick2'].map((name) => (
           <img
             key={name}

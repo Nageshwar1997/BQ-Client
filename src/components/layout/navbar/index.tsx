@@ -1,10 +1,6 @@
 import Button from '@/components/ui/Button';
 import LinearGradient from '@/components/ui/LinearGradient';
-import {
-  COMPONENT_MAP,
-  NAVBAR_CATEGORIES_DATA,
-  NAVBAR_TOP_LAYER_DATA,
-} from '@/constants/navbar.constants';
+import { NAVBAR_CATEGORIES_DATA, NAVBAR_TOP_LAYER_DATA } from '@/constants/navbar.constants';
 import useAuthAction from '@/hooks/useAuthAction';
 import usePathParams from '@/hooks/usePathParams';
 import useUserStore from '@/stores/user.store';
@@ -277,7 +273,7 @@ export const Navbar = () => {
           <div className="bg-secondary-invert absolute top-16 left-0 z-50 flex h-dvh w-full flex-col">
             <div className="h-[calc(100%-64px)] grow overflow-hidden overflow-y-scroll">
               {levelOneCategories.map((category, index) => {
-                const AccordionContentComponent = COMPONENT_MAP[category.category];
+                const AccordionContentComponent = category.component;
                 const isActive = activeIndices.includes(index);
                 const isLastItem = index === levelOneCategories.length - 1;
 

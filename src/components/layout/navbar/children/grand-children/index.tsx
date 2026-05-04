@@ -1,10 +1,6 @@
 import GradientText from '@/components/ui/GradientText';
 import Theme from '@/components/ui/Theme';
-import {
-  COMPONENT_MAP,
-  NAVBAR_CATEGORIES_DATA,
-  type HIGHLIGHTED_CATEGORIES,
-} from '@/constants/navbar.constants';
+import { NAVBAR_CATEGORIES_DATA, type HIGHLIGHTED_CATEGORIES } from '@/constants/navbar.constants';
 import useAuthAction from '@/hooks/useAuthAction';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import usePathParams from '@/hooks/usePathParams';
@@ -56,9 +52,7 @@ export const HoveredComponent = ({ index }: { index: number | null }) => {
     return null;
   }
 
-  const category = NAVBAR_CATEGORIES_DATA[index].category;
-
-  const Component = COMPONENT_MAP[category];
+  const Component = NAVBAR_CATEGORIES_DATA[index].component;
 
   return (
     <div className="bg-battleship-davys-gray h-full max-w-325 rounded-xl p-px backdrop-blur-3xl">
@@ -94,7 +88,7 @@ export const SubCategories = ({
               <div
                 className={`bg-secondary-invert group-hover:bg-primary-invert flex size-10 shrink-0 items-center justify-center rounded-lg xl:size-12 ${
                   isHighlighted
-                    ? 'bg-accent-duo group-hover:shadow-primary-btn-hover [&>svg]:fill-white'
+                    ? 'bg-accent-duo group-hover:shadow-primary-btn-hover [&>svg]:text-white'
                     : 'shadow-battleship-davys-gray shadow-inner'
                 }`}
               >
