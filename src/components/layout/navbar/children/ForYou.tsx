@@ -61,14 +61,14 @@ const ForYou = () => {
                   <CategoryLabel
                     label={category.heading as string}
                     path={category.path}
-                    className="border-battleship-davys-gray/30 mt-0! border-b px-0! py-1 text-left"
+                    className="border-battleship-davys-gray/30 base:text-sm mt-0! border border-b px-0! py-1 text-left text-xs"
                   />
                   <div className="flex cursor-pointer items-center justify-between gap-4 pt-1">
                     <div className="flex flex-col items-start gap-1">
                       <CategoryLabel
                         label={category.label}
                         path={path}
-                        className="text-silver-jet mt-0! px-0! text-left capitalize"
+                        className="text-silver-jet base:text-sm mt-0! px-0! text-left text-xs capitalize"
                       />
                       <p className="text-battleship-davys-gray-invert pt-1 text-left text-[10.5px] leading-4.5 sm:text-xs md:text-sm">
                         {category.description}
