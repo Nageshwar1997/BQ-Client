@@ -1,3 +1,4 @@
+import type { FOOTER_CATEGORIES } from '@/constants/common.constants';
 import type { IconProps } from '@iconify/react';
 import type { ButtonHTMLAttributes, JSX, ReactNode } from 'react';
 import type { TGradientPos, TScrollDirection } from './hook.type';
@@ -60,3 +61,14 @@ export interface IModalWrapper extends TClassName {
   containerProps?: JSX.IntrinsicElements['div'];
   header?: { title?: string; showCloseIcon?: boolean };
 }
+
+export interface IFooterOptionList {
+  options: (typeof FOOTER_CATEGORIES)[number]['options'];
+  title?: string;
+  isFirst?: boolean;
+}
+
+export const FOOTER_AWARDS = [
+  { name: 'Forbes', key: 'Forbes' },
+  { name: 'Talent Award', key: 'TalentAward' },
+];

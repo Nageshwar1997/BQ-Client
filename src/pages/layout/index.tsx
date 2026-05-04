@@ -1,5 +1,6 @@
-import AuthModal from '@/components/layout/modals/AuthModal';
 import LastRouteTracker from '@/components/LastRouteTracker';
+import { Footer } from '@/components/layout/footer';
+import AuthModal from '@/components/layout/modals/AuthModal';
 import useAutoRetry from '@/hooks/useAutoRetry';
 import { Outlet } from 'react-router-dom';
 
@@ -10,6 +11,7 @@ const Layout = () => {
       <LastRouteTracker />
       <AuthModal />
       <Outlet />
+      <Footer />
     </>
   );
 };
