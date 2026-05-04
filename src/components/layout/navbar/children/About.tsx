@@ -10,7 +10,7 @@ const categories = [
   [CAREERS, TRUST_CENTER],
 ];
 
-export const About = () => {
+const About = () => {
   return (
     <div className="base:grid-cols-2 base:gap-3 grid grid-cols-1 content-start justify-start gap-2 p-4 md:grid-cols-3 md:gap-4 lg:gap-5 lg:p-0">
       {categories.map((item, i) => (
@@ -56,3 +56,5 @@ export const About = () => {
     </div>
   );
 };
+
+export default About;
