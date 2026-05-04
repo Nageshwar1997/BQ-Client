@@ -1,18 +1,22 @@
 import { LAST_ROUTE_KEY } from '@/constants/common.constants';
+import usePathParams from '@/hooks/usePathParams';
+import useQueryParams from '@/hooks/useQueryParams';
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 
 const LastRouteTracker = () => {
-  const location = useLocation();
+  const { pathname, search, hash } = usePathParams();
+  const { removeParams } = useQueryParams();
 
   useEffect(() => {
     // ❌ auth pages ignore
-    if (location.pathname.startsWith('/auth')) return;
+    if (pathname.startsWith('/auth')) return;
 
-    const path = location.pathname + location.search + location.hash;
+    const path = pathname + (search ? `?${search}` : '') + hash;
+
+    removeParams('login');
 
     sessionStorage.setItem(LAST_ROUTE_KEY, path);
-  }, [location]);
+  }, [pathname, search, hash]);
 
   return null;
 };

@@ -6,6 +6,7 @@ import usePathParams from '@/hooks/usePathParams';
 import useQueryParams from '@/hooks/useQueryParams';
 import { useGetSessionUser } from '@/services/user-service/user.service.query';
 import useUserStore from '@/stores/user.store';
+import { getLastRoute } from '@/utils/common.util';
 
 const OAuth = () => {
   const [readyToCall, setReadyToCall] = useState(false);
@@ -28,13 +29,14 @@ const OAuth = () => {
 
   useEffect(() => {
     if (user) {
-      navigate('/');
+      navigate(getLastRoute(), { replace: true });
       return;
     }
     if (data?.user) {
       setUser(data.user);
+      navigate(getLastRoute(), { replace: true });
     }
-  }, [data?.user]);
+  }, [data?.user, navigate, setUser, user]);
 
   const showLoading = !queryParams.error && (!readyToCall || isLoading);
   const showError = isError || queryParams.error;

@@ -6,23 +6,23 @@ import Radio from '@/components/ui/inputs/Radio';
 import SocialAuth from '@/components/ui/SocialAuth';
 import { FORM_DEFAULT_VALUES } from '@/constants/form.constants';
 import { LOGIN_INPUT_MAP_DATA, PASSWORD_KEYS } from '@/constants/input.constants';
-import useQueryParams from '@/hooks/useQueryParams';
 import { loginSchema } from '@/schemas/user.schema';
 import { useManualLogin } from '@/services/user-service/auth.service.query';
 import useActionsStore from '@/stores/action.store';
 import useUserStore from '@/stores/user.store';
 import type { TLogin } from '@/types/schema.type';
+import { getLastRoute } from '@/utils/common.util';
 import { setErrorToForm } from '@/utils/form.util';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import BorderGradient from '../containers/BorderGradient';
 
 const LoginForm = () => {
   /* ================= 1. External / Store Hooks ================= */
   const setUser = useUserStore((s) => s.setUser);
-  const { queryParams, removeParams } = useQueryParams();
+  const navigate = useNavigate();
 
   /* ================= 2. API / Query Hooks ================= */
   const { isPending, mutateAsync } = useManualLogin();
@@ -56,7 +56,7 @@ const LoginForm = () => {
         const { runAllActions } = useActionsStore.getState();
         await runAllActions();
 
-        if (queryParams.login) removeParams('login');
+        navigate(getLastRoute(), { replace: true });
       },
 
       onError: ({ fieldErrors }) => setErrorToForm(setError, fieldErrors),
