@@ -11,14 +11,14 @@ import {
 } from '@/constants/navbar.constants';
 import { CategoryLabel, SubCategories } from './grand-children';
 
-const categories = [
-  [FACE_MAKEUP, TRADITIONAL_AND_ESSENTIALS],
-  [CHEEKS_AND_GLOW, SETTING_AND_FINISHING],
-  [FOUNDATIONS_BY_FINISH, FOUNDATIONS_BY_SKIN_TYPE],
-  [PRIMERS_AND_REMOVERS, BRONZERS_AND_CONTOURS, CONCEALERS_AND_CORRECTORS],
-];
-
 const Face = () => {
+  const categories = [
+    [FACE_MAKEUP, TRADITIONAL_AND_ESSENTIALS],
+    [CHEEKS_AND_GLOW, SETTING_AND_FINISHING],
+    [FOUNDATIONS_BY_FINISH, FOUNDATIONS_BY_SKIN_TYPE],
+    [PRIMERS_AND_REMOVERS, BRONZERS_AND_CONTOURS, CONCEALERS_AND_CORRECTORS],
+  ];
+
   return (
     <div className="base:grid-cols-2 base:gap-3 grid h-full w-full grid-cols-1 content-center gap-2 p-4 md:grid-cols-3 md:gap-4 lg:grid-cols-4 lg:gap-5 lg:p-0">
       {categories.map((item, i) => (

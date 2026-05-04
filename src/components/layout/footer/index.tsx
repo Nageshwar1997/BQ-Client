@@ -109,14 +109,12 @@ export const Footer = () => {
         </div>
       </div>
       <div className="my-6 flex w-full flex-col items-center justify-center gap-5 lg:flex-row-reverse">
-        <div className="flex items-center gap-5">
-          {SOCIAL_MEDIA_LINKS.map((item) => {
-            return (
-              <Link to={item.url} key={item.id} target="_blank" className="cursor-pointer">
-                <Icon icon={item.icon} className={`size-5 md:size-6 ${item.className ?? ''}`} />
-              </Link>
-            );
-          })}
+        <div className="flex items-center gap-5 px-[2%]">
+          {SOCIAL_MEDIA_LINKS.map((item) => (
+            <Link to={item.url} key={item.id} target="_blank" className="cursor-pointer">
+              <Icon icon={item.icon} className={`size-5 md:size-6 ${item.className ?? ''}`} />
+            </Link>
+          ))}
         </div>
         <div className="text-battleship-davys-gray-invert px-[10%] text-center text-sm">
           &copy; {year}&nbsp; Beautinique Pvt. Ltd. All rights reserved. Designed with{' '}

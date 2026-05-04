@@ -1,3 +1,12 @@
+import About from '@/components/layout/navbar/children/About';
+import Collections from '@/components/layout/navbar/children/Collection';
+import Eyes from '@/components/layout/navbar/children/Eyes';
+import Face from '@/components/layout/navbar/children/Face';
+import ForYou from '@/components/layout/navbar/children/ForYou';
+import Lips from '@/components/layout/navbar/children/Lips';
+import Skin from '@/components/layout/navbar/children/Skin';
+import type { FC } from 'react';
+
 export const TESTIMONIALS = [
   {
     content:
@@ -1758,3 +1767,13 @@ export const LIPS = {
 /* ================================ LIPS END ================================ */
 
 export const NAVBAR_CATEGORIES_DATA = [FOR_YOU, LIPS, EYES, FACE, SKIN, COLLECTIONS, ABOUT];
+
+export const COMPONENT_MAP: Record<(typeof NAVBAR_CATEGORIES_DATA)[number]['category'], FC> = {
+  [FOR_YOU.category]: ForYou,
+  [SKIN.category]: Skin,
+  [FACE.category]: Face,
+  [EYES.category]: Eyes,
+  [LIPS.category]: Lips,
+  [COLLECTIONS.category]: Collections,
+  [ABOUT.category]: About,
+} as const;

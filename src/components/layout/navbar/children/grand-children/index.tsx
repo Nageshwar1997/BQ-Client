@@ -1,6 +1,10 @@
 import GradientText from '@/components/ui/GradientText';
 import Theme from '@/components/ui/Theme';
-import { NAVBAR_CATEGORIES_DATA, type HIGHLIGHTED_CATEGORIES } from '@/constants/navbar.constants';
+import {
+  COMPONENT_MAP,
+  NAVBAR_CATEGORIES_DATA,
+  type HIGHLIGHTED_CATEGORIES,
+} from '@/constants/navbar.constants';
 import useAuthAction from '@/hooks/useAuthAction';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import usePathParams from '@/hooks/usePathParams';
@@ -10,7 +14,6 @@ import { getTodaysFeedback, isHighlightedCategory } from '@/utils/common.util';
 import { Icon } from '@iconify/react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { COMPONENT_MAP } from '../..';
 
 export const CategoryLabel = ({
   label,
@@ -48,7 +51,7 @@ export const Feedback = ({ forwardIndex = 0 }: { forwardIndex?: TForwardIdx }) =
   );
 };
 
-export const HoveredComponent = ({ index }: { index: number }) => {
+export const HoveredComponent = ({ index }: { index: number | null }) => {
   if (index === null || index >= NAVBAR_CATEGORIES_DATA.length) {
     return null;
   }
@@ -89,7 +92,7 @@ export const SubCategories = ({
           >
             {subCategory.icon && (
               <div
-                className={`bg-secondary-invert group-hover:bg-primary-invert flex size-10 items-center justify-center rounded-lg xl:size-12 ${
+                className={`bg-secondary-invert group-hover:bg-primary-invert flex size-10 shrink-0 items-center justify-center rounded-lg xl:size-12 ${
                   isHighlighted
                     ? 'bg-accent-duo group-hover:shadow-primary-btn-hover [&>svg]:fill-white'
                     : 'shadow-battleship-davys-gray shadow-inner'

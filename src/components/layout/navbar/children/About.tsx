@@ -5,12 +5,11 @@ import { Link } from 'react-router-dom';
 import { TestimonialCarousel } from '../../carousels/TestimonialCarousel';
 import { CategoryLabel, SubCategories } from './grand-children';
 
-const categories = [
-  [COMPANY, PRESS],
-  [CAREERS, TRUST_CENTER],
-];
-
 const About = () => {
+  const categories = [
+    [COMPANY, PRESS],
+    [CAREERS, TRUST_CENTER],
+  ];
   return (
     <div className="base:grid-cols-2 base:gap-3 grid grid-cols-1 content-start justify-start gap-2 p-4 md:grid-cols-3 md:gap-4 lg:gap-5 lg:p-0">
       {categories.map((item, i) => (
