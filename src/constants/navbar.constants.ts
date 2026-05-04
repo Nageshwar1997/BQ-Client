@@ -700,12 +700,1061 @@ export const COLLECTIONS = {
 
 /* ================================ COLLECTIONS START ================================ */
 
-export const NAVBAR_CATEGORIES_DATA = [
-  FOR_YOU,
-  //   lips,
-  // eyes,
-  // face,
-  // skin,
-  COLLECTIONS,
-  ABOUT,
-];
+/* ================================ SKIN START ================================ */
+
+export const MOISTURIZERS = {
+  id: 1,
+  level: 2,
+  label: 'Moisturizers',
+  category: 'moisturizers',
+  path: `/products/skin/moisturizers`,
+  subCategories: [
+    {
+      id: 1,
+      level: 3,
+      label: 'Night Cream',
+      category: 'night_cream',
+      path: `/products/skin/moisturizers/night_cream`,
+      icon: 'solar:infinity-bold',
+      description: 'Deeply hydrates and repairs tired skin while you sleep.',
+    },
+    {
+      id: 2,
+      level: 3,
+      label: 'Eye Cream',
+      category: 'eye_cream',
+      path: `/products/skin/moisturizers/eye_cream`,
+      icon: 'solar:infinity-bold',
+      description: 'Reduces puffiness, dark circles, and fine lines quickly.',
+    },
+    {
+      id: 3,
+      level: 3,
+      label: 'Serum',
+      category: 'serum',
+      path: `/products/skin/moisturizers/serum`,
+      icon: 'solar:infinity-bold',
+      description: 'Nourishes skin with essential vitamins for a radiant glow.',
+    },
+    {
+      id: 4,
+      level: 3,
+      label: 'Skincare Kit',
+      category: 'skincare_kit',
+      path: `/products/skin/moisturizers/skincare_kit`,
+      icon: 'solar:infinity-bold',
+      description: 'Complete care sets for all skin types and beauty concerns.',
+    },
+  ],
+} as const;
+
+export const CLEANSING_AND_EXFOLIATION = {
+  id: 2,
+  level: 2,
+  label: 'Cleansing & Exfoliation',
+  category: 'cleansing_and_exfoliation',
+  path: `/products/skin/cleansing_and_exfoliation`,
+  subCategories: [
+    {
+      id: 1,
+      level: 3,
+      label: 'Cleanser',
+      category: 'cleanser',
+      path: `/products/skin/cleansing_and_exfoliation/cleanser`,
+      icon: 'solar:infinity-bold',
+      description: 'Gently removes dirt, excess oil, and makeup for clean skin.',
+    },
+    {
+      id: 2,
+      level: 3,
+      label: 'Face Wash',
+      category: 'face_wash',
+      path: `/products/skin/cleansing_and_exfoliation/face_wash`,
+      icon: 'solar:infinity-bold',
+      description: 'Refreshing daily wash for soft and healthy-looking skin tone.',
+    },
+    {
+      id: 3,
+      level: 3,
+      label: 'Exfoliator & Scrub',
+      category: 'exfoliator_and_scrub',
+      path: `/products/skin/cleansing_and_exfoliation/exfoliator_and_scrub`,
+      icon: 'solar:infinity-bold',
+      description: 'Removes dead skin cells to reveal a fresh and smooth glow.',
+    },
+    {
+      id: 4,
+      level: 3,
+      label: 'Sunscreen',
+      category: 'sunscreen',
+      path: `/products/skin/cleansing_and_exfoliation/sunscreen`,
+      icon: 'solar:infinity-bold',
+      description: 'Shields skin from harmful UV rays and sun damage daily.',
+    },
+  ],
+} as const;
+
+export const NATURES_BLEND = {
+  id: 3,
+  level: 2,
+  label: "Nature's Blend",
+  category: 'natures_blend',
+  path: `/products/skin/natures_blend`,
+  subCategories: [
+    {
+      id: 1,
+      level: 3,
+      label: 'Aquaholic',
+      category: 'aquaholic',
+      path: `/products/skin/natures_blend/aquaholic`,
+      icon: 'solar:infinity-bold',
+      description: 'Hydration-rich formulas to deeply quench dry, dull skin.',
+    },
+    {
+      id: 2,
+      level: 3,
+      label: 'Coffee Culture',
+      category: 'coffee_culture',
+      path: `/products/skin/natures_blend/coffee_culture`,
+      icon: 'solar:infinity-bold',
+      description: 'Energizing coffee extracts for a firm, smooth, youthful feel.',
+    },
+    {
+      id: 3,
+      level: 3,
+      label: 'Citrus Got Real',
+      category: 'citrus_got_real',
+      path: `/products/skin/natures_blend/citrus_got_real`,
+      icon: 'solar:infinity-bold',
+      description: 'Vitamin C boost for brighter, fresher, healthier-looking skin.',
+    },
+    {
+      id: 4,
+      level: 3,
+      label: 'View All',
+      category: 'view_all',
+      path: `/products/skin/natures_blend/view_all`,
+      icon: 'solar:infinity-bold',
+      description: 'Explore all skincare essentials, perfectly tailored for you.',
+    },
+  ],
+} as const;
+
+export const FACE_MASK = {
+  id: 4,
+  level: 2,
+  label: 'Face Mask',
+  category: 'face_mask',
+  path: `/products/skin/face_mask`,
+  subCategories: [
+    {
+      id: 1,
+      level: 3,
+      label: 'Sheet Mask',
+      category: 'sheet_mask',
+      path: `/products/skin/face_mask/sheet_mask`,
+      icon: 'solar:infinity-bold',
+      description: 'Instant hydration and glowing effect in just a few minutes.',
+    },
+    {
+      id: 2,
+      level: 3,
+      label: 'Face Pack',
+      category: 'face_pack',
+      path: `/products/skin/face_mask/face_pack`,
+      icon: 'solar:infinity-bold',
+      description: 'Detox and refresh your skin naturally with herbal extracts.',
+    },
+    {
+      id: 3,
+      level: 3,
+      label: 'View All',
+      category: 'view_all',
+      path: `/products/skin/face_mask/view_all`,
+      icon: 'solar:infinity-bold',
+      description: 'Browse all skincare must-haves for a flawless glowing look.',
+    },
+  ],
+} as const;
+
+export const SKIN = {
+  id: 5,
+  level: 1,
+  label: 'Skin',
+  category: 'skin',
+  path: '/products/skin',
+  subCategories: [MOISTURIZERS, CLEANSING_AND_EXFOLIATION, NATURES_BLEND, FACE_MASK],
+} as const;
+
+/* ================================ SKIN END ================================ */
+
+/* ================================ FACE START ================================ */
+
+export const FACE_MAKEUP = {
+  id: 1,
+  level: 2,
+  label: 'Face Makeup',
+  category: 'face_makeup',
+  path: `/products/face/face_makeup`,
+  subCategories: [
+    {
+      id: 1,
+      level: 3,
+      label: 'Foundation',
+      category: 'foundation',
+      path: `/products/face/face_makeup/foundation`,
+      icon: 'solar:infinity-bold',
+      description: 'Provides coverage for a flawless base with a natural, smooth finish.',
+    },
+    {
+      id: 2,
+      level: 3,
+      label: 'BB Cream',
+      category: 'bb_cream',
+      path: `/products/face/face_makeup/bb_cream`,
+      icon: 'solar:infinity-bold',
+      description: 'Lightweight formula that hydrates, evens skin tone, and protects skin.',
+    },
+    {
+      id: 3,
+      level: 3,
+      label: 'Compact Powder',
+      category: 'compact_powder',
+      path: `/products/face/face_makeup/compact_powder`,
+      icon: 'solar:infinity-bold',
+      description: 'Sets makeup, reduces shine, and ensures a long-lasting matte finish.',
+    },
+    {
+      id: 4,
+      level: 3,
+      label: 'Loose Powder',
+      category: 'loose_powder',
+      path: `/products/face/face_makeup/loose_powder`,
+      icon: 'solar:infinity-bold',
+      description: 'Finely milled powder for a smooth, shine-free finish that lasts all day.',
+    },
+    {
+      id: 5,
+      level: 3,
+      label: 'Banana Powder',
+      category: 'banana_powder',
+      path: `/products/face/face_makeup/banana_powder`,
+      icon: 'solar:infinity-bold',
+      description: 'Brightens the complexion, reduces shine, and sets makeup beautifully.',
+    },
+    {
+      id: 6,
+      level: 3,
+      label: 'SPF Foundation',
+      category: 'spf_foundation',
+      path: `/products/face/face_makeup/spf_foundation`,
+      icon: 'solar:infinity-bold',
+      description: 'Combines sun protection, coverage for a flawless, radiant look.',
+    },
+  ],
+};
+
+export const TRADITIONAL_AND_ESSENTIALS = {
+  id: 2,
+  level: 2,
+  label: 'Traditional & Essentials',
+  category: 'traditional_and_essentials',
+  path: `/products/face/traditional_and_essentials`,
+  subCategories: [
+    {
+      id: 1,
+      level: 3,
+      label: 'Sindoor',
+      category: 'sindoor',
+      path: `/products/face/traditional_and_essentials/sindoor`,
+      icon: 'solar:infinity-bold',
+      description: 'Symbolic powder for the hairline, enhancing traditional elegance.',
+    },
+  ],
+};
+
+export const CHEEKS_AND_GLOW = {
+  id: 3,
+  level: 2,
+  label: 'Cheeks & Glow',
+  category: 'cheeks_and_glow',
+  path: `/products/face/cheeks_and_glow`,
+  subCategories: [
+    {
+      id: 1,
+      level: 3,
+      label: 'Highlighter',
+      category: 'highlighter',
+      path: `/products/face/cheeks_and_glow/highlighter`,
+      icon: 'solar:infinity-bold',
+      description: 'Adds a radiant, enhancing features with a luminous, dewy look.',
+    },
+    {
+      id: 2,
+      level: 3,
+      label: 'Liquid Highlighter',
+      category: 'liquid_highlighter',
+      path: `/products/face/cheeks_and_glow/liquid_highlighter`,
+      icon: 'solar:infinity-bold',
+      description: 'Blendable liquid formula for a glowing, buildable, natural look.',
+    },
+    {
+      id: 3,
+      level: 3,
+      label: 'Blush',
+      category: 'blush',
+      path: `/products/face/cheeks_and_glow/blush`,
+      icon: 'solar:infinity-bold',
+      description: 'Adds a pop of color to cheeks, creating a youthful, healthy look.',
+    },
+    {
+      id: 4,
+      level: 3,
+      label: 'Cheek Stain',
+      category: 'cheek_stain',
+      path: `/products/face/cheeks_and_glow/cheek_stain`,
+      icon: 'solar:infinity-bold',
+      description: 'Long-lasting tint for a natural, flushed look that stays vibrant.',
+    },
+  ],
+};
+
+export const SETTING_AND_FINISHING = {
+  id: 4,
+  level: 2,
+  label: 'Setting & Finishing',
+  category: 'setting_and_finishing',
+  path: `/products/face/setting_and_finishing`,
+  subCategories: [
+    {
+      id: 1,
+      level: 3,
+      label: 'Setting Spray',
+      category: 'setting_spray',
+      path: `/products/face/setting_and_finishing/setting_spray`,
+      icon: 'solar:infinity-bold',
+      description: 'Locks makeup for long wear, maintaining a fresh look without.',
+    },
+    {
+      id: 2,
+      level: 3,
+      label: 'Compact',
+      category: 'compact',
+      path: `/products/face/setting_and_finishing/compact`,
+      icon: 'solar:infinity-bold',
+      description: 'Portable powder for touch-ups, controls shine, sets makeup place.',
+    },
+    {
+      id: 3,
+      level: 3,
+      label: 'Fixer',
+      category: 'fixer',
+      path: `/products/face/setting_and_finishing/fixer`,
+      icon: 'solar:infinity-bold',
+      description: 'Enhances makeup longevity, ensuring a smudge-proof, flawless.',
+    },
+  ],
+};
+
+export const FOUNDATIONS_BY_FINISH = {
+  id: 5,
+  level: 2,
+  label: 'Foundations by Finish',
+  category: 'foundations_by_finish',
+  path: `/products/face/foundations_by_finish`,
+  subCategories: [
+    {
+      id: 1,
+      level: 3,
+      label: 'Liquid Foundation',
+      category: 'liquid_foundation',
+      path: `/products/face/foundations_by_finish/liquid_foundation`,
+      icon: 'solar:infinity-bold',
+      description: 'Buildable coverage with a natural finish that blends seamlessly skin.',
+    },
+    {
+      id: 2,
+      level: 3,
+      label: 'Matte Foundation',
+      category: 'matte_foundation',
+      path: `/products/face/foundations_by_finish/matte_foundation`,
+      icon: 'solar:infinity-bold',
+      description: 'Oil-absorbing formula for a shine-free, velvety matte look lasts.',
+    },
+    {
+      id: 3,
+      level: 3,
+      label: 'Water Resistant Foundation',
+      category: 'water_resistant_foundation',
+      path: `/products/face/foundations_by_finish/water_resistant_foundation`,
+      icon: 'solar:infinity-bold',
+      description: 'Long-wearing, water-resistant foundation that stays flawless day.',
+    },
+    {
+      id: 4,
+      level: 3,
+      label: 'High Coverage Foundation',
+      category: 'high_coverage_foundation',
+      path: `/products/face/foundations_by_finish/high_coverage_foundation`,
+      icon: 'solar:infinity-bold',
+      description: 'Conceals imperfections with full coverage, ensuring flawless look.',
+    },
+    {
+      id: 5,
+      level: 3,
+      label: 'Stick Foundation',
+      category: 'stick_foundation',
+      path: `/products/face/foundations_by_finish/stick_foundation`,
+      icon: 'solar:infinity-bold',
+      description: 'Convenient stick format for easy application and buildable coverage.',
+    },
+  ],
+};
+
+export const FOUNDATIONS_BY_SKIN_TYPE = {
+  id: 6,
+  level: 2,
+  label: 'Foundations by Skin Type',
+  category: 'foundations_by_skin_type',
+  path: `/products/face/foundations_by_skin_type`,
+  subCategories: [
+    {
+      id: 1,
+      level: 3,
+      label: 'Best for Dry Skin',
+      category: 'best_for_dry_skin',
+      path: `/products/face/foundations_by_skin_type/best_for_dry_skin`,
+      icon: 'solar:infinity-bold',
+      description: 'Hydrating formula that nourishes and enhances radiance for dry skin.',
+    },
+    {
+      id: 2,
+      level: 3,
+      label: 'Best for Oily Skin',
+      category: 'best_for_oily_skin',
+      path: `/products/face/foundations_by_skin_type/best_for_oily_skin`,
+      icon: 'solar:infinity-bold',
+      description: 'Oil-controlling foundation that reduces shine, prevents breakouts.',
+    },
+  ],
+};
+
+export const PRIMERS_AND_REMOVERS = {
+  id: 7,
+  level: 2,
+  label: 'Primers & Removers',
+  category: 'primers_and_removers',
+  path: `/products/face/primers_and_removers`,
+  subCategories: [
+    {
+      id: 1,
+      level: 3,
+      label: 'Makeup Remover',
+      category: 'makeup_remover',
+      path: `/products/face/primers_and_removers/makeup_remover`,
+      icon: 'solar:infinity-bold',
+      description: 'Gently removes makeup while hydrating and refreshing the skin.',
+    },
+    {
+      id: 2,
+      level: 3,
+      label: 'Primer',
+      category: 'primer',
+      path: `/products/face/primers_and_removers/primer`,
+      icon: 'solar:infinity-bold',
+      description: 'Prepares skin, creating a smooth base for long-lasting makeup.',
+    },
+  ],
+};
+
+export const BRONZERS_AND_CONTOURS = {
+  id: 8,
+  level: 2,
+  label: 'Bronzers & Contours',
+  category: 'bronzers_and_contours',
+  path: `/products/face/bronzers_and_contours`,
+  subCategories: [
+    {
+      id: 1,
+      level: 3,
+      label: 'Bronzer',
+      category: 'bronzer',
+      path: `/products/face/bronzers_and_contours/bronzer`,
+      icon: 'solar:infinity-bold',
+      description: 'Adds warmth and a sun-kissed glow for a radiant complexion.',
+    },
+    {
+      id: 2,
+      level: 3,
+      label: 'Contour',
+      category: 'contour',
+      path: `/products/face/bronzers_and_contours/contour`,
+      icon: 'solar:infinity-bold',
+      description: 'Defines features with shadows, enhancing structure and depth.',
+    },
+  ],
+};
+
+export const CONCEALERS_AND_CORRECTORS = {
+  id: 9,
+  level: 2,
+  label: 'Concealers & Correctors',
+  category: 'concealers_and_correctors',
+  path: `/products/face/concealers_and_correctors`,
+  subCategories: [
+    {
+      id: 1,
+      level: 3,
+      label: 'Color Concealer',
+      category: 'color_concealer',
+      path: `/products/face/concealers_and_correctors/color_concealer`,
+      icon: 'solar:infinity-bold',
+      description: 'It covers flaws with precision, delivering a flawless, airbrushed.',
+    },
+    {
+      id: 2,
+      level: 3,
+      label: 'Color Corrector',
+      category: 'color_corrector',
+      path: `/products/face/concealers_and_correctors/color_corrector`,
+      icon: 'solar:infinity-bold',
+      description: 'Neutralizes discoloration, balancing skin tone for a radiant finish.',
+    },
+  ],
+};
+
+export const FACE = {
+  id: 4,
+  level: 1,
+  label: 'Face',
+  category: 'face',
+  path: '/products/face',
+  subCategories: [
+    FACE_MAKEUP,
+    TRADITIONAL_AND_ESSENTIALS,
+    CHEEKS_AND_GLOW,
+    SETTING_AND_FINISHING,
+    PRIMERS_AND_REMOVERS,
+    BRONZERS_AND_CONTOURS,
+    CONCEALERS_AND_CORRECTORS,
+    FOUNDATIONS_BY_SKIN_TYPE,
+    FOUNDATIONS_BY_FINISH,
+  ],
+};
+
+/* ================================ FACE END ================================ */
+
+/* ================================ EYES START ================================ */
+
+export const KOHL_AND_KAJAL = {
+  id: 1,
+  level: 2,
+  label: 'Kohl & Kajal',
+  category: 'kohl_and_kajal',
+  path: `/products/eyes/kohl_and_kajal`,
+  subCategories: [
+    {
+      id: 1,
+      level: 3,
+      label: 'Kohl',
+      category: 'kohl',
+      path: `/products/eyes/kohl_and_kajal/kohl`,
+      icon: 'solar:infinity-bold',
+      description: 'Intensely pigmented kohls for bold, long-lasting eye definition all day.',
+    },
+    {
+      id: 2,
+      level: 3,
+      label: 'Kajal',
+      category: 'kajal',
+      path: `/products/eyes/kohl_and_kajal/kajal`,
+      icon: 'solar:infinity-bold',
+      description: 'Smooth kajals for a dramatic look, perfect for waterline application.',
+    },
+    {
+      id: 3,
+      level: 3,
+      label: 'Smudge Proof Kajal',
+      category: 'smudge_proof_kajal',
+      path: `/products/eyes/kohl_and_kajal/smudge_proof_kajal`,
+      icon: 'solar:infinity-bold',
+      description: 'Long-lasting, smudge-proof kajal for sharp, defined eyes all day long.',
+    },
+  ],
+};
+
+export const MASCARAS = {
+  id: 2,
+  level: 2,
+  label: 'Mascaras',
+  category: 'mascaras',
+  path: `/products/eyes/mascaras`,
+  subCategories: [
+    {
+      id: 1,
+      level: 3,
+      label: 'Volumizing Mascara',
+      category: 'volumizing_mascara',
+      path: `/products/eyes/mascaras/volumizing_mascara`,
+      icon: 'solar:infinity-bold',
+      description: 'Boosts lash volume for a fuller, more dramatic look with each coat.',
+    },
+    {
+      id: 2,
+      level: 3,
+      label: 'Curl Lengthening Mascara',
+      category: 'curl_lengthening_mascara',
+      path: `/products/eyes/mascaras/curl_lengthening_mascara`,
+      icon: 'solar:infinity-bold',
+      description: 'Lifts and curls lashes for a wide-eyed look with added length and volume.',
+    },
+    {
+      id: 3,
+      level: 3,
+      label: 'Waterproof Mascara',
+      category: 'waterproof_mascara',
+      path: `/products/eyes/mascaras/waterproof_mascara`,
+      icon: 'solar:infinity-bold',
+      description: 'Water-resistant formula for long-lasting wear without smudging or flaking.',
+    },
+  ],
+};
+
+export const EYELINERS = {
+  id: 3,
+  level: 2,
+  label: 'Eyeliners',
+  category: 'eyeliners',
+  path: `/products/eyes/eyeliners`,
+  subCategories: [
+    {
+      id: 1,
+      level: 3,
+      label: 'Liquid Eyeliner',
+      category: 'liquid_eyeliner',
+      path: `/products/eyes/eyeliners/liquid_eyeliner`,
+      icon: 'solar:infinity-bold',
+      description: 'Precision tip for sharp lines, perfect for bold cat-eye or winged looks.',
+    },
+    {
+      id: 2,
+      level: 3,
+      label: 'Gel Eyeliner',
+      category: 'gel_eyeliner',
+      path: `/products/eyes/eyeliners/gel_eyeliner`,
+      icon: 'solar:infinity-bold',
+      description: 'Creamy, blendable gel eyeliner for versatile looks, from bold to subtle.',
+    },
+    {
+      id: 3,
+      level: 3,
+      label: 'Pen Eyeliner',
+      category: 'pen_eyeliner',
+      path: `/products/eyes/eyeliners/pen_eyeliner`,
+      icon: 'solar:infinity-bold',
+      description: 'Easy-to-use pen for precise lines, ideal for beginners and quick touch-ups.',
+    },
+  ],
+};
+
+export const EYESHADOW = {
+  id: 4,
+  level: 2,
+  label: 'Eyeshadow',
+  category: 'eyeshadow',
+  path: `/products/eyes/eyeshadow`,
+  subCategories: [
+    {
+      id: 1,
+      level: 3,
+      label: 'Eyeshadow Palette',
+      category: 'eyeshadow_palette',
+      path: `/products/eyes/eyeshadow/eyeshadow_palette`,
+      icon: 'solar:infinity-bold',
+      description: 'Versatile palettes with coordinated shades for endless eye makeup looks.',
+    },
+    {
+      id: 2,
+      level: 3,
+      label: 'Liquid Eyeshadow',
+      category: 'liquid_eyeshadow',
+      path: `/products/eyes/eyeshadow/liquid_eyeshadow`,
+      icon: 'solar:infinity-bold',
+      description: 'High-pigment liquid shadows for easy application and long-lasting shimmer.',
+    },
+    {
+      id: 3,
+      level: 3,
+      label: 'Glitter Eyeshadow',
+      category: 'glitter_eyeshadow',
+      path: `/products/eyes/eyeshadow/glitter_eyeshadow`,
+      icon: 'solar:infinity-bold',
+      description: 'Sparkling glitter shadows for a bold, glamorous look on special occasions.',
+    },
+  ],
+};
+
+export const EYEBROWS = {
+  id: 5,
+  level: 2,
+  label: 'Eyebrows',
+  category: 'eyebrows',
+  path: `/products/eyes/eyebrows`,
+  subCategories: [
+    {
+      id: 1,
+      level: 3,
+      label: 'Brow Definer',
+      category: 'brow_definer',
+      path: `/products/eyes/eyebrows/brow_definer`,
+      icon: 'solar:infinity-bold',
+      description: 'Defines brows with precision for a well-groomed and polished appearance.',
+    },
+    {
+      id: 2,
+      level: 3,
+      label: 'Brow Pencil',
+      category: 'brow_pencil',
+      path: `/products/eyes/eyebrows/brow_pencil`,
+      icon: 'solar:infinity-bold',
+      description: 'Easy-to-use pencil for filling and shaping brows with natural-looking color.',
+    },
+    {
+      id: 3,
+      level: 3,
+      label: 'Brow Gel',
+      category: 'brow_gel',
+      path: `/products/eyes/eyebrows/brow_gel`,
+      icon: 'solar:infinity-bold',
+      description: 'Sets and tames brows, providing a long-lasting hold with a natural finish.',
+    },
+  ],
+};
+
+export const EYE_VALUE_SET = {
+  id: 6,
+  level: 2,
+  label: 'Eye Value Set',
+  category: 'eye_value_set',
+  path: `/products/eyes/eye_value_set`,
+  subCategories: [
+    {
+      id: 1,
+      level: 3,
+      label: 'Eyelashes',
+      category: 'eyelashes',
+      path: `/products/eyes/eye_value_set/eyelashes`,
+      icon: 'solar:infinity-bold',
+      description: 'Enhance your eyes with faux lashes for added volume and captivating charm.',
+    },
+    {
+      id: 2,
+      level: 3,
+      label: 'Eye Gift Set',
+      category: 'eye_gift_set',
+      path: `/products/eyes/eye_value_set/eye_gift_set`,
+      icon: 'solar:infinity-bold',
+      description: "Perfect gift sets featuring popular eye products for makeup lovers' delight.",
+    },
+    {
+      id: 3,
+      level: 3,
+      label: 'Eye Combo',
+      category: 'eye_combo',
+      path: `/products/eyes/eye_value_set/eye_combo`,
+      icon: 'solar:infinity-bold',
+      description: 'Convenient sets with eye essentials for a complete, coordinated eye look.',
+    },
+  ],
+};
+
+export const EYES = {
+  id: 3,
+  level: 1,
+  label: 'Eyes',
+  category: 'eyes',
+  path: '/products/eyes',
+  subCategories: [KOHL_AND_KAJAL, MASCARAS, EYELINERS, EYESHADOW, EYEBROWS, EYE_VALUE_SET],
+};
+
+/* ================================ EYES END ================================ */
+
+/* ================================ LIPS START ================================ */
+
+export const FINISH_TYPES = {
+  id: 1,
+  level: 2,
+  label: 'Finish Types',
+  category: 'finish_types',
+  path: `/products/lips/finish_types`,
+  subCategories: [
+    {
+      id: 1,
+      level: 3,
+      label: 'Matte Lipstick',
+      category: 'matte_lipstick',
+      path: `/products/lips/finish_types/matte_lipstick`,
+      icon: 'solar:infinity-bold',
+      description: 'Velvety matte finish with long-lasting, intense color payoff everywhere.',
+    },
+    {
+      id: 2,
+      level: 3,
+      label: 'Satin Lipstick',
+      category: 'satin_lipstick',
+      path: `/products/lips/finish_types/satin_lipstick`,
+      icon: 'solar:infinity-bold',
+      description: 'Smooth, creamy texture with a luminous, semi-matte finish always.',
+    },
+    {
+      id: 3,
+      level: 3,
+      label: 'Hi-Shine Lipstick',
+      category: 'hi_shine_lipstick',
+      path: `/products/lips/finish_types/hi_shine_lipstick`,
+      icon: 'solar:infinity-bold',
+      description: 'Glossy finish for a shiny, luscious look with rich pigment beautifully.',
+    },
+    {
+      id: 4,
+      level: 3,
+      label: 'Lip Gloss',
+      category: 'lip_gloss',
+      path: `/products/lips/finish_types/lip_gloss`,
+      icon: 'solar:infinity-bold',
+      description: 'Sheer to medium coverage with a high-shine, glossy finish flawlessly.',
+    },
+  ],
+};
+
+export const LIPSTICK_FORMS = {
+  id: 2,
+  level: 2,
+  label: 'Lipstick Forms',
+  category: 'lipstick_forms',
+  path: `/products/lips/lipstick_forms`,
+  subCategories: [
+    {
+      id: 1,
+      level: 3,
+      label: 'Liquid Lipstick',
+      category: 'liquid_lipstick',
+      path: `/products/lips/lipstick_forms/liquid_lipstick`,
+      icon: 'solar:infinity-bold',
+      description: 'Rich, long-lasting color with a lightweight, matte finish beautifully.',
+    },
+    {
+      id: 2,
+      level: 3,
+      label: 'Powder Lipstick',
+      category: 'powder_lipstick',
+      path: `/products/lips/lipstick_forms/powder_lipstick`,
+      icon: 'solar:infinity-bold',
+      description: 'Weightless powder formula with a soft-focus, matte effect perfectly.',
+    },
+    {
+      id: 3,
+      level: 3,
+      label: 'Crayon Lipstick',
+      category: 'crayon_lipstick',
+      path: `/products/lips/lipstick_forms/crayon_lipstick`,
+      icon: 'solar:infinity-bold',
+      description: 'Easy-to-apply crayon for precise lines and bold color payoff smoothly.',
+    },
+    {
+      id: 4,
+      level: 3,
+      label: 'Bullet Lipstick',
+      category: 'bullet_lipstick',
+      path: `/products/lips/lipstick_forms/bullet_lipstick`,
+      icon: 'solar:infinity-bold',
+      description: 'Classic bullet shape with smooth, creamy, full-coverage color always.',
+    },
+  ],
+};
+
+export const LONG_LASTING_LIPSTICKS = {
+  id: 3,
+  level: 2,
+  label: 'Long-Lasting Lipsticks',
+  category: 'long_lasting_lipsticks',
+  path: `/products/lips/long_lasting_lipsticks`,
+  subCategories: [
+    {
+      id: 1,
+      level: 3,
+      label: 'Transfer Proof Lipstick',
+      category: 'transfer_proof_lipstick',
+      path: `/products/lips/long_lasting_lipsticks/transfer_proof_lipstick`,
+      icon: 'solar:infinity-bold',
+      description: 'Stays put all day without smudging or fading for long-lasting wear.',
+    },
+    {
+      id: 2,
+      level: 3,
+      label: 'Water Proof Lipstick',
+      category: 'water_proof_lipstick',
+      path: `/products/lips/long_lasting_lipsticks/water_proof_lipstick`,
+      icon: 'solar:infinity-bold',
+      description: 'Resistant to water and sweat, ensuring color stays vibrant always.',
+    },
+    {
+      id: 3,
+      level: 3,
+      label: 'Lip Tint & Stain',
+      category: 'lip_tint_and_stain',
+      path: `/products/lips/long_lasting_lipsticks/lip_tint_and_stain`,
+      icon: 'solar:infinity-bold',
+      description: 'Lightweight tint with a natural finish that lasts for hours smoothly.',
+    },
+    {
+      id: 4,
+      level: 3,
+      label: 'Smudge Proof',
+      category: 'smudge_proof_lipstick',
+      path: `/products/lips/long_lasting_lipsticks/smudge_proof_lipstick`,
+      icon: 'solar:infinity-bold',
+      description: 'No smudging or transferring, providing a flawless look perfectly.',
+    },
+  ],
+};
+
+export const LIP_CARE = {
+  id: 4,
+  level: 2,
+  label: 'Lip Care',
+  category: 'lip_care',
+  path: `/products/lips/lip_care`,
+  subCategories: [
+    {
+      id: 1,
+      level: 3,
+      label: 'Lip Primer & Scrub',
+      category: 'lip_primer_and_scrub',
+      path: `/products/lips/lip_care/lip_primer_and_scrub`,
+      icon: 'solar:infinity-bold',
+      description: 'Preps lips for smooth application and enhances color beautifully.',
+    },
+    {
+      id: 2,
+      level: 3,
+      label: 'Lipstick Fixer & Remover',
+      category: 'lipstick_fixer_and_remover',
+      path: `/products/lips/lip_care/lipstick_fixer_and_remover`,
+      icon: 'solar:infinity-bold',
+      description: 'Ensures long wear and easy removal without residue effortlessly.',
+    },
+    {
+      id: 3,
+      level: 3,
+      label: 'Lip Balm',
+      category: 'lip_balm',
+      path: `/products/lips/lip_care/lip_balm`,
+      icon: 'solar:infinity-bold',
+      description: 'Deeply hydrates and protects lips from dryness and cracking.',
+    },
+    {
+      id: 4,
+      level: 3,
+      label: 'Tinted Lip Balm',
+      category: 'tinted_lip_balm',
+      path: `/products/lips/lip_care/tinted_lip_balm`,
+      icon: 'solar:infinity-bold',
+      description: 'Hydration with a hint of color for a natural, radiant look daily.',
+    },
+  ],
+};
+
+export const LIP_ENHANCERS_AND_OTHER = {
+  id: 5,
+  level: 2,
+  label: 'Lip Enhancers & Other',
+  category: 'lip_enhancers_and_other',
+  path: `/products/lips/lip_enhancers_and_other`,
+  subCategories: [
+    {
+      id: 1,
+      level: 3,
+      label: 'Lip Liner',
+      category: 'lip_liner',
+      path: `/products/lips/lip_enhancers_and_other/lip_liner`,
+      icon: 'solar:infinity-bold',
+      description: 'Defines lips with precision, shaping and preventing feathering daily.',
+    },
+    {
+      id: 2,
+      level: 3,
+      label: 'Lip Glitter',
+      category: 'lip_glitter',
+      path: `/products/lips/lip_enhancers_and_other/lip_glitter`,
+      icon: 'solar:infinity-bold',
+      description: 'Adds sparkle and shine for a glamorous, bold look on special occasions.',
+    },
+    {
+      id: 3,
+      level: 3,
+      label: 'View All',
+      category: 'view_all',
+      path: `/products/lips/lip_enhancers_and_other/view_all`,
+      icon: 'solar:infinity-bold',
+      description: 'Explore the complete range of lip products for every need beautifully.',
+    },
+  ],
+};
+
+export const LIPSTICK_SETS_AND_COMBOS = {
+  id: 6,
+  level: 2,
+  label: 'Lipstick Set & Combo',
+  category: 'lipstick_set_and_combo',
+  path: `/products/lips/lipstick_set_and_combo`,
+  subCategories: [
+    {
+      id: 1,
+      level: 3,
+      label: 'Lipstick Set',
+      category: 'lipstick_set',
+      path: `/products/lips/lipstick_set_and_combo/lipstick_set`,
+      icon: 'solar:infinity-bold',
+      description: 'Multiple shades in one set for versatile, everyday looks beautifully.',
+    },
+    {
+      id: 2,
+      level: 3,
+      label: 'Lipstick Combo',
+      category: 'lipstick_combo',
+      path: `/products/lips/lipstick_set_and_combo/lipstick_combo`,
+      icon: 'solar:infinity-bold',
+      description: 'Perfectly paired lip products for a complete, cohesive look always.',
+    },
+    {
+      id: 3,
+      level: 3,
+      label: 'Lip Palette',
+      category: 'lip_palette',
+      path: `/products/lips/lipstick_set_and_combo/lip_palette`,
+      icon: 'solar:infinity-bold',
+      description: 'Versatile palette with various shades for creative, bold looks daily.',
+    },
+  ],
+};
+
+export const LIPS = {
+  id: 2,
+  level: 1,
+  label: 'Lips',
+  category: 'lips',
+  path: '/products/lips',
+  subCategories: [
+    FINISH_TYPES,
+    LIPSTICK_FORMS,
+    LONG_LASTING_LIPSTICKS,
+    LIP_CARE,
+    LIP_ENHANCERS_AND_OTHER,
+    LIPSTICK_SETS_AND_COMBOS,
+  ],
+};
+
+/* ================================ LIPS END ================================ */
+
+export const NAVBAR_CATEGORIES_DATA = [FOR_YOU, LIPS, EYES, FACE, SKIN, COLLECTIONS, ABOUT];

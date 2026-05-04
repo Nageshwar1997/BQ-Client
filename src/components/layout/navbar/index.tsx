@@ -3,9 +3,13 @@ import LinearGradient from '@/components/ui/LinearGradient';
 import {
   ABOUT,
   COLLECTIONS,
+  EYES,
+  FACE,
   FOR_YOU,
+  LIPS,
   NAVBAR_CATEGORIES_DATA,
   NAVBAR_TOP_LAYER_DATA,
+  SKIN,
 } from '@/constants/navbar.constants';
 import useAuthAction from '@/hooks/useAuthAction';
 import usePathParams from '@/hooks/usePathParams';
@@ -15,11 +19,19 @@ import { useEffect, useRef, useState, type FC } from 'react';
 import { Link } from 'react-router-dom';
 import About from './children/About';
 import Collections from './children/Collection';
+import Eyes from './children/Eyes';
+import Face from './children/Face';
 import ForYou from './children/ForYou';
 import { HoveredComponent, UserMenuIcons } from './children/grand-children';
+import Lips from './children/Lips';
+import Skin from './children/Skin';
 
 export const COMPONENT_MAP: Record<(typeof NAVBAR_CATEGORIES_DATA)[number]['category'], FC> = {
   [FOR_YOU.category]: ForYou,
+  [SKIN.category]: Skin,
+  [FACE.category]: Face,
+  [EYES.category]: Eyes,
+  [LIPS.category]: Lips,
   [COLLECTIONS.category]: Collections,
   [ABOUT.category]: About,
 } as const;
