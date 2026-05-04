@@ -96,3 +96,30 @@ export const ACCESS: Record<TRouteAccess, TRouteAccess> = {
 } as const;
 
 export const DEFAULT_POSTER = '/images/logo/BQ_gradient_logo.webp';
+
+export const HOME_VIDEOS_DATA = [
+  {
+    posterUrl:
+      'https://res.cloudinary.com/drbhw0nwt/image/upload/v1742736104/Beautinique/Posters/1742736102775_3_Ace_of_Face_Foundation.webp',
+    m3u8Url:
+      'https://res.cloudinary.com/dag2xvurz/video/upload/sp_auto/v1742719904/Beautinique/Home_Videos/1742719884229_SUGAR_Ace_of_Face_Dewy_Foundation_New_Launch_SUGAR_Cosmetics.m3u8',
+    mp4Url:
+      'https://res.cloudinary.com/dag2xvurz/video/upload/v1742719904/Beautinique/Home_Videos/1742719884229_SUGAR_Ace_of_Face_Dewy_Foundation_New_Launch_SUGAR_Cosmetics.mp4',
+  },
+  {
+    posterUrl:
+      'https://res.cloudinary.com/drbhw0nwt/image/upload/v1742736080/Beautinique/Posters/1742736077422_2_Glide_Peptide_Lip_Treatement.webp',
+    m3u8Url:
+      'https://res.cloudinary.com/dag2xvurz/video/upload/sp_auto/v1742130156/Beautinique/Home_Videos/1742130132099_3_Glide_Peptide_SPF50_PA%2B%2B_Lip_Treatment_Must-Have_for_Daily_Protection.m3u8',
+    mp4Url:
+      'https://res.cloudinary.com/dag2xvurz/video/upload/v1742130156/Beautinique/Home_Videos/1742130132099_3_Glide_Peptide_SPF50_PA%2B%2B_Lip_Treatment_Must-Have_for_Daily_Protection.mp4',
+  },
+  {
+    posterUrl:
+      'https://res.cloudinary.com/drbhw0nwt/image/upload/v1742736002/Beautinique/Posters/1742735999781_1_Makeup_Reimagine.webp',
+    m3u8Url:
+      'https://res.cloudinary.com/dag2xvurz/video/upload/sp_auto/v1742127534/Beautinique/Home_Videos/1742127444038_1_Makeup_Reimagine.m3u8',
+    mp4Url:
+      'https://res.cloudinary.com/dag2xvurz/video/upload/v1742127534/Beautinique/Home_Videos/1742127444038_1_Makeup_Reimagine.mp4',
+  },
+];
