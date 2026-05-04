@@ -1,4 +1,5 @@
-import { LAST_ROUTE_KEY } from '@/constants/common.constants';
+import { DEFAULT_POSTER, LAST_ROUTE_KEY } from '@/constants/common.constants';
+import { DUMMY_FEEDBACKS, HIGHLIGHTED_CATEGORIES } from '@/constants/navbar.constants';
 import useToastStore from '@/stores/toast.store';
 import type { IButton } from '@/types/component.type';
 import type { ICustomToast, IDefaultToast, ILoadingToast } from '@/types/store.type';
@@ -103,3 +104,103 @@ export const matchRoute = (routes: readonly string[], path: string) => {
     return path.startsWith(route + '/');
   });
 };
+
+export const getTodaysFeedback = (forwardIndex: 0 | 1 | 2 | 3 | 4 | 5 | 6 = 0) => {
+  // Get the current date
+  const today = new Date();
+  // Get the day of the month (1 to 31)
+  const day = today.getDate();
+  // Calculate the feedback index for today
+  const feedbackIndex = (day + forwardIndex) % DUMMY_FEEDBACKS.length;
+  // Get the feedback for today
+  const todayFeedback = DUMMY_FEEDBACKS[feedbackIndex];
+
+  return todayFeedback;
+};
+
+// It return a boolean value is level 3 category option is highlighted or not
+export const isHighlightedCategory = (
+  option: string,
+  l1Cat?: keyof typeof HIGHLIGHTED_CATEGORIES,
+) => (l1Cat ? HIGHLIGHTED_CATEGORIES[l1Cat].includes(option) : false);
+
+function getPosterFromBlobVideo(blobVideoUrl: string, timeInSeconds = 0): Promise<string> {
+  return new Promise((resolve) => {
+    let posterCreated = false;
+    let isCancelled = false;
+
+    const video = document.createElement('video');
+    video.src = blobVideoUrl;
+    video.crossOrigin = 'anonymous';
+    video.muted = true;
+    video.playsInline = true;
+
+    video.addEventListener('loadeddata', () => {
+      if (!isCancelled) video.currentTime = timeInSeconds;
+    });
+
+    video.addEventListener('seeked', () => {
+      if (isCancelled) return;
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        resolve(DEFAULT_POSTER);
+        return;
+      }
+
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      posterCreated = true;
+      resolve(canvas.toDataURL('image/png'));
+      video.src = '';
+    });
+
+    video.addEventListener('error', () => {
+      if (!posterCreated && !isCancelled) {
+        resolve(DEFAULT_POSTER); // no console.error to avoid noise
+      }
+    });
+
+    // Cancel function for cleanup
+    return () => {
+      isCancelled = true;
+      video.src = '';
+    };
+  });
+}
+
+export function convertVideoToPoster(videoUrl: string): Promise<string> {
+  return new Promise((resolve) => {
+    if (!videoUrl) {
+      resolve(DEFAULT_POSTER);
+      return;
+    }
+
+    try {
+      // Case 1: Cloudinary URL → instant
+      if (videoUrl.includes('/upload/')) {
+        const [base, versionAndPath] = videoUrl.split('/upload/');
+        const cleanedPath = versionAndPath.replace(/^.*?(\/v\d+)/, '$1');
+        const posterPath = cleanedPath.replace(/\.(m3u8|mp4|webm)$/, '.webp');
+        resolve(`${base}/upload/so_0${posterPath}`);
+        return;
+      }
+
+      // Case 2: Blob URL or direct video file → async extract
+      if (videoUrl.startsWith('blob:') || /\.(mp4|webm|ogg)$/i.test(videoUrl)) {
+        getPosterFromBlobVideo(videoUrl)
+          .then((poster) => resolve(poster || DEFAULT_POSTER))
+          .catch(() => resolve(DEFAULT_POSTER));
+        return;
+      }
+
+      // Fallback
+      resolve(DEFAULT_POSTER);
+    } catch (error) {
+      console.error('Failed to create poster URL', error);
+      resolve(DEFAULT_POSTER);
+    }
+  });
+}
