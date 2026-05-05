@@ -1,21 +1,11 @@
 import Button from '@/components/ui/Button';
 import LinearGradient from '@/components/ui/LinearGradient';
-import {
-  ABOUT,
-  COLLECTIONS,
-  EYES,
-  FACE,
-  FOR_YOU,
-  LIPS,
-  NAVBAR_CATEGORIES_DATA,
-  NAVBAR_TOP_LAYER_DATA,
-  SKIN,
-} from '@/constants/navbar.constants';
+import { NAVBAR_CATEGORIES_DATA, NAVBAR_TOP_LAYER_DATA } from '@/constants/navbar.constants';
 import useAuthAction from '@/hooks/useAuthAction';
 import usePathParams from '@/hooks/usePathParams';
 import useUserStore from '@/stores/user.store';
 import { Icon } from '@iconify/react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type FC } from 'react';
 import { Link } from 'react-router-dom';
 import About from './children/About';
 import Collections from './children/Collection';
@@ -60,14 +50,14 @@ const TopLayer = () => {
   );
 };
 
-const COMPONENT_MAP = {
-  [FOR_YOU.category]: ForYou,
-  [LIPS.category]: Lips,
-  [EYES.category]: Eyes,
-  [FACE.category]: Face,
-  [COLLECTIONS.category]: Collections,
-  [SKIN.category]: Skin,
-  [ABOUT.category]: About,
+const COMPONENT_MAP: Record<(typeof NAVBAR_CATEGORIES_DATA)[number]['category'], FC> = {
+  for_you: ForYou,
+  lips: Lips,
+  eyes: Eyes,
+  face: Face,
+  collections: Collections,
+  skin: Skin,
+  about: About,
 } as const;
 
 export const Navbar = () => {
