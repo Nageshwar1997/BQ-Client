@@ -1,29 +1,30 @@
 import Button from '@/components/ui/Button';
 import LinearGradient from '@/components/ui/LinearGradient';
-import { NAVBAR_CATEGORIES_DATA, NAVBAR_TOP_LAYER_DATA } from '@/constants/navbar.constants';
+import {
+  ABOUT,
+  COLLECTIONS,
+  EYES,
+  FACE,
+  FOR_YOU,
+  LIPS,
+  NAVBAR_CATEGORIES_DATA,
+  NAVBAR_TOP_LAYER_DATA,
+  SKIN,
+} from '@/constants/navbar.constants';
 import useAuthAction from '@/hooks/useAuthAction';
 import usePathParams from '@/hooks/usePathParams';
 import useUserStore from '@/stores/user.store';
 import { Icon } from '@iconify/react';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import About from './children/About';
+import Collections from './children/Collection';
+import Eyes from './children/Eyes';
+import Face from './children/Face';
+import ForYou from './children/ForYou';
 import { UserMenuIcons } from './children/grand-children';
-
-export const HoveredComponent = ({ index }: { index: number | null }) => {
-  if (index === null || index >= NAVBAR_CATEGORIES_DATA.length) {
-    return null;
-  }
-
-  const Component = NAVBAR_CATEGORIES_DATA[index].component;
-
-  return (
-    <div className="bg-battleship-davys-gray h-full max-w-325 rounded-xl p-px backdrop-blur-3xl">
-      <div className="text-secondary bg-secondary-invert rounded-xl p-5">
-        <Component />
-      </div>
-    </div>
-  );
-};
+import Lips from './children/Lips';
+import Skin from './children/Skin';
 
 const TopLayer = () => {
   const { runAction } = useAuthAction();
@@ -46,7 +47,7 @@ const TopLayer = () => {
           return (
             <button
               key={item.text}
-              onClick={() => handleNavigate(item.path, item.private)}
+              onClick={() => handleNavigate(item.path, 'private' in item ? item.private : false)}
               className="flex cursor-pointer items-center gap-0.5 transition-all duration-300 hover:opacity-100 lg:opacity-80"
             >
               <Icon icon={item.icon} />
@@ -59,6 +60,16 @@ const TopLayer = () => {
   );
 };
 
+const COMPONENT_MAP = {
+  [FOR_YOU.category]: ForYou,
+  [LIPS.category]: Lips,
+  [EYES.category]: Eyes,
+  [FACE.category]: Face,
+  [COLLECTIONS.category]: Collections,
+  [SKIN.category]: Skin,
+  [ABOUT.category]: About,
+} as const;
+
 export const Navbar = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navbarRef = useRef<HTMLDivElement>(null);
@@ -68,15 +79,15 @@ export const Navbar = () => {
   const { paths, pathname, navigate } = usePathParams();
 
   const [isMobileNavbarOpened, setIsMobileNavbarOpened] = useState<boolean>(false);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [hoveredCategory, setHoveredCategory] = useState<keyof typeof COMPONENT_MAP | null>(null);
   const [activeIndices, setActiveIndices] = useState<number[]>([]);
   const [isContainerHovered, setIsContainerHovered] = useState<boolean>(false);
   const [isNavbarAtTop, setIsNavbarAtTop] = useState(false);
   const [isNavbarHovered, setIsNavbarHovered] = useState(false);
 
   // Sets the hovered index when mouse enters an element
-  const handleMouseEnter = (index: number) => {
-    setHoveredIndex(index);
+  const handleMouseEnter = (category: keyof typeof COMPONENT_MAP) => {
+    setHoveredCategory(category);
     if (!isNavbarAtTop || !isNavbarHovered) {
       setIsNavbarHovered(true);
     }
@@ -85,9 +96,9 @@ export const Navbar = () => {
   // Sets container hover state to true when mouse enters the container
   const handleContainerMouseEnter = () => setIsContainerHovered(true);
 
-  // Resets hovered index and container hover state when mouse leaves
+  // Resets hovered category and container hover state when mouse leaves
   const handleMouseLeave = () => {
-    setHoveredIndex(null);
+    setHoveredCategory(null);
     setIsContainerHovered(false);
   };
 
@@ -141,7 +152,7 @@ export const Navbar = () => {
 
   // Close navbar when pathname changes
   useEffect(() => {
-    setHoveredIndex(null);
+    setHoveredCategory(null);
     setIsContainerHovered(false);
     setIsMobileNavbarOpened(false);
     setActiveIndices([]);
@@ -163,6 +174,8 @@ export const Navbar = () => {
   const nonTransparent = ['product', 'cart', 'offers', 'blogs', 'account'].some((val) =>
     paths.includes(val),
   );
+
+  const HoveredComponent = hoveredCategory ? COMPONENT_MAP[hoveredCategory] : null;
 
   return (
     <div
@@ -191,29 +204,31 @@ export const Navbar = () => {
             <div className="flex h-full items-center gap-2" ref={navbarRef}>
               {NAVBAR_CATEGORIES_DATA.map((item, index) => (
                 <div
+                  key={index}
                   onClick={() => item?.path && navigate(item.path)}
                   className="relative h-full"
-                  key={item.id}
                 >
                   {/* Left Curve */}
-                  {hoveredIndex === index && (
+                  {hoveredCategory === item.category && (
                     <div className="bg-secondary-invert absolute bottom-0 left-px z-52 h-3 w-3 -translate-x-full transform">
                       <div className="bg-tertiary-invert border-battleship-davys-gray z-51 h-full w-full rounded-br-full border-r border-b" />
                     </div>
                   )}
                   <div
                     className={`relative flex h-full items-center justify-center gap-0.5 rounded-t-lg border-r border-l px-3 text-sm font-semibold text-nowrap ${
-                      hoveredIndex === index
+                      hoveredCategory === item.category
                         ? 'bg-secondary-invert border-battleship-davys-gray z-50'
                         : 'border-transparent'
                     } ${isNavbarAtTop ? 'border-t-transparent' : 'border-t'} ${
                       item.path ? 'cursor-pointer' : 'cursor-default'
                     }`}
-                    onMouseEnter={() => handleMouseEnter(index)}
+                    onMouseEnter={() => handleMouseEnter(item.category)}
                   >
                     <p
                       className={`text-tertiary ${
-                        hoveredIndex === index ? 'bg-accent-duo bg-clip-text text-transparent' : ''
+                        hoveredCategory === item.category
+                          ? 'bg-accent-duo bg-clip-text text-transparent'
+                          : ''
                       } ${
                         !(isNavbarAtTop || isNavbarHovered || nonTransparent)
                           ? 'light:text-tertiary-invert'
@@ -225,7 +240,7 @@ export const Navbar = () => {
                     <Icon
                       icon="solar:alt-arrow-down-linear"
                       className={`text-tertiary size-6 ${
-                        hoveredIndex === index ? 'text-blue-crayola-c! rotate-180' : ''
+                        hoveredCategory === item.category ? 'text-blue-crayola-c! rotate-180' : ''
                       } ${
                         !(isNavbarAtTop || isNavbarHovered || nonTransparent)
                           ? 'light:text-tertiary-invert'
@@ -234,7 +249,7 @@ export const Navbar = () => {
                     />
                   </div>
                   {/* Right Curve */}
-                  {hoveredIndex === index && (
+                  {hoveredCategory === item.category && (
                     <div className="bg-secondary-invert absolute right-px bottom-0 z-52 h-3 w-3 translate-x-full transform">
                       <div className="bg-tertiary-invert border-battleship-davys-gray h-full w-full rounded-bl-full border-b border-l" />
                     </div>
@@ -246,14 +261,20 @@ export const Navbar = () => {
               closeOnNavbarLeave={!isNavbarHovered}
               className={`${isNavbarAtTop || isNavbarHovered || nonTransparent ? '' : ''}`}
             />
-            {(hoveredIndex !== null || isContainerHovered) && (
+            {(hoveredCategory || isContainerHovered) && (
               <div
                 className={`absolute top-15.75 -left-5 z-49 h-fit w-auto justify-self-center rounded-2xl transition-all duration-300`}
                 ref={containerRef}
                 onMouseEnter={handleContainerMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
-                <HoveredComponent index={hoveredIndex} />
+                {!!(hoveredCategory && HoveredComponent) && (
+                  <div className="bg-battleship-davys-gray h-full max-w-325 rounded-xl p-px backdrop-blur-3xl">
+                    <div className="text-secondary bg-secondary-invert rounded-xl p-5">
+                      <HoveredComponent />
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -287,12 +308,12 @@ export const Navbar = () => {
           <div className="bg-secondary-invert absolute top-16 left-0 z-50 flex h-dvh w-full flex-col">
             <div className="h-[calc(100%-64px)] grow overflow-hidden overflow-y-scroll">
               {NAVBAR_CATEGORIES_DATA.map((category, index) => {
-                const AccordionContentComponent = category.component;
+                const AccordionContentComponent = COMPONENT_MAP[category.category];
                 const isActive = activeIndices.includes(index);
                 const isLastItem = index === NAVBAR_CATEGORIES_DATA.length - 1;
 
                 return (
-                  <div key={category.id} className={`relative ${isLastItem && 'mb-36'}`}>
+                  <div key={index} className={`relative ${isLastItem && 'mb-36'}`}>
                     <div
                       className="bg-secondary-invert border-battleship-davys-gray-invert sticky top-0 z-50 flex cursor-pointer items-center justify-between border-b py-4 pr-4 pl-6"
                       onClick={() => toggleAccordionIndex(index)}
