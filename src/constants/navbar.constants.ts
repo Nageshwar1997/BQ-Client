@@ -119,37 +119,6 @@ export const DUMMY_FEEDBACKS = [
   ],
 ] as const;
 
-export const HIGHLIGHTED_CATEGORIES = {
-  about: ['mission_vision_values', 'retail_e_commerce'],
-  collections: ['best_of_sugar_pop', 'soap', 'serum', 'sugar_set'],
-  eyes: [
-    'kohl',
-    'curl_lengthening_mascara',
-    'liquid_eyeliner',
-    'glitter_eyeshadow',
-    'brow_pencil',
-    'eye_combo',
-  ],
-  face: [
-    'color_corrector',
-    'compact',
-    'makeup_remover',
-    'matte_foundation',
-    'cheek_stain',
-    'sindoor',
-    'compact_powder',
-  ],
-  lips: [
-    'hi_shine_lipstick',
-    'liquid_lipstick',
-    'lip_tint_and_stain',
-    'lipstick_fixer_and_remover',
-    'lip_glitter',
-    'lip_palette',
-  ],
-  skin: ['serum', 'sunscreen', 'aquaholic', 'face_pack'],
-} as const;
-
 /* ================================ FOR YOU START ================================ */
 
 export const NEW = {

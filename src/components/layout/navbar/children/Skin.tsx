@@ -11,7 +11,7 @@ const Skin = () => {
             className="border-primary-battleship-davys-gray max-w-75 min-w-50 space-y-4 border-b pb-4 lg:border-none lg:pb-0"
           >
             <CategoryLabel {...category} />
-            <SubCategories {...category} l1Cat="skin" />
+            <SubCategories {...category} />
           </div>
         ))}
         <div className="shadow-secondary-inverted col-span-2 hidden max-h-62.5 w-full items-center gap-4 shadow-lg md:flex lg:hidden">

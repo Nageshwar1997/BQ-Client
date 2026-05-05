@@ -45,7 +45,7 @@ const Face = () => {
               } ${category.category === 'foundations_by_skin_type' ? 'base:pb-5.75 md:pb-4' : ''}`}
             >
               <CategoryLabel {...category} />
-              <SubCategories {...category} l1Cat="face" />
+              <SubCategories {...category} />
             </div>
           ))}
         </div>

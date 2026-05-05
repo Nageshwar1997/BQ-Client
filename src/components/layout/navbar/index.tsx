@@ -161,7 +161,7 @@ export const Navbar = () => {
     };
   }, [isMobileNavbarOpened]);
 
-  const nonTransparent = ['product', 'cart', 'offers', 'blogs', 'account'].some((val) =>
+  const nonTransparent = ['products', 'cart', 'offers', 'blogs', 'account'].some((val) =>
     paths.includes(val),
   );
 

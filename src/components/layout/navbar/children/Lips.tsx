@@ -13,13 +13,13 @@ const Lips = () => {
                 category.category,
               )
                 ? category.category === 'lip_care'
-                  ? 'lg:border-transparent 2xl:border-battleship-davys-gray lg:pb-0 2xl:pb-2'
+                  ? '2xl:border-battleship-davys-gray lg:border-transparent lg:pb-0 2xl:pb-2'
                   : 'lg:pb-2'
                 : 'lg:border-none'
             }`}
           >
             <CategoryLabel {...category} />
-            <SubCategories {...category} l1Cat="lips" />
+            <SubCategories {...category} />
           </div>
         );
       })}

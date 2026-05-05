@@ -24,7 +24,7 @@ const About = () => {
               }`}
             >
               <CategoryLabel {...subCat} />
-              <SubCategories l1Cat="about" {...subCat} />
+              <SubCategories {...subCat} />
             </div>
           ))}
         </div>

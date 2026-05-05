@@ -1,5 +1,5 @@
 import { DEFAULT_POSTER, LAST_ROUTE_KEY } from '@/constants/common.constants';
-import { DUMMY_FEEDBACKS, HIGHLIGHTED_CATEGORIES } from '@/constants/navbar.constants';
+import { DUMMY_FEEDBACKS } from '@/constants/navbar.constants';
 import useToastStore from '@/stores/toast.store';
 import type { IButton } from '@/types/component.type';
 import type { ICustomToast, IDefaultToast, ILoadingToast } from '@/types/store.type';
@@ -117,12 +117,6 @@ export const getTodaysFeedback = (forwardIndex: 0 | 1 | 2 | 3 | 4 | 5 | 6 = 0) =
 
   return todayFeedback;
 };
-
-// It return a boolean value is level 3 category option is highlighted or not
-export const isHighlightedCategory = (
-  option: string,
-  l1Cat?: keyof typeof HIGHLIGHTED_CATEGORIES,
-) => (l1Cat ? HIGHLIGHTED_CATEGORIES[l1Cat].includes(option) : false);
 
 function getPosterFromBlobVideo(blobVideoUrl: string, timeInSeconds = 0): Promise<string> {
   return new Promise((resolve) => {

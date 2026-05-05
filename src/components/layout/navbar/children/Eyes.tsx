@@ -14,7 +14,7 @@ const Eyes = () => {
           }`}
         >
           <CategoryLabel {...category} />
-          <SubCategories {...category} l1Cat="eyes" />
+          <SubCategories {...category} />
         </div>
       ))}
       <div className="shadow-secondary-invert col-span-2 hidden max-h-46 w-full items-center gap-5 shadow-lg lg:flex xl:max-h-62.5">

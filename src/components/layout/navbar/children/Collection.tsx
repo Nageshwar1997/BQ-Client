@@ -17,7 +17,6 @@ const Collections = () => {
             <CategoryLabel {...category} />
             <SubCategories
               {...category}
-              l1Cat="collections"
               className={
                 category.category === 'gifting'
                   ? 'md:grid md:grid-cols-3 md:gap-4 lg:flex lg:flex-col lg:gap-2'

@@ -3,7 +3,7 @@ import { ACCESS, ROUTES } from '@/constants/common.constants';
 import ErrorBoundary from '@/pages/error/ErrorBoundary';
 import type { TRouteObject } from '@/types/common.type';
 
-const { AUTH, HOME } = ROUTES;
+const { AUTH, HOME, PRODUCTS } = ROUTES;
 const { GUEST_ONLY, PRIVATE, SOCIAL_ONLY } = ACCESS;
 
 const routes: TRouteObject[] = [
@@ -21,6 +21,34 @@ const routes: TRouteObject[] = [
         lazy: async () => {
           const { default: Home } = await import('@/pages/home');
           return { Component: Home };
+        },
+      },
+      {
+        path: `${PRODUCTS.BASE}/${PRODUCTS.PRODUCT_ID}`,
+        lazy: async () => {
+          const { default: ProductDetails } = await import('@/pages/product/ProductDetails');
+          return { Component: ProductDetails };
+        },
+      },
+      {
+        path: `${PRODUCTS.BASE}/${PRODUCTS.CATEGORY_L1}`,
+        lazy: async () => {
+          const { default: CategoryProducts } = await import('@/pages/product/CategoryProducts');
+          return { Component: CategoryProducts };
+        },
+      },
+      {
+        path: `${PRODUCTS.BASE}/${PRODUCTS.CATEGORY_L1}/${PRODUCTS.CATEGORY_L2}`,
+        lazy: async () => {
+          const { default: CategoryProducts } = await import('@/pages/product/CategoryProducts');
+          return { Component: CategoryProducts };
+        },
+      },
+      {
+        path: `${PRODUCTS.BASE}/${PRODUCTS.CATEGORY_L1}/${PRODUCTS.CATEGORY_L2}/${PRODUCTS.CATEGORY_L3}`,
+        lazy: async () => {
+          const { default: CategoryProducts } = await import('@/pages/product/CategoryProducts');
+          return { Component: CategoryProducts };
         },
       },
     ],

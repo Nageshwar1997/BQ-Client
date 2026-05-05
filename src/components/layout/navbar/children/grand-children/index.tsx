@@ -1,12 +1,12 @@
 import GradientText from '@/components/ui/GradientText';
 import Theme from '@/components/ui/Theme';
-import { NAVBAR_CATEGORIES_DATA, type HIGHLIGHTED_CATEGORIES } from '@/constants/navbar.constants';
+import { NAVBAR_CATEGORIES_DATA } from '@/constants/navbar.constants';
 import useAuthAction from '@/hooks/useAuthAction';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import usePathParams from '@/hooks/usePathParams';
 import type { TClassName, TForwardIdx } from '@/types/component.type';
 
-import { getTodaysFeedback, isHighlightedCategory } from '@/utils/common.util';
+import { getTodaysFeedback } from '@/utils/common.util';
 import { Icon } from '@iconify/react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -50,23 +50,18 @@ export const Feedback = ({ forwardIndex = 0 }: { forwardIndex?: TForwardIdx }) =
 export const SubCategories = ({
   subCategories,
   className = '',
-  l1Cat,
 }: TClassName & {
   subCategories: readonly (typeof NAVBAR_CATEGORIES_DATA)[number]['subCategories'][number]['subCategories'][number][];
-  l1Cat?: keyof typeof HIGHLIGHTED_CATEGORIES;
 }) => {
   const { navigate } = usePathParams();
   return (
     <div className={`flex flex-col gap-1 md:gap-2 ${className}`}>
       {subCategories.map((subCategory, index) => {
-        const isHighlighted = isHighlightedCategory(subCategory.category, l1Cat);
         return (
           <div
             onClick={() => subCategory?.path && navigate(subCategory.path)}
             key={index}
-            className={`hover:bg-smoke-eerie flex cursor-pointer justify-start gap-2 rounded-xl border border-transparent p-2 ${
-              isHighlighted ? 'hover:border-blue-crayola-c' : 'hover:border-primary/8'
-            } group`}
+            className="hover:bg-smoke-eerie hover:border-primary/8 group flex cursor-pointer justify-start gap-2 rounded-xl border border-transparent p-2"
           >
             <div className="flex w-full flex-col justify-center lg:justify-start">
               <p className="text-secondary group-hover:text-primary line-clamp-1 w-full text-left text-xs tracking-wide xl:text-sm">

@@ -86,6 +86,13 @@ export const ROUTES = {
     SET_PASSWORD: 'set-password',
     OAUTH: 'oauth',
   },
+  PRODUCTS: {
+    BASE: 'products',
+    PRODUCT_ID: ':productId',
+    CATEGORY_L1: ':categoryL1',
+    CATEGORY_L2: ':categoryL2',
+    CATEGORY_L3: ':categoryL3',
+  },
 } as const;
 
 export const ACCESS: Record<TRouteAccess, TRouteAccess> = {
