@@ -4,7 +4,7 @@ import { NAVBAR_CATEGORIES_DATA } from '@/constants/navbar.constants';
 import useAuthAction from '@/hooks/useAuthAction';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import usePathParams from '@/hooks/usePathParams';
-import type { TClassName, TForwardIdx } from '@/types/component.type';
+import type { TClassName } from '@/types/component.type';
 
 import { getTodaysFeedback } from '@/utils/common.util';
 import { Icon } from '@iconify/react';
@@ -13,22 +13,22 @@ import { Link } from 'react-router-dom';
 
 export const CategoryLabel = ({
   label,
-  path = '',
-  className = '',
+  path,
+  className,
 }: { label: string; path?: string } & TClassName) => (
   <p
     className={`text-battleship-davys-gray-invert break-inside-avoid text-left text-sm leading-5 font-semibold tracking-wide uppercase ${
       path ? 'cursor-pointer' : 'cursor-default'
-    } ${className}`}
+    } ${className || ''}`}
   >
     {path ? <Link to={path}>{label}</Link> : label}
   </p>
 );
 
-export const Feedback = ({ forwardIndex = 0 }: { forwardIndex?: TForwardIdx }) => {
-  const FEEDBACK = getTodaysFeedback(forwardIndex);
+export const Feedback = () => {
+  const FEEDBACK = getTodaysFeedback();
   return (
-    <div className="border-primary/50 flex w-full flex-col gap-2 border-b pt-0 pb-4 lg:flex-row lg:items-center lg:border-t lg:border-b-transparent lg:pt-4 lg:pb-0">
+    <div className="border-primary/50 flex w-full flex-col gap-2 border-b pt-4 lg:flex-row lg:items-center lg:border-t lg:border-b-transparent">
       <div className="flex w-fit items-center gap-2">
         <Icon icon="solar:chat-dots-linear" className="text-secondary size-4 2xl:size-5" />
         <p className="text-secondary text-sm font-medium text-nowrap lg:text-[11px] xl:text-sm">
@@ -37,7 +37,7 @@ export const Feedback = ({ forwardIndex = 0 }: { forwardIndex?: TForwardIdx }) =
       </div>
       <div className="flex flex-wrap gap-1 *:text-[11px] *:xl:text-sm">
         {FEEDBACK.map((item, idx) => (
-          <GradientText key={idx} {...item} />
+          <GradientText key={idx} {...item} className="wrap-break-word" />
         ))}
       </div>
     </div>

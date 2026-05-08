@@ -105,13 +105,13 @@ export const matchRoute = (routes: readonly string[], path: string) => {
   });
 };
 
-export const getTodaysFeedback = (forwardIndex: 0 | 1 | 2 | 3 | 4 | 5 | 6 = 0) => {
+export const getTodaysFeedback = () => {
   // Get the current date
   const today = new Date();
-  // Get the day of the month (1 to 31)
-  const day = today.getDate();
+  // Get the day of the week (0 to 6)
+  const day = today.getDay();
   // Calculate the feedback index for today
-  const feedbackIndex = (day + forwardIndex) % DUMMY_FEEDBACKS.length;
+  const feedbackIndex = day % DUMMY_FEEDBACKS.length;
   // Get the feedback for today
   const todayFeedback = DUMMY_FEEDBACKS[feedbackIndex];
 

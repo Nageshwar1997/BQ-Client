@@ -68,8 +68,6 @@ export interface IFooterOptionList {
   isFirst?: boolean;
 }
 
-export type TForwardIdx = 0 | 1 | 2 | 3 | 4 | 5 | 6;
-
 export interface IVideoPlayer extends TClassName {
   videoProps: VideoHTMLAttributes<HTMLVideoElement>;
   ref?: RefObject<HTMLVideoElement | null>;

@@ -12,7 +12,7 @@ import Collections from './children/Collection';
 import Eyes from './children/Eyes';
 import Face from './children/Face';
 import ForYou from './children/ForYou';
-import { UserMenuIcons } from './children/grand-children';
+import { Feedback, UserMenuIcons } from './children/grand-children';
 import Lips from './children/Lips';
 import Skin from './children/Skin';
 
@@ -260,8 +260,9 @@ export const Navbar = () => {
               >
                 {!!(hoveredCategory && HoveredComponent) && (
                   <div className="bg-battleship-davys-gray h-full max-w-325 rounded-xl p-px backdrop-blur-3xl">
-                    <div className="text-secondary bg-secondary-invert rounded-xl p-5">
+                    <div className="text-secondary bg-secondary-invert space-y-4 rounded-xl p-4">
                       <HoveredComponent />
+                      <Feedback />
                     </div>
                   </div>
                 )}
@@ -315,8 +316,9 @@ export const Navbar = () => {
                       />
                     </div>
                     {isActive && AccordionContentComponent && (
-                      <div className="overflow-y-scroll">
+                      <div className="overflow-y-scroll p-4">
                         <AccordionContentComponent />
+                        <Feedback />
                       </div>
                     )}
                   </div>
