@@ -22,11 +22,6 @@ export const TESTIMONIALS = [
   },
 ] as const;
 
-export const SOCIAL_COMMUNITY = [
-  { icon: 'solar:play-linear', label: "Founder's Story: Watch Now", path: '/press-media#watch' },
-  { icon: 'solar:chat-dots-linear', label: 'Chat with our team', path: '/contact' },
-] as const;
-
 export const NAVBAR_TOP_LAYER_DATA = [
   { text: 'Refer a Friend', icon: 'lucide:hand-coins', path: '/refer', private: true },
   { text: 'Gift Card', icon: 'ic:round-card-giftcard', path: '/offers' },
@@ -122,81 +117,86 @@ export const DUMMY_FEEDBACKS = [
 /* ================================ FOR YOU START ================================ */
 
 export const NEW = {
-  level: 2,
-  heading: 'Latest Trends',
-  label: 'New Arrivals',
-  category: 'new_arrivals',
-  path: '/products/for_you/latest_trends',
-  videoUrl:
-    'https://res.cloudinary.com/dag2xvurz/video/upload/sp_auto/v1742719904/Beautinique/Home_Videos/1742719884229_SUGAR_Ace_of_Face_Dewy_Foundation_New_Launch_SUGAR_Cosmetics.m3u8',
-  thumbnail:
-    'https://res.cloudinary.com/drbhw0nwt/image/upload/v1742736104/Beautinique/Posters/1742736102775_3_Ace_of_Face_Foundation.webp',
-  description: 'Discover new beauty arrivals for a fresh, trendy style.',
+  label: 'Latest Trends',
+  category: 'latest_trends',
+  path: '',
   subCategories: [
     {
-      level: 3,
-      path: '/products/for_you/latest_trends/new_arrivals',
-      label: '',
+      path: '',
+      label: 'New Arrivals',
       category: '',
-      description: '',
+      description: 'Discover new beauty arrivals for a fresh, trendy style.',
     },
   ],
 } as const;
 
-export const SUGAR_PLAY = {
-  level: 2,
-  heading: 'Best Sellers',
-  label: 'Sugar Play',
-  category: 'sugar_play',
-  path: '/products/for_you/best_sellers',
-  videoUrl:
-    'https://res.cloudinary.com/dag2xvurz/video/upload/sp_auto/v1742127534/Beautinique/Home_Videos/1742127444038_1_Makeup_Reimagine.m3u8',
-  thumbnail:
-    'https://res.cloudinary.com/drbhw0nwt/image/upload/v1742736002/Beautinique/Posters/1742735999781_1_Makeup_Reimagine.webp',
-  description: 'Shop beauty products top-rated & loved by enthusiasts.',
+export const SUGAR_COLLECTION = {
+  label: "Beauty's Collection",
+  category: 'beauty_collection',
+  path: '',
   subCategories: [
     {
-      level: 3,
-      label: '',
-      path: '/products/for_you/best_sellers/sugar_play',
+      label: 'Special Collection',
+      path: '',
       category: '',
-      description: '',
+      description: 'Shop beauty products top-rated & loved by enthusiasts.',
     },
   ],
 } as const;
 
 export const OFFERS = {
-  level: 2,
-  heading: 'Exclusive Deals',
   label: 'Offers',
   category: 'offers',
   path: '/offers',
-  videoUrl:
-    'https://res.cloudinary.com/dag2xvurz/video/upload/sp_auto/v1742130156/Beautinique/Home_Videos/1742130132099_3_Glide_Peptide_SPF50_PA%2B%2B_Lip_Treatment_Must-Have_for_Daily_Protection.m3u8',
-  thumbnail:
-    'https://res.cloudinary.com/drbhw0nwt/image/upload/v1742736080/Beautinique/Posters/1742736077422_2_Glide_Peptide_Lip_Treatement.webp',
-  description: 'Grab discounts on premium cosmetics for a limited time.',
-  subCategories: [],
+  subCategories: [
+    {
+      label: 'Offers & Discounts',
+      path: '/offers',
+      category: '',
+      description: 'Grab discounts on premium cosmetics for a limited time.',
+    },
+  ],
 } as const;
 
 export const BLOGS = {
-  level: 2,
-  heading: 'Beauty Insights',
   label: 'Blogs',
   category: 'blogs',
   path: '/blogs',
-  videoUrl: '/videos/company/values-culture/Get-Ready-With-BQ.mp4',
-  thumbnail: '/images/navbar/blogs.png',
-  description: 'Explore top beauty tips, trends, & skincare routines.',
-  subCategories: [],
+  description: '',
+  subCategories: [
+    {
+      label: 'Beauty Insights',
+      path: '/blogs',
+      category: '',
+      description: 'Explore top beauty tips, trends, and skincare routines.',
+    },
+  ],
 } as const;
 
+export const FOR_YOU_VIDEOS_DATA = [
+  {
+    video: '/videos/company/values-culture/Get-Ready-With-BQ.mp4',
+    thumbnail: '/videos/company/values-culture/Get-Ready-With-BQ.png',
+  },
+  {
+    video: '/videos/company/values-culture/Get-Ready-With-BQ.mp4',
+    thumbnail: '/videos/company/values-culture/Get-Ready-With-BQ.png',
+  },
+  {
+    video: '/videos/company/values-culture/Get-Ready-With-BQ.mp4',
+    thumbnail: '/videos/company/values-culture/Get-Ready-With-BQ.png',
+  },
+  {
+    video: '/videos/company/values-culture/Get-Ready-With-BQ.mp4',
+    thumbnail: '/videos/company/values-culture/Get-Ready-With-BQ.png',
+  },
+];
+
 export const FOR_YOU = {
-  level: 1,
   label: 'For You',
   category: 'for_you',
-  path: '/products/for_you',
-  subCategories: [NEW, SUGAR_PLAY, OFFERS, BLOGS],
+  path: '',
+  subCategories: [NEW, SUGAR_COLLECTION, OFFERS, BLOGS],
 } as const;
 
 /* ================================ FOR YOU END ================================ */
@@ -204,33 +204,28 @@ export const FOR_YOU = {
 /* ================================ ABOUT START ================================ */
 
 export const COMPANY = {
-  level: 2,
   label: 'Company',
   category: 'company',
   subCategories: [
     {
-      level: 3,
       label: 'About Us',
       category: 'about_us',
       path: '/about-us',
       description: 'Learn about our journey, mission, and values that define our brand.',
     },
     {
-      level: 3,
       label: 'Mission Vision Values',
       category: 'mission_vision_values',
       path: '/mission-vision',
       description: "Discover our purpose, vision, and values driving our company's success.",
     },
     {
-      level: 3,
       label: 'Team',
       category: 'team',
       path: '/teams',
       description: 'Meet our talented team committed to delivering excellence every day.',
     },
     {
-      level: 3,
       label: 'Contact Us',
       category: 'contact_us',
       path: '/contact',
@@ -240,19 +235,16 @@ export const COMPANY = {
 } as const;
 
 export const PRESS = {
-  level: 2,
   label: 'Press',
   category: 'press',
   subCategories: [
     {
-      level: 3,
       label: 'Newsroom',
       category: 'newsroom',
       path: '/press-media',
       description: 'Stay updated with our latest news, events, and media announcements.',
     },
     {
-      level: 3,
       label: 'Awards',
       category: 'awards',
       path: '/awards',
@@ -262,26 +254,22 @@ export const PRESS = {
 } as const;
 
 export const CAREERS = {
-  level: 2,
   label: 'Careers',
   category: 'careers',
   subCategories: [
     {
-      level: 3,
       label: 'Values/Culture',
       category: 'values_culture',
       path: '/values-and-culture',
       description: 'Experience our vibrant culture driven by values of growth and innovation.',
     },
     {
-      level: 3,
       label: 'Openings',
       category: 'openings',
       path: '/careers',
       description: 'Discover exciting career opportunities and join our dynamic team today.',
     },
     {
-      level: 3,
       label: 'Retail/E-Commerce',
       category: 'retail_e_commerce',
       path: '/retail-and-e-commerce',
@@ -291,26 +279,22 @@ export const CAREERS = {
 } as const;
 
 export const TRUST_CENTER = {
-  level: 2,
   label: 'Trust Center & Legal',
   category: 'trust_center_and_legal',
   subCategories: [
     {
-      level: 3,
       label: 'Compliance',
       category: 'compliance',
       path: '/cookie-policy',
       description: 'Understand our compliance standards ensuring trust and transparency.',
     },
     {
-      level: 3,
       label: 'Privacy/Policy',
       category: 'privacy_policy',
       path: '/privacy-policy',
       description: 'Learn about our privacy practices and data protection commitments.',
     },
     {
-      level: 3,
       label: 'Terms & Conditions',
       category: 'terms_and_conditions',
       path: '/terms-conditions',
@@ -320,7 +304,6 @@ export const TRUST_CENTER = {
 } as const;
 
 export const ABOUT = {
-  level: 1,
   label: 'About',
   category: 'about',
   path: '/about',
@@ -334,55 +317,47 @@ export const ABOUT = {
 const basePath = '/products/collections';
 
 export const BATH_AND_BODY = {
-  level: 2,
   label: 'Bath & Body',
   category: 'bath_and_body',
   path: `${basePath}/bath_and_body`,
   subCategories: [
     {
-      level: 3,
       label: 'Shower Gel',
       category: 'shower_gel',
       path: `${basePath}/bath_and_body/shower_gel`,
       description: 'Refreshing shower gel that cleanses and hydrates for soft skin.',
     },
     {
-      level: 3,
       label: 'Soap',
       category: 'soap',
       path: `${basePath}/bath_and_body/soap`,
       description: 'Gentle soap for daily cleansing, leaving skin fresh and nourished.',
     },
     {
-      level: 3,
       label: 'Body Lotion',
       category: 'body_lotion',
       path: `${basePath}/bath_and_body/body_lotion`,
       description: 'Moisturizing body lotion that keeps skin smooth and hydrated all day.',
     },
     {
-      level: 3,
       label: 'Body Spray',
       category: 'body_spray',
       path: `${basePath}/bath_and_body/body_spray`,
       description: 'Light body spray with a refreshing fragrance for all-day freshness.',
     },
     {
-      level: 3,
       label: 'Hand Wash',
       category: 'hand_wash',
       path: `${basePath}/bath_and_body/hand_wash`,
       description: 'Cleansing hand wash that leaves hands soft and hygienically clean.',
     },
     {
-      level: 3,
       label: 'Foot Cream',
       category: 'foot_cream',
       path: `${basePath}/bath_and_body/foot_cream`,
       description: 'Nourishing foot cream that soothes and softens tired, dry feet.',
     },
     {
-      level: 3,
       label: 'Hand Cream',
       category: 'hand_cream',
       path: `${basePath}/bath_and_body/hand_cream`,
@@ -392,55 +367,47 @@ export const BATH_AND_BODY = {
 } as const;
 
 export const SUGAR_POP = {
-  level: 2,
   label: 'Sugar Pop',
   category: 'sugar_pop',
   path: `${basePath}/sugar_pop`,
   subCategories: [
     {
-      level: 3,
       label: 'Lips',
       category: 'lips',
       path: `${basePath}/sugar_pop/lips`,
       description: 'Lip products for bold, vibrant color and deep nourishing moisture.',
     },
     {
-      level: 3,
       label: 'Eyes',
       category: 'eyes',
       path: `${basePath}/sugar_pop/eyes`,
       description: 'Eye makeup essentials for creating stunning looks that last all day.',
     },
     {
-      level: 3,
       label: 'Face',
       category: 'face',
       path: `${basePath}/sugar_pop/face`,
       description: 'Face products to enhance complexion with flawless coverage.',
     },
     {
-      level: 3,
       label: 'Nails',
       category: 'nails',
       path: `${basePath}/sugar_pop/nails`,
       description: 'Vibrant nail colors and effective treatments for stylish, healthy nails.',
     },
     {
-      level: 3,
       label: 'Skincare',
       category: 'skincare',
       path: `${basePath}/sugar_pop/skincare`,
       description: 'Skincare essentials for a radiant, nourished, and clear complexion.',
     },
     {
-      level: 3,
       label: 'Body Care',
       category: 'body_care',
       path: `${basePath}/sugar_pop/body_care`,
       description: 'Body care products for soft, smooth skin with lasting hydration.',
     },
     {
-      level: 3,
       label: 'Best of Sugar Pop',
       category: 'best_of_sugar_pop',
       path: `${basePath}/sugar_pop/best_of_sugar_pop`,
@@ -450,48 +417,41 @@ export const SUGAR_POP = {
 } as const;
 
 export const HAIR_CARE = {
-  level: 2,
   label: 'Hair Care',
   category: 'hair_care',
   path: `${basePath}/hair_care`,
   subCategories: [
     {
-      level: 3,
       label: 'Shampoo',
       category: 'shampoo',
       path: `${basePath}/hair_care/shampoo`,
       description: 'Cleansing shampoo that effectively revitalizes hair for healthy shine.',
     },
     {
-      level: 3,
       label: 'Conditioner',
       category: 'conditioner',
       path: `${basePath}/hair_care/conditioner`,
       description: 'Nourishing conditioner that detangles and softens hair beautifully.',
     },
     {
-      level: 3,
       label: 'Hair Oil',
       category: 'hair_oil',
       path: `${basePath}/hair_care/hair_oil`,
       description: 'Hair oil that deeply nourishes hair for strong, shiny, healthy hair.',
     },
     {
-      level: 3,
       label: 'Serum',
       category: 'serum',
       path: `${basePath}/hair_care/serum`,
       description: 'Lightweight hair serum for frizz control and a silky, smooth finish.',
     },
     {
-      level: 3,
       label: 'Hair Mask',
       category: 'hair_mask',
       path: `${basePath}/hair_care/hair_mask`,
       description: 'Deep conditioning hair mask for intense repair and hydration.',
     },
     {
-      level: 3,
       label: 'Combo',
       category: 'combo',
       path: `${basePath}/hair_care/combo`,
@@ -501,48 +461,41 @@ export const HAIR_CARE = {
 } as const;
 
 export const GIFTING = {
-  level: 2,
   label: 'Gifting',
   category: 'gifting',
   path: `${basePath}/gifting`,
   subCategories: [
     {
-      level: 3,
       label: 'Lipstick Set',
       category: 'lipstick_set',
       path: `${basePath}/gifting/lipstick_set`,
       description: 'Beautiful lipstick sets perfect for gifting on any special occasion.',
     },
     {
-      level: 3,
       label: 'Sugar Merch',
       category: 'sugar_merch',
       path: `${basePath}/gifting/sugar_merch`,
       description: 'Trendy Sugar-branded merchandise for fans and beauty lovers.',
     },
     {
-      level: 3,
       label: 'Value Set',
       category: 'value_set',
       path: `${basePath}/gifting/value_set`,
       description: 'Curated value sets for a complete beauty experience and savings.',
     },
     {
-      level: 3,
       label: 'Makeup Kit',
       category: 'makeup_kit',
       path: `${basePath}/gifting/makeup_kit`,
       description: 'Comprehensive makeup kits with essentials for a flawless look.',
     },
     {
-      level: 3,
       label: 'Corporate Gifting',
       category: 'corporate_gifting',
       path: `${basePath}/gifting/corporate_gifting`,
       description: 'Elegant corporate gifts to leave a lasting impression with style.',
     },
     {
-      level: 3,
       label: 'Sugar Set',
       category: 'sugar_set',
       path: `${basePath}/gifting/sugar_set`,
@@ -552,7 +505,6 @@ export const GIFTING = {
 } as const;
 
 export const COLLECTIONS = {
-  level: 1,
   label: 'Collections',
   category: 'collections',
   path: '/products/collections',
@@ -564,34 +516,29 @@ export const COLLECTIONS = {
 /* ================================ SKIN START ================================ */
 
 export const MOISTURIZERS = {
-  level: 2,
   label: 'Moisturizers',
   category: 'moisturizers',
   path: `/products/skin/moisturizers`,
   subCategories: [
     {
-      level: 3,
       label: 'Night Cream',
       category: 'night_cream',
       path: `/products/skin/moisturizers/night_cream`,
       description: 'Deeply hydrates and repairs tired skin while you sleep.',
     },
     {
-      level: 3,
       label: 'Eye Cream',
       category: 'eye_cream',
       path: `/products/skin/moisturizers/eye_cream`,
       description: 'Reduces puffiness, dark circles, and fine lines quickly.',
     },
     {
-      level: 3,
       label: 'Serum',
       category: 'serum',
       path: `/products/skin/moisturizers/serum`,
       description: 'Nourishes skin with essential vitamins for a radiant glow.',
     },
     {
-      level: 3,
       label: 'Skincare Kit',
       category: 'skincare_kit',
       path: `/products/skin/moisturizers/skincare_kit`,
@@ -601,34 +548,29 @@ export const MOISTURIZERS = {
 } as const;
 
 export const CLEANSING_AND_EXFOLIATION = {
-  level: 2,
   label: 'Cleansing & Exfoliation',
   category: 'cleansing_and_exfoliation',
   path: `/products/skin/cleansing_and_exfoliation`,
   subCategories: [
     {
-      level: 3,
       label: 'Cleanser',
       category: 'cleanser',
       path: `/products/skin/cleansing_and_exfoliation/cleanser`,
       description: 'Gently removes dirt, excess oil, and makeup for clean skin.',
     },
     {
-      level: 3,
       label: 'Face Wash',
       category: 'face_wash',
       path: `/products/skin/cleansing_and_exfoliation/face_wash`,
       description: 'Refreshing daily wash for soft and healthy-looking skin tone.',
     },
     {
-      level: 3,
       label: 'Exfoliator & Scrub',
       category: 'exfoliator_and_scrub',
       path: `/products/skin/cleansing_and_exfoliation/exfoliator_and_scrub`,
       description: 'Removes dead skin cells to reveal a fresh and smooth glow.',
     },
     {
-      level: 3,
       label: 'Sunscreen',
       category: 'sunscreen',
       path: `/products/skin/cleansing_and_exfoliation/sunscreen`,
@@ -638,27 +580,23 @@ export const CLEANSING_AND_EXFOLIATION = {
 } as const;
 
 export const NATURES_BLEND = {
-  level: 2,
   label: "Nature's Blend",
   category: 'natures_blend',
   path: `/products/skin/natures_blend`,
   subCategories: [
     {
-      level: 3,
       label: 'Aquaholic',
       category: 'aquaholic',
       path: `/products/skin/natures_blend/aquaholic`,
       description: 'Hydration-rich formulas to deeply quench dry, dull skin.',
     },
     {
-      level: 3,
       label: 'Coffee Culture',
       category: 'coffee_culture',
       path: `/products/skin/natures_blend/coffee_culture`,
       description: 'Energizing coffee extracts for a firm, smooth, youthful feel.',
     },
     {
-      level: 3,
       label: 'Citrus Got Real',
       category: 'citrus_got_real',
       path: `/products/skin/natures_blend/citrus_got_real`,
@@ -668,20 +606,17 @@ export const NATURES_BLEND = {
 } as const;
 
 export const FACE_MASK = {
-  level: 2,
   label: 'Face Mask',
   category: 'face_mask',
   path: `/products/skin/face_mask`,
   subCategories: [
     {
-      level: 3,
       label: 'Sheet Mask',
       category: 'sheet_mask',
       path: `/products/skin/face_mask/sheet_mask`,
       description: 'Instant hydration and glowing effect in just a few minutes.',
     },
     {
-      level: 3,
       label: 'Face Pack',
       category: 'face_pack',
       path: `/products/skin/face_mask/face_pack`,
@@ -691,7 +626,6 @@ export const FACE_MASK = {
 } as const;
 
 export const SKIN = {
-  level: 1,
   label: 'Skin',
   category: 'skin',
   path: '/products/skin',
@@ -703,48 +637,41 @@ export const SKIN = {
 /* ================================ FACE START ================================ */
 
 export const FACE_MAKEUP = {
-  level: 2,
   label: 'Face Makeup',
   category: 'face_makeup',
   path: `/products/face/face_makeup`,
   subCategories: [
     {
-      level: 3,
       label: 'Foundation',
       category: 'foundation',
       path: `/products/face/face_makeup/foundation`,
       description: 'Provides coverage for a flawless base with a natural, smooth finish.',
     },
     {
-      level: 3,
       label: 'BB Cream',
       category: 'bb_cream',
       path: `/products/face/face_makeup/bb_cream`,
       description: 'Lightweight formula that hydrates, evens skin tone, and protects skin.',
     },
     {
-      level: 3,
       label: 'Compact Powder',
       category: 'compact_powder',
       path: `/products/face/face_makeup/compact_powder`,
       description: 'Sets makeup, reduces shine, and ensures a long-lasting matte finish.',
     },
     {
-      level: 3,
       label: 'Loose Powder',
       category: 'loose_powder',
       path: `/products/face/face_makeup/loose_powder`,
       description: 'Finely milled powder for a smooth, shine-free finish that lasts all day.',
     },
     {
-      level: 3,
       label: 'Banana Powder',
       category: 'banana_powder',
       path: `/products/face/face_makeup/banana_powder`,
       description: 'Brightens the complexion, reduces shine, and sets makeup beautifully.',
     },
     {
-      level: 3,
       label: 'SPF Foundation',
       category: 'spf_foundation',
       path: `/products/face/face_makeup/spf_foundation`,
@@ -754,13 +681,11 @@ export const FACE_MAKEUP = {
 } as const;
 
 export const TRADITIONAL_AND_ESSENTIALS = {
-  level: 2,
   label: 'Traditional & Essentials',
   category: 'traditional_and_essentials',
   path: `/products/face/traditional_and_essentials`,
   subCategories: [
     {
-      level: 3,
       label: 'Sindoor',
       category: 'sindoor',
       path: `/products/face/traditional_and_essentials/sindoor`,
@@ -770,34 +695,29 @@ export const TRADITIONAL_AND_ESSENTIALS = {
 } as const;
 
 export const CHEEKS_AND_GLOW = {
-  level: 2,
   label: 'Cheeks & Glow',
   category: 'cheeks_and_glow',
   path: `/products/face/cheeks_and_glow`,
   subCategories: [
     {
-      level: 3,
       label: 'Highlighter',
       category: 'highlighter',
       path: `/products/face/cheeks_and_glow/highlighter`,
       description: 'Adds a radiant, enhancing features with a luminous, dewy look.',
     },
     {
-      level: 3,
       label: 'Liquid Highlighter',
       category: 'liquid_highlighter',
       path: `/products/face/cheeks_and_glow/liquid_highlighter`,
       description: 'Blendable liquid formula for a glowing, buildable, natural look.',
     },
     {
-      level: 3,
       label: 'Blush',
       category: 'blush',
       path: `/products/face/cheeks_and_glow/blush`,
       description: 'Adds a pop of color to cheeks, creating a youthful, healthy look.',
     },
     {
-      level: 3,
       label: 'Cheek Stain',
       category: 'cheek_stain',
       path: `/products/face/cheeks_and_glow/cheek_stain`,
@@ -807,27 +727,23 @@ export const CHEEKS_AND_GLOW = {
 } as const;
 
 export const SETTING_AND_FINISHING = {
-  level: 2,
   label: 'Setting & Finishing',
   category: 'setting_and_finishing',
   path: `/products/face/setting_and_finishing`,
   subCategories: [
     {
-      level: 3,
       label: 'Setting Spray',
       category: 'setting_spray',
       path: `/products/face/setting_and_finishing/setting_spray`,
       description: 'Locks makeup for long wear, maintaining a fresh look without.',
     },
     {
-      level: 3,
       label: 'Compact',
       category: 'compact',
       path: `/products/face/setting_and_finishing/compact`,
       description: 'Portable powder for touch-ups, controls shine, sets makeup place.',
     },
     {
-      level: 3,
       label: 'Fixer',
       category: 'fixer',
       path: `/products/face/setting_and_finishing/fixer`,
@@ -837,41 +753,35 @@ export const SETTING_AND_FINISHING = {
 } as const;
 
 export const FOUNDATIONS_BY_FINISH = {
-  level: 2,
   label: 'Foundations by Finish',
   category: 'foundations_by_finish',
   path: `/products/face/foundations_by_finish`,
   subCategories: [
     {
-      level: 3,
       label: 'Liquid Foundation',
       category: 'liquid_foundation',
       path: `/products/face/foundations_by_finish/liquid_foundation`,
       description: 'Buildable coverage with a natural finish that blends seamlessly skin.',
     },
     {
-      level: 3,
       label: 'Matte Foundation',
       category: 'matte_foundation',
       path: `/products/face/foundations_by_finish/matte_foundation`,
       description: 'Oil-absorbing formula for a shine-free, velvety matte look lasts.',
     },
     {
-      level: 3,
       label: 'Water Resistant Foundation',
       category: 'water_resistant_foundation',
       path: `/products/face/foundations_by_finish/water_resistant_foundation`,
       description: 'Long-wearing, water-resistant foundation that stays flawless day.',
     },
     {
-      level: 3,
       label: 'High Coverage Foundation',
       category: 'high_coverage_foundation',
       path: `/products/face/foundations_by_finish/high_coverage_foundation`,
       description: 'Conceals imperfections with full coverage, ensuring flawless look.',
     },
     {
-      level: 3,
       label: 'Stick Foundation',
       category: 'stick_foundation',
       path: `/products/face/foundations_by_finish/stick_foundation`,
@@ -881,20 +791,17 @@ export const FOUNDATIONS_BY_FINISH = {
 } as const;
 
 export const FOUNDATIONS_BY_SKIN_TYPE = {
-  level: 2,
   label: 'Foundations by Skin Type',
   category: 'foundations_by_skin_type',
   path: `/products/face/foundations_by_skin_type`,
   subCategories: [
     {
-      level: 3,
       label: 'Best for Dry Skin',
       category: 'best_for_dry_skin',
       path: `/products/face/foundations_by_skin_type/best_for_dry_skin`,
       description: 'Hydrating formula that nourishes and enhances radiance for dry skin.',
     },
     {
-      level: 3,
       label: 'Best for Oily Skin',
       category: 'best_for_oily_skin',
       path: `/products/face/foundations_by_skin_type/best_for_oily_skin`,
@@ -904,20 +811,17 @@ export const FOUNDATIONS_BY_SKIN_TYPE = {
 } as const;
 
 export const PRIMERS_AND_REMOVERS = {
-  level: 2,
   label: 'Primers & Removers',
   category: 'primers_and_removers',
   path: `/products/face/primers_and_removers`,
   subCategories: [
     {
-      level: 3,
       label: 'Makeup Remover',
       category: 'makeup_remover',
       path: `/products/face/primers_and_removers/makeup_remover`,
       description: 'Gently removes makeup while hydrating and refreshing the skin.',
     },
     {
-      level: 3,
       label: 'Primer',
       category: 'primer',
       path: `/products/face/primers_and_removers/primer`,
@@ -927,20 +831,17 @@ export const PRIMERS_AND_REMOVERS = {
 } as const;
 
 export const BRONZERS_AND_CONTOURS = {
-  level: 2,
   label: 'Bronzers & Contours',
   category: 'bronzers_and_contours',
   path: `/products/face/bronzers_and_contours`,
   subCategories: [
     {
-      level: 3,
       label: 'Bronzer',
       category: 'bronzer',
       path: `/products/face/bronzers_and_contours/bronzer`,
       description: 'Adds warmth and a sun-kissed glow for a radiant complexion.',
     },
     {
-      level: 3,
       label: 'Contour',
       category: 'contour',
       path: `/products/face/bronzers_and_contours/contour`,
@@ -950,20 +851,17 @@ export const BRONZERS_AND_CONTOURS = {
 } as const;
 
 export const CONCEALERS_AND_CORRECTORS = {
-  level: 2,
   label: 'Concealers & Correctors',
   category: 'concealers_and_correctors',
   path: `/products/face/concealers_and_correctors`,
   subCategories: [
     {
-      level: 3,
       label: 'Color Concealer',
       category: 'color_concealer',
       path: `/products/face/concealers_and_correctors/color_concealer`,
       description: 'It covers flaws with precision, delivering a flawless, airbrushed.',
     },
     {
-      level: 3,
       label: 'Color Corrector',
       category: 'color_corrector',
       path: `/products/face/concealers_and_correctors/color_corrector`,
@@ -973,7 +871,6 @@ export const CONCEALERS_AND_CORRECTORS = {
 } as const;
 
 export const FACE = {
-  level: 1,
   label: 'Face',
   category: 'face',
   path: '/products/face',
@@ -995,27 +892,23 @@ export const FACE = {
 /* ================================ EYES START ================================ */
 
 export const KOHL_AND_KAJAL = {
-  level: 2,
   label: 'Kohl & Kajal',
   category: 'kohl_and_kajal',
   path: `/products/eyes/kohl_and_kajal`,
   subCategories: [
     {
-      level: 3,
       label: 'Kohl',
       category: 'kohl',
       path: `/products/eyes/kohl_and_kajal/kohl`,
       description: 'Intensely pigmented kohls for bold, long-lasting eye definition all day.',
     },
     {
-      level: 3,
       label: 'Kajal',
       category: 'kajal',
       path: `/products/eyes/kohl_and_kajal/kajal`,
       description: 'Smooth kajals for a dramatic look, perfect for waterline application.',
     },
     {
-      level: 3,
       label: 'Smudge Proof Kajal',
       category: 'smudge_proof_kajal',
       path: `/products/eyes/kohl_and_kajal/smudge_proof_kajal`,
@@ -1025,27 +918,23 @@ export const KOHL_AND_KAJAL = {
 } as const;
 
 export const MASCARAS = {
-  level: 2,
   label: 'Mascaras',
   category: 'mascaras',
   path: `/products/eyes/mascaras`,
   subCategories: [
     {
-      level: 3,
       label: 'Volumizing Mascara',
       category: 'volumizing_mascara',
       path: `/products/eyes/mascaras/volumizing_mascara`,
       description: 'Boosts lash volume for a fuller, more dramatic look with each coat.',
     },
     {
-      level: 3,
       label: 'Curl Lengthening Mascara',
       category: 'curl_lengthening_mascara',
       path: `/products/eyes/mascaras/curl_lengthening_mascara`,
       description: 'Lifts and curls lashes for a wide-eyed look with added length and volume.',
     },
     {
-      level: 3,
       label: 'Waterproof Mascara',
       category: 'waterproof_mascara',
       path: `/products/eyes/mascaras/waterproof_mascara`,
@@ -1055,27 +944,23 @@ export const MASCARAS = {
 } as const;
 
 export const EYELINERS = {
-  level: 2,
   label: 'Eyeliners',
   category: 'eyeliners',
   path: `/products/eyes/eyeliners`,
   subCategories: [
     {
-      level: 3,
       label: 'Liquid Eyeliner',
       category: 'liquid_eyeliner',
       path: `/products/eyes/eyeliners/liquid_eyeliner`,
       description: 'Precision tip for sharp lines, perfect for bold cat-eye or winged looks.',
     },
     {
-      level: 3,
       label: 'Gel Eyeliner',
       category: 'gel_eyeliner',
       path: `/products/eyes/eyeliners/gel_eyeliner`,
       description: 'Creamy, blendable gel eyeliner for versatile looks, from bold to subtle.',
     },
     {
-      level: 3,
       label: 'Pen Eyeliner',
       category: 'pen_eyeliner',
       path: `/products/eyes/eyeliners/pen_eyeliner`,
@@ -1085,27 +970,23 @@ export const EYELINERS = {
 } as const;
 
 export const EYESHADOW = {
-  level: 2,
   label: 'Eyeshadow',
   category: 'eyeshadow',
   path: `/products/eyes/eyeshadow`,
   subCategories: [
     {
-      level: 3,
       label: 'Eyeshadow Palette',
       category: 'eyeshadow_palette',
       path: `/products/eyes/eyeshadow/eyeshadow_palette`,
       description: 'Versatile palettes with coordinated shades for endless eye makeup looks.',
     },
     {
-      level: 3,
       label: 'Liquid Eyeshadow',
       category: 'liquid_eyeshadow',
       path: `/products/eyes/eyeshadow/liquid_eyeshadow`,
       description: 'High-pigment liquid shadows for easy application and long-lasting shimmer.',
     },
     {
-      level: 3,
       label: 'Glitter Eyeshadow',
       category: 'glitter_eyeshadow',
       path: `/products/eyes/eyeshadow/glitter_eyeshadow`,
@@ -1115,27 +996,23 @@ export const EYESHADOW = {
 } as const;
 
 export const EYEBROWS = {
-  level: 2,
   label: 'Eyebrows',
   category: 'eyebrows',
   path: `/products/eyes/eyebrows`,
   subCategories: [
     {
-      level: 3,
       label: 'Brow Definer',
       category: 'brow_definer',
       path: `/products/eyes/eyebrows/brow_definer`,
       description: 'Defines brows with precision for a well-groomed and polished appearance.',
     },
     {
-      level: 3,
       label: 'Brow Pencil',
       category: 'brow_pencil',
       path: `/products/eyes/eyebrows/brow_pencil`,
       description: 'Easy-to-use pencil for filling and shaping brows with natural-looking color.',
     },
     {
-      level: 3,
       label: 'Brow Gel',
       category: 'brow_gel',
       path: `/products/eyes/eyebrows/brow_gel`,
@@ -1145,27 +1022,23 @@ export const EYEBROWS = {
 } as const;
 
 export const EYE_VALUE_SET = {
-  level: 2,
   label: 'Eye Value Set',
   category: 'eye_value_set',
   path: `/products/eyes/eye_value_set`,
   subCategories: [
     {
-      level: 3,
       label: 'Eyelashes',
       category: 'eyelashes',
       path: `/products/eyes/eye_value_set/eyelashes`,
       description: 'Enhance your eyes with faux lashes for added volume and captivating charm.',
     },
     {
-      level: 3,
       label: 'Eye Gift Set',
       category: 'eye_gift_set',
       path: `/products/eyes/eye_value_set/eye_gift_set`,
       description: "Perfect gift sets featuring popular eye products for makeup lovers' delight.",
     },
     {
-      level: 3,
       label: 'Eye Combo',
       category: 'eye_combo',
       path: `/products/eyes/eye_value_set/eye_combo`,
@@ -1175,7 +1048,6 @@ export const EYE_VALUE_SET = {
 } as const;
 
 export const EYES = {
-  level: 1,
   label: 'Eyes',
   category: 'eyes',
   path: '/products/eyes',
@@ -1187,34 +1059,29 @@ export const EYES = {
 /* ================================ LIPS START ================================ */
 
 export const FINISH_TYPES = {
-  level: 2,
   label: 'Finish Types',
   category: 'finish_types',
   path: `/products/lips/finish_types`,
   subCategories: [
     {
-      level: 3,
       label: 'Matte Lipstick',
       category: 'matte_lipstick',
       path: `/products/lips/finish_types/matte_lipstick`,
       description: 'Velvety matte finish with long-lasting, intense color payoff everywhere.',
     },
     {
-      level: 3,
       label: 'Satin Lipstick',
       category: 'satin_lipstick',
       path: `/products/lips/finish_types/satin_lipstick`,
       description: 'Smooth, creamy texture with a luminous, semi-matte finish always.',
     },
     {
-      level: 3,
       label: 'Hi-Shine Lipstick',
       category: 'hi_shine_lipstick',
       path: `/products/lips/finish_types/hi_shine_lipstick`,
       description: 'Glossy finish for a shiny, luscious look with rich pigment beautifully.',
     },
     {
-      level: 3,
       label: 'Lip Gloss',
       category: 'lip_gloss',
       path: `/products/lips/finish_types/lip_gloss`,
@@ -1224,34 +1091,29 @@ export const FINISH_TYPES = {
 } as const;
 
 export const LIPSTICK_FORMS = {
-  level: 2,
   label: 'Lipstick Forms',
   category: 'lipstick_forms',
   path: `/products/lips/lipstick_forms`,
   subCategories: [
     {
-      level: 3,
       label: 'Liquid Lipstick',
       category: 'liquid_lipstick',
       path: `/products/lips/lipstick_forms/liquid_lipstick`,
       description: 'Rich, long-lasting color with a lightweight, matte finish beautifully.',
     },
     {
-      level: 3,
       label: 'Powder Lipstick',
       category: 'powder_lipstick',
       path: `/products/lips/lipstick_forms/powder_lipstick`,
       description: 'Weightless powder formula with a soft-focus, matte effect perfectly.',
     },
     {
-      level: 3,
       label: 'Crayon Lipstick',
       category: 'crayon_lipstick',
       path: `/products/lips/lipstick_forms/crayon_lipstick`,
       description: 'Easy-to-apply crayon for precise lines and bold color payoff smoothly.',
     },
     {
-      level: 3,
       label: 'Bullet Lipstick',
       category: 'bullet_lipstick',
       path: `/products/lips/lipstick_forms/bullet_lipstick`,
@@ -1261,34 +1123,29 @@ export const LIPSTICK_FORMS = {
 } as const;
 
 export const LONG_LASTING_LIPSTICKS = {
-  level: 2,
   label: 'Long-Lasting Lipsticks',
   category: 'long_lasting_lipsticks',
   path: `/products/lips/long_lasting_lipsticks`,
   subCategories: [
     {
-      level: 3,
       label: 'Transfer Proof Lipstick',
       category: 'transfer_proof_lipstick',
       path: `/products/lips/long_lasting_lipsticks/transfer_proof_lipstick`,
       description: 'Stays put all day without smudging or fading for long-lasting wear.',
     },
     {
-      level: 3,
       label: 'Water Proof Lipstick',
       category: 'water_proof_lipstick',
       path: `/products/lips/long_lasting_lipsticks/water_proof_lipstick`,
       description: 'Resistant to water and sweat, ensuring color stays vibrant always.',
     },
     {
-      level: 3,
       label: 'Lip Tint & Stain',
       category: 'lip_tint_and_stain',
       path: `/products/lips/long_lasting_lipsticks/lip_tint_and_stain`,
       description: 'Lightweight tint with a natural finish that lasts for hours smoothly.',
     },
     {
-      level: 3,
       label: 'Smudge Proof',
       category: 'smudge_proof_lipstick',
       path: `/products/lips/long_lasting_lipsticks/smudge_proof_lipstick`,
@@ -1298,34 +1155,29 @@ export const LONG_LASTING_LIPSTICKS = {
 } as const;
 
 export const LIP_CARE = {
-  level: 2,
   label: 'Lip Care',
   category: 'lip_care',
   path: `/products/lips/lip_care`,
   subCategories: [
     {
-      level: 3,
       label: 'Lip Primer & Scrub',
       category: 'lip_primer_and_scrub',
       path: `/products/lips/lip_care/lip_primer_and_scrub`,
       description: 'Preps lips for smooth application and enhances color beautifully.',
     },
     {
-      level: 3,
       label: 'Lipstick Fixer & Remover',
       category: 'lipstick_fixer_and_remover',
       path: `/products/lips/lip_care/lipstick_fixer_and_remover`,
       description: 'Ensures long wear and easy removal without residue effortlessly.',
     },
     {
-      level: 3,
       label: 'Lip Balm',
       category: 'lip_balm',
       path: `/products/lips/lip_care/lip_balm`,
       description: 'Deeply hydrates and protects lips from dryness and cracking.',
     },
     {
-      level: 3,
       label: 'Tinted Lip Balm',
       category: 'tinted_lip_balm',
       path: `/products/lips/lip_care/tinted_lip_balm`,
@@ -1335,20 +1187,17 @@ export const LIP_CARE = {
 } as const;
 
 export const LIP_ENHANCERS_AND_OTHER = {
-  level: 2,
   label: 'Lip Enhancers & Other',
   category: 'lip_enhancers_and_other',
   path: `/products/lips/lip_enhancers_and_other`,
   subCategories: [
     {
-      level: 3,
       label: 'Lip Liner',
       category: 'lip_liner',
       path: `/products/lips/lip_enhancers_and_other/lip_liner`,
       description: 'Defines lips with precision, shaping and preventing feathering daily.',
     },
     {
-      level: 3,
       label: 'Lip Glitter',
       category: 'lip_glitter',
       path: `/products/lips/lip_enhancers_and_other/lip_glitter`,
@@ -1358,27 +1207,23 @@ export const LIP_ENHANCERS_AND_OTHER = {
 } as const;
 
 export const LIPSTICK_SETS_AND_COMBOS = {
-  level: 2,
   label: 'Lipstick Set & Combo',
   category: 'lipstick_set_and_combo',
   path: `/products/lips/lipstick_set_and_combo`,
   subCategories: [
     {
-      level: 3,
       label: 'Lipstick Set',
       category: 'lipstick_set',
       path: `/products/lips/lipstick_set_and_combo/lipstick_set`,
       description: 'Multiple shades in one set for versatile, everyday looks beautifully.',
     },
     {
-      level: 3,
       label: 'Lipstick Combo',
       category: 'lipstick_combo',
       path: `/products/lips/lipstick_set_and_combo/lipstick_combo`,
       description: 'Perfectly paired lip products for a complete, cohesive look always.',
     },
     {
-      level: 3,
       label: 'Lip Palette',
       category: 'lip_palette',
       path: `/products/lips/lipstick_set_and_combo/lip_palette`,
@@ -1388,7 +1233,6 @@ export const LIPSTICK_SETS_AND_COMBOS = {
 } as const;
 
 export const LIPS = {
-  level: 1,
   label: 'Lips',
   category: 'lips',
   path: '/products/lips',

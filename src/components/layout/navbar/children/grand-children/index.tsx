@@ -44,34 +44,41 @@ export const Feedback = () => {
   );
 };
 
+export const SubCategory = ({
+  subCategory,
+  className,
+}: TClassName & {
+  subCategory: (typeof NAVBAR_CATEGORIES_DATA)[number]['subCategories'][number]['subCategories'][number];
+}) => {
+  const { navigate } = usePathParams();
+
+  return (
+    <div
+      onClick={() => subCategory?.path && navigate(subCategory.path)}
+      className={`hover:bg-smoke-eerie hover:border-primary/8 group cursor-pointer break-inside-avoid rounded-xl border border-transparent p-2 transition-colors ${className || ''}`}
+    >
+      <p className="text-secondary group-hover:text-primary line-clamp-1 text-left text-xs tracking-wide transition-colors xl:text-sm">
+        {subCategory.label}
+      </p>
+      <p className="text-silver-jet group-hover:text-tertiary line-clamp-2 text-[8px] leading-3 wrap-break-word transition-colors xl:text-[10px]">
+        {subCategory.description}
+      </p>
+    </div>
+  );
+};
+
 export const SubCategories = ({
   subCategories,
   className = '',
 }: TClassName & {
   subCategories: readonly (typeof NAVBAR_CATEGORIES_DATA)[number]['subCategories'][number]['subCategories'][number][];
-}) => {
-  const { navigate } = usePathParams();
-  return (
-    <div className={`flex flex-col gap-1 md:gap-2 ${className}`}>
-      {subCategories.map((subCategory, index) => {
-        return (
-          <div
-            onClick={() => subCategory?.path && navigate(subCategory.path)}
-            key={index}
-            className="hover:bg-smoke-eerie hover:border-primary/8 group cursor-pointer break-inside-avoid rounded-xl border border-transparent p-2 transition-colors"
-          >
-            <p className="text-secondary group-hover:text-primary line-clamp-1 text-left text-xs tracking-wide transition-colors xl:text-sm">
-              {subCategory.label}
-            </p>
-            <p className="text-silver-jet group-hover:text-tertiary line-clamp-2 text-[8px] leading-3 wrap-break-word transition-colors xl:text-[10px]">
-              {subCategory.description}
-            </p>
-          </div>
-        );
-      })}
-    </div>
-  );
-};
+}) => (
+  <div className={`flex flex-col gap-1 md:gap-2 ${className}`}>
+    {subCategories.map((subCategory, index) => (
+      <SubCategory key={index} subCategory={subCategory} />
+    ))}
+  </div>
+);
 
 const CountBadge = ({ count }: { count?: number | string }) => {
   if (!count) return null;
