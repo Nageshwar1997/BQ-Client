@@ -17,7 +17,7 @@ export const CategoryLabel = ({
   className = '',
 }: { label: string; path?: string } & TClassName) => (
   <p
-    className={`text-battleship-davys-gray-invert mt-3 line-clamp-1 px-3 text-left text-sm leading-5 font-semibold tracking-wide uppercase md:mt-0 ${
+    className={`text-battleship-davys-gray-invert break-inside-avoid text-left text-sm leading-5 font-semibold tracking-wide uppercase ${
       path ? 'cursor-pointer' : 'cursor-default'
     } ${className}`}
   >
@@ -35,14 +35,11 @@ export const Feedback = ({ forwardIndex = 0 }: { forwardIndex?: TForwardIdx }) =
           User's Feedback:
         </p>
       </div>
-      {FEEDBACK.map((item) => (
-        <GradientText
-          key={item.text}
-          text={item.text}
-          type={item.type}
-          className="text-[11px] xl:text-sm"
-        />
-      ))}
+      <div className="flex flex-wrap gap-1 *:text-[11px] *:xl:text-sm">
+        {FEEDBACK.map((item, idx) => (
+          <GradientText key={idx} {...item} />
+        ))}
+      </div>
     </div>
   );
 };
@@ -61,16 +58,14 @@ export const SubCategories = ({
           <div
             onClick={() => subCategory?.path && navigate(subCategory.path)}
             key={index}
-            className="hover:bg-smoke-eerie hover:border-primary/8 group flex cursor-pointer justify-start gap-2 rounded-xl border border-transparent p-2"
+            className="hover:bg-smoke-eerie hover:border-primary/8 group cursor-pointer break-inside-avoid rounded-xl border border-transparent p-2 transition-colors"
           >
-            <div className="flex w-full flex-col justify-center lg:justify-start">
-              <p className="text-secondary group-hover:text-primary line-clamp-1 w-full text-left text-xs tracking-wide xl:text-sm">
-                {subCategory.label}
-              </p>
-              <p className="text-silver-jet group-hover:text-tertiary line-clamp-2 text-[8px] leading-3 wrap-break-word xl:text-[10px]">
-                {subCategory.description}
-              </p>
-            </div>
+            <p className="text-secondary group-hover:text-primary line-clamp-1 text-left text-xs tracking-wide transition-colors xl:text-sm">
+              {subCategory.label}
+            </p>
+            <p className="text-silver-jet group-hover:text-tertiary line-clamp-2 text-[8px] leading-3 wrap-break-word transition-colors xl:text-[10px]">
+              {subCategory.description}
+            </p>
           </div>
         );
       })}

@@ -61,7 +61,7 @@ const ForYou = () => {
                   <CategoryLabel
                     label={category.heading as string}
                     path={category.path}
-                    className="border-battleship-davys-gray/30 base:text-sm mt-0! border border-b px-0! py-1 text-left text-xs"
+                    className="border-battleship-davys-gray/30 base:text-sm mt-0! border-b px-0! py-1 text-left text-xs"
                   />
                   <div className="flex cursor-pointer items-center justify-between gap-4 pt-1">
                     <div className="flex flex-col items-start gap-1">
