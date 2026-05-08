@@ -497,13 +497,6 @@ export const HAIR_CARE = {
       path: `${basePath}/hair_care/combo`,
       description: 'Value packs of hair care products for a complete hair routine.',
     },
-    {
-      level: 3,
-      label: 'View All',
-      category: 'view_all',
-      path: `${basePath}/hair_care/view_all`,
-      description: 'Browse all hair care products for your perfect hair solution.',
-    },
   ],
 } as const;
 
@@ -671,13 +664,6 @@ export const NATURES_BLEND = {
       path: `/products/skin/natures_blend/citrus_got_real`,
       description: 'Vitamin C boost for brighter, fresher, healthier-looking skin.',
     },
-    {
-      level: 3,
-      label: 'View All',
-      category: 'view_all',
-      path: `/products/skin/natures_blend/view_all`,
-      description: 'Explore all skincare essentials, perfectly tailored for you.',
-    },
   ],
 } as const;
 
@@ -700,13 +686,6 @@ export const FACE_MASK = {
       category: 'face_pack',
       path: `/products/skin/face_mask/face_pack`,
       description: 'Detox and refresh your skin naturally with herbal extracts.',
-    },
-    {
-      level: 3,
-      label: 'View All',
-      category: 'view_all',
-      path: `/products/skin/face_mask/view_all`,
-      description: 'Browse all skincare must-haves for a flawless glowing look.',
     },
   ],
 } as const;
@@ -1374,13 +1353,6 @@ export const LIP_ENHANCERS_AND_OTHER = {
       category: 'lip_glitter',
       path: `/products/lips/lip_enhancers_and_other/lip_glitter`,
       description: 'Adds sparkle and shine for a glamorous, bold look on special occasions.',
-    },
-    {
-      level: 3,
-      label: 'View All',
-      category: 'view_all',
-      path: `/products/lips/lip_enhancers_and_other/view_all`,
-      description: 'Explore the complete range of lip products for every need beautifully.',
     },
   ],
 } as const;
