@@ -3,34 +3,24 @@ import { CategoryLabel, SubCategories } from './grand-children';
 
 const Lips = () => {
   return (
-    <div className="base:grid-cols-2 base:gap-3 grid h-full w-full grid-cols-1 content-center gap-2 p-4 md:grid-cols-3 md:gap-4 lg:gap-5 lg:p-0 xl:grid-cols-4">
-      {LIPS.subCategories.map((category, index) => {
-        return (
-          <div
-            key={index}
-            className={`border-battleship-davys-gray max-w-75 min-w-50 space-y-4 border-b pb-4 lg:pb-0 ${
-              ['finish_types', 'lipstick_forms', 'long_lasting_lipsticks', 'lip_care'].includes(
-                category.category,
-              )
-                ? category.category === 'lip_care'
-                  ? '2xl:border-battleship-davys-gray lg:border-transparent lg:pb-0 2xl:pb-2'
-                  : 'lg:pb-2'
-                : 'lg:border-none'
-            }`}
-          >
-            <CategoryLabel {...category} />
-            <SubCategories {...category} />
-          </div>
-        );
-      })}
-      <div className="shadow-secondary-invert col-span-2 hidden max-h-46 w-full items-center gap-5 shadow-lg xl:flex xl:max-h-62.5">
-        {['Lipstick1', 'Lipstick2'].map((name) => (
+    <div className="base:columns-2 columns-1 gap-3 md:columns-3 md:gap-4 lg:columns-4 lg:gap-5">
+      {LIPS.subCategories.map((category, index) => (
+        <div
+          key={index}
+          className="border-b-battleship-davys-gray mb-3 break-inside-auto border-b pb-1 md:mb-4 md:pb-2 lg:mb-5"
+        >
+          <CategoryLabel {...category} className="px-2" />
+          <SubCategories {...category} />
+        </div>
+      ))}
+      <div className="break-inside-avoid space-y-3 px-2 md:space-y-4 lg:space-y-5">
+        {['lipstick-1', 'lipstick-2'].map((name, index) => (
           <img
-            key={name}
+            key={index}
             src={`/images/navbar/${name}.jpg`}
             alt={name}
-            className="h-full max-w-[calc(50%-10px)] cursor-pointer rounded-lg object-fill object-center opacity-95 hover:opacity-100"
-            loading="lazy"
+            className="block w-full cursor-pointer rounded-lg object-contain opacity-80 transition-opacity hover:opacity-100"
+            loading="eager"
           />
         ))}
       </div>
