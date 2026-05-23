@@ -1,5 +1,4 @@
-import { AuthApi } from './AuthApi';
-import { UserApi } from './UserApi';
+import { AuthApi, UserApi } from './UserApi';
 
 export const authApi = new AuthApi();
 export const userApi = new UserApi();

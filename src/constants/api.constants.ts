@@ -9,43 +9,36 @@ const METHODS = {
 };
 
 export const API_BASE_URLS = {
-  'gateway-user-service': `${envs.urls.gateway}/api/v1/user-service`,
+  gateway: envs.urls.gateway,
+  'user-service': `${envs.urls.gateway}/api/v1/user-service`,
 };
 
 export const API_METHODS_AND_URLS = {
-  gateway: {
-    user_service: {
-      auth: {
-        register: {
-          send_otp: { method: METHODS.POST, url: '/auth/register/send-otp' },
-          resend_otp: { method: METHODS.PATCH, url: '/auth/register/resend-otp' },
-          verify_otp: { method: METHODS.POST, url: '/auth/register/verify-otp' },
-          save_user: { method: METHODS.POST, url: '/auth/register/save-user' },
-        },
-        login: {
-          manual: { method: METHODS.POST, url: '/auth/login/manual' },
-        },
-        token: {
-          refresh: {
-            baseURL: API_BASE_URLS['gateway-user-service'],
-            method: METHODS.POST,
-            url: '/auth/token/refresh-access-token',
-          },
-        },
-        password: {
-          forgot: {
-            send_otp: { method: METHODS.POST, url: '/auth/password/forgot-send-otp' },
-            resend_otp: { method: METHODS.PATCH, url: '/auth/password/forgot-resend-otp' },
-            verify_otp: { method: METHODS.POST, url: '/auth/password/forgot-verify-otp' },
-            save: { method: METHODS.POST, url: '/auth/password/forgot-save' },
-          },
-          change: { method: METHODS.PATCH, url: '/auth/password/change' },
-          set: { method: METHODS.PATCH, url: '/auth/password/set' },
-        },
+  user_service: {
+    auth: {
+      register: {
+        send_otp: { method: METHODS.POST, url: '/auth/register/send-otp' },
+        resend_otp: { method: METHODS.PATCH, url: '/auth/register/resend-otp' },
+        verify_otp: { method: METHODS.POST, url: '/auth/register/verify-otp' },
+        save_user: { method: METHODS.POST, url: '/auth/register/save-user' },
       },
-      user: { session: { method: METHODS.GET, url: '/user/session' } },
+      login: {
+        manual: { method: METHODS.POST, url: '/auth/login/manual' },
+      },
+      password: {
+        forgot: {
+          send_otp: { method: METHODS.POST, url: '/auth/password/forgot-send-otp' },
+          resend_otp: { method: METHODS.PATCH, url: '/auth/password/forgot-resend-otp' },
+          verify_otp: { method: METHODS.POST, url: '/auth/password/forgot-verify-otp' },
+          save: { method: METHODS.POST, url: '/auth/password/forgot-save' },
+        },
+        change: { method: METHODS.PATCH, url: '/auth/password/change' },
+        set: { method: METHODS.PATCH, url: '/auth/password/set' },
+      },
     },
+    user: { session: { method: METHODS.GET, url: '/user/session' } },
   },
+  gateway: { token: { refresh: { method: METHODS.POST, url: '/refresh-access-token' } } },
 } as const;
 
 export const GATEWAY_USER_SERVICE_QUERY_KEYS = {

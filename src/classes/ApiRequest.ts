@@ -39,8 +39,8 @@ export class ApiRequest {
   private baseUrls = API_BASE_URLS;
   protected instance: AxiosInstance;
 
-  constructor(key: keyof typeof API_BASE_URLS) {
-    const baseURL = this.baseUrls[key];
+  constructor(key?: keyof typeof API_BASE_URLS) {
+    const baseURL = this.baseUrls[key || 'gateway'];
 
     this.instance = axios.create({
       baseURL,
@@ -60,7 +60,7 @@ export class ApiRequest {
 
         const originalRequest = error.config as AxiosRequestConfigWithRetry;
 
-        const refreshUrl = API_METHODS_AND_URLS.gateway.user_service.auth.token.refresh.url;
+        const refreshUrl = API_METHODS_AND_URLS.gateway.token.refresh.url;
 
         if (originalRequest.url?.includes(refreshUrl)) {
           triggerLogout();
@@ -79,9 +79,7 @@ export class ApiRequest {
           isRefreshing = true;
 
           try {
-            await this.instance.request(
-              API_METHODS_AND_URLS.gateway.user_service.auth.token.refresh,
-            );
+            await this.instance.request(API_METHODS_AND_URLS.gateway.token.refresh);
 
             processQueue();
 
