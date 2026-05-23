@@ -11,6 +11,7 @@ const METHODS = {
 export const API_BASE_URLS = {
   gateway: envs.urls.gateway,
   'user-service': `${envs.urls.gateway}/api/v1/user-service`,
+  'product-service': `${envs.urls.gateway}/api/v1/product-service`,
 };
 
 export const API_METHODS_AND_URLS = {
@@ -38,10 +39,17 @@ export const API_METHODS_AND_URLS = {
     },
     user: { session: { method: METHODS.GET, url: '/user/session' } },
   },
+  product_service: {
+    category: {
+      get: {
+        byHierarchy: { method: METHODS.GET, url: '/category/by-hierarchy' },
+      },
+    },
+  },
   gateway: { token: { refresh: { method: METHODS.POST, url: '/refresh-access-token' } } },
 } as const;
 
-export const GATEWAY_USER_SERVICE_QUERY_KEYS = {
+export const USER_SERVICE_QUERY_KEYS = {
   auth: {
     register: {
       send_otp: ['register_send_otp'],
@@ -68,9 +76,11 @@ export const GATEWAY_USER_SERVICE_QUERY_KEYS = {
   },
 } as const;
 
-export const QUERY_KEYS = {
-  gateway: {
-    user_service: GATEWAY_USER_SERVICE_QUERY_KEYS,
+export const PRODUCT_SERVICE_QUERY_KEYS = {
+  category: {
+    get: {
+      byHierarchy: ['get_categories_hierarchy'],
+    },
   },
 } as const;
 

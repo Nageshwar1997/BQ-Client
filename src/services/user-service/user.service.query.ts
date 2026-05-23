@@ -1,8 +1,8 @@
 import { userApi } from '@/classes/apis';
-import { GATEWAY_USER_SERVICE_QUERY_KEYS } from '@/constants/api.constants';
+import { USER_SERVICE_QUERY_KEYS } from '@/constants/api.constants';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
-const { session } = GATEWAY_USER_SERVICE_QUERY_KEYS.user;
+const { session } = USER_SERVICE_QUERY_KEYS.user;
 
 export const useGetSessionUser = ({ enabled = true }) => {
   return useQuery({
