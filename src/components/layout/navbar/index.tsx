@@ -65,8 +65,8 @@ export const Navbar = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navbarRef = useRef<HTMLDivElement>(null);
 
-  const { data } = useGetCategoriesHierarchy();
-  console.log('🚀 ~ Navbar ~ data:', data);
+  const { data: categories } = useGetCategoriesHierarchy();
+  console.log('🚀 ~ Navbar ~ categories:', categories);
 
   const authenticated = useUserStore((s) => s.authenticated);
 
@@ -171,6 +171,7 @@ export const Navbar = () => {
 
   const HoveredComponent = hoveredCategory ? COMPONENT_MAP[hoveredCategory] : null;
 
+  const hoveredCategoryData = categories?.find((category) => category._id === hoveredCategory);
   return (
     <div
       className={`text-tertiary sticky top-0 left-0 z-50 flex h-16 w-full items-center justify-between gap-3 lg:-top-9 lg:h-25 lg:gap-0 xl:gap-5 ${

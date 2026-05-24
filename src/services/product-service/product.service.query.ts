@@ -1,5 +1,6 @@
 import { categoryApi } from '@/classes/apis';
 import { PRODUCT_SERVICE_QUERY_KEYS } from '@/constants/api.constants';
+import type { ICategory } from '@/types/api.type';
 import { useQuery } from '@tanstack/react-query';
 
 const CATEGORY_KEY = PRODUCT_SERVICE_QUERY_KEYS.category;
@@ -22,5 +23,6 @@ export const useGetCategoriesHierarchy = () => {
 
     // UX
     placeholderData: (prev) => prev,
+    select: (data) => (data?.categories || []) as ICategory[],
   });
 };

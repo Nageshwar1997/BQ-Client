@@ -76,3 +76,28 @@ export type TGenerateRoutes<
         >
       : never;
 };
+
+type CategoryLevel = 1 | 2 | 3;
+
+type CategoryBase<TLevel extends CategoryLevel> = {
+  _id: string;
+  name: string;
+  slug: string;
+  level: TLevel;
+};
+
+type Category<TLevel extends CategoryLevel> = TLevel extends 1
+  ? CategoryBase<1> & {
+      subcategories: Category<2>[];
+    }
+  : TLevel extends 2
+    ? CategoryBase<2> & {
+        parent: string;
+        subcategories: Category<3>[];
+      }
+    : CategoryBase<3> & {
+        parent: string;
+        description: string;
+      };
+
+export type ICategory = Category<1>;
