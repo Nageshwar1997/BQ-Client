@@ -3,7 +3,7 @@ import type { TCategory } from '@/types/api.type';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import VideoPlayer from '../../media/VideoPlayer';
-import { CategoryLabel, SubCategory } from './grand-children';
+import { CategoryLabel, L3Category } from './grand-children';
 
 const ForYou = ({ categories }: { categories: TCategory<2>[] }) => {
   const [playingVideoIndex, setPlayingVideoIndex] = useState<null | number>(null);
@@ -12,14 +12,14 @@ const ForYou = ({ categories }: { categories: TCategory<2>[] }) => {
     <div className="base:columns-2 columns-1 gap-3 lg:columns-4 lg:gap-5">
       {categories.map((category, index) => {
         const { thumbnail, video } = FOR_YOU_VIDEOS_DATA[index] ?? FOR_YOU_VIDEOS_DATA[0];
-        const subCategory = category.subcategories?.[0];
+        const subcategory = category.subcategories?.[0];
         return (
           <div
             key={index}
             className="border-b-battleship-davys-gray mb-3 break-inside-auto space-y-4 border-b pb-1 md:pb-2 lg:mb-5"
           >
             <CategoryLabel {...category} className="px-2" />
-            <SubCategory subCategory={subCategory} className="border-none hover:bg-transparent" />
+            <L3Category category={subcategory} className="border-none hover:bg-transparent" />
             {playingVideoIndex === index ? (
               <VideoPlayer
                 className="overflow-hidden rounded-lg!"

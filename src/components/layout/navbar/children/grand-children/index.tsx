@@ -1,11 +1,10 @@
 import GradientText from '@/components/ui/GradientText';
 import Theme from '@/components/ui/Theme';
-import { NAVBAR_CATEGORIES_DATA } from '@/constants/navbar.constants';
 import useAuthAction from '@/hooks/useAuthAction';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import usePathParams from '@/hooks/usePathParams';
-import type { TClassName } from '@/types/component.type';
-
+import type { TCategory } from '@/types/api.type';
+import type { TChildren, TClassName } from '@/types/component.type';
 import { getTodaysFeedback } from '@/utils/common.util';
 import { Icon } from '@iconify/react';
 import { useEffect, useState } from 'react';
@@ -44,41 +43,55 @@ export const Feedback = () => {
   );
 };
 
-export const SubCategory = ({
-  subCategory,
+export const L3Category = ({
+  category,
   className,
 }: TClassName & {
-  subCategory: (typeof NAVBAR_CATEGORIES_DATA)[number]['subcategories'][number]['subcategories'][number];
+  category: TCategory<3>;
 }) => {
   const { navigate } = usePathParams();
 
   return (
     <div
-      onClick={() => subCategory?.path && navigate(subCategory.path)}
+      onClick={() => category?.path && navigate(category.path)}
       className={`hover:bg-smoke-eerie hover:border-primary/8 group cursor-pointer break-inside-avoid rounded-xl border border-transparent p-2 transition-colors ${className || ''}`}
     >
       <p className="text-secondary group-hover:text-primary line-clamp-1 text-left text-xs tracking-wide transition-colors xl:text-sm">
-        {subCategory.name}
+        {category.name}
       </p>
       <p className="text-silver-jet group-hover:text-tertiary line-clamp-2 text-[8px] leading-3 wrap-break-word transition-colors xl:text-[10px]">
-        {subCategory.description}
+        {category.description}
       </p>
     </div>
   );
 };
 
-export const SubCategories = ({
-  subcategories,
+export const L2Category = ({
+  categories,
+  children,
   className = '',
-}: TClassName & {
-  subcategories: readonly (typeof NAVBAR_CATEGORIES_DATA)[number]['subcategories'][number]['subcategories'][number][];
-}) => (
-  <div className={`flex flex-col gap-1 md:gap-2 ${className}`}>
-    {subcategories.map((subCategory, index) => (
-      <SubCategory key={index} subCategory={subCategory} />
-    ))}
-  </div>
-);
+}: { categories: TCategory<2>[] } & TClassName & TChildren) => {
+  return (
+    <div
+      className={`base:columns-2 columns-1 gap-3 md:columns-3 md:gap-4 lg:columns-4 lg:gap-5 ${className}`}
+    >
+      {categories.map((category, index) => (
+        <div
+          key={index}
+          className="border-b-battleship-davys-gray mb-3 break-inside-auto border-b pb-1 md:mb-4 md:pb-2 lg:mb-5"
+        >
+          <CategoryLabel {...category} className="px-2" />
+          <div className="flex flex-col gap-1 md:gap-2">
+            {category.subcategories.map((subcategory, index) => (
+              <L3Category key={index} category={subcategory} />
+            ))}
+          </div>
+        </div>
+      ))}
+      {children}
+    </div>
+  );
+};
 
 const CountBadge = ({ count }: { count?: number | string }) => {
   if (!count) return null;

@@ -5,13 +5,10 @@ import useAuthAction from '@/hooks/useAuthAction';
 import usePathParams from '@/hooks/usePathParams';
 import { useGetCategoriesHierarchy } from '@/services/product-service/product.service.query';
 import useUserStore from '@/stores/user.store';
-import type { ICategory } from '@/types/api.type';
 import { toaster } from '@/utils/common.util';
 import { Icon } from '@iconify/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import About from './children/About';
-import ForYou from './children/ForYou';
 import { Feedback, UserMenuIcons } from './children/grand-children';
 import HoveredCategory from './children/HoveredCategory';
 
@@ -46,16 +43,6 @@ const TopLayer = () => {
         })}
       </div>
     </div>
-  );
-};
-
-const HoveredComponent = ({ category }: { category: ICategory }) => {
-  return category._id === 'about' ? (
-    <About categories={category.subcategories} />
-  ) : category._id === 'for_you' ? (
-    <ForYou categories={category.subcategories} />
-  ) : (
-    <HoveredCategory categories={category.subcategories} />
   );
 };
 
@@ -270,7 +257,7 @@ export const Navbar = () => {
                 {!!(hoveredId && hoveredCategoryData) && (
                   <div className="bg-battleship-davys-gray h-full max-w-325 rounded-xl p-px backdrop-blur-3xl">
                     <div className="text-secondary bg-secondary-invert space-y-4 rounded-xl p-4">
-                      <HoveredComponent category={hoveredCategoryData} />
+                      <HoveredCategory category={hoveredCategoryData} />
                       <Feedback />
                     </div>
                   </div>
@@ -325,7 +312,7 @@ export const Navbar = () => {
                     </div>
                     {isActive && category && (
                       <div className="overflow-y-scroll p-4">
-                        <HoveredComponent category={category} />
+                        <HoveredCategory category={category} />
                         <Feedback />
                       </div>
                     )}

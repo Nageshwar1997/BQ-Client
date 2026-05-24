@@ -4,15 +4,14 @@ import { TESTIMONIALS } from '@/constants/navbar.constants';
 import type { TCategory } from '@/types/api.type';
 import { Link } from 'react-router-dom';
 import { TestimonialCarousel } from '../../carousels/TestimonialCarousel';
-import { CategoryLabel } from './grand-children';
-import HoveredCategory from './HoveredCategory';
+import { CategoryLabel, L2Category } from './grand-children';
 
 const About = ({ categories }: { categories: TCategory<2>[] }) => {
   return (
-    <HoveredCategory categories={categories}>
+    <L2Category categories={categories}>
       <div className="break-inside-auto space-y-3 px-2 md:space-y-4 lg:space-y-5">
         <div className="border-b-battleship-davys-gray space-y-1 border-b pb-1 md:space-y-2 md:pb-2">
-          <CategoryLabel name="Partner with us" className="cursor-default" />
+          <CategoryLabel name="Partner with us" />
           <GradientText
             text="Together, we're Unstoppable!"
             type="accent"
@@ -27,11 +26,11 @@ const About = ({ categories }: { categories: TCategory<2>[] }) => {
           </Link>
         </div>
         <div className="border-b-battleship-davys-gray space-y-1 border-b pb-1 md:space-y-2 md:pb-2">
-          <CategoryLabel name="Peoples Love BQ" className="cursor-default" />
+          <CategoryLabel name="Peoples Love BQ" />
           <TestimonialCarousel data={TESTIMONIALS} />
         </div>
       </div>
-    </HoveredCategory>
+    </L2Category>
   );
 };
 
