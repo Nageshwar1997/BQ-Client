@@ -9,9 +9,9 @@ const ForYou = () => {
 
   return (
     <div className="base:columns-2 columns-1 gap-3 lg:columns-4 lg:gap-5">
-      {FOR_YOU.subCategories.map((category, index) => {
+      {FOR_YOU.subcategories.map((category, index) => {
         const { thumbnail, video } = FOR_YOU_VIDEOS_DATA[index] ?? FOR_YOU_VIDEOS_DATA[0];
-        const subCategory = category.subCategories?.[0];
+        const subCategory = category.subcategories?.[0];
         return (
           <div
             key={index}

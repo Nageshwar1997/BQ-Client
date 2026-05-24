@@ -8,7 +8,7 @@ import { CategoryLabel, SubCategories } from './grand-children';
 const About = () => {
   return (
     <div className="base:columns-2 columns-1 gap-3 md:columns-3 md:gap-4 lg:columns-4 lg:gap-5">
-      {ABOUT.subCategories.map((category, index) => (
+      {ABOUT.subcategories.map((category, index) => (
         <div
           key={index}
           className="border-b-battleship-davys-gray mb-3 break-inside-auto border-b pb-1 md:mb-4 md:pb-2 lg:mb-5"
@@ -19,7 +19,7 @@ const About = () => {
       ))}
       <div className="break-inside-auto space-y-3 px-2 md:space-y-4 lg:space-y-5">
         <div className="border-b-battleship-davys-gray space-y-1 border-b pb-1 md:space-y-2 md:pb-2">
-          <CategoryLabel label="Partner with us" className="cursor-default" />
+          <CategoryLabel name="Partner with us" className="cursor-default" />
           <GradientText
             text="Together, we're Unstoppable!"
             type="accent"
@@ -34,7 +34,7 @@ const About = () => {
           </Link>
         </div>
         <div className="border-b-battleship-davys-gray space-y-1 border-b pb-1 md:space-y-2 md:pb-2">
-          <CategoryLabel label="Peoples Love BQ" className="cursor-default" />
+          <CategoryLabel name="Peoples Love BQ" className="cursor-default" />
           <TestimonialCarousel data={TESTIMONIALS} />
         </div>
       </div>

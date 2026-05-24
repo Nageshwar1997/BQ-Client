@@ -48,7 +48,7 @@ export const SubCategory = ({
   subCategory,
   className,
 }: TClassName & {
-  subCategory: (typeof NAVBAR_CATEGORIES_DATA)[number]['subCategories'][number]['subCategories'][number];
+  subCategory: (typeof NAVBAR_CATEGORIES_DATA)[number]['subcategories'][number]['subcategories'][number];
 }) => {
   const { navigate } = usePathParams();
 
@@ -68,13 +68,13 @@ export const SubCategory = ({
 };
 
 export const SubCategories = ({
-  subCategories,
+  subcategories,
   className = '',
 }: TClassName & {
-  subCategories: readonly (typeof NAVBAR_CATEGORIES_DATA)[number]['subCategories'][number]['subCategories'][number][];
+  subcategories: readonly (typeof NAVBAR_CATEGORIES_DATA)[number]['subcategories'][number]['subcategories'][number][];
 }) => (
   <div className={`flex flex-col gap-1 md:gap-2 ${className}`}>
-    {subCategories.map((subCategory, index) => (
+    {subcategories.map((subCategory, index) => (
       <SubCategory key={index} subCategory={subCategory} />
     ))}
   </div>

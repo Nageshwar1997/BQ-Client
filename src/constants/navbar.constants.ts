@@ -1,3 +1,5 @@
+import type { ICategory, TCategory } from '@/types/api.type';
+
 export const TESTIMONIALS = [
   {
     content:
@@ -116,58 +118,73 @@ export const DUMMY_FEEDBACKS = [
 
 /* ================================ FOR YOU START ================================ */
 
-export const NEW = {
+export const NEW: TCategory<2> = {
+  _id: 'latest_trends',
   name: 'Latest Trends',
   slug: 'latest_trends',
-  path: '',
-  subCategories: [
+  level: 2,
+  parent: 'for_you',
+  subcategories: [
     {
-      path: '',
+      _id: 'new_arrivals',
       name: 'New Arrivals',
-      slug: '',
+      slug: 'new_arrivals',
+      level: 3,
+      parent: 'new',
       description: 'Discover new beauty arrivals for a fresh, trendy style.',
     },
   ],
 } as const;
 
-export const SUGAR_COLLECTION = {
+export const SUGAR_COLLECTION: TCategory<2> = {
+  _id: 'sugar_collection',
   name: "Beauty's Collection",
   slug: 'beauty_collection',
-  path: '',
-  subCategories: [
+  level: 2,
+  parent: 'for_you',
+  subcategories: [
     {
+      _id: 'special_collection',
       name: 'Special Collection',
-      path: '',
-      slug: '',
+      level: 3,
+      parent: 'sugar_collection',
+      slug: 'special_collection',
       description: 'Shop beauty products top-rated & loved by enthusiasts.',
     },
   ],
 } as const;
 
-export const OFFERS = {
+export const OFFERS: TCategory<2> = {
+  _id: 'offers',
   name: 'Offers',
   slug: 'offers',
-  path: '/offers',
-  subCategories: [
+  level: 2,
+  parent: 'for_you',
+  subcategories: [
     {
+      _id: 'offers_and_discounts',
       name: 'Offers & Discounts',
-      path: '/offers',
-      slug: '',
+      slug: 'offers_and_discounts',
+      level: 3,
+      parent: 'offers',
       description: 'Grab discounts on premium cosmetics for a limited time.',
     },
   ],
 } as const;
 
-export const BLOGS = {
+export const BLOGS: TCategory<2> = {
+  _id: 'blogs',
   name: 'Blogs',
   slug: 'blogs',
-  path: '/blogs',
-  description: '',
-  subCategories: [
+  level: 2,
+  parent: 'for_you',
+  subcategories: [
     {
+      _id: 'beauty_insights',
       name: 'Beauty Insights',
-      path: '/blogs',
-      slug: '',
+      slug: 'beauty_insights',
+      level: 3,
+      parent: 'blogs',
       description: 'Explore top beauty tips, trends, and skincare routines.',
     },
   ],
@@ -192,11 +209,12 @@ export const FOR_YOU_VIDEOS_DATA = [
   },
 ];
 
-export const FOR_YOU = {
+export const FOR_YOU: ICategory = {
+  _id: 'for_you',
   name: 'For You',
   slug: 'for_you',
-  path: '',
-  subCategories: [NEW, SUGAR_COLLECTION, OFFERS, BLOGS],
+  level: 1,
+  subcategories: [NEW, SUGAR_COLLECTION, OFFERS, BLOGS],
 } as const;
 
 /* ================================ FOR YOU END ================================ */
@@ -206,7 +224,7 @@ export const FOR_YOU = {
 export const COMPANY = {
   name: 'Company',
   slug: 'company',
-  subCategories: [
+  subcategories: [
     {
       name: 'About Us',
       slug: 'about_us',
@@ -237,7 +255,7 @@ export const COMPANY = {
 export const PRESS = {
   name: 'Press',
   slug: 'press',
-  subCategories: [
+  subcategories: [
     {
       name: 'Newsroom',
       slug: 'newsroom',
@@ -256,7 +274,7 @@ export const PRESS = {
 export const CAREERS = {
   name: 'Careers',
   slug: 'careers',
-  subCategories: [
+  subcategories: [
     {
       name: 'Values/Culture',
       slug: 'values_culture',
@@ -281,7 +299,7 @@ export const CAREERS = {
 export const TRUST_CENTER = {
   name: 'Trust Center & Legal',
   slug: 'trust_center_and_legal',
-  subCategories: [
+  subcategories: [
     {
       name: 'Compliance',
       slug: 'compliance',
@@ -307,7 +325,7 @@ export const ABOUT = {
   name: 'About',
   slug: 'about',
   path: '/about',
-  subCategories: [COMPANY, CAREERS, PRESS, TRUST_CENTER],
+  subcategories: [COMPANY, CAREERS, PRESS, TRUST_CENTER],
 } as const;
 
 /* ================================ ABOUT END ================================ */
@@ -320,7 +338,7 @@ export const BATH_AND_BODY = {
   name: 'Bath & Body',
   slug: 'bath_and_body',
   path: `${basePath}/bath_and_body`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Shower Gel',
       slug: 'shower_gel',
@@ -370,7 +388,7 @@ export const SUGAR_POP = {
   name: 'Sugar Pop',
   slug: 'sugar_pop',
   path: `${basePath}/sugar_pop`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Lips',
       slug: 'lips',
@@ -420,7 +438,7 @@ export const HAIR_CARE = {
   name: 'Hair Care',
   slug: 'hair_care',
   path: `${basePath}/hair_care`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Shampoo',
       slug: 'shampoo',
@@ -464,7 +482,7 @@ export const GIFTING = {
   name: 'Gifting',
   slug: 'gifting',
   path: `${basePath}/gifting`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Lipstick Set',
       slug: 'lipstick_set',
@@ -508,7 +526,7 @@ export const COLLECTIONS = {
   name: 'Collections',
   slug: 'collections',
   path: '/products/collections',
-  subCategories: [BATH_AND_BODY, SUGAR_POP, HAIR_CARE, GIFTING],
+  subcategories: [BATH_AND_BODY, SUGAR_POP, HAIR_CARE, GIFTING],
 } as const;
 
 /* ================================ COLLECTIONS START ================================ */
@@ -519,7 +537,7 @@ export const MOISTURIZERS = {
   name: 'Moisturizers',
   slug: 'moisturizers',
   path: `/products/skin/moisturizers`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Night Cream',
       slug: 'night_cream',
@@ -551,7 +569,7 @@ export const CLEANSING_AND_EXFOLIATION = {
   name: 'Cleansing & Exfoliation',
   slug: 'cleansing_and_exfoliation',
   path: `/products/skin/cleansing_and_exfoliation`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Cleanser',
       slug: 'cleanser',
@@ -583,7 +601,7 @@ export const NATURES_BLEND = {
   name: "Nature's Blend",
   slug: 'natures_blend',
   path: `/products/skin/natures_blend`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Aquaholic',
       slug: 'aquaholic',
@@ -609,7 +627,7 @@ export const FACE_MASK = {
   name: 'Face Mask',
   slug: 'face_mask',
   path: `/products/skin/face_mask`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Sheet Mask',
       slug: 'sheet_mask',
@@ -629,7 +647,7 @@ export const SKIN = {
   name: 'Skin',
   slug: 'skin',
   path: '/products/skin',
-  subCategories: [MOISTURIZERS, CLEANSING_AND_EXFOLIATION, NATURES_BLEND, FACE_MASK],
+  subcategories: [MOISTURIZERS, CLEANSING_AND_EXFOLIATION, NATURES_BLEND, FACE_MASK],
 } as const;
 
 /* ================================ SKIN END ================================ */
@@ -640,7 +658,7 @@ export const FACE_MAKEUP = {
   name: 'Face Makeup',
   slug: 'face_makeup',
   path: `/products/face/face_makeup`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Foundation',
       slug: 'foundation',
@@ -684,7 +702,7 @@ export const TRADITIONAL_AND_ESSENTIALS = {
   name: 'Traditional & Essentials',
   slug: 'traditional_and_essentials',
   path: `/products/face/traditional_and_essentials`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Sindoor',
       slug: 'sindoor',
@@ -698,7 +716,7 @@ export const CHEEKS_AND_GLOW = {
   name: 'Cheeks & Glow',
   slug: 'cheeks_and_glow',
   path: `/products/face/cheeks_and_glow`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Highlighter',
       slug: 'highlighter',
@@ -730,7 +748,7 @@ export const SETTING_AND_FINISHING = {
   name: 'Setting & Finishing',
   slug: 'setting_and_finishing',
   path: `/products/face/setting_and_finishing`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Setting Spray',
       slug: 'setting_spray',
@@ -756,7 +774,7 @@ export const FOUNDATIONS_BY_FINISH = {
   name: 'Foundations by Finish',
   slug: 'foundations_by_finish',
   path: `/products/face/foundations_by_finish`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Liquid Foundation',
       slug: 'liquid_foundation',
@@ -794,7 +812,7 @@ export const FOUNDATIONS_BY_SKIN_TYPE = {
   name: 'Foundations by Skin Type',
   slug: 'foundations_by_skin_type',
   path: `/products/face/foundations_by_skin_type`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Best for Dry Skin',
       slug: 'best_for_dry_skin',
@@ -814,7 +832,7 @@ export const PRIMERS_AND_REMOVERS = {
   name: 'Primers & Removers',
   slug: 'primers_and_removers',
   path: `/products/face/primers_and_removers`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Makeup Remover',
       slug: 'makeup_remover',
@@ -834,7 +852,7 @@ export const BRONZERS_AND_CONTOURS = {
   name: 'Bronzers & Contours',
   slug: 'bronzers_and_contours',
   path: `/products/face/bronzers_and_contours`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Bronzer',
       slug: 'bronzer',
@@ -854,7 +872,7 @@ export const CONCEALERS_AND_CORRECTORS = {
   name: 'Concealers & Correctors',
   slug: 'concealers_and_correctors',
   path: `/products/face/concealers_and_correctors`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Color Concealer',
       slug: 'color_concealer',
@@ -874,7 +892,7 @@ export const FACE = {
   name: 'Face',
   slug: 'face',
   path: '/products/face',
-  subCategories: [
+  subcategories: [
     FACE_MAKEUP,
     TRADITIONAL_AND_ESSENTIALS,
     CHEEKS_AND_GLOW,
@@ -895,7 +913,7 @@ export const KOHL_AND_KAJAL = {
   name: 'Kohl & Kajal',
   slug: 'kohl_and_kajal',
   path: `/products/eyes/kohl_and_kajal`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Kohl',
       slug: 'kohl',
@@ -921,7 +939,7 @@ export const MASCARAS = {
   name: 'Mascaras',
   slug: 'mascaras',
   path: `/products/eyes/mascaras`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Volumizing Mascara',
       slug: 'volumizing_mascara',
@@ -947,7 +965,7 @@ export const EYELINERS = {
   name: 'Eyeliners',
   slug: 'eyeliners',
   path: `/products/eyes/eyeliners`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Liquid Eyeliner',
       slug: 'liquid_eyeliner',
@@ -973,7 +991,7 @@ export const EYESHADOW = {
   name: 'Eyeshadow',
   slug: 'eyeshadow',
   path: `/products/eyes/eyeshadow`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Eyeshadow Palette',
       slug: 'eyeshadow_palette',
@@ -999,7 +1017,7 @@ export const EYEBROWS = {
   name: 'Eyebrows',
   slug: 'eyebrows',
   path: `/products/eyes/eyebrows`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Brow Definer',
       slug: 'brow_definer',
@@ -1025,7 +1043,7 @@ export const EYE_VALUE_SET = {
   name: 'Eye Value Set',
   slug: 'eye_value_set',
   path: `/products/eyes/eye_value_set`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Eyelashes',
       slug: 'eyelashes',
@@ -1051,7 +1069,7 @@ export const EYES = {
   name: 'Eyes',
   slug: 'eyes',
   path: '/products/eyes',
-  subCategories: [KOHL_AND_KAJAL, MASCARAS, EYELINERS, EYESHADOW, EYEBROWS, EYE_VALUE_SET],
+  subcategories: [KOHL_AND_KAJAL, MASCARAS, EYELINERS, EYESHADOW, EYEBROWS, EYE_VALUE_SET],
 } as const;
 
 /* ================================ EYES END ================================ */
@@ -1062,7 +1080,7 @@ export const FINISH_TYPES = {
   name: 'Finish Types',
   slug: 'finish_types',
   path: `/products/lips/finish_types`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Matte Lipstick',
       slug: 'matte_lipstick',
@@ -1094,7 +1112,7 @@ export const LIPSTICK_FORMS = {
   name: 'Lipstick Forms',
   slug: 'lipstick_forms',
   path: `/products/lips/lipstick_forms`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Liquid Lipstick',
       slug: 'liquid_lipstick',
@@ -1126,7 +1144,7 @@ export const LONG_LASTING_LIPSTICKS = {
   name: 'Long-Lasting Lipsticks',
   slug: 'long_lasting_lipsticks',
   path: `/products/lips/long_lasting_lipsticks`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Transfer Proof Lipstick',
       slug: 'transfer_proof_lipstick',
@@ -1158,7 +1176,7 @@ export const LIP_CARE = {
   name: 'Lip Care',
   slug: 'lip_care',
   path: `/products/lips/lip_care`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Lip Primer & Scrub',
       slug: 'lip_primer_and_scrub',
@@ -1190,7 +1208,7 @@ export const LIP_ENHANCERS_AND_OTHER = {
   name: 'Lip Enhancers & Other',
   slug: 'lip_enhancers_and_other',
   path: `/products/lips/lip_enhancers_and_other`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Lip Liner',
       slug: 'lip_liner',
@@ -1210,7 +1228,7 @@ export const LIPSTICK_SETS_AND_COMBOS = {
   name: 'Lipstick Set & Combo',
   slug: 'lipstick_set_and_combo',
   path: `/products/lips/lipstick_set_and_combo`,
-  subCategories: [
+  subcategories: [
     {
       name: 'Lipstick Set',
       slug: 'lipstick_set',
@@ -1236,7 +1254,7 @@ export const LIPS = {
   name: 'Lips',
   slug: 'lips',
   path: '/products/lips',
-  subCategories: [
+  subcategories: [
     FINISH_TYPES,
     LIPSTICK_FORMS,
     LONG_LASTING_LIPSTICKS,

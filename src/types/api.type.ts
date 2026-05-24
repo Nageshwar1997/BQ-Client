@@ -84,20 +84,21 @@ type CategoryBase<TLevel extends CategoryLevel> = {
   name: string;
   slug: string;
   level: TLevel;
+  path?: string;
 };
 
-type Category<TLevel extends CategoryLevel> = TLevel extends 1
+export type TCategory<TLevel extends CategoryLevel> = TLevel extends 1
   ? CategoryBase<1> & {
-      subcategories: Category<2>[];
+      subcategories: TCategory<2>[];
     }
   : TLevel extends 2
     ? CategoryBase<2> & {
         parent: string;
-        subcategories: Category<3>[];
+        subcategories: TCategory<3>[];
       }
     : CategoryBase<3> & {
         parent: string;
         description: string;
       };
 
-export type ICategory = Category<1>;
+export type ICategory = TCategory<1>;
