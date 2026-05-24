@@ -3,6 +3,7 @@ import LinearGradient from '@/components/ui/LinearGradient';
 import { NAVBAR_CATEGORIES_DATA, NAVBAR_TOP_LAYER_DATA } from '@/constants/navbar.constants';
 import useAuthAction from '@/hooks/useAuthAction';
 import usePathParams from '@/hooks/usePathParams';
+import { useGetCategoriesHierarchy } from '@/services/product-service/product.service.query';
 import useUserStore from '@/stores/user.store';
 import { Icon } from '@iconify/react';
 import { useEffect, useRef, useState, type FC } from 'react';
@@ -63,6 +64,9 @@ const COMPONENT_MAP: Record<(typeof NAVBAR_CATEGORIES_DATA)[number]['category'],
 export const Navbar = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navbarRef = useRef<HTMLDivElement>(null);
+
+  const { data } = useGetCategoriesHierarchy();
+  console.log('🚀 ~ Navbar ~ data:', data);
 
   const authenticated = useUserStore((s) => s.authenticated);
 
