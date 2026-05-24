@@ -12,16 +12,16 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export const CategoryLabel = ({
-  label,
+  name,
   path,
   className,
-}: { label: string; path?: string } & TClassName) => (
+}: { name: string; path?: string } & TClassName) => (
   <p
     className={`text-battleship-davys-gray-invert break-inside-avoid text-left text-sm leading-5 font-semibold tracking-wide uppercase ${
       path ? 'cursor-pointer' : 'cursor-default'
     } ${className || ''}`}
   >
-    {path ? <Link to={path}>{label}</Link> : label}
+    {path ? <Link to={path}>{name}</Link> : name}
   </p>
 );
 
@@ -58,7 +58,7 @@ export const SubCategory = ({
       className={`hover:bg-smoke-eerie hover:border-primary/8 group cursor-pointer break-inside-avoid rounded-xl border border-transparent p-2 transition-colors ${className || ''}`}
     >
       <p className="text-secondary group-hover:text-primary line-clamp-1 text-left text-xs tracking-wide transition-colors xl:text-sm">
-        {subCategory.label}
+        {subCategory.name}
       </p>
       <p className="text-silver-jet group-hover:text-tertiary line-clamp-2 text-[8px] leading-3 wrap-break-word transition-colors xl:text-[10px]">
         {subCategory.description}

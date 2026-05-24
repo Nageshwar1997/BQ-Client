@@ -51,7 +51,7 @@ const TopLayer = () => {
   );
 };
 
-const COMPONENT_MAP: Record<(typeof NAVBAR_CATEGORIES_DATA)[number]['category'], FC> = {
+const COMPONENT_MAP: Record<(typeof NAVBAR_CATEGORIES_DATA)[number]['slug'], FC> = {
   for_you: ForYou,
   lips: Lips,
   eyes: Eyes,
@@ -171,7 +171,7 @@ export const Navbar = () => {
 
   const HoveredComponent = hoveredCategory ? COMPONENT_MAP[hoveredCategory] : null;
 
-  const hoveredCategoryData = categories?.find((category) => category._id === hoveredCategory);
+  // const hoveredCategoryData = categories?.find((category) => category._id === hoveredCategory);
   return (
     <div
       className={`text-tertiary sticky top-0 left-0 z-50 flex h-16 w-full items-center justify-between gap-3 lg:-top-9 lg:h-25 lg:gap-0 xl:gap-5 ${
@@ -204,24 +204,24 @@ export const Navbar = () => {
                   className="relative h-full"
                 >
                   {/* Left Curve */}
-                  {hoveredCategory === item.category && (
+                  {hoveredCategory === item.slug && (
                     <div className="bg-secondary-invert absolute bottom-0 left-px z-52 h-3 w-3 -translate-x-full transform">
                       <div className="bg-tertiary-invert border-battleship-davys-gray z-51 h-full w-full rounded-br-full border-r border-b" />
                     </div>
                   )}
                   <div
                     className={`relative flex h-full items-center justify-center gap-0.5 rounded-t-lg border-r border-l px-3 text-sm font-semibold text-nowrap ${
-                      hoveredCategory === item.category
+                      hoveredCategory === item.slug
                         ? 'bg-secondary-invert border-battleship-davys-gray z-50'
                         : 'border-transparent'
                     } ${isNavbarAtTop ? 'border-t-transparent' : 'border-t'} ${
                       item.path ? 'cursor-pointer' : 'cursor-default'
                     }`}
-                    onMouseEnter={() => handleMouseEnter(item.category)}
+                    onMouseEnter={() => handleMouseEnter(item.slug)}
                   >
                     <p
                       className={`text-tertiary ${
-                        hoveredCategory === item.category
+                        hoveredCategory === item.slug
                           ? 'bg-accent-duo bg-clip-text text-transparent'
                           : ''
                       } ${
@@ -230,12 +230,12 @@ export const Navbar = () => {
                           : ''
                       }`}
                     >
-                      {item.label}
+                      {item.name}
                     </p>
                     <Icon
                       icon="solar:alt-arrow-down-linear"
                       className={`text-tertiary size-6 ${
-                        hoveredCategory === item.category ? 'text-blue-crayola-c! rotate-180' : ''
+                        hoveredCategory === item.slug ? 'text-blue-crayola-c! rotate-180' : ''
                       } ${
                         !(isNavbarAtTop || isNavbarHovered || nonTransparent)
                           ? 'light:text-tertiary-invert'
@@ -244,7 +244,7 @@ export const Navbar = () => {
                     />
                   </div>
                   {/* Right Curve */}
-                  {hoveredCategory === item.category && (
+                  {hoveredCategory === item.slug && (
                     <div className="bg-secondary-invert absolute right-px bottom-0 z-52 h-3 w-3 translate-x-full transform">
                       <div className="bg-tertiary-invert border-battleship-davys-gray h-full w-full rounded-bl-full border-b border-l" />
                     </div>
@@ -304,7 +304,7 @@ export const Navbar = () => {
           <div className="bg-secondary-invert absolute top-16 left-0 z-50 flex h-dvh w-full flex-col">
             <div className="h-[calc(100%-64px)] grow overflow-hidden overflow-y-scroll">
               {NAVBAR_CATEGORIES_DATA.map((category, index) => {
-                const AccordionContentComponent = COMPONENT_MAP[category.category];
+                const AccordionContentComponent = COMPONENT_MAP[category.slug];
                 const isActive = activeIndices.includes(index);
                 const isLastItem = index === NAVBAR_CATEGORIES_DATA.length - 1;
 
@@ -314,7 +314,7 @@ export const Navbar = () => {
                       className="bg-secondary-invert border-battleship-davys-gray-invert sticky top-0 z-50 flex cursor-pointer items-center justify-between border-b py-4 pr-4 pl-6"
                       onClick={() => toggleAccordionIndex(index)}
                     >
-                      <p className="text-primary">{category.label}</p>
+                      <p className="text-primary">{category.name}</p>
                       <Icon
                         icon="solar:alt-arrow-down-linear"
                         className={`text-primary size-6 transition-transform duration-300 ease-in-out ${isActive ? 'rotate-180' : ''}`}
