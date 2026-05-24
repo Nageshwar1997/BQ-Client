@@ -121,14 +121,14 @@ export const DUMMY_FEEDBACKS = [
 export const NEW: TCategory<2> = {
   _id: 'latest_trends',
   name: 'Latest Trends',
-  slug: 'latest_trends',
+  slug: 'latest-trends',
   level: 2,
   parent: 'for_you',
   subcategories: [
     {
       _id: 'new_arrivals',
       name: 'New Arrivals',
-      slug: 'new_arrivals',
+      slug: 'new-arrivals',
       level: 3,
       parent: 'new',
       description: 'Discover new beauty arrivals for a fresh, trendy style.',
@@ -139,7 +139,7 @@ export const NEW: TCategory<2> = {
 export const SUGAR_COLLECTION: TCategory<2> = {
   _id: 'sugar_collection',
   name: "Beauty's Collection",
-  slug: 'beauty_collection',
+  slug: 'beauty-collection',
   level: 2,
   parent: 'for_you',
   subcategories: [
@@ -148,7 +148,7 @@ export const SUGAR_COLLECTION: TCategory<2> = {
       name: 'Special Collection',
       level: 3,
       parent: 'sugar_collection',
-      slug: 'special_collection',
+      slug: 'special-collection',
       description: 'Shop beauty products top-rated & loved by enthusiasts.',
     },
   ],
@@ -164,7 +164,7 @@ export const OFFERS: TCategory<2> = {
     {
       _id: 'offers_and_discounts',
       name: 'Offers & Discounts',
-      slug: 'offers_and_discounts',
+      slug: 'offers-and-discounts',
       level: 3,
       parent: 'offers',
       description: 'Grab discounts on premium cosmetics for a limited time.',
@@ -182,7 +182,7 @@ export const BLOGS: TCategory<2> = {
     {
       _id: 'beauty_insights',
       name: 'Beauty Insights',
-      slug: 'beauty_insights',
+      slug: 'beauty-insights',
       level: 3,
       parent: 'blogs',
       description: 'Explore top beauty tips, trends, and skincare routines.',
@@ -212,7 +212,7 @@ export const FOR_YOU_VIDEOS_DATA = [
 export const FOR_YOU: ICategory = {
   _id: 'for_you',
   name: 'For You',
-  slug: 'for_you',
+  slug: 'for-you',
   level: 1,
   subcategories: [NEW, SUGAR_COLLECTION, OFFERS, BLOGS],
 } as const;
@@ -221,110 +221,147 @@ export const FOR_YOU: ICategory = {
 
 /* ================================ ABOUT START ================================ */
 
-export const COMPANY = {
+export const COMPANY: TCategory<2> = {
+  _id: 'company',
   name: 'Company',
   slug: 'company',
+  level: 2,
+  parent: 'about',
   subcategories: [
     {
+      _id: 'about_us',
       name: 'About Us',
-      slug: 'about_us',
-      path: '/about-us',
+      slug: 'about-us',
+      level: 3,
+      parent: 'company',
       description: 'Learn about our journey, mission, and values that define our brand.',
     },
     {
+      _id: 'mission_vision_values',
       name: 'Mission Vision Values',
-      slug: 'mission_vision_values',
-      path: '/mission-vision',
+      slug: 'mission-vision-values',
+      level: 3,
+      parent: 'company',
       description: "Discover our purpose, vision, and values driving our company's success.",
     },
     {
+      _id: 'team',
       name: 'Team',
       slug: 'team',
-      path: '/teams',
+      level: 3,
+      parent: 'company',
       description: 'Meet our talented team committed to delivering excellence every day.',
     },
     {
+      _id: 'contact_us',
       name: 'Contact Us',
       slug: 'contact_us',
-      path: '/contact',
+      level: 3,
+      parent: 'company',
       description: 'Get in touch with us for inquiries, support, or collaboration opportunities.',
     },
   ],
 } as const;
 
-export const PRESS = {
+export const PRESS: TCategory<2> = {
+  _id: 'press',
   name: 'Press',
   slug: 'press',
+  level: 2,
+  parent: 'about',
   subcategories: [
     {
+      _id: 'newsroom',
       name: 'Newsroom',
       slug: 'newsroom',
-      path: '/press-media',
+      level: 3,
+      parent: 'press',
       description: 'Stay updated with our latest news, events, and media announcements.',
     },
     {
+      _id: 'awards',
       name: 'Awards',
       slug: 'awards',
-      path: '/awards',
+      level: 3,
+      parent: 'press',
       description: 'Explore the recognitions and awards we have received for excellence.',
     },
   ],
 } as const;
 
-export const CAREERS = {
+export const CAREERS: TCategory<2> = {
+  _id: 'careers',
   name: 'Careers',
   slug: 'careers',
+  level: 2,
+  parent: 'about',
   subcategories: [
     {
+      _id: 'values_culture',
       name: 'Values/Culture',
-      slug: 'values_culture',
-      path: '/values-and-culture',
+      slug: 'values-culture',
+      level: 3,
+      parent: 'careers',
       description: 'Experience our vibrant culture driven by values of growth and innovation.',
     },
     {
+      _id: 'openings',
       name: 'Openings',
       slug: 'openings',
-      path: '/careers',
+      level: 3,
+      parent: 'careers',
       description: 'Discover exciting career opportunities and join our dynamic team today.',
     },
     {
+      _id: 'retail_e_commerce',
       name: 'Retail/E-Commerce',
-      slug: 'retail_e_commerce',
-      path: '/retail-and-e-commerce',
+      slug: 'retail-e-commerce',
+      level: 3,
+      parent: 'careers',
       description: 'Explore roles in retail and e-commerce driving our digital success.',
     },
   ],
 } as const;
 
-export const TRUST_CENTER = {
+export const TRUST_CENTER: TCategory<2> = {
+  _id: 'trust_center_and_legal',
   name: 'Trust Center & Legal',
-  slug: 'trust_center_and_legal',
+  slug: 'trust-center-and-legal',
+  level: 2,
+  parent: 'about',
   subcategories: [
     {
+      _id: 'compliance',
       name: 'Compliance',
       slug: 'compliance',
-      path: '/cookie-policy',
+      level: 3,
+      parent: 'trust_center_and_legal',
       description: 'Understand our compliance standards ensuring trust and transparency.',
     },
     {
+      _id: 'privacy_policy',
       name: 'Privacy/Policy',
-      slug: 'privacy_policy',
-      path: '/privacy-policy',
+      slug: 'privacy-policy',
+      level: 3,
+      parent: 'trust_center_and_legal',
       description: 'Learn about our privacy practices and data protection commitments.',
     },
     {
+      _id: 'terms_and_conditions',
       name: 'Terms & Conditions',
-      slug: 'terms_and_conditions',
-      path: '/terms-conditions',
+      slug: 'terms-and-conditions',
+      level: 3,
+      parent: 'trust_center_and_legal',
       description: 'Review our terms and conditions for using our products and services.',
     },
   ],
 } as const;
 
-export const ABOUT = {
+export const ABOUT: ICategory = {
+  _id: 'about',
   name: 'About',
   slug: 'about',
-  path: '/about',
+  level: 1,
   subcategories: [COMPANY, CAREERS, PRESS, TRUST_CENTER],
 } as const;
 
