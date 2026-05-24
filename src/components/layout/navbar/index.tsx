@@ -6,6 +6,7 @@ import usePathParams from '@/hooks/usePathParams';
 import { useGetCategoriesHierarchy } from '@/services/product-service/product.service.query';
 import useUserStore from '@/stores/user.store';
 import type { ICategory } from '@/types/api.type';
+import { toaster } from '@/utils/common.util';
 import { Icon } from '@iconify/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -62,12 +63,7 @@ export const Navbar = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navbarRef = useRef<HTMLDivElement>(null);
 
-  const { data } = useGetCategoriesHierarchy();
-
-  const categories = useMemo(() => {
-    const apiData = data || [];
-    return [FOR_YOU, ...apiData, ABOUT];
-  }, [data]);
+  const { data, isError, error } = useGetCategoriesHierarchy();
 
   const authenticated = useUserStore((s) => s.authenticated);
 
@@ -79,6 +75,16 @@ export const Navbar = () => {
   const [isContainerHovered, setIsContainerHovered] = useState<boolean>(false);
   const [isNavbarAtTop, setIsNavbarAtTop] = useState(false);
   const [isNavbarHovered, setIsNavbarHovered] = useState(false);
+
+  const categories = useMemo(() => [FOR_YOU, ...(data || []), ABOUT], [data]);
+
+  const nonTransparent = ['products', 'cart', 'offers', 'blogs', 'account'].some((val) =>
+    paths.includes(val),
+  );
+
+  const hoveredCategoryData = useMemo(() => {
+    return categories.find((category) => category._id === hoveredId);
+  }, [categories, hoveredId]);
 
   // Sets the hovered index when mouse enters an element
   const handleMouseEnter = (id: string) => {
@@ -166,13 +172,11 @@ export const Navbar = () => {
     };
   }, [isMobileNavbarOpened]);
 
-  const nonTransparent = ['products', 'cart', 'offers', 'blogs', 'account'].some((val) =>
-    paths.includes(val),
-  );
-
-  const hoveredCategoryData = useMemo(() => {
-    return categories.find((category) => category._id === hoveredId);
-  }, [categories, hoveredId]);
+  useEffect(() => {
+    if (isError) {
+      toaster.error({ title: 'Oops! Error', description: error.message });
+    }
+  }, [isError, error]);
 
   return (
     <div
@@ -198,7 +202,7 @@ export const Navbar = () => {
             />
           </Link>
           <div className="relative flex h-full w-full items-center justify-between gap-7 pl-4 xl:pl-6">
-            <div className="flex h-full items-center gap-2" ref={navbarRef}>
+            <div className="flex h-full flex-1 items-center gap-2" ref={navbarRef}>
               {categories.map((item, index) => (
                 <div
                   key={index}
