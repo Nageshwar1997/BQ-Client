@@ -1,4 +1,6 @@
+import envs from '@/envs';
 import type { TRouteAccess } from '@/types/common.type';
+import { API_METHODS_AND_URLS } from './api.constants';
 
 export const LOADING_RINGS_DATA = [
   {
@@ -128,5 +130,23 @@ export const HOME_VIDEOS_DATA = [
       'https://res.cloudinary.com/dag2xvurz/video/upload/sp_auto/v1742127534/Beautinique/Home_Videos/1742127444038_1_Makeup_Reimagine.m3u8',
     mp4Url:
       'https://res.cloudinary.com/dag2xvurz/video/upload/v1742127534/Beautinique/Home_Videos/1742127444038_1_Makeup_Reimagine.mp4',
+  },
+];
+
+export const OAUTH_DATA = [
+  {
+    name: 'Google',
+    imgSrc: '/images/auth/social/Google.webp',
+    redirectUrl: `${envs.urls.gateway}${API_METHODS_AND_URLS.user_service.auth.login.oauth.google.redirect.url}`,
+  },
+  {
+    name: 'Github',
+    imgSrc: '/images/auth/social/Github.webp',
+    redirectUrl: `${envs.urls.gateway}${API_METHODS_AND_URLS.user_service.auth.login.oauth.github.redirect.url}`,
+  },
+  {
+    name: 'Linkedin',
+    imgSrc: '/images/auth/social/Linkedin.webp',
+    redirectUrl: `${envs.urls.gateway}${API_METHODS_AND_URLS.user_service.auth.login.oauth.linkedin.redirect.url}`,
   },
 ];

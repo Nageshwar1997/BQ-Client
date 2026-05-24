@@ -1,4 +1,5 @@
-import { API_BASE_URLS, API_METHODS_AND_URLS } from '@/constants/api.constants';
+import { API_METHODS_AND_URLS } from '@/constants/api.constants';
+import envs from '@/envs';
 import axios, { AxiosError, type AxiosInstance, type AxiosRequestConfig } from 'axios';
 import ApiError from './ApiError';
 
@@ -36,14 +37,11 @@ const triggerLogout = () => {
 };
 
 export class ApiRequest {
-  private baseUrls = API_BASE_URLS;
-  protected instance: AxiosInstance;
+  protected readonly instance: AxiosInstance;
 
-  constructor(key?: keyof typeof API_BASE_URLS) {
-    const baseURL = this.baseUrls[key || 'gateway'];
-
+  constructor() {
     this.instance = axios.create({
-      baseURL,
+      baseURL: envs.urls.gateway,
       withCredentials: true,
     });
 
@@ -60,7 +58,7 @@ export class ApiRequest {
 
         const originalRequest = error.config as AxiosRequestConfigWithRetry;
 
-        const refreshUrl = API_METHODS_AND_URLS.gateway.token.refresh.url;
+        const refreshUrl = API_METHODS_AND_URLS.gateway.refreshAccessToken.url;
 
         if (originalRequest.url?.includes(refreshUrl)) {
           triggerLogout();
@@ -79,7 +77,7 @@ export class ApiRequest {
           isRefreshing = true;
 
           try {
-            await this.instance.request(API_METHODS_AND_URLS.gateway.token.refresh);
+            await this.instance.request(API_METHODS_AND_URLS.gateway.refreshAccessToken);
 
             processQueue();
 

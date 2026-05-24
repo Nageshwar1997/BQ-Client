@@ -11,28 +11,24 @@ import type {
 import { ApiRequest } from '../ApiRequest';
 
 export class AuthApi extends ApiRequest {
-  private routes = API_METHODS_AND_URLS.user_service.auth;
-
-  constructor() {
-    super('user-service');
-  }
+  private readonly routes = API_METHODS_AND_URLS.user_service.auth;
 
   /* ===================== REGISTER API ===================== */
 
   public registerSendOtp = (data: TEmail) => {
-    return this.request({ ...this.routes.register.send_otp, data });
+    return this.request({ ...this.routes.register.sendOtp, data });
   };
 
   public registerResendOtp = (token: string) => {
     return this.request({
-      ...this.routes.register.resend_otp,
+      ...this.routes.register.resendOtp,
       headers: { Authorization: `Bearer ${token}` },
     });
   };
 
   public registerVerifyOtp = ({ token, ...data }: TOtp & { token: string }) => {
     return this.request({
-      ...this.routes.register.verify_otp,
+      ...this.routes.register.verifyOtp,
       data,
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -40,7 +36,7 @@ export class AuthApi extends ApiRequest {
 
   public registerSaveUser = ({ token, ...data }: TRegister & { token: string }) => {
     return this.request({
-      ...this.routes.register.save_user,
+      ...this.routes.register.saveUser,
       data,
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -55,19 +51,19 @@ export class AuthApi extends ApiRequest {
   /* ===================== PASSWORD API ===================== */
 
   public forgotPasswordSendOtp = (data: TEmail) => {
-    return this.request({ ...this.routes.password.forgot.send_otp, data });
+    return this.request({ ...this.routes.password.forgot.sendOtp, data });
   };
 
   public forgotPasswordResendOtp = (token: string) => {
     return this.request({
-      ...this.routes.password.forgot.resend_otp,
+      ...this.routes.password.forgot.resendOtp,
       headers: { Authorization: `Bearer ${token}` },
     });
   };
 
   public forgotPasswordVerifyOtp = ({ token, ...data }: TOtp & { token: string }) => {
     return this.request({
-      ...this.routes.password.forgot.verify_otp,
+      ...this.routes.password.forgot.verifyOtp,
       data,
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -107,15 +103,11 @@ export class AuthApi extends ApiRequest {
 }
 
 export class UserApi extends ApiRequest {
-  private routes = API_METHODS_AND_URLS.user_service.user;
-
-  constructor() {
-    super('user-service');
-  }
+  private readonly routes = API_METHODS_AND_URLS.user_service.user;
 
   /* ===================== GET API ===================== */
 
   public getSessionUser = async () => {
-    return this.request({ ...this.routes.session });
+    return this.request(this.routes.session);
   };
 }
