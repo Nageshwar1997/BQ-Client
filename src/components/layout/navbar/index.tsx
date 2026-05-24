@@ -1,21 +1,18 @@
 import Button from '@/components/ui/Button';
 import LinearGradient from '@/components/ui/LinearGradient';
-import { NAVBAR_CATEGORIES_DATA, NAVBAR_TOP_LAYER_DATA } from '@/constants/navbar.constants';
+import { ABOUT, FOR_YOU, NAVBAR_TOP_LAYER_DATA } from '@/constants/navbar.constants';
 import useAuthAction from '@/hooks/useAuthAction';
 import usePathParams from '@/hooks/usePathParams';
 import { useGetCategoriesHierarchy } from '@/services/product-service/product.service.query';
 import useUserStore from '@/stores/user.store';
+import type { ICategory } from '@/types/api.type';
 import { Icon } from '@iconify/react';
-import { useEffect, useRef, useState, type FC } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import About from './children/About';
-import Collections from './children/Collection';
-import Eyes from './children/Eyes';
-import Face from './children/Face';
 import ForYou from './children/ForYou';
 import { Feedback, UserMenuIcons } from './children/grand-children';
-import Lips from './children/Lips';
-import Skin from './children/Skin';
+import HoveredCategory from './children/HoveredCategory';
 
 const TopLayer = () => {
   const { runAction } = useAuthAction();
@@ -51,37 +48,41 @@ const TopLayer = () => {
   );
 };
 
-const COMPONENT_MAP: Record<(typeof NAVBAR_CATEGORIES_DATA)[number]['slug'], FC> = {
-  for_you: ForYou,
-  lips: Lips,
-  eyes: Eyes,
-  face: Face,
-  collections: Collections,
-  skin: Skin,
-  about: About,
-} as const;
+const HoveredComponent = ({ category }: { category: ICategory }) => {
+  return category._id === 'about' ? (
+    <About categories={category.subcategories} />
+  ) : category._id === 'for_you' ? (
+    <ForYou categories={category.subcategories} />
+  ) : (
+    <HoveredCategory categories={category.subcategories} />
+  );
+};
 
 export const Navbar = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navbarRef = useRef<HTMLDivElement>(null);
 
-  const { data: categories } = useGetCategoriesHierarchy();
-  console.log('🚀 ~ Navbar ~ categories:', categories);
+  const { data } = useGetCategoriesHierarchy();
+
+  const categories = useMemo(() => {
+    const apiData = data || [];
+    return [FOR_YOU, ...apiData, ABOUT];
+  }, [data]);
 
   const authenticated = useUserStore((s) => s.authenticated);
 
   const { paths, pathname, navigate } = usePathParams();
 
   const [isMobileNavbarOpened, setIsMobileNavbarOpened] = useState<boolean>(false);
-  const [hoveredCategory, setHoveredCategory] = useState<keyof typeof COMPONENT_MAP | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [activeIndices, setActiveIndices] = useState<number[]>([]);
   const [isContainerHovered, setIsContainerHovered] = useState<boolean>(false);
   const [isNavbarAtTop, setIsNavbarAtTop] = useState(false);
   const [isNavbarHovered, setIsNavbarHovered] = useState(false);
 
   // Sets the hovered index when mouse enters an element
-  const handleMouseEnter = (category: keyof typeof COMPONENT_MAP) => {
-    setHoveredCategory(category);
+  const handleMouseEnter = (id: string) => {
+    setHoveredId(id);
     if (!isNavbarAtTop || !isNavbarHovered) {
       setIsNavbarHovered(true);
     }
@@ -92,7 +93,7 @@ export const Navbar = () => {
 
   // Resets hovered category and container hover state when mouse leaves
   const handleMouseLeave = () => {
-    setHoveredCategory(null);
+    setHoveredId(null);
     setIsContainerHovered(false);
   };
 
@@ -146,7 +147,7 @@ export const Navbar = () => {
 
   // Close navbar when pathname changes
   useEffect(() => {
-    setHoveredCategory(null);
+    setHoveredId(null);
     setIsContainerHovered(false);
     setIsMobileNavbarOpened(false);
     setActiveIndices([]);
@@ -169,9 +170,10 @@ export const Navbar = () => {
     paths.includes(val),
   );
 
-  const HoveredComponent = hoveredCategory ? COMPONENT_MAP[hoveredCategory] : null;
+  const hoveredCategoryData = useMemo(() => {
+    return categories.find((category) => category._id === hoveredId);
+  }, [categories, hoveredId]);
 
-  // const hoveredCategoryData = categories?.find((category) => category._id === hoveredCategory);
   return (
     <div
       className={`text-tertiary sticky top-0 left-0 z-50 flex h-16 w-full items-center justify-between gap-3 lg:-top-9 lg:h-25 lg:gap-0 xl:gap-5 ${
@@ -197,33 +199,31 @@ export const Navbar = () => {
           </Link>
           <div className="relative flex h-full w-full items-center justify-between gap-7 pl-4 xl:pl-6">
             <div className="flex h-full items-center gap-2" ref={navbarRef}>
-              {NAVBAR_CATEGORIES_DATA.map((item, index) => (
+              {categories.map((item, index) => (
                 <div
                   key={index}
                   onClick={() => item?.path && navigate(item.path)}
                   className="relative h-full"
                 >
                   {/* Left Curve */}
-                  {hoveredCategory === item.slug && (
+                  {hoveredId === item._id && (
                     <div className="bg-secondary-invert absolute bottom-0 left-px z-52 h-3 w-3 -translate-x-full transform">
                       <div className="bg-tertiary-invert border-battleship-davys-gray z-51 h-full w-full rounded-br-full border-r border-b" />
                     </div>
                   )}
                   <div
                     className={`relative flex h-full items-center justify-center gap-0.5 rounded-t-lg border-r border-l px-3 text-sm font-semibold text-nowrap ${
-                      hoveredCategory === item.slug
+                      hoveredId === item._id
                         ? 'bg-secondary-invert border-battleship-davys-gray z-50'
                         : 'border-transparent'
                     } ${isNavbarAtTop ? 'border-t-transparent' : 'border-t'} ${
                       item.path ? 'cursor-pointer' : 'cursor-default'
                     }`}
-                    onMouseEnter={() => handleMouseEnter(item.slug)}
+                    onMouseEnter={() => handleMouseEnter(item._id)}
                   >
                     <p
                       className={`text-tertiary ${
-                        hoveredCategory === item.slug
-                          ? 'bg-accent-duo bg-clip-text text-transparent'
-                          : ''
+                        hoveredId === item._id ? 'bg-accent-duo bg-clip-text text-transparent' : ''
                       } ${
                         !(isNavbarAtTop || isNavbarHovered || nonTransparent)
                           ? 'light:text-tertiary-invert'
@@ -235,7 +235,7 @@ export const Navbar = () => {
                     <Icon
                       icon="solar:alt-arrow-down-linear"
                       className={`text-tertiary size-6 ${
-                        hoveredCategory === item.slug ? 'text-blue-crayola-c! rotate-180' : ''
+                        hoveredId === item._id ? 'text-blue-crayola-c! rotate-180' : ''
                       } ${
                         !(isNavbarAtTop || isNavbarHovered || nonTransparent)
                           ? 'light:text-tertiary-invert'
@@ -244,7 +244,7 @@ export const Navbar = () => {
                     />
                   </div>
                   {/* Right Curve */}
-                  {hoveredCategory === item.slug && (
+                  {hoveredId === item._id && (
                     <div className="bg-secondary-invert absolute right-px bottom-0 z-52 h-3 w-3 translate-x-full transform">
                       <div className="bg-tertiary-invert border-battleship-davys-gray h-full w-full rounded-bl-full border-b border-l" />
                     </div>
@@ -256,17 +256,17 @@ export const Navbar = () => {
               closeOnNavbarLeave={!isNavbarHovered}
               className={`${isNavbarAtTop || isNavbarHovered || nonTransparent ? '' : ''}`}
             />
-            {(hoveredCategory || isContainerHovered) && (
+            {(hoveredId || isContainerHovered) && (
               <div
                 className={`absolute top-15.75 -left-5 z-49 h-fit w-auto justify-self-center rounded-2xl transition-all duration-300`}
                 ref={containerRef}
                 onMouseEnter={handleContainerMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
-                {!!(hoveredCategory && HoveredComponent) && (
+                {!!(hoveredId && hoveredCategoryData) && (
                   <div className="bg-battleship-davys-gray h-full max-w-325 rounded-xl p-px backdrop-blur-3xl">
                     <div className="text-secondary bg-secondary-invert space-y-4 rounded-xl p-4">
-                      <HoveredComponent />
+                      <HoveredComponent category={hoveredCategoryData} />
                       <Feedback />
                     </div>
                   </div>
@@ -303,10 +303,9 @@ export const Navbar = () => {
         {isMobileNavbarOpened && (
           <div className="bg-secondary-invert absolute top-16 left-0 z-50 flex h-dvh w-full flex-col">
             <div className="h-[calc(100%-64px)] grow overflow-hidden overflow-y-scroll">
-              {NAVBAR_CATEGORIES_DATA.map((category, index) => {
-                const AccordionContentComponent = COMPONENT_MAP[category.slug];
+              {categories.map((category, index) => {
                 const isActive = activeIndices.includes(index);
-                const isLastItem = index === NAVBAR_CATEGORIES_DATA.length - 1;
+                const isLastItem = index === categories.length - 1;
 
                 return (
                   <div key={index} className={`relative ${isLastItem && 'mb-36'}`}>
@@ -320,9 +319,9 @@ export const Navbar = () => {
                         className={`text-primary size-6 transition-transform duration-300 ease-in-out ${isActive ? 'rotate-180' : ''}`}
                       />
                     </div>
-                    {isActive && AccordionContentComponent && (
+                    {isActive && category && (
                       <div className="overflow-y-scroll p-4">
-                        <AccordionContentComponent />
+                        <HoveredComponent category={category} />
                         <Feedback />
                       </div>
                     )}

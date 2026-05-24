@@ -1,22 +1,15 @@
 import Button from '@/components/ui/Button';
 import GradientText from '@/components/ui/GradientText';
-import { ABOUT, TESTIMONIALS } from '@/constants/navbar.constants';
+import { TESTIMONIALS } from '@/constants/navbar.constants';
+import type { TCategory } from '@/types/api.type';
 import { Link } from 'react-router-dom';
 import { TestimonialCarousel } from '../../carousels/TestimonialCarousel';
-import { CategoryLabel, SubCategories } from './grand-children';
+import { CategoryLabel } from './grand-children';
+import HoveredCategory from './HoveredCategory';
 
-const About = () => {
+const About = ({ categories }: { categories: TCategory<2>[] }) => {
   return (
-    <div className="base:columns-2 columns-1 gap-3 md:columns-3 md:gap-4 lg:columns-4 lg:gap-5">
-      {ABOUT.subcategories.map((category, index) => (
-        <div
-          key={index}
-          className="border-b-battleship-davys-gray mb-3 break-inside-auto border-b pb-1 md:mb-4 md:pb-2 lg:mb-5"
-        >
-          <CategoryLabel {...category} className="px-2" />
-          <SubCategories {...category} />
-        </div>
-      ))}
+    <HoveredCategory categories={categories}>
       <div className="break-inside-auto space-y-3 px-2 md:space-y-4 lg:space-y-5">
         <div className="border-b-battleship-davys-gray space-y-1 border-b pb-1 md:space-y-2 md:pb-2">
           <CategoryLabel name="Partner with us" className="cursor-default" />
@@ -38,7 +31,7 @@ const About = () => {
           <TestimonialCarousel data={TESTIMONIALS} />
         </div>
       </div>
-    </div>
+    </HoveredCategory>
   );
 };
 

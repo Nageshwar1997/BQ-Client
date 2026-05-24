@@ -1,15 +1,16 @@
-import { FOR_YOU, FOR_YOU_VIDEOS_DATA } from '@/constants/navbar.constants';
+import { FOR_YOU_VIDEOS_DATA } from '@/constants/navbar.constants';
+import type { TCategory } from '@/types/api.type';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import VideoPlayer from '../../media/VideoPlayer';
 import { CategoryLabel, SubCategory } from './grand-children';
 
-const ForYou = () => {
+const ForYou = ({ categories }: { categories: TCategory<2>[] }) => {
   const [playingVideoIndex, setPlayingVideoIndex] = useState<null | number>(null);
 
   return (
     <div className="base:columns-2 columns-1 gap-3 lg:columns-4 lg:gap-5">
-      {FOR_YOU.subcategories.map((category, index) => {
+      {categories.map((category, index) => {
         const { thumbnail, video } = FOR_YOU_VIDEOS_DATA[index] ?? FOR_YOU_VIDEOS_DATA[0];
         const subCategory = category.subcategories?.[0];
         return (
