@@ -77,6 +77,31 @@ export type TGenerateRoutes<
       : never;
 };
 
+type TQueryKey<FullPath extends string, Method extends string> =
+  TExtractRouteParams<FullPath> extends never
+    ? readonly [Uppercase<Method>, FullPath]
+    : (params: TExtractRouteParams<FullPath>) => readonly [Uppercase<Method>, FullPath];
+
+export type TGenerateQueryKeys<
+  T,
+  ParentPath extends string = T extends { base: infer B } ? (B extends string ? B : '') : '',
+> = {
+  [K in keyof T as K extends 'base' ? never : K]: T[K] extends IEndpoint
+    ? TQueryKey<`${ParentPath}${T[K]['path']}`, T[K]['method']>
+    : T[K] extends Record<string, unknown>
+      ? TGenerateQueryKeys<
+          T[K],
+          `${ParentPath}${T[K] extends {
+            base: infer B;
+          }
+            ? B extends string
+              ? B
+              : ''
+            : ''}`
+        >
+      : never;
+};
+
 type CategoryLevel = 1 | 2 | 3;
 
 type CategoryBase<TLevel extends CategoryLevel> = {

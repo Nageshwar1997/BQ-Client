@@ -1,5 +1,11 @@
 import type ApiError from '@/classes/ApiError';
-import type { IEndpoint, TGenerateRoutes, TParams, TRouteNode } from '@/types/api.type';
+import type {
+  IEndpoint,
+  TGenerateQueryKeys,
+  TGenerateRoutes,
+  TParams,
+  TRouteNode,
+} from '@/types/api.type';
 import { toaster } from './common.util';
 
 export const handleApiErrorToaster = ({ message, globalErrors }: ApiError, title = 'Error') => {
@@ -70,4 +76,36 @@ export const createRouteHelper = <T extends Record<string, unknown>>(
   };
 
   return build(config) as TGenerateRoutes<T>;
+};
+
+export const createQueryKeys = <T extends Record<string, unknown>>(
+  config: T,
+): TGenerateQueryKeys<T> => {
+  const build = (node: TRouteNode, parents: string[] = []): Record<string, unknown> => {
+    const currentBase = node.base ? [...parents, node.base] : parents;
+
+    const result: Record<string, unknown> = {};
+
+    Object.entries(node).forEach(([key, value]) => {
+      if (isEndpoint(value)) {
+        const fullPath = joinPaths(...currentBase, value.path);
+
+        const hasParams = fullPath.includes(':');
+
+        result[key] = hasParams
+          ? (params: TParams) => [value.method.toUpperCase(), buildDynamicUrl(fullPath, params)]
+          : [value.method.toUpperCase(), fullPath];
+
+        return;
+      }
+
+      if (typeof value === 'object' && value !== null) {
+        result[key] = build(value as TRouteNode, currentBase);
+      }
+    });
+
+    return result;
+  };
+
+  return build(config) as TGenerateQueryKeys<T>;
 };

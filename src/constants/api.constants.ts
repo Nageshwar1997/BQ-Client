@@ -1,13 +1,5 @@
 import envs from '@/envs';
-import { createRouteHelper } from '@/utils/api.util';
-
-const METHODS = {
-  GET: 'GET',
-  POST: 'POST',
-  PUT: 'PUT',
-  PATCH: 'PATCH',
-  DELETE: 'DELETE',
-};
+import { createQueryKeys, createRouteHelper } from '@/utils/api.util';
 
 export const API_BASE_URLS = {
   gateway: envs.urls.gateway,
@@ -98,40 +90,7 @@ export const METHODS_AND_PATHS = {
 
 export const API_METHODS_AND_URLS = createRouteHelper(METHODS_AND_PATHS);
 
-export const USER_SERVICE_QUERY_KEYS = {
-  auth: {
-    register: {
-      send_otp: ['register_send_otp'],
-      resend_otp: ['register_resend_otp'],
-      verify_otp: ['register_verify_otp'],
-      save_user: ['register_save_user'],
-    },
-    password: {
-      forgot: {
-        send_otp: ['password_forgot_send_otp'],
-        resend_otp: ['password_forgot_resend_otp'],
-        verify_otp: ['password_forgot_verify_otp'],
-        save: ['password_forgot_save'],
-      },
-      change: ['password_change'],
-      set: ['password_set'],
-    },
-    login: {
-      manual: ['manual_login'],
-    },
-  },
-  user: {
-    session: ['get_session_user'],
-  },
-} as const;
-
-export const PRODUCT_SERVICE_QUERY_KEYS = {
-  category: {
-    get: {
-      byHierarchy: ['get_categories_hierarchy'],
-    },
-  },
-} as const;
+export const API_QUERY_KEYS = createQueryKeys(METHODS_AND_PATHS);
 
 export const AUTH_PROVIDERS = ['MANUAL', 'GOOGLE', 'LINKEDIN', 'GITHUB'] as const;
 
