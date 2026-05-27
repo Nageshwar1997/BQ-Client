@@ -85,15 +85,6 @@ export class AuthApi extends ApiRequest {
     return this.request({ ...this.routes.password.set, data });
   };
 
-  /* ===================== USER ===================== */
-
-  // public getMe = () => {
-  //   return this.request({
-  //     method: 'GET',
-  //     url: '/auth/me',
-  //   });
-  // };
-
   // public logout = () => {
   //   return this.request({
   //     method: 'POST',

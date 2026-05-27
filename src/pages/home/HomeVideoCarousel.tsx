@@ -89,8 +89,17 @@ const HomeVideoCarousel = () => {
             onClick={type === 'prev' ? handlePrev : handleNext}
             className={`absolute top-1/2 ${
               type === 'prev' ? 'left-4' : 'right-4'
-            } bg-primary-50 hover:bg-primary hidden -translate-y-1/2 transform rounded-full p-3 lg:group-hover:block`}
-          />
+            } bg-primary/50 hover:bg-primary hidden -translate-y-1/2 transform rounded-full cursor-pointer p-3 lg:group-hover:block`}
+          >
+            <Icon
+              icon={
+                type === 'prev'
+                  ? 'solar:alt-arrow-left-linear'
+                  : 'solar:alt-arrow-right-linear'
+              }
+              className="text-tertiary-invert size-4 lg:size-5 xl:size-6"
+            />
+          </button>
         ))}
         <div className="absolute bottom-0 flex w-full items-center justify-between p-4">
           {/* Mute Toggle */}
