@@ -1,11 +1,11 @@
 import { FOR_YOU_VIDEOS_DATA } from '@/constants/navbar.constants';
-import type { TCategory } from '@/types/api.type';
+import type { TCategoryHierarchyNode, TLevel2 } from '@/types/api.type';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import VideoPlayer from '../../media/VideoPlayer';
 import { CategoryLabel, L3Category } from './grand-children';
 
-const ForYou = ({ categories }: { categories: TCategory<2>[] }) => {
+const ForYou = ({ categories }: { categories: TCategoryHierarchyNode<TLevel2>[] }) => {
   const [playingVideoIndex, setPlayingVideoIndex] = useState<null | number>(null);
 
   return (

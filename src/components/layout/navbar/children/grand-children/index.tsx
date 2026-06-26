@@ -3,7 +3,7 @@ import Theme from '@/components/ui/Theme';
 import useAuthAction from '@/hooks/useAuthAction';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import usePathParams from '@/hooks/usePathParams';
-import type { TCategory } from '@/types/api.type';
+import type { TCategoryHierarchyNode, TLevel2, TLevel3 } from '@/types/api.type';
 import type { TChildren, TClassName } from '@/types/component.type';
 import { getTodaysFeedback } from '@/utils/common.util';
 import { Icon } from '@iconify/react';
@@ -47,7 +47,7 @@ export const L3Category = ({
   category,
   className,
 }: TClassName & {
-  category: TCategory<3>;
+  category: TCategoryHierarchyNode<TLevel3>;
 }) => {
   const { navigate } = usePathParams();
 
@@ -70,7 +70,7 @@ export const L2Category = ({
   categories,
   children,
   className = '',
-}: { categories: TCategory<2>[] } & TClassName & TChildren) => {
+}: { categories: TCategoryHierarchyNode<TLevel2>[] } & TClassName & TChildren) => {
   return (
     <div
       className={`base:columns-2 columns-1 gap-3 md:columns-3 md:gap-4 lg:columns-4 lg:gap-5 ${className}`}

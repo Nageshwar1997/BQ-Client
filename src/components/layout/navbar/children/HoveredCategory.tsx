@@ -1,9 +1,9 @@
-import type { ICategory } from '@/types/api.type';
+import type { TCategoryHierarchy } from '@/types/api.type';
 import About from './About';
 import ForYou from './ForYou';
 import { L2Category } from './grand-children';
 
-const HoveredCategory = ({ category }: { category: ICategory }) => {
+const HoveredCategory = ({ category }: { category: TCategoryHierarchy }) => {
   return category._id === 'about' ? (
     <About categories={category.subcategories} />
   ) : category._id === 'for_you' ? (

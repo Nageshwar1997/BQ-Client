@@ -1,4 +1,4 @@
-import type { ICategory, TCategory } from '@/types/api.type';
+import type { TCategoryHierarchy, TCategoryHierarchyNode, TLevel2 } from '@/types/api.type';
 
 export const TESTIMONIALS = [
   {
@@ -90,7 +90,6 @@ export const DUMMY_FEEDBACKS = [
       type: 'silver',
     },
   ],
-
   [
     { text: 'The', type: 'silver' },
     { text: 'colors', type: 'accent' },
@@ -118,7 +117,7 @@ export const DUMMY_FEEDBACKS = [
 
 /* ================================ FOR YOU START ================================ */
 
-export const NEW: TCategory<2> = {
+export const NEW: TCategoryHierarchyNode<TLevel2> = {
   _id: 'latest_trends',
   name: 'Latest Trends',
   slug: 'latest-trends',
@@ -133,10 +132,10 @@ export const NEW: TCategory<2> = {
       parent: 'new',
       description: 'Discover new beauty arrivals for a fresh, trendy style.',
     },
-  ],
+  ] as const,
 } as const;
 
-export const SUGAR_COLLECTION: TCategory<2> = {
+export const SUGAR_COLLECTION: TCategoryHierarchyNode<TLevel2> = {
   _id: 'sugar_collection',
   name: "Beauty's Collection",
   slug: 'beauty-collection',
@@ -154,7 +153,7 @@ export const SUGAR_COLLECTION: TCategory<2> = {
   ],
 } as const;
 
-export const OFFERS: TCategory<2> = {
+export const OFFERS: TCategoryHierarchyNode<TLevel2> = {
   _id: 'offers',
   name: 'Offers',
   slug: 'offers',
@@ -172,7 +171,7 @@ export const OFFERS: TCategory<2> = {
   ],
 } as const;
 
-export const BLOGS: TCategory<2> = {
+export const BLOGS: TCategoryHierarchyNode<TLevel2> = {
   _id: 'blogs',
   name: 'Blogs',
   slug: 'blogs',
@@ -209,7 +208,7 @@ export const FOR_YOU_VIDEOS_DATA = [
   },
 ];
 
-export const FOR_YOU: ICategory = {
+export const FOR_YOU: TCategoryHierarchy = {
   _id: 'for_you',
   name: 'For You',
   slug: 'for-you',
@@ -221,7 +220,7 @@ export const FOR_YOU: ICategory = {
 
 /* ================================ ABOUT START ================================ */
 
-export const COMPANY: TCategory<2> = {
+export const COMPANY: TCategoryHierarchyNode<TLevel2> = {
   _id: 'company',
   name: 'Company',
   slug: 'company',
@@ -263,7 +262,7 @@ export const COMPANY: TCategory<2> = {
   ],
 } as const;
 
-export const PRESS: TCategory<2> = {
+export const PRESS: TCategoryHierarchyNode<TLevel2> = {
   _id: 'press',
   name: 'Press',
   slug: 'press',
@@ -289,7 +288,7 @@ export const PRESS: TCategory<2> = {
   ],
 } as const;
 
-export const CAREERS: TCategory<2> = {
+export const CAREERS: TCategoryHierarchyNode<TLevel2> = {
   _id: 'careers',
   name: 'Careers',
   slug: 'careers',
@@ -323,7 +322,7 @@ export const CAREERS: TCategory<2> = {
   ],
 } as const;
 
-export const TRUST_CENTER: TCategory<2> = {
+export const TRUST_CENTER: TCategoryHierarchyNode<TLevel2> = {
   _id: 'trust_center_and_legal',
   name: 'Trust Center & Legal',
   slug: 'trust-center-and-legal',
@@ -357,7 +356,7 @@ export const TRUST_CENTER: TCategory<2> = {
   ],
 } as const;
 
-export const ABOUT: ICategory = {
+export const ABOUT: TCategoryHierarchy = {
   _id: 'about',
   name: 'About',
   slug: 'about',

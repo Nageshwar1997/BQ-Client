@@ -1,12 +1,12 @@
 import Button from '@/components/ui/Button';
 import GradientText from '@/components/ui/GradientText';
 import { TESTIMONIALS } from '@/constants/navbar.constants';
-import type { TCategory } from '@/types/api.type';
+import type { TCategoryHierarchyNode, TLevel2 } from '@/types/api.type';
 import { Link } from 'react-router-dom';
 import { TestimonialCarousel } from '../../carousels/TestimonialCarousel';
 import { CategoryLabel, L2Category } from './grand-children';
 
-const About = ({ categories }: { categories: TCategory<2>[] }) => {
+const About = ({ categories }: { categories: TCategoryHierarchyNode<TLevel2>[] }) => {
   return (
     <L2Category categories={categories}>
       <div className="break-inside-auto space-y-3 px-2 md:space-y-4 lg:space-y-5">

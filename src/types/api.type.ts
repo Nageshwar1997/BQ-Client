@@ -1,4 +1,10 @@
-import type { TApiMethod, TAuthProvider, TRole } from '@beautinique/shared-constants';
+import type {
+  TApiMethod,
+  TAuthProvider,
+  TCategoryLevel,
+  TCategoryLevelsMap,
+  TRole,
+} from '@beautinique/shared-constants';
 import type { TRegister } from './schema.type';
 
 export type TFieldErrors = Record<string, string[]>;
@@ -17,14 +23,6 @@ export interface IUser extends Omit<TRegister, 'confirmPassword' | 'password'>, 
   role: TRole;
   avatar?: string;
 }
-
-export const METHOD_MAP = {
-  GET: 'get',
-  POST: 'post',
-  PUT: 'put',
-  PATCH: 'patch',
-  DELETE: 'delete',
-} as const;
 
 export interface ICreateHeaders {
   user?: Partial<Pick<IUser, '_id' | 'role'>>;
@@ -55,7 +53,6 @@ type TUrl<FullPath extends string> =
 
 interface IGeneratedEndpoint<T extends IEndpoint, FullPath extends string> {
   method: Uppercase<T['method']>;
-
   url: TUrl<FullPath>;
 }
 
@@ -104,28 +101,34 @@ export type TGenerateQueryKeys<
       : never;
 };
 
-type CategoryLevel = 1 | 2 | 3;
+/* -------------------------------------------------------------------------- */
+/*                                  CATEGORY                                  */
+/* -------------------------------------------------------------------------- */
 
-type CategoryBase<TLevel extends CategoryLevel> = {
-  _id: string;
+export type TLevel1 = TCategoryLevelsMap['L1'];
+export type TLevel2 = TCategoryLevelsMap['L2'];
+export type TLevel3 = TCategoryLevelsMap['L3'];
+
+type CategoryBase<TLevel extends TCategoryLevel> = IId & {
   name: string;
   slug: string;
   level: TLevel;
   path?: string;
 };
 
-export type TCategory<TLevel extends CategoryLevel> = TLevel extends 1
-  ? CategoryBase<1> & {
-      subcategories: TCategory<2>[];
-    }
-  : TLevel extends 2
-    ? CategoryBase<2> & {
-        parent: string;
-        subcategories: TCategory<3>[];
-      }
-    : CategoryBase<3> & {
-        parent: string;
-        description: string;
-      };
+export type TL1Category = CategoryBase<TLevel1>;
+export type TL2Category = CategoryBase<TLevel2> & { parent: string };
+export type TL3Category = CategoryBase<TLevel3> & { parent: string; description: string };
 
-export type ICategory = TCategory<1>;
+export type TCategory = TL1Category | TL2Category | TL3Category;
+
+export type TCategoryHierarchyNode<TLevel extends TCategoryLevel> = TLevel extends TLevel1
+  ? CategoryBase<TLevel1> & { subcategories: TCategoryHierarchyNode<TLevel2>[] }
+  : TLevel extends TLevel2
+    ? CategoryBase<TLevel2> & {
+        parent: string;
+        subcategories: TCategoryHierarchyNode<TLevel3>[];
+      }
+    : CategoryBase<TLevel3> & { parent: string; description: string; subcategories?: never };
+
+export type TCategoryHierarchy = TCategoryHierarchyNode<TLevel1>;
