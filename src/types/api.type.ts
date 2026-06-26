@@ -1,4 +1,4 @@
-import type { AUTH_PROVIDERS, METHOD_MAP, ROLES } from '@/constants/api.constants';
+import type { TApiMethod, TAuthProvider, TRole } from '@beautinique/shared-constants';
 import type { TRegister } from './schema.type';
 
 export type TFieldErrors = Record<string, string[]>;
@@ -12,15 +12,19 @@ export interface ITimeStamp {
   updatedAt: string;
 }
 
-export type TAuthProvider = (typeof AUTH_PROVIDERS)[number];
-
-export type TRole = (typeof ROLES)[number];
-
 export interface IUser extends Omit<TRegister, 'confirmPassword' | 'password'>, IId, ITimeStamp {
   providers: TAuthProvider[];
   role: TRole;
   avatar?: string;
 }
+
+export const METHOD_MAP = {
+  GET: 'get',
+  POST: 'post',
+  PUT: 'put',
+  PATCH: 'patch',
+  DELETE: 'delete',
+} as const;
 
 export interface ICreateHeaders {
   user?: Partial<Pick<IUser, '_id' | 'role'>>;
@@ -29,13 +33,11 @@ export interface ICreateHeaders {
   contentType?: string;
 }
 
-export type TApiMethod = (typeof METHOD_MAP)[keyof typeof METHOD_MAP];
-
 export type TRouteNode = Record<string, unknown> & { base?: string };
 
 export interface IEndpoint {
   path: string;
-  method: TApiMethod;
+  method: Lowercase<TApiMethod>;
 }
 
 export type TParams = Record<string, string | number>;
