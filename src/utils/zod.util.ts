@@ -1,4 +1,3 @@
-import { REGEX } from '@/constants/regex.constants';
 import type {
   IZodArrayConfigs,
   IZodDateConfigs,
@@ -6,6 +5,7 @@ import type {
   IZodNumberConfigs,
   IZodStringConfigs,
 } from '@/types/zod.type';
+import { REGEX } from '@beautinique/shared-constants';
 import {
   array,
   date,

@@ -131,7 +131,7 @@ export const HOME_VIDEOS_DATA = [
     mp4Url:
       'https://res.cloudinary.com/dag2xvurz/video/upload/v1742127534/Beautinique/Home_Videos/1742127444038_1_Makeup_Reimagine.mp4',
   },
-];
+] as const;
 
 export const OAUTH_DATA = [
   {
@@ -149,4 +149,4 @@ export const OAUTH_DATA = [
     imgSrc: '/images/auth/social/Linkedin.webp',
     redirectUrl: `${envs.urls.gateway}${API_METHODS_AND_URLS.user_service.auth.login.oauth.linkedin.redirect.url}`,
   },
-];
+] as const;

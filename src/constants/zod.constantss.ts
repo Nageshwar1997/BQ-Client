@@ -1,5 +1,5 @@
 import type { IZodStringConfigs } from '@/types/zod.type';
-import { REGEX } from './regex.constants';
+import { REGEX } from '@beautinique/shared-constants';
 
 export const EMAIL_OPTIONS: IZodStringConfigs = {
   allowSpace: 'noSpace',
