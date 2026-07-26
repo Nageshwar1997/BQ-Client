@@ -1,11 +1,16 @@
+import { SORT_MAP } from '@beautinique/frontend-constants';
+import type { TSort } from '@beautinique/frontend-types';
+
 import type ApiError from '@/classes/ApiError';
 import type {
   IEndpoint,
+  TCategory,
   TGenerateQueryKeys,
   TGenerateRoutes,
   TParams,
   TRouteNode,
 } from '@/types/api.type';
+
 import { toaster } from './common.util';
 
 export const handleApiErrorToaster = ({ message, globalErrors }: ApiError, title = 'Error') => {
@@ -22,6 +27,22 @@ export const handleApiErrorToaster = ({ message, globalErrors }: ApiError, title
 
 export const handleApiSuccessToaster = (message: string, title = 'Success') => {
   toaster.success({ title, description: message });
+};
+
+export const getFilteredAndSortedCats = (categories: TCategory[], search: string, sort?: TSort) => {
+  const value = search.toLowerCase().trim();
+  const filtered = value
+    ? categories.filter((category) =>
+        [category.name, category.slug].join(' ').toLowerCase().includes(value),
+      )
+    : categories;
+
+  if (!sort) return filtered;
+
+  return [...filtered].sort((a, b) => {
+    const direction = sort === SORT_MAP.desc ? -1 : 1;
+    return a.name.localeCompare(b.name) * direction;
+  });
 };
 
 const joinPaths = (...paths: (string | undefined)[]) =>

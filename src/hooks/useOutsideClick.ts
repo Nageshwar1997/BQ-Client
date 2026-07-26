@@ -1,10 +1,12 @@
 import { useEffect, useRef } from 'react';
 
-type TOutsideClickOptions = { enabled?: boolean };
+interface IOutsideClickOptions {
+  enabled?: boolean;
+}
 
 export const useOutsideClick = <T extends HTMLElement>(
   callback: (event: MouseEvent | TouchEvent | PointerEvent) => void,
-  options: TOutsideClickOptions = { enabled: true },
+  options: IOutsideClickOptions = { enabled: true },
 ) => {
   const ref = useRef<T | null>(null);
 

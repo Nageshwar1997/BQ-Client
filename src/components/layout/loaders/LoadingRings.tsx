@@ -1,7 +1,9 @@
 import { LOADING_RINGS_DATA } from '@/constants/common.constants';
 import type { ILoading } from '@/types/component.type';
 
-const LoadingRings = ({ className = '', text = 'Loading....' }: ILoading) => {
+import LoadingText from './LoadingText';
+
+const LoadingRings = ({ className = '', text }: ILoading) => {
   return (
     <div className={`flex h-full w-full items-center justify-center ${className}`}>
       <div className="relative flex flex-col items-center">
@@ -11,21 +13,17 @@ const LoadingRings = ({ className = '', text = 'Loading....' }: ILoading) => {
               key={index}
               className="absolute inset-0 animate-[ring-spin_2s_linear_infinite] rounded-full border-solid shadow-[0_0_10px_rgb(var(--primary-rgb),0.15)]"
               style={{
-                ['--rx' as string]: `${ring.rotation.rx}deg`,
-                ['--ry' as string]: `${ring.rotation.ry}deg`,
-                ['--z' as string]: `${ring.rotation.z}deg`,
+                ['--rx' as string]: `${String(ring.rotation.rx)}deg`,
+                ['--ry' as string]: `${String(ring.rotation.ry)}deg`,
+                ['--z' as string]: `${String(ring.rotation.z)}deg`,
                 borderColor: ring.border.color,
                 [ring.border.side]: '0.6vmin',
-                animationDelay: `${index * -0.5}s`,
+                animationDelay: `${String(index * -0.5)}s`,
               }}
             />
           ))}
         </div>
-        <div
-          data-text={text}
-          className="loading-text after:text-primary/0 mt-[2vmin] w-fit font-mono text-[3.5vmin] font-extrabold after:content-[attr(data-text)]"
-          style={{ ['--loading-text-duration' as string]: `${Math.max(1, text.length * 0.08)}s` }}
-        />
+        <LoadingText text={text} className="mt-[2vmin]" />
       </div>
     </div>
   );

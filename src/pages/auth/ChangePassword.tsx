@@ -1,3 +1,9 @@
+import type { TChangePasswordZodSchema } from '@beautinique/frontend-types';
+import { changePasswordZodSchema } from '@beautinique/frontend-zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+
 import BorderGradient from '@/components/layout/containers/BorderGradient';
 import AuthBottomInstructions from '@/components/ui/AuthBottomInstructions';
 import Button from '@/components/ui/Button';
@@ -6,14 +12,9 @@ import Input from '@/components/ui/inputs/Input';
 import { FORM_DEFAULT_VALUES } from '@/constants/form.constants';
 import { CHANGE_PASSWORD_INPUT_MAP_DATA } from '@/constants/input.constants';
 import usePathParams from '@/hooks/usePathParams';
-import { changePasswordSchema } from '@/schemas/user.schema';
 import { useChangePassword } from '@/services/user-service/auth.service.query';
 import useUserStore from '@/stores/user.store';
-import type { TChangePassword } from '@/types/schema.type';
 import { setErrorToForm } from '@/utils/form.util';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 
 const ChangePassword = () => {
   /* ================= 1. Store Hooks ================= */
@@ -24,7 +25,7 @@ const ChangePassword = () => {
 
   /* ================= 3. API/Queries Hooks ================= */
 
-  const { isPending, mutateAsync } = useChangePassword();
+  const changePassword = useChangePassword();
 
   /* ================= 4. Forms ================= */
 
@@ -33,13 +34,15 @@ const ChangePassword = () => {
     handleSubmit,
     register,
     setError,
-  } = useForm<TChangePassword>({
-    resolver: zodResolver(changePasswordSchema),
+  } = useForm<TChangePasswordZodSchema>({
+    resolver: zodResolver(changePasswordZodSchema),
     defaultValues: FORM_DEFAULT_VALUES.changePassword,
   });
 
   /* ================= 5. Local State ================= */
-  const [showPasswords, setShowPasswords] = useState<Record<keyof TChangePassword, boolean>>({
+  const [showPasswords, setShowPasswords] = useState<
+    Record<keyof TChangePasswordZodSchema, boolean>
+  >({
     password: false,
     confirmPassword: false,
     currentPassword: false,
@@ -47,22 +50,24 @@ const ChangePassword = () => {
 
   /* ================= 6. Handlers ================= */
 
-  const handleChangePassword = async (data: TChangePassword) => {
-    await mutateAsync(
+  const handleChangePassword = async (data: TChangePasswordZodSchema) => {
+    await changePassword.mutateAsync(
       { ...data },
       {
-        onSuccess: ({ user }) => {
+        onSuccess: ({ data: user }) => {
           if (user) {
             setUser(user);
-            navigate(-1);
+            void navigate(-1);
           }
         },
-        onError: ({ fieldErrors }) => setErrorToForm(setError, fieldErrors),
+        onError: ({ fieldErrors }) => {
+          setErrorToForm(setError, fieldErrors);
+        },
       },
     );
   };
 
-  const togglePasswordVisibility = (field: keyof TChangePassword) => {
+  const togglePasswordVisibility = (field: keyof TChangePasswordZodSchema) => {
     setShowPasswords((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
@@ -92,12 +97,14 @@ const ChangePassword = () => {
                   type: showPasswords[input.name] ? 'text' : input.type,
                   placeholder: input.placeholder,
                   autoComplete: input.autoComplete,
-                  disabled: isPending,
+                  disabled: changePassword.isPending,
                 }}
                 icons={{
                   right: {
                     icon: showPasswords[input.name] ? 'lucide:eye-off' : 'lucide:eye',
-                    onClick: () => togglePasswordVisibility(input.name),
+                    onClick: () => {
+                      togglePasswordVisibility(input.name);
+                    },
                     className: 'cursor-pointer',
                   },
                 }}
@@ -119,7 +126,7 @@ const ChangePassword = () => {
             {/* -------- Submit Button -------- */}
             <Button
               pattern="primary"
-              buttonProps={{ type: 'submit', disabled: isPending || !isDirty }}
+              buttonProps={{ type: 'submit', disabled: changePassword.isPending || !isDirty }}
               content="Submit"
             />
           </div>

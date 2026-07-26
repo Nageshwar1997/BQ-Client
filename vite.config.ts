@@ -1,8 +1,8 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import { visualizer } from 'rollup-plugin-visualizer';
 import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react';
 import path from 'path';
+import { visualizer } from 'rollup-plugin-visualizer';
+import { defineConfig } from 'vite';
 
 export default defineConfig(({ mode }) => ({
   plugins: [
@@ -17,7 +17,7 @@ export default defineConfig(({ mode }) => ({
       }),
   ].filter(Boolean),
   resolve: { alias: { '@': path.resolve(__dirname, './src') } },
-  server: { port: 3001 },
+  server: { port: 3002 },
   build: {
     rollupOptions: {
       output: {
@@ -26,6 +26,8 @@ export default defineConfig(({ mode }) => ({
             if (id.includes('react')) return 'react';
             if (id.includes('react-dom')) return 'react';
           }
+
+          return undefined;
         },
       },
     },

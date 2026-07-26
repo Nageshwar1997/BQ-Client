@@ -1,7 +1,7 @@
 @utility autofill-effect {
   /* 🔹 Base normalization (prevents font jump on suggestion hover) */
   &:where(input, textarea, select) {
-    @apply font-metropolis! caret-primary text-sm font-normal shadow-none;
+    @apply font-metropolis! caret-primary text-sm shadow-none;
   }
 
   /* 🔹 Chrome / Edge / Safari autofill */
@@ -15,7 +15,7 @@
     transition: background-color 5000s ease-in-out 0s;
 
     /* keep typography stable */
-    @apply font-metropolis caret-primary text-sm font-normal shadow-none;
+    @apply font-metropolis caret-primary text-sm shadow-none;
   }
 }
 

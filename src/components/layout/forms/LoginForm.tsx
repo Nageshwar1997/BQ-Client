@@ -1,31 +1,33 @@
+import type { TLoginZodSchema } from '@beautinique/frontend-types';
+import { loginZodSchema } from '@beautinique/frontend-zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { Controller, useForm, useWatch } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+
 import AuthBottomInstructions from '@/components/ui/AuthBottomInstructions';
 import Button from '@/components/ui/Button';
 import GradientText from '@/components/ui/GradientText';
 import Input from '@/components/ui/inputs/Input';
 import Radio from '@/components/ui/inputs/Radio';
-import SocialAuth from '@/components/ui/SocialAuth';
-import { FORM_DEFAULT_VALUES } from '@/constants/form.constants';
 import { LOGIN_INPUT_MAP_DATA, PASSWORD_KEYS } from '@/constants/input.constants';
-import { loginSchema } from '@/schemas/user.schema';
-import { useManualLogin } from '@/services/user-service/auth.service.query';
+import usePathParams from '@/hooks/usePathParams';
+import useQueryParams from '@/hooks/useQueryParams';
+import { useLogin } from '@/services/user-service/auth.service.query';
 import useActionsStore from '@/stores/action.store';
 import useUserStore from '@/stores/user.store';
-import type { TLogin } from '@/types/schema.type';
-import { getLastRoute } from '@/utils/common.util';
 import { setErrorToForm } from '@/utils/form.util';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
-import { Controller, useForm, useWatch } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+
 import BorderGradient from '../containers/BorderGradient';
 
 const LoginForm = () => {
   /* ================= 1. External / Store Hooks ================= */
   const setUser = useUserStore((s) => s.setUser);
-  const navigate = useNavigate();
+  const { queryParams, removeParams } = useQueryParams();
+  const { paths, navigate } = usePathParams();
 
   /* ================= 2. API / Query Hooks ================= */
-  const { isPending, mutateAsync } = useManualLogin();
+  const { isPending, mutateAsync } = useLogin();
 
   /* ================= 3. Form Hooks ================= */
   const {
@@ -35,12 +37,12 @@ const LoginForm = () => {
     register,
     reset,
     setError,
-  } = useForm<TLogin>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: FORM_DEFAULT_VALUES.login,
+  } = useForm<TLoginZodSchema>({
+    resolver: zodResolver(loginZodSchema),
+    defaultValues: { loginMethod: 'email' },
   });
 
-  const selectedMethod = useWatch({ control, name: 'loginMethod' });
+  const selectedMethod = useWatch({ control, name: 'loginMethod', defaultValue: 'email' });
 
   /* ================= 4. Local State ================= */
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -48,18 +50,21 @@ const LoginForm = () => {
   /* ================= 5. Handlers ================= */
 
   // -------- Handle Login Submit --------
-  const handleManualLogin = async (data: TLogin) => {
+  const handleLogin = async (data: TLoginZodSchema) => {
     await mutateAsync(data, {
-      onSuccess: async ({ user }) => {
-        setUser(user);
+      onSuccess: async ({ data: user }) => {
+        setUser(user ?? null);
 
         const { runAllActions } = useActionsStore.getState();
         await runAllActions();
 
-        navigate(getLastRoute(), { replace: true });
+        if (paths.includes('auth')) void navigate('/');
+        if (queryParams.login) removeParams(['login']);
       },
 
-      onError: ({ fieldErrors }) => setErrorToForm(setError, fieldErrors),
+      onError: ({ fieldErrors }) => {
+        setErrorToForm(setError, fieldErrors);
+      },
     });
   };
 
@@ -69,13 +74,12 @@ const LoginForm = () => {
   };
 
   // -------- Handle Login Method Change (Email / Phone) --------
-  const handleLoginMethodChange = (method: TLogin['loginMethod']) => {
-    reset({
-      loginMethod: method,
-      email: method === 'email' ? '' : undefined,
-      phoneNumber: method === 'phoneNumber' ? '' : undefined,
-      password: '',
-    });
+  const handleLoginMethodChange = (method: TLoginZodSchema['loginMethod']) => {
+    if (method === 'phoneNumber') {
+      reset({ loginMethod: method, phoneNumber: undefined, password: undefined });
+    } else {
+      reset({ loginMethod: method, email: undefined, password: undefined });
+    }
   };
 
   /* ================= 6. JSX ================= */
@@ -88,13 +92,10 @@ const LoginForm = () => {
         className="mx-auto text-2xl leading-tight font-semibold sm:text-3xl md:text-4xl lg:text-5xl"
       />
 
-      {/* ================= SOCIAL AUTH ================= */}
-      <SocialAuth />
-
       {/* ================= FORM CONTAINER ================= */}
       <BorderGradient className="flex flex-col gap-5 lg:gap-6">
         {/* ================= MAIN FORM ================= */}
-        <form onSubmit={handleSubmit(handleManualLogin)} className="space-y-5 sm:space-y-6">
+        <form onSubmit={handleSubmit(handleLogin)} className="space-y-5 sm:space-y-6">
           {/* -------- Login Method Toggle (Radio) -------- */}
           <Controller
             name="loginMethod"
@@ -103,7 +104,7 @@ const LoginForm = () => {
               <Radio
                 value={field.value}
                 onChange={(value) => {
-                  handleLoginMethodChange(value);
+                  handleLoginMethodChange(value as TLoginZodSchema['loginMethod']);
                   field.onChange(value);
                 }}
                 options={[
@@ -123,16 +124,18 @@ const LoginForm = () => {
             const isEmail = input.name === 'email';
             const isEmailSelected = selectedMethod === 'email';
 
+            const name = input.name as keyof Omit<TLoginZodSchema, 'loginMethod'>;
+
             // -------- Conditional Rendering --------
             if (isPhone && isEmailSelected) return null;
             if (isEmail && !isEmailSelected) return null;
 
             return (
               <Input
-                key={input.name}
+                key={name}
                 label={input.label}
                 inputProps={{
-                  name: input.name,
+                  name,
                   type: isPassword ? (showPassword ? 'text' : input.type) : input.type,
                   placeholder: input.placeholder,
                   autoComplete: input.autoComplete,
@@ -140,7 +143,13 @@ const LoginForm = () => {
                 }}
                 icons={
                   isPhone
-                    ? { left: '+91' }
+                    ? {
+                        left: (
+                          <span className="text-primary/50 border-r-primary/30 items-center border-r py-2 pr-3 text-[13px] leading-0 capitalize">
+                            +91
+                          </span>
+                        ),
+                      }
                     : isPassword
                       ? {
                           right: {
@@ -151,8 +160,8 @@ const LoginForm = () => {
                         }
                       : undefined
                 }
-                register={register(input.name)}
-                error={errors[input.name]?.message}
+                register={register(name)}
+                error={errors[name]?.message}
               />
             );
           })}
@@ -181,21 +190,6 @@ const LoginForm = () => {
             />
           </div>
         </form>
-
-        {/* ================= FOOTER ================= */}
-        <div className="flex items-center justify-center gap-2">
-          <GradientText
-            text="Don't have an account?"
-            type="silver"
-            className="text-xs md:text-sm"
-          />
-          <GradientText
-            text="Register"
-            type="accent"
-            path="/auth/register"
-            className="text-xs font-semibold md:text-sm"
-          />
-        </div>
 
         {/* ================= EXTRA INFO ================= */}
         <AuthBottomInstructions />

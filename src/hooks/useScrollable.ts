@@ -1,11 +1,19 @@
-import type { TScrollDirection } from '@/types/hook.type';
 import { useEffect, useRef, useState } from 'react';
 
-type THorizontal = { left: boolean; right: boolean };
-type TVertical = { top: boolean; bottom: boolean };
-type TScroll =
-  | ({ direction: 'horizontal' } & THorizontal)
-  | ({ direction: 'vertical' } & TVertical);
+import type { TScrollDirection } from '@/types/hook.type';
+
+interface IHorizontal {
+  left: boolean;
+  right: boolean;
+  direction: 'horizontal';
+}
+interface IVertical {
+  top: boolean;
+  bottom: boolean;
+  direction: 'vertical';
+}
+
+type TScroll = IHorizontal | IVertical;
 
 const useScrollable = (direction: TScrollDirection) => {
   const containerRef = useRef<HTMLDivElement | null>(null);

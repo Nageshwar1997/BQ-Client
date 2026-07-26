@@ -1,67 +1,44 @@
-import { API_METHODS_AND_URLS } from '@/constants/api.constants';
+import { HEADERS_MAP, USER_ROLE_MAP } from '@beautinique/frontend-constants';
 import type {
-  TChangePassword,
-  TEmail,
-  TLogin,
-  TOtp,
-  TPasswords,
-  TRegister,
-  TSetPassword,
-} from '@/types/schema.type';
+  TChangePasswordZodSchema,
+  TEmailZodSchema,
+  TLoginZodSchema,
+  TOtpZodSchema,
+  TPasswordsZodSchema,
+} from '@beautinique/frontend-types';
+
+import { API_METHODS_AND_URLS } from '@/constants/api.constants';
+import type { IUser } from '@/types/api.type';
+
 import { ApiRequest } from '../ApiRequest';
 
 export class AuthApi extends ApiRequest {
-  private readonly routes = API_METHODS_AND_URLS.user_service.auth;
-
-  /* ===================== REGISTER API ===================== */
-
-  public registerSendOtp = (data: TEmail) => {
-    return this.request({ ...this.routes.register.sendOtp, data });
-  };
-
-  public registerResendOtp = (token: string) => {
-    return this.request({
-      ...this.routes.register.resendOtp,
-      headers: { Authorization: `Bearer ${token}` },
-    });
-  };
-
-  public registerVerifyOtp = ({ token, ...data }: TOtp & { token: string }) => {
-    return this.request({
-      ...this.routes.register.verifyOtp,
-      data,
-      headers: { Authorization: `Bearer ${token}` },
-    });
-  };
-
-  public registerSaveUser = ({ token, ...data }: TRegister & { token: string }) => {
-    return this.request({
-      ...this.routes.register.saveUser,
-      data,
-      headers: { Authorization: `Bearer ${token}` },
-    });
-  };
+  private routes = API_METHODS_AND_URLS.user_service.auth;
 
   /* ===================== LOGIN API ===================== */
 
-  public manualLogin = (data: TLogin) => {
-    return this.request({ ...this.routes.login.manual, data });
+  public login = (data: TLoginZodSchema) => {
+    return this.request<IUser>({
+      ...this.routes.login.manual,
+      data,
+      headers: { [HEADERS_MAP.loginRole]: USER_ROLE_MAP.ADMIN },
+    });
   };
 
   /* ===================== PASSWORD API ===================== */
 
-  public forgotPasswordSendOtp = (data: TEmail) => {
-    return this.request({ ...this.routes.password.forgot.sendOtp, data });
+  public forgotPasswordSendOtp = (data: TEmailZodSchema) => {
+    return this.request<string>({ ...this.routes.password.forgot.sendOtp, data });
   };
 
   public forgotPasswordResendOtp = (token: string) => {
-    return this.request({
+    return this.request<number>({
       ...this.routes.password.forgot.resendOtp,
       headers: { Authorization: `Bearer ${token}` },
     });
   };
 
-  public forgotPasswordVerifyOtp = ({ token, ...data }: TOtp & { token: string }) => {
+  public forgotPasswordVerifyOtp = ({ token, ...data }: TOtpZodSchema & { token: string }) => {
     return this.request({
       ...this.routes.password.forgot.verifyOtp,
       data,
@@ -69,36 +46,30 @@ export class AuthApi extends ApiRequest {
     });
   };
 
-  public forgotPasswordSave = ({ token, ...data }: TPasswords & { token: string }) => {
-    return this.request({
+  public forgotPasswordSave = ({ token, ...data }: TPasswordsZodSchema & { token: string }) => {
+    return this.request<IUser>({
       ...this.routes.password.forgot.save,
       data,
       headers: { Authorization: `Bearer ${token}` },
     });
   };
 
-  public changePassword = (data: TChangePassword) => {
-    return this.request({ ...this.routes.password.change, data });
+  public changePassword = (data: TChangePasswordZodSchema) => {
+    return this.request<IUser>({ ...this.routes.password.change, data });
   };
 
-  public setPassword = (data: TSetPassword) => {
-    return this.request({ ...this.routes.password.set, data });
-  };
+  /* ===================== LOGOUT API ===================== */
 
-  // public logout = () => {
-  //   return this.request({
-  //     method: 'POST',
-  //     url: '/auth/logout',
-  //   });
-  // };
+  public logout = () => {
+    return this.request(this.routes.logout);
+  };
 }
-
 export class UserApi extends ApiRequest {
-  private readonly routes = API_METHODS_AND_URLS.user_service.user;
+  private routes = API_METHODS_AND_URLS.user_service.user;
 
   /* ===================== GET API ===================== */
 
   public getSessionUser = async () => {
-    return this.request(this.routes.session);
+    return this.request<IUser>(this.routes.session);
   };
 }

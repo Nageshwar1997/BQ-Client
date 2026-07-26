@@ -1,4 +1,5 @@
 import '@tanstack/react-query';
+
 import type ApiError from './classes/ApiError';
 import type ApiSuccess from './classes/ApiSuccess';
 

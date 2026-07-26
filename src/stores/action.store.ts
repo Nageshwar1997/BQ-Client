@@ -1,15 +1,16 @@
-import type { ActionItem, TActionsStore } from '@/types/store.type';
 import { create } from 'zustand';
+
+import type { IActionItem, IActionsStore } from '@/types/store.type';
 
 const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
-const useActionsStore = create<TActionsStore>((set, get) => ({
+const useActionsStore = create<IActionsStore>((set, get) => ({
   actions: [],
 
   addAction: (fn, options) => {
     const id = crypto.randomUUID();
 
-    const item: ActionItem = {
+    const item: IActionItem = {
       id,
       fn,
       retries: 0,
@@ -23,18 +24,23 @@ const useActionsStore = create<TActionsStore>((set, get) => ({
     return id;
   },
 
-  removeAction: (id) =>
+  removeAction: (id) => {
     set((state) => ({
       actions: state.actions.filter((a) => a.id !== id),
-    })),
+    }));
+  },
 
-  clearActions: () => set({ actions: [] }),
+  clearActions: () => {
+    set({ actions: [] });
+  },
 
   runNextAction: async () => {
     const { actions } = get();
     if (!actions.length) return;
 
     const [current, ...rest] = actions;
+
+    if (!current) return;
 
     try {
       await current.fn();

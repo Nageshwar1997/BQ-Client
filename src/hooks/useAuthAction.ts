@@ -1,5 +1,6 @@
 import useActionsStore from '@/stores/action.store';
 import useUserStore from '@/stores/user.store';
+
 import useQueryParams from './useQueryParams';
 
 const useAuthAction = () => {
@@ -15,7 +16,7 @@ const useAuthAction = () => {
 
         // async safe
         if (result instanceof Promise) {
-          result.catch((err) => {
+          result.catch((err: unknown) => {
             console.error('Action failed:', err);
           });
         }

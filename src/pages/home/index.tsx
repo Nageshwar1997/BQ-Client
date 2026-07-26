@@ -1,12 +1,5 @@
-import HomeHero from './HomeHero';
-
 const Home = () => {
-  return (
-    <div className="h-full w-full lg:-mt-16">
-      {/* <HomeVideoCarousel /> */}
-      <HomeHero />
-    </div>
-  );
+  return <div className="h-full w-full">Home</div>;
 };
 
 export default Home;

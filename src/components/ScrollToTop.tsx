@@ -1,5 +1,6 @@
-import usePathParams from '@/hooks/usePathParams';
 import { useEffect } from 'react';
+
+import usePathParams from '@/hooks/usePathParams';
 
 const ScrollToTop = () => {
   const { pathname } = usePathParams();

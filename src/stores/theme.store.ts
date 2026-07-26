@@ -1,18 +1,20 @@
-import type { TTheme, TThemeStore } from '@/types/store.type';
 import { create } from 'zustand';
 
-const useThemeStore = create<TThemeStore>((set) => {
-  const currentTheme = localStorage.getItem('theme') || '';
-  const isValidTheme = currentTheme && ['dark', 'light'].includes(currentTheme);
+import type { IThemeStore, TTheme } from '@/types/store.type';
+
+const useThemeStore = create<IThemeStore>((set) => {
+  const currentTheme = localStorage.getItem('theme') ?? 'dark';
+  const isValidTheme = ['dark', 'light'].includes(currentTheme);
 
   return {
     theme: isValidTheme ? (currentTheme as TTheme) : 'dark',
-    toggleTheme: () =>
+    toggleTheme: () => {
       set((state) => {
         const newTheme = state.theme === 'dark' ? 'light' : 'dark';
         localStorage.setItem('theme', newTheme);
         return { theme: newTheme };
-      }),
+      });
+    },
   };
 });
 

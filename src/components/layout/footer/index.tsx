@@ -1,3 +1,7 @@
+import { Icon } from '@iconify/react';
+import { Fragment } from 'react';
+import { Link } from 'react-router-dom';
+
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
 import { FOOTER_AWARDS, FOOTER_CATEGORIES, SOCIAL_MEDIA_LINKS } from '@/constants/footer.constants';
@@ -5,9 +9,6 @@ import useAuthAction from '@/hooks/useAuthAction';
 import usePathParams from '@/hooks/usePathParams';
 import useThemeStore from '@/stores/theme.store';
 import { type IFooterOptionList } from '@/types/component.type';
-import { Icon } from '@iconify/react';
-import { Link } from 'react-router-dom';
-import { Fragment } from 'react/jsx-runtime';
 
 const FooterOptionList = ({ isFirst = false, title, options }: IFooterOptionList) => {
   const { runAction } = useAuthAction();
@@ -21,7 +22,7 @@ const FooterOptionList = ({ isFirst = false, title, options }: IFooterOptionList
       return;
     }
 
-    action();
+    void action();
   };
 
   return (
@@ -37,7 +38,9 @@ const FooterOptionList = ({ isFirst = false, title, options }: IFooterOptionList
         {options.map((link, i) => (
           <button
             key={i}
-            onClick={() => handleNavigate(link.path, link.private)}
+            onClick={() => {
+              handleNavigate(link.path, link.private);
+            }}
             className="hover:text-tertiary mx-auto w-fit cursor-pointer text-nowrap hover:font-medium hover:underline"
           >
             {link.title}
@@ -48,7 +51,7 @@ const FooterOptionList = ({ isFirst = false, title, options }: IFooterOptionList
   );
 };
 
-export const Footer = () => {
+const Footer = () => {
   const theme = useThemeStore((s) => s.theme);
 
   const year = new Date().getFullYear();
@@ -63,6 +66,7 @@ export const Footer = () => {
                 <img
                   src={`/images/logo/BQ_${theme === 'dark' ? 'white' : 'black'}_logo.webp`}
                   alt="Logo"
+                  loading="lazy"
                   className="h-10 w-full max-w-20 object-contain sm:h-12 lg:h-16 lg:max-w-24"
                 />
               </Link>
@@ -83,6 +87,7 @@ export const Footer = () => {
                 <img
                   src={`/images/footer/${award.key}-${theme}.webp`}
                   alt={award.name}
+                  loading="lazy"
                   className="h-10 w-fit object-contain md:h-12 lg:h-14"
                 />
               </Link>
@@ -90,11 +95,11 @@ export const Footer = () => {
           </div>
         </div>
         <div className="text-battleship-davys-gray-invert mt-6 grid w-full grid-cols-2 gap-6 px-4 text-sm sm:grid-cols-3 md:px-0 lg:grid-cols-5 lg:gap-10 xl:gap-20">
-          <div className="border-silver col-span-3 w-full border-b opacity-30 lg:hidden" />
+          <div className="border-silver/30 col-span-3 w-full border-b lg:hidden" />
           {FOOTER_CATEGORIES.map((category, index) => (
             <Fragment key={index}>
               {index === 1 && (
-                <div className="border-b-silver col-span-3 w-full border-b opacity-30 sm:hidden" />
+                <div className="border-b-silver/30 col-span-3 w-full border-b sm:hidden" />
               )}
               <FooterOptionList
                 isFirst={index === 0}
@@ -102,7 +107,7 @@ export const Footer = () => {
                 options={category.options}
               />
               {index === 2 && (
-                <div className="border-b-silver col-span-3 w-full border-b opacity-30 lg:hidden" />
+                <div className="border-b-silver/30 col-span-3 w-full border-b lg:hidden" />
               )}
             </Fragment>
           ))}
@@ -125,3 +130,5 @@ export const Footer = () => {
     </div>
   );
 };
+
+export default Footer;

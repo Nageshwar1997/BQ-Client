@@ -1,105 +1,28 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 import { authApi } from '@/classes/apis';
 import { API_QUERY_KEYS } from '@/constants/api.constants';
 import { handleApiErrorToaster, handleApiSuccessToaster } from '@/utils/api.util';
 import { toaster } from '@/utils/common.util';
-import { useMutation } from '@tanstack/react-query';
 
-const { login, password, register } = API_QUERY_KEYS.user_service.auth;
-
-/* ===================== REGISTER QUERIES ===================== */
-
-export const useRegisterSendOtp = () => {
-  return useMutation({
-    mutationKey: register.sendOtp,
-    mutationFn: authApi.registerSendOtp,
-    onMutate: () => {
-      const toastId = toaster.loading({
-        title: 'Please wait...',
-        description: 'Sending OTP to your email...',
-      });
-
-      return { toastId };
-    },
-    onSuccess: ({ message }) => handleApiSuccessToaster(message),
-    onError: (error) => handleApiErrorToaster(error),
-    onSettled: (_data, _error, _variables, context) => {
-      if (context?.toastId) toaster.remove(context.toastId);
-    },
-  });
-};
-
-export const useRegisterResendOtp = () => {
-  return useMutation({
-    mutationKey: register.resendOtp,
-    mutationFn: authApi.registerResendOtp,
-    onMutate: () => {
-      const toastId = toaster.loading({
-        title: 'Please wait...',
-        description: 'Resending OTP to your email...',
-      });
-      return { toastId };
-    },
-    onSuccess: ({ message }) => handleApiSuccessToaster(message),
-    onError: (error) => handleApiErrorToaster(error),
-    onSettled: (_data, _error, _variables, context) => {
-      if (context?.toastId) toaster.remove(context.toastId);
-    },
-  });
-};
-
-export const useRegisterVerifyOtp = () => {
-  return useMutation({
-    mutationKey: register.verifyOtp,
-    mutationFn: authApi.registerVerifyOtp,
-    onMutate: () => {
-      const toastId = toaster.loading({
-        title: 'Please wait...',
-        description: 'Verifying your OTP...',
-      });
-      return { toastId };
-    },
-    onSuccess: ({ message }) => handleApiSuccessToaster(message),
-    onError: (error) => handleApiErrorToaster(error),
-    onSettled: (_data, _error, _variables, context) => {
-      if (context?.toastId) toaster.remove(context.toastId);
-    },
-  });
-};
-
-export const useRegisterAndSaveUser = () => {
-  return useMutation({
-    mutationKey: register.saveUser,
-    mutationFn: authApi.registerSaveUser,
-    onMutate: () => {
-      const toastId = toaster.loading({
-        title: 'Please wait...',
-        description: 'Saving your details...',
-      });
-      return { toastId };
-    },
-    onSuccess: async ({ message }) => handleApiSuccessToaster(message),
-    onError: (error) => handleApiErrorToaster(error),
-    onSettled: (_data, _error, _variables, context) => {
-      if (context?.toastId) toaster.remove(context.toastId);
-    },
-  });
-};
+const { login, logout, password } = API_QUERY_KEYS.user_service.auth;
 
 /* ===================== LOGIN QUERIES ===================== */
 
-export const useManualLogin = () => {
+export const useLogin = () => {
   return useMutation({
     mutationKey: login.manual,
-    mutationFn: authApi.manualLogin,
+    mutationFn: authApi.login,
     onMutate: () => {
-      const toastId = toaster.loading({
-        title: 'Please wait...',
-        description: 'Logging in...',
-      });
+      const toastId = toaster.loading({ title: 'Please wait...', description: 'Logging in...' });
       return { toastId };
     },
-    onSuccess: async ({ message }) => handleApiSuccessToaster(message),
-    onError: (error) => handleApiErrorToaster(error),
+    onSuccess: ({ message }) => {
+      handleApiSuccessToaster(message);
+    },
+    onError: (error) => {
+      handleApiErrorToaster(error);
+    },
     onSettled: (_data, _error, _variables, context) => {
       if (context?.toastId) toaster.remove(context.toastId);
     },
@@ -120,8 +43,12 @@ export const useForgotPasswordSendOtp = () => {
 
       return { toastId };
     },
-    onSuccess: ({ message }) => handleApiSuccessToaster(message),
-    onError: (error) => handleApiErrorToaster(error),
+    onSuccess: ({ message }) => {
+      handleApiSuccessToaster(message);
+    },
+    onError: (error) => {
+      handleApiErrorToaster(error);
+    },
     onSettled: (_data, _error, _variables, context) => {
       if (context?.toastId) toaster.remove(context.toastId);
     },
@@ -139,8 +66,12 @@ export const useForgotPasswordResendOtp = () => {
       });
       return { toastId };
     },
-    onSuccess: ({ message }) => handleApiSuccessToaster(message),
-    onError: (error) => handleApiErrorToaster(error),
+    onSuccess: ({ message }) => {
+      handleApiSuccessToaster(message);
+    },
+    onError: (error) => {
+      handleApiErrorToaster(error);
+    },
     onSettled: (_data, _error, _variables, context) => {
       if (context?.toastId) toaster.remove(context.toastId);
     },
@@ -158,8 +89,12 @@ export const useForgotPasswordVerifyOtp = () => {
       });
       return { toastId };
     },
-    onSuccess: ({ message }) => handleApiSuccessToaster(message),
-    onError: (error) => handleApiErrorToaster(error),
+    onSuccess: ({ message }) => {
+      handleApiSuccessToaster(message);
+    },
+    onError: (error) => {
+      handleApiErrorToaster(error);
+    },
     onSettled: (_data, _error, _variables, context) => {
       if (context?.toastId) toaster.remove(context.toastId);
     },
@@ -177,8 +112,12 @@ export const useForgotPasswordSave = () => {
       });
       return { toastId };
     },
-    onSuccess: async ({ message }) => handleApiSuccessToaster(message),
-    onError: (error) => handleApiErrorToaster(error),
+    onSuccess: ({ message }) => {
+      handleApiSuccessToaster(message);
+    },
+    onError: (error) => {
+      handleApiErrorToaster(error);
+    },
     onSettled: (_data, _error, _variables, context) => {
       if (context?.toastId) toaster.remove(context.toastId);
     },
@@ -196,27 +135,38 @@ export const useChangePassword = () => {
       });
       return { toastId };
     },
-    onSuccess: async ({ message }) => handleApiSuccessToaster(message),
-    onError: (error) => handleApiErrorToaster(error),
+    onSuccess: ({ message }) => {
+      handleApiSuccessToaster(message);
+    },
+    onError: (error) => {
+      handleApiErrorToaster(error);
+    },
     onSettled: (_data, _error, _variables, context) => {
       if (context?.toastId) toaster.remove(context.toastId);
     },
   });
 };
 
-export const useSetPassword = () => {
+/* ===================== LOGOUT QUERIES ===================== */
+
+export const useLogout = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationKey: password.set,
-    mutationFn: authApi.setPassword,
+    mutationKey: logout,
+    mutationFn: authApi.logout,
     onMutate: () => {
-      const toastId = toaster.loading({
-        title: 'Please wait...',
-        description: 'Setting your password...',
-      });
+      const toastId = toaster.loading({ title: 'Please wait...', description: 'Logging out...' });
       return { toastId };
     },
-    onSuccess: async ({ message }) => handleApiSuccessToaster(message),
-    onError: (error) => handleApiErrorToaster(error),
+    onSuccess: ({ message }) => {
+      handleApiSuccessToaster(message);
+      // Drop all cached data so nothing from this session leaks into the next login.
+      queryClient.clear();
+    },
+    onError: (error) => {
+      handleApiErrorToaster(error);
+    },
     onSettled: (_data, _error, _variables, context) => {
       if (context?.toastId) toaster.remove(context.toastId);
     },

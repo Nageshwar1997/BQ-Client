@@ -1,10 +1,11 @@
-import useActionsStore from '@/stores/action.store';
 import { useEffect } from 'react';
+
+import useActionsStore from '@/stores/action.store';
 
 const useAutoRetry = () => {
   useEffect(() => {
     const handleOnline = () => {
-      useActionsStore.getState().runAllActions();
+      void useActionsStore.getState().runAllActions();
     };
 
     window.addEventListener('online', handleOnline);

@@ -1,13 +1,29 @@
 import type {
+  ICreateHeaders,
   TApiMethod,
   TAuthProvider,
   TCategoryLevel,
   TCategoryLevelsMap,
-  TRole,
-} from '@beautinique/shared-constants';
-import type { TRegister } from './schema.type';
+  TCategoryZodSchema,
+  TProductBasicInfoZodSchema,
+  TProductDescriptionAndContentZodSchema,
+  TProductMediaAndGalleryZodSchema,
+  TProductStatus,
+  TProductWithoutVariantsZodSchema,
+  TProductWithVariantsZodSchema,
+  TRegisterZodSchema,
+  TSort,
+  TTryOnSelection,
+  TUserRole,
+} from '@beautinique/frontend-types';
 
 export type TFieldErrors = Record<string, string[]>;
+
+export interface IErrorResponse {
+  message?: string;
+  fieldErrors?: TFieldErrors;
+  globalErrors?: string[];
+}
 
 export interface IId {
   _id: string;
@@ -18,18 +34,42 @@ export interface ITimeStamp {
   updatedAt: string;
 }
 
-export interface IUser extends Omit<TRegister, 'confirmPassword' | 'password'>, IId, ITimeStamp {
+export interface IUser
+  extends Omit<TRegisterZodSchema, 'confirmPassword' | 'password'>, IId, ITimeStamp {
   providers: TAuthProvider[];
-  role: TRole;
+  role: TUserRole;
   avatar?: string;
 }
 
-export interface ICreateHeaders {
-  user?: Partial<Pick<IUser, '_id' | 'role'>>;
-  token?: string;
-  loginRole?: TRole;
-  contentType?: string;
-}
+/* -------------------------------------------------------------------------- */
+/*                                  CATEGORY                                  */
+/* -------------------------------------------------------------------------- */
+
+export type TLevel1 = TCategoryLevelsMap['L1'];
+export type TLevel2 = TCategoryLevelsMap['L2'];
+export type TLevel3 = TCategoryLevelsMap['L3'];
+
+type CategoryBase<TLevel extends TCategoryLevel> = IId &
+  Pick<TCategoryZodSchema, 'name'> & { slug: string; level: TLevel };
+
+export type TL1Category = CategoryBase<TLevel1>;
+export type TL2Category = CategoryBase<TLevel2> & { parent: string };
+export type TL3Category = CategoryBase<TLevel3> & { parent: string; description: string };
+
+export type TCategory = TL1Category | TL2Category | TL3Category;
+
+export type TCategoryHierarchyNode<TLevel extends TCategoryLevel> = TLevel extends TLevel1
+  ? CategoryBase<TLevel1> & { subcategories: TCategoryHierarchyNode<TLevel2>[] }
+  : TLevel extends TLevel2
+    ? CategoryBase<TLevel2> & { parent: string; subcategories: TCategoryHierarchyNode<TLevel3>[] }
+    : CategoryBase<TLevel3> & { parent: string; description: string; subcategories?: never };
+
+export type TCategoryHierarchy = TCategoryHierarchyNode<TLevel1>;
+
+export type TCreateHeaders = Omit<
+  ICreateHeaders<Partial<Pick<IUser, '_id' | 'role'>>>,
+  'serviceSecret'
+>;
 
 export type TRouteNode = Record<string, unknown> & { base?: string };
 
@@ -101,34 +141,81 @@ export type TGenerateQueryKeys<
       : never;
 };
 
-/* -------------------------------------------------------------------------- */
-/*                                  CATEGORY                                  */
-/* -------------------------------------------------------------------------- */
+type TApiTryOn =
+  | { enabled: boolean; configured: false }
+  | ({ enabled: false; configured: true } & Partial<TTryOnSelection>)
+  | ({ enabled: true; configured: true } & TTryOnSelection);
 
-export type TLevel1 = TCategoryLevelsMap['L1'];
-export type TLevel2 = TCategoryLevelsMap['L2'];
-export type TLevel3 = TCategoryLevelsMap['L3'];
-
-type CategoryBase<TLevel extends TCategoryLevel> = IId & {
-  name: string;
-  slug: string;
-  level: TLevel;
-  path?: string;
+export type TRemoveFileType<T> = {
+  [K in keyof T]: T[K] extends (infer U)[] ? Exclude<U, File>[] : Exclude<T[K], File>;
 };
 
-export type TL1Category = CategoryBase<TLevel1>;
-export type TL2Category = CategoryBase<TLevel2> & { parent: string };
-export type TL3Category = CategoryBase<TLevel3> & { parent: string; description: string };
+export type TApiProductBase = IId &
+  ITimeStamp &
+  Pick<TProductBasicInfoZodSchema, 'title' | 'brand' | 'sellingPrice' | 'originalPrice'> &
+  Omit<TProductDescriptionAndContentZodSchema, 'step'> &
+  TRemoveFileType<Omit<TProductMediaAndGalleryZodSchema, 'step'>> & {
+    tryOn: TApiTryOn;
+    seller: string;
+    sku: string;
+    slug: string;
+    discount: number;
+    soldCount: number;
+    returnCount: number;
+    reviews: string[];
+    totalReviews: number;
+    averageRating: number;
+    totalRating: number;
+    status: TProductStatus;
+    history?: {
+      approvedBy?: string | null;
+      approvedAt?: string | null;
+      blockedBy?: string | null;
+      blockedAt?: string | null;
+      rejectedBy?: string | null;
+      rejectedAt?: string | null;
+      rejectReason?: string | null;
+    };
+  };
 
-export type TCategory = TL1Category | TL2Category | TL3Category;
+type TVariant = TRemoveFileType<TProductWithVariantsZodSchema['variants'][number]> & {
+  sku: string;
+  discount: number;
+  images: string[];
+  thumbnail?: string;
+} & IId;
 
-export type TCategoryHierarchyNode<TLevel extends TCategoryLevel> = TLevel extends TLevel1
-  ? CategoryBase<TLevel1> & { subcategories: TCategoryHierarchyNode<TLevel2>[] }
-  : TLevel extends TLevel2
-    ? CategoryBase<TLevel2> & {
-        parent: string;
-        subcategories: TCategoryHierarchyNode<TLevel3>[];
-      }
-    : CategoryBase<TLevel3> & { parent: string; description: string; subcategories?: never };
+type TApiStockAndVariants =
+  | Omit<TProductWithoutVariantsZodSchema, 'step'>
+  | (Pick<TProductWithVariantsZodSchema, 'hasVariants'> & { variants: TVariant[] });
 
-export type TCategoryHierarchy = TCategoryHierarchyNode<TLevel1>;
+export type TApiProduct = TApiProductBase & TApiStockAndVariants & { category: string };
+
+export type TApiProductPopulated = TApiProductBase &
+  TApiStockAndVariants & { category: TCategory; seller: unknown };
+
+export type TProductSortBy = keyof Pick<
+  TApiProduct,
+  'createdAt' | 'updatedAt' | 'title' | 'sellingPrice' | 'originalPrice' | 'soldCount'
+>;
+
+export interface IGetDashboardProductsQuery {
+  page: string;
+  limit: string;
+  search?: string;
+  status?: TProductStatus;
+  category?: string;
+  sortBy?: TProductSortBy;
+  sortOrder?: TSort;
+}
+
+export interface IPagination {
+  page: number;
+  totalPages: number;
+}
+
+export interface IDashboardProductsResponse {
+  products: TApiProductPopulated[];
+  pagination: IPagination;
+  counts: Record<TProductStatus | 'ALL', number>;
+}

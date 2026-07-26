@@ -1,0 +1,924 @@
+[
+  {
+    "_id": {
+      "$oid": "6b1000000000000000000001"
+    },
+    "title": "Velvet Matte Lipstick",
+    "sku": "VEL-MAT-LIP-001",
+    "brand": "Beautinique",
+    "originalPrice": 699,
+    "sellingPrice": 549,
+    "discount": 21,
+    "stock": null,
+    "stockThreshold": null,
+    "shortDescription": "Premium matte lipstick with long lasting bold color.",
+    "description": "<p>Premium matte lipstick with smooth application and intense color payoff for everyday elegance.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770987/Beautinique/Images/Testing/2026/06/18/614d1910-315c-44a3-9620-7bc26243b420.png\"></p>",
+    "instructions": "<p>Apply directly on clean lips for a flawless matte finish.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/68c41fe4-96e1-44a2-94aa-52395ed768f4.png\"></p>",
+    "ingredients": "<p>Vitamin E, Beeswax, Castor Oil, Natural Pigments.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771119/Beautinique/Images/Testing/2026/06/18/8b2a919c-4a5a-4ca9-bb83-402c1b1e07f4.png\"></p>",
+    "additional": "<p>Cruelty free and dermatologically tested formula.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/55490436-901e-4e58-8809-a4b4484b6e2b.png\"></p>",
+    "slug": "velvet-matte-lipstick",
+    "images": [
+      "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770767/Beautinique/Images/Testing/2026/06/18/88494140-7a24-45b9-9df0-5830e63efc94.png"
+    ],
+    "thumbnail": "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770758/Beautinique/Images/Testing/2026/06/18/57817127-4c5f-4590-aeaf-383e81db6713.png",
+    "category": {
+      "$oid": "6a0eb140ba5621703b811a5d"
+    },
+    "seller": {
+      "$oid": "69f1dbc072e24bc004daa827"
+    },
+    "saleCount": 235,
+    "returnCount": 4,
+    "reviews": [],
+    "totalReviews": 145,
+    "averageRating": 4.8,
+    "totalRating": 696,
+    "hasVariants": true,
+    "variants": [
+      {
+        "sku": "VEL-MAT-LIP-001-RUB",
+        "type": "Color",
+        "label": "Ruby Red",
+        "value": "#C21833",
+        "originalPrice": 699,
+        "sellingPrice": 549,
+        "discount": 21,
+        "stock": 60,
+        "stockThreshold": 10,
+        "images": [
+          "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771372/Beautinique/Images/Testing/2026/06/18/b00931cc-b620-4bb2-bba7-fb5ae3a3a94d.png"
+        ],
+        "thumbnail": "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771403/Beautinique/Images/Testing/2026/06/18/2b9d853e-e728-4444-b64c-a97a259409f0.png",
+        "_id": {
+          "$oid": "6b1000000000000000000101"
+        }
+      }
+    ],
+    "status": "PUBLISHED",
+    "history": {
+      "approvedBy": {
+        "$oid": "69f1dbc072e24bc004daa827"
+      },
+      "approvedAt": {
+        "$date": "2026-06-18T14:01:18.278Z"
+      }
+    },
+    "tryOn": {
+      "configured": true,
+      "enabled": true,
+      "category": "LIP",
+      "subCategory": "MATTE"
+    },
+    "createdAt": {
+      "$date": "2026-06-18T14:01:18.391Z"
+    },
+    "updatedAt": {
+      "$date": "2026-06-18T14:01:18.391Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6b1000000000000000000002"
+    },
+    "title": "Crystal Shine Gloss",
+    "sku": "CRY-GLO-LIP-002",
+    "brand": "Beautinique",
+    "originalPrice": 599,
+    "sellingPrice": 449,
+    "discount": 25,
+    "stock": null,
+    "stockThreshold": null,
+    "shortDescription": "Glossy lip finish with hydrating ingredients.",
+    "description": "<p>Crystal shine gloss delivers mirror like shine and comfortable hydration throughout the day.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770987/Beautinique/Images/Testing/2026/06/18/614d1910-315c-44a3-9620-7bc26243b420.png\"></p>",
+    "instructions": "<p>Apply evenly across lips whenever shine is desired.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/68c41fe4-96e1-44a2-94aa-52395ed768f4.png\"></p>",
+    "ingredients": "<p>Jojoba Oil, Vitamin E, Shea Butter, Gloss Base.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771119/Beautinique/Images/Testing/2026/06/18/8b2a919c-4a5a-4ca9-bb83-402c1b1e07f4.png\"></p>",
+    "additional": "<p>Lightweight and non sticky formula.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/55490436-901e-4e58-8809-a4b4484b6e2b.png\"></p>",
+    "slug": "crystal-shine-gloss",
+    "images": [
+      "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770767/Beautinique/Images/Testing/2026/06/18/88494140-7a24-45b9-9df0-5830e63efc94.png"
+    ],
+    "thumbnail": "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770758/Beautinique/Images/Testing/2026/06/18/57817127-4c5f-4590-aeaf-383e81db6713.png",
+    "category": {
+      "$oid": "6a0eb1d1ba5621703b811a60"
+    },
+    "seller": {
+      "$oid": "69f1dbc072e24bc004daa827"
+    },
+    "saleCount": 189,
+    "returnCount": 2,
+    "reviews": [],
+    "totalReviews": 95,
+    "averageRating": 4.6,
+    "totalRating": 437,
+    "hasVariants": false,
+    "variants": [],
+    "status": "PENDING",
+    "tryOn": {
+      "configured": true,
+      "enabled": true,
+      "category": "LIP",
+      "subCategory": "GLOSS"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6b1000000000000000000003"
+    },
+    "title": "Diamond Shimmer Lipstick",
+    "sku": "DIA-SHI-LIP-003",
+    "brand": "Beautinique",
+    "originalPrice": 799,
+    "sellingPrice": 629,
+    "discount": 21,
+    "stock": null,
+    "stockThreshold": null,
+    "shortDescription": "Shimmer lipstick for glamorous makeup looks.",
+    "description": "<p>Luxurious shimmer lipstick with reflective pigments and long lasting shine.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770987/Beautinique/Images/Testing/2026/06/18/614d1910-315c-44a3-9620-7bc26243b420.png\"></p>",
+    "instructions": "<p>Apply one coat for shimmer effect or layer for intensity.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/68c41fe4-96e1-44a2-94aa-52395ed768f4.png\"></p>",
+    "ingredients": "<p>Mica, Vitamin E, Natural Wax Blend.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771119/Beautinique/Images/Testing/2026/06/18/8b2a919c-4a5a-4ca9-bb83-402c1b1e07f4.png\"></p>",
+    "additional": "<p>Perfect for party and bridal makeup.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/55490436-901e-4e58-8809-a4b4484b6e2b.png\"></p>",
+    "slug": "diamond-shimmer-lipstick",
+    "images": [
+      "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770767/Beautinique/Images/Testing/2026/06/18/88494140-7a24-45b9-9df0-5830e63efc94.png"
+    ],
+    "thumbnail": "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770758/Beautinique/Images/Testing/2026/06/18/57817127-4c5f-4590-aeaf-383e81db6713.png",
+    "category": {
+      "$oid": "6a0eb187ba5621703b811a5f"
+    },
+    "seller": {
+      "$oid": "69f1dbc072e24bc004daa827"
+    },
+    "saleCount": 120,
+    "returnCount": 1,
+    "reviews": [],
+    "totalReviews": 67,
+    "averageRating": 4.5,
+    "totalRating": 302,
+    "hasVariants": false,
+    "variants": [],
+    "status": "BLOCKED",
+    "tryOn": {
+      "configured": true,
+      "enabled": true,
+      "category": "LIP",
+      "subCategory": "SHIMMER"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6b1000000000000000000004"
+    },
+    "title": "Precision Lip Crayon",
+    "sku": "PRE-CRA-LIP-004",
+    "brand": "Beautinique",
+    "originalPrice": 499,
+    "sellingPrice": 399,
+    "discount": 20,
+    "stock": null,
+    "stockThreshold": null,
+    "shortDescription": "Smooth crayon lipstick with precise application.",
+    "description": "<p>Retractable lip crayon with creamy texture and excellent color payoff.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770987/Beautinique/Images/Testing/2026/06/18/614d1910-315c-44a3-9620-7bc26243b420.png\"></p>",
+    "instructions": "<p>Outline lips then fill evenly for perfect definition.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/68c41fe4-96e1-44a2-94aa-52395ed768f4.png\"></p>",
+    "ingredients": "<p>Vitamin E, Natural Oils, Pigments.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771119/Beautinique/Images/Testing/2026/06/18/8b2a919c-4a5a-4ca9-bb83-402c1b1e07f4.png\"></p>",
+    "additional": "<p>Easy to carry and easy to apply.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/55490436-901e-4e58-8809-a4b4484b6e2b.png\"></p>",
+    "slug": "precision-lip-crayon",
+    "images": [
+      "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770767/Beautinique/Images/Testing/2026/06/18/88494140-7a24-45b9-9df0-5830e63efc94.png"
+    ],
+    "thumbnail": "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770758/Beautinique/Images/Testing/2026/06/18/57817127-4c5f-4590-aeaf-383e81db6713.png",
+    "category": {
+      "$oid": "6a0eba85671006e3b42b41b0"
+    },
+    "seller": {
+      "$oid": "69f1dbc072e24bc004daa827"
+    },
+    "saleCount": 210,
+    "returnCount": 3,
+    "reviews": [],
+    "totalReviews": 112,
+    "averageRating": 4.7,
+    "totalRating": 526,
+    "hasVariants": false,
+    "variants": [],
+    "status": "REJECTED",
+    "history": {
+      "rejectReason": "Packaging information missing"
+    },
+    "tryOn": {
+      "configured": true,
+      "enabled": true,
+      "category": "LIP",
+      "subCategory": "CRAYON"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6b1000000000000000000005"
+    },
+    "title": "Perfect Brow Definer",
+    "sku": "BRO-DEF-EYE-005",
+    "brand": "Beautinique",
+    "originalPrice": 649,
+    "sellingPrice": 499,
+    "discount": 23,
+    "stock": null,
+    "stockThreshold": null,
+    "shortDescription": "Eyebrow definer for natural shaped brows.",
+    "description": "<p>Create natural looking brows with precision tip technology and long lasting wear.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770987/Beautinique/Images/Testing/2026/06/18/614d1910-315c-44a3-9620-7bc26243b420.png\"></p>",
+    "instructions": "<p>Use light strokes to fill and shape eyebrows.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/68c41fe4-96e1-44a2-94aa-52395ed768f4.png\"></p>",
+    "ingredients": "<p>Wax Blend, Iron Oxides, Vitamin E.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771119/Beautinique/Images/Testing/2026/06/18/8b2a919c-4a5a-4ca9-bb83-402c1b1e07f4.png\"></p>",
+    "additional": "<p>Water resistant eyebrow formula.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/55490436-901e-4e58-8809-a4b4484b6e2b.png\"></p>",
+    "slug": "perfect-brow-definer",
+    "images": [
+      "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770767/Beautinique/Images/Testing/2026/06/18/88494140-7a24-45b9-9df0-5830e63efc94.png"
+    ],
+    "thumbnail": "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770758/Beautinique/Images/Testing/2026/06/18/57817127-4c5f-4590-aeaf-383e81db6713.png",
+    "category": {
+      "$oid": "6a0ef9402a248b1c546d1ccb"
+    },
+    "seller": {
+      "$oid": "69f1dbc072e24bc004daa827"
+    },
+    "saleCount": 156,
+    "returnCount": 2,
+    "reviews": [],
+    "totalReviews": 89,
+    "averageRating": 4.6,
+    "totalRating": 409,
+    "hasVariants": false,
+    "variants": [],
+    "status": "PUBLISHED",
+    "tryOn": {
+      "configured": true,
+      "enabled": true,
+      "category": "EYE",
+      "subCategory": "EYEBROW"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6b1000000000000000000006"
+    },
+    "title": "Ultra Black Eyeliner",
+    "sku": "ULT-EYE-LIN-006",
+    "brand": "Beautinique",
+    "originalPrice": 599,
+    "sellingPrice": 459,
+    "discount": 23,
+    "stock": null,
+    "stockThreshold": null,
+    "shortDescription": "Precision liquid eyeliner with intense black finish.",
+    "description": "<p>Create sharp and dramatic eye looks with this highly pigmented liquid eyeliner that stays all day.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770987/Beautinique/Images/Testing/2026/06/18/614d1910-315c-44a3-9620-7bc26243b420.png\"></p>",
+    "instructions": "<p>Draw a thin line from inner corner to outer corner of the eye.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/68c41fe4-96e1-44a2-94aa-52395ed768f4.png\"></p>",
+    "ingredients": "<p>Carbon Black, Water Base, Film Formers, Vitamin E.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771119/Beautinique/Images/Testing/2026/06/18/8b2a919c-4a5a-4ca9-bb83-402c1b1e07f4.png\"></p>",
+    "additional": "<p>Smudge resistant and water resistant formula.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/55490436-901e-4e58-8809-a4b4484b6e2b.png\"></p>",
+    "slug": "ultra-black-eyeliner",
+    "images": [
+      "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770767/Beautinique/Images/Testing/2026/06/18/88494140-7a24-45b9-9df0-5830e63efc94.png"
+    ],
+    "thumbnail": "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770758/Beautinique/Images/Testing/2026/06/18/57817127-4c5f-4590-aeaf-383e81db6713.png",
+    "category": {
+      "$oid": "6a0ef91c2a248b1c546d1cc5"
+    },
+    "seller": {
+      "$oid": "69f1dbc072e24bc004daa827"
+    },
+    "saleCount": 220,
+    "returnCount": 4,
+    "reviews": [],
+    "totalReviews": 118,
+    "averageRating": 4.8,
+    "totalRating": 566,
+    "hasVariants": false,
+    "variants": [],
+    "status": "PUBLISHED",
+    "tryOn": {
+      "configured": true,
+      "enabled": true,
+      "category": "EYE",
+      "subCategory": "EYELINER"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6b1000000000000000000007"
+    },
+    "title": "Smudge Proof Kajal",
+    "sku": "SMU-KAJ-EYE-007",
+    "brand": "Beautinique",
+    "originalPrice": 399,
+    "sellingPrice": 299,
+    "discount": 25,
+    "stock": null,
+    "stockThreshold": null,
+    "shortDescription": "Deep black kajal with all day wear.",
+    "description": "<p>Highly pigmented kajal with smooth glide and smudge proof performance for everyday use.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770987/Beautinique/Images/Testing/2026/06/18/614d1910-315c-44a3-9620-7bc26243b420.png\"></p>",
+    "instructions": "<p>Apply gently along waterline and lash line.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/68c41fe4-96e1-44a2-94aa-52395ed768f4.png\"></p>",
+    "ingredients": "<p>Natural Waxes, Pigments, Vitamin E, Oils.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771119/Beautinique/Images/Testing/2026/06/18/8b2a919c-4a5a-4ca9-bb83-402c1b1e07f4.png\"></p>",
+    "additional": "<p>Suitable for sensitive eyes.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/55490436-901e-4e58-8809-a4b4484b6e2b.png\"></p>",
+    "slug": "smudge-proof-kajal",
+    "images": [
+      "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770767/Beautinique/Images/Testing/2026/06/18/88494140-7a24-45b9-9df0-5830e63efc94.png"
+    ],
+    "thumbnail": "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770758/Beautinique/Images/Testing/2026/06/18/57817127-4c5f-4590-aeaf-383e81db6713.png",
+    "category": {
+      "$oid": "6a0ef7c72a248b1c546d1cc1"
+    },
+    "seller": {
+      "$oid": "69f1dbc072e24bc004daa827"
+    },
+    "saleCount": 310,
+    "returnCount": 8,
+    "reviews": [],
+    "totalReviews": 165,
+    "averageRating": 4.7,
+    "totalRating": 776,
+    "hasVariants": false,
+    "variants": [],
+    "status": "PUBLISHED",
+    "tryOn": {
+      "configured": true,
+      "enabled": true,
+      "category": "EYE",
+      "subCategory": "KAJAL"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6b1000000000000000000008"
+    },
+    "title": "Galaxy Eyeshadow Palette",
+    "sku": "GAL-EYE-SHA-008",
+    "brand": "Beautinique",
+    "originalPrice": 999,
+    "sellingPrice": 799,
+    "discount": 20,
+    "stock": null,
+    "stockThreshold": null,
+    "shortDescription": "Multi shade eyeshadow palette with rich pigments.",
+    "description": "<p>Blendable eyeshadow palette featuring matte, shimmer and metallic shades for endless looks.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770987/Beautinique/Images/Testing/2026/06/18/614d1910-315c-44a3-9620-7bc26243b420.png\"></p>",
+    "instructions": "<p>Apply with brush and blend evenly across eyelids.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/68c41fe4-96e1-44a2-94aa-52395ed768f4.png\"></p>",
+    "ingredients": "<p>Mica, Talc, Silica, Pigments, Vitamin E.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771119/Beautinique/Images/Testing/2026/06/18/8b2a919c-4a5a-4ca9-bb83-402c1b1e07f4.png\"></p>",
+    "additional": "<p>Highly blendable and beginner friendly formula.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/55490436-901e-4e58-8809-a4b4484b6e2b.png\"></p>",
+    "slug": "galaxy-eyeshadow-palette",
+    "images": [
+      "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770767/Beautinique/Images/Testing/2026/06/18/88494140-7a24-45b9-9df0-5830e63efc94.png"
+    ],
+    "thumbnail": "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770758/Beautinique/Images/Testing/2026/06/18/57817127-4c5f-4590-aeaf-383e81db6713.png",
+    "category": {
+      "$oid": "6a0ef9322a248b1c546d1cc8"
+    },
+    "seller": {
+      "$oid": "69f1dbc072e24bc004daa827"
+    },
+    "saleCount": 142,
+    "returnCount": 3,
+    "reviews": [],
+    "totalReviews": 84,
+    "averageRating": 4.6,
+    "totalRating": 386,
+    "hasVariants": false,
+    "variants": [],
+    "status": "PENDING",
+    "tryOn": {
+      "configured": true,
+      "enabled": true,
+      "category": "EYE",
+      "subCategory": "EYESHADOW"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6b1000000000000000000009"
+    },
+    "title": "Flawless Coverage Foundation",
+    "sku": "FLA-FOU-FAC-009",
+    "brand": "Beautinique",
+    "originalPrice": 899,
+    "sellingPrice": 699,
+    "discount": 22,
+    "stock": null,
+    "stockThreshold": null,
+    "shortDescription": "Medium to full coverage liquid foundation.",
+    "description": "<p>Lightweight foundation that blends seamlessly and provides a natural flawless finish.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770987/Beautinique/Images/Testing/2026/06/18/614d1910-315c-44a3-9620-7bc26243b420.png\"></p>",
+    "instructions": "<p>Apply using brush, sponge or fingertips and blend evenly.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/68c41fe4-96e1-44a2-94aa-52395ed768f4.png\"></p>",
+    "ingredients": "<p>Hyaluronic Acid, Vitamin E, Silica, Pigments.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771119/Beautinique/Images/Testing/2026/06/18/8b2a919c-4a5a-4ca9-bb83-402c1b1e07f4.png\"></p>",
+    "additional": "<p>Provides hydration and long lasting wear.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/55490436-901e-4e58-8809-a4b4484b6e2b.png\"></p>",
+    "slug": "flawless-coverage-foundation",
+    "images": [
+      "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770767/Beautinique/Images/Testing/2026/06/18/88494140-7a24-45b9-9df0-5830e63efc94.png"
+    ],
+    "thumbnail": "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770758/Beautinique/Images/Testing/2026/06/18/57817127-4c5f-4590-aeaf-383e81db6713.png",
+    "category": {
+      "$oid": "6a0f00442a248b1c546d1ce6"
+    },
+    "seller": {
+      "$oid": "69f1dbc072e24bc004daa827"
+    },
+    "saleCount": 176,
+    "returnCount": 5,
+    "reviews": [],
+    "totalReviews": 103,
+    "averageRating": 4.7,
+    "totalRating": 484,
+    "hasVariants": false,
+    "variants": [],
+    "status": "PUBLISHED",
+    "tryOn": {
+      "configured": true,
+      "enabled": true,
+      "category": "FACE",
+      "subCategory": "FOUNDATION"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6b1000000000000000000010"
+    },
+    "title": "Bright Touch Concealer",
+    "sku": "BRI-CON-FAC-010",
+    "brand": "Beautinique",
+    "originalPrice": 699,
+    "sellingPrice": 529,
+    "discount": 24,
+    "stock": null,
+    "stockThreshold": null,
+    "shortDescription": "High coverage concealer for flawless skin.",
+    "description": "<p>Creamy concealer that hides dark circles, blemishes and uneven skin tone effectively.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770987/Beautinique/Images/Testing/2026/06/18/614d1910-315c-44a3-9620-7bc26243b420.png\"></p>",
+    "instructions": "<p>Apply on target areas and blend gently using sponge or brush.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/68c41fe4-96e1-44a2-94aa-52395ed768f4.png\"></p>",
+    "ingredients": "<p>Vitamin E, Silica, Pigments, Moisturizing Agents.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771119/Beautinique/Images/Testing/2026/06/18/8b2a919c-4a5a-4ca9-bb83-402c1b1e07f4.png\"></p>",
+    "additional": "<p>Crease resistant formula with natural finish.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/55490436-901e-4e58-8809-a4b4484b6e2b.png\"></p>",
+    "slug": "bright-touch-concealer",
+    "images": [
+      "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770767/Beautinique/Images/Testing/2026/06/18/88494140-7a24-45b9-9df0-5830e63efc94.png"
+    ],
+    "thumbnail": "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770758/Beautinique/Images/Testing/2026/06/18/57817127-4c5f-4590-aeaf-383e81db6713.png",
+    "category": {
+      "$oid": "6a0f00442a248b1c546d1ce6"
+    },
+    "seller": {
+      "$oid": "69f1dbc072e24bc004daa827"
+    },
+    "saleCount": 128,
+    "returnCount": 2,
+    "reviews": [],
+    "totalReviews": 72,
+    "averageRating": 4.5,
+    "totalRating": 324,
+    "hasVariants": false,
+    "variants": [],
+    "status": "BLOCKED",
+    "tryOn": {
+      "configured": true,
+      "enabled": true,
+      "category": "FACE",
+      "subCategory": "CONCEALER"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6b1000000000000000000011"
+    },
+    "title": "Radiant Glow Highlighter",
+    "sku": "RAD-HIG-FAC-011",
+    "brand": "Beautinique",
+    "originalPrice": 899,
+    "sellingPrice": 699,
+    "discount": 22,
+    "stock": null,
+    "stockThreshold": null,
+    "shortDescription": "Silky highlighter for luminous radiant skin.",
+    "description": "<p>Highly blendable highlighter that enhances facial features with a natural glowing finish and smooth texture.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770987/Beautinique/Images/Testing/2026/06/18/614d1910-315c-44a3-9620-7bc26243b420.png\"></p>",
+    "instructions": "<p>Apply on cheekbones, nose bridge and brow bones for instant glow.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/68c41fe4-96e1-44a2-94aa-52395ed768f4.png\"></p>",
+    "ingredients": "<p>Mica, Silica, Vitamin E, Pearl Pigments.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771119/Beautinique/Images/Testing/2026/06/18/8b2a919c-4a5a-4ca9-bb83-402c1b1e07f4.png\"></p>",
+    "additional": "<p>Buildable glow suitable for day and night makeup.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/55490436-901e-4e58-8809-a4b4484b6e2b.png\"></p>",
+    "slug": "radiant-glow-highlighter",
+    "images": [
+      "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770767/Beautinique/Images/Testing/2026/06/18/88494140-7a24-45b9-9df0-5830e63efc94.png"
+    ],
+    "thumbnail": "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770758/Beautinique/Images/Testing/2026/06/18/57817127-4c5f-4590-aeaf-383e81db6713.png",
+    "category": {
+      "$oid": "6a0f00442a248b1c546d1ce6"
+    },
+    "seller": {
+      "$oid": "69f1dbc072e24bc004daa827"
+    },
+    "saleCount": 148,
+    "returnCount": 2,
+    "reviews": [],
+    "totalReviews": 81,
+    "averageRating": 4.8,
+    "totalRating": 389,
+    "hasVariants": false,
+    "variants": [],
+    "status": "PUBLISHED",
+    "tryOn": {
+      "configured": true,
+      "enabled": true,
+      "category": "FACE",
+      "subCategory": "HIGHLIGHTER"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6b1000000000000000000012"
+    },
+    "title": "Rose Petal Blush",
+    "sku": "ROS-BLU-FAC-012",
+    "brand": "Beautinique",
+    "originalPrice": 799,
+    "sellingPrice": 629,
+    "discount": 21,
+    "stock": null,
+    "stockThreshold": null,
+    "shortDescription": "Soft blush for natural rosy cheeks.",
+    "description": "<p>Finely milled blush that blends effortlessly to deliver a healthy and youthful flush of color.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770987/Beautinique/Images/Testing/2026/06/18/614d1910-315c-44a3-9620-7bc26243b420.png\"></p>",
+    "instructions": "<p>Apply lightly on cheeks and blend upward toward temples.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/68c41fe4-96e1-44a2-94aa-52395ed768f4.png\"></p>",
+    "ingredients": "<p>Talc, Mica, Pigments, Vitamin E.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771119/Beautinique/Images/Testing/2026/06/18/8b2a919c-4a5a-4ca9-bb83-402c1b1e07f4.png\"></p>",
+    "additional": "<p>Natural finish suitable for all skin tones.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/55490436-901e-4e58-8809-a4b4484b6e2b.png\"></p>",
+    "slug": "rose-petal-blush",
+    "images": [
+      "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770767/Beautinique/Images/Testing/2026/06/18/88494140-7a24-45b9-9df0-5830e63efc94.png"
+    ],
+    "thumbnail": "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770758/Beautinique/Images/Testing/2026/06/18/57817127-4c5f-4590-aeaf-383e81db6713.png",
+    "category": {
+      "$oid": "6a0f00442a248b1c546d1ce6"
+    },
+    "seller": {
+      "$oid": "69f1dbc072e24bc004daa827"
+    },
+    "saleCount": 115,
+    "returnCount": 1,
+    "reviews": [],
+    "totalReviews": 64,
+    "averageRating": 4.6,
+    "totalRating": 294,
+    "hasVariants": false,
+    "variants": [],
+    "status": "REJECTED",
+    "history": {
+      "rejectReason": "Product information incomplete"
+    },
+    "tryOn": {
+      "configured": true,
+      "enabled": true,
+      "category": "FACE",
+      "subCategory": "BLUSH"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6b1000000000000000000013"
+    },
+    "title": "Natural Hair Color",
+    "sku": "NAT-COL-HAI-013",
+    "brand": "Beautinique",
+    "originalPrice": 999,
+    "sellingPrice": 749,
+    "discount": 25,
+    "stock": null,
+    "stockThreshold": null,
+    "shortDescription": "Long lasting hair color with shine protection.",
+    "description": "<p>Rich hair coloring formula that provides vibrant color while nourishing hair strands.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770987/Beautinique/Images/Testing/2026/06/18/614d1910-315c-44a3-9620-7bc26243b420.png\"></p>",
+    "instructions": "<p>Mix developer and color cream before applying evenly to hair.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/68c41fe4-96e1-44a2-94aa-52395ed768f4.png\"></p>",
+    "ingredients": "<p>Color Pigments, Keratin, Argan Oil, Conditioning Agents.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771119/Beautinique/Images/Testing/2026/06/18/8b2a919c-4a5a-4ca9-bb83-402c1b1e07f4.png\"></p>",
+    "additional": "<p>Ammonia free formula with lasting shine.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/55490436-901e-4e58-8809-a4b4484b6e2b.png\"></p>",
+    "slug": "natural-hair-color",
+    "images": [
+      "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770767/Beautinique/Images/Testing/2026/06/18/88494140-7a24-45b9-9df0-5830e63efc94.png"
+    ],
+    "thumbnail": "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770758/Beautinique/Images/Testing/2026/06/18/57817127-4c5f-4590-aeaf-383e81db6713.png",
+    "category": {
+      "$oid": "6a0f00322a248b1c546d1ce1"
+    },
+    "seller": {
+      "$oid": "69f1dbc072e24bc004daa827"
+    },
+    "saleCount": 96,
+    "returnCount": 4,
+    "reviews": [],
+    "totalReviews": 55,
+    "averageRating": 4.4,
+    "totalRating": 242,
+    "hasVariants": false,
+    "variants": [],
+    "status": "BLOCKED",
+    "tryOn": {
+      "configured": true,
+      "enabled": true,
+      "category": "HAIR",
+      "subCategory": "COLOR"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6b1000000000000000000014"
+    },
+    "title": "Ruby Gel Nail Polish",
+    "sku": "RUB-GEL-NAI-014",
+    "brand": "Beautinique",
+    "originalPrice": 499,
+    "sellingPrice": 349,
+    "discount": 30,
+    "stock": null,
+    "stockThreshold": null,
+    "shortDescription": "High shine gel nail polish with long wear.",
+    "description": "<p>Professional gel nail polish delivering salon quality shine and durability.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770987/Beautinique/Images/Testing/2026/06/18/614d1910-315c-44a3-9620-7bc26243b420.png\"></p>",
+    "instructions": "<p>Apply two coats and cure under UV lamp.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/68c41fe4-96e1-44a2-94aa-52395ed768f4.png\"></p>",
+    "ingredients": "<p>Gel Resin, Pigments, Protective Polymers.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771119/Beautinique/Images/Testing/2026/06/18/8b2a919c-4a5a-4ca9-bb83-402c1b1e07f4.png\"></p>",
+    "additional": "<p>Chip resistant glossy finish.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/55490436-901e-4e58-8809-a4b4484b6e2b.png\"></p>",
+    "slug": "ruby-gel-nail-polish",
+    "images": [
+      "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770767/Beautinique/Images/Testing/2026/06/18/88494140-7a24-45b9-9df0-5830e63efc94.png"
+    ],
+    "thumbnail": "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770758/Beautinique/Images/Testing/2026/06/18/57817127-4c5f-4590-aeaf-383e81db6713.png",
+    "category": {
+      "$oid": "6a0f00442a248b1c546d1ce7"
+    },
+    "seller": {
+      "$oid": "69f1dbc072e24bc004daa827"
+    },
+    "saleCount": 175,
+    "returnCount": 2,
+    "reviews": [],
+    "totalReviews": 90,
+    "averageRating": 4.7,
+    "totalRating": 423,
+    "hasVariants": false,
+    "variants": [],
+    "status": "PUBLISHED",
+    "tryOn": {
+      "configured": true,
+      "enabled": true,
+      "category": "NAIL",
+      "subCategory": "GEL"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6b1000000000000000000015"
+    },
+    "title": "Nude Liquid Nail Enamel",
+    "sku": "NUD-LIQ-NAI-015",
+    "brand": "Beautinique",
+    "originalPrice": 399,
+    "sellingPrice": 279,
+    "discount": 30,
+    "stock": null,
+    "stockThreshold": null,
+    "shortDescription": "Smooth liquid nail enamel with elegant finish.",
+    "description": "<p>Quick drying liquid nail enamel with rich pigmentation and glossy appearance.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770987/Beautinique/Images/Testing/2026/06/18/614d1910-315c-44a3-9620-7bc26243b420.png\"></p>",
+    "instructions": "<p>Apply evenly on clean nails and allow to dry completely.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/68c41fe4-96e1-44a2-94aa-52395ed768f4.png\"></p>",
+    "ingredients": "<p>Nitrocellulose, Pigments, Resins, Solvents.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771119/Beautinique/Images/Testing/2026/06/18/8b2a919c-4a5a-4ca9-bb83-402c1b1e07f4.png\"></p>",
+    "additional": "<p>Fast drying and long lasting formula.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/55490436-901e-4e58-8809-a4b4484b6e2b.png\"></p>",
+    "slug": "nude-liquid-nail-enamel",
+    "images": [
+      "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770767/Beautinique/Images/Testing/2026/06/18/88494140-7a24-45b9-9df0-5830e63efc94.png"
+    ],
+    "thumbnail": "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770758/Beautinique/Images/Testing/2026/06/18/57817127-4c5f-4590-aeaf-383e81db6713.png",
+    "category": {
+      "$oid": "6a0f00442a248b1c546d1ce7"
+    },
+    "seller": {
+      "$oid": "69f1dbc072e24bc004daa827"
+    },
+    "saleCount": 132,
+    "returnCount": 1,
+    "reviews": [],
+    "totalReviews": 73,
+    "averageRating": 4.5,
+    "totalRating": 328,
+    "hasVariants": false,
+    "variants": [],
+    "status": "PENDING",
+    "tryOn": {
+      "configured": true,
+      "enabled": true,
+      "category": "NAIL",
+      "subCategory": "LIQUID"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6b1000000000000000000016"
+    },
+    "title": "Deep Hydration Moisturizer",
+    "sku": "DEE-MOI-SKI-016",
+    "brand": "Beautinique",
+    "originalPrice": 899,
+    "sellingPrice": 699,
+    "discount": 22,
+    "stock": null,
+    "stockThreshold": null,
+    "shortDescription": "Intense hydration moisturizer for soft healthy skin.",
+    "description": "<p>Rich moisturizing cream formulated with hydrating ingredients that lock in moisture and improve skin texture throughout the day.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770987/Beautinique/Images/Testing/2026/06/18/614d1910-315c-44a3-9620-7bc26243b420.png\"></p>",
+    "instructions": "<p>Apply generously on cleansed face and neck using upward strokes.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/68c41fe4-96e1-44a2-94aa-52395ed768f4.png\"></p>",
+    "ingredients": "<p>Hyaluronic Acid, Shea Butter, Vitamin E, Aloe Vera.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771119/Beautinique/Images/Testing/2026/06/18/8b2a919c-4a5a-4ca9-bb83-402c1b1e07f4.png\"></p>",
+    "additional": "<p>Suitable for dry and normal skin types.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/55490436-901e-4e58-8809-a4b4484b6e2b.png\"></p>",
+    "slug": "deep-hydration-moisturizer",
+    "images": [
+      "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770767/Beautinique/Images/Testing/2026/06/18/88494140-7a24-45b9-9df0-5830e63efc94.png"
+    ],
+    "thumbnail": "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770758/Beautinique/Images/Testing/2026/06/18/57817127-4c5f-4590-aeaf-383e81db6713.png",
+    "category": {
+      "$oid": "6a0f00442a248b1c546d1ce8"
+    },
+    "seller": {
+      "$oid": "69f1dbc072e24bc004daa827"
+    },
+    "saleCount": 212,
+    "returnCount": 3,
+    "reviews": [],
+    "totalReviews": 121,
+    "averageRating": 4.8,
+    "totalRating": 581,
+    "hasVariants": false,
+    "variants": [],
+    "status": "PUBLISHED",
+    "tryOn": {
+      "configured": true,
+      "enabled": true,
+      "category": "SKIN",
+      "subCategory": "MOISTURIZER"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6b1000000000000000000017"
+    },
+    "title": "Vitamin C Glow Serum",
+    "sku": "VIT-SER-SKI-017",
+    "brand": "Beautinique",
+    "originalPrice": 1199,
+    "sellingPrice": 949,
+    "discount": 21,
+    "stock": null,
+    "stockThreshold": null,
+    "shortDescription": "Brightening serum enriched with Vitamin C.",
+    "description": "<p>Advanced facial serum that helps improve skin radiance, reduce dullness and support an even looking complexion.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770987/Beautinique/Images/Testing/2026/06/18/614d1910-315c-44a3-9620-7bc26243b420.png\"></p>",
+    "instructions": "<p>Apply a few drops on cleansed skin before moisturizer.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/68c41fe4-96e1-44a2-94aa-52395ed768f4.png\"></p>",
+    "ingredients": "<p>Vitamin C, Niacinamide, Hyaluronic Acid, Aloe Vera.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771119/Beautinique/Images/Testing/2026/06/18/8b2a919c-4a5a-4ca9-bb83-402c1b1e07f4.png\"></p>",
+    "additional": "<p>Dermatologically tested brightening formula.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/55490436-901e-4e58-8809-a4b4484b6e2b.png\"></p>",
+    "slug": "vitamin-c-glow-serum",
+    "images": [
+      "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770767/Beautinique/Images/Testing/2026/06/18/88494140-7a24-45b9-9df0-5830e63efc94.png"
+    ],
+    "thumbnail": "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770758/Beautinique/Images/Testing/2026/06/18/57817127-4c5f-4590-aeaf-383e81db6713.png",
+    "category": {
+      "$oid": "6a0f00442a248b1c546d1ce8"
+    },
+    "seller": {
+      "$oid": "69f1dbc072e24bc004daa827"
+    },
+    "saleCount": 185,
+    "returnCount": 2,
+    "reviews": [],
+    "totalReviews": 108,
+    "averageRating": 4.7,
+    "totalRating": 508,
+    "hasVariants": false,
+    "variants": [],
+    "status": "PENDING",
+    "tryOn": {
+      "configured": true,
+      "enabled": true,
+      "category": "SKIN",
+      "subCategory": "SERUM"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6b1000000000000000000018"
+    },
+    "title": "Refreshing Daily Toner",
+    "sku": "REF-TON-SKI-018",
+    "brand": "Beautinique",
+    "originalPrice": 699,
+    "sellingPrice": 529,
+    "discount": 24,
+    "stock": null,
+    "stockThreshold": null,
+    "shortDescription": "Alcohol free toner for refreshed skin.",
+    "description": "<p>Gentle facial toner that removes residual impurities while helping maintain skin balance and freshness.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770987/Beautinique/Images/Testing/2026/06/18/614d1910-315c-44a3-9620-7bc26243b420.png\"></p>",
+    "instructions": "<p>Apply with cotton pad after cleansing and before serum.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/68c41fe4-96e1-44a2-94aa-52395ed768f4.png\"></p>",
+    "ingredients": "<p>Rose Water, Witch Hazel, Aloe Vera, Niacinamide.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771119/Beautinique/Images/Testing/2026/06/18/8b2a919c-4a5a-4ca9-bb83-402c1b1e07f4.png\"></p>",
+    "additional": "<p>Alcohol free and suitable for daily use.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/55490436-901e-4e58-8809-a4b4484b6e2b.png\"></p>",
+    "slug": "refreshing-daily-toner",
+    "images": [
+      "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770767/Beautinique/Images/Testing/2026/06/18/88494140-7a24-45b9-9df0-5830e63efc94.png"
+    ],
+    "thumbnail": "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770758/Beautinique/Images/Testing/2026/06/18/57817127-4c5f-4590-aeaf-383e81db6713.png",
+    "category": {
+      "$oid": "6a0f00442a248b1c546d1ce8"
+    },
+    "seller": {
+      "$oid": "69f1dbc072e24bc004daa827"
+    },
+    "saleCount": 143,
+    "returnCount": 1,
+    "reviews": [],
+    "totalReviews": 79,
+    "averageRating": 4.5,
+    "totalRating": 356,
+    "hasVariants": false,
+    "variants": [],
+    "status": "BLOCKED",
+    "tryOn": {
+      "configured": true,
+      "enabled": true,
+      "category": "SKIN",
+      "subCategory": "TONER"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6b1000000000000000000019"
+    },
+    "title": "Gentle Foam Cleanser",
+    "sku": "GEN-CLE-SKI-019",
+    "brand": "Beautinique",
+    "originalPrice": 799,
+    "sellingPrice": 599,
+    "discount": 25,
+    "stock": null,
+    "stockThreshold": null,
+    "shortDescription": "Gentle facial cleanser for daily cleansing.",
+    "description": "<p>Foaming face cleanser that effectively removes dirt, oil and makeup while keeping skin hydrated.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770987/Beautinique/Images/Testing/2026/06/18/614d1910-315c-44a3-9620-7bc26243b420.png\"></p>",
+    "instructions": "<p>Massage onto damp skin and rinse thoroughly with water.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/68c41fe4-96e1-44a2-94aa-52395ed768f4.png\"></p>",
+    "ingredients": "<p>Aloe Vera, Glycerin, Mild Cleansing Agents, Green Tea Extract.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771119/Beautinique/Images/Testing/2026/06/18/8b2a919c-4a5a-4ca9-bb83-402c1b1e07f4.png\"></p>",
+    "additional": "<p>Soap free cleanser suitable for sensitive skin.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/55490436-901e-4e58-8809-a4b4484b6e2b.png\"></p>",
+    "slug": "gentle-foam-cleanser",
+    "images": [
+      "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770767/Beautinique/Images/Testing/2026/06/18/88494140-7a24-45b9-9df0-5830e63efc94.png"
+    ],
+    "thumbnail": "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770758/Beautinique/Images/Testing/2026/06/18/57817127-4c5f-4590-aeaf-383e81db6713.png",
+    "category": {
+      "$oid": "6a0f00442a248b1c546d1ce8"
+    },
+    "seller": {
+      "$oid": "69f1dbc072e24bc004daa827"
+    },
+    "saleCount": 174,
+    "returnCount": 2,
+    "reviews": [],
+    "totalReviews": 97,
+    "averageRating": 4.7,
+    "totalRating": 455,
+    "hasVariants": false,
+    "variants": [],
+    "status": "PUBLISHED",
+    "tryOn": {
+      "configured": true,
+      "enabled": true,
+      "category": "SKIN",
+      "subCategory": "CLEANSER"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6b1000000000000000000020"
+    },
+    "title": "Ultimate Makeup Combo Kit",
+    "sku": "ULT-COM-LIP-020",
+    "brand": "Beautinique",
+    "originalPrice": 2499,
+    "sellingPrice": 1899,
+    "discount": 24,
+    "stock": null,
+    "stockThreshold": null,
+    "shortDescription": "Complete beauty combo kit for everyday glam.",
+    "description": "<p>Curated makeup combo featuring essential beauty products designed to create flawless makeup looks.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770987/Beautinique/Images/Testing/2026/06/18/614d1910-315c-44a3-9620-7bc26243b420.png\"></p>",
+    "instructions": "<p>Use included products as part of your regular makeup routine.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/68c41fe4-96e1-44a2-94aa-52395ed768f4.png\"></p>",
+    "ingredients": "<p>Contains multiple cosmetic formulations and skin friendly ingredients.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771119/Beautinique/Images/Testing/2026/06/18/8b2a919c-4a5a-4ca9-bb83-402c1b1e07f4.png\"></p>",
+    "additional": "<p>Excellent gifting option for beauty enthusiasts.</p><p><img src=\"https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781771118/Beautinique/Images/Testing/2026/06/18/55490436-901e-4e58-8809-a4b4484b6e2b.png\"></p>",
+    "slug": "ultimate-makeup-combo-kit",
+    "images": [
+      "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770767/Beautinique/Images/Testing/2026/06/18/88494140-7a24-45b9-9df0-5830e63efc94.png"
+    ],
+    "thumbnail": "https://res.cloudinary.com/dqp7b3we7/image/upload/f_auto,q_auto/v1781770758/Beautinique/Images/Testing/2026/06/18/57817127-4c5f-4590-aeaf-383e81db6713.png",
+    "category": {
+      "$oid": "6a0ef23f2a248b1c546d1cb5"
+    },
+    "seller": {
+      "$oid": "69f1dbc072e24bc004daa827"
+    },
+    "saleCount": 88,
+    "returnCount": 1,
+    "reviews": [],
+    "totalReviews": 44,
+    "averageRating": 4.9,
+    "totalRating": 216,
+    "hasVariants": false,
+    "variants": [],
+    "status": "REJECTED",
+    "history": {
+      "rejectReason": "Bundle pricing validation pending"
+    },
+    "tryOn": {
+      "configured": true,
+      "enabled": true,
+      "category": "LIP",
+      "subCategory": "MATTE"
+    }
+  }
+]
