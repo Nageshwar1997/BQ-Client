@@ -11,7 +11,7 @@ import { useGetCategoriesHierarchy } from '@/services/product-service/category.s
 import useUserStore from '@/stores/user.store';
 import { toaster } from '@/utils/common.util';
 
-import { Feedback, UserMenuIcons } from './children/grand-children';
+import { Feedback, type IUserMenuIconsHandle, UserMenuIcons } from './children/grand-children';
 import HoveredCategory from './children/HoveredCategory';
 
 const TopLayer = () => {
@@ -53,6 +53,7 @@ const TopLayer = () => {
 export const Navbar = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navbarRef = useRef<HTMLDivElement>(null);
+  const userMenuIconsRef = useRef<IUserMenuIconsHandle>(null);
 
   const { data, isError, error } = useGetCategoriesHierarchy();
 
@@ -66,6 +67,7 @@ export const Navbar = () => {
   const [isContainerHovered, setIsContainerHovered] = useState<boolean>(false);
   const [isNavbarAtTop, setIsNavbarAtTop] = useState(false);
   const [isNavbarHovered, setIsNavbarHovered] = useState(false);
+  const isMountedRef = useRef(false);
 
   const categories = useMemo(() => [FOR_YOU, ...(data ?? []), ABOUT], [data]);
 
@@ -146,6 +148,11 @@ export const Navbar = () => {
 
   // Close navbar when pathname changes
   useEffect(() => {
+    if (!isMountedRef.current) {
+      isMountedRef.current = true;
+      return;
+    }
+
     setHoveredId(null);
     setIsContainerHovered(false);
     setIsMobileNavbarOpened(false);
@@ -183,6 +190,7 @@ export const Navbar = () => {
       }}
       onMouseLeave={() => {
         setIsNavbarHovered(false);
+        userMenuIconsRef.current?.close();
       }}
     >
       <div className="hidden h-full w-full lg:block" onMouseLeave={handleMouseLeave}>
@@ -256,7 +264,7 @@ export const Navbar = () => {
               ))}
             </div>
             <UserMenuIcons
-              closeOnNavbarLeave={!isNavbarHovered}
+              ref={userMenuIconsRef}
               className={isNavbarAtTop || isNavbarHovered || nonTransparent ? '' : ''}
             />
             {(hoveredId ?? isContainerHovered) && (

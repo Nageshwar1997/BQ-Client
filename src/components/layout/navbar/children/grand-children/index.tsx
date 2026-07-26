@@ -1,5 +1,5 @@
 import { Icon } from '@iconify/react';
-import { useEffect, useState } from 'react';
+import { type Ref, useImperativeHandle, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import GradientText from '@/components/ui/GradientText';
@@ -106,10 +106,14 @@ const CountBadge = ({ count }: { count?: number | string }) => {
   );
 };
 
+export interface IUserMenuIconsHandle {
+  close: () => void;
+}
+
 export const UserMenuIcons = ({
   className = '',
-  closeOnNavbarLeave,
-}: IClassName & { closeOnNavbarLeave?: boolean }) => {
+  ref,
+}: IClassName & { ref?: Ref<IUserMenuIconsHandle> }) => {
   const [isOpen, setIsOpen] = useState({
     search: false,
     user: false,
@@ -127,11 +131,15 @@ export const UserMenuIcons = ({
     runAction(action);
   };
 
-  useEffect(() => {
-    if (closeOnNavbarLeave) {
-      setIsOpen({ search: false, user: false });
-    }
-  }, [closeOnNavbarLeave]);
+  useImperativeHandle(
+    ref,
+    () => ({
+      close: () => {
+        setIsOpen({ search: false, user: false });
+      },
+    }),
+    [],
+  );
 
   return (
     <>
