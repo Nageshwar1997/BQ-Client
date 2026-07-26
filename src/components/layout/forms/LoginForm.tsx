@@ -10,6 +10,7 @@ import Button from '@/components/ui/Button';
 import GradientText from '@/components/ui/GradientText';
 import Input from '@/components/ui/inputs/Input';
 import Radio from '@/components/ui/inputs/Radio';
+import SocialAuth from '@/components/ui/SocialAuth';
 import { LOGIN_INPUT_MAP_DATA, PASSWORD_KEYS } from '@/constants/input.constants';
 import usePathParams from '@/hooks/usePathParams';
 import useQueryParams from '@/hooks/useQueryParams';
@@ -91,6 +92,9 @@ const LoginForm = () => {
         text="Login"
         className="mx-auto text-2xl leading-tight font-semibold sm:text-3xl md:text-4xl lg:text-5xl"
       />
+
+      {/* ================= SOCIAL AUTH ================= */}
+      <SocialAuth />
 
       {/* ================= FORM CONTAINER ================= */}
       <BorderGradient className="flex flex-col gap-5 lg:gap-6">
@@ -190,6 +194,21 @@ const LoginForm = () => {
             />
           </div>
         </form>
+
+        {/* ================= FOOTER ================= */}
+        <div className="flex items-center justify-center gap-2">
+          <GradientText
+            text="Don't have an account?"
+            type="silver"
+            className="text-xs md:text-sm"
+          />
+          <GradientText
+            text="Register"
+            type="accent"
+            path="/auth/register"
+            className="text-xs font-semibold md:text-sm"
+          />
+        </div>
 
         {/* ================= EXTRA INFO ================= */}
         <AuthBottomInstructions />

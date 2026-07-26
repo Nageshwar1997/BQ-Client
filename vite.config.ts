@@ -17,7 +17,7 @@ export default defineConfig(({ mode }) => ({
       }),
   ].filter(Boolean),
   resolve: { alias: { '@': path.resolve(__dirname, './src') } },
-  server: { port: 3002 },
+  server: { port: 3001 },
   build: {
     rollupOptions: {
       output: {
