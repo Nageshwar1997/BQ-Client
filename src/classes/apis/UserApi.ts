@@ -90,7 +90,7 @@ export class AuthApi extends ApiRequest {
   };
 
   public setPassword = (data: TSetPasswordZodSchema) => {
-    return this.request({ ...this.routes.password.set, data });
+    return this.request<IUser>({ ...this.routes.password.set, data });
   };
 
   /* ===================== LOGOUT API ===================== */
