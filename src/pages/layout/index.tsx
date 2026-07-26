@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 
 import Footer from '@/components/layout/footer';
 import AuthModal from '@/components/layout/modals/AuthModal';
-import Sidebar from '@/components/layout/sidebar';
+import { Navbar } from '@/components/layout/navbar';
 import ScrollToTop from '@/components/ScrollToTop';
 import useAuthLogoutListener from '@/hooks/useAuthLogoutListener';
 import useAutoRefreshAccessToken from '@/hooks/useAutoRefreshAccessToken';
@@ -17,15 +17,11 @@ const Layout = () => {
       <ScrollToTop />
       {/* If the user isn't logged in, show the auth modal. just add queryParams.login = "true" to the url */}
       <AuthModal />
-      <div className="flex w-full grow flex-col-reverse md:flex-row">
-        <Sidebar />
-        <div className="h-full max-w-full min-w-0 flex-1 grow">
-          <main>
-            <Outlet />
-          </main>
-          <Footer />
-        </div>
-      </div>
+      <Navbar />
+      <main className="h-full max-w-full min-w-0 flex-1 grow">
+        <Outlet />
+      </main>
+      <Footer />
       {/* <Chatbot /> */}
     </div>
   );

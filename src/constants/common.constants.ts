@@ -85,10 +85,10 @@ export const ROUTES = {
   CATEGORIES: { BASE: 'categories' },
   PRODUCTS: {
     BASE: 'products',
-    PRODUCT_ID: ':slug',
-    CATEGORY_L1: ':categoryL1',
-    CATEGORY_L2: ':categoryL2',
-    CATEGORY_L3: ':categoryL3',
+    SLUG: ':slug',
+    CATEGORY_L1_SLUG: ':l1_slug',
+    CATEGORY_L2_SLUG: ':l2_slug',
+    CATEGORY_L3_SLUG: ':l3_slug',
   },
   PROFILE: {
     BASE: 'profile',

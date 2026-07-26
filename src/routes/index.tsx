@@ -12,7 +12,6 @@ const routes: RouteObject[] = [
     path: HOME,
     HydrateFallback: LoadingScreen,
     ErrorBoundary,
-    middleware: [authenticate],
     lazy: async () => {
       const { default: Layout } = await import('@/pages/layout');
       return { Component: Layout };
@@ -36,35 +35,38 @@ const routes: RouteObject[] = [
               return { Component: Products };
             },
           },
+          {
+            path: PRODUCTS.SLUG,
+            lazy: async () => {
+              const { default: ProductDetails } = await import('@/pages/product/ProductDetails');
+              return { Component: ProductDetails };
+            },
+          },
+          {
+            path: PRODUCTS.CATEGORY_L1_SLUG,
+            lazy: async () => {
+              const { default: CategoryProducts } =
+                await import('@/pages/product/CategoryProducts');
+              return { Component: CategoryProducts };
+            },
+          },
+          {
+            path: `${PRODUCTS.CATEGORY_L1_SLUG}/${PRODUCTS.CATEGORY_L2_SLUG}`,
+            lazy: async () => {
+              const { default: CategoryProducts } =
+                await import('@/pages/product/CategoryProducts');
+              return { Component: CategoryProducts };
+            },
+          },
+          {
+            path: `${PRODUCTS.CATEGORY_L1_SLUG}/${PRODUCTS.CATEGORY_L2_SLUG}/${PRODUCTS.CATEGORY_L3_SLUG}`,
+            lazy: async () => {
+              const { default: CategoryProducts } =
+                await import('@/pages/product/CategoryProducts');
+              return { Component: CategoryProducts };
+            },
+          },
         ],
-      },
-      {
-        path: `${PRODUCTS.BASE}/${PRODUCTS.PRODUCT_ID}`,
-        lazy: async () => {
-          const { default: ProductDetails } = await import('@/pages/product/ProductDetails');
-          return { Component: ProductDetails };
-        },
-      },
-      {
-        path: `${PRODUCTS.BASE}/${PRODUCTS.CATEGORY_L1}`,
-        lazy: async () => {
-          const { default: CategoryProducts } = await import('@/pages/product/CategoryProducts');
-          return { Component: CategoryProducts };
-        },
-      },
-      {
-        path: `${PRODUCTS.BASE}/${PRODUCTS.CATEGORY_L1}/${PRODUCTS.CATEGORY_L2}`,
-        lazy: async () => {
-          const { default: CategoryProducts } = await import('@/pages/product/CategoryProducts');
-          return { Component: CategoryProducts };
-        },
-      },
-      {
-        path: `${PRODUCTS.BASE}/${PRODUCTS.CATEGORY_L1}/${PRODUCTS.CATEGORY_L2}/${PRODUCTS.CATEGORY_L3}`,
-        lazy: async () => {
-          const { default: CategoryProducts } = await import('@/pages/product/CategoryProducts');
-          return { Component: CategoryProducts };
-        },
       },
     ],
   },
