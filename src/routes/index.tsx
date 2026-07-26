@@ -111,6 +111,14 @@ const routes: RouteObject[] = [
           return { Component: ChangePassword };
         },
       },
+      {
+        path: AUTH.OAUTH,
+        lazy: async () => {
+          const { default: OAuth } = await import('@/pages/auth/OAuth');
+
+          return { Component: OAuth };
+        },
+      },
     ],
   },
   {

@@ -23,12 +23,12 @@ const OAuth = () => {
 
   useEffect(() => {
     if (user) {
-      void navigate('/', { replace: true });
+      void navigate('/');
       return;
     }
     if (session.data) {
       setUser(session.data);
-      void navigate('/', { replace: true });
+      void navigate('/');
     }
   }, [session.data, navigate, setUser, user]);
 

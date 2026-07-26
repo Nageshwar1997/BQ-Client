@@ -248,7 +248,7 @@ export const HOME_VIDEOS_DATA = [
 
 export const OAUTH_DATA = [
   {
-    icon: 'devicon:linkedin',
+    icon: 'devicon:google',
     redirectUrl: `${envs.urls.gateway}${API_METHODS_AND_URLS.user_service.auth.login.oauth.google.redirect.url}`,
   },
   {
@@ -256,7 +256,7 @@ export const OAUTH_DATA = [
     redirectUrl: `${envs.urls.gateway}${API_METHODS_AND_URLS.user_service.auth.login.oauth.github.redirect.url}`,
   },
   {
-    icon: 'devicon:google',
+    icon: 'devicon:linkedin',
     redirectUrl: `${envs.urls.gateway}${API_METHODS_AND_URLS.user_service.auth.login.oauth.linkedin.redirect.url}`,
   },
 ] as const;
