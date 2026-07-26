@@ -108,7 +108,5 @@ Thumbs.db
 .claude/*
 .agents/*
 
-
-# TEMP
-old-src
-old-src-2
+# TEMP (TODO: Remove it later)
+prevRoutes.txt
