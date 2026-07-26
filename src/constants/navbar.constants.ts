@@ -206,7 +206,7 @@ export const FOR_YOU_VIDEOS_DATA = [
     video: '/videos/company/values-culture/Get-Ready-With-BQ.mp4',
     thumbnail: '/videos/company/values-culture/Get-Ready-With-BQ.png',
   },
-];
+] as const;
 
 export const FOR_YOU: TCategoryHierarchy = {
   _id: 'for_you',

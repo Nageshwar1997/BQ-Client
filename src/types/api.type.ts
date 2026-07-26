@@ -50,7 +50,7 @@ export type TLevel2 = TCategoryLevelsMap['L2'];
 export type TLevel3 = TCategoryLevelsMap['L3'];
 
 type CategoryBase<TLevel extends TCategoryLevel> = IId &
-  Pick<TCategoryZodSchema, 'name'> & { slug: string; level: TLevel };
+  Pick<TCategoryZodSchema, 'name'> & { slug: string; level: TLevel; path?: string };
 
 export type TL1Category = CategoryBase<TLevel1>;
 export type TL2Category = CategoryBase<TLevel2> & { parent: string };

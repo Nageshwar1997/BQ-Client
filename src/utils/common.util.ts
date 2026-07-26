@@ -2,6 +2,7 @@ import type { IconProps } from '@iconify/react';
 import type { CSSProperties } from 'react';
 
 import { TOAST_TYPE, TOOLTIP_GAP, VIDEO_PLACEHOLDER } from '@/constants/common.constants';
+import { DUMMY_FEEDBACKS } from '@/constants/navbar.constants';
 import useToastStore from '@/stores/toast.store';
 import type { IButton, ITooltip } from '@/types/component.type';
 import type {
@@ -327,7 +328,6 @@ export const isNullOrUndefined = (value: unknown): value is null | undefined => 
   return isNull(value) || isUndefined(value);
 };
 
-
 export const getTodaysFeedback = () => {
   // Get the current date
   const today = new Date();
@@ -338,5 +338,5 @@ export const getTodaysFeedback = () => {
   // Get the feedback for today
   const todayFeedback = DUMMY_FEEDBACKS[feedbackIndex];
 
-  return todayFeedback;
+  return todayFeedback ?? DUMMY_FEEDBACKS[0];
 };
