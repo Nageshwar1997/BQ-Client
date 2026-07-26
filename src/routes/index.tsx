@@ -5,11 +5,11 @@ import { ROUTES } from '@/constants/common.constants';
 import { authenticate } from '@/middlewares';
 import ErrorBoundary from '@/pages/error/ErrorBoundary';
 
-const { AUTH, CATEGORIES, DASHBOARD, PRODUCTS } = ROUTES;
+const { AUTH, CATEGORIES, HOME, PRODUCTS } = ROUTES;
 
 const routes: RouteObject[] = [
   {
-    path: DASHBOARD,
+    path: HOME,
     HydrateFallback: LoadingScreen,
     ErrorBoundary,
     middleware: [authenticate],
@@ -34,13 +34,6 @@ const routes: RouteObject[] = [
             lazy: async () => {
               const { default: Products } = await import('@/pages/product/Products');
               return { Component: Products };
-            },
-          },
-          {
-            path: PRODUCTS.ADD,
-            lazy: async () => {
-              const { default: AddProduct } = await import('@/pages/product/AddProduct');
-              return { Component: AddProduct };
             },
           },
         ],

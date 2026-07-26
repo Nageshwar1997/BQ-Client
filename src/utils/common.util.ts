@@ -188,7 +188,7 @@ export const isDeepEqual = <T>(
   });
 };
 
-function getPosterFromBlobVideo(blobVideoUrl: string, timeInSeconds = 0): Promise<string> {
+const getPosterFromBlobVideo = (blobVideoUrl: string, timeInSeconds = 0): Promise<string> => {
   return new Promise((resolve) => {
     let posterCreated = false;
     let isCancelled = false;
@@ -233,9 +233,9 @@ function getPosterFromBlobVideo(blobVideoUrl: string, timeInSeconds = 0): Promis
       video.src = '';
     };
   });
-}
+};
 
-export function convertVideoToPoster(videoUrl: string): Promise<string> {
+export const convertVideoToPoster = (videoUrl: string): Promise<string> => {
   return new Promise((resolve) => {
     if (!videoUrl) {
       resolve(VIDEO_PLACEHOLDER);
@@ -271,7 +271,7 @@ export function convertVideoToPoster(videoUrl: string): Promise<string> {
       resolve(VIDEO_PLACEHOLDER);
     }
   });
-}
+};
 
 export const formatINRCurrency = (amount: number): string =>
   new Intl.NumberFormat('en-IN', {
@@ -325,4 +325,18 @@ export const isUndefined = (value: unknown): value is undefined => value === und
 /* ========== NULL/UNDEFINED CHECK FUNCTION ========== */
 export const isNullOrUndefined = (value: unknown): value is null | undefined => {
   return isNull(value) || isUndefined(value);
+};
+
+
+export const getTodaysFeedback = () => {
+  // Get the current date
+  const today = new Date();
+  // Get the day of the week (0 to 6)
+  const day = today.getDay();
+  // Calculate the feedback index for today
+  const feedbackIndex = day % DUMMY_FEEDBACKS.length;
+  // Get the feedback for today
+  const todayFeedback = DUMMY_FEEDBACKS[feedbackIndex];
+
+  return todayFeedback;
 };
