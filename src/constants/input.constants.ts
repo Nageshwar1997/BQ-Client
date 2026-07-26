@@ -2,7 +2,7 @@ import { VARIANT_TYPES, VARIANT_TYPES_MAP } from '@beautinique/frontend-constant
 
 import type { TQuillToolbar } from '@/types/input.type';
 
-export const PASSWORD_KEYS = ['password', 'confirmPassword'];
+export const PASSWORD_KEYS = ['password', 'confirmPassword'] as const;
 
 const NAME_DATA = { type: 'text', autoComplete: 'given-name' } as const;
 

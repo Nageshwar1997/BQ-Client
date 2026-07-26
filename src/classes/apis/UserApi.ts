@@ -20,18 +20,18 @@ export class AuthApi extends ApiRequest {
   /* ===================== REGISTER API ===================== */
 
   public registerSendOtp = (data: TEmailZodSchema) => {
-    return this.request({ ...this.routes.register.sendOtp, data });
+    return this.request<string>({ ...this.routes.register.sendOtp, data });
   };
 
   public registerResendOtp = (token: string) => {
-    return this.request({
+    return this.request<number>({
       ...this.routes.register.resendOtp,
       headers: { Authorization: `Bearer ${token}` },
     });
   };
 
   public registerVerifyOtp = ({ token, ...data }: TOtpZodSchema & { token: string }) => {
-    return this.request({
+    return this.request<never>({
       ...this.routes.register.verifyOtp,
       data,
       headers: { Authorization: `Bearer ${token}` },
@@ -39,7 +39,7 @@ export class AuthApi extends ApiRequest {
   };
 
   public registerSaveUser = ({ token, ...data }: TRegisterZodSchema & { token: string }) => {
-    return this.request({
+    return this.request<IUser>({
       ...this.routes.register.saveUser,
       data,
       headers: { Authorization: `Bearer ${token}` },
