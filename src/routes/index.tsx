@@ -86,6 +86,14 @@ const routes: RouteObject[] = [
       },
 
       {
+        path: AUTH.REGISTER,
+        lazy: async () => {
+          const { default: Register } = await import('@/pages/auth/Register');
+          return { Component: Register };
+        },
+      },
+
+      {
         path: AUTH.FORGOT_PASSWORD,
         lazy: async () => {
           const { default: ForgotPassword } = await import('@/pages/auth/ForgotPassword');

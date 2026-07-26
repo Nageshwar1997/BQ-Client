@@ -1,4 +1,4 @@
-import type { TLoginZodSchema } from '@beautinique/frontend-types';
+import type { TLoginZodSchema, TPasswordZodSchema } from '@beautinique/frontend-types';
 import { loginZodSchema } from '@beautinique/frontend-zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
@@ -123,7 +123,7 @@ const LoginForm = () => {
 
           {/* ================= INPUTS ================= */}
           {LOGIN_INPUT_MAP_DATA.map((input) => {
-            const isPassword = PASSWORD_KEYS.includes(input.name);
+            const isPassword = PASSWORD_KEYS.includes(input.name as keyof TPasswordZodSchema);
             const isPhone = input.name === 'phoneNumber';
             const isEmail = input.name === 'email';
             const isEmailSelected = selectedMethod === 'email';

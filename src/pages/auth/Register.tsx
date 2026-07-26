@@ -7,7 +7,7 @@ import type {
 import { emailZodSchema, otpZodSchema, registerZodSchema } from '@beautinique/frontend-zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 
 import BorderGradient from '@/components/layout/containers/BorderGradient';
 import AuthBottomInstructions from '@/components/ui/AuthBottomInstructions';
@@ -66,6 +66,7 @@ const Register = () => {
   /* ================= 6. Derived Values ================= */
   const token = sendOtp.data?.data ?? '';
   const sendCount = resendOtp.data?.data ?? 1;
+  const email = useWatch({ control: sendOtpForm.control, name: 'email' });
 
   /* ================= 7. Handlers ================= */
 
@@ -163,7 +164,7 @@ const Register = () => {
       <SocialAuth />
 
       {/* ================= FORM CONTAINER ================= */}
-      <BorderGradient className="flex flex-col gap-5 py-6 lg:gap-6">
+      <BorderGradient className="flex flex-col gap-5 lg:gap-6">
         {/* ================= MAIN FORM ================= */}
         <form
           onSubmit={
@@ -175,56 +176,56 @@ const Register = () => {
           }
           className="grid grid-cols-1 gap-x-4 gap-y-5 sm:grid-cols-2 sm:gap-y-6"
         >
-          {/* ================= STEP: SEND / VERIFY ================= */}
-          {(currentStep === 'send' || currentStep === 'verify') && (
+          {currentStep !== 'send' && (
+            <div className="col-span-2 mx-auto space-x-2">
+              <GradientText text="Email:" type="silver" className="text-sm" />
+              <GradientText text={email} type="accent" className="text-sm" />
+            </div>
+          )}
+          {/* ================= STEP: SEND  ================= */}
+          {currentStep === 'send' && (
+            <Input
+              key={EMAIL_INPUT_DATA.name}
+              label={EMAIL_INPUT_DATA.label}
+              inputProps={{
+                name: EMAIL_INPUT_DATA.name,
+                type: EMAIL_INPUT_DATA.type,
+                placeholder: EMAIL_INPUT_DATA.placeholder,
+                autoComplete: EMAIL_INPUT_DATA.autoComplete,
+                disabled: sendOtp.isPending,
+              }}
+              register={sendOtpForm.register(EMAIL_INPUT_DATA.name)}
+              error={sendOtpForm.formState.errors[EMAIL_INPUT_DATA.name]?.message}
+              containerClassName="sm:col-span-2"
+            />
+          )}
+          {/* ================= STEP: VERIFY ================= */}
+          {currentStep === 'verify' && (
             <>
-              {/* -------- Email Input -------- */}
               <Input
-                key={EMAIL_INPUT_DATA.name}
-                label={EMAIL_INPUT_DATA.label}
+                key={OTP_INPUT_DATA.name}
+                label={OTP_INPUT_DATA.label}
                 inputProps={{
-                  name: EMAIL_INPUT_DATA.name,
-                  type: EMAIL_INPUT_DATA.type,
-                  placeholder: EMAIL_INPUT_DATA.placeholder,
-                  autoComplete: EMAIL_INPUT_DATA.autoComplete,
-                  disabled: sendOtp.isPending || currentStep === 'verify',
-                  readOnly: currentStep === 'verify',
+                  name: OTP_INPUT_DATA.name,
+                  type: OTP_INPUT_DATA.type,
+                  placeholder: OTP_INPUT_DATA.placeholder,
+                  autoComplete: OTP_INPUT_DATA.autoComplete,
+                  disabled: verifyOtp.isPending || resendOtp.isPending,
                 }}
-                register={sendOtpForm.register(EMAIL_INPUT_DATA.name)}
-                error={sendOtpForm.formState.errors[EMAIL_INPUT_DATA.name]?.message}
+                register={verifyOtpForm.register(OTP_INPUT_DATA.name)}
+                error={verifyOtpForm.formState.errors[OTP_INPUT_DATA.name]?.message}
                 containerClassName="sm:col-span-2"
               />
 
-              {/* -------- OTP Section (only in verify step) -------- */}
-              {currentStep === 'verify' && (
-                <>
-                  <Input
-                    key={OTP_INPUT_DATA.name}
-                    label={OTP_INPUT_DATA.label}
-                    inputProps={{
-                      name: OTP_INPUT_DATA.name,
-                      type: OTP_INPUT_DATA.type,
-                      placeholder: OTP_INPUT_DATA.placeholder,
-                      autoComplete: OTP_INPUT_DATA.autoComplete,
-                      disabled: verifyOtp.isPending || resendOtp.isPending,
-                    }}
-                    register={verifyOtpForm.register(OTP_INPUT_DATA.name)}
-                    error={verifyOtpForm.formState.errors[OTP_INPUT_DATA.name]?.message}
-                    containerClassName="sm:col-span-2"
-                  />
-
-                  {/* -------- Resend OTP -------- */}
-                  <Resend
-                    className="sm:col-span-2"
-                    label="Not received OTP?"
-                    count={sendCount >= 3 ? 0 : 30}
-                    onResend={handleResendOtp}
-                  />
-                </>
-              )}
+              {/* -------- Resend OTP -------- */}
+              <Resend
+                className="col-span-2"
+                label="Not received OTP?"
+                count={sendCount >= 3 ? 0 : 30}
+                onResend={handleResendOtp}
+              />
             </>
           )}
-
           {/* ================= STEP: REGISTER DETAILS ================= */}
           {currentStep === 'save' &&
             REGISTER_INPUT_MAP_DATA.map((input) => {
