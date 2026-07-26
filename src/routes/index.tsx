@@ -5,7 +5,7 @@ import { ROUTES } from '@/constants/common.constants';
 import { authenticate } from '@/middlewares';
 import ErrorBoundary from '@/pages/error/ErrorBoundary';
 
-const { AUTH, CATEGORIES, HOME, PRODUCTS } = ROUTES;
+const { AUTH, HOME, PRODUCTS } = ROUTES;
 
 const routes: RouteObject[] = [
   {
@@ -64,14 +64,6 @@ const routes: RouteObject[] = [
         lazy: async () => {
           const { default: CategoryProducts } = await import('@/pages/product/CategoryProducts');
           return { Component: CategoryProducts };
-        },
-      },
-      /* ========== CATEGORIES ========== */
-      {
-        path: CATEGORIES.BASE,
-        lazy: async () => {
-          const { default: Categories } = await import('@/pages/category/Categories');
-          return { Component: Categories };
         },
       },
     ],

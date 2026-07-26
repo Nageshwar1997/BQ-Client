@@ -1,7 +1,7 @@
 import { SORT_MAP } from '@beautinique/frontend-constants';
-import type { TCategoryLevel, TProductStatus, TSort } from '@beautinique/frontend-types';
+import type { TProductStatus, TSort } from '@beautinique/frontend-types';
 import { Icon } from '@iconify/react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
 
@@ -17,112 +17,14 @@ import {
   TableRow,
   TableRowCell,
 } from '@/components/layout/table';
-import HierarchySelect from '@/components/ui/inputs/HierarchySelect';
-import Input from '@/components/ui/inputs/Input';
-import Select from '@/components/ui/inputs/Select';
 import { PRODUCTS_TABLE_TITLES } from '@/constants/api.constants';
-import { ROUTES } from '@/constants/common.constants';
-import useDebounce from '@/hooks/useDebounce';
-import useIsSmallScreen from '@/hooks/useIsSmallScreen';
-import usePathParams from '@/hooks/usePathParams';
 import useQueryParams from '@/hooks/useQueryParams';
-import { useGetCategoriesHierarchy } from '@/services/product-service/category.service.query';
 import { useGetDashboardProducts } from '@/services/product-service/product.service.query';
-import type { TCategoryHierarchyNode, TProductSortBy } from '@/types/api.type';
-import type { IHierarchySelectOption } from '@/types/input.type';
+import type { TProductSortBy } from '@/types/api.type';
 import { formatDate, formatINRCurrency } from '@/utils/common.util';
 
-const SearchAndSort = () => {
-  const { queryParams, setParams, removeParams } = useQueryParams();
-  const isSmallScreen = useIsSmallScreen(1024);
-  const [searchQuery, setSearchQuery] = useState(queryParams.search ?? '');
-
-  const { data: hierarchy, isLoading, isError } = useGetCategoriesHierarchy();
-
-  const handleSearch = useDebounce({
-    callback: (value: string) => {
-      const trimmedValue = value.trim();
-      if (trimmedValue) {
-        setParams({ ...queryParams, search: trimmedValue });
-      } else {
-        removeParams(['search']);
-      }
-    },
-    delay: 600,
-  });
-
-  const categories = useMemo(() => {
-    const mapCategoryHierarchy = (
-      categories: TCategoryHierarchyNode<TCategoryLevel>[],
-    ): IHierarchySelectOption[] => {
-      return categories.map((category) => ({
-        label: category.name,
-        searchLabel: category.name,
-        value: category._id,
-        children: category.subcategories?.length
-          ? mapCategoryHierarchy(category.subcategories)
-          : [],
-      }));
-    };
-
-    return hierarchy ? mapCategoryHierarchy(hierarchy) : [];
-  }, [hierarchy]);
-
-  return (
-    <div className="base:flex-row flex flex-col items-center justify-between gap-3 md:gap-4">
-      <Input
-        needRef={!isSmallScreen}
-        inputProps={{
-          name: 'search',
-          placeholder: 'Search products here...',
-          value: searchQuery,
-          onChange: (e) => {
-            const value = (e.target.value || '').trimStart();
-            // instant ui update
-            setSearchQuery(value);
-            // debounced action
-            handleSearch(value);
-          },
-        }}
-        containerClassName="max-w-xs! w-full"
-        icons={{ right: { icon: 'solar:magnifer-linear', className: 'size-4 text-primary/50' } }}
-      />
-      <HierarchySelect
-        selectProps={{
-          value: queryParams.category ?? '',
-          placeholder: 'Select Category',
-          onChange: (value) => {
-            if (value) {
-              setParams({ category: String(value) });
-            } else {
-              removeParams(['category']);
-            }
-          },
-          disabled: isLoading || !hierarchy?.length,
-        }}
-        icons={{
-          ...(queryParams.category && {
-            right: {
-              icon: 'lucide:x',
-              className: 'cursor-pointer size-4',
-              onClick: () => {
-                removeParams(['category']);
-              },
-            },
-          }),
-        }}
-        options={categories}
-        error={isError ? 'Failed to load categories' : undefined}
-        containerClassName="min-w-40 max-w-xs! w-full"
-        optionsClassName="base:w-max base:right-0 base:left-auto sm:w-full sm:left-0 sm:right-auto"
-      />
-    </div>
-  );
-};
-
 const Products = () => {
-  const { queryParams, setParams, removeParams } = useQueryParams();
-  const { navigate } = usePathParams();
+  const { queryParams, setParams } = useQueryParams();
   const { ref, inView } = useInView();
 
   const {
@@ -162,47 +64,7 @@ const Products = () => {
   }, [inView, hasNextPage, fetchNextPage]);
 
   return (
-    <PageWrapper
-      navbar={{
-        buttons: [
-          {
-            content: 'Add Product',
-            pattern: 'primary',
-            className: 'whitespace-nowrap',
-            leftIcon: { icon: 'solar:add-circle-linear' },
-            buttonProps: { onClick: () => navigate(ROUTES.PRODUCTS.ADD) },
-          },
-        ],
-        ...(data?.counts && {
-          components: [
-            <Select
-              key="status-count-select"
-              options={Object.entries(data.counts).map(([key, value]) => ({
-                value: key.toLowerCase(),
-                label: `${key} (${String(value)})`.toLowerCase(),
-              }))}
-              selectProps={{
-                value: queryParams.status ?? 'all',
-                onChange: (value) => {
-                  if (!value || value === 'all') {
-                    removeParams(['status', 'search']);
-                  } else if (value) {
-                    if (value === 'draft') {
-                      removeParams(['search']);
-                    }
-                    setParams({ status: value.toString() });
-                  }
-                },
-              }}
-              containerClassName="max-w-32! w-full"
-              className="[&>div]:first:capitalize"
-              optionsClassName="[&>ul>li]:text-xs"
-            />,
-          ],
-        }),
-        children: <SearchAndSort />,
-      }}
-    >
+    <PageWrapper>
       <div className="border-primary/10 bg-secondary-invert overflow-hidden rounded-xl border">
         {!!data?.products.length && (
           <ScrollableGradientContainer
