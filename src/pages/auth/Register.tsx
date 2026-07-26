@@ -56,7 +56,7 @@ const Register = () => {
   });
 
   /* ================= 5. Local State ================= */
-  const [currentStep, setCurrentStep] = useState<'send' | 'verify' | 'save'>('send');
+  const [currentStep, setCurrentStep] = useState<'send' | 'verify' | 'save'>('save');
 
   const [showPasswords, setShowPasswords] = useState<Record<keyof TPasswordsZodSchema, boolean>>({
     password: false,
@@ -73,6 +73,7 @@ const Register = () => {
   const handleSendOtp = async (data: TEmailZodSchema) => {
     await sendOtp.mutateAsync(data, {
       onSuccess: () => {
+        registerAndSaveForm.setValue('email', email);
         setCurrentStep('verify');
       },
       onError: ({ fieldErrors }) => {
@@ -86,6 +87,7 @@ const Register = () => {
       { ...data, token },
       {
         onSuccess: () => {
+          registerAndSaveForm.setValue('email', email);
           setCurrentStep('save');
         },
         onError: ({ fieldErrors }) => {
@@ -101,6 +103,7 @@ const Register = () => {
       {
         onSuccess: ({ data: user }) => {
           setUser(user ?? null);
+          void navigate('/');
         },
         onError: ({ fieldErrors }) => {
           setErrorToForm(registerAndSaveForm.setError, fieldErrors);
@@ -138,7 +141,7 @@ const Register = () => {
       case 'send':
       default:
         sendOtpForm.reset();
-        navigate('/');
+        void navigate('/');
         break;
     }
   };
@@ -177,7 +180,7 @@ const Register = () => {
           className="grid grid-cols-1 gap-x-4 gap-y-5 sm:grid-cols-2 sm:gap-y-6"
         >
           {currentStep !== 'send' && (
-            <div className="col-span-2 mx-auto space-x-2">
+            <div className="mx-auto space-x-2 sm:col-span-2">
               <GradientText text="Email:" type="silver" className="text-sm" />
               <GradientText text={email} type="accent" className="text-sm" />
             </div>
@@ -219,7 +222,7 @@ const Register = () => {
 
               {/* -------- Resend OTP -------- */}
               <Resend
-                className="col-span-2"
+                className="sm:col-span-2"
                 label="Not received OTP?"
                 count={sendCount >= 3 ? 0 : 30}
                 onResend={handleResendOtp}
