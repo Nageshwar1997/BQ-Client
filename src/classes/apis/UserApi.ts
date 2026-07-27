@@ -6,6 +6,7 @@ import type {
   TPasswordsZodSchema,
   TRegisterZodSchema,
   TSetPasswordZodSchema,
+  TUpdateUserZodSchema,
 } from '@beautinique/frontend-types';
 
 import { API_METHODS_AND_URLS } from '@/constants/api.constants';
@@ -101,5 +102,11 @@ export class UserApi extends ApiRequest {
 
   public getSessionUser = async () => {
     return this.request<IUser>(this.routes.session);
+  };
+
+  /* ===================== UPDATE API ===================== */
+
+  public updateUser = (data: Partial<TUpdateUserZodSchema> & { avatar?: string }) => {
+    return this.request<IUser>({ ...this.routes.update, data });
   };
 }

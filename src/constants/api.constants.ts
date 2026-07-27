@@ -57,6 +57,7 @@ export const METHODS_AND_PATHS = {
     user: {
       base: '/user',
       session: { method: GET, path: '/session' },
+      update: { method: PATCH, path: '/' },
     },
   },
   media_service: {
