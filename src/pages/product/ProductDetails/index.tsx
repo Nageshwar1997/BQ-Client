@@ -3,13 +3,10 @@ import { useMemo } from 'react';
 
 import ApiStatus from '@/components/layout/ApiStatus';
 import { MediaCarouselWithParentMedia } from '@/components/layout/carousels/MediaCarouselWithParentMedia';
-import PageWrapper from '@/components/layout/containers/PageWrapper';
 import ScrollableGradientContainer from '@/components/layout/containers/ScrollableGradientContainer';
 import Dropdown from '@/components/layout/dropdown';
 import Button from '@/components/ui/Button';
-import Select from '@/components/ui/inputs/Select';
 import { QuillContent } from '@/components/ui/QuillContent';
-import { PRODUCT_STATUS_TRANSITIONS } from '@/constants/api.constants';
 import usePathParams from '@/hooks/usePathParams';
 import useQueryParams from '@/hooks/useQueryParams';
 import { useGetDashboardProductBySlug } from '@/services/product-service/product.service.query';
@@ -19,7 +16,7 @@ import { formatDate, formatINRCurrency, isNullOrUndefined } from '@/utils/common
 const ProductDetails = () => {
   const { pathParams } = usePathParams();
   const { data: product, isLoading, isError } = useGetDashboardProductBySlug(pathParams.slug ?? '');
-  const { queryParams, setParams, removeParams } = useQueryParams();
+  const { queryParams, setParams,  } = useQueryParams();
 
   const variant = useMemo(() => {
     if (!product) return null;
@@ -79,42 +76,7 @@ const ProductDetails = () => {
   }, [product, variant]);
 
   return (
-    <PageWrapper
-      navbar={{
-        components: [
-          <Select
-            key="status-select"
-            options={
-              product?.status
-                ? PRODUCT_STATUS_TRANSITIONS[product.status].map((status) => ({
-                    label: status.toLowerCase(),
-                    value: status,
-                  }))
-                : []
-            }
-            selectProps={{
-              value: product?.status ?? 'all',
-              onChange: (value) => {
-                if (!value || value === 'all') {
-                  removeParams(['status', 'search']);
-                } else if (value) {
-                  if (value === 'draft') {
-                    removeParams(['search']);
-                  }
-                  setParams({ status: value.toString() });
-                }
-              },
-              placeholder: 'Update status',
-              disabled: !product?.status || isLoading || isError,
-            }}
-            containerClassName="max-w-40! w-full"
-            className="[&>div]:first:capitalize"
-            optionsClassName="[&>ul>li]:text-xs"
-          />,
-        ],
-      }}
-      className="flex flex-col gap-8"
-    >
+    <div className="">
       {!!product && !!Object.keys(product).length ? (
         <div className="grid flex-col items-start gap-6 lg:grid-cols-2">
           <div className="w-full lg:sticky lg:top-37">
@@ -401,7 +363,7 @@ const ProductDetails = () => {
           }
         />
       )}
-    </PageWrapper>
+    </div>
   );
 };
 

@@ -6,7 +6,6 @@ import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
 
 import ApiStatus from '@/components/layout/ApiStatus';
-import PageWrapper from '@/components/layout/containers/PageWrapper';
 import ScrollableGradientContainer from '@/components/layout/containers/ScrollableGradientContainer';
 import LoadingText from '@/components/layout/loaders/LoadingText';
 import {
@@ -64,157 +63,155 @@ const Products = () => {
   }, [inView, hasNextPage, fetchNextPage]);
 
   return (
-    <PageWrapper>
-      <div className="border-primary/10 bg-secondary-invert overflow-hidden rounded-xl border">
-        {!!data?.products.length && (
-          <ScrollableGradientContainer
-            direction="horizontal"
-            gradientClassNames={{ left: 'from-secondary-invert', right: 'from-secondary-invert' }}
-          >
-            <Table className="relative text-xs">
-              <TableHead>
-                <TableRow>
-                  {PRODUCTS_TABLE_TITLES.map(({ label, sortKey }, index) => (
-                    <TableHeadCell
-                      key={`th-${String(index)}`}
-                      className={`${sortKey ? 'hover:text-primary/90 cursor-pointer select-none' : ''} `}
-                      onClick={() => {
-                        if (sortKey) handleSort(sortKey);
-                      }}
-                    >
-                      <div className="flex items-center justify-center gap-1">
-                        {label}
-                        {sortKey && (
-                          <Icon
-                            icon={
-                              queryParams.sortBy === sortKey
-                                ? queryParams.sortOrder === SORT_MAP.asc
-                                  ? 'solar:alt-arrow-up-linear'
-                                  : 'solar:alt-arrow-down-linear'
-                                : 'solar:sort-linear'
-                            }
-                            className="size-3.5 shrink-0"
-                          />
-                        )}
-                      </div>
-                    </TableHeadCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {data.products.map((product, index) => {
-                  return (
-                    <TableRow
-                      key={`${product._id}-${String(index)}`}
-                      tabIndex={0}
-                      className="border-y-primary/5 odd:bg-primary/5 even:bg-primary/2.5 border-y first:border-t-0 last:border-b-0 [&>td]:px-3 [&>td]:py-2 [&>td]:text-xs"
-                      ref={index === data.products.length - 4 ? ref : undefined}
-                    >
-                      <TableRowCell>{index + 1}</TableRowCell>
-                      <TableRowCell>
-                        <Link className="mx-auto block size-4.5 shrink-0" to={product.slug}>
-                          <Icon
-                            icon="material-symbols:eye-tracking-outline"
-                            className="text-primary hover:text-blue-crayola-c mx-auto size-full"
-                          />
-                        </Link>
-                      </TableRowCell>
-                      <TableRowCell className="grid place-items-center">
-                        <img
-                          src={product.thumbnail}
-                          alt={product.title}
-                          loading="lazy"
-                          className="border-tertiary/20 aspect-square size-10 rounded-lg border object-cover"
+    <div className="border-primary/10 bg-secondary-invert overflow-hidden rounded-xl border">
+      {!!data?.products.length && (
+        <ScrollableGradientContainer
+          direction="horizontal"
+          gradientClassNames={{ left: 'from-secondary-invert', right: 'from-secondary-invert' }}
+        >
+          <Table className="relative text-xs">
+            <TableHead>
+              <TableRow>
+                {PRODUCTS_TABLE_TITLES.map(({ label, sortKey }, index) => (
+                  <TableHeadCell
+                    key={`th-${String(index)}`}
+                    className={`${sortKey ? 'hover:text-primary/90 cursor-pointer select-none' : ''} `}
+                    onClick={() => {
+                      if (sortKey) handleSort(sortKey);
+                    }}
+                  >
+                    <div className="flex items-center justify-center gap-1">
+                      {label}
+                      {sortKey && (
+                        <Icon
+                          icon={
+                            queryParams.sortBy === sortKey
+                              ? queryParams.sortOrder === SORT_MAP.asc
+                                ? 'solar:alt-arrow-up-linear'
+                                : 'solar:alt-arrow-down-linear'
+                              : 'solar:sort-linear'
+                          }
+                          className="size-3.5 shrink-0"
                         />
-                      </TableRowCell>
-                      <TableRowCell>
-                        <p className="max-w-sm truncate text-left">{product.title}</p>
-                      </TableRowCell>
-                      <TableRowCell>{product.brand}</TableRowCell>
-                      <TableRowCell className="text-primary-green font-medium">
-                        {formatINRCurrency(product.sellingPrice)}
-                      </TableRowCell>
-                      <TableRowCell className="text-primary-red font-medium">
-                        {formatINRCurrency(product.originalPrice)}
-                      </TableRowCell>
-                      <TableRowCell>{product.status}</TableRowCell>
-                      <TableRowCell>
-                        {!product.hasVariants
-                          ? product.stock
-                          : product.variants.reduce((acc, variant) => acc + variant.stock, 0)}
-                      </TableRowCell>
-                      <TableRowCell>
-                        {formatDate(product.createdAt, { month: '2-digit' })}
-                      </TableRowCell>
-                      <TableRowCell>
-                        {formatDate(product.updatedAt, { month: '2-digit' })}
-                      </TableRowCell>
-                      <TableRowCell>
-                        {product.tryOn.configured && product.tryOn.enabled
-                          ? `${product.tryOn.category} - ${product.tryOn.subCategory}`
-                          : 'N/A'}
-                      </TableRowCell>
-                      <TableRowCell>
-                        {product.hasVariants ? product.variants.length : 'N/A'}
-                      </TableRowCell>
-                      <TableRowCell>{product.sku}</TableRowCell>
-                      <TableRowCell>{product.slug}</TableRowCell>
-                      <TableRowCell>{product.soldCount}</TableRowCell>
-                      <TableRowCell>{product.returnCount}</TableRowCell>
-                      <TableRowCell>{product.averageRating}</TableRowCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </ScrollableGradientContainer>
-        )}
+                      )}
+                    </div>
+                  </TableHeadCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data.products.map((product, index) => {
+                return (
+                  <TableRow
+                    key={`${product._id}-${String(index)}`}
+                    tabIndex={0}
+                    className="border-y-primary/5 odd:bg-primary/5 even:bg-primary/2.5 border-y first:border-t-0 last:border-b-0 [&>td]:px-3 [&>td]:py-2 [&>td]:text-xs"
+                    ref={index === data.products.length - 4 ? ref : undefined}
+                  >
+                    <TableRowCell>{index + 1}</TableRowCell>
+                    <TableRowCell>
+                      <Link className="mx-auto block size-4.5 shrink-0" to={product.slug}>
+                        <Icon
+                          icon="material-symbols:eye-tracking-outline"
+                          className="text-primary hover:text-blue-crayola-c mx-auto size-full"
+                        />
+                      </Link>
+                    </TableRowCell>
+                    <TableRowCell className="grid place-items-center">
+                      <img
+                        src={product.thumbnail}
+                        alt={product.title}
+                        loading="lazy"
+                        className="border-tertiary/20 aspect-square size-10 rounded-lg border object-cover"
+                      />
+                    </TableRowCell>
+                    <TableRowCell>
+                      <p className="max-w-sm truncate text-left">{product.title}</p>
+                    </TableRowCell>
+                    <TableRowCell>{product.brand}</TableRowCell>
+                    <TableRowCell className="text-primary-green font-medium">
+                      {formatINRCurrency(product.sellingPrice)}
+                    </TableRowCell>
+                    <TableRowCell className="text-primary-red font-medium">
+                      {formatINRCurrency(product.originalPrice)}
+                    </TableRowCell>
+                    <TableRowCell>{product.status}</TableRowCell>
+                    <TableRowCell>
+                      {!product.hasVariants
+                        ? product.stock
+                        : product.variants.reduce((acc, variant) => acc + variant.stock, 0)}
+                    </TableRowCell>
+                    <TableRowCell>
+                      {formatDate(product.createdAt, { month: '2-digit' })}
+                    </TableRowCell>
+                    <TableRowCell>
+                      {formatDate(product.updatedAt, { month: '2-digit' })}
+                    </TableRowCell>
+                    <TableRowCell>
+                      {product.tryOn.configured && product.tryOn.enabled
+                        ? `${product.tryOn.category} - ${product.tryOn.subCategory}`
+                        : 'N/A'}
+                    </TableRowCell>
+                    <TableRowCell>
+                      {product.hasVariants ? product.variants.length : 'N/A'}
+                    </TableRowCell>
+                    <TableRowCell>{product.sku}</TableRowCell>
+                    <TableRowCell>{product.slug}</TableRowCell>
+                    <TableRowCell>{product.soldCount}</TableRowCell>
+                    <TableRowCell>{product.returnCount}</TableRowCell>
+                    <TableRowCell>{product.averageRating}</TableRowCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </ScrollableGradientContainer>
+      )}
 
-        {(isLoading ||
-          isFetchingNextPage ||
-          isError ||
-          // typescript-eslint's no-unnecessary-condition misreads isFetchNextPageError as always
-          // falsy for this react-query hook shape, even though tsc confirms it's a real boolean.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          isFetchNextPageError ||
-          data?.products.length === 0) && (
-          <div
-            className={`flex items-center justify-center ${!isFetchingNextPage ? 'min-h-[40dvh]' : ''}`}
-          >
-            {isLoading || isFetchingNextPage ? (
-              <LoadingText
-                text={isLoading ? 'Loading products...' : 'Loading more products...'}
-                className="my-2"
-              />
-            ) : (
-              <ApiStatus
-                className="min-h-0!"
-                status={
-                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- see note above
-                  isError || isFetchNextPageError ? 'error' : 'empty'
-                }
-                title={
-                  isError
-                    ? 'Failed to load products'
-                    : // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- see note above
-                      isFetchNextPageError
-                      ? 'Failed to load more products'
-                      : 'No products available'
-                }
-                description={
-                  isError
-                    ? 'Something went wrong while fetching products. Please try again.'
-                    : // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- see note above
-                      isFetchNextPageError
-                      ? 'Something went wrong while fetching more products. Please try again.'
-                      : 'No products have been added yet.'
-                }
-              />
-            )}
-          </div>
-        )}
-      </div>
-    </PageWrapper>
+      {(isLoading ||
+        isFetchingNextPage ||
+        isError ||
+        // typescript-eslint's no-unnecessary-condition misreads isFetchNextPageError as always
+        // falsy for this react-query hook shape, even though tsc confirms it's a real boolean.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        isFetchNextPageError ||
+        data?.products.length === 0) && (
+        <div
+          className={`flex items-center justify-center ${!isFetchingNextPage ? 'min-h-[40dvh]' : ''}`}
+        >
+          {isLoading || isFetchingNextPage ? (
+            <LoadingText
+              text={isLoading ? 'Loading products...' : 'Loading more products...'}
+              className="my-2"
+            />
+          ) : (
+            <ApiStatus
+              className="min-h-0!"
+              status={
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- see note above
+                isError || isFetchNextPageError ? 'error' : 'empty'
+              }
+              title={
+                isError
+                  ? 'Failed to load products'
+                  : // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- see note above
+                    isFetchNextPageError
+                    ? 'Failed to load more products'
+                    : 'No products available'
+              }
+              description={
+                isError
+                  ? 'Something went wrong while fetching products. Please try again.'
+                  : // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- see note above
+                    isFetchNextPageError
+                    ? 'Something went wrong while fetching more products. Please try again.'
+                    : 'No products have been added yet.'
+              }
+            />
+          )}
+        </div>
+      )}
+    </div>
   );
 };
 
