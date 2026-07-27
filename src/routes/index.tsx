@@ -5,7 +5,7 @@ import { ROUTES } from '@/constants/common.constants';
 import { authenticate } from '@/middlewares';
 import ErrorBoundary from '@/pages/error/ErrorBoundary';
 
-const { AUTH, HOME, PRODUCTS } = ROUTES;
+const { AUTH, HOME, PRODUCTS, PROFILE } = ROUTES;
 
 const routes: RouteObject[] = [
   {
@@ -64,6 +64,72 @@ const routes: RouteObject[] = [
               const { default: CategoryProducts } =
                 await import('@/pages/product/CategoryProducts');
               return { Component: CategoryProducts };
+            },
+          },
+        ],
+      },
+      {
+        path: PROFILE.BASE,
+        middleware: [authenticate],
+        lazy: async () => {
+          const { default: Account } = await import('@/pages/profile');
+          return { Component: Account };
+        },
+        children: [
+          {
+            index: true,
+            lazy: async () => {
+              const { default: Profile } = await import('@/pages/profile/Profile');
+              return { Component: Profile };
+            },
+          },
+          {
+            path: PROFILE.ORDERS,
+            lazy: async () => {
+              const { default: Orders } = await import('@/pages/profile/Orders');
+              return { Component: Orders };
+            },
+          },
+          {
+            path: PROFILE.ADDRESSES,
+            lazy: async () => {
+              const { default: Addresses } = await import('@/pages/profile/Addresses');
+              return { Component: Addresses };
+            },
+          },
+          {
+            path: PROFILE.WISHLIST,
+            lazy: async () => {
+              const { default: Wishlist } = await import('@/pages/profile/Wishlist');
+              return { Component: Wishlist };
+            },
+          },
+          {
+            path: PROFILE.REVIEWS,
+            lazy: async () => {
+              const { default: Reviews } = await import('@/pages/profile/Reviews');
+              return { Component: Reviews };
+            },
+          },
+          {
+            path: PROFILE.REFER_A_FRIEND,
+            lazy: async () => {
+              const { default: ReferAFriend } = await import('@/pages/profile/ReferAFriend');
+              return { Component: ReferAFriend };
+            },
+          },
+          {
+            path: PROFILE.GIFT_CARDS,
+            lazy: async () => {
+              const { default: GiftCards } = await import('@/pages/profile/GiftCards');
+              return { Component: GiftCards };
+            },
+          },
+          {
+            path: PROFILE.NOTIFICATIONS,
+            lazy: async () => {
+              const { default: Notifications } = await import('@/pages/profile/Notifications');
+              return { Component: Notifications };
             },
           },
         ],

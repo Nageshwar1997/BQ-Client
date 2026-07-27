@@ -79,6 +79,8 @@ export const Navbar = () => {
     return categories.find((category) => category._id === hoveredId);
   }, [categories, hoveredId]);
 
+  const isHomeRoute = pathname === '/';
+
   // Sets the hovered index when mouse enters an element
   const handleMouseEnter = (id: string) => {
     setHoveredId(id);
@@ -181,7 +183,7 @@ export const Navbar = () => {
   return (
     <div
       className={`text-tertiary sticky top-0 left-0 z-50 flex h-16 w-full items-center justify-between gap-3 lg:-top-9 lg:h-25 lg:gap-0 xl:gap-5 ${
-        isNavbarAtTop || isNavbarHovered || nonTransparent
+        (isNavbarAtTop || isNavbarHovered || nonTransparent || !isHomeRoute) 
           ? 'bg-tertiary-invert shadow-primary-invert/50 shadow-lg'
           : 'bg-transparent'
       } ${paths.includes('account') ? 'lg:top-0!' : ''}`}

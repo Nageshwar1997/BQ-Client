@@ -92,6 +92,13 @@ export const ROUTES = {
   },
   PROFILE: {
     BASE: 'profile',
+    ORDERS: 'orders',
+    ADDRESSES: 'addresses',
+    WISHLIST: 'wishlist',
+    REVIEWS: 'reviews',
+    REFER_A_FRIEND: 'refer-a-friend',
+    GIFT_CARDS: 'gift-cards',
+    NOTIFICATIONS: 'notifications',
   },
 } as const;
 
