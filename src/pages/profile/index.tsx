@@ -4,7 +4,7 @@ import Sidebar from '@/components/layout/sidebar';
 
 const Account = () => {
   return (
-    <div className="mx-auto flex w-full flex-col gap-6 lg:flex-row lg:items-start lg:gap-8">
+    <div className="mx-auto flex w-full flex-col gap-4 md:flex-row md:items-start md:gap-6">
       <Sidebar />
       <div className="min-w-0 flex-1">
         <Outlet />

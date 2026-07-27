@@ -131,7 +131,7 @@ export const SIDEBAR_DATA = [
     handler: null,
   },
   {
-    title: 'My Reviews',
+    title: 'Reviews',
     icon: 'solar:star-linear',
     path: `/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.REVIEWS}`,
     handler: null,

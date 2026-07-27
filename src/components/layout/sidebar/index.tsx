@@ -27,7 +27,9 @@ const SidebarItem = ({
       >
         <Icon icon={icon} className={`size-full ${isSameRoute ? 'text-white' : 'text-tertiary'}`} />
       </span>
-      <span className="text-[8px] md:hidden">{item.title}</span>
+      <span className="line-clamp-1 w-8 text-center text-[8px] tracking-tight md:hidden">
+        {item.title}
+      </span>
     </div>
   );
 };
@@ -55,7 +57,7 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="border-t-silver/30 md:border-r-silver/30 bg-primary-invert sticky bottom-0 left-0 z-40 flex w-dvw items-center justify-center gap-4 border-t px-2 py-4 md:top-16 md:bottom-auto md:h-[calc(100dvh-4rem)] md:w-fit md:flex-col md:border-r md:border-t-transparent">
+    <aside className="border-t-silver/30 md:border-r-silver/30 bg-primary-invert fixed md:sticky bottom-0 left-0 z-40 flex w-dvw items-center justify-center gap-4 border-t px-2 py-4 md:top-16 md:bottom-auto md:h-[calc(100dvh-4rem)] md:w-fit md:flex-col md:border-r md:border-t-transparent">
       <ScrollableGradientContainer
         direction={isMobile ? 'horizontal' : 'vertical'}
         className="[&>div]:items-center [&>div]:justify-start"

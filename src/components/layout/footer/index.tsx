@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
+import { ROUTES } from '@/constants/common.constants';
 import { FOOTER_AWARDS, FOOTER_CATEGORIES, SOCIAL_MEDIA_LINKS } from '@/constants/footer.constants';
 import useAuthAction from '@/hooks/useAuthAction';
 import usePathParams from '@/hooks/usePathParams';
@@ -56,8 +57,12 @@ const Footer = () => {
 
   const year = new Date().getFullYear();
 
+  const { paths } = usePathParams();
+
+  const isProfilePage = paths.includes(ROUTES.PROFILE.BASE);
+
   return (
-    <div className="w-full">
+    <div className={`w-full ${isProfilePage ? 'pb-16 md:pb-0' : ''}`}>
       <div className="border-y-primary/30 w-full space-y-6 border-y py-6 text-center md:px-4 lg:px-10 lg:py-10 xl:px-20">
         <div className="flex w-full flex-col items-center justify-between gap-2 md:flex-row lg:gap-4">
           <div className="flex flex-col items-center md:items-start">
