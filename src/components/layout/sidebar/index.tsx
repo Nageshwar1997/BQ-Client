@@ -2,7 +2,6 @@ import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import Divider from '@/components/ui/Divider';
 import Tooltip from '@/components/ui/Tooltip';
 import { ROUTES, SIDEBAR_DATA } from '@/constants/common.constants';
 import useIsSmallScreen from '@/hooks/useIsSmallScreen';
@@ -57,14 +56,6 @@ const Sidebar = () => {
 
   return (
     <aside className="border-t-silver/30 md:border-r-silver/30 bg-primary-invert sticky bottom-0 left-0 z-50 flex w-dvw items-center justify-center gap-4 border-t px-2 py-4 md:top-0 md:bottom-auto md:h-dvh md:w-fit md:flex-col md:border-r md:border-t-transparent">
-      <Link to="/" className="hidden w-14 items-center justify-center md:flex">
-        <img
-          src="/images/logo/BQ_gradient_logo.webp"
-          alt="Logo"
-          className="w-full object-contain"
-        />
-      </Link>
-      <Divider className="hidden md:block" />
       <ScrollableGradientContainer
         direction={isMobile ? 'horizontal' : 'vertical'}
         className="[&>div]:items-center [&>div]:justify-start"
@@ -72,8 +63,7 @@ const Sidebar = () => {
       >
         <div className="flex gap-4 md:flex-col">
           {SIDEBAR_DATA.map((item, index) => {
-            const path =
-              'path' in item ? (item.path !== '/' ? item.path.replace('/', '') : item.path) : '';
+            const path = 'path' in item ? item.path : '';
             const isSameRoute = path === pathname || paths.includes(path);
             const isSameIndex = hoveredIdx === index;
 

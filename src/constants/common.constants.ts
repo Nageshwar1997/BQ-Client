@@ -107,27 +107,51 @@ export const TOOLTIP_ANIMATION_DURATION = 400 as const;
 
 export const SIDEBAR_DATA = [
   {
-    title: 'Home',
-    icon: 'solar:widget-linear',
-    path: ROUTES.HOME,
-    handler: null,
-  },
-  {
     title: 'Profile',
     icon: 'solar:user-circle-linear',
     path: `/${ROUTES.PROFILE.BASE}`,
     handler: null,
   },
   {
-    title: 'Categories',
-    icon: 'solar:hanger-2-linear',
-    path: `/${ROUTES.CATEGORIES.BASE}`,
+    title: 'Orders',
+    icon: 'solar:delivery-linear',
+    path: `/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.ORDERS}`,
     handler: null,
   },
   {
-    title: 'Products',
-    icon: 'solar:box-minimalistic-linear',
-    path: `/${ROUTES.PRODUCTS.BASE}`,
+    title: 'Addresses',
+    icon: 'solar:map-point-linear',
+    path: `/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.ADDRESSES}`,
+    handler: null,
+  },
+  {
+    title: 'Wishlist',
+    icon: 'solar:heart-linear',
+    path: `/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.WISHLIST}`,
+    handler: null,
+  },
+  {
+    title: 'My Reviews',
+    icon: 'solar:star-linear',
+    path: `/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.REVIEWS}`,
+    handler: null,
+  },
+  {
+    title: 'Refer a Friend',
+    icon: 'solar:users-group-rounded-linear',
+    path: `/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.REFER_A_FRIEND}`,
+    handler: null,
+  },
+  {
+    title: 'Gift Cards',
+    icon: 'ic:round-card-giftcard',
+    path: `/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.GIFT_CARDS}`,
+    handler: null,
+  },
+  {
+    title: 'Notifications',
+    icon: 'solar:bell-linear',
+    path: `/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.NOTIFICATIONS}`,
     handler: null,
   },
   {
