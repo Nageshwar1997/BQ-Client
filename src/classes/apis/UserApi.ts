@@ -6,10 +6,10 @@ import type {
   TPasswordsZodSchema,
   TRegisterZodSchema,
   TSetPasswordZodSchema,
-  TUpdateUserZodSchema,
 } from '@beautinique/frontend-types';
 
 import { API_METHODS_AND_URLS } from '@/constants/api.constants';
+import type { TProfileFormSchema } from '@/pages/profile/Profile';
 import type { IUser } from '@/types/api.type';
 
 import { ApiRequest } from '../ApiRequest';
@@ -106,7 +106,7 @@ export class UserApi extends ApiRequest {
 
   /* ===================== UPDATE API ===================== */
 
-  public updateUser = (data: Partial<TUpdateUserZodSchema> & { avatar?: string }) => {
+  public updateUser = (data: Partial<TProfileFormSchema>) => {
     return this.request<IUser>({ ...this.routes.update, data });
   };
 }

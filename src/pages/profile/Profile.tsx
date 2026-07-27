@@ -1,5 +1,5 @@
-import type { TUpdateUserZodSchema } from '@beautinique/frontend-types';
-import { updateUserSchema, z } from '@beautinique/frontend-zod';
+import type { TInfer } from '@beautinique/frontend-zod';
+import { imageUnionZodSchema, updateUserSchema } from '@beautinique/frontend-zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import Button from '@/components/ui/Button';
 import GradientText from '@/components/ui/GradientText';
 import Input from '@/components/ui/inputs/Input';
+import { UPDATE_USER_INPUT_MAP_DATA } from '@/constants/input.constants';
 import { useUploadSingleMedia } from '@/services/media-service/media.service.query';
 import { useUpdateUser } from '@/services/user-service/user.service.query';
 import useUserStore from '@/stores/user.store';
@@ -14,29 +15,16 @@ import useUserStore from '@/stores/user.store';
 import AvatarUpload from './children/AvatarUpload';
 
 const profileFormSchema = updateUserSchema.extend({
-  avatar: z.url().optional(),
+  avatar: imageUnionZodSchema,
 });
 
-type TProfileFormSchema = z.infer<typeof profileFormSchema>;
-type TProfileField = keyof TUpdateUserZodSchema;
-
-const PROFILE_FIELDS: {
-  key: TProfileField;
-  label: string;
-  type: string;
-  autoComplete: string;
-}[] = [
-  { key: 'firstName', label: 'First Name', type: 'text', autoComplete: 'given-name' },
-  { key: 'lastName', label: 'Last Name', type: 'text', autoComplete: 'family-name' },
-  { key: 'email', label: 'Email', type: 'text', autoComplete: 'email' },
-  { key: 'phoneNumber', label: 'Phone Number', type: 'number', autoComplete: 'tel' },
-];
+export type TProfileFormSchema = TInfer<typeof profileFormSchema>;
 
 const Profile = () => {
   const user = useUserStore((s) => s.user);
   const uploadMedia = useUploadSingleMedia();
   const updateUser = useUpdateUser();
-  const [editableFields, setEditableFields] = useState<Set<TProfileField>>(new Set());
+  const [editableFields, setEditableFields] = useState<Set<keyof TProfileFormSchema>>(new Set());
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
   const { register, handleSubmit, formState, reset } = useForm<TProfileFormSchema>({
@@ -97,28 +85,28 @@ const Profile = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-x-4 gap-y-5 sm:grid-cols-2">
-        {PROFILE_FIELDS.map((field) => (
+        {UPDATE_USER_INPUT_MAP_DATA.map((field) => (
           <Input
-            key={field.key}
+            key={field.name}
             label={field.label}
-            register={register(field.key)}
-            error={formState.errors[field.key]?.message}
-            needRef={editableFields.has(field.key)}
+            register={register(field.name)}
+            error={formState.errors[field.name]?.message}
+            needRef={editableFields.has(field.name)}
             inputProps={{
               type: field.type,
               autoComplete: field.autoComplete,
-              name: field.key,
-              readOnly: !editableFields.has(field.key),
+              name: field.name,
+              readOnly: !editableFields.has(field.name),
               disabled: isSubmitting,
             }}
             icons={
-              editableFields.has(field.key)
+              editableFields.has(field.name)
                 ? undefined
                 : {
                     right: {
                       icon: 'solar:pen-2-linear',
                       onClick: () => {
-                        setEditableFields((prev) => new Set(prev).add(field.key));
+                        setEditableFields((prev) => new Set(prev).add(field.name));
                       },
                       className:
                         'text-primary/50 hover:text-primary size-4.5 shrink-0 cursor-pointer',
