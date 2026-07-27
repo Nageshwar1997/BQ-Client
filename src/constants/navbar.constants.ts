@@ -6,21 +6,21 @@ export const TESTIMONIALS = [
       'I absolutely love the range of products on this website! The quality is unmatched, and my skin has never felt better. I always get compliments!',
     name: 'Nageshwar Pawar',
     role: 'Founder',
-    image: '/images/company/teams/male/Nageshwar-Pawar.webp',
+    image: '/images/logo/BQ_gradient_logo.webp',
   },
   {
     content:
       'Finding the perfect shade was so easy. The product descriptions and customer reviews helped me make the right choice. Fast delivery too!',
     name: 'Manjusha Magar',
     role: 'Co-Founder',
-    image: '/images/company/teams/female/Manjusha-Magar.webp',
+    image: '/images/logo/BQ_gradient_logo.webp',
   },
   {
     content:
       'I love how the products feel on my skin. They are lightweight, long-lasting, and make me feel confident all day. Highly recommended!',
     name: 'Deepika Padukone',
     role: 'CEO',
-    image: '/images/company/teams/female/Deepika-Padukone.webp',
+    image: '/images/logo/BQ_gradient_logo.webp',
   },
 ] as const;
 
