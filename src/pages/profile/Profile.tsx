@@ -6,12 +6,12 @@ import { useForm } from 'react-hook-form';
 
 import Button from '@/components/ui/Button';
 import GradientText from '@/components/ui/GradientText';
+import Input from '@/components/ui/inputs/Input';
 import { useUploadSingleMedia } from '@/services/media-service/media.service.query';
 import { useUpdateUser } from '@/services/user-service/user.service.query';
 import useUserStore from '@/stores/user.store';
 
 import AvatarUpload from './children/AvatarUpload';
-import EditableField from './children/EditableField';
 
 const profileFormSchema = updateUserSchema.extend({
   avatar: z.url().optional(),
@@ -98,17 +98,33 @@ const Profile = () => {
 
       <div className="grid grid-cols-1 gap-x-4 gap-y-5 sm:grid-cols-2">
         {PROFILE_FIELDS.map((field) => (
-          <EditableField
+          <Input
             key={field.key}
             label={field.label}
             register={register(field.key)}
             error={formState.errors[field.key]?.message}
-            isEditing={editableFields.has(field.key)}
-            isDisabled={isSubmitting}
-            inputProps={{ type: field.type, autoComplete: field.autoComplete }}
-            onEdit={() => {
-              setEditableFields((prev) => new Set(prev).add(field.key));
+            needRef={editableFields.has(field.key)}
+            inputProps={{
+              type: field.type,
+              autoComplete: field.autoComplete,
+              name: field.key,
+              readOnly: !editableFields.has(field.key),
+              disabled: isSubmitting,
             }}
+            icons={
+              editableFields.has(field.key)
+                ? undefined
+                : {
+                    right: {
+                      icon: 'solar:pen-2-linear',
+                      onClick: () => {
+                        setEditableFields((prev) => new Set(prev).add(field.key));
+                      },
+                      className:
+                        'text-primary/50 hover:text-primary size-4.5 shrink-0 cursor-pointer',
+                    },
+                  }
+            }
           />
         ))}
       </div>

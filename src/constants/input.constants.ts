@@ -95,6 +95,13 @@ export const REGISTER_INPUT_MAP_DATA = [
   ...PASSWORDS_INPUT_MAP_DATA,
 ] as const;
 
+export const UPDATE_USER_INPUT_MAP_DATA = [
+  FIRST_NAME_INPUT_DATA,
+  LAST_NAME_INPUT_DATA,
+  EMAIL_INPUT_DATA,
+  PHONE_NUMBER_INPUT_DATA,
+] as const;
+
 export const PRODUCT_BASIC_INFO_INPUT_MAP_DATA = [
   {
     name: 'title',
