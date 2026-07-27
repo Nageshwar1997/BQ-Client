@@ -1,4 +1,3 @@
-import { Icon } from '@iconify/react';
 import type { InputHTMLAttributes } from 'react';
 import type { UseFormRegisterReturn } from 'react-hook-form';
 
@@ -9,11 +8,9 @@ interface IEditableFieldProps {
   register: UseFormRegisterReturn;
   error?: string;
   isEditing: boolean;
-  isSaving: boolean;
+  isDisabled?: boolean;
   inputProps?: Pick<InputHTMLAttributes<HTMLInputElement>, 'type' | 'autoComplete'>;
   onEdit: () => void;
-  onSave: () => void;
-  onCancel: () => void;
 }
 
 const EditableField = ({
@@ -21,11 +18,9 @@ const EditableField = ({
   register,
   error,
   isEditing,
-  isSaving,
+  isDisabled,
   inputProps,
   onEdit,
-  onSave,
-  onCancel,
 }: IEditableFieldProps) => {
   return (
     <Input
@@ -37,28 +32,19 @@ const EditableField = ({
         ...inputProps,
         name: register.name,
         readOnly: !isEditing,
-        disabled: isSaving,
+        disabled: isDisabled,
       }}
-      icons={{
-        right: isEditing ? (
-          <div className="flex items-center gap-2">
-            <Icon
-              icon="solar:check-circle-linear"
-              onClick={onSave}
-              className="text-primary-green size-5 shrink-0 cursor-pointer"
-            />
-            <Icon
-              icon="solar:close-circle-linear"
-              onClick={onCancel}
-              className="text-red-c size-5 shrink-0 cursor-pointer"
-            />
-          </div>
-        ) : {
-          icon: 'solar:pen-2-linear',
-          onClick: onEdit,
-          className: 'text-primary/50 hover:text-primary size-4.5 shrink-0 cursor-pointer',
-        },
-      }}
+      icons={
+        isEditing
+          ? undefined
+          : {
+              right: {
+                icon: 'solar:pen-2-linear',
+                onClick: onEdit,
+                className: 'text-primary/50 hover:text-primary size-4.5 shrink-0 cursor-pointer',
+              },
+            }
+      }
     />
   );
 };

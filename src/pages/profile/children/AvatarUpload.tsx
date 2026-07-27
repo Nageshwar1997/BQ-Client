@@ -1,22 +1,35 @@
 import { Icon } from '@iconify/react';
-import { type ChangeEvent, useRef } from 'react';
+import { type ChangeEvent, useEffect, useRef, useState } from 'react';
 
-import { useUploadSingleMedia } from '@/services/media-service/media.service.query';
-import { useUpdateUser } from '@/services/user-service/user.service.query';
 import type { IUser } from '@/types/api.type';
 import { toaster } from '@/utils/common.util';
 
 const getInitials = (firstName: string, lastName: string) =>
   `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
 
-const AvatarUpload = ({ user }: { user: IUser }) => {
+interface IAvatarUploadProps {
+  user: IUser;
+  avatarFile: File | null;
+  onFileSelect: (file: File) => void;
+}
+
+const AvatarUpload = ({ user, avatarFile, onFileSelect }: IAvatarUploadProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const uploadMedia = useUploadSingleMedia();
-  const updateUser = useUpdateUser();
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-  const isPending = uploadMedia.isPending || updateUser.isPending;
+  useEffect(() => {
+    if (!avatarFile) return;
 
-  const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    const url = URL.createObjectURL(avatarFile);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setPreviewUrl(url);
+
+    return () => {
+      URL.revokeObjectURL(url);
+    };
+  }, [avatarFile]);
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     event.target.value = '';
 
@@ -27,25 +40,16 @@ const AvatarUpload = ({ user }: { user: IUser }) => {
       return;
     }
 
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('folder', 'avatars');
-
-    const { data: avatarUrl } = await uploadMedia.mutateAsync({
-      data: formData,
-      toasterInfo: { title: 'Please wait...', description: 'Uploading your photo...' },
-    });
-
-    if (!avatarUrl) return;
-
-    await updateUser.mutateAsync({ avatar: avatarUrl });
+    onFileSelect(file);
   };
+
+  const displayUrl = avatarFile ? previewUrl : user.avatar;
 
   return (
     <div className="relative size-20 shrink-0 sm:size-24">
-      {user.avatar ? (
+      {displayUrl ? (
         <img
-          src={user.avatar}
+          src={displayUrl}
           alt={`${user.firstName} ${user.lastName}`}
           className="border-primary/10 size-full rounded-full border object-cover"
         />
@@ -58,25 +62,19 @@ const AvatarUpload = ({ user }: { user: IUser }) => {
         <>
           <button
             type="button"
-            disabled={isPending}
             onClick={() => {
               fileInputRef.current?.click();
             }}
-            className="bg-accent-duo border-secondary-invert absolute right-0 bottom-0 flex size-7 items-center justify-center rounded-full border-2 shadow-md disabled:cursor-not-allowed disabled:opacity-70 sm:size-8"
+            className="bg-accent-duo border-secondary-invert absolute right-0 bottom-0 flex size-7 items-center justify-center rounded-full border-2 shadow-md sm:size-8"
           >
-            <Icon
-              icon={isPending ? 'svg-spinners:ring-resize' : 'solar:camera-add-linear'}
-              className="size-4 text-white sm:size-4.5"
-            />
+            <Icon icon="solar:camera-add-linear" className="size-4 text-white sm:size-4.5" />
           </button>
           <input
             ref={fileInputRef}
             type="file"
             accept="image/*"
             className="sr-only"
-            onChange={(event) => {
-              void handleFileChange(event);
-            }}
+            onChange={handleFileChange}
           />
         </>
       )}

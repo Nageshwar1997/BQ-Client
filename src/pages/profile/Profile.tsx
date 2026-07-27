@@ -1,16 +1,23 @@
 import type { TUpdateUserZodSchema } from '@beautinique/frontend-types';
-import { updateUserSchema } from '@beautinique/frontend-zod';
+import { updateUserSchema, z } from '@beautinique/frontend-zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import Button from '@/components/ui/Button';
 import GradientText from '@/components/ui/GradientText';
+import { useUploadSingleMedia } from '@/services/media-service/media.service.query';
 import { useUpdateUser } from '@/services/user-service/user.service.query';
 import useUserStore from '@/stores/user.store';
 
 import AvatarUpload from './children/AvatarUpload';
 import EditableField from './children/EditableField';
 
+const profileFormSchema = updateUserSchema.extend({
+  avatar: z.url().optional(),
+});
+
+type TProfileFormSchema = z.infer<typeof profileFormSchema>;
 type TProfileField = keyof TUpdateUserZodSchema;
 
 const PROFILE_FIELDS: {
@@ -27,45 +34,58 @@ const PROFILE_FIELDS: {
 
 const Profile = () => {
   const user = useUserStore((s) => s.user);
+  const uploadMedia = useUploadSingleMedia();
   const updateUser = useUpdateUser();
-  const [editingField, setEditingField] = useState<TProfileField | null>(null);
+  const [editableFields, setEditableFields] = useState<Set<TProfileField>>(new Set());
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
-  const { register, formState, trigger, getValues, resetField } = useForm<TUpdateUserZodSchema>({
-    resolver: zodResolver(updateUserSchema),
+  const { register, handleSubmit, formState, reset } = useForm<TProfileFormSchema>({
+    resolver: zodResolver(profileFormSchema),
     defaultValues: {
       firstName: user?.firstName,
       lastName: user?.lastName,
       email: user?.email,
       phoneNumber: user?.phoneNumber,
+      avatar: user?.avatar,
     },
   });
 
   if (!user) return null;
 
-  const handleEdit = (field: TProfileField) => {
-    if (editingField && editingField !== field) {
-      resetField(editingField);
+  const isSubmitting = uploadMedia.isPending || updateUser.isPending;
+
+  const onSubmit = async (values: TProfileFormSchema) => {
+    let avatar = values.avatar;
+
+    if (avatarFile) {
+      const formData = new FormData();
+      formData.append('file', avatarFile);
+      formData.append('folder', 'avatars');
+
+      const { data } = await uploadMedia.mutateAsync({
+        data: formData,
+        toasterInfo: { title: 'Please wait...', description: 'Uploading your photo...' },
+      });
+
+      avatar = data ?? avatar;
     }
-    setEditingField(field);
-  };
 
-  const handleSave = async (field: TProfileField) => {
-    const isValid = await trigger(field);
-    if (!isValid) return;
+    await updateUser.mutateAsync({ ...values, avatar });
 
-    await updateUser.mutateAsync({ [field]: getValues(field) });
-    setEditingField(null);
-  };
-
-  const handleCancel = (field: TProfileField) => {
-    resetField(field);
-    setEditingField(null);
+    setAvatarFile(null);
+    setEditableFields(new Set());
+    reset({ ...values, avatar });
   };
 
   return (
-    <div className="border-primary/10 bg-secondary-invert flex flex-col gap-6 rounded-2xl border p-4 sm:p-6">
+    <form
+      onSubmit={(event) => {
+        void handleSubmit(onSubmit)(event);
+      }}
+      className="border-primary/10 bg-secondary-invert flex flex-col gap-6 rounded-2xl border p-4 sm:p-6"
+    >
       <div className="flex items-center gap-4 sm:gap-6">
-        <AvatarUpload user={user} />
+        <AvatarUpload user={user} avatarFile={avatarFile} onFileSelect={setAvatarFile} />
         <div>
           <GradientText
             type="accent"
@@ -83,22 +103,23 @@ const Profile = () => {
             label={field.label}
             register={register(field.key)}
             error={formState.errors[field.key]?.message}
-            isEditing={editingField === field.key}
-            isSaving={updateUser.isPending && editingField === field.key}
+            isEditing={editableFields.has(field.key)}
+            isDisabled={isSubmitting}
             inputProps={{ type: field.type, autoComplete: field.autoComplete }}
             onEdit={() => {
-              handleEdit(field.key);
-            }}
-            onSave={() => {
-              void handleSave(field.key);
-            }}
-            onCancel={() => {
-              handleCancel(field.key);
+              setEditableFields((prev) => new Set(prev).add(field.key));
             }}
           />
         ))}
       </div>
-    </div>
+
+      <Button
+        pattern="primary"
+        content="Save Changes"
+        className="sm:w-fit sm:self-end"
+        buttonProps={{ type: 'submit', disabled: isSubmitting }}
+      />
+    </form>
   );
 };
 
