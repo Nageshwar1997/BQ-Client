@@ -155,6 +155,12 @@ export const SIDEBAR_DATA = [
     handler: null,
   },
   {
+    title: 'Change Password',
+    icon: 'solar:lock-password-linear',
+    path: `/${ROUTES.AUTH.BASE}/${ROUTES.AUTH.CHANGE_PASSWORD}`,
+    handler: null,
+  },
+  {
     title: 'Logout',
     icon: 'solar:logout-2-linear',
     handler: 'logout',
