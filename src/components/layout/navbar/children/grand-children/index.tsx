@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import GradientText from '@/components/ui/GradientText';
 import Theme from '@/components/ui/Theme';
+import { ROUTES } from '@/constants/common.constants';
 import useAuthAction from '@/hooks/useAuthAction';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import usePathParams from '@/hooks/usePathParams';
@@ -157,19 +158,22 @@ export const UserMenuIcons = ({
             className="text-tertiary hover:text-secondary size-5 cursor-pointer md:size-6"
           />
         )}
-        <div className="relative" ref={userPopupRef}>
-          <Icon
-            icon="solar:user-circle-linear"
-            onClick={() => {
-              setIsOpen((prev) => ({ ...prev, user: true }));
-            }}
-            className={`size-5 cursor-pointer md:size-6 ${isOpen.user ? 'text-blue-crayola-c' : 'text-tertiary hover:text-secondary'}`}
-          />
-          {/* <UserPopupModal
+        {/* TODO: Remove Link tag once UserPopupModal is implemented */}
+        <Link to={`/${ROUTES.PROFILE.BASE}`}>
+          <div className="relative" ref={userPopupRef}>
+            <Icon
+              icon="solar:user-circle-linear"
+              // onClick={() => {
+              //   setIsOpen((prev) => ({ ...prev, user: true }));
+              // }}
+              className={`size-5 cursor-pointer md:size-6 ${isOpen.user ? 'text-blue-crayola-c' : 'text-tertiary hover:text-secondary'}`}
+            />
+            {/* <UserPopupModal
             isOpen={isOpen.user}
             onClose={() => setIsOpen((prev) => ({ ...prev, user: false }))}
           /> */}
-        </div>
+          </div>
+        </Link>
         <Icon
           icon="solar:shop-2-linear"
           onClick={() => {
