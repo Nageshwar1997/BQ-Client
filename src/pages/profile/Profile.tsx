@@ -1,5 +1,5 @@
 import type { TUpdateUserZodSchema } from '@beautinique/frontend-types';
-import { updateUserSchema } from '@beautinique/frontend-zod';
+import { updateUserZodSchema } from '@beautinique/frontend-zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
@@ -24,7 +24,7 @@ const Profile = () => {
   const [editableFields, setEditableFields] = useState<Set<keyof TUpdateUserZodSchema>>(new Set());
 
   const { control, register, handleSubmit, formState, reset } = useForm<TUpdateUserZodSchema>({
-    resolver: zodResolver(updateUserSchema),
+    resolver: zodResolver(updateUserZodSchema),
     defaultValues: {
       firstName: user?.firstName,
       lastName: user?.lastName,

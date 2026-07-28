@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@beautinique/frontend-constants": "^1.0.0",
-    "@beautinique/frontend-zod": "^1.0.11",
+    "@beautinique/frontend-zod": "^1.0.12",
     "@beautinique/shared-utils": "^1.0.4",
     "@iconify/react": "^6.0.2",
     "@tanstack/react-table": "^8.21.3",
@@ -36,7 +36,7 @@
     "zustand": "^5.0.14"
   },
   "devDependencies": {
-    "@beautinique/frontend-types": "^1.0.8",
+    "@beautinique/frontend-types": "^1.0.9",
     "@eslint/js": "^10.0.1",
     "@hookform/resolvers": "^5.4.0",
     "@react-google-maps/api": "^2.20.8",
