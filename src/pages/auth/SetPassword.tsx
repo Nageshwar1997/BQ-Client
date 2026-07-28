@@ -1,19 +1,19 @@
+import type { TSetPasswordZodSchema } from '@beautinique/frontend-types';
+import { setPasswordZodSchema } from '@beautinique/frontend-zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+
 import BorderGradient from '@/components/layout/containers/BorderGradient';
 import AuthBottomInstructions from '@/components/ui/AuthBottomInstructions';
 import Button from '@/components/ui/Button';
 import GradientText from '@/components/ui/GradientText';
 import Input from '@/components/ui/inputs/Input';
-import { FORM_DEFAULT_VALUES } from '@/constants/form.constants';
 import { PASSWORDS_INPUT_MAP_DATA } from '@/constants/input.constants';
 import usePathParams from '@/hooks/usePathParams';
-import { setPasswordSchema } from '@/schemas/user.schema';
 import { useSetPassword } from '@/services/user-service/auth.service.query';
 import useUserStore from '@/stores/user.store';
-import type { TSetPassword } from '@/types/schema.type';
 import { setErrorToForm } from '@/utils/form.util';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 
 const SetPassword = () => {
   /* ================= 1. Store Hooks ================= */
@@ -33,30 +33,34 @@ const SetPassword = () => {
     handleSubmit,
     register,
     setError,
-  } = useForm<TSetPassword>({
-    resolver: zodResolver(setPasswordSchema),
-    defaultValues: FORM_DEFAULT_VALUES.passwords,
+  } = useForm<TSetPasswordZodSchema>({
+    resolver: zodResolver(setPasswordZodSchema),
   });
 
   /* ================= 5. Local State ================= */
-  const [showPasswords, setShowPasswords] = useState<Record<keyof TSetPassword, boolean>>({
+  const [showPasswords, setShowPasswords] = useState<Record<keyof TSetPasswordZodSchema, boolean>>({
     password: false,
     confirmPassword: false,
   });
 
   /* ================= 6. Handlers ================= */
 
-  const handleSetPassword = async (data: TSetPassword) => {
+  const handleSetPassword = async (data: TSetPasswordZodSchema) => {
     await mutateAsync(
       { ...data },
       {
-        onSuccess: ({ user }) => (setUser(user), navigate(-1)),
-        onError: ({ fieldErrors }) => setErrorToForm(setError, fieldErrors),
+        onSuccess: ({ data: user }) => {
+          setUser(user ?? null);
+          void navigate(-1);
+        },
+        onError: ({ fieldErrors }) => {
+          setErrorToForm(setError, fieldErrors);
+        },
       },
     );
   };
 
-  const togglePasswordVisibility = (field: keyof TSetPassword) => {
+  const togglePasswordVisibility = (field: keyof TSetPasswordZodSchema) => {
     setShowPasswords((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
@@ -72,10 +76,10 @@ const SetPassword = () => {
       />
 
       {/* ================= FORM CONTAINER ================= */}
-      <BorderGradient className="flex flex-col gap-5 py-6 lg:gap-6">
+      <BorderGradient className="flex flex-col gap-5 lg:gap-6">
         {/* ================= MAIN FORM ================= */}
         <form onSubmit={handleSubmit(handleSetPassword)} className="space-y-5 sm:space-y-6">
-          {/* ================= STEP: CHANGE PASSWORD ================= */}
+          {/* ================= STEP: SET PASSWORD ================= */}
           {PASSWORDS_INPUT_MAP_DATA.map((input) => {
             return (
               <Input
@@ -91,7 +95,9 @@ const SetPassword = () => {
                 icons={{
                   right: {
                     icon: showPasswords[input.name] ? 'lucide:eye-off' : 'lucide:eye',
-                    onClick: () => togglePasswordVisibility(input.name),
+                    onClick: () => {
+                      togglePasswordVisibility(input.name);
+                    },
                     className: 'cursor-pointer',
                   },
                 }}

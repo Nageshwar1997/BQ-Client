@@ -1,3 +1,14 @@
+import type {
+  TEmailZodSchema,
+  TOtpZodSchema,
+  TPasswordsZodSchema,
+  TRegisterZodSchema,
+} from '@beautinique/frontend-types';
+import { emailZodSchema, otpZodSchema, registerZodSchema } from '@beautinique/frontend-zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
+
 import BorderGradient from '@/components/layout/containers/BorderGradient';
 import AuthBottomInstructions from '@/components/ui/AuthBottomInstructions';
 import Button from '@/components/ui/Button';
@@ -5,7 +16,6 @@ import GradientText from '@/components/ui/GradientText';
 import Input from '@/components/ui/inputs/Input';
 import Resend from '@/components/ui/Resend';
 import SocialAuth from '@/components/ui/SocialAuth';
-import { FORM_DEFAULT_VALUES } from '@/constants/form.constants';
 import {
   EMAIL_INPUT_DATA,
   OTP_INPUT_DATA,
@@ -13,7 +23,6 @@ import {
   REGISTER_INPUT_MAP_DATA,
 } from '@/constants/input.constants';
 import usePathParams from '@/hooks/usePathParams';
-import { emailSchema, otpSchema, registerSchema } from '@/schemas/user.schema';
 import {
   useRegisterAndSaveUser,
   useRegisterResendOtp,
@@ -21,12 +30,8 @@ import {
   useRegisterVerifyOtp,
 } from '@/services/user-service/auth.service.query';
 import useUserStore from '@/stores/user.store';
-import type { TEmail, TOtp, TRegister } from '@/types/schema.type';
 import { toaster } from '@/utils/common.util';
 import { setErrorToForm } from '@/utils/form.util';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 
 const Register = () => {
   /* ================= 1. Store Hooks ================= */
@@ -36,110 +41,112 @@ const Register = () => {
   const { navigate } = usePathParams();
 
   /* ================= 3. API/Queries Hooks ================= */
-  const {
-    data: sendOtpData,
-    isPending: isSendingOtp,
-    mutateAsync: sendOtpAsync,
-  } = useRegisterSendOtp();
-  const {
-    data: resendOtpData,
-    isPending: isResendingOtp,
-    mutateAsync: resendOtpAsync,
-  } = useRegisterResendOtp();
-  const { isPending: isVerifyingOtp, mutateAsync: verifyOtpAsync } = useRegisterVerifyOtp();
-  const { isPending: isRegistering, mutateAsync: registerAndSaveAsync } = useRegisterAndSaveUser();
+  const sendOtp = useRegisterSendOtp();
+  const resendOtp = useRegisterResendOtp();
+  const verifyOtp = useRegisterVerifyOtp();
+  const registerAndSave = useRegisterAndSaveUser();
 
   /* ================= 4. Forms ================= */
-  const sendOtpForm = useForm<TEmail>({
-    resolver: zodResolver(emailSchema),
-    defaultValues: FORM_DEFAULT_VALUES.email,
-  });
+  const sendOtpForm = useForm<TEmailZodSchema>({ resolver: zodResolver(emailZodSchema) });
 
-  const verifyOtpForm = useForm<TOtp>({
-    resolver: zodResolver(otpSchema),
-    defaultValues: FORM_DEFAULT_VALUES.otp,
-  });
+  const verifyOtpForm = useForm<TOtpZodSchema>({ resolver: zodResolver(otpZodSchema) });
 
-  const registerAndSaveForm = useForm<TRegister>({
-    resolver: zodResolver(registerSchema),
-    defaultValues: FORM_DEFAULT_VALUES.register,
+  const registerAndSaveForm = useForm<TRegisterZodSchema>({
+    resolver: zodResolver(registerZodSchema),
   });
 
   /* ================= 5. Local State ================= */
-  const [currentStep, setCurrentStep] = useState<'send' | 'verify' | 'save'>('send');
+  const [currentStep, setCurrentStep] = useState<'send' | 'verify' | 'save'>('save');
 
-  const [showPasswords, setShowPasswords] = useState<Partial<Record<keyof TRegister, boolean>>>({
+  const [showPasswords, setShowPasswords] = useState<Record<keyof TPasswordsZodSchema, boolean>>({
     password: false,
     confirmPassword: false,
   });
 
   /* ================= 6. Derived Values ================= */
-  const token = sendOtpData?.token || '';
-  const sendCount = resendOtpData?.sendCount || 1;
+  const token = sendOtp.data?.data ?? '';
+  const sendCount = resendOtp.data?.data ?? 1;
+  const email = useWatch({ control: sendOtpForm.control, name: 'email' });
 
   /* ================= 7. Handlers ================= */
 
-  const handleSendOtp = async (data: TEmail) => {
-    await sendOtpAsync(data, {
-      onSuccess: () => setCurrentStep('verify'),
-      onError: ({ fieldErrors }) => setErrorToForm(sendOtpForm.setError, fieldErrors),
+  const handleSendOtp = async (data: TEmailZodSchema) => {
+    await sendOtp.mutateAsync(data, {
+      onSuccess: () => {
+        registerAndSaveForm.setValue('email', email);
+        setCurrentStep('verify');
+      },
+      onError: ({ fieldErrors }) => {
+        setErrorToForm(sendOtpForm.setError, fieldErrors);
+      },
     });
   };
 
-  const handleVerifyOtp = async (data: TOtp) => {
-    await verifyOtpAsync(
+  const handleVerifyOtp = async (data: TOtpZodSchema) => {
+    await verifyOtp.mutateAsync(
       { ...data, token },
       {
-        onSuccess: () => setCurrentStep('save'),
-        onError: ({ fieldErrors }) => setErrorToForm(verifyOtpForm.setError, fieldErrors),
+        onSuccess: () => {
+          registerAndSaveForm.setValue('email', email);
+          setCurrentStep('save');
+        },
+        onError: ({ fieldErrors }) => {
+          setErrorToForm(verifyOtpForm.setError, fieldErrors);
+        },
       },
     );
   };
 
-  const handleRegisterAndSave = async (data: TRegister) => {
-    await registerAndSaveAsync(
+  const handleRegisterAndSave = async (data: TRegisterZodSchema) => {
+    await registerAndSave.mutateAsync(
       { ...data, token },
       {
-        onSuccess: ({ user }) => setUser(user),
-        onError: ({ fieldErrors }) => setErrorToForm(registerAndSaveForm.setError, fieldErrors),
+        onSuccess: ({ data: user }) => {
+          setUser(user ?? null);
+          void navigate('/');
+        },
+        onError: ({ fieldErrors }) => {
+          setErrorToForm(registerAndSaveForm.setError, fieldErrors);
+        },
       },
     );
   };
 
   const handleResendOtp = async () => {
     if (sendCount >= 3) {
-      return toaster.error({
+      toaster.error({
         title: 'Resend Failed',
         description: 'You have reached the maximum number of attempts.',
       });
+      return;
     }
 
-    if (isSendingOtp || isVerifyingOtp || isResendingOtp) return;
+    if (sendOtp.isPending || verifyOtp.isPending || resendOtp.isPending) return;
 
-    await resendOtpAsync(token);
+    await resendOtp.mutateAsync(token);
   };
 
   const handleBack = () => {
     switch (currentStep) {
       case 'verify':
-        verifyOtpForm.reset(FORM_DEFAULT_VALUES.otp);
+        verifyOtpForm.reset();
         setCurrentStep('send');
         break;
 
       case 'save':
-        registerAndSaveForm.reset(FORM_DEFAULT_VALUES.register);
+        registerAndSaveForm.reset();
         setCurrentStep('send');
         break;
 
       case 'send':
       default:
-        sendOtpForm.reset(FORM_DEFAULT_VALUES.email);
-        navigate('/');
+        sendOtpForm.reset();
+        void navigate('/');
         break;
     }
   };
 
-  const togglePasswordVisibility = (field: keyof TRegister) => {
+  const togglePasswordVisibility = (field: keyof TPasswordsZodSchema) => {
     if (!PASSWORD_KEYS.includes(field)) return;
 
     setShowPasswords((prev) => ({ ...prev, [field]: !prev[field] }));
@@ -160,7 +167,7 @@ const Register = () => {
       <SocialAuth />
 
       {/* ================= FORM CONTAINER ================= */}
-      <BorderGradient className="flex flex-col gap-5 py-6 lg:gap-6">
+      <BorderGradient className="flex flex-col gap-5 lg:gap-6">
         {/* ================= MAIN FORM ================= */}
         <form
           onSubmit={
@@ -172,60 +179,60 @@ const Register = () => {
           }
           className="grid grid-cols-1 gap-x-4 gap-y-5 sm:grid-cols-2 sm:gap-y-6"
         >
-          {/* ================= STEP: SEND / VERIFY ================= */}
-          {(currentStep === 'send' || currentStep === 'verify') && (
+          {currentStep !== 'send' && (
+            <div className="mx-auto space-x-2 sm:col-span-2">
+              <GradientText text="Email:" type="silver" className="text-sm" />
+              <GradientText text={email} type="accent" className="text-sm" />
+            </div>
+          )}
+          {/* ================= STEP: SEND  ================= */}
+          {currentStep === 'send' && (
+            <Input
+              key={EMAIL_INPUT_DATA.name}
+              label={EMAIL_INPUT_DATA.label}
+              inputProps={{
+                name: EMAIL_INPUT_DATA.name,
+                type: EMAIL_INPUT_DATA.type,
+                placeholder: EMAIL_INPUT_DATA.placeholder,
+                autoComplete: EMAIL_INPUT_DATA.autoComplete,
+                disabled: sendOtp.isPending,
+              }}
+              register={sendOtpForm.register(EMAIL_INPUT_DATA.name)}
+              error={sendOtpForm.formState.errors[EMAIL_INPUT_DATA.name]?.message}
+              containerClassName="sm:col-span-2"
+            />
+          )}
+          {/* ================= STEP: VERIFY ================= */}
+          {currentStep === 'verify' && (
             <>
-              {/* -------- Email Input -------- */}
               <Input
-                key={EMAIL_INPUT_DATA.name}
-                label={EMAIL_INPUT_DATA.label}
+                key={OTP_INPUT_DATA.name}
+                label={OTP_INPUT_DATA.label}
                 inputProps={{
-                  name: EMAIL_INPUT_DATA.name,
-                  type: EMAIL_INPUT_DATA.type,
-                  placeholder: EMAIL_INPUT_DATA.placeholder,
-                  autoComplete: EMAIL_INPUT_DATA.autoComplete,
-                  disabled: isSendingOtp || currentStep === 'verify',
-                  readOnly: currentStep === 'verify',
+                  name: OTP_INPUT_DATA.name,
+                  type: OTP_INPUT_DATA.type,
+                  placeholder: OTP_INPUT_DATA.placeholder,
+                  autoComplete: OTP_INPUT_DATA.autoComplete,
+                  disabled: verifyOtp.isPending || resendOtp.isPending,
                 }}
-                register={sendOtpForm.register(EMAIL_INPUT_DATA.name)}
-                error={sendOtpForm.formState.errors[EMAIL_INPUT_DATA.name]?.message}
+                register={verifyOtpForm.register(OTP_INPUT_DATA.name)}
+                error={verifyOtpForm.formState.errors[OTP_INPUT_DATA.name]?.message}
                 containerClassName="sm:col-span-2"
               />
 
-              {/* -------- OTP Section (only in verify step) -------- */}
-              {currentStep === 'verify' && (
-                <>
-                  <Input
-                    key={OTP_INPUT_DATA.name}
-                    label={OTP_INPUT_DATA.label}
-                    inputProps={{
-                      name: OTP_INPUT_DATA.name,
-                      type: OTP_INPUT_DATA.type,
-                      placeholder: OTP_INPUT_DATA.placeholder,
-                      autoComplete: OTP_INPUT_DATA.autoComplete,
-                      disabled: isVerifyingOtp || isResendingOtp,
-                    }}
-                    register={verifyOtpForm.register(OTP_INPUT_DATA.name)}
-                    error={verifyOtpForm.formState.errors[OTP_INPUT_DATA.name]?.message}
-                    containerClassName="sm:col-span-2"
-                  />
-
-                  {/* -------- Resend OTP -------- */}
-                  <Resend
-                    className="sm:col-span-2"
-                    label="Not received OTP?"
-                    count={sendCount >= 3 ? 0 : 30}
-                    onResend={handleResendOtp}
-                  />
-                </>
-              )}
+              {/* -------- Resend OTP -------- */}
+              <Resend
+                className="sm:col-span-2"
+                label="Not received OTP?"
+                count={sendCount >= 3 ? 0 : 30}
+                onResend={handleResendOtp}
+              />
             </>
           )}
-
           {/* ================= STEP: REGISTER DETAILS ================= */}
           {currentStep === 'save' &&
             REGISTER_INPUT_MAP_DATA.map((input) => {
-              const isPassword = PASSWORD_KEYS.includes(input.name);
+              const isPassword = PASSWORD_KEYS.includes(input.name as keyof TPasswordsZodSchema);
               const isPhone = input.name === 'phoneNumber';
               return (
                 <Input
@@ -234,22 +241,32 @@ const Register = () => {
                   inputProps={{
                     name: input.name,
                     type: isPassword
-                      ? showPasswords[input.name]
+                      ? showPasswords[input.name as keyof TPasswordsZodSchema]
                         ? 'text'
                         : input.type
                       : input.type,
                     placeholder: input.placeholder,
                     autoComplete: input.autoComplete,
-                    disabled: isRegistering,
+                    disabled: registerAndSave.isPending,
                   }}
                   icons={
-                    input.name === 'phoneNumber'
-                      ? { left: '+91' }
-                      : PASSWORD_KEYS.includes(input.name)
+                    isPhone
+                      ? {
+                          left: (
+                            <span className="text-primary/50 border-r-primary/30 items-center border-r py-2 pr-3 text-[13px] leading-0 capitalize">
+                              +91
+                            </span>
+                          ),
+                        }
+                      : isPassword
                         ? {
                             right: {
-                              icon: showPasswords[input.name] ? 'lucide:eye-off' : 'lucide:eye',
-                              onClick: () => togglePasswordVisibility(input.name),
+                              icon: showPasswords[input.name as keyof TPasswordsZodSchema]
+                                ? 'lucide:eye-off'
+                                : 'lucide:eye',
+                              onClick: () => {
+                                togglePasswordVisibility(input.name as keyof TPasswordsZodSchema);
+                              },
                               className: 'cursor-pointer',
                             },
                           }
@@ -284,10 +301,10 @@ const Register = () => {
                 type: 'submit',
                 disabled:
                   currentStep === 'send'
-                    ? isSendingOtp
+                    ? sendOtp.isPending
                     : currentStep === 'verify'
-                      ? isVerifyingOtp || isResendingOtp
-                      : isRegistering,
+                      ? verifyOtp.isPending || resendOtp.isPending
+                      : registerAndSave.isPending,
               }}
               content={
                 currentStep === 'send'

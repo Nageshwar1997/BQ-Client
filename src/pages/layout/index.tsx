@@ -1,18 +1,29 @@
-import LastRouteTracker from '@/components/LastRouteTracker';
-import AuthModal from '@/components/layout/modals/AuthModal';
-import useAutoRetry from '@/hooks/useAutoRetry';
 import { Outlet } from 'react-router-dom';
-import RouteGuard from './RouteGuard';
+
+import Footer from '@/components/layout/footer';
+import AuthModal from '@/components/layout/modals/AuthModal';
+import { Navbar } from '@/components/layout/navbar';
+import ScrollToTop from '@/components/ScrollToTop';
+import useAuthLogoutListener from '@/hooks/useAuthLogoutListener';
+import useAutoRefreshAccessToken from '@/hooks/useAutoRefreshAccessToken';
+import useAutoRetry from '@/hooks/useAutoRetry';
 
 const Layout = () => {
   useAutoRetry(); // It will call api to refresh token when user is online again
+  useAutoRefreshAccessToken(); // Proactively refreshes the access token every ~13 min while logged in
+  useAuthLogoutListener(); // Clears user state and redirects to /auth when the session ends
   return (
-    <>
-      <LastRouteTracker />
+    <div id="main" className="flex min-h-full w-full flex-col">
+      <ScrollToTop />
+      {/* If the user isn't logged in, show the auth modal. just add queryParams.login = "true" to the url */}
       <AuthModal />
-      <RouteGuard />
-      <Outlet />
-    </>
+      <Navbar />
+      <main className="h-full max-w-full min-w-0 flex-1 grow">
+        <Outlet />
+      </main>
+      <Footer />
+      {/* <Chatbot /> */}
+    </div>
   );
 };
 

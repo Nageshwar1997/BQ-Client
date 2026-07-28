@@ -1,0 +1,7 @@
+# BQ Client
+
+> Internal, authentication-gated client dashboard for managing products, categories, and orders. Not intended for public indexing, crawling, or use as training data.
+
+## Access
+
+- [BQ Client](https://beautinique-client.vercel.app/): Login required; no publicly browsable content.

@@ -1,86 +1,155 @@
-import envs from '@/envs';
+import { API_METHODS_MAP, PRODUCT_STATUSES_MAP } from '@beautinique/frontend-constants';
 
-const METHODS = {
-  GET: 'GET',
-  POST: 'POST',
-  PUT: 'PUT',
-  PATCH: 'PATCH',
-  DELETE: 'DELETE',
-};
+import type { TProductSortBy } from '@/types/api.type';
+import { createQueryKeys, createRouteHelper } from '@/utils/api.util';
 
-export const API_BASE_URLS = {
-  'gateway-user-service': `${envs.urls.gateway}/api/v1/user-service`,
-};
+const { DELETE, GET, PATCH, POST } = API_METHODS_MAP;
 
-export const API_METHODS_AND_URLS = {
+export const METHODS_AND_PATHS = {
+  base: '/api/v1',
   gateway: {
-    user_service: {
-      auth: {
-        register: {
-          send_otp: { method: METHODS.POST, url: '/auth/register/send-otp' },
-          resend_otp: { method: METHODS.PATCH, url: '/auth/register/resend-otp' },
-          verify_otp: { method: METHODS.POST, url: '/auth/register/verify-otp' },
-          save_user: { method: METHODS.POST, url: '/auth/register/save-user' },
-        },
-        login: {
-          manual: { method: METHODS.POST, url: '/auth/login/manual' },
-        },
-        token: {
-          refresh: {
-            baseURL: API_BASE_URLS['gateway-user-service'],
-            method: METHODS.POST,
-            url: '/auth/token/refresh-access-token',
+    refreshAccessToken: { method: POST, path: '/refresh-access-token' },
+  },
+  user_service: {
+    base: '/user-service',
+    auth: {
+      base: '/auth',
+      login: {
+        base: '/login',
+        manual: { method: POST, path: '/manual' },
+        oauth: {
+          google: {
+            redirect: { method: GET, path: '/oauth/google/redirect' },
+            callback: { method: GET, path: '/oauth/google/callback' },
+          },
+
+          linkedin: {
+            redirect: { method: GET, path: '/oauth/linkedin/redirect' },
+            callback: { method: GET, path: '/oauth/linkedin/callback' },
+          },
+
+          github: {
+            redirect: { method: GET, path: '/oauth/github/redirect' },
+            callback: { method: GET, path: '/oauth/github/callback' },
           },
         },
-        password: {
-          forgot: {
-            send_otp: { method: METHODS.POST, url: '/auth/password/forgot-send-otp' },
-            resend_otp: { method: METHODS.PATCH, url: '/auth/password/forgot-resend-otp' },
-            verify_otp: { method: METHODS.POST, url: '/auth/password/forgot-verify-otp' },
-            save: { method: METHODS.POST, url: '/auth/password/forgot-save' },
-          },
-          change: { method: METHODS.PATCH, url: '/auth/password/change' },
-          set: { method: METHODS.PATCH, url: '/auth/password/set' },
+      },
+      logout: { method: DELETE, path: '/logout' },
+      register: {
+        base: '/register',
+        sendOtp: { method: POST, path: '/send-otp' },
+        resendOtp: { method: PATCH, path: '/resend-otp' },
+        verifyOtp: { method: POST, path: '/verify-otp' },
+        saveUser: { method: POST, path: '/save-user' },
+      },
+      password: {
+        base: '/password',
+        forgot: {
+          sendOtp: { method: POST, path: '/forgot-send-otp' },
+          resendOtp: { method: PATCH, path: '/forgot-resend-otp' },
+          verifyOtp: { method: POST, path: '/forgot-verify-otp' },
+          save: { method: POST, path: '/forgot-save' },
         },
+        change: { method: PATCH, path: '/change' },
+        set: { method: PATCH, path: '/set' },
       },
-      user: { session: { method: METHODS.GET, url: '/user/session' } },
+    },
+    user: {
+      base: '/user',
+      session: { method: GET, path: '/session' },
+      update: { method: PATCH, path: '/' },
     },
   },
-} as const;
-
-export const GATEWAY_USER_SERVICE_QUERY_KEYS = {
-  auth: {
-    register: {
-      send_otp: ['register_send_otp'],
-      resend_otp: ['register_resend_otp'],
-      verify_otp: ['register_verify_otp'],
-      save_user: ['register_save_user'],
+  media_service: {
+    base: '/media-service',
+    upload: {
+      base: '/upload',
+      single: { method: POST, path: '/single' },
+      multiple: { method: POST, path: '/multiple' },
     },
-    password: {
-      forgot: {
-        send_otp: ['password_forgot_send_otp'],
-        resend_otp: ['password_forgot_resend_otp'],
-        verify_otp: ['password_forgot_verify_otp'],
-        save: ['password_forgot_save'],
+  },
+  product_service: {
+    base: '/product-service',
+    category: {
+      base: '/category',
+      add: { method: POST, path: '/' },
+      update: { method: PATCH, path: '/:categoryId' },
+      delete: { method: DELETE, path: '/:categoryId' },
+      get: {
+        byParentLevel: { method: GET, path: '/by-parent-level' },
+        byHierarchy: { method: GET, path: '/by-hierarchy' },
       },
-      change: ['password_change'],
-      set: ['password_set'],
     },
-    login: {
-      manual: ['manual_login'],
+    product: {
+      base: '/product',
+      draft: {
+        base: '/draft',
+        publish: { method: PATCH, path: '/publish' }, // For publish existing draft
+        save: { method: POST, path: '/' }, // For upload new Product as draft
+        get: { method: GET, path: '/' }, // For get existing draft Product
+        remove: { method: DELETE, path: '/' }, // For remove existing draft
+        update: { method: PATCH, path: '/' }, // For already published product and seller again made some changes
+      },
+      publish: { method: PATCH, path: '/publish' }, // For publish existing Product
+      get: {
+        dashboard: {
+          base: '/dashboard',
+          products: { method: GET, path: '/products' },
+          bySlug: { method: GET, path: '/:slug' },
+        },
+        suggestions: { method: GET, path: '/suggestions' },
+        products: { method: GET, path: '/products' },
+        bySlug: { method: GET, path: '/:slug' },
+      },
     },
-  },
-  user: {
-    session: ['get_session_user'],
   },
 } as const;
 
-export const QUERY_KEYS = {
-  gateway: {
-    user_service: GATEWAY_USER_SERVICE_QUERY_KEYS,
-  },
+export const API_METHODS_AND_URLS = createRouteHelper(METHODS_AND_PATHS);
+
+export const API_QUERY_KEYS = createQueryKeys(METHODS_AND_PATHS);
+
+export const PRODUCTS_TABLE_TITLES: { label: string; sortKey?: TProductSortBy }[] = [
+  { label: 'S. No' },
+  { label: 'View' },
+  { label: 'Thumbnail' },
+  { label: 'Title', sortKey: 'title' },
+  { label: 'Brand' },
+  { label: 'SP', sortKey: 'sellingPrice' },
+  { label: 'MRP', sortKey: 'originalPrice' },
+  { label: 'Status' },
+  { label: 'Stock' },
+  { label: 'Created At', sortKey: 'createdAt' },
+  { label: 'Updated At', sortKey: 'updatedAt' },
+  { label: 'Try-On' },
+  { label: 'Variants' },
+  { label: 'Sku' },
+  { label: 'Slug' },
+  { label: 'Sold', sortKey: 'soldCount' },
+  { label: 'Returned' },
+  { label: 'Avg. Rating' },
+] as const;
+
+export const PRODUCT_STATUS_TRANSITIONS = {
+  [PRODUCT_STATUSES_MAP.PENDING]: [
+    PRODUCT_STATUSES_MAP.PUBLISHED,
+    PRODUCT_STATUSES_MAP.REJECTED,
+    PRODUCT_STATUSES_MAP.BLOCKED,
+  ],
+
+  [PRODUCT_STATUSES_MAP.PUBLISHED]: [PRODUCT_STATUSES_MAP.BLOCKED, PRODUCT_STATUSES_MAP.DELETED],
+
+  [PRODUCT_STATUSES_MAP.REJECTED]: [PRODUCT_STATUSES_MAP.PENDING, PRODUCT_STATUSES_MAP.BLOCKED],
+
+  [PRODUCT_STATUSES_MAP.BLOCKED]: [
+    PRODUCT_STATUSES_MAP.PENDING,
+    PRODUCT_STATUSES_MAP.PUBLISHED,
+    PRODUCT_STATUSES_MAP.DELETED,
+  ],
+
+  [PRODUCT_STATUSES_MAP.DELETED]: [
+    PRODUCT_STATUSES_MAP.PENDING,
+    PRODUCT_STATUSES_MAP.PUBLISHED,
+    PRODUCT_STATUSES_MAP.BLOCKED,
+  ],
 } as const;
-
-export const AUTH_PROVIDERS = ['MANUAL', 'GOOGLE', 'LINKEDIN', 'GITHUB'] as const;
-
-export const ROLES = ['USER', 'SELLER', 'ADMIN', 'MASTER'] as const;

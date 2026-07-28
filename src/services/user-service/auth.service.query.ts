@@ -1,16 +1,17 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 import { authApi } from '@/classes/apis';
-import { GATEWAY_USER_SERVICE_QUERY_KEYS } from '@/constants/api.constants';
+import { API_QUERY_KEYS } from '@/constants/api.constants';
 import { handleApiErrorToaster, handleApiSuccessToaster } from '@/utils/api.util';
 import { toaster } from '@/utils/common.util';
-import { useMutation } from '@tanstack/react-query';
 
-const QUERY_KEY = GATEWAY_USER_SERVICE_QUERY_KEYS.auth;
+const { login, logout, password, register } = API_QUERY_KEYS.user_service.auth;
 
 /* ===================== REGISTER QUERIES ===================== */
 
 export const useRegisterSendOtp = () => {
   return useMutation({
-    mutationKey: QUERY_KEY.register.send_otp,
+    mutationKey: register.sendOtp,
     mutationFn: authApi.registerSendOtp,
     onMutate: () => {
       const toastId = toaster.loading({
@@ -20,8 +21,12 @@ export const useRegisterSendOtp = () => {
 
       return { toastId };
     },
-    onSuccess: ({ message }) => handleApiSuccessToaster(message),
-    onError: (error) => handleApiErrorToaster(error),
+    onSuccess: ({ message }) => {
+      handleApiSuccessToaster(message);
+    },
+    onError: (error) => {
+      handleApiErrorToaster(error);
+    },
     onSettled: (_data, _error, _variables, context) => {
       if (context?.toastId) toaster.remove(context.toastId);
     },
@@ -30,7 +35,7 @@ export const useRegisterSendOtp = () => {
 
 export const useRegisterResendOtp = () => {
   return useMutation({
-    mutationKey: QUERY_KEY.register.resend_otp,
+    mutationKey: register.resendOtp,
     mutationFn: authApi.registerResendOtp,
     onMutate: () => {
       const toastId = toaster.loading({
@@ -39,8 +44,12 @@ export const useRegisterResendOtp = () => {
       });
       return { toastId };
     },
-    onSuccess: ({ message }) => handleApiSuccessToaster(message),
-    onError: (error) => handleApiErrorToaster(error),
+    onSuccess: ({ message }) => {
+      handleApiSuccessToaster(message);
+    },
+    onError: (error) => {
+      handleApiErrorToaster(error);
+    },
     onSettled: (_data, _error, _variables, context) => {
       if (context?.toastId) toaster.remove(context.toastId);
     },
@@ -49,7 +58,7 @@ export const useRegisterResendOtp = () => {
 
 export const useRegisterVerifyOtp = () => {
   return useMutation({
-    mutationKey: QUERY_KEY.register.verify_otp,
+    mutationKey: register.verifyOtp,
     mutationFn: authApi.registerVerifyOtp,
     onMutate: () => {
       const toastId = toaster.loading({
@@ -58,8 +67,12 @@ export const useRegisterVerifyOtp = () => {
       });
       return { toastId };
     },
-    onSuccess: ({ message }) => handleApiSuccessToaster(message),
-    onError: (error) => handleApiErrorToaster(error),
+    onSuccess: ({ message }) => {
+      handleApiSuccessToaster(message);
+    },
+    onError: (error) => {
+      handleApiErrorToaster(error);
+    },
     onSettled: (_data, _error, _variables, context) => {
       if (context?.toastId) toaster.remove(context.toastId);
     },
@@ -68,7 +81,7 @@ export const useRegisterVerifyOtp = () => {
 
 export const useRegisterAndSaveUser = () => {
   return useMutation({
-    mutationKey: QUERY_KEY.register.save_user,
+    mutationKey: register.saveUser,
     mutationFn: authApi.registerSaveUser,
     onMutate: () => {
       const toastId = toaster.loading({
@@ -77,8 +90,12 @@ export const useRegisterAndSaveUser = () => {
       });
       return { toastId };
     },
-    onSuccess: async ({ message }) => handleApiSuccessToaster(message),
-    onError: (error) => handleApiErrorToaster(error),
+    onSuccess: ({ message }) => {
+      handleApiSuccessToaster(message);
+    },
+    onError: (error) => {
+      handleApiErrorToaster(error);
+    },
     onSettled: (_data, _error, _variables, context) => {
       if (context?.toastId) toaster.remove(context.toastId);
     },
@@ -87,19 +104,20 @@ export const useRegisterAndSaveUser = () => {
 
 /* ===================== LOGIN QUERIES ===================== */
 
-export const useManualLogin = () => {
+export const useLogin = () => {
   return useMutation({
-    mutationKey: QUERY_KEY.login.manual,
-    mutationFn: authApi.manualLogin,
+    mutationKey: login.manual,
+    mutationFn: authApi.login,
     onMutate: () => {
-      const toastId = toaster.loading({
-        title: 'Please wait...',
-        description: 'Logging in...',
-      });
+      const toastId = toaster.loading({ title: 'Please wait...', description: 'Logging in...' });
       return { toastId };
     },
-    onSuccess: async ({ message }) => handleApiSuccessToaster(message),
-    onError: (error) => handleApiErrorToaster(error),
+    onSuccess: ({ message }) => {
+      handleApiSuccessToaster(message);
+    },
+    onError: (error) => {
+      handleApiErrorToaster(error);
+    },
     onSettled: (_data, _error, _variables, context) => {
       if (context?.toastId) toaster.remove(context.toastId);
     },
@@ -110,7 +128,7 @@ export const useManualLogin = () => {
 
 export const useForgotPasswordSendOtp = () => {
   return useMutation({
-    mutationKey: QUERY_KEY.password.forgot.send_otp,
+    mutationKey: password.forgot.sendOtp,
     mutationFn: authApi.forgotPasswordSendOtp,
     onMutate: () => {
       const toastId = toaster.loading({
@@ -120,8 +138,12 @@ export const useForgotPasswordSendOtp = () => {
 
       return { toastId };
     },
-    onSuccess: ({ message }) => handleApiSuccessToaster(message),
-    onError: (error) => handleApiErrorToaster(error),
+    onSuccess: ({ message }) => {
+      handleApiSuccessToaster(message);
+    },
+    onError: (error) => {
+      handleApiErrorToaster(error);
+    },
     onSettled: (_data, _error, _variables, context) => {
       if (context?.toastId) toaster.remove(context.toastId);
     },
@@ -130,7 +152,7 @@ export const useForgotPasswordSendOtp = () => {
 
 export const useForgotPasswordResendOtp = () => {
   return useMutation({
-    mutationKey: QUERY_KEY.password.forgot.resend_otp,
+    mutationKey: password.forgot.resendOtp,
     mutationFn: authApi.forgotPasswordResendOtp,
     onMutate: () => {
       const toastId = toaster.loading({
@@ -139,8 +161,12 @@ export const useForgotPasswordResendOtp = () => {
       });
       return { toastId };
     },
-    onSuccess: ({ message }) => handleApiSuccessToaster(message),
-    onError: (error) => handleApiErrorToaster(error),
+    onSuccess: ({ message }) => {
+      handleApiSuccessToaster(message);
+    },
+    onError: (error) => {
+      handleApiErrorToaster(error);
+    },
     onSettled: (_data, _error, _variables, context) => {
       if (context?.toastId) toaster.remove(context.toastId);
     },
@@ -149,7 +175,7 @@ export const useForgotPasswordResendOtp = () => {
 
 export const useForgotPasswordVerifyOtp = () => {
   return useMutation({
-    mutationKey: QUERY_KEY.password.forgot.verify_otp,
+    mutationKey: password.forgot.verifyOtp,
     mutationFn: authApi.forgotPasswordVerifyOtp,
     onMutate: () => {
       const toastId = toaster.loading({
@@ -158,8 +184,12 @@ export const useForgotPasswordVerifyOtp = () => {
       });
       return { toastId };
     },
-    onSuccess: ({ message }) => handleApiSuccessToaster(message),
-    onError: (error) => handleApiErrorToaster(error),
+    onSuccess: ({ message }) => {
+      handleApiSuccessToaster(message);
+    },
+    onError: (error) => {
+      handleApiErrorToaster(error);
+    },
     onSettled: (_data, _error, _variables, context) => {
       if (context?.toastId) toaster.remove(context.toastId);
     },
@@ -168,7 +198,7 @@ export const useForgotPasswordVerifyOtp = () => {
 
 export const useForgotPasswordSave = () => {
   return useMutation({
-    mutationKey: QUERY_KEY.password.forgot.save,
+    mutationKey: password.forgot.save,
     mutationFn: authApi.forgotPasswordSave,
     onMutate: () => {
       const toastId = toaster.loading({
@@ -177,8 +207,12 @@ export const useForgotPasswordSave = () => {
       });
       return { toastId };
     },
-    onSuccess: async ({ message }) => handleApiSuccessToaster(message),
-    onError: (error) => handleApiErrorToaster(error),
+    onSuccess: ({ message }) => {
+      handleApiSuccessToaster(message);
+    },
+    onError: (error) => {
+      handleApiErrorToaster(error);
+    },
     onSettled: (_data, _error, _variables, context) => {
       if (context?.toastId) toaster.remove(context.toastId);
     },
@@ -187,7 +221,7 @@ export const useForgotPasswordSave = () => {
 
 export const useChangePassword = () => {
   return useMutation({
-    mutationKey: QUERY_KEY.password.change,
+    mutationKey: password.change,
     mutationFn: authApi.changePassword,
     onMutate: () => {
       const toastId = toaster.loading({
@@ -196,8 +230,12 @@ export const useChangePassword = () => {
       });
       return { toastId };
     },
-    onSuccess: async ({ message }) => handleApiSuccessToaster(message),
-    onError: (error) => handleApiErrorToaster(error),
+    onSuccess: ({ message }) => {
+      handleApiSuccessToaster(message);
+    },
+    onError: (error) => {
+      handleApiErrorToaster(error);
+    },
     onSettled: (_data, _error, _variables, context) => {
       if (context?.toastId) toaster.remove(context.toastId);
     },
@@ -206,7 +244,7 @@ export const useChangePassword = () => {
 
 export const useSetPassword = () => {
   return useMutation({
-    mutationKey: QUERY_KEY.password.set,
+    mutationKey: password.set,
     mutationFn: authApi.setPassword,
     onMutate: () => {
       const toastId = toaster.loading({
@@ -215,8 +253,38 @@ export const useSetPassword = () => {
       });
       return { toastId };
     },
-    onSuccess: async ({ message }) => handleApiSuccessToaster(message),
-    onError: (error) => handleApiErrorToaster(error),
+    onSuccess: ({ message }) => {
+      handleApiSuccessToaster(message);
+    },
+    onError: (error) => {
+      handleApiErrorToaster(error);
+    },
+    onSettled: (_data, _error, _variables, context) => {
+      if (context?.toastId) toaster.remove(context.toastId);
+    },
+  });
+};
+
+/* ===================== LOGOUT QUERIES ===================== */
+
+export const useLogout = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: logout,
+    mutationFn: authApi.logout,
+    onMutate: () => {
+      const toastId = toaster.loading({ title: 'Please wait...', description: 'Logging out...' });
+      return { toastId };
+    },
+    onSuccess: ({ message }) => {
+      handleApiSuccessToaster(message);
+      // Drop all cached data so nothing from this session leaks into the next login.
+      queryClient.clear();
+    },
+    onError: (error) => {
+      handleApiErrorToaster(error);
+    },
     onSettled: (_data, _error, _variables, context) => {
       if (context?.toastId) toaster.remove(context.toastId);
     },

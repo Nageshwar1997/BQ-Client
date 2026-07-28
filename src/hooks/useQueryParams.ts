@@ -1,47 +1,60 @@
-import type { TParams } from '@/types/hook.type';
+import { isNullOrUndefined } from '@beautinique/shared-utils';
+import { useCallback } from 'react';
+
+import type { TStringRecord } from '@/types/hook.type';
+
 import usePathParams from './usePathParams';
 
 const useQueryParams = () => {
   const { navigate, search, pathname } = usePathParams();
 
-  const getParams = (): TParams => {
+  const getParams = useCallback((): TStringRecord => {
     const searchParams = new URLSearchParams(search);
-    const params: TParams = {};
+    const params: TStringRecord = {};
 
     for (const [key, value] of searchParams.entries()) {
       params[key] = value;
     }
 
     return params;
-  };
+  }, [search]);
 
-  const setParams = (params: TParams): void => {
-    const searchParams = new URLSearchParams(search);
+  const setParams = useCallback(
+    (params: TStringRecord | ((prevParams: TStringRecord) => TStringRecord)): void => {
+      const currentParams = getParams();
 
-    Object.entries(params).forEach(([key, value]) => {
-      if (value === undefined || value === null || value === '') {
-        searchParams.delete(key);
-      } else {
-        searchParams.set(key, value);
-      }
-    });
+      const updatedParams =
+        typeof params === 'function' ? params(currentParams) : { ...currentParams, ...params };
 
-    navigate({ pathname, search: searchParams.toString() });
-  };
+      const searchParams = new URLSearchParams();
 
-  const removeParams = (keys: string | string[]): void => {
-    const searchParams = new URLSearchParams(search);
+      Object.entries(updatedParams).forEach(([key, value]) => {
+        if (!isNullOrUndefined(value) && value !== '') {
+          searchParams.set(key, value);
+        }
+      });
 
-    (Array.isArray(keys) ? keys : [keys]).forEach((key) => {
-      searchParams.delete(key);
-    });
+      void navigate({ pathname, search: searchParams.toString() });
+    },
+    [getParams, navigate, pathname],
+  );
 
-    navigate({ pathname, search: searchParams.toString() });
-  };
+  const removeParams = useCallback(
+    (keys: string | string[]): void => {
+      setParams((prevParams) => {
+        const keysToRemove = new Set(Array.isArray(keys) ? keys : [keys]);
 
-  const clearParams = (): void => {
-    navigate({ pathname, search: '' });
-  };
+        return Object.fromEntries(
+          Object.entries(prevParams).filter(([key]) => !keysToRemove.has(key)),
+        );
+      });
+    },
+    [setParams],
+  );
+
+  const clearParams = useCallback((): void => {
+    void navigate({ pathname, search: '' });
+  }, [navigate, pathname]);
 
   return {
     queryParams: getParams(),

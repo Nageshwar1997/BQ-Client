@@ -1,20 +1,21 @@
-import Button from '@/components/ui/Button';
-import envs from '@/envs';
 import { isRouteErrorResponse, Link, useRouteError } from 'react-router-dom';
 
-type TError = {
+import Button from '@/components/ui/Button';
+import envs from '@/envs';
+
+interface IError {
   imgText: string;
   title: string;
   message: string;
-};
+}
 
-const ErrorWrapper = ({ imgText, title, message }: TError) => {
+const ErrorWrapper = ({ imgText, title, message }: IError) => {
   const error = useRouteError();
 
   let devMessage = 'Something went wrong';
 
   if (isRouteErrorResponse(error)) {
-    devMessage = error.statusText || error.data || devMessage;
+    devMessage = error.statusText || String(error.data) || devMessage;
   } else if (error instanceof Error) {
     devMessage = error.message;
   }

@@ -1,20 +1,27 @@
-import { BEAUTY_FACTS } from '@/constants/common.constants';
-import type { TClassName } from '@/types/component.type';
 import { useEffect, useMemo, useState } from 'react';
+
+import { BEAUTY_FACTS } from '@/constants/common.constants';
+import type { IClassName } from '@/types/component.type';
+
 import Teddy from './teddy';
 
-const LoadingScreen = ({ className = '' }: TClassName) => {
+const factsLength = BEAUTY_FACTS.length;
+const getRandomIndex = () => Math.floor(Math.random() * factsLength);
+
+const LoadingScreen = ({ className = '' }: IClassName) => {
   const TEXT_CHANGE_INTERVAL = 5000;
 
-  const [fact, setFact] = useState(BEAUTY_FACTS[getRandomIndex(BEAUTY_FACTS)]);
+  const [fact, setFact] = useState(BEAUTY_FACTS[getRandomIndex()] ?? '');
   useEffect(() => {
     const textIntervalId = setInterval(() => {
-      const getRandomFactIndex = getRandomIndex(BEAUTY_FACTS);
-      setFact(BEAUTY_FACTS[getRandomFactIndex]);
+      const getRandomFactIndex = getRandomIndex();
+      setFact(BEAUTY_FACTS[getRandomFactIndex] ?? '');
     }, TEXT_CHANGE_INTERVAL);
 
-    return () => clearInterval(textIntervalId);
-  }, [BEAUTY_FACTS]);
+    return () => {
+      clearInterval(textIntervalId);
+    };
+  }, []);
 
   const loadingText = useMemo(
     () => (
@@ -25,9 +32,7 @@ const LoadingScreen = ({ className = '' }: TClassName) => {
     ),
     [fact],
   );
-  function getRandomIndex(array: string[]) {
-    return Math.floor(Math.random() * array.length);
-  }
+
   return (
     <div
       className={`fixed inset-0 z-100 flex h-dvh w-dvw flex-col items-center justify-center bg-[radial-gradient(circle,rgba(var(--primary-rgb),0.5)_0%,rgba(var(--primary-rgb),0.2)_30%,rgba(var(--primary-invert-rgb),0.2)_60%,rgba(var(--primary-invert-rgb),1)_100%)] px-10 ${className}`}

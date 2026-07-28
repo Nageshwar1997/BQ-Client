@@ -1,8 +1,9 @@
 import useActionsStore from '@/stores/action.store';
 import useUserStore from '@/stores/user.store';
+
 import useQueryParams from './useQueryParams';
 
-export const useAuthAction = () => {
+const useAuthAction = () => {
   const user = useUserStore((s) => s.user);
   const addAction = useActionsStore((s) => s.addAction);
   const { queryParams, setParams } = useQueryParams();
@@ -15,7 +16,7 @@ export const useAuthAction = () => {
 
         // async safe
         if (result instanceof Promise) {
-          result.catch((err) => {
+          result.catch((err: unknown) => {
             console.error('Action failed:', err);
           });
         }
@@ -37,3 +38,5 @@ export const useAuthAction = () => {
 
   return { runAction };
 };
+
+export default useAuthAction;

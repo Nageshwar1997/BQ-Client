@@ -1,5 +1,7 @@
-import type { TApiStatus } from '@/types/component.type';
 import { Icon } from '@iconify/react';
+
+import type { TApiStatus } from '@/types/component.type';
+
 import Divider from '../ui/Divider';
 import GradientText from '../ui/GradientText';
 import LoadingRings from './loaders/LoadingRings';
@@ -10,18 +12,22 @@ const ApiDescription = ({ status, ...props }: TApiStatus) => {
 
   return (
     <div className="flex flex-col items-center justify-center gap-2">
-      <Icon
-        icon={status === 'error' ? 'solar:danger-triangle-linear' : 'solar:box-minimalistic-linear'}
-        className="text-silver-jet size-12 shrink-0 md:size-16"
-      />
+      <div className="bg-primary/5 grid size-8 place-items-center rounded-full p-2 md:size-10">
+        <Icon
+          icon={status === 'error' ? 'solar:danger-triangle-linear' : 'solar:folder-error-linear'}
+          className="text-silver-jet size-full shrink-0"
+        />
+      </div>
+
       <GradientText
         type="silver"
-        className="text-base text-shadow-sm sm:text-lg md:text-xl lg:text-2xl xl:text-3xl"
+        className="text-sm text-shadow-sm sm:text-base md:text-lg"
         text={typeof title === 'string' ? title : ''}
-        children={title && typeof title !== 'string' ? title : undefined}
-      />
+      >
+        {title && typeof title !== 'string' ? title : undefined}
+      </GradientText>
       {description && (
-        <div className="text-silver-jet text-center text-sm leading-6 font-normal sm:text-base md:text-lg">
+        <div className="text-silver-jet text-center text-xs leading-6 font-normal sm:text-sm">
           {description}
         </div>
       )}
@@ -33,7 +39,7 @@ const ApiDescription = ({ status, ...props }: TApiStatus) => {
 const ApiStatus = ({ className = '', ...props }: TApiStatus) => {
   return (
     <div
-      className={`m-auto flex h-full w-full flex-col items-center justify-center gap-2 p-4 ${className}`}
+      className={`m-auto flex h-full min-h-60 w-full flex-col items-center justify-center gap-2 p-4 ${className}`}
     >
       {props.status === 'loading' ? (
         <LoadingRings text={'text' in props && props.text ? props.text : 'Loading....'} />

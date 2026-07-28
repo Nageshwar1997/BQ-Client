@@ -7,13 +7,13 @@ declare global {
     description: string;
     image?: string;
     order_id?: string;
-    handler?: (response: { [key: string]: string }) => void;
+    handler?: (response: Record<string, string>) => void;
     prefill?: {
       name?: string;
       email?: string;
       contact?: string;
     };
-    notes?: { [key: string]: string };
+    notes?: Record<string, string>;
     theme?: { color?: string };
   }
 
@@ -22,11 +22,11 @@ declare global {
     close: () => void;
     on(
       event: string,
-      callback: (response: { [key: string]: string }) => void
+      callback: (response: Record<string, string>) => void
     ): void;
     off(
       event: string,
-      callback: (response: { [key: string]: string }) => void
+      callback: (response: Record<string, string>) => void
     ): void;
   }
 

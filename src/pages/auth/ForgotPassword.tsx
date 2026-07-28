@@ -1,3 +1,13 @@
+import type {
+  TEmailZodSchema,
+  TOtpZodSchema,
+  TPasswordsZodSchema,
+} from '@beautinique/frontend-types';
+import { emailZodSchema, otpZodSchema, passwordsZodSchema } from '@beautinique/frontend-zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+
 import BorderGradient from '@/components/layout/containers/BorderGradient';
 import AuthBottomInstructions from '@/components/ui/AuthBottomInstructions';
 import Button from '@/components/ui/Button';
@@ -11,7 +21,6 @@ import {
   PASSWORDS_INPUT_MAP_DATA,
 } from '@/constants/input.constants';
 import usePathParams from '@/hooks/usePathParams';
-import { emailSchema, otpSchema, passwordsSchema } from '@/schemas/user.schema';
 import {
   useForgotPasswordResendOtp,
   useForgotPasswordSave,
@@ -19,12 +28,8 @@ import {
   useForgotPasswordVerifyOtp,
 } from '@/services/user-service/auth.service.query';
 import useUserStore from '@/stores/user.store';
-import type { TEmail, TOtp, TPasswords } from '@/types/schema.type';
 import { toaster } from '@/utils/common.util';
 import { setErrorToForm } from '@/utils/form.util';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 
 const ForgotPassword = () => {
   /* ================= 1. Store Hooks ================= */
@@ -34,87 +39,84 @@ const ForgotPassword = () => {
   const { navigate } = usePathParams();
 
   /* ================= 3. API/Queries Hooks ================= */
-  const {
-    data: sendOtpData,
-    isPending: isSendingOtp,
-    mutateAsync: sendOtpAsync,
-  } = useForgotPasswordSendOtp();
-  const {
-    data: resendOtpData,
-    isPending: isResendingOtp,
-    mutateAsync: resendOtpAsync,
-  } = useForgotPasswordResendOtp();
-  const { isPending: isVerifyingOtp, mutateAsync: verifyOtpAsync } = useForgotPasswordVerifyOtp();
-  const { isPending: isRegistering, mutateAsync: registerAndSaveAsync } = useForgotPasswordSave();
+  const sendOtp = useForgotPasswordSendOtp();
+  const resendOtp = useForgotPasswordResendOtp();
+  const verifyOtp = useForgotPasswordVerifyOtp();
+  const savePassword = useForgotPasswordSave();
+
+  const token = useMemo(() => sendOtp.data?.data ?? '', [sendOtp.data]);
+
+  const sendCount = useMemo(() => resendOtp.data?.data ?? 1, [resendOtp.data]);
 
   /* ================= 4. Forms ================= */
-  const sendOtpForm = useForm<TEmail>({
-    resolver: zodResolver(emailSchema),
-    defaultValues: FORM_DEFAULT_VALUES.email,
-  });
+  const sendOtpForm = useForm<TEmailZodSchema>({ resolver: zodResolver(emailZodSchema) });
 
-  const verifyOtpForm = useForm<TOtp>({
-    resolver: zodResolver(otpSchema),
-    defaultValues: FORM_DEFAULT_VALUES.otp,
-  });
+  const verifyOtpForm = useForm<TOtpZodSchema>({ resolver: zodResolver(otpZodSchema) });
 
-  const passwordForm = useForm<TPasswords>({
-    resolver: zodResolver(passwordsSchema),
-    defaultValues: FORM_DEFAULT_VALUES.passwords,
-  });
+  const passwordForm = useForm<TPasswordsZodSchema>({ resolver: zodResolver(passwordsZodSchema) });
 
   /* ================= 5. Local State ================= */
   const [currentStep, setCurrentStep] = useState<'send' | 'verify' | 'save'>('send');
 
-  const [showPasswords, setShowPasswords] = useState<Record<keyof TPasswords, boolean>>({
+  const [showPasswords, setShowPasswords] = useState<Record<keyof TPasswordsZodSchema, boolean>>({
     password: false,
     confirmPassword: false,
   });
 
-  /* ================= 6. Derived Values ================= */
-  const token = sendOtpData?.token || '';
-  const sendCount = resendOtpData?.sendCount || 1;
-
   /* ================= 7. Handlers ================= */
 
-  const handleSendOtp = async (data: TEmail) => {
-    await sendOtpAsync(data, {
-      onSuccess: () => setCurrentStep('verify'),
-      onError: ({ fieldErrors }) => setErrorToForm(sendOtpForm.setError, fieldErrors),
+  const handleSendOtp = async (data: TEmailZodSchema) => {
+    await sendOtp.mutateAsync(data, {
+      onSuccess: () => {
+        setCurrentStep('verify');
+      },
+      onError: ({ fieldErrors }) => {
+        setErrorToForm(sendOtpForm.setError, fieldErrors);
+      },
     });
   };
 
-  const handleVerifyOtp = async (data: TOtp) => {
-    await verifyOtpAsync(
+  const handleVerifyOtp = async (data: TOtpZodSchema) => {
+    await verifyOtp.mutateAsync(
       { ...data, token },
       {
-        onSuccess: () => setCurrentStep('save'),
-        onError: ({ fieldErrors }) => setErrorToForm(verifyOtpForm.setError, fieldErrors),
+        onSuccess: () => {
+          setCurrentStep('save');
+        },
+        onError: ({ fieldErrors }) => {
+          setErrorToForm(verifyOtpForm.setError, fieldErrors);
+        },
       },
     );
   };
 
-  const handleForgotPassword = async (data: TPasswords) => {
-    await registerAndSaveAsync(
+  const handleForgotPassword = async (data: TPasswordsZodSchema) => {
+    await savePassword.mutateAsync(
       { ...data, token },
       {
-        onSuccess: ({ user }) => setUser(user),
-        onError: ({ fieldErrors }) => setErrorToForm(passwordForm.setError, fieldErrors),
+        onSuccess: ({ data: user }) => {
+          setUser(user ?? null);
+        },
+        onError: ({ fieldErrors }) => {
+          setErrorToForm(passwordForm.setError, fieldErrors);
+        },
       },
     );
   };
 
   const handleResendOtp = async () => {
     if (sendCount >= 3) {
-      return toaster.error({
+      toaster.error({
         title: 'Resend Failed',
         description: 'You have reached the maximum number of attempts.',
       });
+
+      return;
     }
 
-    if (isSendingOtp || isVerifyingOtp || isResendingOtp) return;
+    if (sendOtp.isPending || verifyOtp.isPending || resendOtp.isPending) return;
 
-    await resendOtpAsync(token);
+    await resendOtp.mutateAsync(token);
   };
 
   const handleBack = () => {
@@ -132,12 +134,12 @@ const ForgotPassword = () => {
       case 'send':
       default:
         sendOtpForm.reset(FORM_DEFAULT_VALUES.email);
-        navigate(-1);
+        void navigate(-1);
         break;
     }
   };
 
-  const togglePasswordVisibility = (field: keyof TPasswords) => {
+  const togglePasswordVisibility = (field: keyof TPasswordsZodSchema) => {
     setShowPasswords((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
@@ -177,7 +179,7 @@ const ForgotPassword = () => {
                   type: EMAIL_INPUT_DATA.type,
                   placeholder: EMAIL_INPUT_DATA.placeholder,
                   autoComplete: EMAIL_INPUT_DATA.autoComplete,
-                  disabled: isSendingOtp || currentStep === 'verify',
+                  disabled: sendOtp.isPending || currentStep === 'verify',
                   readOnly: currentStep === 'verify',
                 }}
                 register={sendOtpForm.register(EMAIL_INPUT_DATA.name)}
@@ -195,7 +197,7 @@ const ForgotPassword = () => {
                       type: OTP_INPUT_DATA.type,
                       placeholder: OTP_INPUT_DATA.placeholder,
                       autoComplete: OTP_INPUT_DATA.autoComplete,
-                      disabled: isVerifyingOtp || isResendingOtp,
+                      disabled: verifyOtp.isPending || resendOtp.isPending,
                     }}
                     register={verifyOtpForm.register(OTP_INPUT_DATA.name)}
                     error={verifyOtpForm.formState.errors[OTP_INPUT_DATA.name]?.message}
@@ -224,12 +226,14 @@ const ForgotPassword = () => {
                     type: showPasswords[input.name] ? 'text' : input.type,
                     placeholder: input.placeholder,
                     autoComplete: input.autoComplete,
-                    disabled: isRegistering,
+                    disabled: savePassword.isPending,
                   }}
                   icons={{
                     right: {
                       icon: showPasswords[input.name] ? 'lucide:eye-off' : 'lucide:eye',
-                      onClick: () => togglePasswordVisibility(input.name),
+                      onClick: () => {
+                        togglePasswordVisibility(input.name);
+                      },
                       className: 'cursor-pointer',
                     },
                   }}
@@ -261,10 +265,10 @@ const ForgotPassword = () => {
                 type: 'submit',
                 disabled:
                   currentStep === 'send'
-                    ? isSendingOtp
+                    ? sendOtp.isPending
                     : currentStep === 'verify'
-                      ? isVerifyingOtp || isResendingOtp
-                      : isRegistering,
+                      ? verifyOtp.isPending || resendOtp.isPending
+                      : savePassword.isPending,
               }}
               content={
                 currentStep === 'send'
