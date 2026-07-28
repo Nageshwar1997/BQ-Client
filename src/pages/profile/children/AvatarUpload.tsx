@@ -3,13 +3,12 @@ import { Icon } from '@iconify/react';
 import { type ChangeEvent, type InputHTMLAttributes, useEffect, useState } from 'react';
 
 import { InputError } from '@/components/ui/inputs/children';
-import type { IUser } from '@/types/api.type';
+import useUserStore from '@/stores/user.store';
 
 const getInitials = (firstName: string, lastName: string) =>
   `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
 
 interface IAvatarUploadProps {
-  user: IUser;
   error?: string;
   fileInputProps: Pick<InputHTMLAttributes<HTMLInputElement>, 'disabled'> & {
     value?: File | string;
@@ -17,7 +16,9 @@ interface IAvatarUploadProps {
   };
 }
 
-const AvatarUpload = ({ user, error, fileInputProps }: IAvatarUploadProps) => {
+const AvatarUpload = ({ error, fileInputProps }: IAvatarUploadProps) => {
+  const user = useUserStore((s) => s.user);
+
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
@@ -45,6 +46,8 @@ const AvatarUpload = ({ user, error, fileInputProps }: IAvatarUploadProps) => {
       URL.revokeObjectURL(url);
     };
   }, [fileInputProps.value]);
+
+  if (!user) return null;
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (fileInputProps.disabled) return;

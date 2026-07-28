@@ -1,5 +1,5 @@
-import type { TInfer } from '@beautinique/frontend-zod';
-import { imageUnionZodSchema, updateUserSchema } from '@beautinique/frontend-zod';
+import type { TUpdateUserZodSchema } from '@beautinique/frontend-types';
+import { updateUserSchema } from '@beautinique/frontend-zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
@@ -14,20 +14,16 @@ import useUserStore from '@/stores/user.store';
 
 import AvatarUpload from './children/AvatarUpload';
 
-const profileFormSchema = updateUserSchema.extend({
-  avatar: imageUnionZodSchema,
-});
-
-export type TProfileFormSchema = TInfer<typeof profileFormSchema>;
-
 const Profile = () => {
   const user = useUserStore((s) => s.user);
+  const setUser = useUserStore((s) => s.setUser);
+
   const uploadMedia = useUploadSingleMedia();
   const updateUser = useUpdateUser();
-  const [editableFields, setEditableFields] = useState<Set<keyof TProfileFormSchema>>(new Set());
+  const [editableFields, setEditableFields] = useState<Set<keyof TUpdateUserZodSchema>>(new Set());
 
-  const { control, register, handleSubmit, formState, reset } = useForm<TProfileFormSchema>({
-    resolver: zodResolver(profileFormSchema),
+  const { control, register, handleSubmit, formState, reset } = useForm<TUpdateUserZodSchema>({
+    resolver: zodResolver(updateUserSchema),
     defaultValues: {
       firstName: user?.firstName,
       lastName: user?.lastName,
@@ -43,9 +39,8 @@ const Profile = () => {
 
   const isSubmitting = uploadMedia.isPending || updateUser.isPending;
 
-  const onSubmit = async (values: TProfileFormSchema) => {
-    let avatar = values.avatar;
-
+  const onSubmit = async (values: TUpdateUserZodSchema) => {
+    const body = values;
     if (avatar instanceof File) {
       const formData = new FormData();
       formData.append('file', avatar);
@@ -56,13 +51,16 @@ const Profile = () => {
         toasterInfo: { title: 'Please wait...', description: 'Uploading your photo...' },
       });
 
-      avatar = data ?? avatar;
+      body.avatar = data ?? avatar;
     }
 
-    await updateUser.mutateAsync({ ...values, avatar });
-
-    setEditableFields(new Set());
-    reset({ ...values, avatar });
+    await updateUser.mutateAsync(body, {
+      onSuccess: ({ data: user }) => {
+        setUser(user ?? null);
+        setEditableFields(new Set());
+        reset();
+      },
+    });
   };
 
   return (
@@ -78,7 +76,6 @@ const Profile = () => {
           name="avatar"
           render={({ field: { onChange } }) => (
             <AvatarUpload
-              user={user}
               error={formState.errors.avatar?.message}
               fileInputProps={{
                 value: avatar,
