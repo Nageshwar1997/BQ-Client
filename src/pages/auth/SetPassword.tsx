@@ -79,7 +79,7 @@ const SetPassword = () => {
       <BorderGradient className="flex flex-col gap-5 lg:gap-6">
         {/* ================= MAIN FORM ================= */}
         <form onSubmit={handleSubmit(handleSetPassword)} className="space-y-5 sm:space-y-6">
-          {/* ================= STEP: CHANGE PASSWORD ================= */}
+          {/* ================= STEP: SET PASSWORD ================= */}
           {PASSWORDS_INPUT_MAP_DATA.map((input) => {
             return (
               <Input
