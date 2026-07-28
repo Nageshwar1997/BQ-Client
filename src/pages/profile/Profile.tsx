@@ -11,8 +11,20 @@ import { UPDATE_USER_INPUT_MAP_DATA } from '@/constants/input.constants';
 import { useUploadSingleMedia } from '@/services/media-service/media.service.query';
 import { useUpdateUser } from '@/services/user-service/user.service.query';
 import useUserStore from '@/stores/user.store';
+import { isDeepEqual, toaster } from '@/utils/common.util';
 
 import AvatarUpload from './children/AvatarUpload';
+
+const getUpdatedFields = (
+  original: TUpdateUserZodSchema,
+  updated: TUpdateUserZodSchema,
+): Partial<TUpdateUserZodSchema> => {
+  const changedKeys = (Object.keys(updated) as (keyof TUpdateUserZodSchema)[]).filter(
+    (key) => !isDeepEqual(original[key], updated[key]),
+  );
+
+  return Object.fromEntries(changedKeys.map((key) => [key, updated[key]]));
+};
 
 const Profile = () => {
   const user = useUserStore((s) => s.user);
@@ -44,7 +56,7 @@ const Profile = () => {
     if (avatar instanceof File) {
       const formData = new FormData();
       formData.append('file', avatar);
-      formData.append('folder', 'avatars');
+      formData.append('folder', 'Avatars');
 
       const { data } = await uploadMedia.mutateAsync({
         data: formData,
@@ -54,9 +66,25 @@ const Profile = () => {
       body.avatar = data ?? avatar;
     }
 
-    await updateUser.mutateAsync(body, {
-      onSuccess: ({ data: user }) => {
-        setUser(user ?? null);
+    const updatedFields = getUpdatedFields(
+      {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        avatar: user.avatar,
+      },
+      body,
+    );
+
+    if (Object.keys(updatedFields).length === 0) {
+      toaster.error({ title: 'No changes', description: 'You have not made any changes.' });
+      return;
+    }
+
+    await updateUser.mutateAsync(updatedFields, {
+      onSuccess: ({ data: updatedUser }) => {
+        setUser(updatedUser ?? null);
         setEditableFields(new Set());
         reset();
       },

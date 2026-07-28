@@ -2,7 +2,6 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { userApi } from '@/classes/apis';
 import { API_QUERY_KEYS } from '@/constants/api.constants';
-import useUserStore from '@/stores/user.store';
 import { handleApiErrorToaster, handleApiSuccessToaster } from '@/utils/api.util';
 
 const { session, update } = API_QUERY_KEYS.user_service.user;
@@ -24,13 +23,10 @@ export const useGetSessionUser = ({ enabled = true }) => {
 };
 
 export const useUpdateUser = () => {
-  const setUser = useUserStore((s) => s.setUser);
-
   return useMutation({
     mutationKey: update,
     mutationFn: userApi.updateUser,
-    onSuccess: ({ data, message }) => {
-      if (data) setUser(data);
+    onSuccess: ({ message }) => {
       handleApiSuccessToaster(message);
     },
     onError: (error) => {
