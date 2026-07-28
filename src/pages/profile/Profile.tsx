@@ -127,20 +127,24 @@ const Profile = () => {
               readOnly: !editableFields.has(field.name),
               disabled: isSubmitting,
             }}
-            icons={
-              editableFields.has(field.name)
-                ? undefined
-                : {
-                    right: {
-                      icon: 'solar:pen-2-linear',
-                      onClick: () => {
-                        setEditableFields((prev) => new Set(prev).add(field.name));
-                      },
-                      className:
-                        'text-primary/50 hover:text-primary size-4.5 shrink-0 cursor-pointer',
-                    },
-                  }
-            }
+            icons={{
+              ...(field.name === 'phoneNumber' && {
+                left: (
+                  <span className="text-primary/50 border-r-primary/30 items-center border-r py-2 pr-3 text-[13px] leading-0 capitalize">
+                    +91
+                  </span>
+                ),
+              }),
+              ...(!editableFields.has(field.name) && {
+                right: {
+                  icon: 'solar:pen-2-linear',
+                  onClick: () => {
+                    setEditableFields((prev) => new Set(prev).add(field.name));
+                  },
+                  className: 'text-primary/50 hover:text-primary size-4.5 shrink-0 cursor-pointer',
+                },
+              }),
+            }}
           />
         ))}
       </div>
