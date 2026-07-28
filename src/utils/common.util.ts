@@ -189,6 +189,35 @@ export const isDeepEqual = <T>(
   });
 };
 
+const isPlainObject = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' &&
+  value !== null &&
+  !Array.isArray(value) &&
+  !(value instanceof Date) &&
+  !(value instanceof File) &&
+  !(value instanceof Map) &&
+  !(value instanceof Set);
+
+/**
+ * Diffs `original` against `updated`. Plain objects are diffed key-by-key (only the changed
+ * keys come back); everything else (arrays, Dates, Files, Maps, Sets, primitives, ...) has no
+ * notion of "fields", so the whole `updated` value comes back if it differs.
+ * Returns `undefined` when nothing changed.
+ */
+export const getUpdatedFields = <T>(original: T, updated: T): Partial<T> | T | undefined => {
+  if (isDeepEqual(original, updated)) return undefined;
+
+  if (isPlainObject(original) && isPlainObject(updated)) {
+    const changedKeys = Object.keys(updated).filter(
+      (key) => !isDeepEqual(original[key], updated[key]),
+    );
+
+    return Object.fromEntries(changedKeys.map((key) => [key, updated[key]])) as Partial<T>;
+  }
+
+  return updated;
+};
+
 const getPosterFromBlobVideo = (blobVideoUrl: string, timeInSeconds = 0): Promise<string> => {
   return new Promise((resolve) => {
     let posterCreated = false;

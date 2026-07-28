@@ -11,20 +11,9 @@ import { UPDATE_USER_INPUT_MAP_DATA } from '@/constants/input.constants';
 import { useUploadSingleMedia } from '@/services/media-service/media.service.query';
 import { useUpdateUser } from '@/services/user-service/user.service.query';
 import useUserStore from '@/stores/user.store';
-import { isDeepEqual, toaster } from '@/utils/common.util';
+import { getUpdatedFields, toaster } from '@/utils/common.util';
 
 import AvatarUpload from './children/AvatarUpload';
-
-const getUpdatedFields = (
-  original: TUpdateUserZodSchema,
-  updated: TUpdateUserZodSchema,
-): Partial<TUpdateUserZodSchema> => {
-  const changedKeys = (Object.keys(updated) as (keyof TUpdateUserZodSchema)[]).filter(
-    (key) => !isDeepEqual(original[key], updated[key]),
-  );
-
-  return Object.fromEntries(changedKeys.map((key) => [key, updated[key]]));
-};
 
 const Profile = () => {
   const user = useUserStore((s) => s.user);
@@ -77,7 +66,7 @@ const Profile = () => {
       body,
     );
 
-    if (Object.keys(updatedFields).length === 0) {
+    if (!updatedFields) {
       toaster.error({ title: 'No changes', description: 'You have not made any changes.' });
       return;
     }
