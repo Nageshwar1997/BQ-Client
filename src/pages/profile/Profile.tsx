@@ -2,7 +2,7 @@ import type { TInfer } from '@beautinique/frontend-zod';
 import { imageUnionZodSchema, updateUserSchema } from '@beautinique/frontend-zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 
 import Button from '@/components/ui/Button';
 import GradientText from '@/components/ui/GradientText';
@@ -25,9 +25,8 @@ const Profile = () => {
   const uploadMedia = useUploadSingleMedia();
   const updateUser = useUpdateUser();
   const [editableFields, setEditableFields] = useState<Set<keyof TProfileFormSchema>>(new Set());
-  const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
-  const { register, handleSubmit, formState, reset } = useForm<TProfileFormSchema>({
+  const { control, register, handleSubmit, formState, reset } = useForm<TProfileFormSchema>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
       firstName: user?.firstName,
@@ -38,6 +37,8 @@ const Profile = () => {
     },
   });
 
+  const avatar = useWatch({ control, name: 'avatar', defaultValue: user?.avatar });
+
   if (!user) return null;
 
   const isSubmitting = uploadMedia.isPending || updateUser.isPending;
@@ -45,9 +46,9 @@ const Profile = () => {
   const onSubmit = async (values: TProfileFormSchema) => {
     let avatar = values.avatar;
 
-    if (avatarFile) {
+    if (avatar instanceof File) {
       const formData = new FormData();
-      formData.append('file', avatarFile);
+      formData.append('file', avatar);
       formData.append('folder', 'avatars');
 
       const { data } = await uploadMedia.mutateAsync({
@@ -60,7 +61,6 @@ const Profile = () => {
 
     await updateUser.mutateAsync({ ...values, avatar });
 
-    setAvatarFile(null);
     setEditableFields(new Set());
     reset({ ...values, avatar });
   };
@@ -73,7 +73,21 @@ const Profile = () => {
       className="border-primary/10 bg-secondary-invert flex flex-col gap-6 rounded-2xl border p-4 sm:p-6"
     >
       <div className="flex items-center gap-4 sm:gap-6">
-        <AvatarUpload user={user} avatarFile={avatarFile} onFileSelect={setAvatarFile} />
+        <Controller
+          control={control}
+          name="avatar"
+          render={({ field: { onChange } }) => (
+            <AvatarUpload
+              user={user}
+              error={formState.errors.avatar?.message}
+              fileInputProps={{
+                value: avatar,
+                onChange: onChange,
+                disabled: isSubmitting,
+              }}
+            />
+          )}
+        />
         <div>
           <GradientText
             type="accent"

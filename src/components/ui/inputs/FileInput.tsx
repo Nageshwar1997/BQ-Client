@@ -107,7 +107,6 @@ const InputWithIconClick = ({
 );
 
 const CenterContent = ({ fileInputProps }: Pick<IFileInput, 'fileInputProps'>) => {
-  const inputRef = useRef<HTMLInputElement | null>(null);
   const { value: _, ...inputProps } = fileInputProps;
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -130,7 +129,6 @@ const CenterContent = ({ fileInputProps }: Pick<IFileInput, 'fileInputProps'>) =
       </p>
       {/* Input */}
       <input
-        ref={inputRef}
         aria-autocomplete="none"
         {...inputProps}
         id={fileInputProps.id ?? fileInputProps.name}

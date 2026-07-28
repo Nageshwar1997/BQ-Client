@@ -1,83 +1,93 @@
+import { IMAGE_MIMES } from '@beautinique/frontend-constants';
 import { Icon } from '@iconify/react';
-import { type ChangeEvent, useEffect, useRef, useState } from 'react';
+import { type ChangeEvent, type InputHTMLAttributes, useEffect, useState } from 'react';
 
+import { InputError } from '@/components/ui/inputs/children';
 import type { IUser } from '@/types/api.type';
-import { toaster } from '@/utils/common.util';
 
 const getInitials = (firstName: string, lastName: string) =>
   `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
 
 interface IAvatarUploadProps {
   user: IUser;
-  avatarFile: File | null;
-  onFileSelect: (file: File) => void;
+  error?: string;
+  fileInputProps: Pick<InputHTMLAttributes<HTMLInputElement>, 'disabled'> & {
+    value?: File | string;
+    onChange?: (value?: File | string) => void;
+  };
 }
 
-const AvatarUpload = ({ user, avatarFile, onFileSelect }: IAvatarUploadProps) => {
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
+const AvatarUpload = ({ user, error, fileInputProps }: IAvatarUploadProps) => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!avatarFile) return;
+    const value = fileInputProps.value;
 
-    const url = URL.createObjectURL(avatarFile);
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (!value) {
+      /**
+       * previewUrl is derived from URL.createObjectURL(), an external-system side effect
+       * unsafe to run during render, so this branch can't be computed with a plain useMemo.
+       */
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setPreviewUrl(null);
+      return;
+    }
+
+    if (typeof value === 'string') {
+      setPreviewUrl(value);
+      return;
+    }
+
+    const url = URL.createObjectURL(value);
     setPreviewUrl(url);
 
     return () => {
       URL.revokeObjectURL(url);
     };
-  }, [avatarFile]);
+  }, [fileInputProps.value]);
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (fileInputProps.disabled) return;
+
+    fileInputProps.onChange?.(event.target.files?.[0]);
     event.target.value = '';
-
-    if (!file) return;
-
-    if (!file.type.startsWith('image/')) {
-      toaster.error({ title: 'Invalid file', description: 'Please select an image file.' });
-      return;
-    }
-
-    onFileSelect(file);
   };
 
-  const displayUrl = avatarFile ? previewUrl : user.avatar;
+  const { value: _value, onChange: _onChange, disabled } = fileInputProps;
 
   return (
-    <div className="relative size-20 shrink-0 sm:size-24">
-      {displayUrl ? (
-        <img
-          src={displayUrl}
-          alt={`${user.firstName} ${user.lastName}`}
-          className="border-primary/10 size-full rounded-full border object-cover"
-        />
-      ) : (
-        <div className="bg-accent-duo border-primary/10 flex size-full items-center justify-center rounded-full border text-2xl font-semibold text-white sm:text-3xl">
-          {getInitials(user.firstName, user.lastName)}
-        </div>
-      )}
-      {!user.avatar && (
-        <>
-          <button
-            type="button"
-            onClick={() => {
-              fileInputRef.current?.click();
-            }}
-            className="bg-accent-duo border-secondary-invert absolute right-0 bottom-0 flex size-7 items-center justify-center rounded-full border-2 shadow-md sm:size-8"
-          >
-            <Icon icon="solar:camera-add-linear" className="size-4 text-white sm:size-4.5" />
-          </button>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            className="sr-only"
-            onChange={handleFileChange}
+    <div className="flex flex-col gap-1.5">
+      <div className="bg-accent-duo border-primary-invert relative size-20 shrink-0 rounded-full border-2 sm:size-24">
+        {previewUrl ? (
+          <img
+            src={previewUrl}
+            alt={`${user.firstName} ${user.lastName}`}
+            className="size-full rounded-full object-cover"
           />
-        </>
-      )}
+        ) : (
+          <div className="flex size-full items-center justify-center text-2xl font-semibold text-white sm:text-3xl">
+            {getInitials(user.firstName, user.lastName)}
+          </div>
+        )}
+        <label
+          htmlFor={!disabled ? 'avatar' : ''}
+          className={`bg-accent-duo border-secondary-invert absolute right-0 bottom-0 flex size-7 items-center justify-center rounded-full border-2 shadow-md disabled:cursor-not-allowed disabled:opacity-70 sm:size-8 ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+        >
+          <Icon icon="solar:camera-add-linear" className="size-4 text-white sm:size-4.5" />
+        </label>
+        <input
+          disabled={disabled}
+          multiple={false}
+          aria-autocomplete="none"
+          id="avatar"
+          accept={IMAGE_MIMES.join(', ')}
+          type="file"
+          name="avatar"
+          className="sr-only"
+          onChange={handleChange}
+        />
+      </div>
+      <InputError error={error} />
     </div>
   );
 };
