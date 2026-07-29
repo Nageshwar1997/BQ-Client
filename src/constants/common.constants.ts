@@ -95,6 +95,7 @@ export const ROUTES = {
   LEGAL: {
     ACCESSIBILITY: 'accessibility',
     DISCLAIMER: 'disclaimer',
+    TERMS_CONDITIONS: 'terms-conditions',
   },
   PROFILE: {
     BASE: 'profile',

@@ -148,6 +148,15 @@ const routes: RouteObject[] = [
           return { Component: Disclaimer };
         },
       },
+      {
+        path: LEGAL.TERMS_CONDITIONS,
+        lazy: async () => {
+          const { default: TermsAndConditions } = await import(
+            '@/pages/legal-policies/TermsAndConditions'
+          );
+          return { Component: TermsAndConditions };
+        },
+      },
     ],
   },
   {
