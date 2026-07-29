@@ -149,6 +149,7 @@ export const UserMenuIcons = ({
         onClose={() => setIsOpen((prev) => ({ ...prev, search: false }))}
       /> */}
       <div className={`flex items-center gap-2 md:gap-3 xl:gap-5 ${className}`}>
+        <Theme />
         {!paths.includes('search') && (
           <Icon
             icon="solar:magnifer-linear"
@@ -211,7 +212,6 @@ export const UserMenuIcons = ({
             }
           />
         </div>
-        <Theme />
       </div>
     </>
   );

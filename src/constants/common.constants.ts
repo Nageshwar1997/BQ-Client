@@ -146,7 +146,7 @@ export const SIDEBAR_DATA = [
   },
   {
     title: 'Gift Cards',
-    icon: 'ic:round-card-giftcard',
+    icon: 'solar:gift-linear',
     path: `/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.GIFT_CARDS}`,
     handler: null,
   },
