@@ -23,15 +23,17 @@ const Profile = () => {
   const updateUser = useUpdateUser();
   const [editableFields, setEditableFields] = useState<Set<keyof TUpdateUserZodSchema>>(new Set());
 
+  const defaultValues = {
+    firstName: user?.firstName,
+    lastName: user?.lastName,
+    email: user?.email,
+    phoneNumber: user?.phoneNumber,
+    ...(user?.avatar && { avatar: user.avatar }),
+  };
+
   const { control, register, handleSubmit, formState, reset } = useForm<TUpdateUserZodSchema>({
     resolver: zodResolver(updateUserZodSchema),
-    defaultValues: {
-      firstName: user?.firstName,
-      lastName: user?.lastName,
-      email: user?.email,
-      phoneNumber: user?.phoneNumber,
-      ...(user?.avatar && { avatar: user.avatar }),
-    },
+    defaultValues,
   });
 
   const avatar = useWatch({ control, name: 'avatar' });
@@ -39,6 +41,11 @@ const Profile = () => {
   if (!user) return null;
 
   const isSubmitting = uploadMedia.isPending || updateUser.isPending;
+
+  const handleReset = (values?: TUpdateUserZodSchema) => {
+    reset(values ?? defaultValues);
+    setEditableFields(new Set());
+  };
 
   const onSubmit = async (values: TUpdateUserZodSchema) => {
     const body = values;
@@ -73,8 +80,8 @@ const Profile = () => {
     await updateUser.mutateAsync(updatedFields, {
       onSuccess: ({ data: updatedUser }) => {
         setUser(updatedUser ?? null);
-        reset(body);
-        setEditableFields(new Set());
+
+        handleReset(body);
       },
     });
   };
@@ -146,14 +153,22 @@ const Profile = () => {
             }}
           />
         ))}
+        <Button
+          pattern="secondary"
+          content="Reset"
+          buttonProps={{
+            disabled: isSubmitting,
+            onClick: () => {
+              handleReset();
+            },
+          }}
+        />
+        <Button
+          pattern="primary"
+          content="Save Changes"
+          buttonProps={{ type: 'submit', disabled: isSubmitting }}
+        />
       </div>
-
-      <Button
-        pattern="primary"
-        content="Save Changes"
-        className="sm:w-fit sm:self-end"
-        buttonProps={{ type: 'submit', disabled: isSubmitting }}
-      />
     </form>
   );
 };
