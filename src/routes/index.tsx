@@ -5,7 +5,7 @@ import { ROUTES } from '@/constants/common.constants';
 import { authenticate } from '@/middlewares';
 import ErrorBoundary from '@/pages/error/ErrorBoundary';
 
-const { AUTH, HOME, PRODUCTS, PROFILE } = ROUTES;
+const { AUTH, HOME, LEGAL, PRODUCTS, PROFILE } = ROUTES;
 
 const routes: RouteObject[] = [
   {
@@ -133,6 +133,13 @@ const routes: RouteObject[] = [
             },
           },
         ],
+      },
+      {
+        path: LEGAL.ACCESSIBILITY,
+        lazy: async () => {
+          const { default: Accessibility } = await import('@/pages/legal-policies/Accessibility');
+          return { Component: Accessibility };
+        },
       },
     ],
   },

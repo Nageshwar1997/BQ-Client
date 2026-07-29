@@ -92,6 +92,9 @@ export const ROUTES = {
     CATEGORY_L2_SLUG: ':l2_slug',
     CATEGORY_L3_SLUG: ':l3_slug',
   },
+  LEGAL: {
+    ACCESSIBILITY: 'accessibility',
+  },
   PROFILE: {
     BASE: 'profile',
     ORDERS: 'orders',
