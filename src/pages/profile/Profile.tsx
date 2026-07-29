@@ -91,9 +91,9 @@ const Profile = () => {
       onSubmit={(event) => {
         void handleSubmit(onSubmit)(event);
       }}
-      className="border-primary/10 bg-secondary-invert flex flex-col gap-6 rounded-2xl border p-4 sm:p-6"
+      className="flex flex-col gap-6 p-4 sm:p-6"
     >
-      <div className="flex items-center gap-4 sm:gap-6">
+      <div className="flex items-center gap-6">
         <Controller
           control={control}
           name="avatar"
@@ -118,7 +118,7 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-x-4 gap-y-5 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         {UPDATE_USER_INPUT_MAP_DATA.map((field) => (
           <Input
             key={field.name}
