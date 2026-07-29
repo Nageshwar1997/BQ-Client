@@ -1,5 +1,12 @@
-import { COUNTRIES_MAP } from '@beautinique/frontend-constants';
-import { z } from '@beautinique/frontend-zod';
+import { COUNTRIES_MAP, REGEX } from '@beautinique/frontend-constants';
+import {
+  emailValidation,
+  enum as enum_z,
+  object,
+  phoneNumberValidation,
+  string,
+  type TInfer,
+} from '@beautinique/frontend-zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Icon } from '@iconify/react';
 import { Controller, useForm } from 'react-hook-form';
@@ -22,18 +29,26 @@ const QUERY_TYPE_OPTIONS = [
   'Something Else',
 ];
 
-const contactFormSchema = z.object({
-  name: z.string().min(2, 'Please enter your name'),
-  email: z.email('Please enter a valid email'),
-  phoneNumber: z
-    .string()
-    .min(10, 'Please enter a valid 10-digit phone number')
-    .max(10, 'Please enter a valid 10-digit phone number'),
-  queryType: z.enum(QUERY_TYPE_OPTIONS, { message: 'Please select what your query is about' }),
-  message: z.string().min(10, 'Message should be at least 10 characters'),
+const contactFormSchema = object({
+  name: string('Name is required.')
+    .trim()
+    .nonempty('Name is required.')
+    .min(2, 'Name should be at least 2 characters long.')
+    .max(50, 'Name should be at most 50 characters long.')
+    .regex(REGEX.ONLY_LETTERS_AND_SPACES, 'Only letters and spaces are allowed.')
+    .regex(REGEX.SINGLE_SPACE, 'Only one space is allowed.'),
+  email: emailValidation,
+  phoneNumber: phoneNumberValidation.optional(),
+  queryType: enum_z(QUERY_TYPE_OPTIONS, 'Please select what your query is about.'),
+  message: string('Message is required.')
+    .trim()
+    .nonempty('Message is required.')
+    .min(10, 'Message should be at least 10 characters')
+    .max(500, 'Message should be at most 500 characters')
+    .regex(REGEX.ONLY_LETTERS_AND_SPACES, 'Only letters and spaces are allowed.'),
 });
 
-type TContactFormSchema = z.infer<typeof contactFormSchema>;
+type TContactFormSchema = TInfer<typeof contactFormSchema>;
 
 const CONTACT_DETAILS = [
   {
