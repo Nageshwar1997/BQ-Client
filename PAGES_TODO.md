@@ -13,6 +13,7 @@ Tracks which pages are fully built vs. still just a title-only stub, waiting on 
 | Cookie Policy | `/cookie-policy` | `src/pages/legal-policies/CookiePolicy.tsx` |
 | Privacy Policy | `/privacy-policy` | `src/pages/legal-policies/PrivacyPolicy.tsx` |
 | About Us | `/about-us` | `src/pages/company/AboutUs.tsx` |
+| Sustainability | `/sustainability` | `src/pages/company/Sustainability.tsx` |
 
 ## ⏳ Pending (stub only — title, no real content yet)
 
@@ -36,7 +37,6 @@ Tracks which pages are fully built vs. still just a title-only stub, waiting on 
 |---|---|---|
 | Partner With Us | `/partner-with-us` | `src/pages/company/PartnerWithUs.tsx` |
 | Careers | `/careers` | `src/pages/company/Careers.tsx` |
-| Sustainability | `/sustainability` | `src/pages/company/Sustainability.tsx` |
 | Ethics | `/ethics` | `src/pages/company/Ethics.tsx` |
 | Press / Media | `/press-media` | `src/pages/company/PressMedia.tsx` |
 
