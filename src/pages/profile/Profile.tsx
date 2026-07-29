@@ -30,11 +30,11 @@ const Profile = () => {
       lastName: user?.lastName,
       email: user?.email,
       phoneNumber: user?.phoneNumber,
-      avatar: user?.avatar,
+      ...(user?.avatar && { avatar: user.avatar }),
     },
   });
 
-  const avatar = useWatch({ control, name: 'avatar', defaultValue: user?.avatar });
+  const avatar = useWatch({ control, name: 'avatar' });
 
   if (!user) return null;
 
@@ -55,16 +55,15 @@ const Profile = () => {
       body.avatar = data ?? avatar;
     }
 
-    const updatedFields = getUpdatedFields(
-      {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        phoneNumber: user.phoneNumber,
-        avatar: user.avatar,
-      },
-      body,
-    );
+    const compare = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      avatar: user.avatar?.charAt(0) ? user.avatar : undefined,
+    };
+
+    const updatedFields = getUpdatedFields(compare, body);
 
     if (!updatedFields) {
       toaster.error({ title: 'No changes', description: 'You have not made any changes.' });
@@ -74,8 +73,8 @@ const Profile = () => {
     await updateUser.mutateAsync(updatedFields, {
       onSuccess: ({ data: updatedUser }) => {
         setUser(updatedUser ?? null);
+        reset(body);
         setEditableFields(new Set());
-        reset();
       },
     });
   };
