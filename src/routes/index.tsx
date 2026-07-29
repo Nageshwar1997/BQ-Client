@@ -157,6 +157,13 @@ const routes: RouteObject[] = [
           return { Component: TermsAndConditions };
         },
       },
+      {
+        path: LEGAL.COOKIE_POLICY,
+        lazy: async () => {
+          const { default: CookiePolicy } = await import('@/pages/legal-policies/CookiePolicy');
+          return { Component: CookiePolicy };
+        },
+      },
     ],
   },
   {

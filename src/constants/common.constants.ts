@@ -96,6 +96,7 @@ export const ROUTES = {
     ACCESSIBILITY: 'accessibility',
     DISCLAIMER: 'disclaimer',
     TERMS_CONDITIONS: 'terms-conditions',
+    COOKIE_POLICY: 'cookie-policy',
   },
   PROFILE: {
     BASE: 'profile',
