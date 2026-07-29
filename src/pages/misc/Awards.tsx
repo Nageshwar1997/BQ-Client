@@ -3,8 +3,24 @@ import { Link } from 'react-router-dom';
 
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
-import { FOOTER_AWARDS } from '@/constants/footer.constants';
 import useThemeStore from '@/stores/theme.store';
+
+const AWARD_STORIES = [
+  {
+    key: 'Forbes',
+    name: 'Forbes',
+    tagline: 'Featured in "Rising Beauty-Tech Startups to Watch"',
+    story:
+      'Forbes recognized Beautinique for reimagining how people shop for cosmetics online. The feature centered on our virtual try-on technology, which lets shoppers preview a shade or product live through their camera before it ever reaches checkout, and our marketplace model built around verified sellers and genuine, purchase-only reviews. In an industry where online beauty shopping often means guessing, the piece called out our attempt to replace that guesswork with real confidence.',
+  },
+  {
+    key: 'TalentAward',
+    name: 'Talent Award',
+    tagline: 'Celebrating the people behind the platform',
+    story:
+      'Long before Beautinique had its first customer, it had a small team convinced it could build something better than a typical online store. The Talent Award recognized that team directly — the design and engineering craftsmanship behind everything from the product pages to the small interaction details most shoppers never consciously notice, but always feel. It was less about a finished product, and more about the care that went into building it.',
+  },
+] as const;
 
 const Awards = () => {
   const theme = useThemeStore((s) => s.theme);
@@ -30,26 +46,34 @@ const Awards = () => {
 
       <Divider />
 
-      {/* Awards Grid */}
-      <section className="flex flex-col gap-4">
+      {/* Award Stories */}
+      <section className="flex flex-col gap-6">
         <GradientText
           type="accent"
           text="Our Recognitions"
           className="text-xl font-semibold sm:text-2xl"
         />
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {FOOTER_AWARDS.map((award) => (
+        <div className="flex flex-col gap-4">
+          {AWARD_STORIES.map((award) => (
             <div
               key={award.key}
-              className="border-primary/10 bg-secondary-invert flex flex-col items-center gap-3 rounded-xl border p-6 text-center"
+              className="border-primary/10 bg-secondary-invert flex flex-col gap-4 rounded-xl border p-4 sm:flex-row sm:gap-6 sm:p-6"
             >
-              <img
-                src={`/images/footer/${award.key}-${theme}.webp`}
-                alt={award.name}
-                loading="lazy"
-                className="h-14 w-fit object-contain"
-              />
-              <p className="text-primary text-sm font-semibold sm:text-base">{award.name}</p>
+              <div className="flex shrink-0 items-center justify-center sm:w-40">
+                <img
+                  src={`/images/footer/${award.key}-${theme}.webp`}
+                  alt={award.name}
+                  loading="lazy"
+                  className="h-14 w-fit object-contain"
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <div>
+                  <p className="text-primary text-base font-semibold sm:text-lg">{award.name}</p>
+                  <p className="text-secondary text-xs font-medium sm:text-sm">{award.tagline}</p>
+                </div>
+                <p className="text-secondary text-xs leading-relaxed sm:text-sm">{award.story}</p>
+              </div>
             </div>
           ))}
         </div>
