@@ -1,3 +1,5 @@
+import type { TAuthProvider } from '@beautinique/frontend-types';
+
 import type { StepperStep } from '@/components/ui/Stepper';
 import envs from '@/envs';
 
@@ -283,17 +285,24 @@ export const HOME_VIDEOS_DATA = [
   },
 ] as const;
 
+export const PROVIDER_ICON_MAP: Record<TAuthProvider, string> = {
+  MANUAL: 'devicon:magento',
+  GOOGLE: 'devicon:google',
+  LINKEDIN: 'devicon:linkedin',
+  GITHUB: 'devicon:github',
+};
+
 export const OAUTH_DATA = [
   {
-    icon: 'devicon:google',
+    icon: PROVIDER_ICON_MAP.GOOGLE,
     redirectUrl: `${envs.urls.gateway}${API_METHODS_AND_URLS.user_service.auth.login.oauth.google.redirect.url}`,
   },
   {
-    icon: 'devicon:github',
+    icon: PROVIDER_ICON_MAP.GITHUB,
     redirectUrl: `${envs.urls.gateway}${API_METHODS_AND_URLS.user_service.auth.login.oauth.github.redirect.url}`,
   },
   {
-    icon: 'devicon:linkedin',
+    icon: PROVIDER_ICON_MAP.LINKEDIN,
     redirectUrl: `${envs.urls.gateway}${API_METHODS_AND_URLS.user_service.auth.login.oauth.linkedin.redirect.url}`,
   },
 ] as const;

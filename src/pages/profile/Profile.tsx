@@ -1,19 +1,29 @@
 import type { TUpdateUserZodSchema } from '@beautinique/frontend-types';
 import { updateUserZodSchema } from '@beautinique/frontend-zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 
 import Button from '@/components/ui/Button';
+import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
 import Input from '@/components/ui/inputs/Input';
+import { PROVIDER_ICON_MAP, ROUTES } from '@/constants/common.constants';
 import { UPDATE_USER_INPUT_MAP_DATA } from '@/constants/input.constants';
 import { useUploadSingleMedia } from '@/services/media-service/media.service.query';
 import { useUpdateUser } from '@/services/user-service/user.service.query';
 import useUserStore from '@/stores/user.store';
-import { getUpdatedFields, toaster } from '@/utils/common.util';
+import { formatDate, getUpdatedFields, toaster } from '@/utils/common.util';
 
 import AvatarUpload from './children/AvatarUpload';
+
+const getGreeting = (hour: number) => {
+  if (hour < 12) return 'Good morning';
+  if (hour < 17) return 'Good afternoon';
+  return 'Good evening';
+};
 
 const Profile = () => {
   const user = useUserStore((s) => s.user);
@@ -93,6 +103,25 @@ const Profile = () => {
       }}
       className="flex flex-col gap-6 p-4 sm:p-6"
     >
+      <div className="flex flex-col gap-1.5">
+        <GradientText
+          type="accent"
+          text={`${getGreeting(new Date().getHours())}, ${user.firstName}!`}
+          className="text-2xl font-semibold sm:text-3xl"
+        />
+        <p className="text-secondary text-xs sm:text-sm">
+          This is your personal space. Keep your details accurate so orders, delivery updates, and
+          support always reach the right place. Click the{' '}
+          <Icon
+            icon="solar:pen-2-linear"
+            className="text-primary/70 inline size-3.5 align-text-bottom"
+          />{' '}
+          icon next to any field to edit it, then hit{' '}
+          <GradientText type="accent" text="Save Changes" className="font-medium" /> when
+          you&apos;re done.
+        </p>
+      </div>
+      <Divider />
       <div className="flex items-center gap-6">
         <Controller
           control={control}
@@ -168,6 +197,77 @@ const Profile = () => {
           content="Save Changes"
           buttonProps={{ type: 'submit', disabled: isSubmitting }}
         />
+      </div>
+
+      <Divider />
+
+      <div className="flex flex-col gap-4">
+        <GradientText
+          type="accent"
+          text="Account Details"
+          className="text-base font-semibold sm:text-lg"
+        />
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="border-primary/10 bg-secondary-invert flex items-center gap-3 rounded-xl border p-3">
+            <Icon icon="solar:calendar-linear" className="text-primary/60 size-5 shrink-0" />
+            <div>
+              <p className="text-primary/50 text-[11px]">Member Since</p>
+              <p className="text-secondary text-sm font-medium">{formatDate(user.createdAt)}</p>
+            </div>
+          </div>
+
+          <div className="border-primary/10 bg-secondary-invert flex items-center gap-3 rounded-xl border p-3">
+            <Icon icon="solar:calendar-linear" className="text-primary/60 size-5 shrink-0" />
+            <div>
+              <p className="text-primary/50 text-[11px]">Last Updated</p>
+              <p className="text-secondary text-sm font-medium">{formatDate(user.updatedAt)}</p>
+            </div>
+          </div>
+
+          <div className="border-primary/10 bg-secondary-invert flex items-center gap-3 rounded-xl border p-3">
+            <Icon icon="solar:shield-user-linear" className="text-primary/60 size-5 shrink-0" />
+            <div>
+              <p className="text-primary/50 text-[11px]">Account Type</p>
+              <p className="text-secondary text-sm font-medium capitalize">
+                {user.role.toLowerCase()}
+              </p>
+            </div>
+          </div>
+
+          <div className="border-primary/10 bg-secondary-invert flex items-center gap-3 rounded-xl border p-3">
+            <div className="flex shrink-0 -space-x-1">
+              {user.providers.map((provider) => (
+                <span
+                  key={provider}
+                  className="bg-secondary-invert border-primary/50 flex size-6 items-center justify-center rounded-full border"
+                >
+                  <Icon icon={PROVIDER_ICON_MAP[provider]} className="size-3.5" />
+                </span>
+              ))}
+            </div>
+            <div>
+              <p className="text-primary/50 text-[11px]">Signed In Via</p>
+              <p className="text-secondary text-sm font-medium capitalize">
+                {user.providers.map((provider) => provider.toLowerCase()).join(', ')}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <Divider />
+
+      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+        <div>
+          <p className="text-primary text-sm font-semibold sm:text-base">Password &amp; Security</p>
+          <p className="text-secondary text-xs sm:text-sm">
+            Update your password regularly to keep your account secure.
+          </p>
+        </div>
+        <Link to={`/${ROUTES.AUTH.BASE}/${ROUTES.AUTH.CHANGE_PASSWORD}`}>
+          <Button pattern="secondary" content="Change Password" />
+        </Link>
       </div>
     </form>
   );
