@@ -57,10 +57,10 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="border-t-silver/30 md:border-r-silver/30 bg-primary-invert fixed md:sticky bottom-0 left-0 z-40 flex w-dvw items-center justify-center gap-4 border-t px-2 py-4 md:top-16 md:bottom-auto md:w-fit md:flex-col md:border-r md:border-t-transparent">
+    <aside className="border-t-silver/30 bg-primary-invert fixed bottom-0 left-0 z-40 flex w-dvw items-center justify-center gap-4 border-t px-2 py-4 md:sticky md:top-16 md:bottom-auto md:w-fit md:flex-col md:border-none">
       <ScrollableGradientContainer
         direction={isMobile ? 'horizontal' : 'vertical'}
-        className="[&>div]:items-center [&>div]:justify-start"
+        className="[&>div]:items-center [&>div]:md:justify-start"
         containerClassName="grow"
       >
         <div className="flex gap-4 md:flex-col">
