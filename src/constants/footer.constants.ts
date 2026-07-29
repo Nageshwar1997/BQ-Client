@@ -1,26 +1,34 @@
+import { ROUTES } from './common.constants';
+
+const { COMPANY, LEGAL, PRODUCTS, PROFILE, QUICK_LINKS, SERVICES } = ROUTES;
+
 export const FOOTER_CATEGORIES = [
   {
     title: 'Company',
     options: [
-      { title: 'About Us', path: 'about-us' },
-      { title: 'Partner With Us', path: 'partner-with-us' },
-      { title: 'Careers', path: 'careers' },
-      { title: 'Sustainability', path: 'sustainability' },
-      { title: 'Ethics', path: 'ethics' },
-      { title: 'Press/Media', path: 'press-media' },
+      { title: 'About Us', path: `/${COMPANY.ABOUT_US}` },
+      { title: 'Partner With Us', path: `/${COMPANY.PARTNER_WITH_US}` },
+      { title: 'Careers', path: `/${COMPANY.CAREERS}` },
+      { title: 'Sustainability', path: `/${COMPANY.SUSTAINABILITY}` },
+      { title: 'Ethics', path: `/${COMPANY.ETHICS}` },
+      { title: 'Press/Media', path: `/${COMPANY.PRESS_MEDIA}` },
     ],
   },
   {
     title: 'Quick Links',
     options: [
-      { title: 'My Account', path: 'account', private: true },
-      { title: 'Order History', path: 'orders', private: true },
-      { title: 'Wishlist', path: 'wishlist', private: true },
-      { title: 'Refer a Friend', path: 'refer', private: true },
-      { title: 'Store Locator', path: 'store-locator' },
+      { title: 'My Account', path: `/${PROFILE.BASE}`, private: true },
+      { title: 'Order History', path: `/${PROFILE.BASE}/${PROFILE.ORDERS}`, private: true },
+      { title: 'Wishlist', path: `/${PROFILE.BASE}/${PROFILE.WISHLIST}`, private: true },
+      {
+        title: 'Refer a Friend',
+        path: `/${PROFILE.BASE}/${PROFILE.REFER_A_FRIEND}`,
+        private: true,
+      },
+      { title: 'Store Locator', path: `/${QUICK_LINKS.STORE_LOCATOR}` },
       {
         title: 'Become a Seller',
-        path: 'become-seller',
+        path: `/${QUICK_LINKS.BECOME_SELLER}`,
         private: true,
       },
     ],
@@ -28,36 +36,40 @@ export const FOOTER_CATEGORIES = [
   {
     title: 'Products',
     options: [
-      { title: 'For You', path: 'products/for_you' },
-      { title: 'Lip Care', path: 'products/lips' },
-      { title: 'Special Collection', path: 'products/collections' },
-      { title: 'Face Care', path: 'products/face' },
-      { title: 'Skin Care', path: 'products/skin' },
-      { title: 'Eye Care', path: 'products/eyes' },
+      { title: 'For You', path: `/${PRODUCTS.BASE}` },
+      { title: 'Lip Care', path: `/${PRODUCTS.BASE}` },
+      { title: 'Special Collection', path: `/${PRODUCTS.BASE}` },
+      { title: 'Face Care', path: `/${PRODUCTS.BASE}` },
+      { title: 'Skin Care', path: `/${PRODUCTS.BASE}` },
+      { title: 'Eye Care', path: `/${PRODUCTS.BASE}` },
     ],
   },
   {
     title: 'Services',
     options: [
-      { title: 'Contact Us', path: 'contact' },
-      { title: 'Help Center/FAQ', path: 'help-center-faq' },
-      { title: 'Shipping Info', path: 'shipping-info' },
+      { title: 'Contact Us', path: `/${SERVICES.CONTACT}` },
+      { title: 'Help Center/FAQ', path: `/${SERVICES.HELP_CENTER_FAQ}` },
+      { title: 'Shipping Info', path: `/${SERVICES.SHIPPING_INFO}` },
       {
         title: 'Returns & Refunds',
-        path: 'orders/return-refund',
+        path: `/${PROFILE.BASE}/${PROFILE.ORDERS}/${PROFILE.ORDER_RETURN_REFUND}`,
         private: true,
       },
-      { title: 'Track My Orders', path: 'orders/track', private: true },
+      {
+        title: 'Track My Orders',
+        path: `/${PROFILE.BASE}/${PROFILE.ORDERS}/${PROFILE.ORDER_TRACK}`,
+        private: true,
+      },
     ],
   },
   {
     title: 'Legal & Policies',
     options: [
-      { title: 'Privacy Policy', path: 'privacy-policy' },
-      { title: 'Cookie Policy', path: 'cookie-policy' },
-      { title: 'Terms & Conditions', path: 'terms-conditions' },
-      { title: 'Disclaimer', path: 'disclaimer' },
-      { title: 'Accessibility', path: 'accessibility' },
+      { title: 'Privacy Policy', path: `/${LEGAL.PRIVACY_POLICY}` },
+      { title: 'Cookie Policy', path: `/${LEGAL.COOKIE_POLICY}` },
+      { title: 'Terms & Conditions', path: `/${LEGAL.TERMS_CONDITIONS}` },
+      { title: 'Disclaimer', path: `/${LEGAL.DISCLAIMER}` },
+      { title: 'Accessibility', path: `/${LEGAL.ACCESSIBILITY}` },
     ],
   },
 ];

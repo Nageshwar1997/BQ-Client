@@ -88,7 +88,7 @@ const Footer = () => {
           </div>
           <div className="base:flex-row flex flex-col items-center justify-end gap-2 lg:gap-4">
             {FOOTER_AWARDS.map((award, ind) => (
-              <Link key={ind} to="/awards">
+              <Link key={ind} to={`/${ROUTES.AWARDS}`}>
                 <img
                   src={`/images/footer/${award.key}-${theme}.webp`}
                   alt={award.name}

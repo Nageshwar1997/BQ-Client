@@ -5,7 +5,7 @@ import { ROUTES } from '@/constants/common.constants';
 import { authenticate } from '@/middlewares';
 import ErrorBoundary from '@/pages/error/ErrorBoundary';
 
-const { AUTH, HOME, LEGAL, PRODUCTS, PROFILE } = ROUTES;
+const { AUTH, AWARDS, COMPANY, HOME, LEGAL, PRODUCTS, PROFILE, QUICK_LINKS, SERVICES } = ROUTES;
 
 const routes: RouteObject[] = [
   {
@@ -85,10 +85,32 @@ const routes: RouteObject[] = [
           },
           {
             path: PROFILE.ORDERS,
-            lazy: async () => {
-              const { default: Orders } = await import('@/pages/profile/Orders');
-              return { Component: Orders };
-            },
+            element: <Outlet />,
+            children: [
+              {
+                index: true,
+                lazy: async () => {
+                  const { default: Orders } = await import('@/pages/profile/Orders');
+                  return { Component: Orders };
+                },
+              },
+              {
+                path: PROFILE.ORDER_RETURN_REFUND,
+                lazy: async () => {
+                  const { default: OrderReturnRefund } = await import(
+                    '@/pages/profile/OrderReturnRefund'
+                  );
+                  return { Component: OrderReturnRefund };
+                },
+              },
+              {
+                path: PROFILE.ORDER_TRACK,
+                lazy: async () => {
+                  const { default: OrderTrack } = await import('@/pages/profile/OrderTrack');
+                  return { Component: OrderTrack };
+                },
+              },
+            ],
           },
           {
             path: PROFILE.ADDRESSES,
@@ -169,6 +191,91 @@ const routes: RouteObject[] = [
         lazy: async () => {
           const { default: PrivacyPolicy } = await import('@/pages/legal-policies/PrivacyPolicy');
           return { Component: PrivacyPolicy };
+        },
+      },
+      {
+        path: COMPANY.ABOUT_US,
+        lazy: async () => {
+          const { default: AboutUs } = await import('@/pages/company/AboutUs');
+          return { Component: AboutUs };
+        },
+      },
+      {
+        path: COMPANY.PARTNER_WITH_US,
+        lazy: async () => {
+          const { default: PartnerWithUs } = await import('@/pages/company/PartnerWithUs');
+          return { Component: PartnerWithUs };
+        },
+      },
+      {
+        path: COMPANY.CAREERS,
+        lazy: async () => {
+          const { default: Careers } = await import('@/pages/company/Careers');
+          return { Component: Careers };
+        },
+      },
+      {
+        path: COMPANY.SUSTAINABILITY,
+        lazy: async () => {
+          const { default: Sustainability } = await import('@/pages/company/Sustainability');
+          return { Component: Sustainability };
+        },
+      },
+      {
+        path: COMPANY.ETHICS,
+        lazy: async () => {
+          const { default: Ethics } = await import('@/pages/company/Ethics');
+          return { Component: Ethics };
+        },
+      },
+      {
+        path: COMPANY.PRESS_MEDIA,
+        lazy: async () => {
+          const { default: PressMedia } = await import('@/pages/company/PressMedia');
+          return { Component: PressMedia };
+        },
+      },
+      {
+        path: SERVICES.CONTACT,
+        lazy: async () => {
+          const { default: Contact } = await import('@/pages/services/Contact');
+          return { Component: Contact };
+        },
+      },
+      {
+        path: SERVICES.HELP_CENTER_FAQ,
+        lazy: async () => {
+          const { default: HelpCenterFAQ } = await import('@/pages/services/HelpCenterFAQ');
+          return { Component: HelpCenterFAQ };
+        },
+      },
+      {
+        path: SERVICES.SHIPPING_INFO,
+        lazy: async () => {
+          const { default: ShippingInfo } = await import('@/pages/services/ShippingInfo');
+          return { Component: ShippingInfo };
+        },
+      },
+      {
+        path: QUICK_LINKS.STORE_LOCATOR,
+        lazy: async () => {
+          const { default: StoreLocator } = await import('@/pages/misc/StoreLocator');
+          return { Component: StoreLocator };
+        },
+      },
+      {
+        path: QUICK_LINKS.BECOME_SELLER,
+        middleware: [authenticate],
+        lazy: async () => {
+          const { default: BecomeSeller } = await import('@/pages/misc/BecomeSeller');
+          return { Component: BecomeSeller };
+        },
+      },
+      {
+        path: AWARDS,
+        lazy: async () => {
+          const { default: Awards } = await import('@/pages/misc/Awards');
+          return { Component: Awards };
         },
       },
     ],

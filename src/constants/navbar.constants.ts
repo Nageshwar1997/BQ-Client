@@ -1,5 +1,9 @@
 import type { TCategoryHierarchy, TCategoryHierarchyNode, TLevel2 } from '@/types/api.type';
 
+import { ROUTES } from './common.constants';
+
+const { PROFILE, SERVICES } = ROUTES;
+
 export const TESTIMONIALS = [
   {
     content:
@@ -25,13 +29,18 @@ export const TESTIMONIALS = [
 ] as const;
 
 export const NAVBAR_TOP_LAYER_DATA = [
-  { text: 'Refer a Friend', icon: 'lucide:hand-coins', path: '/refer', private: true },
+  {
+    text: 'Refer a Friend',
+    icon: 'lucide:hand-coins',
+    path: `/${PROFILE.BASE}/${PROFILE.REFER_A_FRIEND}`,
+    private: true,
+  },
   { text: 'Gift Card', icon: 'ic:round-card-giftcard', path: '/offers' },
-  { text: 'BQ Care', icon: 'hugeicons:customer-service', path: '/contact' },
+  { text: 'BQ Care', icon: 'hugeicons:customer-service', path: `/${SERVICES.CONTACT}` },
   {
     text: 'Track Orders',
     icon: 'material-symbols:monitor-heart-outline-rounded',
-    path: '/track',
+    path: `/${PROFILE.BASE}/${PROFILE.ORDERS}/${PROFILE.ORDER_TRACK}`,
     private: true,
   },
 ] as const;

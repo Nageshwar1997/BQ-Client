@@ -75,6 +75,24 @@ export const USER_KEY = 'user' as const;
 
 export const ROUTES = {
   HOME: '/',
+  AWARDS: 'awards',
+  COMPANY: {
+    ABOUT_US: 'about-us',
+    PARTNER_WITH_US: 'partner-with-us',
+    CAREERS: 'careers',
+    SUSTAINABILITY: 'sustainability',
+    ETHICS: 'ethics',
+    PRESS_MEDIA: 'press-media',
+  },
+  SERVICES: {
+    CONTACT: 'contact',
+    HELP_CENTER_FAQ: 'help-center-faq',
+    SHIPPING_INFO: 'shipping-info',
+  },
+  QUICK_LINKS: {
+    STORE_LOCATOR: 'store-locator',
+    BECOME_SELLER: 'become-seller',
+  },
   AUTH: {
     BASE: 'auth',
     LOGIN: 'login',
@@ -102,6 +120,8 @@ export const ROUTES = {
   PROFILE: {
     BASE: 'profile',
     ORDERS: 'orders',
+    ORDER_RETURN_REFUND: 'return-refund',
+    ORDER_TRACK: 'track',
     ADDRESSES: 'addresses',
     WISHLIST: 'wishlist',
     REVIEWS: 'reviews',
