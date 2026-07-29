@@ -18,6 +18,7 @@ Tracks which pages are fully built vs. still just a title-only stub, waiting on 
 | Help Center / FAQ | `/help-center-faq` | `src/pages/services/HelpCenterFAQ.tsx` |
 | Press / Media | `/press-media` | `src/pages/company/PressMedia.tsx` |
 | Ethics | `/ethics` | `src/pages/company/Ethics.tsx` |
+| Shipping Info | `/shipping-info` | `src/pages/services/ShippingInfo.tsx` |
 
 ## ⏳ Pending (stub only — title, no real content yet)
 
@@ -47,7 +48,6 @@ Tracks which pages are fully built vs. still just a title-only stub, waiting on 
 | Page | Route | File |
 |---|---|---|
 | Contact Us | `/contact` | `src/pages/services/Contact.tsx` |
-| Shipping Info | `/shipping-info` | `src/pages/services/ShippingInfo.tsx` |
 
 ### Misc
 
