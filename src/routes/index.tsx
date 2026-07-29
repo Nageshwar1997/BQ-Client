@@ -141,6 +141,13 @@ const routes: RouteObject[] = [
           return { Component: Accessibility };
         },
       },
+      {
+        path: LEGAL.DISCLAIMER,
+        lazy: async () => {
+          const { default: Disclaimer } = await import('@/pages/legal-policies/Disclaimer');
+          return { Component: Disclaimer };
+        },
+      },
     ],
   },
   {
