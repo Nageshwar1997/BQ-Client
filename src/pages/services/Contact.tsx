@@ -1,3 +1,4 @@
+import { COUNTRIES_MAP } from '@beautinique/frontend-constants';
 import { z } from '@beautinique/frontend-zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Icon } from '@iconify/react';
@@ -50,12 +51,12 @@ const CONTACT_DETAILS = [
   {
     icon: 'solar:clock-circle-linear',
     title: 'Support Hours',
-    value: 'Mon–Sat, 10 AM – 7 PM IST',
+    value: 'Mon-Sat, 10 AM - 7 PM IST',
   },
   {
     icon: 'solar:map-point-linear',
     title: 'Based In',
-    value: 'India',
+    value: COUNTRIES_MAP.India,
   },
 ] as const;
 
