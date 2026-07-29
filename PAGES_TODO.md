@@ -14,6 +14,7 @@ Tracks which pages are fully built vs. still just a title-only stub, waiting on 
 | Privacy Policy | `/privacy-policy` | `src/pages/legal-policies/PrivacyPolicy.tsx` |
 | About Us | `/about-us` | `src/pages/company/AboutUs.tsx` |
 | Sustainability | `/sustainability` | `src/pages/company/Sustainability.tsx` |
+| Awards | `/awards` | `src/pages/misc/Awards.tsx` |
 
 ## ⏳ Pending (stub only — title, no real content yet)
 
@@ -54,7 +55,6 @@ Tracks which pages are fully built vs. still just a title-only stub, waiting on 
 |---|---|---|
 | Store Locator | `/store-locator` | `src/pages/misc/StoreLocator.tsx` |
 | Become a Seller | `/become-seller` | `src/pages/misc/BecomeSeller.tsx` |
-| Awards | `/awards` | `src/pages/misc/Awards.tsx` |
 
 ## Known gap (no page or route yet at all)
 
