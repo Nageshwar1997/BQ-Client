@@ -1,4 +1,4 @@
-import { ROUTES } from './common.constants';
+import { ROUTES } from './routes.constants';
 
 const { COMPANY, LEGAL, PRODUCTS, PROFILE, QUICK_LINKS, SERVICES } = ROUTES;
 

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { ROUTES } from '@/constants/common.constants';
+import { ROUTES } from '@/constants/routes.constants';
 import usePathParams from '@/hooks/usePathParams';
 import useUserStore from '@/stores/user.store';
 

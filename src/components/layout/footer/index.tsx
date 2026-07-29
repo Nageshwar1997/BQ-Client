@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
-import { ROUTES } from '@/constants/common.constants';
 import { FOOTER_AWARDS, FOOTER_CATEGORIES, SOCIAL_MEDIA_LINKS } from '@/constants/footer.constants';
+import { ROUTES } from '@/constants/routes.constants';
 import useAuthAction from '@/hooks/useAuthAction';
 import usePathParams from '@/hooks/usePathParams';
 import useThemeStore from '@/stores/theme.store';

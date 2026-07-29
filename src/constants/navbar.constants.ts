@@ -1,6 +1,6 @@
 import type { TCategoryHierarchy, TCategoryHierarchyNode, TLevel2 } from '@/types/api.type';
 
-import { ROUTES } from './common.constants';
+import { ROUTES } from './routes.constants';
 
 const { PROFILE, SERVICES } = ROUTES;
 

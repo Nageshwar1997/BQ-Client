@@ -12,6 +12,7 @@ Tracks which pages are fully built vs. still just a title-only stub, waiting on 
 | Terms & Conditions | `/terms-conditions` | `src/pages/legal-policies/TermsAndConditions.tsx` |
 | Cookie Policy | `/cookie-policy` | `src/pages/legal-policies/CookiePolicy.tsx` |
 | Privacy Policy | `/privacy-policy` | `src/pages/legal-policies/PrivacyPolicy.tsx` |
+| About Us | `/about-us` | `src/pages/company/AboutUs.tsx` |
 
 ## ⏳ Pending (stub only — title, no real content yet)
 
@@ -33,7 +34,6 @@ Tracks which pages are fully built vs. still just a title-only stub, waiting on 
 
 | Page | Route | File |
 |---|---|---|
-| About Us | `/about-us` | `src/pages/company/AboutUs.tsx` |
 | Partner With Us | `/partner-with-us` | `src/pages/company/PartnerWithUs.tsx` |
 | Careers | `/careers` | `src/pages/company/Careers.tsx` |
 | Sustainability | `/sustainability` | `src/pages/company/Sustainability.tsx` |

@@ -1,7 +1,7 @@
 import { Outlet, type RouteObject } from 'react-router-dom';
 
 import LoadingScreen from '@/components/layout/loaders/LoadingScreen';
-import { ROUTES } from '@/constants/common.constants';
+import { ROUTES } from '@/constants/routes.constants';
 import { authenticate } from '@/middlewares';
 import ErrorBoundary from '@/pages/error/ErrorBoundary';
 
@@ -97,9 +97,8 @@ const routes: RouteObject[] = [
               {
                 path: PROFILE.ORDER_RETURN_REFUND,
                 lazy: async () => {
-                  const { default: OrderReturnRefund } = await import(
-                    '@/pages/profile/OrderReturnRefund'
-                  );
+                  const { default: OrderReturnRefund } =
+                    await import('@/pages/profile/OrderReturnRefund');
                   return { Component: OrderReturnRefund };
                 },
               },
@@ -173,9 +172,8 @@ const routes: RouteObject[] = [
       {
         path: LEGAL.TERMS_CONDITIONS,
         lazy: async () => {
-          const { default: TermsAndConditions } = await import(
-            '@/pages/legal-policies/TermsAndConditions'
-          );
+          const { default: TermsAndConditions } =
+            await import('@/pages/legal-policies/TermsAndConditions');
           return { Component: TermsAndConditions };
         },
       },

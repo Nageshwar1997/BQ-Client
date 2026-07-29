@@ -3,7 +3,8 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import Tooltip from '@/components/ui/Tooltip';
-import { ROUTES, SIDEBAR_DATA } from '@/constants/common.constants';
+import { SIDEBAR_DATA } from '@/constants/common.constants';
+import { ROUTES } from '@/constants/routes.constants';
 import useIsSmallScreen from '@/hooks/useIsSmallScreen';
 import usePathParams from '@/hooks/usePathParams';
 import { useLogout } from '@/services/user-service/auth.service.query';

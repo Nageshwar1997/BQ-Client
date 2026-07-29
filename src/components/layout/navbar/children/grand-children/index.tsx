@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import GradientText from '@/components/ui/GradientText';
 import Theme from '@/components/ui/Theme';
-import { ROUTES } from '@/constants/common.constants';
+import { ROUTES } from '@/constants/routes.constants';
 import useAuthAction from '@/hooks/useAuthAction';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import usePathParams from '@/hooks/usePathParams';
