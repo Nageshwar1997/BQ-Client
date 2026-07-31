@@ -103,6 +103,15 @@ export const METHODS_AND_PATHS = {
       },
     },
   },
+  organization_service: {
+    base: '/organization-service',
+    contact: {
+      base: '/contact',
+      create: { method: POST, path: '/' },
+      list: { method: GET, path: '/' },
+      updateStatus: { method: PATCH, path: '/:ticketId' },
+    },
+  },
 } as const;
 
 export const API_METHODS_AND_URLS = createRouteHelper(METHODS_AND_PATHS);

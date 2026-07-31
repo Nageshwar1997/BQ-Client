@@ -1,9 +1,9 @@
-import { CONTACT_QUERY_TYPES, COUNTRIES_MAP } from '@beautinique/frontend-constants';
+import { COUNTRIES_MAP } from '@beautinique/frontend-constants';
 import type { TCreateContactQueryZodSchema } from '@beautinique/frontend-types';
 import { createContactQueryZodSchema } from '@beautinique/frontend-zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Icon } from '@iconify/react';
-import { Controller, useForm, useWatch } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 import Button from '@/components/ui/Button';
 import Divider from '@/components/ui/Divider';
@@ -11,6 +11,8 @@ import GradientText from '@/components/ui/GradientText';
 import Input from '@/components/ui/inputs/Input';
 import Select from '@/components/ui/inputs/Select';
 import Textarea from '@/components/ui/inputs/Textarea';
+import { CONTACT_INPUT_MAP_DATA } from '@/constants/input.constants';
+import { useCreateContactQuery } from '@/services/organization-service/contact.service.query';
 
 const CONTACT_DETAILS = [
   {
@@ -38,18 +40,19 @@ const CONTACT_DETAILS = [
 ] as const;
 
 const Contact = () => {
+  const createContact = useCreateContactQuery();
+
   const { control, register, handleSubmit, formState, reset } =
     useForm<TCreateContactQueryZodSchema>({
       resolver: zodResolver(createContactQueryZodSchema),
     });
 
-  const values = useWatch({ control });
-  console.log('🚀 ~ Contact ~ values:', values);
-
-  const onSubmit = (data: TCreateContactQueryZodSchema) => {
-    // eslint-disable-next-line no-console
-    console.log(data);
-    reset();
+  const onSubmit = async (data: TCreateContactQueryZodSchema) => {
+    await createContact.mutateAsync(data, {
+      onSuccess: () => {
+        reset();
+      },
+    });
   };
 
   return (
@@ -111,75 +114,56 @@ const Contact = () => {
           text="Send Us a Message"
           className="text-xl font-semibold sm:text-2xl"
         />
-        <form
-          onSubmit={(event) => {
-            void handleSubmit(onSubmit)(event);
-          }}
-          className="grid grid-cols-1 gap-4 sm:grid-cols-2"
-        >
-          <Input
-            label="Name"
-            register={register('name')}
-            error={formState.errors.name?.message}
-            inputProps={{
-              name: 'name',
-              type: 'text',
-              autoComplete: 'name',
-              placeholder: 'Enter your full name',
-            }}
-          />
-          <Input
-            label="Email"
-            register={register('email')}
-            error={formState.errors.email?.message}
-            inputProps={{
-              name: 'email',
-              type: 'text',
-              autoComplete: 'email',
-              placeholder: 'Enter your email address',
-            }}
-          />
-          <Input
-            label="Phone Number"
-            register={register('phoneNumber')}
-            error={formState.errors.phoneNumber?.message}
-            inputProps={{
-              name: 'phoneNumber',
-              type: 'number',
-              autoComplete: 'tel',
-              placeholder: 'Enter your phone number',
-            }}
-            icons={{
-              left: (
-                <span className="text-primary/50 border-r-primary/30 items-center border-r py-2 pr-3 text-[13px] leading-0 capitalize">
-                  +91
-                </span>
-              ),
-            }}
-          />
-          <Controller
-            control={control}
-            name="queryType"
-            render={({ field }) => (
-              <Select
-                label="Query Type"
-                error={formState.errors.queryType?.message}
-                options={CONTACT_QUERY_TYPES.map((option) => ({ label: option, value: option }))}
-                selectProps={{
-                  value: field.value,
-                  onChange: field.onChange,
-                  placeholder: 'What is your query about?',
+        <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {CONTACT_INPUT_MAP_DATA.map((input) => {
+            const { label, name, placeholder, type } = input;
+            return type === 'select' ? (
+              <Controller
+                key={name}
+                control={control}
+                name={name}
+                render={({ field: { value, onChange } }) => (
+                  <Select
+                    label={label}
+                    error={formState.errors[name]?.message}
+                    options={input.options}
+                    selectProps={{ value, onChange, placeholder }}
+                  />
+                )}
+              />
+            ) : type === 'textarea' ? (
+              <Textarea
+                key={name}
+                label={label}
+                register={register(name)}
+                error={formState.errors[name]?.message}
+                containerClassName="sm:col-span-2"
+                textAreaProps={{ name, placeholder, autoComplete: input.autoComplete }}
+              />
+            ) : (
+              <Input
+                key={name}
+                label={label}
+                register={register(name)}
+                error={formState.errors[name]?.message}
+                inputProps={{
+                  name,
+                  type,
+                  placeholder,
+                  autoComplete: input.autoComplete,
+                }}
+                icons={{
+                  ...(type === 'number' && {
+                    left: (
+                      <span className="text-primary/50 border-r-primary/30 items-center border-r py-2 pr-3 text-[13px] leading-0 capitalize">
+                        +91
+                      </span>
+                    ),
+                  }),
                 }}
               />
-            )}
-          />
-          <Textarea
-            label="Message"
-            register={register('message')}
-            error={formState.errors.message?.message}
-            containerClassName="sm:col-span-2"
-            textAreaProps={{ name: 'message', placeholder: 'How can we help?', rows: 5 }}
-          />
+            );
+          })}
           <Button
             pattern="primary"
             content="Send Message"

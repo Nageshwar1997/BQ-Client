@@ -1,10 +1,20 @@
-import { VARIANT_TYPES, VARIANT_TYPES_MAP } from '@beautinique/frontend-constants';
+import {
+  CONTACT_QUERY_TYPES,
+  VARIANT_TYPES,
+  VARIANT_TYPES_MAP,
+} from '@beautinique/frontend-constants';
 
 import type { TQuillToolbar } from '@/types/input.type';
 
 export const PASSWORD_KEYS = ['password', 'confirmPassword'] as const;
 
-const NAME_DATA = { type: 'text', autoComplete: 'given-name' } as const;
+const NAME_INPUT_DATA = {
+  name: 'name',
+  label: 'Name',
+  type: 'text',
+  autoComplete: 'given-name',
+  placeholder: 'Enter your full name',
+} as const;
 
 export const EMAIL_INPUT_DATA = {
   name: 'email',
@@ -23,14 +33,14 @@ export const OTP_INPUT_DATA = {
 } as const;
 
 const FIRST_NAME_INPUT_DATA = {
-  ...NAME_DATA,
+  ...NAME_INPUT_DATA,
   name: 'firstName',
   label: 'First Name',
   placeholder: 'Enter first name',
 } as const;
 
 const LAST_NAME_INPUT_DATA = {
-  ...NAME_DATA,
+  ...NAME_INPUT_DATA,
   name: 'lastName',
   label: 'Last Name',
   placeholder: 'Enter last name',
@@ -288,6 +298,26 @@ export const PRODUCT_TRYON_INPUT_MAP_DATA = [
     label: 'Try-on sub-category',
     type: 'select',
     placeholder: 'Select try-on sub-category',
+  },
+] as const;
+
+export const CONTACT_INPUT_MAP_DATA = [
+  NAME_INPUT_DATA,
+  EMAIL_INPUT_DATA,
+  PHONE_NUMBER_INPUT_DATA,
+  {
+    name: 'queryType',
+    label: 'Query Type',
+    type: 'select',
+    placeholder: 'What is your query about?',
+    options: CONTACT_QUERY_TYPES.map((option) => ({ label: option, value: option })),
+  },
+  {
+    name: 'message',
+    label: 'Message',
+    type: 'textarea',
+    placeholder: 'How can we help?',
+    autoComplete: 'off',
   },
 ] as const;
 
