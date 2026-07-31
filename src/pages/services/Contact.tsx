@@ -18,7 +18,7 @@ import Input from '@/components/ui/inputs/Input';
 import Select from '@/components/ui/inputs/Select';
 import Textarea from '@/components/ui/inputs/Textarea';
 
-const QUERY_TYPE_OPTIONS = [
+const CONTACT_QUERY_OPTIONS = [
   'Order Related',
   'Returns & Refunds',
   'Payment Issue',
@@ -39,7 +39,7 @@ const contactFormSchema = object({
     .regex(REGEX.SINGLE_SPACE, 'Only one space is allowed.'),
   email: emailValidation,
   phoneNumber: phoneNumberValidation.optional(),
-  queryType: enum_z(QUERY_TYPE_OPTIONS, 'Please select what your query is about.'),
+  queryType: enum_z(CONTACT_QUERY_OPTIONS, 'Please select what your query is about.'),
   message: string('Message is required.')
     .trim()
     .nonempty('Message is required.')
@@ -198,7 +198,7 @@ const Contact = () => {
               <Select
                 label="Query Type"
                 error={formState.errors.queryType?.message}
-                options={QUERY_TYPE_OPTIONS.map((option) => ({ label: option, value: option }))}
+                options={CONTACT_QUERY_OPTIONS.map((option) => ({ label: option, value: option }))}
                 selectProps={{
                   value: field.value,
                   onChange: field.onChange,
