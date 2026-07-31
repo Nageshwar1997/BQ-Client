@@ -1,15 +1,9 @@
-import { COUNTRIES_MAP, REGEX } from '@beautinique/frontend-constants';
-import {
-  emailValidation,
-  enum as enum_z,
-  object,
-  phoneNumberValidation,
-  string,
-  type TInfer,
-} from '@beautinique/frontend-zod';
+import { CONTACT_QUERY_TYPES, COUNTRIES_MAP } from '@beautinique/frontend-constants';
+import type { TCreateContactQueryZodSchema } from '@beautinique/frontend-types';
+import { createContactQueryZodSchema } from '@beautinique/frontend-zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Icon } from '@iconify/react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 
 import Button from '@/components/ui/Button';
 import Divider from '@/components/ui/Divider';
@@ -17,38 +11,6 @@ import GradientText from '@/components/ui/GradientText';
 import Input from '@/components/ui/inputs/Input';
 import Select from '@/components/ui/inputs/Select';
 import Textarea from '@/components/ui/inputs/Textarea';
-
-const CONTACT_QUERY_OPTIONS = [
-  'Order Related',
-  'Returns & Refunds',
-  'Payment Issue',
-  'Product Question',
-  'Become a Seller',
-  'Account Help',
-  'Feedback / Suggestion',
-  'Something Else',
-];
-
-const contactFormSchema = object({
-  name: string('Name is required.')
-    .trim()
-    .nonempty('Name is required.')
-    .min(2, 'Name should be at least 2 characters long.')
-    .max(50, 'Name should be at most 50 characters long.')
-    .regex(REGEX.ONLY_LETTERS_AND_SPACES, 'Only letters and spaces are allowed.')
-    .regex(REGEX.SINGLE_SPACE, 'Only one space is allowed.'),
-  email: emailValidation,
-  phoneNumber: phoneNumberValidation.optional(),
-  queryType: enum_z(CONTACT_QUERY_OPTIONS, 'Please select what your query is about.'),
-  message: string('Message is required.')
-    .trim()
-    .nonempty('Message is required.')
-    .min(10, 'Message should be at least 10 characters')
-    .max(500, 'Message should be at most 500 characters')
-    .regex(REGEX.ONLY_LETTERS_AND_SPACES, 'Only letters and spaces are allowed.'),
-});
-
-type TContactFormSchema = TInfer<typeof contactFormSchema>;
 
 const CONTACT_DETAILS = [
   {
@@ -76,13 +38,17 @@ const CONTACT_DETAILS = [
 ] as const;
 
 const Contact = () => {
-  const { control, register, handleSubmit, formState, reset } = useForm<TContactFormSchema>({
-    resolver: zodResolver(contactFormSchema),
-  });
+  const { control, register, handleSubmit, formState, reset } =
+    useForm<TCreateContactQueryZodSchema>({
+      resolver: zodResolver(createContactQueryZodSchema),
+    });
 
-  const onSubmit = (values: TContactFormSchema) => {
+  const values = useWatch({ control });
+  console.log('🚀 ~ Contact ~ values:', values);
+
+  const onSubmit = (data: TCreateContactQueryZodSchema) => {
     // eslint-disable-next-line no-console
-    console.log(values);
+    console.log(data);
     reset();
   };
 
@@ -198,7 +164,7 @@ const Contact = () => {
               <Select
                 label="Query Type"
                 error={formState.errors.queryType?.message}
-                options={CONTACT_QUERY_OPTIONS.map((option) => ({ label: option, value: option }))}
+                options={CONTACT_QUERY_TYPES.map((option) => ({ label: option, value: option }))}
                 selectProps={{
                   value: field.value,
                   onChange: field.onChange,
