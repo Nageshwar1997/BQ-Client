@@ -214,6 +214,14 @@ const routes: RouteObject[] = [
         },
       },
       {
+        path: COMPANY.MISSION_VISION_VALUES,
+        lazy: async () => {
+          const { default: MissionVisionValues } =
+            await import('@/pages/company/MissionVisionValues');
+          return { Component: MissionVisionValues };
+        },
+      },
+      {
         path: COMPANY.PARTNER_WITH_US,
         lazy: async () => {
           const { default: PartnerWithUs } = await import('@/pages/company/PartnerWithUs');
@@ -225,6 +233,20 @@ const routes: RouteObject[] = [
         lazy: async () => {
           const { default: Careers } = await import('@/pages/company/Careers');
           return { Component: Careers };
+        },
+      },
+      {
+        path: COMPANY.VALUES_CULTURE,
+        lazy: async () => {
+          const { default: ValuesCulture } = await import('@/pages/company/ValuesCulture');
+          return { Component: ValuesCulture };
+        },
+      },
+      {
+        path: COMPANY.RETAIL_ECOMMERCE,
+        lazy: async () => {
+          const { default: RetailEcommerce } = await import('@/pages/company/RetailEcommerce');
+          return { Component: RetailEcommerce };
         },
       },
       {
@@ -246,6 +268,13 @@ const routes: RouteObject[] = [
         lazy: async () => {
           const { default: PressMedia } = await import('@/pages/company/PressMedia');
           return { Component: PressMedia };
+        },
+      },
+      {
+        path: COMPANY.NEWSROOM,
+        lazy: async () => {
+          const { default: Newsroom } = await import('@/pages/company/Newsroom');
+          return { Component: Newsroom };
         },
       },
       {

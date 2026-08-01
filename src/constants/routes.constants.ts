@@ -4,11 +4,15 @@ export const ROUTES = {
   COMPANY: {
     ABOUT_US: 'about-us',
     TEAM: 'team',
+    MISSION_VISION_VALUES: 'mission-vision-values',
     PARTNER_WITH_US: 'partner-with-us',
     CAREERS: 'careers',
+    VALUES_CULTURE: 'values-culture',
+    RETAIL_ECOMMERCE: 'retail-e-commerce',
     SUSTAINABILITY: 'sustainability',
     ETHICS: 'ethics',
     PRESS_MEDIA: 'press-media',
+    NEWSROOM: 'newsroom',
   },
   SERVICES: {
     CONTACT: 'contact',
