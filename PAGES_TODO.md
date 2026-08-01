@@ -4,51 +4,51 @@ Tracks which pages are fully built vs. still just a title-only stub, waiting on 
 
 ## ✅ Completed
 
-| Page | Route | File |
-|---|---|---|
-| Profile | `/profile` | `src/pages/profile/Profile.tsx` |
-| Accessibility Statement | `/accessibility` | `src/pages/legal-policies/Accessibility.tsx` |
-| Disclaimer | `/disclaimer` | `src/pages/legal-policies/Disclaimer.tsx` |
-| Terms & Conditions | `/terms-conditions` | `src/pages/legal-policies/TermsAndConditions.tsx` |
-| Cookie Policy | `/cookie-policy` | `src/pages/legal-policies/CookiePolicy.tsx` |
-| Privacy Policy | `/privacy-policy` | `src/pages/legal-policies/PrivacyPolicy.tsx` |
-| About Us | `/about-us` | `src/pages/company/AboutUs.tsx` |
-| Sustainability | `/sustainability` | `src/pages/company/Sustainability.tsx` |
-| Awards | `/awards` | `src/pages/misc/Awards.tsx` |
-| Help Center / FAQ | `/help-center-faq` | `src/pages/services/HelpCenterFAQ.tsx` |
-| Press / Media | `/press-media` | `src/pages/company/PressMedia.tsx` |
-| Ethics | `/ethics` | `src/pages/company/Ethics.tsx` |
-| Shipping Info | `/shipping-info` | `src/pages/services/ShippingInfo.tsx` |
-| Contact Us | `/contact` | `src/pages/services/Contact.tsx` |
-| Partner With Us | `/partner-with-us` | `src/pages/company/PartnerWithUs.tsx` |
+| Page                    | Route               | File                                              |
+| ----------------------- | ------------------- | ------------------------------------------------- |
+| Profile                 | `/profile`          | `src/pages/profile/Profile.tsx`                   |
+| Accessibility Statement | `/accessibility`    | `src/pages/legal-policies/Accessibility.tsx`      |
+| Disclaimer              | `/disclaimer`       | `src/pages/legal-policies/Disclaimer.tsx`         |
+| Terms & Conditions      | `/terms-conditions` | `src/pages/legal-policies/TermsAndConditions.tsx` |
+| Cookie Policy           | `/cookie-policy`    | `src/pages/legal-policies/CookiePolicy.tsx`       |
+| Privacy Policy          | `/privacy-policy`   | `src/pages/legal-policies/PrivacyPolicy.tsx`      |
+| About Us                | `/about-us`         | `src/pages/company/AboutUs.tsx`                   |
+| Sustainability          | `/sustainability`   | `src/pages/company/Sustainability.tsx`            |
+| Awards                  | `/awards`           | `src/pages/misc/Awards.tsx`                       |
+| Help Center / FAQ       | `/help-center-faq`  | `src/pages/services/HelpCenterFAQ.tsx`            |
+| Press / Media           | `/press-media`      | `src/pages/company/PressMedia.tsx`                |
+| Ethics                  | `/ethics`           | `src/pages/company/Ethics.tsx`                    |
+| Shipping Info           | `/shipping-info`    | `src/pages/services/ShippingInfo.tsx`             |
+| Contact Us              | `/contact`          | `src/pages/services/Contact.tsx`                  |
+| Partner With Us         | `/partner-with-us`  | `src/pages/company/PartnerWithUs.tsx`             |
 
 ## ⏳ Pending (stub only — title, no real content yet)
 
 ### Profile
 
-| Page | Route | File |
-|---|---|---|
-| Orders | `/profile/orders` | `src/pages/profile/Orders.tsx` |
+| Page            | Route                           | File                                      |
+| --------------- | ------------------------------- | ----------------------------------------- |
+| Orders          | `/profile/orders`               | `src/pages/profile/Orders.tsx`            |
 | Return & Refund | `/profile/orders/return-refund` | `src/pages/profile/OrderReturnRefund.tsx` |
-| Track Order | `/profile/orders/track` | `src/pages/profile/OrderTrack.tsx` |
-| Addresses | `/profile/addresses` | `src/pages/profile/Addresses.tsx` |
-| Wishlist | `/profile/wishlist` | `src/pages/profile/Wishlist.tsx` |
-| Reviews | `/profile/reviews` | `src/pages/profile/Reviews.tsx` |
-| Refer a Friend | `/profile/refer-a-friend` | `src/pages/profile/ReferAFriend.tsx` |
-| Gift Cards | `/profile/gift-cards` | `src/pages/profile/GiftCards.tsx` |
-| Notifications | `/profile/notifications` | `src/pages/profile/Notifications.tsx` |
+| Track Order     | `/profile/orders/track`         | `src/pages/profile/OrderTrack.tsx`        |
+| Addresses       | `/profile/addresses`            | `src/pages/profile/Addresses.tsx`         |
+| Wishlist        | `/profile/wishlist`             | `src/pages/profile/Wishlist.tsx`          |
+| Reviews         | `/profile/reviews`              | `src/pages/profile/Reviews.tsx`           |
+| Refer a Friend  | `/profile/refer-a-friend`       | `src/pages/profile/ReferAFriend.tsx`      |
+| Gift Cards      | `/profile/gift-cards`           | `src/pages/profile/GiftCards.tsx`         |
+| Notifications   | `/profile/notifications`        | `src/pages/profile/Notifications.tsx`     |
 
 ### Company
 
-| Page | Route | File |
-|---|---|---|
+| Page    | Route      | File                            |
+| ------- | ---------- | ------------------------------- |
 | Careers | `/careers` | `src/pages/company/Careers.tsx` |
 
 ### Misc
 
-| Page | Route | File |
-|---|---|---|
-| Store Locator | `/store-locator` | `src/pages/misc/StoreLocator.tsx` |
+| Page            | Route            | File                              |
+| --------------- | ---------------- | --------------------------------- |
+| Store Locator   | `/store-locator` | `src/pages/misc/StoreLocator.tsx` |
 | Become a Seller | `/become-seller` | `src/pages/misc/BecomeSeller.tsx` |
 
 ## Known gap (no page or route yet at all)
