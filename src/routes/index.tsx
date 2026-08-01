@@ -5,7 +5,8 @@ import { ROUTES } from '@/constants/routes.constants';
 import { authenticate } from '@/middlewares';
 import ErrorBoundary from '@/pages/error/ErrorBoundary';
 
-const { AUTH, AWARDS, COMPANY, HOME, LEGAL, PRODUCTS, PROFILE, QUICK_LINKS, SERVICES } = ROUTES;
+const { AUTH, AWARDS, COMPANY, DISCOVER, HOME, LEGAL, PRODUCTS, PROFILE, QUICK_LINKS, SERVICES } =
+  ROUTES;
 
 const routes: RouteObject[] = [
   {
@@ -192,10 +193,24 @@ const routes: RouteObject[] = [
         },
       },
       {
+        path: LEGAL.COMPLIANCE,
+        lazy: async () => {
+          const { default: Compliance } = await import('@/pages/legal-policies/Compliance');
+          return { Component: Compliance };
+        },
+      },
+      {
         path: COMPANY.ABOUT_US,
         lazy: async () => {
           const { default: AboutUs } = await import('@/pages/company/AboutUs');
           return { Component: AboutUs };
+        },
+      },
+      {
+        path: COMPANY.TEAM,
+        lazy: async () => {
+          const { default: Team } = await import('@/pages/company/Team');
+          return { Component: Team };
         },
       },
       {
@@ -274,6 +289,35 @@ const routes: RouteObject[] = [
         lazy: async () => {
           const { default: Awards } = await import('@/pages/misc/Awards');
           return { Component: Awards };
+        },
+      },
+      {
+        path: DISCOVER.NEW_ARRIVALS,
+        lazy: async () => {
+          const { default: NewArrivals } = await import('@/pages/misc/NewArrivals');
+          return { Component: NewArrivals };
+        },
+      },
+      {
+        path: DISCOVER.SPECIAL_COLLECTION,
+        lazy: async () => {
+          const { default: SpecialCollection } = await import('@/pages/misc/SpecialCollection');
+          return { Component: SpecialCollection };
+        },
+      },
+      {
+        path: DISCOVER.OFFERS_AND_DISCOUNTS,
+        lazy: async () => {
+          const { default: OffersAndDiscounts } =
+            await import('@/pages/misc/OffersAndDiscounts');
+          return { Component: OffersAndDiscounts };
+        },
+      },
+      {
+        path: DISCOVER.BEAUTY_INSIGHTS,
+        lazy: async () => {
+          const { default: BeautyInsights } = await import('@/pages/misc/BeautyInsights');
+          return { Component: BeautyInsights };
         },
       },
     ],

@@ -55,7 +55,7 @@ export const L3Category = ({
 
   return (
     <div
-      onClick={() => category.path && navigate(category.path)}
+      onClick={() => navigate(category.path ?? category.slug)}
       className={`hover:bg-smoke-eerie hover:border-primary/8 group cursor-pointer break-inside-avoid rounded-xl border border-transparent p-2 transition-colors ${className}`}
     >
       <p className="text-secondary group-hover:text-primary line-clamp-1 text-left text-xs tracking-wide transition-colors xl:text-sm">

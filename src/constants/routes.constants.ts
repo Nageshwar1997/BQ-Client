@@ -3,6 +3,7 @@ export const ROUTES = {
   AWARDS: 'awards',
   COMPANY: {
     ABOUT_US: 'about-us',
+    TEAM: 'team',
     PARTNER_WITH_US: 'partner-with-us',
     CAREERS: 'careers',
     SUSTAINABILITY: 'sustainability',
@@ -28,6 +29,12 @@ export const ROUTES = {
     OAUTH: 'oauth',
   },
   CATEGORIES: { BASE: 'categories' },
+  DISCOVER: {
+    NEW_ARRIVALS: 'new-arrivals',
+    SPECIAL_COLLECTION: 'special-collection',
+    OFFERS_AND_DISCOUNTS: 'offers-and-discounts',
+    BEAUTY_INSIGHTS: 'beauty-insights',
+  },
   PRODUCTS: {
     BASE: 'products',
     SLUG: ':slug',
@@ -41,6 +48,7 @@ export const ROUTES = {
     TERMS_CONDITIONS: 'terms-conditions',
     COOKIE_POLICY: 'cookie-policy',
     PRIVACY_POLICY: 'privacy-policy',
+    COMPLIANCE: 'compliance',
   },
   PROFILE: {
     BASE: 'profile',
