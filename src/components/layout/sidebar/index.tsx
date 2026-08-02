@@ -8,7 +8,6 @@ import { ROUTES } from '@/constants/routes.constants';
 import useIsSmallScreen from '@/hooks/useIsSmallScreen';
 import usePathParams from '@/hooks/usePathParams';
 import { useLogout } from '@/services/user-service/auth.service.query';
-import useUserStore from '@/stores/user.store';
 
 import ScrollableGradientContainer from '../containers/ScrollableGradientContainer';
 
@@ -39,15 +38,13 @@ const Sidebar = () => {
   const { pathname, paths, navigate } = usePathParams();
   const isMobile = useIsSmallScreen(767);
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
-  const setUser = useUserStore((s) => s.setUser);
-  const logout = useLogout();
+  const { mutateAsync: logout } = useLogout();
 
   const handleEvents = async (event: (typeof SIDEBAR_DATA)[number]['handler']) => {
     switch (event) {
       case 'logout':
-        await logout.mutateAsync(undefined, {
+        await logout(undefined, {
           onSettled: () => {
-            setUser(null);
             void navigate(`/${ROUTES.AUTH.BASE}`);
           },
         });

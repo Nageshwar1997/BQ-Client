@@ -4,13 +4,14 @@ import { Link } from 'react-router-dom';
 
 import GradientText from '@/components/ui/GradientText';
 import Theme from '@/components/ui/Theme';
-import { ROUTES } from '@/constants/routes.constants';
 import useAuthAction from '@/hooks/useAuthAction';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import usePathParams from '@/hooks/usePathParams';
 import type { TCategoryHierarchyNode, TLevel2, TLevel3 } from '@/types/api.type';
 import type { IChildren, IClassName } from '@/types/component.type';
 import { getTodaysFeedback, resolveCategoryPath } from '@/utils/common.util';
+
+import UserPopupModal from './UserPopupModal';
 
 export const CategoryLabel = ({
   name,
@@ -182,22 +183,22 @@ export const UserMenuIcons = ({
             className="text-tertiary hover:text-secondary size-5 cursor-pointer md:size-6"
           />
         )}
-        {/* TODO: Remove Link tag once UserPopupModal is implemented */}
-        <Link to={`/${ROUTES.PROFILE.BASE}`}>
-          <div className="relative" ref={userPopupRef}>
-            <Icon
-              icon="solar:user-circle-linear"
-              // onClick={() => {
-              //   setIsOpen((prev) => ({ ...prev, user: true }));
-              // }}
-              className={`size-5 cursor-pointer md:size-6 ${isOpen.user ? 'text-blue-crayola-c' : 'text-tertiary hover:text-secondary'}`}
-            />
-            {/* <UserPopupModal
+
+        <div className="relative" ref={userPopupRef}>
+          <Icon
+            icon="solar:user-circle-linear"
+            onClick={() => {
+              setIsOpen((prev) => ({ ...prev, user: true }));
+            }}
+            className={`size-5 cursor-pointer md:size-6 ${isOpen.user ? 'text-blue-crayola-c' : 'text-tertiary hover:text-secondary'}`}
+          />
+          <UserPopupModal
             isOpen={isOpen.user}
-            onClose={() => setIsOpen((prev) => ({ ...prev, user: false }))}
-          /> */}
-          </div>
-        </Link>
+            onClose={() => {
+              setIsOpen((prev) => ({ ...prev, user: false }));
+            }}
+          />
+        </div>
         <Icon
           icon="solar:shop-2-linear"
           onClick={() => {

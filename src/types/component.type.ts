@@ -2,7 +2,6 @@ import type { IconProps } from '@iconify/react';
 import type {
   ButtonHTMLAttributes,
   ComponentProps,
-  JSX,
   ReactElement,
   ReactNode,
   RefObject,
@@ -82,7 +81,7 @@ export type TApiStatus = TErrorStatus | TEmptyStatus | TLoadingStatus;
 export interface IModalWrapper extends IClassName, IChildren {
   isOpen: boolean;
   onClose: () => void;
-  containerProps?: JSX.IntrinsicElements['div'];
+  containerProps?: ComponentProps<'div'>;
   header?: { title?: string; showCloseIcon?: boolean };
   closeOnOutsideClick?: boolean;
   style?: ComponentProps<'div'>['style'];

@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { authApi } from '@/classes/apis';
 import { API_QUERY_KEYS } from '@/constants/api.constants';
+import useUserStore from '@/stores/user.store';
 import { handleApiErrorToaster, handleApiSuccessToaster } from '@/utils/api.util';
 import { toaster } from '@/utils/common.util';
 
@@ -269,6 +270,7 @@ export const useSetPassword = () => {
 
 export const useLogout = () => {
   const queryClient = useQueryClient();
+  const setUser = useUserStore((s) => s.setUser);
 
   return useMutation({
     mutationKey: logout,
@@ -287,6 +289,7 @@ export const useLogout = () => {
     },
     onSettled: (_data, _error, _variables, context) => {
       if (context?.toastId) toaster.remove(context.toastId);
+      setUser(null);
     },
   });
 };

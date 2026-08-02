@@ -45,6 +45,39 @@ export const NAVBAR_TOP_LAYER_DATA = [
   },
 ] as const;
 
+export const USER_MENU_POPUP_DATA = [
+  {
+    text: 'My Profile',
+    icon: 'solar:user-circle-linear',
+    path: `/${PROFILE.BASE}`,
+    private: true,
+  },
+  {
+    text: 'My Orders',
+    icon: 'solar:delivery-linear',
+    path: `/${PROFILE.BASE}/${PROFILE.ORDERS}`,
+    private: true,
+  },
+  {
+    text: 'Wishlist',
+    icon: 'solar:heart-linear',
+    path: `/${PROFILE.BASE}/${PROFILE.WISHLIST}`,
+    private: true,
+  },
+  {
+    text: 'Addresses',
+    icon: 'solar:map-point-linear',
+    path: `/${PROFILE.BASE}/${PROFILE.ADDRESSES}`,
+    private: true,
+  },
+  {
+    text: 'Refer a Friend',
+    icon: 'solar:users-group-rounded-linear',
+    path: `/${PROFILE.BASE}/${PROFILE.REFER_A_FRIEND}`,
+    private: true,
+  },
+] as const;
+
 export const DUMMY_FEEDBACKS = [
   [
     { text: 'Great variety of lipsticks! Loved the', type: 'silver' },
