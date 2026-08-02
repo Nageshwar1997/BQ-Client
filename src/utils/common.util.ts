@@ -3,6 +3,7 @@ import type { CSSProperties } from 'react';
 
 import { TOAST_TYPE, TOOLTIP_GAP, VIDEO_PLACEHOLDER } from '@/constants/common.constants';
 import { DUMMY_FEEDBACKS } from '@/constants/navbar.constants';
+import { ROUTES } from '@/constants/routes.constants';
 import useToastStore from '@/stores/toast.store';
 import type { IButton, ITooltip } from '@/types/component.type';
 import type {
@@ -355,6 +356,13 @@ export const isUndefined = (value: unknown): value is undefined => value === und
 /* ========== NULL/UNDEFINED CHECK FUNCTION ========== */
 export const isNullOrUndefined = (value: unknown): value is null | undefined => {
   return isNull(value) || isUndefined(value);
+};
+
+// Builds a /products/l1-slug/l2-slug/l3-slug path from the given slug chain.
+// Returns undefined if any segment is missing, so callers can skip navigation instead of linking to a broken URL.
+export const buildCategoryProductsPath = (...slugs: (string | undefined)[]) => {
+  if (slugs.some((slug) => !slug)) return undefined;
+  return `/${ROUTES.PRODUCTS.BASE}/${slugs.join('/')}`;
 };
 
 export const getTodaysFeedback = () => {
