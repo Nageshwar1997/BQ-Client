@@ -18,7 +18,7 @@ const OAuth = () => {
 
   useEffect(() => {
     if (!queryParams.success && !queryParams.error) {
-      void navigate('/auth');
+      void navigate(`/${ROUTES.AUTH.BASE}`);
     }
   }, [queryParams.success, queryParams.error, navigate]);
 

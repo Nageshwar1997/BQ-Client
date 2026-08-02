@@ -121,7 +121,7 @@ const Footer = () => {
       <div className="my-6 flex w-full flex-col items-center justify-center gap-5 lg:flex-row-reverse">
         <div className="flex items-center gap-5 px-[2%]">
           {SOCIAL_MEDIA_LINKS.map((item) => (
-            <Link to={item.url} key={item.id} target="_blank" className="cursor-pointer">
+            <Link to={item.url} key={item.id} target="_blank">
               <Icon icon={item.icon} className={`size-5 md:size-6 ${item.className ?? ''}`} />
             </Link>
           ))}

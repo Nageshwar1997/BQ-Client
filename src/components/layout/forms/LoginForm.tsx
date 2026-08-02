@@ -60,7 +60,7 @@ const LoginForm = () => {
         const { runAllActions } = useActionsStore.getState();
         await runAllActions();
 
-        if (paths.includes('auth')) void navigate(ROUTES.HOME);
+        if (paths.includes(ROUTES.AUTH.BASE)) void navigate(ROUTES.HOME);
         if (queryParams.login) removeParams(['login']);
       },
 

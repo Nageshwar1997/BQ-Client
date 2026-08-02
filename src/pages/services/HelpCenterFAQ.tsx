@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
+import { ROUTES } from '@/constants/routes.constants';
 
 const FAQ_CATEGORIES = [
   {
@@ -237,7 +238,7 @@ const HelpCenterFAQ = () => {
           <p className="text-primary text-base font-semibold sm:text-lg">Still Have Questions?</p>
           <p className="text-secondary text-xs sm:text-sm">
             Our{' '}
-            <Link to="/contact" className="inline">
+            <Link to={`/${ROUTES.SERVICES.CONTACT}`} className="inline">
               <GradientText type="accent" text="Contact Us" className="font-medium" />
             </Link>{' '}
             page has more ways to reach our team.

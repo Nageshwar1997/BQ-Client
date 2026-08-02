@@ -202,7 +202,7 @@ const Sustainability = () => {
           </p>
           <p className="text-secondary text-xs sm:text-sm">
             Read our{' '}
-            <Link to="/ethics" className="inline">
+            <Link to={`/${ROUTES.COMPANY.ETHICS}`} className="inline">
               <GradientText type="accent" text="ethics standards" className="font-medium" />
             </Link>{' '}
             or get in touch if you have questions or ideas for us.

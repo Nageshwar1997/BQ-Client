@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 
 import Button from '@/components/ui/Button';
 import GradientText from '@/components/ui/GradientText';
+import { ROUTES } from '@/constants/routes.constants';
 import type { TCategoryHierarchyNode, TLevel2 } from '@/types/api.type';
 
 import { TestimonialCarousel } from '../../carousels/TestimonialCarousel';
@@ -18,7 +19,7 @@ const About = ({ categories }: { categories: TCategoryHierarchyNode<TLevel2>[] }
             type="accent"
             className="block text-sm leading-5 font-medium italic"
           />
-          <Link to="/partner-with-us" className="block w-fit">
+          <Link to={`/${ROUTES.COMPANY.PARTNER_WITH_US}`} className="block w-fit">
             <Button
               content="Become a seller"
               pattern="outline"

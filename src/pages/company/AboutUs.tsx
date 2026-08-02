@@ -255,11 +255,11 @@ const AboutUs = () => {
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           Doing right by people and the planet isn&apos;t an afterthought for us &mdash; it&apos;s
           part of how we choose who sells on our platform. Read more about our{' '}
-          <Link to="/sustainability" className="inline">
+          <Link to={`/${ROUTES.COMPANY.SUSTAINABILITY}`} className="inline">
             <GradientText type="accent" text="sustainability commitments" className="font-medium" />
           </Link>{' '}
           and our{' '}
-          <Link to="/ethics" className="inline">
+          <Link to={`/${ROUTES.COMPANY.ETHICS}`} className="inline">
             <GradientText type="accent" text="ethics standards" className="font-medium" />
           </Link>
           .
@@ -279,14 +279,14 @@ const AboutUs = () => {
         </div>
         <div className="flex flex-wrap gap-3">
           <Link
-            to="/careers"
+            to={`/${ROUTES.COMPANY.CAREERS}`}
             className="border-primary/20 hover:bg-primary-invert/60 text-primary flex items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors"
           >
             <Icon icon="solar:compass-linear" className="size-4.5" />
             View Careers
           </Link>
           <Link
-            to="/become-seller"
+            to={`/${ROUTES.QUICK_LINKS.BECOME_SELLER}`}
             className="border-primary/20 hover:bg-primary-invert/60 text-primary flex items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors"
           >
             <Icon icon="solar:shop-2-linear" className="size-4.5" />

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
+import { ROUTES } from '@/constants/routes.constants';
 
 const OUR_VALUES = [
   {
@@ -58,9 +59,8 @@ const MissionVisionValues = () => {
           className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
         />
         <p className="text-secondary max-w-2xl text-sm sm:text-base">
-          What drives{' '}
-          <GradientText type="accent" text="Beautinique" className="font-semibold" /> forward, and
-          the principles we hold ourselves to along the way.
+          What drives <GradientText type="accent" text="Beautinique" className="font-semibold" />{' '}
+          forward, and the principles we hold ourselves to along the way.
         </p>
       </div>
 
@@ -94,7 +94,11 @@ const MissionVisionValues = () => {
 
       {/* Our Values */}
       <section className="flex flex-col gap-4">
-        <GradientText type="accent" text="Our Values" className="text-xl font-semibold sm:text-2xl" />
+        <GradientText
+          type="accent"
+          text="Our Values"
+          className="text-xl font-semibold sm:text-2xl"
+        />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {OUR_VALUES.map((value) => (
             <div
@@ -147,7 +151,7 @@ const MissionVisionValues = () => {
           </p>
         </div>
         <Link
-          to="/about-us"
+          to={`/${ROUTES.COMPANY.ABOUT_US}`}
           className="border-primary/20 hover:bg-primary-invert/60 text-primary flex shrink-0 items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors"
         >
           <Icon icon="solar:bag-heart-linear" className="size-4.5" />

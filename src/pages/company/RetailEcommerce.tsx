@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
+import { ROUTES } from '@/constants/routes.constants';
 
 const TEAMS = [
   {
@@ -114,7 +115,7 @@ const RetailEcommerce = () => {
           </p>
         </div>
         <Link
-          to="/careers"
+          to={`/${ROUTES.COMPANY.CAREERS}`}
           className="border-primary/20 hover:bg-primary-invert/60 text-primary flex shrink-0 items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors"
         >
           <Icon icon="solar:compass-linear" className="size-4.5" />

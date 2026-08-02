@@ -116,7 +116,7 @@ const Ethics = () => {
           We collect only the data we actually need to run the platform, we never sell it, and we
           give you control over your own information &mdash; from editing your profile to requesting
           deletion. The specifics live in our{' '}
-          <Link to="/privacy-policy" className="inline">
+          <Link to={`/${ROUTES.LEGAL.PRIVACY_POLICY}`} className="inline">
             <GradientText type="accent" text="Privacy Policy" className="font-medium" />
           </Link>
           .
@@ -163,15 +163,15 @@ const Ethics = () => {
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           These standards work alongside our{' '}
-          <Link to="/terms-conditions" className="inline">
+          <Link to={`/${ROUTES.LEGAL.TERMS_CONDITIONS}`} className="inline">
             <GradientText type="accent" text="Terms & Conditions" className="font-medium" />
           </Link>
           ,{' '}
-          <Link to="/privacy-policy" className="inline">
+          <Link to={`/${ROUTES.LEGAL.PRIVACY_POLICY}`} className="inline">
             <GradientText type="accent" text="Privacy Policy" className="font-medium" />
           </Link>
           , and{' '}
-          <Link to="/sustainability" className="inline">
+          <Link to={`/${ROUTES.COMPANY.SUSTAINABILITY}`} className="inline">
             <GradientText type="accent" text="Sustainability Commitments" className="font-medium" />
           </Link>
           .

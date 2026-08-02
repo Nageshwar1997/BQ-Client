@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
+import { ROUTES } from '@/constants/routes.constants';
 
 const PARTNER_BENEFITS = [
   {
@@ -61,10 +62,19 @@ const PARTNERSHIP_TYPES = [
 ] as const;
 
 const PARTNER_STEPS = [
-  { title: 'Apply', description: 'Tell us about your business, products, and what you’re looking for.' },
+  {
+    title: 'Apply',
+    description: 'Tell us about your business, products, and what you’re looking for.',
+  },
   { title: 'Review', description: 'Our team reviews your application and product details.' },
-  { title: 'Onboard', description: 'Get set up with everything you need — listings, payouts, and support.' },
-  { title: 'Go Live', description: 'Your products or collaboration go live for our customers to discover.' },
+  {
+    title: 'Onboard',
+    description: 'Get set up with everything you need — listings, payouts, and support.',
+  },
+  {
+    title: 'Go Live',
+    description: 'Your products or collaboration go live for our customers to discover.',
+  },
 ] as const;
 
 const REQUIREMENTS = [
@@ -209,7 +219,7 @@ const PartnerWithUs = () => {
         </div>
         <div className="flex flex-wrap gap-3">
           <Link
-            to="/become-seller"
+            to={`/${ROUTES.QUICK_LINKS.BECOME_SELLER}`}
             className="bg-accent-duo flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90"
           >
             <Icon icon="solar:shop-2-linear" className="size-4.5" />

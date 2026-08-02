@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
+import { ROUTES } from '@/constants/routes.constants';
 
 const QUICK_FACTS = [
   {
@@ -74,8 +75,8 @@ const ShippingInfo = () => {
           className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
         />
         <p className="text-secondary max-w-2xl text-sm sm:text-base">
-          Everything you need to know about how your order gets from a seller&apos;s shelf to
-          your doorstep.
+          Everything you need to know about how your order gets from a seller&apos;s shelf to your
+          doorstep.
         </p>
       </div>
 
@@ -139,9 +140,9 @@ const ShippingInfo = () => {
           className="text-xl font-semibold sm:text-2xl"
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
-          Shipping costs are calculated at checkout based on your delivery location, order
-          weight, and the seller fulfilling your item — and you&apos;ll always see the final
-          amount before you pay. Many sellers offer free shipping on orders above{' '}
+          Shipping costs are calculated at checkout based on your delivery location, order weight,
+          and the seller fulfilling your item — and you&apos;ll always see the final amount before
+          you pay. Many sellers offer free shipping on orders above{' '}
           <span className="text-primary font-medium">₹499</span>, shown directly on the product
           page.
         </p>
@@ -155,8 +156,11 @@ const ShippingInfo = () => {
           className="text-xl font-semibold sm:text-2xl"
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
-          Once your order ships, visit{' '}
-          <Link to="/profile/orders/track" className="inline">
+          Once your order ships, visit
+          <Link
+            to={`/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.ORDERS}/${ROUTES.PROFILE.ORDER_TRACK}`}
+            className="inline"
+          >
             <GradientText type="accent" text="Track My Orders" className="font-medium" />
           </Link>{' '}
           from your Profile to see live status updates for every shipment in your order.
@@ -173,7 +177,7 @@ const ShippingInfo = () => {
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           We package orders to keep products safe in transit while favoring recyclable materials
           wherever we can — read more on our{' '}
-          <Link to="/sustainability" className="inline">
+          <Link to={`/${ROUTES.COMPANY.SUSTAINABILITY}`} className="inline">
             <GradientText type="accent" text="Sustainability" className="font-medium" />
           </Link>{' '}
           page.
@@ -182,19 +186,25 @@ const ShippingInfo = () => {
 
       {/* Delayed or Missing */}
       <section className="border-primary/10 bg-secondary-invert flex items-start gap-3 rounded-xl border p-4 sm:p-5">
-        <Icon icon="solar:danger-triangle-linear" className="text-primary/60 mt-0.5 size-5 shrink-0" />
+        <Icon
+          icon="solar:danger-triangle-linear"
+          className="text-primary/60 mt-0.5 size-5 shrink-0"
+        />
         <div className="flex flex-col gap-1.5">
           <p className="text-primary text-sm font-semibold sm:text-base">
             Delayed or Missing Package?
           </p>
           <p className="text-secondary text-xs leading-relaxed sm:text-sm">
-            If your order is running later than the estimate shown, or tracking hasn&apos;t
-            updated in a while, check{' '}
-            <Link to="/profile/orders/track" className="inline">
+            If your order is running later than the estimate shown, or tracking hasn&apos;t updated
+            in a while, check{' '}
+            <Link
+              to={`/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.ORDERS}/${ROUTES.PROFILE.ORDER_TRACK}`}
+              className="inline"
+            >
               <GradientText type="accent" text="Track My Orders" className="font-medium" />
             </Link>{' '}
-            first. If something still looks wrong, reach out to us and we&apos;ll help sort it
-            out with the seller and courier.
+            first. If something still looks wrong, reach out to us and we&apos;ll help sort it out
+            with the seller and courier.
           </p>
         </div>
       </section>
@@ -207,7 +217,7 @@ const ShippingInfo = () => {
           <p className="text-primary text-base font-semibold sm:text-lg">Still Have Questions?</p>
           <p className="text-secondary text-xs sm:text-sm">
             Check our{' '}
-            <Link to="/help-center-faq" className="inline">
+            <Link to={`/${ROUTES.SERVICES.HELP_CENTER_FAQ}`} className="inline">
               <GradientText type="accent" text="Help Center" className="font-medium" />
             </Link>{' '}
             or reach out to our team directly.

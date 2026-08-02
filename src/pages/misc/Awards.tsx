@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
+import { ROUTES } from '@/constants/routes.constants';
 import useThemeStore from '@/stores/theme.store';
 
 const AWARD_STORIES = [
@@ -38,9 +39,9 @@ const Awards = () => {
           className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
         />
         <p className="text-secondary max-w-2xl text-sm sm:text-base">
-          We&apos;re grateful for the recognition our team and platform have received along the
-          way &mdash; it keeps us pushing to make Beautinique better for everyone who shops and
-          sells here.
+          We&apos;re grateful for the recognition our team and platform have received along the way
+          &mdash; it keeps us pushing to make Beautinique better for everyone who shops and sells
+          here.
         </p>
       </div>
 
@@ -87,8 +88,8 @@ const Awards = () => {
           className="text-xl font-semibold sm:text-2xl"
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
-          None of this happens without our customers, sellers, and team. Every review, every
-          order, and every product listed on{' '}
+          None of this happens without our customers, sellers, and team. Every review, every order,
+          and every product listed on{' '}
           <GradientText type="accent" text="Beautinique" className="font-semibold" /> is part of
           what got us here, and we don&apos;t take that for granted.
         </p>
@@ -102,7 +103,7 @@ const Awards = () => {
           <p className="text-primary text-base font-semibold sm:text-lg">Want the Full Story?</p>
           <p className="text-secondary text-xs sm:text-sm">
             Head over to{' '}
-            <Link to="/press-media" className="inline">
+            <Link to={`/${ROUTES.COMPANY.PRESS_MEDIA}`} className="inline">
               <GradientText type="accent" text="Press / Media" className="font-medium" />
             </Link>{' '}
             for our latest news and coverage.

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import ApiStatus from '@/components/layout/ApiStatus';
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
+import { ROUTES } from '@/constants/routes.constants';
 import useThemeStore from '@/stores/theme.store';
 
 const NEWS_ITEMS = [
@@ -89,7 +90,7 @@ const Newsroom = () => {
           <p className="text-primary text-base font-semibold sm:text-lg">Press Resources</p>
           <p className="text-secondary text-xs sm:text-sm">
             Journalists and partners can find brand assets and media contacts on our{' '}
-            <Link to="/press-media" className="inline">
+            <Link to={`/${ROUTES.COMPANY.PRESS_MEDIA}`} className="inline">
               <GradientText type="accent" text="Press / Media" className="font-medium" />
             </Link>{' '}
             page.

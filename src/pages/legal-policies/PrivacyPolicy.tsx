@@ -202,7 +202,7 @@ const PrivacyPolicy = () => {
           We use cookies and similar technologies to keep you signed in, remember your preferences,
           analyze traffic, and enhance your overall experience. For full details on the types of
           cookies we use and how to manage them, see our{' '}
-          <Link to="/cookie-policy" className="inline">
+          <Link to={`/${ROUTES.LEGAL.COOKIE_POLICY}`} className="inline">
             <GradientText type="accent" text="Cookie Policy" className="font-semibold" />
           </Link>
           .

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import Button from '@/components/ui/Button';
+import { ROUTES } from '@/constants/routes.constants';
 import useThemeStore from '@/stores/theme.store';
 import useUserStore from '@/stores/user.store';
 
@@ -30,7 +31,7 @@ const HomeHero = () => {
             ON THE WEB
           </h1>
           {!authenticated && (
-            <Link to="/auth/register" className="mt-4">
+            <Link to={`/${ROUTES.AUTH.BASE}/${ROUTES.AUTH.REGISTER}`} className="mt-4">
               <Button pattern="secondary" content="Register Now" className="gap-3! px-6! py-4" />
             </Link>
           )}
