@@ -37,7 +37,7 @@ const routes: RouteObject[] = [
             },
           },
           {
-            path: PRODUCTS.SLUG,
+            path: `${PRODUCTS.PRODUCT.BASE}/${PRODUCTS.PRODUCT.SLUG}`,
             lazy: async () => {
               const { default: ProductDetails } = await import('@/pages/product/ProductDetails');
               return { Component: ProductDetails };

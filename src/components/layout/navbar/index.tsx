@@ -12,7 +12,7 @@ import { useGetCategoriesHierarchy } from '@/services/product-service/category.s
 import useUserStore from '@/stores/user.store';
 import type { TCategoryHierarchy } from '@/types/api.type';
 import type { IClassName } from '@/types/component.type';
-import { buildCategoryProductsPath, toaster } from '@/utils/common.util';
+import { toaster } from '@/utils/common.util';
 
 import { Feedback, type IUserMenuIconsHandle, UserMenuIcons } from './children/grand-children';
 import HoveredCategory from './children/HoveredCategory';
@@ -130,7 +130,7 @@ export const Navbar = () => {
 
   const authenticated = useUserStore((s) => s.authenticated);
 
-  const { paths, pathname } = usePathParams();
+  const { paths, pathname, navigate } = usePathParams();
 
   const [isMobileNavbarOpened, setIsMobileNavbarOpened] = useState<boolean>(false);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
@@ -289,7 +289,7 @@ export const Navbar = () => {
                   category: { _id, name, slug, path },
                 };
 
-                const target = path ?? buildCategoryProductsPath(slug);
+                const target = path ?? (slug ? `${ROUTES.PRODUCTS.BASE}/${slug}` : undefined);
                 return target ? (
                   <Link className="relative block h-full" key={index} to={target}>
                     <Category {...props} />
@@ -366,10 +366,27 @@ export const Navbar = () => {
                       }}
                     >
                       <p className="text-primary">{category.name}</p>
-                      <Icon
-                        icon="solar:alt-arrow-down-linear"
-                        className={`text-primary size-6 transition-transform duration-300 ease-in-out ${isActive ? 'rotate-180' : ''}`}
-                      />
+                      <div className="flex items-center gap-2">
+                        <Icon
+                          icon="solar:alt-arrow-down-linear"
+                          className={`text-primary hover:text-blue-crayola-c size-6 transition-colors duration-300`}
+                          onClick={(e) => {
+                            const target =
+                              category.path ??
+                              (category.slug
+                                ? `${ROUTES.PRODUCTS.BASE}/${category.slug}`
+                                : undefined);
+
+                            if (!target) return;
+                            e.stopPropagation();
+                            void navigate(`/${target}`);
+                          }}
+                        />
+                        <Icon
+                          icon="solar:alt-arrow-down-linear"
+                          className={`text-primary size-6 transition-transform duration-300 ease-in-out ${isActive ? 'rotate-180' : ''}`}
+                        />
+                      </div>
                     </div>
                     {isActive && (
                       <div className="overflow-y-scroll p-4">

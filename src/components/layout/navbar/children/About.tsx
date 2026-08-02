@@ -13,13 +13,13 @@ const About = ({ categories }: { categories: TCategoryHierarchyNode<TLevel2>[] }
     <L2Category categories={categories}>
       <div className="break-inside-auto space-y-3 px-2 md:space-y-4 lg:space-y-5">
         <div className="border-b-battleship-davys-gray space-y-1 border-b pb-1 md:space-y-2 md:pb-2">
-          <CategoryLabel name="Partner with us" />
+          <CategoryLabel name="Partner with us" path={ROUTES.COMPANY.PARTNER_WITH_US} />
           <GradientText
             text="Together, we're Unstoppable!"
             type="accent"
             className="block text-sm leading-5 font-medium italic"
           />
-          <Link to={`/${ROUTES.COMPANY.PARTNER_WITH_US}`} className="block w-fit">
+          <Link to={`/${ROUTES.QUICK_LINKS.BECOME_SELLER}`} className="block w-fit">
             <Button
               content="Become a seller"
               pattern="outline"

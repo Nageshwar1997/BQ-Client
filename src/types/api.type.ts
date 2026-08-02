@@ -49,20 +49,20 @@ export type TLevel1 = TCategoryLevelsMap['L1'];
 export type TLevel2 = TCategoryLevelsMap['L2'];
 export type TLevel3 = TCategoryLevelsMap['L3'];
 
-type CategoryBase<TLevel extends TCategoryLevel> = IId &
+export type TCategoryBase<TLevel extends TCategoryLevel> = IId &
   Pick<TCategoryZodSchema, 'name'> & { slug: string; level: TLevel; path?: string };
 
-export type TL1Category = CategoryBase<TLevel1>;
-export type TL2Category = CategoryBase<TLevel2> & { parent: string };
-export type TL3Category = CategoryBase<TLevel3> & { parent: string; description: string };
+export type TL1Category = TCategoryBase<TLevel1>;
+export type TL2Category = TCategoryBase<TLevel2> & { parent: string };
+export type TL3Category = TCategoryBase<TLevel3> & { parent: string; description: string };
 
 export type TCategory = TL1Category | TL2Category | TL3Category;
 
 export type TCategoryHierarchyNode<TLevel extends TCategoryLevel> = TLevel extends TLevel1
-  ? CategoryBase<TLevel1> & { subcategories: TCategoryHierarchyNode<TLevel2>[] }
+  ? TCategoryBase<TLevel1> & { subcategories: TCategoryHierarchyNode<TLevel2>[] }
   : TLevel extends TLevel2
-    ? CategoryBase<TLevel2> & { parent: string; subcategories: TCategoryHierarchyNode<TLevel3>[] }
-    : CategoryBase<TLevel3> & { parent: string; description: string; subcategories?: never };
+    ? TCategoryBase<TLevel2> & { parent: string; subcategories: TCategoryHierarchyNode<TLevel3>[] }
+    : TCategoryBase<TLevel3> & { parent: string; description: string; subcategories?: never };
 
 export type TCategoryHierarchy = TCategoryHierarchyNode<TLevel1>;
 

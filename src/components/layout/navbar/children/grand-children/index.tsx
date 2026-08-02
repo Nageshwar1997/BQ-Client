@@ -16,15 +16,15 @@ export const CategoryLabel = ({
   name,
   path,
   className = '',
-}: { name: string; path?: string } & IClassName) => (
-  <p
-    className={`text-battleship-davys-gray-invert break-inside-avoid text-left text-sm leading-5 font-semibold tracking-wide uppercase ${
-      path ? 'cursor-pointer' : 'cursor-default'
-    } ${className}`}
-  >
-    {path ? <Link to={path}>{name}</Link> : name}
-  </p>
-);
+}: { name: string; path?: string } & IClassName) => {
+  return (
+    <p
+      className={`text-battleship-davys-gray-invert break-inside-avoid text-left text-sm leading-5 font-semibold tracking-wide uppercase ${className}`}
+    >
+      {path ? <Link to={path}>{name}</Link> : name}
+    </p>
+  );
+};
 
 export const Feedback = () => {
   const FEEDBACK = getTodaysFeedback();
@@ -51,20 +51,26 @@ export const L3Category = ({
 }: IClassName & {
   category: TCategoryHierarchyNode<TLevel3>;
 }) => {
-  const { navigate } = usePathParams();
-
-  return (
-    <div
-      onClick={() => navigate(category.path ?? category.slug)}
-      className={`hover:bg-smoke-eerie hover:border-primary/8 group cursor-pointer break-inside-avoid rounded-xl border border-transparent p-2 transition-colors ${className}`}
-    >
+  const target = category.path;
+  const content = (
+    <>
       <p className="text-secondary group-hover:text-primary line-clamp-1 text-left text-xs tracking-wide transition-colors xl:text-sm">
         {category.name}
       </p>
       <p className="text-silver-jet group-hover:text-tertiary line-clamp-2 text-[8px] leading-3 wrap-break-word transition-colors xl:text-[10px]">
         {category.description}
       </p>
-    </div>
+    </>
+  );
+
+  const sharedClassName = `hover:bg-smoke-eerie hover:border-primary/8 group break-inside-avoid rounded-xl border border-transparent p-2 transition-colors ${className}`;
+
+  return target ? (
+    <Link to={target} className={sharedClassName}>
+      {content}
+    </Link>
+  ) : (
+    <div className={sharedClassName}>{content}</div>
   );
 };
 

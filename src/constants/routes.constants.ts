@@ -41,7 +41,7 @@ export const ROUTES = {
   },
   PRODUCTS: {
     BASE: 'products',
-    SLUG: ':slug',
+    PRODUCT: { BASE: 'product', SLUG: ':slug' },
     CATEGORY_L1_SLUG: ':l1_slug',
     CATEGORY_L2_SLUG: ':l2_slug',
     CATEGORY_L3_SLUG: ':l3_slug',
