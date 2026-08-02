@@ -129,14 +129,15 @@ export const DUMMY_FEEDBACKS = [
 export const NEW: TCategoryHierarchyNode<TLevel2> = {
   _id: 'latest_trends',
   name: 'Latest Trends',
-  slug: 'latest-trends',
+  slug: '',
   level: 2,
   parent: 'for_you',
   subcategories: [
     {
       _id: 'new_arrivals',
       name: 'New Arrivals',
-      slug: 'new-arrivals',
+      slug: '',
+      path: `${ROUTES.PRODUCTS.BASE}?sortBy=createdAt`,
       level: 3,
       parent: 'new',
       description: 'Discover new beauty arrivals for a fresh, trendy style.',
@@ -147,16 +148,18 @@ export const NEW: TCategoryHierarchyNode<TLevel2> = {
 export const SUGAR_COLLECTION: TCategoryHierarchyNode<TLevel2> = {
   _id: 'sugar_collection',
   name: "Beauty's Collection",
-  slug: 'beauty-collection',
+  slug: '',
+  path: ROUTES.PRODUCTS.BASE,
   level: 2,
   parent: 'for_you',
   subcategories: [
     {
       _id: 'special_collection',
       name: 'Special Collection',
+      slug: '',
+      path: ROUTES.PRODUCTS.BASE,
       level: 3,
       parent: 'sugar_collection',
-      slug: 'special-collection',
       description: 'Shop beauty products top-rated & loved by enthusiasts.',
     },
   ],
@@ -165,14 +168,16 @@ export const SUGAR_COLLECTION: TCategoryHierarchyNode<TLevel2> = {
 export const OFFERS: TCategoryHierarchyNode<TLevel2> = {
   _id: 'offers',
   name: 'Offers',
-  slug: 'offers',
+  slug: '',
+  path: `${ROUTES.PRODUCTS.BASE}?discount=80`,
   level: 2,
   parent: 'for_you',
   subcategories: [
     {
       _id: 'offers_and_discounts',
       name: 'Offers & Discounts',
-      slug: 'offers-and-discounts',
+      slug: '',
+      path: `${ROUTES.PRODUCTS.BASE}?discount=80`,
       level: 3,
       parent: 'offers',
       description: 'Grab discounts on premium cosmetics for a limited time.',
@@ -183,14 +188,16 @@ export const OFFERS: TCategoryHierarchyNode<TLevel2> = {
 export const BLOGS: TCategoryHierarchyNode<TLevel2> = {
   _id: 'blogs',
   name: 'Blogs',
-  slug: 'blogs',
+  slug: '',
+  path: ROUTES.DISCOVER.BLOGS,
   level: 2,
   parent: 'for_you',
   subcategories: [
     {
       _id: 'beauty_insights',
       name: 'Beauty Insights',
-      slug: 'beauty-insights',
+      slug: '',
+      path: ROUTES.DISCOVER.BLOGS,
       level: 3,
       parent: 'blogs',
       description: 'Explore top beauty tips, trends, and skincare routines.',
@@ -220,7 +227,7 @@ export const FOR_YOU_VIDEOS_DATA = [
 export const FOR_YOU: TCategoryHierarchy = {
   _id: 'for_you',
   name: 'For You',
-  slug: 'for-you',
+  slug: '',
   level: 1,
   subcategories: [NEW, SUGAR_COLLECTION, OFFERS, BLOGS],
 } as const;
@@ -232,14 +239,16 @@ export const FOR_YOU: TCategoryHierarchy = {
 export const COMPANY: TCategoryHierarchyNode<TLevel2> = {
   _id: 'company',
   name: 'Company',
-  slug: 'company',
+  slug: '',
+  path: ROUTES.COMPANY.ABOUT_US,
   level: 2,
   parent: 'about',
   subcategories: [
     {
       _id: 'about_us',
       name: 'About Us',
-      slug: 'about-us',
+      slug: '',
+      path: ROUTES.COMPANY.ABOUT_US,
       level: 3,
       parent: 'company',
       description: 'Learn about our journey, mission, and values that define our brand.',
@@ -247,7 +256,8 @@ export const COMPANY: TCategoryHierarchyNode<TLevel2> = {
     {
       _id: 'mission_vision_values',
       name: 'Mission Vision Values',
-      slug: 'mission-vision-values',
+      slug: '',
+      path: ROUTES.COMPANY.MISSION_VISION_VALUES,
       level: 3,
       parent: 'company',
       description: "Discover our purpose, vision, and values driving our company's success.",
@@ -255,7 +265,8 @@ export const COMPANY: TCategoryHierarchyNode<TLevel2> = {
     {
       _id: 'team',
       name: 'Team',
-      slug: 'team',
+      slug: '',
+      path: ROUTES.COMPANY.TEAM,
       level: 3,
       parent: 'company',
       description: 'Meet our talented team committed to delivering excellence every day.',
@@ -263,7 +274,8 @@ export const COMPANY: TCategoryHierarchyNode<TLevel2> = {
     {
       _id: 'contact_us',
       name: 'Contact Us',
-      slug: 'contact',
+      slug: '',
+      path: ROUTES.SERVICES.CONTACT,
       level: 3,
       parent: 'company',
       description: 'Get in touch with us for inquiries, support, or collaboration opportunities.',
@@ -274,14 +286,16 @@ export const COMPANY: TCategoryHierarchyNode<TLevel2> = {
 export const PRESS: TCategoryHierarchyNode<TLevel2> = {
   _id: 'press',
   name: 'Press',
-  slug: 'press',
+  slug: '',
+  path: ROUTES.COMPANY.PRESS_MEDIA,
   level: 2,
   parent: 'about',
   subcategories: [
     {
       _id: 'newsroom',
       name: 'Newsroom',
-      slug: 'newsroom',
+      slug: '',
+      path: ROUTES.COMPANY.NEWSROOM,
       level: 3,
       parent: 'press',
       description: 'Stay updated with our latest news, events, and media announcements.',
@@ -289,7 +303,8 @@ export const PRESS: TCategoryHierarchyNode<TLevel2> = {
     {
       _id: 'awards',
       name: 'Awards',
-      slug: 'awards',
+      slug: '',
+      path: ROUTES.AWARDS,
       level: 3,
       parent: 'press',
       description: 'Explore the recognitions and awards we have received for excellence.',
@@ -300,14 +315,16 @@ export const PRESS: TCategoryHierarchyNode<TLevel2> = {
 export const CAREERS: TCategoryHierarchyNode<TLevel2> = {
   _id: 'careers',
   name: 'Careers',
-  slug: 'careers',
+  slug: '',
+  path: ROUTES.COMPANY.CAREERS,
   level: 2,
   parent: 'about',
   subcategories: [
     {
       _id: 'values_culture',
       name: 'Values/Culture',
-      slug: 'values-culture',
+      slug: '',
+      path: ROUTES.COMPANY.VALUES_CULTURE,
       level: 3,
       parent: 'careers',
       description: 'Experience our vibrant culture driven by values of growth and innovation.',
@@ -315,7 +332,8 @@ export const CAREERS: TCategoryHierarchyNode<TLevel2> = {
     {
       _id: 'openings',
       name: 'Openings',
-      slug: 'careers',
+      slug: '',
+      path: ROUTES.COMPANY.CAREERS,
       level: 3,
       parent: 'careers',
       description: 'Discover exciting career opportunities and join our dynamic team today.',
@@ -323,7 +341,8 @@ export const CAREERS: TCategoryHierarchyNode<TLevel2> = {
     {
       _id: 'retail_e_commerce',
       name: 'Retail/E-Commerce',
-      slug: 'retail-e-commerce',
+      slug: '',
+      path: ROUTES.COMPANY.RETAIL_ECOMMERCE,
       level: 3,
       parent: 'careers',
       description: 'Explore roles in retail and e-commerce driving our digital success.',
@@ -334,14 +353,15 @@ export const CAREERS: TCategoryHierarchyNode<TLevel2> = {
 export const TRUST_CENTER: TCategoryHierarchyNode<TLevel2> = {
   _id: 'trust_center_and_legal',
   name: 'Trust Center & Legal',
-  slug: 'trust-center-and-legal',
+  slug: '',
   level: 2,
   parent: 'about',
   subcategories: [
     {
       _id: 'compliance',
       name: 'Compliance',
-      slug: 'compliance',
+      slug: '',
+      path: ROUTES.LEGAL.COMPLIANCE,
       level: 3,
       parent: 'trust_center_and_legal',
       description: 'Understand our compliance standards ensuring trust and transparency.',
@@ -349,7 +369,8 @@ export const TRUST_CENTER: TCategoryHierarchyNode<TLevel2> = {
     {
       _id: 'privacy_policy',
       name: 'Privacy/Policy',
-      slug: 'privacy-policy',
+      slug: '',
+      path: ROUTES.LEGAL.PRIVACY_POLICY,
       level: 3,
       parent: 'trust_center_and_legal',
       description: 'Learn about our privacy practices and data protection commitments.',
@@ -357,7 +378,8 @@ export const TRUST_CENTER: TCategoryHierarchyNode<TLevel2> = {
     {
       _id: 'terms_and_conditions',
       name: 'Terms & Conditions',
-      slug: 'terms-conditions',
+      slug: '',
+      path: ROUTES.LEGAL.TERMS_CONDITIONS,
       level: 3,
       parent: 'trust_center_and_legal',
       description: 'Review our terms and conditions for using our products and services.',
@@ -368,7 +390,7 @@ export const TRUST_CENTER: TCategoryHierarchyNode<TLevel2> = {
 export const ABOUT: TCategoryHierarchy = {
   _id: 'about',
   name: 'About',
-  slug: 'about',
+  slug: '',
   level: 1,
   subcategories: [COMPANY, CAREERS, PRESS, TRUST_CENTER],
 } as const;

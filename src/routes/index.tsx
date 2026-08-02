@@ -337,16 +337,15 @@ const routes: RouteObject[] = [
       {
         path: DISCOVER.OFFERS_AND_DISCOUNTS,
         lazy: async () => {
-          const { default: OffersAndDiscounts } =
-            await import('@/pages/misc/OffersAndDiscounts');
+          const { default: OffersAndDiscounts } = await import('@/pages/misc/OffersAndDiscounts');
           return { Component: OffersAndDiscounts };
         },
       },
       {
-        path: DISCOVER.BEAUTY_INSIGHTS,
+        path: DISCOVER.BLOGS,
         lazy: async () => {
-          const { default: BeautyInsights } = await import('@/pages/misc/BeautyInsights');
-          return { Component: BeautyInsights };
+          const { default: Blogs } = await import('@/pages/misc/Blogs');
+          return { Component: Blogs };
         },
       },
     ],

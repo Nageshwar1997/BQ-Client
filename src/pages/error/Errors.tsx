@@ -1,6 +1,7 @@
 import { isRouteErrorResponse, Link, useRouteError } from 'react-router-dom';
 
 import Button from '@/components/ui/Button';
+import { ROUTES } from '@/constants/routes.constants';
 import envs from '@/envs';
 
 interface IError {
@@ -38,7 +39,7 @@ const ErrorWrapper = ({ imgText, title, message }: IError) => {
       )}
       <div className="flex items-center justify-center gap-4">
         {Array.from({ length: 2 }).map((_, index) => (
-          <Link to={index === 0 ? '/contact' : '/'} key={index}>
+          <Link to={index === 0 ? `/${ROUTES.SERVICES.CONTACT}` : ROUTES.HOME} key={index}>
             <Button
               content={index === 0 ? 'Contact Us' : 'Home'}
               pattern={index === 0 ? 'secondary' : 'primary'}

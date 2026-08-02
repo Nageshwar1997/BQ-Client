@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
+import { ROUTES } from '@/constants/routes.constants';
 import { formatDate } from '@/utils/common.util';
 
 const QUICK_OVERVIEW = [
@@ -47,17 +48,20 @@ const DATA_WE_COLLECT = [
   {
     icon: 'solar:card-linear',
     title: 'Order & Payment Information',
-    description: 'Shipping address and payment details, processed securely by our payment partners.',
+    description:
+      'Shipping address and payment details, processed securely by our payment partners.',
   },
   {
     icon: 'solar:devices-linear',
     title: 'Usage & Device Information',
-    description: 'Pages visited, browser type, and device information via cookies and similar tech.',
+    description:
+      'Pages visited, browser type, and device information via cookies and similar tech.',
   },
   {
     icon: 'solar:videocamera-linear',
     title: 'Virtual Try-On Camera Data',
-    description: 'Camera access used only to render live previews; frames are not stored or shared.',
+    description:
+      'Camera access used only to render live previews; frames are not stored or shared.',
   },
 ] as const;
 
@@ -77,7 +81,7 @@ const YOUR_RIGHTS = [
 ] as const;
 
 const BeautiniqueLink = () => (
-  <Link to="/" className="inline">
+  <Link to={ROUTES.HOME} className="inline">
     <GradientText type="accent" text="Beautinique" className="font-semibold" />
   </Link>
 );
@@ -96,8 +100,8 @@ const PrivacyPolicy = () => {
           className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
         />
         <p className="text-secondary max-w-2xl text-sm sm:text-base">
-          This Privacy Policy explains how <BeautiniqueLink /> collects, uses, shares, and
-          protects your personal information when you shop, sell, or browse with us.
+          This Privacy Policy explains how <BeautiniqueLink /> collects, uses, shares, and protects
+          your personal information when you shop, sell, or browse with us.
         </p>
         <span className="text-primary/50 flex items-center gap-1 text-xs sm:text-sm">
           <Icon icon="solar:calendar-mark-linear" className="size-3.5" />
@@ -195,9 +199,9 @@ const PrivacyPolicy = () => {
           className="text-xl font-semibold sm:text-2xl"
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
-          We use cookies and similar technologies to keep you signed in, remember your
-          preferences, analyze traffic, and enhance your overall experience. For full details on
-          the types of cookies we use and how to manage them, see our{' '}
+          We use cookies and similar technologies to keep you signed in, remember your preferences,
+          analyze traffic, and enhance your overall experience. For full details on the types of
+          cookies we use and how to manage them, see our{' '}
           <Link to="/cookie-policy" className="inline">
             <GradientText type="accent" text="Cookie Policy" className="font-semibold" />
           </Link>
@@ -213,11 +217,11 @@ const PrivacyPolicy = () => {
           className="text-xl font-semibold sm:text-2xl"
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
-          We do not sell or rent your personal information to third parties. Your data may be
-          shared only with trusted partners who help us run our platform &mdash; such as payment
+          We do not sell or rent your personal information to third parties. Your data may be shared
+          only with trusted partners who help us run our platform &mdash; such as payment
           processors, shipping carriers, marketplace sellers fulfilling your order, and
-          authentication providers (Google, LinkedIn, GitHub) if you choose to sign in through
-          them &mdash; or when required to comply with the law.
+          authentication providers (Google, LinkedIn, GitHub) if you choose to sign in through them
+          &mdash; or when required to comply with the law.
         </p>
       </section>
 
@@ -232,8 +236,8 @@ const PrivacyPolicy = () => {
           We implement appropriate technical and organizational measures to protect your personal
           information from unauthorized access, disclosure, or misuse &mdash; including encrypting
           sensitive account data and transmitting information over secure connections. While no
-          system can be guaranteed to be 100% secure, we work continuously to keep your
-          information safe.
+          system can be guaranteed to be 100% secure, we work continuously to keep your information
+          safe.
         </p>
       </section>
 
@@ -245,9 +249,9 @@ const PrivacyPolicy = () => {
           className="text-xl font-semibold sm:text-2xl"
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
-          We retain your personal information for as long as your account is active or as needed
-          to provide our services, comply with legal obligations, resolve disputes, and enforce
-          our agreements. When you delete your account, we remove or anonymize your personal data,
+          We retain your personal information for as long as your account is active or as needed to
+          provide our services, comply with legal obligations, resolve disputes, and enforce our
+          agreements. When you delete your account, we remove or anonymize your personal data,
           except where retention is required by law.
         </p>
       </section>
@@ -286,9 +290,9 @@ const PrivacyPolicy = () => {
           className="text-xl font-semibold sm:text-2xl"
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
-          Beautinique is not directed at children under 18, and we do not knowingly collect
-          personal information from anyone under that age. If you believe a child has provided us
-          with personal information, please contact us so we can remove it promptly.
+          Beautinique is not directed at children under 18, and we do not knowingly collect personal
+          information from anyone under that age. If you believe a child has provided us with
+          personal information, please contact us so we can remove it promptly.
         </p>
       </section>
 
@@ -300,9 +304,9 @@ const PrivacyPolicy = () => {
           className="text-xl font-semibold sm:text-2xl"
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
-          Your information may be processed or stored on servers located outside your home
-          country. Wherever your data is processed, we take steps to ensure it receives an
-          adequate level of protection, consistent with this Privacy Policy.
+          Your information may be processed or stored on servers located outside your home country.
+          Wherever your data is processed, we take steps to ensure it receives an adequate level of
+          protection, consistent with this Privacy Policy.
         </p>
       </section>
 
@@ -329,8 +333,8 @@ const PrivacyPolicy = () => {
             Questions About Your Data?
           </p>
           <p className="text-secondary text-xs sm:text-sm">
-            For access, correction, or deletion requests, or any other privacy questions, reach
-            out to us.
+            For access, correction, or deletion requests, or any other privacy questions, reach out
+            to us.
           </p>
         </div>
         <a

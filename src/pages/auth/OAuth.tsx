@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 
 import ApiStatus from '@/components/layout/ApiStatus';
 import GradientText from '@/components/ui/GradientText';
+import { ROUTES } from '@/constants/routes.constants';
 import usePathParams from '@/hooks/usePathParams';
 import useQueryParams from '@/hooks/useQueryParams';
 import { useGetSessionUser } from '@/services/user-service/user.service.query';
@@ -23,12 +24,12 @@ const OAuth = () => {
 
   useEffect(() => {
     if (user) {
-      void navigate('/');
+      void navigate(ROUTES.HOME);
       return;
     }
     if (session.data) {
       setUser(session.data);
-      void navigate('/');
+      void navigate(ROUTES.HOME);
     }
   }, [session.data, navigate, setUser, user]);
 

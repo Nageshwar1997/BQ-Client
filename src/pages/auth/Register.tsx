@@ -22,6 +22,7 @@ import {
   PASSWORD_KEYS,
   REGISTER_INPUT_MAP_DATA,
 } from '@/constants/input.constants';
+import { ROUTES } from '@/constants/routes.constants';
 import usePathParams from '@/hooks/usePathParams';
 import {
   useRegisterAndSaveUser,
@@ -103,7 +104,7 @@ const Register = () => {
       {
         onSuccess: ({ data: user }) => {
           setUser(user ?? null);
-          void navigate('/');
+          void navigate(ROUTES.HOME);
         },
         onError: ({ fieldErrors }) => {
           setErrorToForm(registerAndSaveForm.setError, fieldErrors);
@@ -141,7 +142,7 @@ const Register = () => {
       case 'send':
       default:
         sendOtpForm.reset();
-        void navigate('/');
+        void navigate(ROUTES.HOME);
         break;
     }
   };

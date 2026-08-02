@@ -67,7 +67,7 @@ const Footer = () => {
         <div className="flex w-full flex-col items-center justify-between gap-2 md:flex-row lg:gap-4">
           <div className="flex flex-col items-center md:items-start">
             <div className="flex items-center justify-center">
-              <Link to="/">
+              <Link to={ROUTES.HOME}>
                 <img
                   src={`/images/logo/BQ_${theme === 'dark' ? 'white' : 'black'}_logo.webp`}
                   alt="Logo"

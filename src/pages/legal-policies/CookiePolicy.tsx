@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
+import { ROUTES } from '@/constants/routes.constants';
 import { formatDate } from '@/utils/common.util';
 
 const QUICK_OVERVIEW = [
@@ -78,7 +79,7 @@ const HOW_WE_USE_COOKIES = [
 ] as const;
 
 const BeautiniqueLink = () => (
-  <Link to="/" className="inline">
+  <Link to={ROUTES.HOME} className="inline">
     <GradientText type="accent" text="Beautinique" className="font-semibold" />
   </Link>
 );
@@ -143,8 +144,8 @@ const CookiePolicy = () => {
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           Cookies are small text files stored on your device when you visit a website. They help
           websites remember information about your visit, like your preferred language, login
-          status, and items in your cart, so your next visit can be faster and more personalized.
-          We also use similar technologies such as local storage and session storage for the same
+          status, and items in your cart, so your next visit can be faster and more personalized. We
+          also use similar technologies such as local storage and session storage for the same
           purposes.
         </p>
       </section>
@@ -221,10 +222,10 @@ const CookiePolicy = () => {
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           Some cookies are set by third-party services we rely on, such as analytics providers,
           payment processors, and social sign-in options like Google, LinkedIn, and GitHub. These
-          partners may use cookies to help us understand site usage, process payments securely,
-          and let you sign in without creating a new password. We don&apos;t control these
-          third-party cookies directly, so we encourage you to review each provider&apos;s own
-          privacy and cookie practices.
+          partners may use cookies to help us understand site usage, process payments securely, and
+          let you sign in without creating a new password. We don&apos;t control these third-party
+          cookies directly, so we encourage you to review each provider&apos;s own privacy and
+          cookie practices.
         </p>
       </section>
 
@@ -237,10 +238,9 @@ const CookiePolicy = () => {
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           <span className="text-primary font-medium">Session cookies</span> are temporary and are
-          automatically deleted once you close your browser. {' '}
-          <span className="text-primary font-medium">Persistent cookies</span> remain on your
-          device for a set period, or until you delete them, so we can recognize you on return
-          visits.
+          automatically deleted once you close your browser.{' '}
+          <span className="text-primary font-medium">Persistent cookies</span> remain on your device
+          for a set period, or until you delete them, so we can recognize you on return visits.
         </p>
       </section>
 
@@ -252,8 +252,8 @@ const CookiePolicy = () => {
           className="text-xl font-semibold sm:text-2xl"
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
-          You can control or disable cookies at any time through your browser settings &mdash;
-          most browsers let you view, delete, and block cookies from specific sites, or all sites
+          You can control or disable cookies at any time through your browser settings &mdash; most
+          browsers let you view, delete, and block cookies from specific sites, or all sites
           entirely. Keep in mind that disabling essential cookies may prevent parts of the site,
           like sign-in or checkout, from working properly.
         </p>
@@ -278,8 +278,8 @@ const CookiePolicy = () => {
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           We may update this Cookie Policy from time to time to reflect changes in the cookies and
-          technologies we use. Any updates will be posted on this page with a revised
-          &quot;last updated&quot; date.
+          technologies we use. Any updates will be posted on this page with a revised &quot;last
+          updated&quot; date.
         </p>
       </section>
 
@@ -288,7 +288,9 @@ const CookiePolicy = () => {
       {/* Contact */}
       <section className="border-primary/10 bg-secondary-invert flex flex-col items-start justify-between gap-4 rounded-2xl border p-4 sm:flex-row sm:items-center sm:p-6">
         <div className="flex flex-col gap-1">
-          <p className="text-primary text-base font-semibold sm:text-lg">Questions About Cookies?</p>
+          <p className="text-primary text-base font-semibold sm:text-lg">
+            Questions About Cookies?
+          </p>
           <p className="text-secondary text-xs sm:text-sm">
             For more details or concerns about how we use cookies, reach out anytime.
           </p>

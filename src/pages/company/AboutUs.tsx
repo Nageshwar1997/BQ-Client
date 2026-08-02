@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
+import { ROUTES } from '@/constants/routes.constants';
 
 const WHAT_WE_STAND_FOR = [
   {
@@ -94,7 +95,7 @@ const WHY_SHOP_WITH_US = [
 ] as const;
 
 const BeautiniqueLink = () => (
-  <Link to="/" className="inline">
+  <Link to={ROUTES.HOME} className="inline">
     <GradientText type="accent" text="Beautinique" className="font-semibold" />
   </Link>
 );
@@ -123,14 +124,18 @@ const AboutUs = () => {
 
       {/* Our Story */}
       <section className="flex flex-col gap-3">
-        <GradientText type="accent" text="Our Story" className="text-xl font-semibold sm:text-2xl" />
+        <GradientText
+          type="accent"
+          text="Our Story"
+          className="text-xl font-semibold sm:text-2xl"
+        />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
-          <BeautiniqueLink /> started with a simple frustration: shopping for cosmetics online
-          often meant guessing whether a shade would actually suit you, whether a seller could be
-          trusted, or whether a glowing review was even real. We set out to build a marketplace
-          that removes that guesswork &mdash; connecting verified independent sellers with
-          shoppers, backed by tools like virtual try-on and genuine, purchase-only reviews, so
-          every order feels like a sure thing instead of a gamble.
+          <BeautiniqueLink /> started with a simple frustration: shopping for cosmetics online often
+          meant guessing whether a shade would actually suit you, whether a seller could be trusted,
+          or whether a glowing review was even real. We set out to build a marketplace that removes
+          that guesswork &mdash; connecting verified independent sellers with shoppers, backed by
+          tools like virtual try-on and genuine, purchase-only reviews, so every order feels like a
+          sure thing instead of a gamble.
         </p>
       </section>
 
@@ -192,7 +197,11 @@ const AboutUs = () => {
 
       {/* Our Values */}
       <section className="flex flex-col gap-4">
-        <GradientText type="accent" text="Our Values" className="text-xl font-semibold sm:text-2xl" />
+        <GradientText
+          type="accent"
+          text="Our Values"
+          className="text-xl font-semibold sm:text-2xl"
+        />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {OUR_VALUES.map((value) => (
             <div
@@ -244,8 +253,8 @@ const AboutUs = () => {
           className="text-xl font-semibold sm:text-2xl"
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
-          Doing right by people and the planet isn&apos;t an afterthought for us &mdash;
-          it&apos;s part of how we choose who sells on our platform. Read more about our{' '}
+          Doing right by people and the planet isn&apos;t an afterthought for us &mdash; it&apos;s
+          part of how we choose who sells on our platform. Read more about our{' '}
           <Link to="/sustainability" className="inline">
             <GradientText type="accent" text="sustainability commitments" className="font-medium" />
           </Link>{' '}
@@ -264,8 +273,8 @@ const AboutUs = () => {
         <div className="flex flex-col gap-1">
           <p className="text-primary text-base font-semibold sm:text-lg">Come Grow With Us</p>
           <p className="text-secondary text-xs sm:text-sm">
-            Whether you want to join our team, sell on our marketplace, or just say hello,
-            we&apos;d love to hear from you.
+            Whether you want to join our team, sell on our marketplace, or just say hello, we&apos;d
+            love to hear from you.
           </p>
         </div>
         <div className="flex flex-wrap gap-3">

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
+import { ROUTES } from '@/constants/routes.constants';
 import { formatDate } from '@/utils/common.util';
 
 const QUICK_OVERVIEW = [
@@ -47,7 +48,7 @@ const PROHIBITED_USES = [
 ] as const;
 
 const BeautiniqueLink = () => (
-  <Link to="/" className="inline">
+  <Link to={ROUTES.HOME} className="inline">
     <GradientText type="accent" text="Beautinique" className="font-semibold" />
   </Link>
 );
@@ -67,8 +68,8 @@ const TermsAndConditions = () => {
         />
         <p className="text-secondary max-w-2xl text-sm sm:text-base">
           By accessing and using <BeautiniqueLink />, you agree to be bound by the following terms
-          and policies. Please read them carefully before shopping, selling, or creating an
-          account with us.
+          and policies. Please read them carefully before shopping, selling, or creating an account
+          with us.
         </p>
         <span className="text-primary/50 flex items-center gap-1 text-xs sm:text-sm">
           <Icon icon="solar:calendar-mark-linear" className="size-3.5" />
@@ -87,11 +88,10 @@ const TermsAndConditions = () => {
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           Welcome to <BeautiniqueLink />. These Terms & Conditions (&quot;Terms&quot;) govern your
-          access to
-          and use of our website, mobile experience, and services, including browsing, purchasing
-          products, selling as a partner, and using features like reviews and virtual try-on. By
-          creating an account or using this platform in any way, you agree to comply with these
-          Terms in full.
+          access to and use of our website, mobile experience, and services, including browsing,
+          purchasing products, selling as a partner, and using features like reviews and virtual
+          try-on. By creating an account or using this platform in any way, you agree to comply with
+          these Terms in full.
         </p>
       </section>
 
@@ -129,9 +129,9 @@ const TermsAndConditions = () => {
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           You must be at least 18 years old, or the age of legal majority in your jurisdiction, and
-          capable of entering into a binding contract to create an account or place an order. If
-          you are using Beautinique on behalf of a business, you confirm that you have the
-          authority to bind that business to these Terms.
+          capable of entering into a binding contract to create an account or place an order. If you
+          are using Beautinique on behalf of a business, you confirm that you have the authority to
+          bind that business to these Terms.
         </p>
       </section>
 
@@ -143,9 +143,9 @@ const TermsAndConditions = () => {
           className="text-xl font-semibold sm:text-2xl"
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
-          If you create an account, you are responsible for maintaining the confidentiality of
-          your login credentials and for ensuring the accuracy of the information you provide.
-          You agree to notify us immediately at{' '}
+          If you create an account, you are responsible for maintaining the confidentiality of your
+          login credentials and for ensuring the accuracy of the information you provide. You agree
+          to notify us immediately at{' '}
           <a href="mailto:beautinique.bq@gmail.com" className="text-primary font-medium">
             beautinique.bq@gmail.com
           </a>{' '}
@@ -163,9 +163,9 @@ const TermsAndConditions = () => {
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           Some products listed on <BeautiniqueLink /> are sold by independent third-party sellers
           through our marketplace, not by Beautinique directly. While we vet sellers who join our
-          platform, each seller is solely responsible for the accuracy, quality, and legality of
-          the products they list. Beautinique acts as a facilitator connecting buyers and sellers
-          and is not the manufacturer or direct retailer of every product shown on this site.
+          platform, each seller is solely responsible for the accuracy, quality, and legality of the
+          products they list. Beautinique acts as a facilitator connecting buyers and sellers and is
+          not the manufacturer or direct retailer of every product shown on this site.
         </p>
       </section>
 
@@ -204,11 +204,11 @@ const TermsAndConditions = () => {
           className="text-xl font-semibold sm:text-2xl"
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
-          Product details, pricing, and availability are subject to change without notice. We
-          strive for accuracy across every listing but do not guarantee that product descriptions,
-          images, or prices are always error-free, complete, or current. If a product is listed at
-          an incorrect price due to a technical error, we reserve the right to cancel that order
-          even after confirmation.
+          Product details, pricing, and availability are subject to change without notice. We strive
+          for accuracy across every listing but do not guarantee that product descriptions, images,
+          or prices are always error-free, complete, or current. If a product is listed at an
+          incorrect price due to a technical error, we reserve the right to cancel that order even
+          after confirmation.
         </p>
       </section>
 
@@ -222,9 +222,8 @@ const TermsAndConditions = () => {
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           All purchases made through our site are subject to product availability and successful
           verification of payment details. We reserve the right to refuse, cancel, or limit any
-          order at our discretion, including in cases of suspected fraud, pricing errors, or
-          unusual order activity. You will be notified and refunded in full if we cancel a paid
-          order.
+          order at our discretion, including in cases of suspected fraud, pricing errors, or unusual
+          order activity. You will be notified and refunded in full if we cancel a paid order.
         </p>
       </section>
 
@@ -237,9 +236,9 @@ const TermsAndConditions = () => {
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           Delivery timelines shown at checkout are estimates and are not guaranteed, as they can be
-          affected by seller processing time, courier delays, or circumstances outside our
-          control. Risk of loss and title for products pass to you once an order is handed over to
-          the shipping carrier.
+          affected by seller processing time, courier delays, or circumstances outside our control.
+          Risk of loss and title for products pass to you once an order is handed over to the
+          shipping carrier.
         </p>
       </section>
 
@@ -251,10 +250,10 @@ const TermsAndConditions = () => {
           className="text-xl font-semibold sm:text-2xl"
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
-          Returns, exchanges, and refunds are governed by the return window and eligibility
-          criteria shown on each product page at the time of purchase. Opened or used cosmetic
-          products may not be eligible for return for hygiene reasons, unless the product arrived
-          damaged, defective, or incorrect.
+          Returns, exchanges, and refunds are governed by the return window and eligibility criteria
+          shown on each product page at the time of purchase. Opened or used cosmetic products may
+          not be eligible for return for hygiene reasons, unless the product arrived damaged,
+          defective, or incorrect.
         </p>
       </section>
 
@@ -267,10 +266,9 @@ const TermsAndConditions = () => {
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           By submitting a review, photo, or other content, you grant <BeautiniqueLink /> a
-          non-exclusive, royalty-free, worldwide license to use, display, and reproduce that
-          content in connection with our platform and marketing. You confirm that your reviews
-          reflect your genuine experience and do not contain false, misleading, or abusive
-          content.
+          non-exclusive, royalty-free, worldwide license to use, display, and reproduce that content
+          in connection with our platform and marketing. You confirm that your reviews reflect your
+          genuine experience and do not contain false, misleading, or abusive content.
         </p>
       </section>
 
@@ -283,9 +281,9 @@ const TermsAndConditions = () => {
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           Our virtual try-on feature may request access to your device camera to render product
-          previews. Camera access is used only to power this feature in real time and is not
-          stored or shared by us beyond what is required to provide the preview. By using this
-          feature, you consent to this temporary use of your camera.
+          previews. Camera access is used only to power this feature in real time and is not stored
+          or shared by us beyond what is required to provide the preview. By using this feature, you
+          consent to this temporary use of your camera.
         </p>
       </section>
 
@@ -299,8 +297,8 @@ const TermsAndConditions = () => {
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           All content on this site, including logos, designs, text, product photography, and
           graphics owned by <BeautiniqueLink />, is protected under applicable copyright and
-          trademark law. You may not copy, reproduce, or redistribute this content without our
-          prior written permission.
+          trademark law. You may not copy, reproduce, or redistribute this content without our prior
+          written permission.
         </p>
       </section>
 
@@ -314,8 +312,8 @@ const TermsAndConditions = () => {
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           To the maximum extent permitted by law, <BeautiniqueLink /> is not liable for any
           indirect, incidental, or consequential loss or damage arising from your use of our
-          website, products purchased through our marketplace, or reliance on content found on
-          this site.
+          website, products purchased through our marketplace, or reliance on content found on this
+          site.
         </p>
       </section>
 
@@ -328,8 +326,8 @@ const TermsAndConditions = () => {
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           You agree to indemnify and hold <BeautiniqueLink /> harmless from any claims, losses, or
-          expenses (including legal fees) arising out of your misuse of the platform or violation
-          of these Terms.
+          expenses (including legal fees) arising out of your misuse of the platform or violation of
+          these Terms.
         </p>
       </section>
 
@@ -356,8 +354,8 @@ const TermsAndConditions = () => {
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           We may update these Terms at any time to reflect changes in our services, legal
-          requirements, or business practices. Continued use of the website after changes are
-          posted constitutes your acceptance of the updated Terms.
+          requirements, or business practices. Continued use of the website after changes are posted
+          constitutes your acceptance of the updated Terms.
         </p>
       </section>
 
@@ -366,7 +364,9 @@ const TermsAndConditions = () => {
       {/* Contact */}
       <section className="border-primary/10 bg-secondary-invert flex flex-col items-start justify-between gap-4 rounded-2xl border p-4 sm:flex-row sm:items-center sm:p-6">
         <div className="flex flex-col gap-1">
-          <p className="text-primary text-base font-semibold sm:text-lg">Questions About These Terms?</p>
+          <p className="text-primary text-base font-semibold sm:text-lg">
+            Questions About These Terms?
+          </p>
           <p className="text-secondary text-xs sm:text-sm">
             Reach out and we&apos;ll help clarify anything in this agreement.
           </p>

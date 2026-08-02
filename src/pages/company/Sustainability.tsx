@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
+import { ROUTES } from '@/constants/routes.constants';
 
 const SUSTAINABILITY_PILLARS = [
   {
@@ -38,7 +39,7 @@ const SUSTAINABILITY_PILLARS = [
 ] as const;
 
 const BeautiniqueLink = () => (
-  <Link to="/" className="inline">
+  <Link to={ROUTES.HOME} className="inline">
     <GradientText type="accent" text="Beautinique" className="font-semibold" />
   </Link>
 );
@@ -114,8 +115,8 @@ const Sustainability = () => {
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           We package orders to minimize excess material while still keeping your products safe in
           transit, and we favor recyclable packaging wherever we can. When a seller offers a
-          refillable or low-waste version of a product, we make that clear on the listing so you
-          can choose it over the standard packaging.
+          refillable or low-waste version of a product, we make that clear on the listing so you can
+          choose it over the standard packaging.
         </p>
       </section>
 
@@ -127,9 +128,9 @@ const Sustainability = () => {
           className="text-xl font-semibold sm:text-2xl"
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
-          As a marketplace, we don&apos;t manufacture every product we sell &mdash; but we do
-          choose who we work with. We prioritize sellers and brands that avoid animal testing and
-          are transparent about where their ingredients come from, so you can shop with a clearer
+          As a marketplace, we don&apos;t manufacture every product we sell &mdash; but we do choose
+          who we work with. We prioritize sellers and brands that avoid animal testing and are
+          transparent about where their ingredients come from, so you can shop with a clearer
           conscience.
         </p>
       </section>
@@ -156,8 +157,8 @@ const Sustainability = () => {
           className="text-xl font-semibold sm:text-2xl"
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
-          Every seller on our platform goes through a review before their products go live. As
-          part of that process, we encourage sellers to share information about their sourcing,
+          Every seller on our platform goes through a review before their products go live. As part
+          of that process, we encourage sellers to share information about their sourcing,
           packaging, and environmental practices, and we highlight the ones who go the extra mile.
         </p>
       </section>
@@ -171,9 +172,8 @@ const Sustainability = () => {
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           Small changes add up. Through our Beauty Insights articles and product guides, we share
-          tips on recycling empties, choosing refillable products, and building a lower-waste
-          beauty routine &mdash; so sustainability becomes part of how you shop, not just what we
-          promise.
+          tips on recycling empties, choosing refillable products, and building a lower-waste beauty
+          routine &mdash; so sustainability becomes part of how you shop, not just what we promise.
         </p>
       </section>
 
@@ -186,9 +186,9 @@ const Sustainability = () => {
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           This is an ongoing journey, not a finished checklist. We&apos;re continuing to work with
-          sellers on more sustainable packaging options, explore lower-carbon delivery choices,
-          and expand the resources we share with our community &mdash; and we&apos;ll keep this
-          page updated as those efforts grow.
+          sellers on more sustainable packaging options, explore lower-carbon delivery choices, and
+          expand the resources we share with our community &mdash; and we&apos;ll keep this page
+          updated as those efforts grow.
         </p>
       </section>
 

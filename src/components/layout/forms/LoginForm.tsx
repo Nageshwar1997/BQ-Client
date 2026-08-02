@@ -12,6 +12,7 @@ import Input from '@/components/ui/inputs/Input';
 import Radio from '@/components/ui/inputs/Radio';
 import SocialAuth from '@/components/ui/SocialAuth';
 import { LOGIN_INPUT_MAP_DATA, PASSWORD_KEYS } from '@/constants/input.constants';
+import { ROUTES } from '@/constants/routes.constants';
 import usePathParams from '@/hooks/usePathParams';
 import useQueryParams from '@/hooks/useQueryParams';
 import { useLogin } from '@/services/user-service/auth.service.query';
@@ -59,7 +60,7 @@ const LoginForm = () => {
         const { runAllActions } = useActionsStore.getState();
         await runAllActions();
 
-        if (paths.includes('auth')) void navigate('/');
+        if (paths.includes('auth')) void navigate(ROUTES.HOME);
         if (queryParams.login) removeParams(['login']);
       },
 
@@ -182,7 +183,7 @@ const LoginForm = () => {
           {/* ================= ACTION BUTTONS ================= */}
           <div className="flex gap-4 sm:col-span-2">
             {/* -------- Back Button -------- */}
-            <Link to="/" className="w-full">
+            <Link to={ROUTES.HOME} className="w-full">
               <Button pattern="secondary" content="Back" />
             </Link>
 

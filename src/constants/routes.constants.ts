@@ -37,7 +37,7 @@ export const ROUTES = {
     NEW_ARRIVALS: 'new-arrivals',
     SPECIAL_COLLECTION: 'special-collection',
     OFFERS_AND_DISCOUNTS: 'offers-and-discounts',
-    BEAUTY_INSIGHTS: 'beauty-insights',
+    BLOGS: 'blogs',
   },
   PRODUCTS: {
     BASE: 'products',

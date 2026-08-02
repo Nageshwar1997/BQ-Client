@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
+import { ROUTES } from '@/constants/routes.constants';
 import { formatDate } from '@/utils/common.util';
 
 const QUICK_OVERVIEW = [
@@ -39,7 +40,7 @@ const QUICK_OVERVIEW = [
 ] as const;
 
 const BeautiniqueLink = () => (
-  <Link to="/" className="inline">
+  <Link to={ROUTES.HOME} className="inline">
     <GradientText type="accent" text="Beautinique" className="font-semibold" />
   </Link>
 );
@@ -74,9 +75,8 @@ const Disclaimer = () => {
       <section className="flex flex-col gap-3">
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           Welcome to <BeautiniqueLink />. All information, products, and services provided on this
-          website are intended solely for general informational and beauty enhancement purposes.
-          By accessing this site, you acknowledge and agree to the terms outlined in this
-          disclaimer.
+          website are intended solely for general informational and beauty enhancement purposes. By
+          accessing this site, you acknowledge and agree to the terms outlined in this disclaimer.
         </p>
       </section>
 
@@ -163,8 +163,8 @@ const Disclaimer = () => {
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           Our virtual try-on feature is designed to give you a general sense of how a shade or
           product might look. Actual results can vary based on your camera, screen calibration,
-          lighting conditions, and skin tone, and should be treated as a guide rather than an
-          exact preview of the physical product.
+          lighting conditions, and skin tone, and should be treated as a guide rather than an exact
+          preview of the physical product.
         </p>
       </section>
 
@@ -176,10 +176,9 @@ const Disclaimer = () => {
           className="text-xl font-semibold sm:text-2xl"
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
-          Product reviews, ratings, and feedback shown on this site reflect the personal opinions
-          of individual customers. They are not independently verified, edited, or endorsed by{' '}
-          <BeautiniqueLink />, and should not be treated as professional or medical
-          recommendations.
+          Product reviews, ratings, and feedback shown on this site reflect the personal opinions of
+          individual customers. They are not independently verified, edited, or endorsed by{' '}
+          <BeautiniqueLink />, and should not be treated as professional or medical recommendations.
         </p>
       </section>
 
@@ -205,9 +204,9 @@ const Disclaimer = () => {
           className="text-xl font-semibold sm:text-2xl"
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
-          To the fullest extent permitted by law, <BeautiniqueLink /> is not liable for any
-          direct, indirect, incidental, or consequential damages resulting from product use,
-          reliance on website content, or access to and use of this website.
+          To the fullest extent permitted by law, <BeautiniqueLink /> is not liable for any direct,
+          indirect, incidental, or consequential damages resulting from product use, reliance on
+          website content, or access to and use of this website.
         </p>
       </section>
 
@@ -219,10 +218,10 @@ const Disclaimer = () => {
           className="text-xl font-semibold sm:text-2xl"
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
-          This disclaimer may be updated periodically to reflect changes in our policies,
-          products, or applicable regulations. We encourage you to review this page from time to
-          time; continued use of the site after changes are posted constitutes acceptance of the
-          updated disclaimer.
+          This disclaimer may be updated periodically to reflect changes in our policies, products,
+          or applicable regulations. We encourage you to review this page from time to time;
+          continued use of the site after changes are posted constitutes acceptance of the updated
+          disclaimer.
         </p>
       </section>
 
@@ -246,8 +245,7 @@ const Disclaimer = () => {
         <div className="flex flex-col gap-1">
           <p className="text-primary text-base font-semibold sm:text-lg">Have Questions?</p>
           <p className="text-secondary text-xs sm:text-sm">
-            If anything in this disclaimer is unclear, reach out and we&apos;ll be happy to
-            explain.
+            If anything in this disclaimer is unclear, reach out and we&apos;ll be happy to explain.
           </p>
         </div>
         <a

@@ -5,11 +5,14 @@ import { Link } from 'react-router-dom';
 import Button from '@/components/ui/Button';
 import LinearGradient from '@/components/ui/LinearGradient';
 import { ABOUT, FOR_YOU, NAVBAR_TOP_LAYER_DATA } from '@/constants/navbar.constants';
+import { ROUTES } from '@/constants/routes.constants';
 import useAuthAction from '@/hooks/useAuthAction';
 import usePathParams from '@/hooks/usePathParams';
 import { useGetCategoriesHierarchy } from '@/services/product-service/category.service.query';
 import useUserStore from '@/stores/user.store';
-import { toaster } from '@/utils/common.util';
+import type { TCategoryHierarchy } from '@/types/api.type';
+import type { IClassName } from '@/types/component.type';
+import { buildCategoryProductsPath, toaster } from '@/utils/common.util';
 
 import { Feedback, type IUserMenuIconsHandle, UserMenuIcons } from './children/grand-children';
 import HoveredCategory from './children/HoveredCategory';
@@ -50,6 +53,74 @@ const TopLayer = () => {
   );
 };
 
+const Category = ({
+  isCatHovered,
+  isNavbarAtTop,
+  isNavbarHovered,
+  isNonTransparent,
+  onMouseEnter,
+  category,
+  className = '',
+}: IClassName & {
+  isCatHovered: boolean;
+  isNavbarAtTop: boolean;
+  isNavbarHovered: boolean;
+  isNonTransparent: boolean;
+  onMouseEnter: (catId: string) => void;
+  category: Pick<TCategoryHierarchy, '_id' | 'path' | 'slug' | 'name'>;
+}) => {
+  return (
+    <div className={`h-full ${className}`}>
+      {/* Left Curve */}
+      {isCatHovered && (
+        <div className="bg-secondary-invert absolute bottom-0 left-px z-52 h-3 w-3 -translate-x-full transform">
+          <div className="bg-tertiary-invert border-battleship-davys-gray z-51 h-full w-full rounded-br-full border-r border-b" />
+        </div>
+      )}
+      <div
+        className={`relative flex h-full items-center justify-center gap-0.5 rounded-t-lg border-r border-l px-3 text-sm font-semibold text-nowrap ${
+          isCatHovered
+            ? 'bg-secondary-invert border-battleship-davys-gray z-50'
+            : 'border-transparent'
+        } ${isNavbarAtTop ? 'border-t-transparent' : 'border-t'} ${
+          (category.path ?? category.slug) ? 'cursor-pointer' : 'cursor-default'
+        }`}
+        onMouseEnter={() => {
+          onMouseEnter(category._id);
+        }}
+      >
+        <p
+          className={`text-tertiary ${
+            isCatHovered ? 'bg-accent-duo bg-clip-text text-transparent' : ''
+          } ${
+            !(isNavbarAtTop || isNavbarHovered || isNonTransparent)
+              ? 'light:text-tertiary-invert'
+              : ''
+          }`}
+        >
+          {category.name}
+        </p>
+        <Icon
+          icon="solar:alt-arrow-down-linear"
+          className={`text-tertiary size-6 ${
+            isCatHovered ? 'text-blue-crayola-c! rotate-180' : ''
+          } ${
+            !(isNavbarAtTop || isNavbarHovered || isNonTransparent)
+              ? 'light:text-tertiary-invert'
+              : ''
+          } transition-transform duration-300 ease-in-out`}
+        />
+      </div>
+      {/* Right Curve */}
+      {isCatHovered && (
+        <div className="bg-secondary-invert absolute right-px bottom-0 z-52 h-3 w-3 translate-x-full transform">
+          <div className="bg-tertiary-invert border-battleship-davys-gray h-full w-full rounded-bl-full border-b border-l" />
+        </div>
+      )}
+    </div>
+  );
+};
+
 export const Navbar = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navbarRef = useRef<HTMLDivElement>(null);
@@ -59,7 +130,7 @@ export const Navbar = () => {
 
   const authenticated = useUserStore((s) => s.authenticated);
 
-  const { paths, pathname, navigate } = usePathParams();
+  const { paths, pathname } = usePathParams();
 
   const [isMobileNavbarOpened, setIsMobileNavbarOpened] = useState<boolean>(false);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
@@ -71,15 +142,13 @@ export const Navbar = () => {
 
   const categories = useMemo(() => [FOR_YOU, ...(data ?? []), ABOUT], [data]);
 
-  const nonTransparent = ['products', 'cart', 'offers', 'blogs', 'account'].some((val) =>
-    paths.includes(val),
-  );
+  const isNonTransparent = [ROUTES.PRODUCTS.BASE].some((val) => paths.includes(val));
 
   const hoveredCategoryData = useMemo(() => {
     return categories.find((category) => category._id === hoveredId);
   }, [categories, hoveredId]);
 
-  const isHomeRoute = pathname === '/';
+  const isHomeRoute = pathname === ROUTES.HOME;
 
   // Sets the hovered index when mouse enters an element
   const handleMouseEnter = (id: string) => {
@@ -183,7 +252,7 @@ export const Navbar = () => {
   return (
     <div
       className={`text-tertiary sticky top-0 left-0 z-50 flex h-16 w-full items-center justify-between gap-3 lg:-top-9 lg:h-25 lg:gap-0 xl:gap-5 ${
-        (isNavbarAtTop || isNavbarHovered || nonTransparent || !isHomeRoute) 
+        isNavbarAtTop || isNavbarHovered || isNonTransparent || !isHomeRoute
           ? 'bg-tertiary-invert shadow-primary-invert/50 shadow-lg'
           : 'bg-transparent'
       } ${paths.includes('account') ? 'lg:top-0!' : ''}`}
@@ -199,7 +268,7 @@ export const Navbar = () => {
         <TopLayer />
         <div className="flex h-16 w-full items-center px-2 sm:px-5">
           <Link
-            to="/"
+            to={ROUTES.HOME}
             className="flex h-12 items-center justify-center sm:h-14 md:h-full md:min-h-16"
           >
             <img
@@ -210,64 +279,29 @@ export const Navbar = () => {
           </Link>
           <div className="relative flex h-full w-full items-center justify-between gap-7 pl-4 xl:pl-6">
             <div className="flex h-full flex-1 items-center gap-2" ref={navbarRef}>
-              {categories.map((item, index) => (
-                <div
-                  key={index}
-                  onClick={() => (item.path ? navigate(item.path) : undefined)}
-                  className="relative h-full"
-                >
-                  {/* Left Curve */}
-                  {hoveredId === item._id && (
-                    <div className="bg-secondary-invert absolute bottom-0 left-px z-52 h-3 w-3 -translate-x-full transform">
-                      <div className="bg-tertiary-invert border-battleship-davys-gray z-51 h-full w-full rounded-br-full border-r border-b" />
-                    </div>
-                  )}
-                  <div
-                    className={`relative flex h-full items-center justify-center gap-0.5 rounded-t-lg border-r border-l px-3 text-sm font-semibold text-nowrap ${
-                      hoveredId === item._id
-                        ? 'bg-secondary-invert border-battleship-davys-gray z-50'
-                        : 'border-transparent'
-                    } ${isNavbarAtTop ? 'border-t-transparent' : 'border-t'} ${
-                      item.path ? 'cursor-pointer' : 'cursor-default'
-                    }`}
-                    onMouseEnter={() => {
-                      handleMouseEnter(item._id);
-                    }}
-                  >
-                    <p
-                      className={`text-tertiary ${
-                        hoveredId === item._id ? 'bg-accent-duo bg-clip-text text-transparent' : ''
-                      } ${
-                        !(isNavbarAtTop || isNavbarHovered || nonTransparent)
-                          ? 'light:text-tertiary-invert'
-                          : ''
-                      }`}
-                    >
-                      {item.name}
-                    </p>
-                    <Icon
-                      icon="solar:alt-arrow-down-linear"
-                      className={`text-tertiary size-6 ${
-                        hoveredId === item._id ? 'text-blue-crayola-c! rotate-180' : ''
-                      } ${
-                        !(isNavbarAtTop || isNavbarHovered || nonTransparent)
-                          ? 'light:text-tertiary-invert'
-                          : ''
-                      } transition-transform duration-300 ease-in-out`}
-                    />
-                  </div>
-                  {/* Right Curve */}
-                  {hoveredId === item._id && (
-                    <div className="bg-secondary-invert absolute right-px bottom-0 z-52 h-3 w-3 translate-x-full transform">
-                      <div className="bg-tertiary-invert border-battleship-davys-gray h-full w-full rounded-bl-full border-b border-l" />
-                    </div>
-                  )}
-                </div>
-              ))}
+              {categories.map(({ _id, name, slug, path }, index) => {
+                const props = {
+                  isCatHovered: hoveredId === _id,
+                  isNavbarAtTop: isNavbarAtTop,
+                  isNavbarHovered: isNavbarHovered,
+                  isNonTransparent: isNonTransparent,
+                  onMouseEnter: handleMouseEnter,
+                  category: { _id, name, slug, path },
+                };
+
+                const target = path ?? buildCategoryProductsPath(slug);
+                return target ? (
+                  <Link className="relative block h-full" key={index} to={target}>
+                    <Category {...props} />
+                  </Link>
+                ) : (
+                  <Category key={index} {...props} className="relative" />
+                );
+              })}
             </div>
             <UserMenuIcons
               ref={userMenuIconsRef}
-              className={isNavbarAtTop || isNavbarHovered || nonTransparent ? '' : ''}
+              className={isNavbarAtTop || isNavbarHovered || isNonTransparent ? '' : ''}
             />
             {(hoveredId ?? isContainerHovered) && (
               <div
@@ -291,7 +325,10 @@ export const Navbar = () => {
       </div>
       {/* Mobile Navbar */}
       <div className="flex w-full items-center justify-between gap-2 px-2 sm:px-3 md:px-4 lg:hidden">
-        <Link to="/" className="flex h-12 max-h-14 items-center justify-center md:h-14 lg:hidden">
+        <Link
+          to={ROUTES.HOME}
+          className="flex h-12 max-h-14 items-center justify-center md:h-14 lg:hidden"
+        >
           <img
             src="/images/logo/BQ_gradient_logo.webp"
             alt="Logo"

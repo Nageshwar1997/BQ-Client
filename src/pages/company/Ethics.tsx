@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
+import { ROUTES } from '@/constants/routes.constants';
 
 const ETHICAL_PRINCIPLES = [
   {
@@ -38,7 +39,7 @@ const ETHICAL_PRINCIPLES = [
 ] as const;
 
 const BeautiniqueLink = () => (
-  <Link to="/" className="inline">
+  <Link to={ROUTES.HOME} className="inline">
     <GradientText type="accent" text="Beautinique" className="font-semibold" />
   </Link>
 );
@@ -57,8 +58,8 @@ const Ethics = () => {
           className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
         />
         <p className="text-secondary max-w-2xl text-sm sm:text-base">
-          Running a marketplace means people trust us with their money, their data, and their
-          time. Here&apos;s how we try to earn that trust, every day.
+          Running a marketplace means people trust us with their money, their data, and their time.
+          Here&apos;s how we try to earn that trust, every day.
         </p>
       </div>
 
@@ -81,9 +82,7 @@ const Ethics = () => {
                 <Icon icon={principle.icon} className="size-5 text-white" />
               </span>
               <div>
-                <p className="text-primary text-sm font-semibold sm:text-base">
-                  {principle.title}
-                </p>
+                <p className="text-primary text-sm font-semibold sm:text-base">{principle.title}</p>
                 <p className="text-secondary text-xs sm:text-sm">{principle.description}</p>
               </div>
             </div>
@@ -115,8 +114,8 @@ const Ethics = () => {
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           We collect only the data we actually need to run the platform, we never sell it, and we
-          give you control over your own information &mdash; from editing your profile to
-          requesting deletion. The specifics live in our{' '}
+          give you control over your own information &mdash; from editing your profile to requesting
+          deletion. The specifics live in our{' '}
           <Link to="/privacy-policy" className="inline">
             <GradientText type="accent" text="Privacy Policy" className="font-medium" />
           </Link>
@@ -133,9 +132,9 @@ const Ethics = () => {
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           Beauty comes in every shade, budget, and identity. We hold sellers, staff, and our own
-          product decisions to the same standard: no discrimination based on race, gender,
-          religion, disability, sexual orientation, or any other protected characteristic &mdash;
-          whether in hiring, seller onboarding, or how products are marketed on our platform.
+          product decisions to the same standard: no discrimination based on race, gender, religion,
+          disability, sexual orientation, or any other protected characteristic &mdash; whether in
+          hiring, seller onboarding, or how products are marketed on our platform.
         </p>
       </section>
 
@@ -148,10 +147,9 @@ const Ethics = () => {
         <div className="flex flex-col gap-1.5">
           <p className="text-primary text-sm font-semibold sm:text-base">Reporting a Concern</p>
           <p className="text-secondary text-xs leading-relaxed sm:text-sm">
-            If you come across a listing, seller, or review that feels dishonest, discriminatory,
-            or unsafe, please tell us. Every report is reviewed by our team, and we take
-            appropriate action &mdash; up to and including removing the seller or listing
-            involved.
+            If you come across a listing, seller, or review that feels dishonest, discriminatory, or
+            unsafe, please tell us. Every report is reviewed by our team, and we take appropriate
+            action &mdash; up to and including removing the seller or listing involved.
           </p>
         </div>
       </section>
