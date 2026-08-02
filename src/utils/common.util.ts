@@ -359,11 +359,22 @@ export const isNullOrUndefined = (value: unknown): value is null | undefined => 
 };
 
 // Builds a /products/l1-slug/l2-slug/l3-slug path from the given slug chain.
-// Returns undefined if any segment is missing, so callers can skip navigation instead of linking to a broken URL.
+// Returns undefined if any segment is missing/empty, so callers can skip navigation instead of linking to a broken URL.
 export const buildCategoryProductsPath = (...slugs: (string | undefined)[]) => {
-  if (slugs.some((slug) => !slug)) return undefined;
+  if (slugs.length === 0 || slugs.some((slug) => !slug)) return undefined;
   return `/${ROUTES.PRODUCTS.BASE}/${slugs.join('/')}`;
 };
+
+// ROUTES values and category.path from the API are stored without a leading slash, so a
+// direct <Link to={path}> resolves relative to the current route. This normalizes any such
+// path to an absolute in-app URL.
+export const toAbsolutePath = (path: string) => (path.startsWith('/') ? path : `/${path}`);
+
+// Resolves a category's navigation target: an explicit `path` always wins (normalized to
+// absolute); otherwise falls back to the /products slug chain, or undefined if that chain
+// is incomplete (e.g. a missing/empty slug), so the caller can render a non-interactive label.
+export const resolveCategoryPath = (path: string | undefined, ...slugs: (string | undefined)[]) =>
+  path ? toAbsolutePath(path) : buildCategoryProductsPath(...slugs);
 
 export const getTodaysFeedback = () => {
   // Get the current date

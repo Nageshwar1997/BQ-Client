@@ -6,11 +6,11 @@ import { L2Category } from './grand-children';
 
 const HoveredCategory = ({ category }: { category: TCategoryHierarchy }) => {
   return category._id === 'about' ? (
-    <About categories={category.subcategories} />
+    <About categories={category.subcategories} l1Slug={category.slug} />
   ) : category._id === 'for_you' ? (
-    <ForYou categories={category.subcategories} />
+    <ForYou categories={category.subcategories} l1Slug={category.slug} />
   ) : (
-    <L2Category categories={category.subcategories} />
+    <L2Category categories={category.subcategories} l1Slug={category.slug} />
   );
 };
 

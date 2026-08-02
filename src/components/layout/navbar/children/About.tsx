@@ -8,9 +8,15 @@ import type { TCategoryHierarchyNode, TLevel2 } from '@/types/api.type';
 import { TestimonialCarousel } from '../../carousels/TestimonialCarousel';
 import { CategoryLabel, L2Category } from './grand-children';
 
-const About = ({ categories }: { categories: TCategoryHierarchyNode<TLevel2>[] }) => {
+const About = ({
+  categories,
+  l1Slug,
+}: {
+  categories: TCategoryHierarchyNode<TLevel2>[];
+  l1Slug?: string;
+}) => {
   return (
-    <L2Category categories={categories}>
+    <L2Category categories={categories} l1Slug={l1Slug}>
       <div className="break-inside-auto space-y-3 px-2 md:space-y-4 lg:space-y-5">
         <div className="border-b-battleship-davys-gray space-y-1 border-b pb-1 md:space-y-2 md:pb-2">
           <CategoryLabel name="Partner with us" path={ROUTES.COMPANY.PARTNER_WITH_US} />

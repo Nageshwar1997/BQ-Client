@@ -3,11 +3,18 @@ import { useState } from 'react';
 
 import { FOR_YOU_VIDEOS_DATA } from '@/constants/navbar.constants';
 import type { TCategoryHierarchyNode, TLevel2 } from '@/types/api.type';
+import { resolveCategoryPath } from '@/utils/common.util';
 
 import VideoPlayer from '../../media/VideoPlayer';
 import { CategoryLabel, L3Category } from './grand-children';
 
-const ForYou = ({ categories }: { categories: TCategoryHierarchyNode<TLevel2>[] }) => {
+const ForYou = ({
+  categories,
+  l1Slug,
+}: {
+  categories: TCategoryHierarchyNode<TLevel2>[];
+  l1Slug?: string;
+}) => {
   const [playingVideoIndex, setPlayingVideoIndex] = useState<null | number>(null);
 
   return (
@@ -21,8 +28,17 @@ const ForYou = ({ categories }: { categories: TCategoryHierarchyNode<TLevel2>[] 
             key={index}
             className="border-b-battleship-davys-gray mb-3 break-inside-auto space-y-4 border-b pb-1 md:pb-2 lg:mb-5"
           >
-            <CategoryLabel {...category} className="px-2" />
-            <L3Category category={subcategory} className="border-none hover:bg-transparent" />
+            <CategoryLabel
+              name={category.name}
+              path={resolveCategoryPath(category.path, l1Slug, category.slug)}
+              className="px-2"
+            />
+            <L3Category
+              category={subcategory}
+              l1Slug={l1Slug}
+              l2Slug={category.slug}
+              className="border-none hover:bg-transparent"
+            />
             {playingVideoIndex === index ? (
               <VideoPlayer
                 className="overflow-hidden rounded-lg!"

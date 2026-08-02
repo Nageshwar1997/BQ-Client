@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => ({
         brotliSize: true,
       }),
   ].filter(Boolean),
-  resolve: { alias: { '@': path.resolve(__dirname, './src') } },
+  resolve: { alias: { '@': path.resolve(import.meta.dirname, './src') } },
   server: { port: 3001 },
   build: {
     rollupOptions: {

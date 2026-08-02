@@ -12,7 +12,7 @@ import { useGetCategoriesHierarchy } from '@/services/product-service/category.s
 import useUserStore from '@/stores/user.store';
 import type { TCategoryHierarchy } from '@/types/api.type';
 import type { IClassName } from '@/types/component.type';
-import { toaster } from '@/utils/common.util';
+import { resolveCategoryPath, toaster } from '@/utils/common.util';
 
 import { Feedback, type IUserMenuIconsHandle, UserMenuIcons } from './children/grand-children';
 import HoveredCategory from './children/HoveredCategory';
@@ -289,7 +289,7 @@ export const Navbar = () => {
                   category: { _id, name, slug, path },
                 };
 
-                const target = path ?? (slug ? `${ROUTES.PRODUCTS.BASE}/${slug}` : undefined);
+                const target = resolveCategoryPath(path, slug);
                 return target ? (
                   <Link className="relative block h-full" key={index} to={target}>
                     <Category {...props} />
@@ -371,15 +371,11 @@ export const Navbar = () => {
                           icon="solar:alt-arrow-down-linear"
                           className={`text-primary hover:text-blue-crayola-c size-6 transition-colors duration-300`}
                           onClick={(e) => {
-                            const target =
-                              category.path ??
-                              (category.slug
-                                ? `${ROUTES.PRODUCTS.BASE}/${category.slug}`
-                                : undefined);
+                            const target = resolveCategoryPath(category.path, category.slug);
 
                             if (!target) return;
                             e.stopPropagation();
-                            void navigate(`/${target}`);
+                            void navigate(target);
                           }}
                         />
                         <Icon

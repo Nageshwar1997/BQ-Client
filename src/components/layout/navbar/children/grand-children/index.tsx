@@ -10,18 +10,20 @@ import { useOutsideClick } from '@/hooks/useOutsideClick';
 import usePathParams from '@/hooks/usePathParams';
 import type { TCategoryHierarchyNode, TLevel2, TLevel3 } from '@/types/api.type';
 import type { IChildren, IClassName } from '@/types/component.type';
-import { getTodaysFeedback } from '@/utils/common.util';
+import { getTodaysFeedback, resolveCategoryPath } from '@/utils/common.util';
 
 export const CategoryLabel = ({
   name,
   path,
   className = '',
 }: { name: string; path?: string } & IClassName) => {
+  const target = path ? resolveCategoryPath(path) : undefined;
+
   return (
     <p
       className={`text-battleship-davys-gray-invert break-inside-avoid text-left text-sm leading-5 font-semibold tracking-wide uppercase ${className}`}
     >
-      {path ? <Link to={path}>{name}</Link> : name}
+      {target ? <Link to={target}>{name}</Link> : name}
     </p>
   );
 };
@@ -47,11 +49,15 @@ export const Feedback = () => {
 
 export const L3Category = ({
   category,
+  l1Slug,
+  l2Slug,
   className = '',
 }: IClassName & {
   category: TCategoryHierarchyNode<TLevel3>;
+  l1Slug?: string;
+  l2Slug?: string;
 }) => {
-  const target = category.path;
+  const target = resolveCategoryPath(category.path, l1Slug, l2Slug, category.slug);
   const content = (
     <>
       <p className="text-secondary group-hover:text-primary line-clamp-1 text-left text-xs tracking-wide transition-colors xl:text-sm">
@@ -76,9 +82,11 @@ export const L3Category = ({
 
 export const L2Category = ({
   categories,
+  l1Slug,
   children,
   className = '',
-}: { categories: TCategoryHierarchyNode<TLevel2>[] } & IClassName & Partial<IChildren>) => {
+}: { categories: TCategoryHierarchyNode<TLevel2>[]; l1Slug?: string } & IClassName &
+  Partial<IChildren>) => {
   return (
     <div
       className={`base:columns-2 columns-1 gap-3 md:columns-3 md:gap-4 lg:columns-4 lg:gap-5 ${className}`}
@@ -88,10 +96,19 @@ export const L2Category = ({
           key={index}
           className="border-b-battleship-davys-gray mb-3 break-inside-auto border-b pb-1 md:mb-4 md:pb-2 lg:mb-5"
         >
-          <CategoryLabel {...category} className="px-2" />
+          <CategoryLabel
+            name={category.name}
+            path={resolveCategoryPath(category.path, l1Slug, category.slug)}
+            className="px-2"
+          />
           <div className="flex flex-col gap-1 md:gap-2">
             {category.subcategories.map((subcategory, index) => (
-              <L3Category key={index} category={subcategory} />
+              <L3Category
+                key={index}
+                category={subcategory}
+                l1Slug={l1Slug}
+                l2Slug={category.slug}
+              />
             ))}
           </div>
         </div>
