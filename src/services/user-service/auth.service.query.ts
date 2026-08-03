@@ -2,6 +2,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { authApi } from '@/classes/apis';
 import { API_QUERY_KEYS } from '@/constants/api.constants';
+import { PRIVATE_ROUTE_PREFIXES, ROUTES } from '@/constants/routes.constants';
+import usePathParams from '@/hooks/usePathParams';
 import useUserStore from '@/stores/user.store';
 import { handleApiErrorToaster, handleApiSuccessToaster } from '@/utils/api.util';
 import { toaster } from '@/utils/common.util';
@@ -271,6 +273,7 @@ export const useSetPassword = () => {
 export const useLogout = () => {
   const queryClient = useQueryClient();
   const setUser = useUserStore((s) => s.setUser);
+  const { paths, navigate } = usePathParams();
 
   return useMutation({
     mutationKey: logout,
@@ -290,6 +293,12 @@ export const useLogout = () => {
     onSettled: (_data, _error, _variables, context) => {
       if (context?.toastId) toaster.remove(context.toastId);
       setUser(null);
+
+      // Logging out on a page that requires auth leaves the user stranded on a route they can
+      // no longer access, so send them somewhere they can actually see.
+      if (PRIVATE_ROUTE_PREFIXES.some((prefix) => paths.includes(prefix))) {
+        void navigate(ROUTES.HOME);
+      }
     },
   });
 };

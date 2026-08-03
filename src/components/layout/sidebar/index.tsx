@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 import Tooltip from '@/components/ui/Tooltip';
 import { SIDEBAR_DATA } from '@/constants/common.constants';
-import { ROUTES } from '@/constants/routes.constants';
 import useIsSmallScreen from '@/hooks/useIsSmallScreen';
 import usePathParams from '@/hooks/usePathParams';
 import { useLogout } from '@/services/user-service/auth.service.query';
@@ -35,7 +34,7 @@ const SidebarItem = ({
 };
 
 const Sidebar = () => {
-  const { pathname, paths, navigate } = usePathParams();
+  const { pathname, paths } = usePathParams();
   const isMobile = useIsSmallScreen(767);
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const { mutateAsync: logout } = useLogout();
@@ -43,11 +42,7 @@ const Sidebar = () => {
   const handleEvents = async (event: (typeof SIDEBAR_DATA)[number]['handler']) => {
     switch (event) {
       case 'logout':
-        await logout(undefined, {
-          onSettled: () => {
-            void navigate(`/${ROUTES.AUTH.BASE}`);
-          },
-        });
+        await logout();
         break;
       default:
         break;

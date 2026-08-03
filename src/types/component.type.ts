@@ -74,9 +74,10 @@ type TBaseStatus = ITitleDescription & IClassName & { divider?: boolean };
 
 type TErrorStatus = TBaseStatus & { status: 'error' };
 type TEmptyStatus = TBaseStatus & { status: 'empty' };
+type TSuccessStatus = TBaseStatus & { status: 'success' };
 type TLoadingStatus = IClassName & { status: 'loading'; text?: string };
 
-export type TApiStatus = TErrorStatus | TEmptyStatus | TLoadingStatus;
+export type TApiStatus = TErrorStatus | TEmptyStatus | TSuccessStatus | TLoadingStatus;
 
 export interface IModalWrapper extends IClassName, IChildren {
   isOpen: boolean;

@@ -2,11 +2,14 @@ import { useEffect } from 'react';
 
 import ApiStatus from '@/components/layout/ApiStatus';
 import GradientText from '@/components/ui/GradientText';
+import { OAUTH_REDIRECT_KEY } from '@/constants/common.constants';
 import { ROUTES } from '@/constants/routes.constants';
 import usePathParams from '@/hooks/usePathParams';
 import useQueryParams from '@/hooks/useQueryParams';
 import { useGetSessionUser } from '@/services/user-service/user.service.query';
 import useUserStore from '@/stores/user.store';
+
+const OAUTH_SUCCESS_REDIRECT_DELAY_MS = 5000;
 
 const OAuth = () => {
   const { navigate } = usePathParams();
@@ -14,7 +17,7 @@ const OAuth = () => {
   const setUser = useUserStore((s) => s.setUser);
   const user = useUserStore((s) => s.user);
 
-  const session = useGetSessionUser({ enabled: !!queryParams.success });
+  const session = useGetSessionUser({ enabled: !!queryParams.success && !user });
 
   useEffect(() => {
     if (!queryParams.success && !queryParams.error) {
@@ -23,29 +26,47 @@ const OAuth = () => {
   }, [queryParams.success, queryParams.error, navigate]);
 
   useEffect(() => {
-    if (user) {
-      void navigate(ROUTES.HOME);
-      return;
-    }
-    if (session.data) {
+    if (!user && session.data) {
       setUser(session.data);
-      void navigate(ROUTES.HOME);
     }
-  }, [session.data, navigate, setUser, user]);
+  }, [session.data, setUser, user]);
 
-  const showLoading = !queryParams.error && (!queryParams.success || session.isLoading);
-  const showError = session.isError || queryParams.error;
+  const isSuccess = !!user;
+  const showError = !isSuccess && (session.isError || !!queryParams.error);
+  const showLoading = !isSuccess && !showError && (!queryParams.success || session.isLoading);
+
+  // Once logged in, show the success state briefly, then send the user back to wherever
+  // they started the OAuth flow from (falls back to home if nothing was stashed).
+  useEffect(() => {
+    if (!isSuccess) return;
+
+    const redirectPath = sessionStorage.getItem(OAUTH_REDIRECT_KEY) ?? ROUTES.HOME;
+    sessionStorage.removeItem(OAUTH_REDIRECT_KEY);
+
+    const timer = setTimeout(() => {
+      void navigate(redirectPath);
+    }, OAUTH_SUCCESS_REDIRECT_DELAY_MS);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [isSuccess, navigate]);
+
   return (
     <ApiStatus
-      status={showLoading ? 'loading' : showError ? 'error' : 'empty'}
+      status={showLoading ? 'loading' : showError ? 'error' : isSuccess ? 'success' : 'empty'}
       text="Logging in..."
-      title={showError ? 'Login failed...' : 'User details not found.'}
+      title={
+        showError ? 'Login failed...' : isSuccess ? 'Login successful!' : 'User details not found.'
+      }
       description={
         showError ? (
           <>
             There was a problem signing you in. Please{' '}
             <GradientText type="accent" path="/auth" text="Try again" />.
           </>
+        ) : isSuccess ? (
+          'Redirecting you back shortly...'
         ) : (
           <>
             There was a problem finding user details. Please{' '}

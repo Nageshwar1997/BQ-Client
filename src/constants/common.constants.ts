@@ -74,6 +74,10 @@ export const BEAUTY_FACTS = [
 
 export const USER_KEY = 'user' as const;
 
+// Path the user was on right before starting an OAuth redirect, so the callback page can send
+// them back to it instead of always landing on home.
+export const OAUTH_REDIRECT_KEY = 'oauth_redirect_path' as const;
+
 export const TOOLTIP_GAP = 15 as const;
 export const TOOLTIP_ANIMATION_DURATION = 400 as const;
 

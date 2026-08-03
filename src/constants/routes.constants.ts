@@ -67,3 +67,11 @@ export const ROUTES = {
     NOTIFICATIONS: 'notifications',
   },
 } as const;
+
+// Path segments that gate a route behind `middleware: [authenticate]` in routes/index.tsx.
+// Used to detect "user is currently on a page they can no longer access" (e.g. right after logout).
+export const PRIVATE_ROUTE_PREFIXES = [
+  ROUTES.PROFILE.BASE,
+  ROUTES.QUICK_LINKS.BECOME_SELLER,
+  ROUTES.AUTH.CHANGE_PASSWORD,
+] as const;
