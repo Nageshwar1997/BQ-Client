@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import GradientText from '@/components/ui/GradientText';
 import Theme from '@/components/ui/Theme';
-import useAuthAction from '@/hooks/useAuthAction';
+import useAuthNavigate from '@/hooks/useAuthNavigate';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import usePathParams from '@/hooks/usePathParams';
 import type { TCategoryHierarchyNode, TLevel2, TLevel3 } from '@/types/api.type';
@@ -12,6 +12,12 @@ import type { IChildren, IClassName } from '@/types/component.type';
 import { getTodaysFeedback, resolveCategoryPath } from '@/utils/common.util';
 
 import UserPopupModal from './UserPopupModal';
+
+// Shared bordered wrapper used for each labeled block inside a hover-panel column
+// (L2Category's per-category groups, and the static blocks in About/ForYou).
+export const CategorySection = ({ children, className = '' }: IChildren & IClassName) => (
+  <div className={`border-b-battleship-davys-gray border-b pb-1 ${className}`}>{children}</div>
+);
 
 export const CategoryLabel = ({
   name,
@@ -93,10 +99,7 @@ export const L2Category = ({
       className={`base:columns-2 columns-1 gap-3 md:columns-3 md:gap-4 lg:columns-4 lg:gap-5 ${className}`}
     >
       {categories.map((category, index) => (
-        <div
-          key={index}
-          className="border-b-battleship-davys-gray mb-3 break-inside-auto border-b pb-1 md:mb-4 md:pb-2 lg:mb-5"
-        >
+        <CategorySection key={index} className="mb-3 break-inside-auto md:mb-4 md:pb-2 lg:mb-5">
           <CategoryLabel
             name={category.name}
             path={resolveCategoryPath(category.path, l1Slug, category.slug)}
@@ -112,7 +115,7 @@ export const L2Category = ({
               />
             ))}
           </div>
-        </div>
+        </CategorySection>
       ))}
       {children}
     </div>
@@ -146,14 +149,13 @@ export const UserMenuIcons = ({
   const userPopupRef = useOutsideClick<HTMLDivElement>(() => {
     setIsOpen((prev) => ({ ...prev, user: false }));
   });
-  const { paths, navigate } = usePathParams();
-  const { runAction } = useAuthAction();
+  const { paths } = usePathParams();
+  const authNavigate = useAuthNavigate();
   //   const { cart } = useCartStore();
   //   const { wishlist } = useWishlistStore();
 
   const handleAuthNavigation = (path: string) => {
-    const action = () => navigate(path); // wrap in a function
-    runAction(action);
+    authNavigate(path, true);
   };
 
   useImperativeHandle(

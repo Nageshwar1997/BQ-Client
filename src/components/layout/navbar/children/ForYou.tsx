@@ -6,7 +6,7 @@ import type { TCategoryHierarchyNode, TLevel2 } from '@/types/api.type';
 import { resolveCategoryPath } from '@/utils/common.util';
 
 import VideoPlayer from '../../media/VideoPlayer';
-import { CategoryLabel, L3Category } from './grand-children';
+import { CategoryLabel, CategorySection, L3Category } from './grand-children';
 
 const ForYou = ({
   categories,
@@ -24,10 +24,7 @@ const ForYou = ({
         const subcategory = category.subcategories[0];
         if (!subcategory) return null;
         return (
-          <div
-            key={index}
-            className="border-b-battleship-davys-gray mb-3 break-inside-auto space-y-4 border-b pb-1 md:pb-2 lg:mb-5"
-          >
+          <CategorySection key={index} className="mb-3 break-inside-auto space-y-4 md:pb-2 lg:mb-5">
             <CategoryLabel
               name={category.name}
               path={resolveCategoryPath(category.path, l1Slug, category.slug)}
@@ -65,7 +62,7 @@ const ForYou = ({
                 </button>
               </div>
             )}
-          </div>
+          </CategorySection>
         );
       })}
     </div>

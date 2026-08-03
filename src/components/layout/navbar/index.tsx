@@ -6,7 +6,7 @@ import Button from '@/components/ui/Button';
 import LinearGradient from '@/components/ui/LinearGradient';
 import { ABOUT, FOR_YOU, NAVBAR_TOP_LAYER_DATA } from '@/constants/navbar.constants';
 import { ROUTES } from '@/constants/routes.constants';
-import useAuthAction from '@/hooks/useAuthAction';
+import useAuthNavigate from '@/hooks/useAuthNavigate';
 import usePathParams from '@/hooks/usePathParams';
 import { useGetCategoriesHierarchy } from '@/services/product-service/category.service.query';
 import useUserStore from '@/stores/user.store';
@@ -18,18 +18,8 @@ import { Feedback, type IUserMenuIconsHandle, UserMenuIcons } from './children/g
 import HoveredCategory from './children/HoveredCategory';
 
 const TopLayer = () => {
-  const { runAction } = useAuthAction();
-  const { navigate } = usePathParams();
+  const handleNavigate = useAuthNavigate();
 
-  const handleNavigate = (path: string, isPrivateRoute?: boolean) => {
-    const action = () => navigate(path); // wrap in a function
-
-    if (isPrivateRoute) {
-      runAction(action); // queue
-      return;
-    }
-    void action(); // run immediately if logged in
-  };
   return (
     <div className="text-secondary bg-secondary-invert flex h-9 items-center justify-between rounded-b-md px-2 sm:px-5">
       <p className="text-sm opacity-80">Beautinique Luxury</p>

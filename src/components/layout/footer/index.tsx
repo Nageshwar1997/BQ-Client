@@ -6,25 +6,13 @@ import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
 import { FOOTER_AWARDS, FOOTER_CATEGORIES, SOCIAL_MEDIA_LINKS } from '@/constants/footer.constants';
 import { ROUTES } from '@/constants/routes.constants';
-import useAuthAction from '@/hooks/useAuthAction';
+import useAuthNavigate from '@/hooks/useAuthNavigate';
 import usePathParams from '@/hooks/usePathParams';
 import useThemeStore from '@/stores/theme.store';
 import { type IFooterOptionList } from '@/types/component.type';
 
 const FooterOptionList = ({ isFirst = false, title, options }: IFooterOptionList) => {
-  const { runAction } = useAuthAction();
-  const { navigate } = usePathParams();
-
-  const handleNavigate = (path: string, isPrivate?: boolean) => {
-    const action = () => navigate(path);
-
-    if (isPrivate) {
-      runAction(action);
-      return;
-    }
-
-    void action();
-  };
+  const authNavigate = useAuthNavigate();
 
   return (
     <div className={`space-y-2 text-sm lg:text-base ${isFirst ? 'col-span-3 sm:col-span-1' : ''}`}>
@@ -40,7 +28,7 @@ const FooterOptionList = ({ isFirst = false, title, options }: IFooterOptionList
           <button
             key={i}
             onClick={() => {
-              handleNavigate(link.path, link.private);
+              authNavigate(link.path, link.private);
             }}
             className="hover:text-tertiary mx-auto w-fit cursor-pointer text-nowrap hover:font-medium hover:underline"
           >

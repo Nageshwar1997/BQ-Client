@@ -5,7 +5,7 @@ import Button from '@/components/ui/Button';
 import Divider from '@/components/ui/Divider';
 import { USER_MENU_POPUP_DATA } from '@/constants/navbar.constants';
 import { ROUTES } from '@/constants/routes.constants';
-import useAuthAction from '@/hooks/useAuthAction';
+import useAuthNavigate from '@/hooks/useAuthNavigate';
 import usePathParams from '@/hooks/usePathParams';
 import useQueryParams from '@/hooks/useQueryParams';
 import { useLogout } from '@/services/user-service/auth.service.query';
@@ -14,20 +14,14 @@ import type { IModalWrapper } from '@/types/component.type';
 
 const UserPopupModal = ({ isOpen, onClose }: Pick<IModalWrapper, 'isOpen' | 'onClose'>) => {
   const { navigate } = usePathParams();
-  const { runAction } = useAuthAction();
+  const authNavigate = useAuthNavigate();
 
   const { setParams, queryParams } = useQueryParams();
   const { user, authenticated } = useUserStore();
   const { mutateAsync: logout } = useLogout();
 
   const handleNavigate = (path: string, isPrivateRoute?: boolean) => {
-    const action = () => navigate(path); // wrap in a function
-
-    if (isPrivateRoute) {
-      runAction(action); // run immediately if logged in, else queue + open login modal
-    } else {
-      void action();
-    }
+    authNavigate(path, isPrivateRoute);
     onClose();
   };
 
