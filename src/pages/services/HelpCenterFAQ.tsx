@@ -2,6 +2,12 @@ import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import {
+  EmailUsAction,
+  StaticPageCTA,
+  StaticPageHeader,
+  StaticPageLayout,
+} from '@/components/layout/static-page';
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
 import { ROUTES } from '@/constants/routes.constants';
@@ -172,22 +178,12 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
 
 const HelpCenterFAQ = () => {
   return (
-    <div className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-4 py-10 sm:px-6 sm:py-14">
-      {/* Header */}
-      <div className="flex flex-col items-center gap-4 text-center">
-        <span className="bg-accent-duo flex size-16 items-center justify-center rounded-full shadow-lg sm:size-20">
-          <Icon icon="solar:question-circle-linear" className="size-8 text-white sm:size-10" />
-        </span>
-        <GradientText
-          type="accent"
-          text="Help Center"
-          className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
-        />
-        <p className="text-secondary max-w-2xl text-sm sm:text-base">
-          Answers to the questions we hear most, grouped by topic. Can&apos;t find what you need?
-          We&apos;re just an email away.
-        </p>
-      </div>
+    <StaticPageLayout>
+      <StaticPageHeader
+        icon="solar:question-circle-linear"
+        title="Help Center"
+        description="Answers to the questions we hear most, grouped by topic. Can't find what you need? We're just an email away."
+      />
 
       <Divider />
 
@@ -232,27 +228,20 @@ const HelpCenterFAQ = () => {
 
       <Divider />
 
-      {/* CTA */}
-      <section className="border-primary/10 bg-secondary-invert flex flex-col gap-4 rounded-2xl border p-4 sm:flex-row sm:items-center sm:justify-between sm:p-6">
-        <div className="flex flex-col gap-1">
-          <p className="text-primary text-base font-semibold sm:text-lg">Still Have Questions?</p>
-          <p className="text-secondary text-xs sm:text-sm">
+      <StaticPageCTA
+        title="Still Have Questions?"
+        description={
+          <>
             Our{' '}
             <Link to={`/${ROUTES.SERVICES.CONTACT}`} className="inline">
               <GradientText type="accent" text="Contact Us" className="font-medium" />
             </Link>{' '}
             page has more ways to reach our team.
-          </p>
-        </div>
-        <a
-          href="mailto:beautinique.bq@gmail.com"
-          className="border-primary/20 hover:bg-primary-invert/60 text-primary flex shrink-0 items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors"
-        >
-          <Icon icon="solar:letter-linear" className="size-4.5" />
-          beautinique.bq@gmail.com
-        </a>
-      </section>
-    </div>
+          </>
+        }
+        actions={<EmailUsAction />}
+      />
+    </StaticPageLayout>
   );
 };
 

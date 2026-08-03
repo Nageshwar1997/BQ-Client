@@ -1,6 +1,14 @@
 import { Icon } from '@iconify/react';
 import { Link } from 'react-router-dom';
 
+import {
+  Checklist,
+  InfoCardGrid,
+  StaticPageCTA,
+  StaticPageHeader,
+  StaticPageLayout,
+  StaticPageSection,
+} from '@/components/layout/static-page';
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
 import { ROUTES } from '@/constants/routes.constants';
@@ -47,93 +55,45 @@ const LIFE_AT_BQ = [
 
 const ValuesCulture = () => {
   return (
-    <div className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-4 py-10 sm:px-6 sm:py-14">
-      {/* Header */}
-      <div className="flex flex-col items-center gap-4 text-center">
-        <span className="bg-accent-duo flex size-16 items-center justify-center rounded-full shadow-lg sm:size-20">
-          <Icon icon="solar:hand-stars-linear" className="size-8 text-white sm:size-10" />
-        </span>
-        <GradientText
-          type="accent"
-          text="Values & Culture"
-          className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
-        />
-        <p className="text-secondary max-w-2xl text-sm sm:text-base">
-          How the team behind{' '}
-          <GradientText type="accent" text="Beautinique" className="font-semibold" /> works, and
-          what we expect from each other.
-        </p>
-      </div>
+    <StaticPageLayout>
+      <StaticPageHeader
+        icon="solar:hand-stars-linear"
+        title="Values & Culture"
+        description={
+          <>
+            How the team behind{' '}
+            <GradientText type="accent" text="Beautinique" className="font-semibold" /> works, and
+            what we expect from each other.
+          </>
+        }
+      />
 
       <Divider />
 
-      {/* Core Values */}
-      <section className="flex flex-col gap-4">
-        <GradientText
-          type="accent"
-          text="What We Value"
-          className="text-xl font-semibold sm:text-2xl"
-        />
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {CORE_VALUES.map((value) => (
-            <div
-              key={value.title}
-              className="border-primary/10 bg-secondary-invert hover:border-primary/20 flex items-start gap-3 rounded-xl border p-4 transition-colors"
-            >
-              <span className="bg-accent-duo flex size-9 shrink-0 items-center justify-center rounded-lg">
-                <Icon icon={value.icon} className="size-5 text-white" />
-              </span>
-              <div>
-                <p className="text-primary text-sm font-semibold sm:text-base">{value.title}</p>
-                <p className="text-secondary text-xs sm:text-sm">{value.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <StaticPageSection title="What We Value">
+        <InfoCardGrid items={CORE_VALUES} />
+      </StaticPageSection>
 
-      {/* Life at Beautinique */}
-      <section className="flex flex-col gap-4">
-        <GradientText
-          type="accent"
-          text="Life at Beautinique"
-          className="text-xl font-semibold sm:text-2xl"
-        />
-        <ul className="flex flex-col gap-3">
-          {LIFE_AT_BQ.map((point) => (
-            <li
-              key={point}
-              className="border-primary/10 bg-secondary-invert flex items-start gap-3 rounded-xl border p-3 sm:p-4"
-            >
-              <Icon
-                icon="solar:check-circle-linear"
-                className="text-primary-green mt-0.5 size-4.5 shrink-0"
-              />
-              <span className="text-secondary text-xs sm:text-sm">{point}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
+      <StaticPageSection title="Life at Beautinique">
+        <Checklist items={LIFE_AT_BQ} />
+      </StaticPageSection>
 
       <Divider />
 
-      {/* CTA */}
-      <section className="border-primary/10 bg-secondary-invert flex flex-col items-start justify-between gap-4 rounded-2xl border p-4 sm:flex-row sm:items-center sm:p-6">
-        <div className="flex flex-col gap-1">
-          <p className="text-primary text-base font-semibold sm:text-lg">Sound Like You?</p>
-          <p className="text-secondary text-xs sm:text-sm">
-            See what roles we&apos;re hiring for right now.
-          </p>
-        </div>
-        <Link
-          to={`/${ROUTES.COMPANY.CAREERS}`}
-          className="border-primary/20 hover:bg-primary-invert/60 text-primary flex shrink-0 items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors"
-        >
-          <Icon icon="solar:compass-linear" className="size-4.5" />
-          View Open Roles
-        </Link>
-      </section>
-    </div>
+      <StaticPageCTA
+        title="Sound Like You?"
+        description="See what roles we're hiring for right now."
+        actions={
+          <Link
+            to={`/${ROUTES.COMPANY.CAREERS}`}
+            className="border-primary/20 hover:bg-primary-invert/60 text-primary flex shrink-0 items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors"
+          >
+            <Icon icon="solar:compass-linear" className="size-4.5" />
+            View Open Roles
+          </Link>
+        }
+      />
+    </StaticPageLayout>
   );
 };
 

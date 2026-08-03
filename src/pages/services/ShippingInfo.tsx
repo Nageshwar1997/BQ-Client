@@ -1,6 +1,15 @@
-import { Icon } from '@iconify/react';
 import { Link } from 'react-router-dom';
 
+import {
+  EmailUsAction,
+  HighlightNote,
+  InfoCardGrid,
+  NumberedSteps,
+  StaticPageCTA,
+  StaticPageHeader,
+  StaticPageLayout,
+  StaticPageSection,
+} from '@/components/layout/static-page';
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
 import { ROUTES } from '@/constants/routes.constants';
@@ -63,82 +72,24 @@ const SHIPPING_STEPS = [
 
 const ShippingInfo = () => {
   return (
-    <div className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-4 py-10 sm:px-6 sm:py-14">
-      {/* Header */}
-      <div className="flex flex-col items-center gap-4 text-center">
-        <span className="bg-accent-duo flex size-16 items-center justify-center rounded-full shadow-lg sm:size-20">
-          <Icon icon="solar:delivery-linear" className="size-8 text-white sm:size-10" />
-        </span>
-        <GradientText
-          type="accent"
-          text="Shipping Info"
-          className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
-        />
-        <p className="text-secondary max-w-2xl text-sm sm:text-base">
-          Everything you need to know about how your order gets from a seller&apos;s shelf to your
-          doorstep.
-        </p>
-      </div>
+    <StaticPageLayout>
+      <StaticPageHeader
+        icon="solar:delivery-linear"
+        title="Shipping Info"
+        description="Everything you need to know about how your order gets from a seller's shelf to your doorstep."
+      />
 
       <Divider />
 
-      {/* Key Points */}
-      <section className="flex flex-col gap-4">
-        <GradientText
-          type="accent"
-          text="Key Points at a Glance"
-          className="text-xl font-semibold sm:text-2xl"
-        />
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {QUICK_FACTS.map((fact) => (
-            <div
-              key={fact.title}
-              className="border-primary/10 bg-secondary-invert hover:border-primary/20 flex items-start gap-3 rounded-xl border p-4 transition-colors"
-            >
-              <span className="bg-accent-duo flex size-9 shrink-0 items-center justify-center rounded-lg">
-                <Icon icon={fact.icon} className="size-5 text-white" />
-              </span>
-              <div>
-                <p className="text-primary text-sm font-semibold sm:text-base">{fact.title}</p>
-                <p className="text-secondary text-xs sm:text-sm">{fact.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <StaticPageSection title="Key Points at a Glance">
+        <InfoCardGrid items={QUICK_FACTS} />
+      </StaticPageSection>
 
-      {/* How Shipping Works */}
-      <section className="flex flex-col gap-4">
-        <GradientText
-          type="accent"
-          text="How Shipping Works"
-          className="text-xl font-semibold sm:text-2xl"
-        />
-        <div className="flex flex-col gap-3">
-          {SHIPPING_STEPS.map((step, index) => (
-            <div
-              key={step.title}
-              className="border-primary/10 bg-secondary-invert flex items-start gap-3 rounded-xl border p-4"
-            >
-              <span className="bg-accent-duo flex size-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold text-white">
-                {index + 1}
-              </span>
-              <div>
-                <p className="text-primary text-sm font-semibold sm:text-base">{step.title}</p>
-                <p className="text-secondary text-xs sm:text-sm">{step.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <StaticPageSection title="How Shipping Works">
+        <NumberedSteps steps={SHIPPING_STEPS} />
+      </StaticPageSection>
 
-      {/* Shipping Costs */}
-      <section className="flex flex-col gap-3">
-        <GradientText
-          type="accent"
-          text="Shipping Costs"
-          className="text-xl font-semibold sm:text-2xl"
-        />
+      <StaticPageSection title="Shipping Costs" className="gap-3">
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           Shipping costs are calculated at checkout based on your delivery location, order weight,
           and the seller fulfilling your item — and you&apos;ll always see the final amount before
@@ -146,15 +97,9 @@ const ShippingInfo = () => {
           <span className="text-primary font-medium">₹499</span>, shown directly on the product
           page.
         </p>
-      </section>
+      </StaticPageSection>
 
-      {/* Tracking */}
-      <section className="flex flex-col gap-3">
-        <GradientText
-          type="accent"
-          text="Tracking Your Order"
-          className="text-xl font-semibold sm:text-2xl"
-        />
+      <StaticPageSection title="Tracking Your Order" className="gap-3">
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           Once your order ships, visit
           <Link
@@ -165,15 +110,9 @@ const ShippingInfo = () => {
           </Link>{' '}
           from your Profile to see live status updates for every shipment in your order.
         </p>
-      </section>
+      </StaticPageSection>
 
-      {/* Packaging */}
-      <section className="flex flex-col gap-3">
-        <GradientText
-          type="accent"
-          text="Packaging"
-          className="text-xl font-semibold sm:text-2xl"
-        />
+      <StaticPageSection title="Packaging" className="gap-3">
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           We package orders to keep products safe in transit while favoring recyclable materials
           wherever we can — read more on our{' '}
@@ -182,56 +121,37 @@ const ShippingInfo = () => {
           </Link>{' '}
           page.
         </p>
-      </section>
+      </StaticPageSection>
 
-      {/* Delayed or Missing */}
-      <section className="border-primary/10 bg-secondary-invert flex items-start gap-3 rounded-xl border p-4 sm:p-5">
-        <Icon
-          icon="solar:danger-triangle-linear"
-          className="text-primary/60 mt-0.5 size-5 shrink-0"
-        />
-        <div className="flex flex-col gap-1.5">
-          <p className="text-primary text-sm font-semibold sm:text-base">
-            Delayed or Missing Package?
-          </p>
-          <p className="text-secondary text-xs leading-relaxed sm:text-sm">
-            If your order is running later than the estimate shown, or tracking hasn&apos;t updated
-            in a while, check{' '}
-            <Link
-              to={`/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.ORDERS}/${ROUTES.PROFILE.ORDER_TRACK}`}
-              className="inline"
-            >
-              <GradientText type="accent" text="Track My Orders" className="font-medium" />
-            </Link>{' '}
-            first. If something still looks wrong, reach out to us and we&apos;ll help sort it out
-            with the seller and courier.
-          </p>
-        </div>
-      </section>
+      <HighlightNote title="Delayed or Missing Package?">
+        If your order is running later than the estimate shown, or tracking hasn&apos;t updated in a
+        while, check{' '}
+        <Link
+          to={`/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.ORDERS}/${ROUTES.PROFILE.ORDER_TRACK}`}
+          className="inline"
+        >
+          <GradientText type="accent" text="Track My Orders" className="font-medium" />
+        </Link>{' '}
+        first. If something still looks wrong, reach out to us and we&apos;ll help sort it out with
+        the seller and courier.
+      </HighlightNote>
 
       <Divider />
 
-      {/* CTA */}
-      <section className="border-primary/10 bg-secondary-invert flex flex-col gap-4 rounded-2xl border p-4 sm:flex-row sm:items-center sm:justify-between sm:p-6">
-        <div className="flex flex-col gap-1">
-          <p className="text-primary text-base font-semibold sm:text-lg">Still Have Questions?</p>
-          <p className="text-secondary text-xs sm:text-sm">
+      <StaticPageCTA
+        title="Still Have Questions?"
+        description={
+          <>
             Check our{' '}
             <Link to={`/${ROUTES.SERVICES.HELP_CENTER_FAQ}`} className="inline">
               <GradientText type="accent" text="Help Center" className="font-medium" />
             </Link>{' '}
             or reach out to our team directly.
-          </p>
-        </div>
-        <a
-          href="mailto:beautinique.bq@gmail.com"
-          className="border-primary/20 hover:bg-primary-invert/60 text-primary flex shrink-0 items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors"
-        >
-          <Icon icon="solar:letter-linear" className="size-4.5" />
-          beautinique.bq@gmail.com
-        </a>
-      </section>
-    </div>
+          </>
+        }
+        actions={<EmailUsAction />}
+      />
+    </StaticPageLayout>
   );
 };
 

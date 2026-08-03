@@ -1,7 +1,12 @@
 import { Icon } from '@iconify/react';
 
+import {
+  InfoCardGrid,
+  StaticPageHeader,
+  StaticPageLayout,
+  StaticPageSection,
+} from '@/components/layout/static-page';
 import Divider from '@/components/ui/Divider';
-import GradientText from '@/components/ui/GradientText';
 
 const VALUES_CULTURE = [
   {
@@ -46,77 +51,26 @@ const RETAIL_ECOMMERCE_ROLES = [
 
 const Careers = () => {
   return (
-    <div className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-4 py-10 sm:px-6 sm:py-14">
-      {/* Header */}
-      <div className="flex flex-col items-center gap-4 text-center">
-        <span className="bg-accent-duo flex size-16 items-center justify-center rounded-full shadow-lg sm:size-20">
-          <Icon icon="solar:case-round-minimalistic-linear" className="size-8 text-white sm:size-10" />
-        </span>
-        <GradientText
-          type="accent"
-          text="Careers"
-          className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
-        />
-        <p className="text-secondary max-w-2xl text-sm sm:text-base">
-          Join the team building a beauty marketplace people actually trust.
-        </p>
-      </div>
+    <StaticPageLayout>
+      <StaticPageHeader
+        icon="solar:case-round-minimalistic-linear"
+        title="Careers"
+        description="Join the team building a beauty marketplace people actually trust."
+      />
 
       <Divider />
 
-      {/* Values / Culture */}
-      <section className="flex flex-col gap-4">
-        <GradientText
-          type="accent"
-          text="Values & Culture"
-          className="text-xl font-semibold sm:text-2xl"
-        />
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {VALUES_CULTURE.map((value) => (
-            <div
-              key={value.title}
-              className="border-primary/10 bg-secondary-invert hover:border-primary/20 flex items-start gap-3 rounded-xl border p-4 transition-colors"
-            >
-              <span className="bg-accent-duo flex size-9 shrink-0 items-center justify-center rounded-lg">
-                <Icon icon={value.icon} className="size-5 text-white" />
-              </span>
-              <div>
-                <p className="text-primary text-sm font-semibold sm:text-base">{value.title}</p>
-                <p className="text-secondary text-xs sm:text-sm">{value.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <StaticPageSection title="Values & Culture">
+        <InfoCardGrid items={VALUES_CULTURE} />
+      </StaticPageSection>
 
-      {/* Retail / E-Commerce */}
-      <section className="flex flex-col gap-4">
-        <GradientText
-          type="accent"
-          text="Retail & E-Commerce Teams"
-          className="text-xl font-semibold sm:text-2xl"
-        />
+      <StaticPageSection title="Retail & E-Commerce Teams">
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           The teams keeping the marketplace running day to day, from seller support to order
           fulfilment:
         </p>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {RETAIL_ECOMMERCE_ROLES.map((role) => (
-            <div
-              key={role.title}
-              className="border-primary/10 bg-secondary-invert flex items-start gap-3 rounded-xl border p-4"
-            >
-              <span className="bg-accent-duo flex size-9 shrink-0 items-center justify-center rounded-lg">
-                <Icon icon={role.icon} className="size-5 text-white" />
-              </span>
-              <div>
-                <p className="text-primary text-sm font-semibold sm:text-base">{role.title}</p>
-                <p className="text-secondary text-xs sm:text-sm">{role.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+        <InfoCardGrid items={RETAIL_ECOMMERCE_ROLES} columns={3} />
+      </StaticPageSection>
 
       <Divider />
 
@@ -125,7 +79,9 @@ const Careers = () => {
         <span className="bg-accent-duo flex size-12 items-center justify-center rounded-full">
           <Icon icon="solar:inbox-linear" className="size-6 text-white" />
         </span>
-        <p className="text-primary text-base font-semibold sm:text-lg">No Open Positions Right Now</p>
+        <p className="text-primary text-base font-semibold sm:text-lg">
+          No Open Positions Right Now
+        </p>
         <p className="text-secondary max-w-md text-xs sm:text-sm">
           We don&apos;t have any active openings at the moment, but we&apos;re growing. Check back
           soon, or reach out — we&apos;re always happy to hear from people who want to build with
@@ -139,7 +95,7 @@ const Careers = () => {
           beautinique.bq@gmail.com
         </a>
       </section>
-    </div>
+    </StaticPageLayout>
   );
 };
 

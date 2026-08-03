@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Icon } from '@iconify/react';
 import { Controller, useForm } from 'react-hook-form';
 
+import { StaticPageHeader, StaticPageLayout } from '@/components/layout/static-page';
 import Button from '@/components/ui/Button';
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
@@ -56,22 +57,12 @@ const Contact = () => {
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-4 py-10 sm:px-6 sm:py-14">
-      {/* Header */}
-      <div className="flex flex-col items-center gap-4 text-center">
-        <span className="bg-accent-duo flex size-16 items-center justify-center rounded-full shadow-lg sm:size-20">
-          <Icon icon="solar:chat-round-dots-linear" className="size-8 text-white sm:size-10" />
-        </span>
-        <GradientText
-          type="accent"
-          text="Contact Us"
-          className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
-        />
-        <p className="text-secondary max-w-2xl text-sm sm:text-base">
-          Have a question, feedback, or just want to say hi? Send us a message, or reach out
-          directly using the details below.
-        </p>
-      </div>
+    <StaticPageLayout>
+      <StaticPageHeader
+        icon="solar:chat-round-dots-linear"
+        title="Contact Us"
+        description="Have a question, feedback, or just want to say hi? Send us a message, or reach out directly using the details below."
+      />
 
       <Divider />
 
@@ -172,7 +163,7 @@ const Contact = () => {
           />
         </form>
       </section>
-    </div>
+    </StaticPageLayout>
   );
 };
 

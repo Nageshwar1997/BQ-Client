@@ -1,6 +1,14 @@
 import { Icon } from '@iconify/react';
 import { Link } from 'react-router-dom';
 
+import {
+  Checklist,
+  InfoCardGrid,
+  StaticPageCTA,
+  StaticPageHeader,
+  StaticPageLayout,
+  StaticPageSection,
+} from '@/components/layout/static-page';
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
 import { ROUTES } from '@/constants/routes.constants';
@@ -47,27 +55,21 @@ const HOW_WE_LIVE_IT = [
 
 const MissionVisionValues = () => {
   return (
-    <div className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-4 py-10 sm:px-6 sm:py-14">
-      {/* Header */}
-      <div className="flex flex-col items-center gap-4 text-center">
-        <span className="bg-accent-duo flex size-16 items-center justify-center rounded-full shadow-lg sm:size-20">
-          <Icon icon="solar:flag-linear" className="size-8 text-white sm:size-10" />
-        </span>
-        <GradientText
-          type="accent"
-          text="Mission, Vision & Values"
-          className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
-        />
-        <p className="text-secondary max-w-2xl text-sm sm:text-base">
-          What drives <GradientText type="accent" text="Beautinique" className="font-semibold" />{' '}
-          forward, and the principles we hold ourselves to along the way.
-        </p>
-      </div>
+    <StaticPageLayout>
+      <StaticPageHeader
+        icon="solar:flag-linear"
+        title="Mission, Vision & Values"
+        description={
+          <>
+            What drives <GradientText type="accent" text="Beautinique" className="font-semibold" />{' '}
+            forward, and the principles we hold ourselves to along the way.
+          </>
+        }
+      />
 
       <Divider />
 
-      {/* Mission & Vision */}
-      <section className="flex flex-col gap-4">
+      <StaticPageSection>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="border-primary/10 bg-secondary-invert flex flex-col gap-3 rounded-xl border p-4 sm:p-5">
             <span className="bg-accent-duo flex size-9 shrink-0 items-center justify-center rounded-lg">
@@ -90,75 +92,32 @@ const MissionVisionValues = () => {
             </p>
           </div>
         </div>
-      </section>
+      </StaticPageSection>
 
-      {/* Our Values */}
-      <section className="flex flex-col gap-4">
-        <GradientText
-          type="accent"
-          text="Our Values"
-          className="text-xl font-semibold sm:text-2xl"
-        />
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {OUR_VALUES.map((value) => (
-            <div
-              key={value.title}
-              className="border-primary/10 bg-secondary-invert hover:border-primary/20 flex items-start gap-3 rounded-xl border p-4 transition-colors"
-            >
-              <span className="bg-accent-duo flex size-9 shrink-0 items-center justify-center rounded-lg">
-                <Icon icon={value.icon} className="size-5 text-white" />
-              </span>
-              <div>
-                <p className="text-primary text-sm font-semibold sm:text-base">{value.title}</p>
-                <p className="text-secondary text-xs sm:text-sm">{value.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <StaticPageSection title="Our Values">
+        <InfoCardGrid items={OUR_VALUES} />
+      </StaticPageSection>
 
-      {/* How We Live It */}
-      <section className="flex flex-col gap-4">
-        <GradientText
-          type="accent"
-          text="How We Live It"
-          className="text-xl font-semibold sm:text-2xl"
-        />
-        <ul className="flex flex-col gap-3">
-          {HOW_WE_LIVE_IT.map((point) => (
-            <li
-              key={point}
-              className="border-primary/10 bg-secondary-invert flex items-start gap-3 rounded-xl border p-3 sm:p-4"
-            >
-              <Icon
-                icon="solar:check-circle-linear"
-                className="text-primary-green mt-0.5 size-4.5 shrink-0"
-              />
-              <span className="text-secondary text-xs sm:text-sm">{point}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
+      <StaticPageSection title="How We Live It">
+        <Checklist items={HOW_WE_LIVE_IT} />
+      </StaticPageSection>
 
       <Divider />
 
-      {/* CTA */}
-      <section className="border-primary/10 bg-secondary-invert flex flex-col items-start justify-between gap-4 rounded-2xl border p-4 sm:flex-row sm:items-center sm:p-6">
-        <div className="flex flex-col gap-1">
-          <p className="text-primary text-base font-semibold sm:text-lg">Want the Full Story?</p>
-          <p className="text-secondary text-xs sm:text-sm">
-            Read more about who we are and where we&apos;re headed.
-          </p>
-        </div>
-        <Link
-          to={`/${ROUTES.COMPANY.ABOUT_US}`}
-          className="border-primary/20 hover:bg-primary-invert/60 text-primary flex shrink-0 items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors"
-        >
-          <Icon icon="solar:bag-heart-linear" className="size-4.5" />
-          About Beautinique
-        </Link>
-      </section>
-    </div>
+      <StaticPageCTA
+        title="Want the Full Story?"
+        description="Read more about who we are and where we're headed."
+        actions={
+          <Link
+            to={`/${ROUTES.COMPANY.ABOUT_US}`}
+            className="border-primary/20 hover:bg-primary-invert/60 text-primary flex shrink-0 items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors"
+          >
+            <Icon icon="solar:bag-heart-linear" className="size-4.5" />
+            About Beautinique
+          </Link>
+        }
+      />
+    </StaticPageLayout>
   );
 };
 

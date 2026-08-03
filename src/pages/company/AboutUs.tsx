@@ -1,6 +1,14 @@
 import { Icon } from '@iconify/react';
 import { Link } from 'react-router-dom';
 
+import {
+  BeautiniqueLink,
+  InfoCardGrid,
+  StaticPageCTA,
+  StaticPageHeader,
+  StaticPageLayout,
+  StaticPageSection,
+} from '@/components/layout/static-page';
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
 import { ROUTES } from '@/constants/routes.constants';
@@ -94,41 +102,23 @@ const WHY_SHOP_WITH_US = [
   },
 ] as const;
 
-const BeautiniqueLink = () => (
-  <Link to={ROUTES.HOME} className="inline">
-    <GradientText type="accent" text="Beautinique" className="font-semibold" />
-  </Link>
-);
-
 const AboutUs = () => {
   return (
-    <div className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-4 py-10 sm:px-6 sm:py-14">
-      {/* Header */}
-      <div className="flex flex-col items-center gap-4 text-center">
-        <span className="bg-accent-duo flex size-16 items-center justify-center rounded-full shadow-lg sm:size-20">
-          <Icon icon="solar:bag-heart-linear" className="size-8 text-white sm:size-10" />
-        </span>
-        <GradientText
-          type="accent"
-          text="About Beautinique"
-          className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
-        />
-        <p className="text-secondary max-w-2xl text-sm sm:text-base">
-          Pronounced <GradientText type="accent" text="Beauty-Unique" className="font-medium" />{' '}
-          &mdash; a marketplace built around one idea: everyone deserves beauty products that
-          actually work for them.
-        </p>
-      </div>
+    <StaticPageLayout>
+      <StaticPageHeader
+        icon="solar:bag-heart-linear"
+        title="About Beautinique"
+        description={
+          <>
+            Pronounced <BeautiniqueLink /> &mdash; a marketplace built around one idea: everyone
+            deserves beauty products that actually work for them.
+          </>
+        }
+      />
 
       <Divider />
 
-      {/* Our Story */}
-      <section className="flex flex-col gap-3">
-        <GradientText
-          type="accent"
-          text="Our Story"
-          className="text-xl font-semibold sm:text-2xl"
-        />
+      <StaticPageSection title="Our Story" className="gap-3">
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           <BeautiniqueLink /> started with a simple frustration: shopping for cosmetics online often
           meant guessing whether a shade would actually suit you, whether a seller could be trusted,
@@ -137,40 +127,13 @@ const AboutUs = () => {
           tools like virtual try-on and genuine, purchase-only reviews, so every order feels like a
           sure thing instead of a gamble.
         </p>
-      </section>
+      </StaticPageSection>
 
-      {/* What We Stand For */}
-      <section className="flex flex-col gap-4">
-        <GradientText
-          type="accent"
-          text="What We Stand For"
-          className="text-xl font-semibold sm:text-2xl"
-        />
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {WHAT_WE_STAND_FOR.map((point) => (
-            <div
-              key={point.title}
-              className="border-primary/10 bg-secondary-invert hover:border-primary/20 flex items-start gap-3 rounded-xl border p-4 transition-colors"
-            >
-              <span className="bg-accent-duo flex size-9 shrink-0 items-center justify-center rounded-lg">
-                <Icon icon={point.icon} className="size-5 text-white" />
-              </span>
-              <div>
-                <p className="text-primary text-sm font-semibold sm:text-base">{point.title}</p>
-                <p className="text-secondary text-xs sm:text-sm">{point.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <StaticPageSection title="What We Stand For">
+        <InfoCardGrid items={WHAT_WE_STAND_FOR} />
+      </StaticPageSection>
 
-      {/* Mission & Vision */}
-      <section className="flex flex-col gap-4">
-        <GradientText
-          type="accent"
-          text="Our Mission & Vision"
-          className="text-xl font-semibold sm:text-2xl"
-        />
+      <StaticPageSection title="Our Mission & Vision">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="border-primary/10 bg-secondary-invert flex flex-col gap-3 rounded-xl border p-4 sm:p-5">
             <span className="bg-accent-duo flex size-9 shrink-0 items-center justify-center rounded-lg">
@@ -193,65 +156,17 @@ const AboutUs = () => {
             </p>
           </div>
         </div>
-      </section>
+      </StaticPageSection>
 
-      {/* Our Values */}
-      <section className="flex flex-col gap-4">
-        <GradientText
-          type="accent"
-          text="Our Values"
-          className="text-xl font-semibold sm:text-2xl"
-        />
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {OUR_VALUES.map((value) => (
-            <div
-              key={value.title}
-              className="border-primary/10 bg-secondary-invert flex items-start gap-3 rounded-xl border p-4"
-            >
-              <span className="bg-accent-duo flex size-9 shrink-0 items-center justify-center rounded-lg">
-                <Icon icon={value.icon} className="size-5 text-white" />
-              </span>
-              <div>
-                <p className="text-primary text-sm font-semibold sm:text-base">{value.title}</p>
-                <p className="text-secondary text-xs sm:text-sm">{value.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <StaticPageSection title="Our Values">
+        <InfoCardGrid items={OUR_VALUES} />
+      </StaticPageSection>
 
-      {/* Why Shop With Us */}
-      <section className="flex flex-col gap-4">
-        <GradientText
-          type="accent"
-          text="Why Shop With Us"
-          className="text-xl font-semibold sm:text-2xl"
-        />
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {WHY_SHOP_WITH_US.map((feature) => (
-            <div
-              key={feature.title}
-              className="border-primary/10 bg-secondary-invert flex items-start gap-3 rounded-xl border p-4"
-            >
-              <span className="bg-accent-duo flex size-9 shrink-0 items-center justify-center rounded-lg">
-                <Icon icon={feature.icon} className="size-5 text-white" />
-              </span>
-              <div>
-                <p className="text-primary text-sm font-semibold sm:text-base">{feature.title}</p>
-                <p className="text-secondary text-xs sm:text-sm">{feature.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <StaticPageSection title="Why Shop With Us">
+        <InfoCardGrid items={WHY_SHOP_WITH_US} />
+      </StaticPageSection>
 
-      {/* Sustainability & Ethics */}
-      <section className="flex flex-col gap-3">
-        <GradientText
-          type="accent"
-          text="Sustainability & Ethics"
-          className="text-xl font-semibold sm:text-2xl"
-        />
+      <StaticPageSection title="Sustainability & Ethics" className="gap-3">
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           Doing right by people and the planet isn&apos;t an afterthought for us &mdash; it&apos;s
           part of how we choose who sells on our platform. Read more about our{' '}
@@ -264,44 +179,41 @@ const AboutUs = () => {
           </Link>
           .
         </p>
-      </section>
+      </StaticPageSection>
 
       <Divider />
 
-      {/* CTA */}
-      <section className="border-primary/10 bg-secondary-invert flex flex-col gap-4 rounded-2xl border p-4 sm:p-6">
-        <div className="flex flex-col gap-1">
-          <p className="text-primary text-base font-semibold sm:text-lg">Come Grow With Us</p>
-          <p className="text-secondary text-xs sm:text-sm">
-            Whether you want to join our team, sell on our marketplace, or just say hello, we&apos;d
-            love to hear from you.
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-3">
-          <Link
-            to={`/${ROUTES.COMPANY.CAREERS}`}
-            className="border-primary/20 hover:bg-primary-invert/60 text-primary flex items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors"
-          >
-            <Icon icon="solar:compass-linear" className="size-4.5" />
-            View Careers
-          </Link>
-          <Link
-            to={`/${ROUTES.QUICK_LINKS.BECOME_SELLER}`}
-            className="border-primary/20 hover:bg-primary-invert/60 text-primary flex items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors"
-          >
-            <Icon icon="solar:shop-2-linear" className="size-4.5" />
-            Become a Seller
-          </Link>
-          <a
-            href="mailto:beautinique.bq@gmail.com"
-            className="border-primary/20 hover:bg-primary-invert/60 text-primary flex items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors"
-          >
-            <Icon icon="solar:letter-linear" className="size-4.5" />
-            beautinique.bq@gmail.com
-          </a>
-        </div>
-      </section>
-    </div>
+      <StaticPageCTA
+        title="Come Grow With Us"
+        description="Whether you want to join our team, sell on our marketplace, or just say hello, we'd love to hear from you."
+        layout="stack"
+        actions={
+          <div className="flex flex-wrap gap-3">
+            <Link
+              to={`/${ROUTES.COMPANY.CAREERS}`}
+              className="border-primary/20 hover:bg-primary-invert/60 text-primary flex items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors"
+            >
+              <Icon icon="solar:compass-linear" className="size-4.5" />
+              View Careers
+            </Link>
+            <Link
+              to={`/${ROUTES.QUICK_LINKS.BECOME_SELLER}`}
+              className="border-primary/20 hover:bg-primary-invert/60 text-primary flex items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors"
+            >
+              <Icon icon="solar:shop-2-linear" className="size-4.5" />
+              Become a Seller
+            </Link>
+            <a
+              href="mailto:beautinique.bq@gmail.com"
+              className="border-primary/20 hover:bg-primary-invert/60 text-primary flex items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors"
+            >
+              <Icon icon="solar:letter-linear" className="size-4.5" />
+              beautinique.bq@gmail.com
+            </a>
+          </div>
+        }
+      />
+    </StaticPageLayout>
   );
 };
 

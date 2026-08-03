@@ -1,10 +1,19 @@
-import { Icon } from '@iconify/react';
 import { Link } from 'react-router-dom';
 
+import {
+  BeautiniqueLink,
+  Checklist,
+  EmailUsAction,
+  InfoCardGrid,
+  LastUpdatedBadge,
+  StaticPageCTA,
+  StaticPageHeader,
+  StaticPageLayout,
+  StaticPageSection,
+} from '@/components/layout/static-page';
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
 import { ROUTES } from '@/constants/routes.constants';
-import { formatDate } from '@/utils/common.util';
 
 const QUICK_OVERVIEW = [
   {
@@ -80,124 +89,43 @@ const YOUR_RIGHTS = [
   'Opt out of marketing emails at any time, from the email itself or your settings.',
 ] as const;
 
-const BeautiniqueLink = () => (
-  <Link to={ROUTES.HOME} className="inline">
-    <GradientText type="accent" text="Beautinique" className="font-semibold" />
-  </Link>
-);
-
 const PrivacyPolicy = () => {
   return (
-    <div className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-4 py-10 sm:px-6 sm:py-14">
-      {/* Header */}
-      <div className="flex flex-col items-center gap-4 text-center">
-        <span className="bg-accent-duo flex size-16 items-center justify-center rounded-full shadow-lg sm:size-20">
-          <Icon icon="solar:lock-keyhole-linear" className="size-8 text-white sm:size-10" />
-        </span>
-        <GradientText
-          type="accent"
-          text="Privacy Policy"
-          className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
-        />
-        <p className="text-secondary max-w-2xl text-sm sm:text-base">
-          This Privacy Policy explains how <BeautiniqueLink /> collects, uses, shares, and protects
-          your personal information when you shop, sell, or browse with us.
-        </p>
-        <span className="text-primary/50 flex items-center gap-1 text-xs sm:text-sm">
-          <Icon icon="solar:calendar-mark-linear" className="size-3.5" />
-          Last updated {formatDate(new Date())}
-        </span>
-      </div>
+    <StaticPageLayout>
+      <StaticPageHeader
+        icon="solar:lock-keyhole-linear"
+        title="Privacy Policy"
+        description={
+          <>
+            This Privacy Policy explains how <BeautiniqueLink /> collects, uses, shares, and
+            protects your personal information when you shop, sell, or browse with us.
+          </>
+        }
+        meta={<LastUpdatedBadge />}
+      />
 
       <Divider />
 
-      {/* Quick Overview */}
-      <section className="flex flex-col gap-4">
-        <GradientText
-          type="accent"
-          text="Key Points at a Glance"
-          className="text-xl font-semibold sm:text-2xl"
-        />
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {QUICK_OVERVIEW.map((point) => (
-            <div
-              key={point.title}
-              className="border-primary/10 bg-secondary-invert hover:border-primary/20 flex items-start gap-3 rounded-xl border p-4 transition-colors"
-            >
-              <span className="bg-accent-duo flex size-9 shrink-0 items-center justify-center rounded-lg">
-                <Icon icon={point.icon} className="size-5 text-white" />
-              </span>
-              <div>
-                <p className="text-primary text-sm font-semibold sm:text-base">{point.title}</p>
-                <p className="text-secondary text-xs sm:text-sm">{point.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <StaticPageSection title="Key Points at a Glance">
+        <InfoCardGrid items={QUICK_OVERVIEW} />
+      </StaticPageSection>
 
-      {/* Information We Collect */}
-      <section className="flex flex-col gap-4">
-        <GradientText
-          type="accent"
-          text="Information We Collect"
-          className="text-xl font-semibold sm:text-2xl"
-        />
+      <StaticPageSection title="Information We Collect">
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           We collect information you give us directly, information generated as you use our
           services, and information needed to power certain features:
         </p>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {DATA_WE_COLLECT.map((item) => (
-            <div
-              key={item.title}
-              className="border-primary/10 bg-secondary-invert flex items-start gap-3 rounded-xl border p-4"
-            >
-              <span className="bg-accent-duo flex size-9 shrink-0 items-center justify-center rounded-lg">
-                <Icon icon={item.icon} className="size-5 text-white" />
-              </span>
-              <div>
-                <p className="text-primary text-sm font-semibold sm:text-base">{item.title}</p>
-                <p className="text-secondary text-xs sm:text-sm">{item.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+        <InfoCardGrid items={DATA_WE_COLLECT} />
+      </StaticPageSection>
 
-      {/* How We Use Your Information */}
-      <section className="flex flex-col gap-4">
-        <GradientText
-          type="accent"
-          text="How We Use Your Information"
-          className="text-xl font-semibold sm:text-2xl"
-        />
+      <StaticPageSection title="How We Use Your Information">
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           <BeautiniqueLink /> uses your information to:
         </p>
-        <ul className="flex flex-col gap-3">
-          {HOW_WE_USE_INFO.map((use) => (
-            <li
-              key={use}
-              className="border-primary/10 bg-secondary-invert flex items-start gap-3 rounded-xl border p-3 sm:p-4"
-            >
-              <Icon
-                icon="solar:check-circle-linear"
-                className="text-primary-green mt-0.5 size-4.5 shrink-0"
-              />
-              <span className="text-secondary text-xs sm:text-sm">{use}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
+        <Checklist items={HOW_WE_USE_INFO} />
+      </StaticPageSection>
 
-      {/* Cookies & Tracking */}
-      <section className="flex flex-col gap-3">
-        <GradientText
-          type="accent"
-          text="Cookies & Tracking"
-          className="text-xl font-semibold sm:text-2xl"
-        />
+      <StaticPageSection title="Cookies & Tracking" className="gap-3">
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           We use cookies and similar technologies to keep you signed in, remember your preferences,
           analyze traffic, and enhance your overall experience. For full details on the types of
@@ -207,15 +135,9 @@ const PrivacyPolicy = () => {
           </Link>
           .
         </p>
-      </section>
+      </StaticPageSection>
 
-      {/* Sharing Your Information */}
-      <section className="flex flex-col gap-3">
-        <GradientText
-          type="accent"
-          text="How We Share Your Information"
-          className="text-xl font-semibold sm:text-2xl"
-        />
+      <StaticPageSection title="How We Share Your Information" className="gap-3">
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           We do not sell or rent your personal information to third parties. Your data may be shared
           only with trusted partners who help us run our platform &mdash; such as payment
@@ -223,15 +145,9 @@ const PrivacyPolicy = () => {
           authentication providers (Google, LinkedIn, GitHub) if you choose to sign in through them
           &mdash; or when required to comply with the law.
         </p>
-      </section>
+      </StaticPageSection>
 
-      {/* Data Security */}
-      <section className="flex flex-col gap-3">
-        <GradientText
-          type="accent"
-          text="Data Security"
-          className="text-xl font-semibold sm:text-2xl"
-        />
+      <StaticPageSection title="Data Security" className="gap-3">
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           We implement appropriate technical and organizational measures to protect your personal
           information from unauthorized access, disclosure, or misuse &mdash; including encrypting
@@ -239,113 +155,60 @@ const PrivacyPolicy = () => {
           system can be guaranteed to be 100% secure, we work continuously to keep your information
           safe.
         </p>
-      </section>
+      </StaticPageSection>
 
-      {/* Data Retention */}
-      <section className="flex flex-col gap-3">
-        <GradientText
-          type="accent"
-          text="Data Retention"
-          className="text-xl font-semibold sm:text-2xl"
-        />
+      <StaticPageSection title="Data Retention" className="gap-3">
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           We retain your personal information for as long as your account is active or as needed to
           provide our services, comply with legal obligations, resolve disputes, and enforce our
           agreements. When you delete your account, we remove or anonymize your personal data,
           except where retention is required by law.
         </p>
-      </section>
+      </StaticPageSection>
 
-      {/* Your Rights */}
-      <section className="flex flex-col gap-4">
-        <GradientText
-          type="accent"
-          text="Your Rights & Choices"
-          className="text-xl font-semibold sm:text-2xl"
-        />
+      <StaticPageSection title="Your Rights & Choices">
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           You&apos;re always in control of your personal information. You can:
         </p>
-        <ul className="flex flex-col gap-3">
-          {YOUR_RIGHTS.map((right) => (
-            <li
-              key={right}
-              className="border-primary/10 bg-secondary-invert flex items-start gap-3 rounded-xl border p-3 sm:p-4"
-            >
-              <Icon
-                icon="solar:user-check-rounded-linear"
-                className="text-primary/60 mt-0.5 size-4.5 shrink-0"
-              />
-              <span className="text-secondary text-xs sm:text-sm">{right}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      {/* Children's Privacy */}
-      <section className="flex flex-col gap-3">
-        <GradientText
-          type="accent"
-          text="Children's Privacy"
-          className="text-xl font-semibold sm:text-2xl"
+        <Checklist
+          items={YOUR_RIGHTS}
+          icon="solar:user-check-rounded-linear"
+          iconClassName="text-primary/60"
         />
+      </StaticPageSection>
+
+      <StaticPageSection title="Children's Privacy" className="gap-3">
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           Beautinique is not directed at children under 18, and we do not knowingly collect personal
           information from anyone under that age. If you believe a child has provided us with
           personal information, please contact us so we can remove it promptly.
         </p>
-      </section>
+      </StaticPageSection>
 
-      {/* International Data Transfers */}
-      <section className="flex flex-col gap-3">
-        <GradientText
-          type="accent"
-          text="International Data Transfers"
-          className="text-xl font-semibold sm:text-2xl"
-        />
+      <StaticPageSection title="International Data Transfers" className="gap-3">
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           Your information may be processed or stored on servers located outside your home country.
           Wherever your data is processed, we take steps to ensure it receives an adequate level of
           protection, consistent with this Privacy Policy.
         </p>
-      </section>
+      </StaticPageSection>
 
-      {/* Changes to This Policy */}
-      <section className="flex flex-col gap-3">
-        <GradientText
-          type="accent"
-          text="Changes to This Policy"
-          className="text-xl font-semibold sm:text-2xl"
-        />
+      <StaticPageSection title="Changes to This Policy" className="gap-3">
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           We may update this Privacy Policy periodically to reflect changes in our practices or
           legal requirements. Continued use of our website after changes are posted constitutes
           acceptance of the updated policy.
         </p>
-      </section>
+      </StaticPageSection>
 
       <Divider />
 
-      {/* Contact */}
-      <section className="border-primary/10 bg-secondary-invert flex flex-col items-start justify-between gap-4 rounded-2xl border p-4 sm:flex-row sm:items-center sm:p-6">
-        <div className="flex flex-col gap-1">
-          <p className="text-primary text-base font-semibold sm:text-lg">
-            Questions About Your Data?
-          </p>
-          <p className="text-secondary text-xs sm:text-sm">
-            For access, correction, or deletion requests, or any other privacy questions, reach out
-            to us.
-          </p>
-        </div>
-        <a
-          href="mailto:beautinique.bq@gmail.com"
-          className="border-primary/20 hover:bg-primary-invert/60 text-primary flex shrink-0 items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors"
-        >
-          <Icon icon="solar:letter-linear" className="size-4.5" />
-          beautinique.bq@gmail.com
-        </a>
-      </section>
-    </div>
+      <StaticPageCTA
+        title="Questions About Your Data?"
+        description="For access, correction, or deletion requests, or any other privacy questions, reach out to us."
+        actions={<EmailUsAction />}
+      />
+    </StaticPageLayout>
   );
 };
 

@@ -1,6 +1,15 @@
 import { Icon } from '@iconify/react';
 import { Link } from 'react-router-dom';
 
+import {
+  Checklist,
+  InfoCardGrid,
+  NumberedSteps,
+  StaticPageCTA,
+  StaticPageHeader,
+  StaticPageLayout,
+  StaticPageSection,
+} from '@/components/layout/static-page';
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
 import { ROUTES } from '@/constants/routes.constants';
@@ -85,156 +94,70 @@ const REQUIREMENTS = [
 
 const PartnerWithUs = () => {
   return (
-    <div className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-4 py-10 sm:px-6 sm:py-14">
-      {/* Header */}
-      <div className="flex flex-col items-center gap-4 text-center">
-        <span className="bg-accent-duo flex size-16 items-center justify-center rounded-full shadow-lg sm:size-20">
-          <Icon icon="solar:rocket-linear" className="size-8 text-white sm:size-10" />
-        </span>
-        <GradientText
-          type="accent"
-          text="Partner With Us"
-          className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
-        />
-        <p className="text-secondary max-w-2xl text-sm sm:text-base">
-          <GradientText
-            type="accent"
-            text="Together, we're Unstoppable!"
-            className="font-medium italic"
-          />{' '}
-          Whether you sell beauty products, run a brand, or have an audience that loves beauty —
-          there&apos;s a place for you on Beautinique.
-        </p>
-      </div>
+    <StaticPageLayout>
+      <StaticPageHeader
+        icon="solar:rocket-linear"
+        title="Partner With Us"
+        description={
+          <>
+            <GradientText
+              type="accent"
+              text="Together, we're Unstoppable!"
+              className="font-medium italic"
+            />{' '}
+            Whether you sell beauty products, run a brand, or have an audience that loves beauty —
+            there&apos;s a place for you on Beautinique.
+          </>
+        }
+      />
 
       <Divider />
 
-      {/* Benefits */}
-      <section className="flex flex-col gap-4">
-        <GradientText
-          type="accent"
-          text="Why Partner With Us"
-          className="text-xl font-semibold sm:text-2xl"
-        />
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {PARTNER_BENEFITS.map((benefit) => (
-            <div
-              key={benefit.title}
-              className="border-primary/10 bg-secondary-invert hover:border-primary/20 flex items-start gap-3 rounded-xl border p-4 transition-colors"
-            >
-              <span className="bg-accent-duo flex size-9 shrink-0 items-center justify-center rounded-lg">
-                <Icon icon={benefit.icon} className="size-5 text-white" />
-              </span>
-              <div>
-                <p className="text-primary text-sm font-semibold sm:text-base">{benefit.title}</p>
-                <p className="text-secondary text-xs sm:text-sm">{benefit.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <StaticPageSection title="Why Partner With Us">
+        <InfoCardGrid items={PARTNER_BENEFITS} />
+      </StaticPageSection>
 
-      {/* Partnership Types */}
-      <section className="flex flex-col gap-4">
-        <GradientText
-          type="accent"
-          text="Ways to Partner"
-          className="text-xl font-semibold sm:text-2xl"
-        />
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {PARTNERSHIP_TYPES.map((type) => (
-            <div
-              key={type.title}
-              className="border-primary/10 bg-secondary-invert flex items-start gap-3 rounded-xl border p-4"
-            >
-              <span className="bg-accent-duo flex size-9 shrink-0 items-center justify-center rounded-lg">
-                <Icon icon={type.icon} className="size-5 text-white" />
-              </span>
-              <div>
-                <p className="text-primary text-sm font-semibold sm:text-base">{type.title}</p>
-                <p className="text-secondary text-xs sm:text-sm">{type.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <StaticPageSection title="Ways to Partner">
+        <InfoCardGrid items={PARTNERSHIP_TYPES} />
+      </StaticPageSection>
 
-      {/* How It Works */}
-      <section className="flex flex-col gap-4">
-        <GradientText
-          type="accent"
-          text="How It Works"
-          className="text-xl font-semibold sm:text-2xl"
-        />
-        <div className="flex flex-col gap-3">
-          {PARTNER_STEPS.map((step, index) => (
-            <div
-              key={step.title}
-              className="border-primary/10 bg-secondary-invert flex items-start gap-3 rounded-xl border p-4"
-            >
-              <span className="bg-accent-duo flex size-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold text-white">
-                {index + 1}
-              </span>
-              <div>
-                <p className="text-primary text-sm font-semibold sm:text-base">{step.title}</p>
-                <p className="text-secondary text-xs sm:text-sm">{step.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <StaticPageSection title="How It Works">
+        <NumberedSteps steps={PARTNER_STEPS} />
+      </StaticPageSection>
 
-      {/* Requirements */}
-      <section className="flex flex-col gap-4">
-        <GradientText
-          type="accent"
-          text="What You'll Need"
-          className="text-xl font-semibold sm:text-2xl"
+      <StaticPageSection title="What You'll Need">
+        <Checklist
+          items={REQUIREMENTS}
+          icon="solar:clipboard-check-linear"
+          iconClassName="text-primary/60"
         />
-        <ul className="flex flex-col gap-3">
-          {REQUIREMENTS.map((requirement) => (
-            <li
-              key={requirement}
-              className="border-primary/10 bg-secondary-invert flex items-start gap-3 rounded-xl border p-3 sm:p-4"
-            >
-              <Icon
-                icon="solar:clipboard-check-linear"
-                className="text-primary/60 mt-0.5 size-4.5 shrink-0"
-              />
-              <span className="text-secondary text-xs sm:text-sm">{requirement}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
+      </StaticPageSection>
 
       <Divider />
 
-      {/* CTA */}
-      <section className="border-primary/10 bg-secondary-invert flex flex-col gap-4 rounded-2xl border p-4 sm:flex-row sm:items-center sm:justify-between sm:p-6">
-        <div className="flex flex-col gap-1">
-          <p className="text-primary text-base font-semibold sm:text-lg">Ready to Get Started?</p>
-          <p className="text-secondary text-xs sm:text-sm">
-            Apply as a seller, or reach out directly for brand and affiliate partnerships.
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-3">
-          <Link
-            to={`/${ROUTES.QUICK_LINKS.BECOME_SELLER}`}
-            className="bg-accent-duo flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90"
-          >
-            <Icon icon="solar:shop-2-linear" className="size-4.5" />
-            Become a Seller
-          </Link>
-          <a
-            href="mailto:beautinique.bq@gmail.com"
-            className="border-primary/20 hover:bg-primary-invert/60 text-primary flex items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors"
-          >
-            <Icon icon="solar:letter-linear" className="size-4.5" />
-            beautinique.bq@gmail.com
-          </a>
-        </div>
-      </section>
-    </div>
+      <StaticPageCTA
+        title="Ready to Get Started?"
+        description="Apply as a seller, or reach out directly for brand and affiliate partnerships."
+        actions={
+          <div className="flex flex-wrap gap-3">
+            <Link
+              to={`/${ROUTES.QUICK_LINKS.BECOME_SELLER}`}
+              className="bg-accent-duo flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90"
+            >
+              <Icon icon="solar:shop-2-linear" className="size-4.5" />
+              Become a Seller
+            </Link>
+            <a
+              href="mailto:beautinique.bq@gmail.com"
+              className="border-primary/20 hover:bg-primary-invert/60 text-primary flex items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors"
+            >
+              <Icon icon="solar:letter-linear" className="size-4.5" />
+              beautinique.bq@gmail.com
+            </a>
+          </div>
+        }
+      />
+    </StaticPageLayout>
   );
 };
 
