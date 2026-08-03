@@ -44,18 +44,18 @@ const UserPopupModal = ({ isOpen, onClose }: Pick<IModalWrapper, 'isOpen' | 'onC
       className="bg-tertiary-invert rounded-lg!"
     >
       <div className="w-full space-y-2">
-        <div className="mx-auto w-min space-y-2">
-          <span className="size-10">
+        <div className="mx-auto flex flex-col items-center space-y-2">
+          <div className="size-10">
             {user?.avatar ? (
               <img
                 src={user.avatar}
                 alt={`${user.firstName} ${user.lastName}`}
-                className="border-tertiary aspect-square h-full w-full rounded-full border-2 object-cover"
+                className="border-tertiary aspect-square size-full rounded-full border-2 object-cover"
               />
             ) : (
               <Icon icon="solar:user-circle-linear" className="text-tertiary size-full" />
             )}
-          </span>
+          </div>
           <p className="line-clamp-1 text-sm font-semibold capitalize">
             {user ? `${user.firstName} ${user.lastName}` : 'Guest'}
           </p>
