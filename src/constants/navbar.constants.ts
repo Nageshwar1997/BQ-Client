@@ -35,7 +35,11 @@ export const NAVBAR_TOP_LAYER_DATA = [
     path: `/${PROFILE.BASE}/${PROFILE.REFER_A_FRIEND}`,
     private: true,
   },
-  { text: 'Gift Card', icon: 'ic:round-card-giftcard', path: '/offers' },
+  {
+    text: 'Gift Card',
+    icon: 'ic:round-card-giftcard',
+    path: `/${PROFILE.BASE}/${PROFILE.GIFT_CARDS}`,
+  },
   { text: 'BQ Care', icon: 'hugeicons:customer-service', path: `/${SERVICES.CONTACT}` },
   {
     text: 'Track Orders',

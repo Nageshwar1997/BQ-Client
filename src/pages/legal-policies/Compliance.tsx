@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
+import { ROUTES } from '@/constants/routes.constants';
 import { formatDate } from '@/utils/common.util';
 
 const COMPLIANCE_PILLARS = [
@@ -29,10 +30,10 @@ const COMPLIANCE_PILLARS = [
 ] as const;
 
 const RELATED_POLICIES = [
-  { label: 'Privacy Policy', path: '/privacy-policy' },
-  { label: 'Terms & Conditions', path: '/terms-conditions' },
-  { label: 'Cookie Policy', path: '/cookie-policy' },
-  { label: 'Accessibility', path: '/accessibility' },
+  { label: 'Privacy Policy', path: `/${ROUTES.LEGAL.PRIVACY_POLICY}` },
+  { label: 'Terms & Conditions', path: `/${ROUTES.LEGAL.TERMS_CONDITIONS}` },
+  { label: 'Cookie Policy', path: `/${ROUTES.LEGAL.COOKIE_POLICY}` },
+  { label: 'Accessibility', path: `/${ROUTES.LEGAL.ACCESSIBILITY}` },
 ] as const;
 
 const Compliance = () => {
@@ -49,8 +50,8 @@ const Compliance = () => {
           className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
         />
         <p className="text-secondary max-w-2xl text-sm sm:text-base">
-          How <GradientText type="accent" text="Beautinique" className="font-semibold" /> keeps
-          the marketplace trustworthy — for shoppers and sellers alike.
+          How <GradientText type="accent" text="Beautinique" className="font-semibold" /> keeps the
+          marketplace trustworthy — for shoppers and sellers alike.
         </p>
         <span className="text-primary/50 flex items-center gap-1 text-xs sm:text-sm">
           <Icon icon="solar:calendar-mark-linear" className="size-3.5" />
@@ -94,8 +95,8 @@ const Compliance = () => {
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           We work to align our marketplace practices, seller onboarding, and data handling with
-          applicable consumer protection and data privacy regulations. Sellers are expected to
-          meet product labeling and safety requirements for the categories they list in.
+          applicable consumer protection and data privacy regulations. Sellers are expected to meet
+          product labeling and safety requirements for the categories they list in.
         </p>
       </section>
 
@@ -107,8 +108,8 @@ const Compliance = () => {
           className="text-xl font-semibold sm:text-2xl"
         />
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
-          If you spot a counterfeit listing, a suspicious seller, or anything that doesn&apos;t
-          look right, let us know and we&apos;ll investigate promptly.
+          If you spot a counterfeit listing, a suspicious seller, or anything that doesn&apos;t look
+          right, let us know and we&apos;ll investigate promptly.
         </p>
       </section>
 
@@ -138,7 +139,9 @@ const Compliance = () => {
       {/* Contact */}
       <section className="border-primary/10 bg-secondary-invert flex flex-col items-start justify-between gap-4 rounded-2xl border p-4 sm:flex-row sm:items-center sm:p-6">
         <div className="flex flex-col gap-1">
-          <p className="text-primary text-base font-semibold sm:text-lg">Have a Compliance Question?</p>
+          <p className="text-primary text-base font-semibold sm:text-lg">
+            Have a Compliance Question?
+          </p>
           <p className="text-secondary text-xs sm:text-sm">
             Reach out and our team will get back to you.
           </p>
