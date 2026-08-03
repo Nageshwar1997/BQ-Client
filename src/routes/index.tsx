@@ -3,7 +3,7 @@ import { Outlet, type RouteObject } from 'react-router-dom';
 
 import LoadingScreen from '@/components/layout/loaders/LoadingScreen';
 import { ROUTES } from '@/constants/routes.constants';
-import { authenticate, guestOnly } from '@/middlewares';
+import { authenticate, guestOnly, oauthOnly } from '@/middlewares';
 import ErrorBoundary from '@/pages/error/ErrorBoundary';
 
 const { AUTH, AWARDS, COMPANY, DISCOVER, HOME, LEGAL, PRODUCTS, PROFILE, QUICK_LINKS, SERVICES } =
@@ -245,6 +245,11 @@ const routes: RouteObject[] = [
         path: AUTH.CHANGE_PASSWORD,
         middleware: [authenticate],
         lazy: loadPage(() => import('@/pages/auth/ChangePassword')),
+      },
+      {
+        path: AUTH.SET_PASSWORD,
+        middleware: [authenticate, oauthOnly],
+        lazy: loadPage(() => import('@/pages/auth/SetPassword')),
       },
       {
         path: AUTH.OAUTH,
