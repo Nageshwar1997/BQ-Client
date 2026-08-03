@@ -1,3 +1,4 @@
+import { type ComponentType } from 'react';
 import { Outlet, type RouteObject } from 'react-router-dom';
 
 import LoadingScreen from '@/components/layout/loaders/LoadingScreen';
@@ -8,22 +9,24 @@ import ErrorBoundary from '@/pages/error/ErrorBoundary';
 const { AUTH, AWARDS, COMPANY, DISCOVER, HOME, LEGAL, PRODUCTS, PROFILE, QUICK_LINKS, SERVICES } =
   ROUTES;
 
+// Wraps a page's dynamic import into the function react-router's `lazy` route property expects.
+// The import itself must stay a literal `() => import('@/path')` callback (not a variable path)
+// so Vite can statically split each page into its own chunk.
+const loadPage = (loader: () => Promise<{ default: ComponentType }>) => async () => {
+  const { default: Component } = await loader();
+  return { Component };
+};
+
 const routes: RouteObject[] = [
   {
     path: HOME,
     HydrateFallback: LoadingScreen,
     ErrorBoundary,
-    lazy: async () => {
-      const { default: Layout } = await import('@/pages/layout');
-      return { Component: Layout };
-    },
+    lazy: loadPage(() => import('@/pages/layout')),
     children: [
       {
         index: true,
-        lazy: async () => {
-          const { default: Home } = await import('@/pages/home');
-          return { Component: Home };
-        },
+        lazy: loadPage(() => import('@/pages/home')),
       },
       {
         path: PRODUCTS.BASE,
@@ -31,58 +34,34 @@ const routes: RouteObject[] = [
         children: [
           {
             index: true,
-            lazy: async () => {
-              const { default: Products } = await import('@/pages/product/Products');
-              return { Component: Products };
-            },
+            lazy: loadPage(() => import('@/pages/product/Products')),
           },
           {
             path: `${PRODUCTS.PRODUCT.BASE}/${PRODUCTS.PRODUCT.SLUG}`,
-            lazy: async () => {
-              const { default: ProductDetails } = await import('@/pages/product/ProductDetails');
-              return { Component: ProductDetails };
-            },
+            lazy: loadPage(() => import('@/pages/product/ProductDetails')),
           },
           {
             path: PRODUCTS.CATEGORY_L1_SLUG,
-            lazy: async () => {
-              const { default: CategoryProducts } =
-                await import('@/pages/product/CategoryProducts');
-              return { Component: CategoryProducts };
-            },
+            lazy: loadPage(() => import('@/pages/product/CategoryProducts')),
           },
           {
             path: `${PRODUCTS.CATEGORY_L1_SLUG}/${PRODUCTS.CATEGORY_L2_SLUG}`,
-            lazy: async () => {
-              const { default: CategoryProducts } =
-                await import('@/pages/product/CategoryProducts');
-              return { Component: CategoryProducts };
-            },
+            lazy: loadPage(() => import('@/pages/product/CategoryProducts')),
           },
           {
             path: `${PRODUCTS.CATEGORY_L1_SLUG}/${PRODUCTS.CATEGORY_L2_SLUG}/${PRODUCTS.CATEGORY_L3_SLUG}`,
-            lazy: async () => {
-              const { default: CategoryProducts } =
-                await import('@/pages/product/CategoryProducts');
-              return { Component: CategoryProducts };
-            },
+            lazy: loadPage(() => import('@/pages/product/CategoryProducts')),
           },
         ],
       },
       {
         path: PROFILE.BASE,
         middleware: [authenticate],
-        lazy: async () => {
-          const { default: Account } = await import('@/pages/profile');
-          return { Component: Account };
-        },
+        lazy: loadPage(() => import('@/pages/profile')),
         children: [
           {
             index: true,
-            lazy: async () => {
-              const { default: Profile } = await import('@/pages/profile/Profile');
-              return { Component: Profile };
-            },
+            lazy: loadPage(() => import('@/pages/profile/Profile')),
           },
           {
             path: PROFILE.ORDERS,
@@ -90,263 +69,152 @@ const routes: RouteObject[] = [
             children: [
               {
                 index: true,
-                lazy: async () => {
-                  const { default: Orders } = await import('@/pages/profile/Orders');
-                  return { Component: Orders };
-                },
+                lazy: loadPage(() => import('@/pages/profile/Orders')),
               },
               {
                 path: PROFILE.ORDER_RETURN_REFUND,
-                lazy: async () => {
-                  const { default: OrderReturnRefund } =
-                    await import('@/pages/profile/OrderReturnRefund');
-                  return { Component: OrderReturnRefund };
-                },
+                lazy: loadPage(() => import('@/pages/profile/OrderReturnRefund')),
               },
               {
                 path: PROFILE.ORDER_TRACK,
-                lazy: async () => {
-                  const { default: OrderTrack } = await import('@/pages/profile/OrderTrack');
-                  return { Component: OrderTrack };
-                },
+                lazy: loadPage(() => import('@/pages/profile/OrderTrack')),
               },
             ],
           },
           {
             path: PROFILE.ADDRESSES,
-            lazy: async () => {
-              const { default: Addresses } = await import('@/pages/profile/Addresses');
-              return { Component: Addresses };
-            },
+            lazy: loadPage(() => import('@/pages/profile/Addresses')),
           },
           {
             path: PROFILE.WISHLIST,
-            lazy: async () => {
-              const { default: Wishlist } = await import('@/pages/profile/Wishlist');
-              return { Component: Wishlist };
-            },
+            lazy: loadPage(() => import('@/pages/profile/Wishlist')),
           },
           {
             path: PROFILE.REVIEWS,
-            lazy: async () => {
-              const { default: Reviews } = await import('@/pages/profile/Reviews');
-              return { Component: Reviews };
-            },
+            lazy: loadPage(() => import('@/pages/profile/Reviews')),
           },
           {
             path: PROFILE.REFER_A_FRIEND,
-            lazy: async () => {
-              const { default: ReferAFriend } = await import('@/pages/profile/ReferAFriend');
-              return { Component: ReferAFriend };
-            },
+            lazy: loadPage(() => import('@/pages/profile/ReferAFriend')),
           },
           {
             path: PROFILE.GIFT_CARDS,
-            lazy: async () => {
-              const { default: GiftCards } = await import('@/pages/profile/GiftCards');
-              return { Component: GiftCards };
-            },
+            lazy: loadPage(() => import('@/pages/profile/GiftCards')),
           },
           {
             path: PROFILE.NOTIFICATIONS,
-            lazy: async () => {
-              const { default: Notifications } = await import('@/pages/profile/Notifications');
-              return { Component: Notifications };
-            },
+            lazy: loadPage(() => import('@/pages/profile/Notifications')),
           },
         ],
       },
       {
         path: LEGAL.ACCESSIBILITY,
-        lazy: async () => {
-          const { default: Accessibility } = await import('@/pages/legal-policies/Accessibility');
-          return { Component: Accessibility };
-        },
+        lazy: loadPage(() => import('@/pages/legal-policies/Accessibility')),
       },
       {
         path: LEGAL.DISCLAIMER,
-        lazy: async () => {
-          const { default: Disclaimer } = await import('@/pages/legal-policies/Disclaimer');
-          return { Component: Disclaimer };
-        },
+        lazy: loadPage(() => import('@/pages/legal-policies/Disclaimer')),
       },
       {
         path: LEGAL.TERMS_CONDITIONS,
-        lazy: async () => {
-          const { default: TermsAndConditions } =
-            await import('@/pages/legal-policies/TermsAndConditions');
-          return { Component: TermsAndConditions };
-        },
+        lazy: loadPage(() => import('@/pages/legal-policies/TermsAndConditions')),
       },
       {
         path: LEGAL.COOKIE_POLICY,
-        lazy: async () => {
-          const { default: CookiePolicy } = await import('@/pages/legal-policies/CookiePolicy');
-          return { Component: CookiePolicy };
-        },
+        lazy: loadPage(() => import('@/pages/legal-policies/CookiePolicy')),
       },
       {
         path: LEGAL.PRIVACY_POLICY,
-        lazy: async () => {
-          const { default: PrivacyPolicy } = await import('@/pages/legal-policies/PrivacyPolicy');
-          return { Component: PrivacyPolicy };
-        },
+        lazy: loadPage(() => import('@/pages/legal-policies/PrivacyPolicy')),
       },
       {
         path: LEGAL.COMPLIANCE,
-        lazy: async () => {
-          const { default: Compliance } = await import('@/pages/legal-policies/Compliance');
-          return { Component: Compliance };
-        },
+        lazy: loadPage(() => import('@/pages/legal-policies/Compliance')),
       },
       {
         path: COMPANY.ABOUT_US,
-        lazy: async () => {
-          const { default: AboutUs } = await import('@/pages/company/AboutUs');
-          return { Component: AboutUs };
-        },
+        lazy: loadPage(() => import('@/pages/company/AboutUs')),
       },
       {
         path: COMPANY.TEAM,
-        lazy: async () => {
-          const { default: Team } = await import('@/pages/company/Team');
-          return { Component: Team };
-        },
+        lazy: loadPage(() => import('@/pages/company/Team')),
       },
       {
         path: COMPANY.MISSION_VISION_VALUES,
-        lazy: async () => {
-          const { default: MissionVisionValues } =
-            await import('@/pages/company/MissionVisionValues');
-          return { Component: MissionVisionValues };
-        },
+        lazy: loadPage(() => import('@/pages/company/MissionVisionValues')),
       },
       {
         path: COMPANY.PARTNER_WITH_US,
-        lazy: async () => {
-          const { default: PartnerWithUs } = await import('@/pages/company/PartnerWithUs');
-          return { Component: PartnerWithUs };
-        },
+        lazy: loadPage(() => import('@/pages/company/PartnerWithUs')),
       },
       {
         path: COMPANY.CAREERS,
-        lazy: async () => {
-          const { default: Careers } = await import('@/pages/company/Careers');
-          return { Component: Careers };
-        },
+        lazy: loadPage(() => import('@/pages/company/Careers')),
       },
       {
         path: COMPANY.VALUES_CULTURE,
-        lazy: async () => {
-          const { default: ValuesCulture } = await import('@/pages/company/ValuesCulture');
-          return { Component: ValuesCulture };
-        },
+        lazy: loadPage(() => import('@/pages/company/ValuesCulture')),
       },
       {
         path: COMPANY.RETAIL_ECOMMERCE,
-        lazy: async () => {
-          const { default: RetailEcommerce } = await import('@/pages/company/RetailEcommerce');
-          return { Component: RetailEcommerce };
-        },
+        lazy: loadPage(() => import('@/pages/company/RetailEcommerce')),
       },
       {
         path: COMPANY.SUSTAINABILITY,
-        lazy: async () => {
-          const { default: Sustainability } = await import('@/pages/company/Sustainability');
-          return { Component: Sustainability };
-        },
+        lazy: loadPage(() => import('@/pages/company/Sustainability')),
       },
       {
         path: COMPANY.ETHICS,
-        lazy: async () => {
-          const { default: Ethics } = await import('@/pages/company/Ethics');
-          return { Component: Ethics };
-        },
+        lazy: loadPage(() => import('@/pages/company/Ethics')),
       },
       {
         path: COMPANY.PRESS_MEDIA,
-        lazy: async () => {
-          const { default: PressMedia } = await import('@/pages/company/PressMedia');
-          return { Component: PressMedia };
-        },
+        lazy: loadPage(() => import('@/pages/company/PressMedia')),
       },
       {
         path: COMPANY.NEWSROOM,
-        lazy: async () => {
-          const { default: Newsroom } = await import('@/pages/company/Newsroom');
-          return { Component: Newsroom };
-        },
+        lazy: loadPage(() => import('@/pages/company/Newsroom')),
       },
       {
         path: SERVICES.CONTACT,
-        lazy: async () => {
-          const { default: Contact } = await import('@/pages/services/Contact');
-          return { Component: Contact };
-        },
+        lazy: loadPage(() => import('@/pages/services/Contact')),
       },
       {
         path: SERVICES.HELP_CENTER_FAQ,
-        lazy: async () => {
-          const { default: HelpCenterFAQ } = await import('@/pages/services/HelpCenterFAQ');
-          return { Component: HelpCenterFAQ };
-        },
+        lazy: loadPage(() => import('@/pages/services/HelpCenterFAQ')),
       },
       {
         path: SERVICES.SHIPPING_INFO,
-        lazy: async () => {
-          const { default: ShippingInfo } = await import('@/pages/services/ShippingInfo');
-          return { Component: ShippingInfo };
-        },
+        lazy: loadPage(() => import('@/pages/services/ShippingInfo')),
       },
       {
         path: QUICK_LINKS.STORE_LOCATOR,
-        lazy: async () => {
-          const { default: StoreLocator } = await import('@/pages/misc/StoreLocator');
-          return { Component: StoreLocator };
-        },
+        lazy: loadPage(() => import('@/pages/misc/StoreLocator')),
       },
       {
         path: QUICK_LINKS.BECOME_SELLER,
         middleware: [authenticate],
-        lazy: async () => {
-          const { default: BecomeSeller } = await import('@/pages/misc/BecomeSeller');
-          return { Component: BecomeSeller };
-        },
+        lazy: loadPage(() => import('@/pages/misc/BecomeSeller')),
       },
       {
         path: AWARDS,
-        lazy: async () => {
-          const { default: Awards } = await import('@/pages/misc/Awards');
-          return { Component: Awards };
-        },
+        lazy: loadPage(() => import('@/pages/misc/Awards')),
       },
       {
         path: DISCOVER.NEW_ARRIVALS,
-        lazy: async () => {
-          const { default: NewArrivals } = await import('@/pages/misc/NewArrivals');
-          return { Component: NewArrivals };
-        },
+        lazy: loadPage(() => import('@/pages/misc/NewArrivals')),
       },
       {
         path: DISCOVER.SPECIAL_COLLECTION,
-        lazy: async () => {
-          const { default: SpecialCollection } = await import('@/pages/misc/SpecialCollection');
-          return { Component: SpecialCollection };
-        },
+        lazy: loadPage(() => import('@/pages/misc/SpecialCollection')),
       },
       {
         path: DISCOVER.OFFERS_AND_DISCOUNTS,
-        lazy: async () => {
-          const { default: OffersAndDiscounts } = await import('@/pages/misc/OffersAndDiscounts');
-          return { Component: OffersAndDiscounts };
-        },
+        lazy: loadPage(() => import('@/pages/misc/OffersAndDiscounts')),
       },
       {
         path: DISCOVER.BLOGS,
-        lazy: async () => {
-          const { default: Blogs } = await import('@/pages/misc/Blogs');
-          return { Component: Blogs };
-        },
+        lazy: loadPage(() => import('@/pages/misc/Blogs')),
       },
     ],
   },
@@ -354,62 +222,39 @@ const routes: RouteObject[] = [
     path: AUTH.BASE,
     HydrateFallback: LoadingScreen,
     ErrorBoundary: ErrorBoundary,
-    lazy: async () => {
-      const { default: Auth } = await import('@/pages/auth');
-      return { Component: Auth };
-    },
+    lazy: loadPage(() => import('@/pages/auth')),
     children: [
       {
         index: true,
         middleware: [guestOnly],
-        lazy: async () => {
-          const { default: Login } = await import('@/pages/auth/Login');
-          return { Component: Login };
-        },
+        lazy: loadPage(() => import('@/pages/auth/Login')),
       },
 
       {
         path: AUTH.REGISTER,
         middleware: [guestOnly],
-        lazy: async () => {
-          const { default: Register } = await import('@/pages/auth/Register');
-          return { Component: Register };
-        },
+        lazy: loadPage(() => import('@/pages/auth/Register')),
       },
 
       {
         path: AUTH.FORGOT_PASSWORD,
         middleware: [guestOnly],
-        lazy: async () => {
-          const { default: ForgotPassword } = await import('@/pages/auth/ForgotPassword');
-          return { Component: ForgotPassword };
-        },
+        lazy: loadPage(() => import('@/pages/auth/ForgotPassword')),
       },
       {
         path: AUTH.CHANGE_PASSWORD,
         middleware: [authenticate],
-        lazy: async () => {
-          const { default: ChangePassword } = await import('@/pages/auth/ChangePassword');
-
-          return { Component: ChangePassword };
-        },
+        lazy: loadPage(() => import('@/pages/auth/ChangePassword')),
       },
       {
         path: AUTH.OAUTH,
-        lazy: async () => {
-          const { default: OAuth } = await import('@/pages/auth/OAuth');
-
-          return { Component: OAuth };
-        },
+        lazy: loadPage(() => import('@/pages/auth/OAuth')),
       },
     ],
   },
   {
     path: '*',
-    lazy: async () => {
-      const { default: NotFound } = await import('@/pages/error/NotFound');
-      return { Component: NotFound };
-    },
+    lazy: loadPage(() => import('@/pages/error/NotFound')),
   },
 ];
 
