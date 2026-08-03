@@ -3,16 +3,17 @@ import { Link } from 'react-router-dom';
 
 import { OAUTH_DATA, OAUTH_REDIRECT_KEY } from '@/constants/common.constants';
 import usePathParams from '@/hooks/usePathParams';
+import useQueryParams from '@/hooks/useQueryParams';
 
 const SocialAuth = () => {
-  const { pathname, search } = usePathParams();
+  const { pathname } = usePathParams();
+  const { queryParams } = useQueryParams();
 
   const handleOAuthStart = () => {
     // OAuth is a full page redirect away from the SPA, so stash where the user was
     // (minus the `login` modal flag) to send them back once the callback succeeds.
-    const params = new URLSearchParams(search);
-    params.delete('login');
-    const querystring = params.toString();
+    const { login: _login, ...paramsToKeep } = queryParams;
+    const querystring = new URLSearchParams(paramsToKeep).toString();
 
     sessionStorage.setItem(
       OAUTH_REDIRECT_KEY,
