@@ -2,7 +2,7 @@ import { Outlet, type RouteObject } from 'react-router-dom';
 
 import LoadingScreen from '@/components/layout/loaders/LoadingScreen';
 import { ROUTES } from '@/constants/routes.constants';
-import { authenticate } from '@/middlewares';
+import { authenticate, guestOnly } from '@/middlewares';
 import ErrorBoundary from '@/pages/error/ErrorBoundary';
 
 const { AUTH, AWARDS, COMPANY, DISCOVER, HOME, LEGAL, PRODUCTS, PROFILE, QUICK_LINKS, SERVICES } =
@@ -361,6 +361,7 @@ const routes: RouteObject[] = [
     children: [
       {
         index: true,
+        middleware: [guestOnly],
         lazy: async () => {
           const { default: Login } = await import('@/pages/auth/Login');
           return { Component: Login };
@@ -369,6 +370,7 @@ const routes: RouteObject[] = [
 
       {
         path: AUTH.REGISTER,
+        middleware: [guestOnly],
         lazy: async () => {
           const { default: Register } = await import('@/pages/auth/Register');
           return { Component: Register };
@@ -377,6 +379,7 @@ const routes: RouteObject[] = [
 
       {
         path: AUTH.FORGOT_PASSWORD,
+        middleware: [guestOnly],
         lazy: async () => {
           const { default: ForgotPassword } = await import('@/pages/auth/ForgotPassword');
           return { Component: ForgotPassword };

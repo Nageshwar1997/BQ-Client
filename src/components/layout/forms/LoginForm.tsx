@@ -57,11 +57,20 @@ const LoginForm = () => {
       onSuccess: async ({ data: user }) => {
         setUser(user ?? null);
 
-        const { runAllActions } = useActionsStore.getState();
+        const { actions, runAllActions } = useActionsStore.getState();
+        const hadQueuedAction = actions.length > 0;
         await runAllActions();
 
-        if (paths.includes(ROUTES.AUTH.BASE)) void navigate(ROUTES.HOME);
-        if (queryParams.login) removeParams(['login']);
+        // A queued action (e.g. the private route the user originally tried to visit) already
+        // navigated where it needed to; navigating again here would clobber that with stale
+        // `paths`/`queryParams` captured before the queued navigation ran.
+        if (hadQueuedAction) return;
+
+        if (paths.includes(ROUTES.AUTH.BASE)) {
+          void navigate(ROUTES.HOME);
+        } else if (queryParams.login) {
+          removeParams(['login']);
+        }
       },
 
       onError: ({ fieldErrors }) => {
