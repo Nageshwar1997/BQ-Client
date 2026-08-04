@@ -7,6 +7,7 @@ import { ROUTES } from '@/constants/routes.constants';
 import usePathParams from '@/hooks/usePathParams';
 import useQueryParams from '@/hooks/useQueryParams';
 import { useGetSessionUser } from '@/services/user-service/user.service.query';
+import useActionsStore from '@/stores/action.store';
 import useUserStore from '@/stores/user.store';
 
 const OAUTH_SUCCESS_REDIRECT_DELAY_MS = 5000;
@@ -44,7 +45,17 @@ const OAuth = () => {
     sessionStorage.removeItem(OAUTH_REDIRECT_KEY);
 
     const timer = setTimeout(() => {
-      void navigate(redirectPath);
+      void (async () => {
+        // A private nav item (e.g. "Profile") queued a navigation and opened the login modal
+        // before this OAuth flow started — that queued action is the real intended destination,
+        // so it takes priority over the stashed OAuth redirect path.
+        const { actions, runAllActions } = useActionsStore.getState();
+        const hadQueuedAction = actions.length > 0;
+        await runAllActions();
+        if (hadQueuedAction) return;
+
+        void navigate(redirectPath);
+      })();
     }, OAUTH_SUCCESS_REDIRECT_DELAY_MS);
 
     return () => {
