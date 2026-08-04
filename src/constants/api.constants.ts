@@ -50,14 +50,17 @@ export const METHODS_AND_PATHS = {
           verifyOtp: { method: POST, path: '/forgot-verify-otp' },
           save: { method: POST, path: '/forgot-save' },
         },
-        change: { method: PATCH, path: '/change' },
-        set: { method: PATCH, path: '/set' },
       },
     },
     user: {
       base: '/user',
       session: { method: GET, path: '/session' },
       update: { method: PATCH, path: '/' },
+      password: {
+        base: '/password',
+        change: { method: PATCH, path: '/change' },
+        set: { method: PATCH, path: '/set' },
+      },
     },
   },
   media_service: {

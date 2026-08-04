@@ -12,7 +12,7 @@ import Input from '@/components/ui/inputs/Input';
 import { FORM_DEFAULT_VALUES } from '@/constants/form.constants';
 import { CHANGE_PASSWORD_INPUT_MAP_DATA } from '@/constants/input.constants';
 import usePathParams from '@/hooks/usePathParams';
-import { useChangePassword } from '@/services/user-service/auth.service.query';
+import { useChangePassword } from '@/services/user-service/user.service.query';
 import useUserStore from '@/stores/user.store';
 import { setErrorToForm } from '@/utils/form.util';
 

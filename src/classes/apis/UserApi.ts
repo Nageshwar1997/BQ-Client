@@ -81,13 +81,7 @@ export class AuthApi extends ApiRequest {
     });
   };
 
-  public changePassword = (data: TChangePasswordZodSchema) => {
-    return this.request<IUser>({ ...this.routes.password.change, data });
-  };
 
-  public setPassword = (data: TSetPasswordZodSchema) => {
-    return this.request<IUser>({ ...this.routes.password.set, data });
-  };
 
   /* ===================== LOGOUT API ===================== */
 
@@ -108,5 +102,13 @@ export class UserApi extends ApiRequest {
 
   public updateUser = (data: TUpdateUserZodSchema) => {
     return this.request<IUser>({ ...this.routes.update, data });
+  };
+
+  public changePassword = (data: TChangePasswordZodSchema) => {
+    return this.request<IUser>({ ...this.routes.password.change, data });
+  };
+
+  public setPassword = (data: TSetPasswordZodSchema) => {
+    return this.request<IUser>({ ...this.routes.password.set, data });
   };
 }

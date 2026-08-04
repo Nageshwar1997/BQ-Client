@@ -222,52 +222,6 @@ export const useForgotPasswordSave = () => {
   });
 };
 
-export const useChangePassword = () => {
-  return useMutation({
-    mutationKey: password.change,
-    mutationFn: authApi.changePassword,
-    onMutate: () => {
-      const toastId = toaster.loading({
-        title: 'Please wait...',
-        description: 'Changing your password...',
-      });
-      return { toastId };
-    },
-    onSuccess: ({ message }) => {
-      handleApiSuccessToaster(message);
-    },
-    onError: (error) => {
-      handleApiErrorToaster(error);
-    },
-    onSettled: (_data, _error, _variables, context) => {
-      if (context?.toastId) toaster.remove(context.toastId);
-    },
-  });
-};
-
-export const useSetPassword = () => {
-  return useMutation({
-    mutationKey: password.set,
-    mutationFn: authApi.setPassword,
-    onMutate: () => {
-      const toastId = toaster.loading({
-        title: 'Please wait...',
-        description: 'Setting your password...',
-      });
-      return { toastId };
-    },
-    onSuccess: ({ message }) => {
-      handleApiSuccessToaster(message);
-    },
-    onError: (error) => {
-      handleApiErrorToaster(error);
-    },
-    onSettled: (_data, _error, _variables, context) => {
-      if (context?.toastId) toaster.remove(context.toastId);
-    },
-  });
-};
-
 /* ===================== LOGOUT QUERIES ===================== */
 
 export const useLogout = () => {

@@ -11,7 +11,7 @@ import GradientText from '@/components/ui/GradientText';
 import Input from '@/components/ui/inputs/Input';
 import { PASSWORDS_INPUT_MAP_DATA } from '@/constants/input.constants';
 import usePathParams from '@/hooks/usePathParams';
-import { useSetPassword } from '@/services/user-service/auth.service.query';
+import { useSetPassword } from '@/services/user-service/user.service.query';
 import useUserStore from '@/stores/user.store';
 import { setErrorToForm } from '@/utils/form.util';
 
