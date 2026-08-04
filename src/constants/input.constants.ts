@@ -3,10 +3,15 @@ import {
   VARIANT_TYPES,
   VARIANT_TYPES_MAP,
 } from '@beautinique/frontend-constants';
+import type { TPasswordsZodSchema } from '@beautinique/frontend-types';
 
 import type { TQuillToolbar } from '@/types/input.type';
 
-export const PASSWORD_KEYS = ['password', 'confirmPassword'] as const;
+export const BASE_PASSWORD_KEYS: readonly (keyof TPasswordsZodSchema)[] = ['password', 'confirmPassword'];
+
+export const BASE_PASSWORDS_VISIBILITY = Object.fromEntries(
+  BASE_PASSWORD_KEYS.map((key) => [key, false] as const),
+) as Readonly<Record<(typeof BASE_PASSWORD_KEYS)[number], false>>;
 
 const NAME_INPUT_DATA = {
   name: 'name',

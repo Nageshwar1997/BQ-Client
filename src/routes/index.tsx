@@ -3,7 +3,7 @@ import { Outlet, type RouteObject } from 'react-router-dom';
 
 import LoadingScreen from '@/components/layout/loaders/LoadingScreen';
 import { ROUTES } from '@/constants/routes.constants';
-import { authenticate, guestOnly, oauthOnly } from '@/middlewares';
+import { authenticate, guestOnly } from '@/middlewares';
 import ErrorBoundary from '@/pages/error/ErrorBoundary';
 
 const { AUTH, AWARDS, COMPANY, DISCOVER, HOME, LEGAL, PRODUCTS, PROFILE, QUICK_LINKS, SERVICES } =
@@ -80,6 +80,10 @@ const routes: RouteObject[] = [
                 lazy: loadPage(() => import('@/pages/profile/OrderTrack')),
               },
             ],
+          },
+          {
+            path: PROFILE.UPDATE_PASSWORD,
+            lazy: loadPage(() => import('@/pages/profile/UpdatePassword')),
           },
           {
             path: PROFILE.ADDRESSES,
@@ -222,37 +226,24 @@ const routes: RouteObject[] = [
     path: AUTH.BASE,
     HydrateFallback: LoadingScreen,
     ErrorBoundary: ErrorBoundary,
+    middleware: [guestOnly],
     lazy: loadPage(() => import('@/pages/auth')),
     children: [
       {
         index: true,
-        middleware: [guestOnly],
         lazy: loadPage(() => import('@/pages/auth/Login')),
       },
 
       {
         path: AUTH.REGISTER,
-        middleware: [guestOnly],
         lazy: loadPage(() => import('@/pages/auth/Register')),
       },
 
       {
         path: AUTH.FORGOT_PASSWORD,
-        middleware: [guestOnly],
         lazy: loadPage(() => import('@/pages/auth/ForgotPassword')),
       },
       {
-        path: AUTH.CHANGE_PASSWORD,
-        middleware: [authenticate],
-        lazy: loadPage(() => import('@/pages/auth/ChangePassword')),
-      },
-      {
-        path: AUTH.SET_PASSWORD,
-        middleware: [authenticate, oauthOnly],
-        lazy: loadPage(() => import('@/pages/auth/SetPassword')),
-      },
-      {
-        path: AUTH.OAUTH,
         lazy: loadPage(() => import('@/pages/auth/OAuth')),
       },
     ],

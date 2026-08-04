@@ -11,7 +11,7 @@ import GradientText from '@/components/ui/GradientText';
 import Input from '@/components/ui/inputs/Input';
 import Radio from '@/components/ui/inputs/Radio';
 import SocialAuth from '@/components/ui/SocialAuth';
-import { LOGIN_INPUT_MAP_DATA, PASSWORD_KEYS } from '@/constants/input.constants';
+import { BASE_PASSWORD_KEYS, LOGIN_INPUT_MAP_DATA } from '@/constants/input.constants';
 import { ROUTES } from '@/constants/routes.constants';
 import usePathParams from '@/hooks/usePathParams';
 import useQueryParams from '@/hooks/useQueryParams';
@@ -133,7 +133,7 @@ const LoginForm = () => {
 
           {/* ================= INPUTS ================= */}
           {LOGIN_INPUT_MAP_DATA.map((input) => {
-            const isPassword = PASSWORD_KEYS.includes(input.name as keyof TPasswordZodSchema);
+            const isPassword = BASE_PASSWORD_KEYS.includes(input.name as keyof TPasswordZodSchema);
             const isPhone = input.name === 'phoneNumber';
             const isEmail = input.name === 'email';
             const isEmailSelected = selectedMethod === 'email';

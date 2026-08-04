@@ -28,8 +28,6 @@ export const ROUTES = {
     LOGIN: 'login',
     REGISTER: 'register',
     FORGOT_PASSWORD: 'forgot-password',
-    CHANGE_PASSWORD: 'change-password',
-    SET_PASSWORD: 'set-password',
     OAUTH: 'oauth',
   },
   CATEGORIES: { BASE: 'categories' },
@@ -65,6 +63,7 @@ export const ROUTES = {
     REFER_A_FRIEND: 'refer-a-friend',
     GIFT_CARDS: 'gift-cards',
     NOTIFICATIONS: 'notifications',
+    UPDATE_PASSWORD: 'update-password',
   },
 } as const;
 
@@ -73,5 +72,4 @@ export const ROUTES = {
 export const PRIVATE_ROUTE_PREFIXES = [
   ROUTES.PROFILE.BASE,
   ROUTES.QUICK_LINKS.BECOME_SELLER,
-  ROUTES.AUTH.CHANGE_PASSWORD,
 ] as const;

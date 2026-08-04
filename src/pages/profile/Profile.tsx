@@ -266,8 +266,8 @@ const Profile = () => {
             Update your password regularly to keep your account secure.
           </p>
         </div>
-        <Link to={`/${ROUTES.AUTH.BASE}/${ROUTES.AUTH.CHANGE_PASSWORD}`}>
-          <Button pattern="secondary" content="Change Password" />
+        <Link to={ROUTES.PROFILE.UPDATE_PASSWORD}>
+          <Button pattern="secondary" content="Update Password" />
         </Link>
       </div>
     </form>

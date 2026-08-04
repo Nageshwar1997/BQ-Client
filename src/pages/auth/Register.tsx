@@ -17,9 +17,10 @@ import Input from '@/components/ui/inputs/Input';
 import Resend from '@/components/ui/Resend';
 import SocialAuth from '@/components/ui/SocialAuth';
 import {
+  BASE_PASSWORD_KEYS,
+  BASE_PASSWORDS_VISIBILITY,
   EMAIL_INPUT_DATA,
   OTP_INPUT_DATA,
-  PASSWORD_KEYS,
   REGISTER_INPUT_MAP_DATA,
 } from '@/constants/input.constants';
 import { ROUTES } from '@/constants/routes.constants';
@@ -59,10 +60,8 @@ const Register = () => {
   /* ================= 5. Local State ================= */
   const [currentStep, setCurrentStep] = useState<'send' | 'verify' | 'save'>('save');
 
-  const [showPasswords, setShowPasswords] = useState<Record<keyof TPasswordsZodSchema, boolean>>({
-    password: false,
-    confirmPassword: false,
-  });
+  const [showPasswords, setShowPasswords] =
+    useState<Record<keyof TPasswordsZodSchema, boolean>>(BASE_PASSWORDS_VISIBILITY);
 
   /* ================= 6. Derived Values ================= */
   const token = sendOtp.data?.data ?? '';
@@ -148,7 +147,7 @@ const Register = () => {
   };
 
   const togglePasswordVisibility = (field: keyof TPasswordsZodSchema) => {
-    if (!PASSWORD_KEYS.includes(field)) return;
+    if (!BASE_PASSWORD_KEYS.includes(field)) return;
 
     setShowPasswords((prev) => ({ ...prev, [field]: !prev[field] }));
   };
@@ -233,7 +232,9 @@ const Register = () => {
           {/* ================= STEP: REGISTER DETAILS ================= */}
           {currentStep === 'save' &&
             REGISTER_INPUT_MAP_DATA.map((input) => {
-              const isPassword = PASSWORD_KEYS.includes(input.name as keyof TPasswordsZodSchema);
+              const isPassword = BASE_PASSWORD_KEYS.includes(
+                input.name as keyof TPasswordsZodSchema,
+              );
               const isPhone = input.name === 'phoneNumber';
               return (
                 <Input

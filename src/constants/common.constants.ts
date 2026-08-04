@@ -131,9 +131,9 @@ export const SIDEBAR_DATA = [
     handler: null,
   },
   {
-    title: 'Change Password',
+    title: 'Update Password',
     icon: 'solar:lock-password-linear',
-    path: `/${ROUTES.AUTH.BASE}/${ROUTES.AUTH.CHANGE_PASSWORD}`,
+    path: `/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.UPDATE_PASSWORD}`,
     handler: null,
   },
   {
