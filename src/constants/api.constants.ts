@@ -1,7 +1,15 @@
 import { API_METHODS_MAP, PRODUCT_STATUSES_MAP } from '@beautinique/frontend-constants';
 
-import type { TProductSortBy } from '@/types/api.type';
+import type { TProductSortBy, TSellerApplicationSortBy } from '@/types/api.type';
 import { createQueryKeys, createRouteHelper } from '@/utils/api.util';
+
+// TODO: move to @beautinique/frontend-constants alongside PRODUCT_STATUSES_MAP once the
+// seller-review endpoints ship server-side.
+export const SELLER_STATUSES_MAP = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+} as const;
 
 const { DELETE, GET, PATCH, POST } = API_METHODS_MAP;
 
@@ -114,6 +122,25 @@ export const METHODS_AND_PATHS = {
       list: { method: GET, path: '/' },
       updateStatus: { method: PATCH, path: '/:ticketId' },
     },
+    seller: {
+      base: '/seller',
+      draft: {
+        base: '/draft',
+        save: { method: POST, path: '/' }, // Upsert the current step's data
+        get: { method: GET, path: '/' }, // Resume an in-progress application
+        submit: { method: PATCH, path: '/submit' }, // Final submit-for-review
+      },
+      me: { method: GET, path: '/me' }, // Current user's application + status
+      get: {
+        dashboard: {
+          base: '/dashboard',
+          applications: { method: GET, path: '/applications' }, // Admin list
+          bySellerId: { method: GET, path: '/:sellerId' }, // Admin detail
+        },
+      },
+      approve: { method: PATCH, path: '/:sellerId/approve' },
+      reject: { method: PATCH, path: '/:sellerId/reject' },
+    },
   },
 } as const;
 
@@ -142,6 +169,20 @@ export const PRODUCTS_TABLE_TITLES: { label: string; sortKey?: TProductSortBy }[
   { label: 'Avg. Rating' },
 ] as const;
 
+export const SELLER_APPLICATIONS_TABLE_TITLES: {
+  label: string;
+  sortKey?: TSellerApplicationSortBy;
+}[] = [
+  { label: 'S. No' },
+  { label: 'View' },
+  { label: 'Business Name', sortKey: 'businessName' },
+  { label: 'Applicant' },
+  { label: 'GSTIN' },
+  { label: 'Status' },
+  { label: 'Submitted At', sortKey: 'createdAt' },
+  { label: 'Updated At', sortKey: 'updatedAt' },
+] as const;
+
 export const PRODUCT_STATUS_TRANSITIONS = {
   [PRODUCT_STATUSES_MAP.PENDING]: [
     PRODUCT_STATUSES_MAP.PUBLISHED,
@@ -164,4 +205,10 @@ export const PRODUCT_STATUS_TRANSITIONS = {
     PRODUCT_STATUSES_MAP.PUBLISHED,
     PRODUCT_STATUSES_MAP.BLOCKED,
   ],
+} as const;
+
+export const SELLER_STATUS_TRANSITIONS = {
+  [SELLER_STATUSES_MAP.PENDING]: [SELLER_STATUSES_MAP.APPROVED, SELLER_STATUSES_MAP.REJECTED],
+  [SELLER_STATUSES_MAP.REJECTED]: [SELLER_STATUSES_MAP.PENDING], // Resubmit
+  [SELLER_STATUSES_MAP.APPROVED]: [], // Terminal — no revocation flow yet
 } as const;

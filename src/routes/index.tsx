@@ -3,11 +3,22 @@ import { Outlet, type RouteObject } from 'react-router-dom';
 
 import LoadingScreen from '@/components/layout/loaders/LoadingScreen';
 import { ROUTES } from '@/constants/routes.constants';
-import { authenticate, guestOnly } from '@/middlewares';
+import { authenticate, guestOnly, requireRole } from '@/middlewares';
 import ErrorBoundary from '@/pages/error/ErrorBoundary';
 
-const { AUTH, AWARDS, COMPANY, DISCOVER, HOME, LEGAL, PRODUCTS, PROFILE, QUICK_LINKS, SERVICES } =
-  ROUTES;
+const {
+  ADMIN,
+  AUTH,
+  AWARDS,
+  COMPANY,
+  DISCOVER,
+  HOME,
+  LEGAL,
+  PRODUCTS,
+  PROFILE,
+  QUICK_LINKS,
+  SERVICES,
+} = ROUTES;
 
 // Wraps a page's dynamic import into the function react-router's `lazy` route property expects.
 // The import itself must stay a literal `() => import('@/path')` callback (not a variable path)
@@ -108,6 +119,27 @@ const routes: RouteObject[] = [
           {
             path: PROFILE.NOTIFICATIONS,
             lazy: loadPage(() => import('@/pages/profile/Notifications')),
+          },
+        ],
+      },
+      {
+        path: ADMIN.BASE,
+        middleware: [authenticate, requireRole(['ADMIN'])],
+        lazy: loadPage(() => import('@/pages/admin')),
+        children: [
+          {
+            path: ADMIN.SELLER_APPLICATIONS.BASE,
+            element: <Outlet />,
+            children: [
+              {
+                index: true,
+                lazy: loadPage(() => import('@/pages/admin/SellerApplications')),
+              },
+              {
+                path: ADMIN.SELLER_APPLICATIONS.DETAIL,
+                lazy: loadPage(() => import('@/pages/admin/SellerApplicationDetail')),
+              },
+            ],
           },
         ],
       },

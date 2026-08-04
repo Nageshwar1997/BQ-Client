@@ -7,13 +7,22 @@ import { toaster } from '@/utils/common.util';
 
 const { session, update, password } = API_QUERY_KEYS.user_service.user;
 
-export const useGetSessionUser = ({ enabled = true }) => {
+export const useGetSessionUser = ({
+  enabled = true,
+  // Lets a screen (e.g. the "application under review" status page) poll for a role change —
+  // e.g. once an admin approves a pending seller application — without requiring a re-login.
+  refetchInterval = false,
+}: {
+  enabled?: boolean;
+  refetchInterval?: number | false;
+}) => {
   return useQuery({
     queryKey: session,
     queryFn: userApi.getSessionUser,
     staleTime: 5 * 60 * 1000, // 5 min
     gcTime: 15 * 60 * 1000, // 15 min
     enabled,
+    refetchInterval,
     placeholderData: (prev) => prev,
     retry: false,
     refetchOnWindowFocus: false,

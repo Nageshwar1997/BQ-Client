@@ -219,3 +219,78 @@ export interface IDashboardProductsResponse {
   pagination: IPagination;
   counts: Record<TProductStatus | 'ALL', number>;
 }
+
+/* -------------------------------------------------------------------------- */
+/*                                   SELLER                                   */
+/* -------------------------------------------------------------------------- */
+
+// TODO: move to @beautinique/frontend-types (mirroring TProductStatus) once the seller-review
+// endpoints ship server-side. TUserRole already includes 'SELLER'/'ADMIN' (@beautinique/shared-
+// types' USER_ROLES), so no role-type changes are needed — only this status enum is local.
+export type TSellerStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
+
+export interface ISellerBusinessDetails {
+  businessName: string;
+  businessType: string;
+  gstin: string;
+  pan: string;
+}
+
+export interface ISellerBankDetails {
+  accountHolderName: string;
+  accountNumber: string;
+  ifscCode: string;
+  bankName?: string;
+}
+
+export interface ISellerPickupAddress {
+  addressLine1: string;
+  addressLine2?: string;
+  city: string;
+  state: string;
+  pincode: string;
+  country: string;
+}
+
+export interface ISellerDocuments {
+  idProof: string;
+  addressProof: string;
+  businessLicense: string;
+}
+
+export type TApiSellerApplicationBase = IId &
+  ITimeStamp &
+  ISellerBusinessDetails & {
+    userId: string;
+    bankDetails: ISellerBankDetails;
+    pickupAddress: ISellerPickupAddress;
+    documents: ISellerDocuments;
+    status: TSellerStatus;
+    history?: {
+      approvedBy?: string | null;
+      approvedAt?: string | null;
+      rejectedBy?: string | null;
+      rejectedAt?: string | null;
+      rejectReason?: string | null;
+    };
+  };
+
+export type TSellerApplicationSortBy = keyof Pick<
+  TApiSellerApplicationBase,
+  'businessName' | 'createdAt' | 'updatedAt'
+>;
+
+export interface IGetSellerApplicationsQuery {
+  page: string;
+  limit: string;
+  search?: string;
+  status?: TSellerStatus;
+  sortBy?: TSellerApplicationSortBy;
+  sortOrder?: TSort;
+}
+
+export interface ISellerApplicationsDashboardResponse {
+  applications: TApiSellerApplicationBase[];
+  pagination: IPagination;
+  counts: Record<TSellerStatus | 'ALL', number>;
+}

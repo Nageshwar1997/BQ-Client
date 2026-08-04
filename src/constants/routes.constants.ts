@@ -65,6 +65,13 @@ export const ROUTES = {
     NOTIFICATIONS: 'notifications',
     UPDATE_PASSWORD: 'update-password',
   },
+  ADMIN: {
+    BASE: 'admin',
+    SELLER_APPLICATIONS: {
+      BASE: 'seller-applications',
+      DETAIL: ':sellerId',
+    },
+  },
 } as const;
 
 // Path segments that gate a route behind `middleware: [authenticate]` in routes/index.tsx.
@@ -72,4 +79,5 @@ export const ROUTES = {
 export const PRIVATE_ROUTE_PREFIXES = [
   ROUTES.PROFILE.BASE,
   ROUTES.QUICK_LINKS.BECOME_SELLER,
+  ROUTES.ADMIN.BASE,
 ] as const;

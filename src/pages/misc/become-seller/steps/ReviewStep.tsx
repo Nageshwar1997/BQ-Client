@@ -1,0 +1,89 @@
+import type { UseFormReturn } from 'react-hook-form';
+
+import GradientText from '@/components/ui/GradientText';
+import Checkbox from '@/components/ui/inputs/Checkbox';
+import type {
+  TSellerBankDetailsZodSchema,
+  TSellerBusinessDetailsZodSchema,
+  TSellerDocumentsFormZodSchema,
+  TSellerReviewZodSchema,
+} from '@/schemas/seller.schema';
+
+interface IReviewStepProps {
+  form: UseFormReturn<TSellerReviewZodSchema>;
+  business: TSellerBusinessDetailsZodSchema;
+  bank: TSellerBankDetailsZodSchema;
+  documents: TSellerDocumentsFormZodSchema;
+  disabled?: boolean;
+}
+
+const SummaryRow = ({ label, value }: { label: string; value?: string }) => (
+  <div className="flex items-center justify-between gap-4 py-1.5 text-[13px]">
+    <span className="text-primary/50">{label}</span>
+    <span className="text-primary max-w-[60%] truncate text-right font-medium">{value ?? '—'}</span>
+  </div>
+);
+
+const documentName = (value?: File | string) => {
+  if (value instanceof File) return value.name;
+  if (typeof value === 'string' && value) return value.split('/').pop();
+  return '—';
+};
+
+const ReviewStep = ({ form, business, bank, documents, disabled = false }: IReviewStepProps) => {
+  const {
+    register,
+    formState: { errors },
+  } = form;
+
+  return (
+    <div className="flex flex-col gap-5">
+      <div className="border-primary/10 divide-primary/10 divide-y rounded-lg border">
+        <div className="p-4">
+          <GradientText type="silver" text="Business details" className="text-sm font-semibold" />
+          <SummaryRow label="Business name" value={business.businessName} />
+          <SummaryRow label="Business type" value={business.businessType} />
+          <SummaryRow label="GSTIN" value={business.gstin} />
+          <SummaryRow label="PAN" value={business.pan} />
+        </div>
+        <div className="p-4">
+          <GradientText type="silver" text="Bank & tax details" className="text-sm font-semibold" />
+          <SummaryRow label="Account holder" value={bank.accountHolderName} />
+          <SummaryRow label="Account number" value={bank.accountNumber} />
+          <SummaryRow label="IFSC code" value={bank.ifscCode} />
+          <SummaryRow label="Bank name" value={bank.bankName} />
+        </div>
+        <div className="p-4">
+          <GradientText
+            type="silver"
+            text="Address & documents"
+            className="text-sm font-semibold"
+          />
+          <SummaryRow
+            label="Pickup address"
+            value={[
+              documents.pickupAddress.addressLine1,
+              documents.pickupAddress.city,
+              documents.pickupAddress.state,
+              documents.pickupAddress.pincode,
+            ]
+              .filter(Boolean)
+              .join(', ')}
+          />
+          <SummaryRow label="ID proof" value={documentName(documents.idProof)} />
+          <SummaryRow label="Address proof" value={documentName(documents.addressProof)} />
+          <SummaryRow label="Business license" value={documentName(documents.businessLicense)} />
+        </div>
+      </div>
+
+      <Checkbox
+        register={register('confirmDetails')}
+        checkboxProps={{ name: 'confirmDetails', disabled }}
+        content="I confirm the above information is accurate."
+        error={errors.confirmDetails?.message}
+      />
+    </div>
+  );
+};
+
+export default ReviewStep;

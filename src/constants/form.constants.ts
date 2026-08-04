@@ -43,6 +43,27 @@ export const FORM_DEFAULT_VALUES = {
     subCategory: '',
     description: '',
   },
+  sellerBusinessDetails: {
+    businessName: '',
+    businessType: '',
+    gstin: '',
+    pan: '',
+  },
+  sellerBankDetails: {
+    accountHolderName: '',
+    accountNumber: '',
+    ifscCode: '',
+    bankName: '',
+  },
+  sellerDocuments: {
+    pickupAddress: '',
+    idProof: '',
+    addressProof: '',
+    businessLicense: '',
+  },
+  sellerReview: {
+    confirmDetails: false,
+  },
 } as const;
 
 export const ADD_PRODUCT_FORM_ID_MAP = {
@@ -52,4 +73,11 @@ export const ADD_PRODUCT_FORM_ID_MAP = {
   3: 'product-variants-form',
   4: 'product-try-on-form',
   5: 'product-confirm-form',
+} as const;
+
+export const SELLER_FORM_ID_MAP = {
+  0: 'seller-business-details-form',
+  1: 'seller-bank-details-form',
+  2: 'seller-documents-form',
+  3: 'seller-review-form',
 } as const;

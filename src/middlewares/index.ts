@@ -1,3 +1,4 @@
+import type { TUserRole } from '@beautinique/frontend-types';
 import { type MiddlewareFunction, redirect } from 'react-router-dom';
 
 import { ROUTES } from '@/constants/routes.constants';
@@ -29,3 +30,19 @@ export const guestOnly: MiddlewareFunction = (_args, next) => {
 
   return next();
 };
+
+// Gates a route behind one of the given roles (e.g. the admin seller-review area). Assumes
+// `authenticate` already ran (or is listed first in the same route's `middleware` array) — this
+// only checks the role, not login state, so an anonymous user falls through the `!user` branch
+// the same way an under-privileged one does.
+export const requireRole =
+  (roles: TUserRole[]): MiddlewareFunction =>
+  (_args, next) => {
+    const { user } = useUserStore.getState();
+
+    if (!user || !roles.includes(user.role)) {
+      return redirect(ROUTES.HOME);
+    }
+
+    return next();
+  };
