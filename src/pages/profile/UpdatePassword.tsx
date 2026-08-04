@@ -2,12 +2,14 @@ import { AUTH_PROVIDER_MAP } from '@beautinique/frontend-constants';
 import type { TChangePasswordZodSchema, TSetPasswordZodSchema } from '@beautinique/frontend-types';
 import { changePasswordZodSchema, setPasswordZodSchema } from '@beautinique/frontend-zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import BorderGradient from '@/components/layout/containers/BorderGradient';
 import AuthBottomInstructions from '@/components/ui/AuthBottomInstructions';
 import Button from '@/components/ui/Button';
+import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
 import Input from '@/components/ui/inputs/Input';
 import {
@@ -93,16 +95,29 @@ const UpdatePassword = () => {
     : setPasswordForm.formState.isDirty;
 
   return (
-    <div className="flex w-full flex-col items-center justify-center gap-4">
+    <div className="mx-auto flex w-full max-w-xl flex-col items-center gap-6 p-4 sm:p-6">
       {/* ================= HEADER ================= */}
-      <GradientText
-        type="accent"
-        text={hasManualProvider ? 'Change Password' : 'Set Password'}
-        className="mx-auto text-2xl leading-tight font-semibold sm:text-3xl md:text-4xl lg:text-5xl"
-      />
+      <div className="flex flex-col items-center gap-3 text-center">
+        <span className="bg-accent-duo shadow-secondary-btn flex size-14 items-center justify-center rounded-full sm:size-16">
+          <Icon
+            icon={hasManualProvider ? 'solar:lock-password-linear' : 'solar:shield-plus-linear'}
+            className="size-7 text-white sm:size-8"
+          />
+        </span>
+        <GradientText
+          type="accent"
+          text={hasManualProvider ? 'Change Password' : 'Set Password'}
+          className="mx-auto text-2xl leading-tight font-semibold sm:text-3xl md:text-4xl"
+        />
+        <p className="text-secondary max-w-sm text-xs sm:text-sm">
+          {hasManualProvider
+            ? 'Update your password regularly to keep your account safe and secure.'
+            : 'You signed in with a social account — set a password so you can also log in with your email.'}
+        </p>
+      </div>
 
       {/* ================= FORM CONTAINER ================= */}
-      <BorderGradient className="flex flex-col gap-5 py-6 lg:gap-6">
+      <BorderGradient className="flex flex-col gap-5 py-6 lg:gap-6" containerClassName="w-full">
         {/* ================= MAIN FORM ================= */}
         <form
           onSubmit={
@@ -113,61 +128,85 @@ const UpdatePassword = () => {
           className="space-y-5 sm:space-y-6"
         >
           {/* ================= STEP: PASSWORD FIELDS ================= */}
-          {hasManualProvider
-            ? CHANGE_PASSWORD_INPUT_MAP_DATA.map((input) => (
-                <Input
-                  key={input.name}
-                  label={input.label}
-                  inputProps={{
-                    name: input.name,
-                    type: showPasswords.change[input.name] ? 'text' : input.type,
-                    placeholder: input.placeholder,
-                    autoComplete: input.autoComplete,
-                    disabled: isPending,
-                  }}
-                  icons={{
-                    right: {
-                      icon: showPasswords.change[input.name] ? 'lucide:eye-off' : 'lucide:eye',
-                      onClick: () => {
-                        setShowPasswords((prev) => ({
-                          ...prev,
-                          set: { ...prev.set, [input.name]: !prev.change[input.name] },
-                        }));
+          <div className="flex flex-col gap-4 sm:gap-5">
+            {hasManualProvider
+              ? CHANGE_PASSWORD_INPUT_MAP_DATA.map((input) => (
+                  <Input
+                    key={input.name}
+                    label={input.label}
+                    inputProps={{
+                      name: input.name,
+                      type: showPasswords.change[input.name] ? 'text' : input.type,
+                      placeholder: input.placeholder,
+                      autoComplete: input.autoComplete,
+                      disabled: isPending,
+                    }}
+                    icons={{
+                      left: {
+                        icon: 'solar:lock-keyhole-minimalistic-linear',
+                        className: 'text-primary/40',
                       },
-                      className: 'cursor-pointer',
-                    },
-                  }}
-                  register={changePasswordForm.register(input.name)}
-                  error={changePasswordForm.formState.errors[input.name]?.message}
-                />
-              ))
-            : PASSWORDS_INPUT_MAP_DATA.map((input) => (
-                <Input
-                  key={input.name}
-                  label={input.label}
-                  inputProps={{
-                    name: input.name,
-                    type: showPasswords.set[input.name] ? 'text' : input.type,
-                    placeholder: input.placeholder,
-                    autoComplete: input.autoComplete,
-                    disabled: isPending,
-                  }}
-                  icons={{
-                    right: {
-                      icon: showPasswords.set[input.name] ? 'lucide:eye-off' : 'lucide:eye',
-                      onClick: () => {
-                        setShowPasswords((prev) => ({
-                          ...prev,
-                          set: { ...prev.set, [input.name]: !prev.set[input.name] },
-                        }));
+                      right: {
+                        icon: showPasswords.change[input.name] ? 'lucide:eye-off' : 'lucide:eye',
+                        onClick: () => {
+                          setShowPasswords((prev) => ({
+                            ...prev,
+                            set: { ...prev.set, [input.name]: !prev.change[input.name] },
+                          }));
+                        },
+                        className: 'cursor-pointer',
                       },
-                      className: 'cursor-pointer',
-                    },
-                  }}
-                  register={setPasswordForm.register(input.name)}
-                  error={setPasswordForm.formState.errors[input.name]?.message}
-                />
-              ))}
+                    }}
+                    register={changePasswordForm.register(input.name)}
+                    error={changePasswordForm.formState.errors[input.name]?.message}
+                  />
+                ))
+              : PASSWORDS_INPUT_MAP_DATA.map((input) => (
+                  <Input
+                    key={input.name}
+                    label={input.label}
+                    inputProps={{
+                      name: input.name,
+                      type: showPasswords.set[input.name] ? 'text' : input.type,
+                      placeholder: input.placeholder,
+                      autoComplete: input.autoComplete,
+                      disabled: isPending,
+                    }}
+                    icons={{
+                      left: {
+                        icon: 'solar:lock-keyhole-minimalistic-linear',
+                        className: 'text-primary/40',
+                      },
+                      right: {
+                        icon: showPasswords.set[input.name] ? 'lucide:eye-off' : 'lucide:eye',
+                        onClick: () => {
+                          setShowPasswords((prev) => ({
+                            ...prev,
+                            set: { ...prev.set, [input.name]: !prev.set[input.name] },
+                          }));
+                        },
+                        className: 'cursor-pointer',
+                      },
+                    }}
+                    register={setPasswordForm.register(input.name)}
+                    error={setPasswordForm.formState.errors[input.name]?.message}
+                  />
+                ))}
+          </div>
+
+          {/* ================= PASSWORD TIP ================= */}
+          <div className="border-primary/10 bg-secondary-invert flex items-start gap-2.5 rounded-xl border p-3">
+            <Icon
+              icon="solar:shield-check-linear"
+              className="text-primary-green mt-0.5 size-4.5 shrink-0"
+            />
+            <p className="text-secondary text-[11px] leading-relaxed sm:text-xs">
+              Use at least 8 characters with a mix of letters, numbers, and symbols for a stronger
+              password.
+            </p>
+          </div>
+
+          <Divider />
 
           {/* ================= ACTION BUTTONS ================= */}
           <div className="flex gap-4">
@@ -176,6 +215,7 @@ const UpdatePassword = () => {
               pattern="secondary"
               buttonProps={{ onClick: () => navigate(-1) }}
               content="Cancel"
+              leftIcon={{ icon: 'lucide:arrow-left' }}
             />
 
             {/* -------- Submit Button -------- */}
@@ -183,6 +223,7 @@ const UpdatePassword = () => {
               pattern="primary"
               buttonProps={{ type: 'submit', disabled: isPending || !isDirty }}
               content="Submit"
+              rightIcon={{ icon: 'solar:check-circle-linear' }}
             />
           </div>
         </form>
