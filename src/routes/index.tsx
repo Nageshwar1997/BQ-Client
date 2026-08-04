@@ -244,6 +244,7 @@ const routes: RouteObject[] = [
         lazy: loadPage(() => import('@/pages/auth/ForgotPassword')),
       },
       {
+        path: AUTH.OAUTH,
         lazy: loadPage(() => import('@/pages/auth/OAuth')),
       },
     ],

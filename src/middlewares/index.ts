@@ -3,11 +3,17 @@ import { type MiddlewareFunction, redirect } from 'react-router-dom';
 import { ROUTES } from '@/constants/routes.constants';
 import useUserStore from '@/stores/user.store';
 
-export const authenticate: MiddlewareFunction = (_args, next) => {
+export const authenticate: MiddlewareFunction = ({ request }, next) => {
   const { user } = useUserStore.getState();
 
   if (!user) {
-    return redirect(`/${ROUTES.AUTH.BASE}`);
+    // Remember where the user was trying to go, so login can send them back here instead of Home.
+    const { pathname, search } = new URL(request.url);
+    const intendedPath = `${pathname}${search}`;
+    const redirectParam =
+      intendedPath === ROUTES.HOME ? '' : `?redirect=${encodeURIComponent(intendedPath)}`;
+
+    return redirect(`/${ROUTES.AUTH.BASE}${redirectParam}`);
   }
 
   return next();

@@ -57,6 +57,13 @@ const LoginForm = () => {
       onSuccess: async ({ data: user }) => {
         setUser(user ?? null);
 
+        // The `authenticate` middleware bounced the user here from a private route it recorded —
+        // send them straight back to it instead of Home.
+        if (queryParams.redirect) {
+          void navigate(queryParams.redirect);
+          return;
+        }
+
         const { actions, runAllActions } = useActionsStore.getState();
         const hadQueuedAction = actions.length > 0;
         await runAllActions();

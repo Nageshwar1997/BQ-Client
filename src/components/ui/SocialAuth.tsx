@@ -12,13 +12,13 @@ const SocialAuth = () => {
   const handleOAuthStart = () => {
     // OAuth is a full page redirect away from the SPA, so stash where the user was
     // (minus the `login` modal flag) to send them back once the callback succeeds.
-    const { login: _login, ...paramsToKeep } = queryParams;
+    const { login: _login, redirect, ...paramsToKeep } = queryParams;
     const querystring = new URLSearchParams(paramsToKeep).toString();
+    const fallbackPath = `${pathname}${querystring ? `?${querystring}` : ''}`;
 
-    sessionStorage.setItem(
-      OAUTH_REDIRECT_KEY,
-      `${pathname}${querystring ? `?${querystring}` : ''}`,
-    );
+    // If a private route already bounced the user here (?redirect=...), that's the real
+    // destination — prefer it over this auth page itself.
+    sessionStorage.setItem(OAUTH_REDIRECT_KEY, redirect ?? fallbackPath);
   };
 
   return (

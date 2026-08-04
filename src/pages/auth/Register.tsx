@@ -25,6 +25,7 @@ import {
 } from '@/constants/input.constants';
 import { ROUTES } from '@/constants/routes.constants';
 import usePathParams from '@/hooks/usePathParams';
+import useQueryParams from '@/hooks/useQueryParams';
 import {
   useRegisterAndSaveUser,
   useRegisterResendOtp,
@@ -41,6 +42,7 @@ const Register = () => {
 
   /* ================= 2. Custom Hooks ================= */
   const { navigate } = usePathParams();
+  const { queryParams } = useQueryParams();
 
   /* ================= 3. API/Queries Hooks ================= */
   const sendOtp = useRegisterSendOtp();
@@ -103,7 +105,9 @@ const Register = () => {
       {
         onSuccess: ({ data: user }) => {
           setUser(user ?? null);
-          void navigate(ROUTES.HOME);
+
+          // Same as login: if a private route bounced the user here, send them back to it.
+          void navigate(queryParams.redirect ?? ROUTES.HOME);
         },
         onError: ({ fieldErrors }) => {
           setErrorToForm(registerAndSaveForm.setError, fieldErrors);
