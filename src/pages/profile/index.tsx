@@ -6,9 +6,9 @@ const Account = () => {
   return (
     <div className="mx-auto flex w-full flex-col md:flex-row md:items-start">
       <Sidebar />
-      <div className="md:border-l-silver/30 min-w-0 grow md:flex-1 md:border-l">
+      <main className="md:border-l-silver/30 min-w-0 grow md:flex-1 md:border-l">
         <Outlet />
-      </div>
+      </main>
     </div>
   );
 };

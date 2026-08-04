@@ -35,11 +35,11 @@ const Breadcrumb = ({ className = '', customPath, customPaths }: IBreadcrumb) =>
                 handleNavigate(-1);
               }}
             >
-              Dashboard
+              Home
             </button>
           ) : (
             <span aria-current="page" className="truncate capitalize opacity-80">
-              Dashboard
+              Home
             </span>
           )}
           {activePaths.length > 0 && <Icon icon="solar:alt-arrow-right-linear" className="" />}
