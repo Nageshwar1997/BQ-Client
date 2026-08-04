@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import BorderGradient from '@/components/layout/containers/BorderGradient';
+import BrandShowcasePanel from '@/components/layout/containers/BrandShowcasePanel';
 import ScrollableGradientContainer from '@/components/layout/containers/ScrollableGradientContainer';
 import AuthBottomInstructions from '@/components/ui/AuthBottomInstructions';
 import Button from '@/components/ui/Button';
@@ -205,21 +206,7 @@ const UpdatePassword = () => {
                       />
                     ))}
               </div>
-
-              {/* ================= PASSWORD TIP ================= */}
-              <div className="border-primary/10 bg-secondary-invert flex items-start gap-2.5 rounded-xl border p-3">
-                <Icon
-                  icon="solar:shield-check-linear"
-                  className="text-primary-green mt-0.5 size-4.5 shrink-0"
-                />
-                <p className="text-secondary text-[11px] leading-relaxed sm:text-xs">
-                  Use at least 8 characters with a mix of letters, numbers, and symbols for a
-                  stronger password.
-                </p>
-              </div>
-
               <Divider />
-
               {/* ================= ACTION BUTTONS ================= */}
               <div className="flex gap-4">
                 {/* -------- Back / Cancel Button -------- */}
@@ -247,41 +234,21 @@ const UpdatePassword = () => {
       </ScrollableGradientContainer>
 
       {/* ================= RIGHT SHOWCASE PANEL ================= */}
-      <div className="from-blue-crayola-c via-dodger-blue-c hidden w-full rounded-2xl -bg-linear-90 to-transparent lg:flex lg:flex-col lg:items-center lg:justify-between lg:gap-6 lg:p-8">
-        {/* -------- Copy -------- */}
-        <div className="flex flex-col items-center gap-2 text-center">
-          <h1 className="text-2xl font-semibold text-white sm:text-3xl">
-            {hasManualProvider ? 'Keep Your Account Secure' : 'One Password, One Login'}
-          </h1>
-          <p className="max-w-sm text-sm text-white/80 sm:text-base">
-            {hasManualProvider
-              ? 'A strong, regularly updated password is your first line of defense on Beautinique.'
-              : 'Set a password once, and sign in with either your email or your social account, whichever you prefer.'}
-          </p>
-        </div>
-
-        {/* -------- Illustration -------- */}
-        <img
-          src="/images/auth/auth-left-side.webp"
-          className="max-h-[45dvh] w-auto object-contain drop-shadow-2xl"
-          alt="Account security illustration"
-          loading="eager"
-          fetchPriority="high"
-        />
-
-        {/* -------- Trust Highlights -------- */}
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          {SECURITY_HIGHLIGHTS.map((item) => (
-            <span
-              key={item.text}
-              className="flex items-center gap-1.5 rounded-full border border-white/30 bg-white/10 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-md sm:text-sm"
-            >
-              <Icon icon={item.icon} className="size-4 shrink-0" />
-              {item.text}
-            </span>
-          ))}
-        </div>
-      </div>
+      <BrandShowcasePanel
+        title={hasManualProvider ? 'Keep Your Account Secure' : 'One Password, One Login'}
+        description={
+          hasManualProvider
+            ? 'A strong, regularly updated password is your first line of defense on Beautinique.'
+            : 'Set a password once, and sign in with either your email or your social account, whichever you prefer.'
+        }
+        image={{
+          src: '/images/auth/auth-left-side.webp',
+          alt: 'Account security illustration',
+        }}
+        highlights={SECURITY_HIGHLIGHTS}
+        className="-bg-linear-90!"
+        imageClassName="max-h-1/2"
+      />
     </div>
   );
 };
