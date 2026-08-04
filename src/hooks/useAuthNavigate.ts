@@ -1,3 +1,5 @@
+import { OAUTH_REDIRECT_KEY } from '@/constants/common.constants';
+
 import useAuthAction from './useAuthAction';
 import usePathParams from './usePathParams';
 
@@ -11,6 +13,10 @@ const useAuthNavigate = () => {
     const action = () => navigate(path);
 
     if (isPrivate) {
+      // The queued action above only lives in memory — if the user ends up completing login via
+      // OAuth (a full-page redirect round trip to the provider and back), that memory is wiped.
+      // Stash the target path so it survives that round trip too (see SocialAuth/OAuth pages).
+      sessionStorage.setItem(OAUTH_REDIRECT_KEY, path);
       runAction(action);
       return;
     }
