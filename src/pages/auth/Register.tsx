@@ -16,6 +16,7 @@ import GradientText from '@/components/ui/GradientText';
 import Input from '@/components/ui/inputs/Input';
 import Resend from '@/components/ui/Resend';
 import SocialAuth from '@/components/ui/SocialAuth';
+import { OAUTH_REDIRECT_KEY } from '@/constants/common.constants';
 import {
   BASE_PASSWORD_KEYS,
   BASE_PASSWORDS_VISIBILITY,
@@ -106,8 +107,17 @@ const Register = () => {
         onSuccess: ({ data: user }) => {
           setUser(user ?? null);
 
-          // Same as login: if a private route bounced the user here, send them back to it.
-          void navigate(queryParams.redirect ?? ROUTES.HOME);
+          // Same as login: if a private route/nav item sent the user here, send them back to it.
+          const target = queryParams.redirect?.charAt(0)
+            ? queryParams.redirect
+            : sessionStorage.getItem(OAUTH_REDIRECT_KEY);
+          if (target) {
+            sessionStorage.removeItem(OAUTH_REDIRECT_KEY);
+            void navigate(target);
+            return;
+          }
+
+          void navigate(ROUTES.HOME);
         },
         onError: ({ fieldErrors }) => {
           setErrorToForm(registerAndSaveForm.setError, fieldErrors);

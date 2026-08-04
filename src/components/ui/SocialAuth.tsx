@@ -4,17 +4,16 @@ import { Link } from 'react-router-dom';
 import { OAUTH_DATA, OAUTH_REDIRECT_KEY } from '@/constants/common.constants';
 import usePathParams from '@/hooks/usePathParams';
 import useQueryParams from '@/hooks/useQueryParams';
-import useActionsStore from '@/stores/action.store';
 
 const SocialAuth = () => {
   const { pathname } = usePathParams();
   const { queryParams } = useQueryParams();
 
   const handleOAuthStart = () => {
-    // A private nav item (e.g. the navbar's "Become a Seller" icon) already queued a navigation
-    // and stashed its exact target path before opening this login modal — that's the real
-    // destination, so don't clobber it with this auth page's own path.
-    if (useActionsStore.getState().actions.length > 0) return;
+    // A private nav item may have already stashed the exact path it wanted to reach (see
+    // useAuthNavigate) before this modal opened — that's the real destination, don't clobber it
+    // with this page's own path.
+    if (sessionStorage.getItem(OAUTH_REDIRECT_KEY)) return;
 
     // OAuth is a full page redirect away from the SPA, so stash where the user was
     // (minus the `login` modal flag) to send them back once the callback succeeds.

@@ -11,12 +11,12 @@ import GradientText from '@/components/ui/GradientText';
 import Input from '@/components/ui/inputs/Input';
 import Radio from '@/components/ui/inputs/Radio';
 import SocialAuth from '@/components/ui/SocialAuth';
+import { OAUTH_REDIRECT_KEY } from '@/constants/common.constants';
 import { BASE_PASSWORD_KEYS, LOGIN_INPUT_MAP_DATA } from '@/constants/input.constants';
 import { ROUTES } from '@/constants/routes.constants';
 import usePathParams from '@/hooks/usePathParams';
 import useQueryParams from '@/hooks/useQueryParams';
 import { useLogin } from '@/services/user-service/auth.service.query';
-import useActionsStore from '@/stores/action.store';
 import useUserStore from '@/stores/user.store';
 import { setErrorToForm } from '@/utils/form.util';
 
@@ -54,24 +54,20 @@ const LoginForm = () => {
   // -------- Handle Login Submit --------
   const handleLogin = async (data: TLoginZodSchema) => {
     await mutateAsync(data, {
-      onSuccess: async ({ data: user }) => {
+      onSuccess: ({ data: user }) => {
         setUser(user ?? null);
 
-        // The `authenticate` middleware bounced the user here from a private route it recorded —
-        // send them straight back to it instead of Home.
-        if (queryParams.redirect) {
-          void navigate(queryParams.redirect);
+        // Either the `authenticate` middleware bounced the user here from a private route
+        // (?redirect=...), or a private nav item stashed one before opening this modal — send
+        // them straight back to it instead of Home.
+        const target = queryParams.redirect?.charAt(0)
+          ? queryParams.redirect
+          : sessionStorage.getItem(OAUTH_REDIRECT_KEY);
+        if (target) {
+          sessionStorage.removeItem(OAUTH_REDIRECT_KEY);
+          void navigate(target);
           return;
         }
-
-        const { actions, runAllActions } = useActionsStore.getState();
-        const hadQueuedAction = actions.length > 0;
-        await runAllActions();
-
-        // A queued action (e.g. the private route the user originally tried to visit) already
-        // navigated where it needed to; navigating again here would clobber that with stale
-        // `paths`/`queryParams` captured before the queued navigation ran.
-        if (hadQueuedAction) return;
 
         if (paths.includes(ROUTES.AUTH.BASE)) {
           void navigate(ROUTES.HOME);

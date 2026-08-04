@@ -7,7 +7,6 @@ import { ROUTES } from '@/constants/routes.constants';
 import usePathParams from '@/hooks/usePathParams';
 import useQueryParams from '@/hooks/useQueryParams';
 import { useGetSessionUser } from '@/services/user-service/user.service.query';
-import useActionsStore from '@/stores/action.store';
 import useUserStore from '@/stores/user.store';
 
 const OAUTH_SUCCESS_REDIRECT_DELAY_MS = 5000;
@@ -37,7 +36,9 @@ const OAuth = () => {
   const showLoading = !isSuccess && !showError && (!queryParams.success || session.isLoading);
 
   // Once logged in, show the success state briefly, then send the user back to wherever
-  // they started the OAuth flow from (falls back to home if nothing was stashed).
+  // they started the OAuth flow from (falls back to home if nothing was stashed). The stash
+  // (OAUTH_REDIRECT_KEY in sessionStorage) is set either by a private nav item before opening
+  // the login modal, or by SocialAuth when the OAuth flow itself was started from /auth.
   useEffect(() => {
     if (!isSuccess) return;
 
@@ -45,17 +46,7 @@ const OAuth = () => {
     sessionStorage.removeItem(OAUTH_REDIRECT_KEY);
 
     const timer = setTimeout(() => {
-      void (async () => {
-        // A private nav item (e.g. "Profile") queued a navigation and opened the login modal
-        // before this OAuth flow started — that queued action is the real intended destination,
-        // so it takes priority over the stashed OAuth redirect path.
-        const { actions, runAllActions } = useActionsStore.getState();
-        const hadQueuedAction = actions.length > 0;
-        await runAllActions();
-        if (hadQueuedAction) return;
-
-        void navigate(redirectPath);
-      })();
+      void navigate(redirectPath);
     }, OAUTH_SUCCESS_REDIRECT_DELAY_MS);
 
     return () => {

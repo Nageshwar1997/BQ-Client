@@ -1,27 +1,29 @@
 import { OAUTH_REDIRECT_KEY } from '@/constants/common.constants';
+import useUserStore from '@/stores/user.store';
 
-import useAuthAction from './useAuthAction';
 import usePathParams from './usePathParams';
+import useQueryParams from './useQueryParams';
 
-// Navigates immediately for public paths; for private ones, runs the navigation only once the
-// user is authenticated (queuing it and opening the login modal otherwise).
+// Navigates immediately for public paths (or if already logged in); for private ones while
+// logged out, remembers the target path and opens the login modal instead. sessionStorage (not
+// React/Zustand state) is what survives an OAuth login's full-page redirect round trip, so that's
+// where the target is stashed — the same key/mechanism SocialAuth/OAuth already use.
 const useAuthNavigate = () => {
   const { navigate } = usePathParams();
-  const { runAction } = useAuthAction();
+  const user = useUserStore((s) => s.user);
+  const { queryParams, setParams } = useQueryParams();
 
   return (path: string, isPrivate?: boolean) => {
-    const action = () => navigate(path);
-
-    if (isPrivate) {
-      // The queued action above only lives in memory — if the user ends up completing login via
-      // OAuth (a full-page redirect round trip to the provider and back), that memory is wiped.
-      // Stash the target path so it survives that round trip too (see SocialAuth/OAuth pages).
-      sessionStorage.setItem(OAUTH_REDIRECT_KEY, path);
-      runAction(action);
+    if (!isPrivate || !!user) {
+      void navigate(path);
       return;
     }
 
-    void action();
+    sessionStorage.setItem(OAUTH_REDIRECT_KEY, path);
+
+    if (!queryParams.login) {
+      setParams({ login: 'true' });
+    }
   };
 };
 
