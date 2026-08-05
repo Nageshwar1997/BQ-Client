@@ -198,7 +198,7 @@ const routes: RouteObject[] = [
       {
         path: QUICK_LINKS.BECOME_SELLER,
         middleware: [authenticate],
-        lazy: loadPage(() => import('@/pages/misc/BecomeSeller')),
+        lazy: loadPage(() => import('@/pages/misc/become-seller/BecomeSeller')),
       },
       {
         path: AWARDS,
