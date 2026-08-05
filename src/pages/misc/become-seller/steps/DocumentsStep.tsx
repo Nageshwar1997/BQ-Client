@@ -1,7 +1,9 @@
+import { COUNTRIES, STATES_AND_UTS } from '@beautinique/frontend-constants';
 import { Controller, type UseFormReturn } from 'react-hook-form';
 
 import FileInput from '@/components/ui/inputs/FileInput';
 import Input from '@/components/ui/inputs/Input';
+import Select from '@/components/ui/inputs/Select';
 
 import type { TSellerDocumentsFormZodSchema } from '../schema/seller.schema';
 
@@ -48,11 +50,22 @@ const DocumentsStep = ({ form, disabled = false }: IDocumentsStepProps) => {
           register={register('pickupAddress.city')}
           error={errors.pickupAddress?.city?.message}
         />
-        <Input
-          label="State"
-          inputProps={{ name: 'pickupAddress.state', placeholder: 'e.g. Maharashtra', disabled }}
-          register={register('pickupAddress.state')}
-          error={errors.pickupAddress?.state?.message}
+        <Controller
+          control={control}
+          name="pickupAddress.state"
+          render={({ field }) => (
+            <Select
+              label="State"
+              selectProps={{
+                value: field.value,
+                onChange: field.onChange,
+                placeholder: 'e.g. Maharashtra',
+                disabled,
+              }}
+              options={STATES_AND_UTS.map((value) => ({ label: value, value }))}
+              error={errors.pickupAddress?.state?.message}
+            />
+          )}
         />
         <Input
           label="Pincode"
@@ -60,11 +73,22 @@ const DocumentsStep = ({ form, disabled = false }: IDocumentsStepProps) => {
           register={register('pickupAddress.pincode')}
           error={errors.pickupAddress?.pincode?.message}
         />
-        <Input
-          label="Country"
-          inputProps={{ name: 'pickupAddress.country', placeholder: 'e.g. India', disabled }}
-          register={register('pickupAddress.country')}
-          error={errors.pickupAddress?.country?.message}
+        <Controller
+          control={control}
+          name="pickupAddress.country"
+          render={({ field }) => (
+            <Select
+              label="Country"
+              selectProps={{
+                value: field.value,
+                onChange: field.onChange,
+                placeholder: 'e.g. India',
+                disabled,
+              }}
+              options={COUNTRIES.map((value) => ({ label: value, value }))}
+              error={errors.pickupAddress?.country?.message}
+            />
+          )}
         />
       </div>
 
