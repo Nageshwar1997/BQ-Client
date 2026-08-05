@@ -25,7 +25,10 @@ const About = ({
             type="accent"
             className="block text-sm leading-5 font-medium italic"
           />
-          <Link to={`/${ROUTES.QUICK_LINKS.BECOME_SELLER}`} className="block w-fit">
+          <Link
+            to={`/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.BECOME_SELLER}`}
+            className="block w-fit"
+          >
             <Button
               content="Become a seller"
               pattern="outline"

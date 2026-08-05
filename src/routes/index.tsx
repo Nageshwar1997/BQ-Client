@@ -64,6 +64,10 @@ const routes: RouteObject[] = [
             lazy: loadPage(() => import('@/pages/profile/Profile')),
           },
           {
+            path: PROFILE.BECOME_SELLER,
+            lazy: loadPage(() => import('@/pages/profile/BecomeSeller')),
+          },
+          {
             path: PROFILE.ORDERS,
             element: <Outlet />,
             children: [
@@ -194,11 +198,6 @@ const routes: RouteObject[] = [
       {
         path: QUICK_LINKS.STORE_LOCATOR,
         lazy: loadPage(() => import('@/pages/misc/StoreLocator')),
-      },
-      {
-        path: QUICK_LINKS.BECOME_SELLER,
-        middleware: [authenticate],
-        lazy: loadPage(() => import('@/pages/misc/become-seller/BecomeSeller')),
       },
       {
         path: AWARDS,

@@ -102,7 +102,7 @@ const Profile = () => {
       onSubmit={(event) => {
         void handleSubmit(onSubmit)(event);
       }}
-      className="flex flex-col gap-6 p-4 sm:p-6"
+      className="flex flex-col gap-6"
     >
       <div className="flex flex-col gap-1.5">
         <GradientText

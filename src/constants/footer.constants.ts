@@ -28,7 +28,7 @@ export const FOOTER_CATEGORIES = [
       { title: 'Store Locator', path: `/${QUICK_LINKS.STORE_LOCATOR}` },
       {
         title: 'Become a Seller',
-        path: `/${QUICK_LINKS.BECOME_SELLER}`,
+        path: `/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.BECOME_SELLER}`,
         private: true,
       },
     ],

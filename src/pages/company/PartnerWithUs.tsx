@@ -141,7 +141,7 @@ const PartnerWithUs = () => {
         actions={
           <div className="flex flex-wrap gap-3">
             <Link
-              to={`/${ROUTES.QUICK_LINKS.BECOME_SELLER}`}
+              to={`/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.BECOME_SELLER}`}
               className="bg-accent-duo flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90"
             >
               <Icon icon="solar:shop-2-linear" className="size-4.5" />

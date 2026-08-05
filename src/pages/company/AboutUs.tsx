@@ -197,7 +197,7 @@ const AboutUs = () => {
               View Careers
             </Link>
             <Link
-              to={`/${ROUTES.QUICK_LINKS.BECOME_SELLER}`}
+              to={`/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.BECOME_SELLER}`}
               className="border-primary/20 hover:bg-primary-invert/60 text-primary flex items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors"
             >
               <Icon icon="solar:shop-2-linear" className="size-4.5" />

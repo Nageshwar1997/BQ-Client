@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import GradientText from '@/components/ui/GradientText';
 import Theme from '@/components/ui/Theme';
+import { ROUTES } from '@/constants/routes.constants';
 import useAuthNavigate from '@/hooks/useAuthNavigate';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import usePathParams from '@/hooks/usePathParams';
@@ -204,7 +205,7 @@ export const UserMenuIcons = ({
         <Icon
           icon="solar:shop-2-linear"
           onClick={() => {
-            handleAuthNavigation('/become-seller');
+            handleAuthNavigation(`/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.BECOME_SELLER}`);
           }}
           className="text-tertiary hover:text-secondary size-5 cursor-pointer md:size-6"
         />

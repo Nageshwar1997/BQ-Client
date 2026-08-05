@@ -21,7 +21,6 @@ export const ROUTES = {
   },
   QUICK_LINKS: {
     STORE_LOCATOR: 'store-locator',
-    BECOME_SELLER: 'become-seller',
   },
   AUTH: {
     BASE: 'auth',
@@ -54,6 +53,7 @@ export const ROUTES = {
   },
   PROFILE: {
     BASE: 'profile',
+    BECOME_SELLER: 'become-seller',
     ORDERS: 'orders',
     ORDER_RETURN_REFUND: 'return-refund',
     ORDER_TRACK: 'track',
@@ -69,7 +69,4 @@ export const ROUTES = {
 
 // Path segments that gate a route behind `middleware: [authenticate]` in routes/index.tsx.
 // Used to detect "user is currently on a page they can no longer access" (e.g. right after logout).
-export const PRIVATE_ROUTE_PREFIXES = [
-  ROUTES.PROFILE.BASE,
-  ROUTES.QUICK_LINKS.BECOME_SELLER,
-] as const;
+export const PRIVATE_ROUTE_PREFIXES = [ROUTES.PROFILE.BASE] as const;

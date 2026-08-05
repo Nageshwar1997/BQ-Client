@@ -89,6 +89,12 @@ export const SIDEBAR_DATA = [
     handler: null,
   },
   {
+    title: 'Become a Seller',
+    icon: 'solar:shop-2-linear',
+    path: `/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.BECOME_SELLER}`,
+    handler: null,
+  },
+  {
     title: 'Orders',
     icon: 'solar:delivery-linear',
     path: `/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.ORDERS}`,
