@@ -1,5 +1,6 @@
 import {
   CONTACT_QUERY_TYPES,
+  SELLER_TYPES,
   VARIANT_TYPES,
   VARIANT_TYPES_MAP,
 } from '@beautinique/frontend-constants';
@@ -7,7 +8,10 @@ import type { TPasswordsZodSchema } from '@beautinique/frontend-types';
 
 import type { TQuillToolbar } from '@/types/input.type';
 
-export const BASE_PASSWORD_KEYS: readonly (keyof TPasswordsZodSchema)[] = ['password', 'confirmPassword'];
+export const BASE_PASSWORD_KEYS: readonly (keyof TPasswordsZodSchema)[] = [
+  'password',
+  'confirmPassword',
+];
 
 export const BASE_PASSWORDS_VISIBILITY = Object.fromEntries(
   BASE_PASSWORD_KEYS.map((key) => [key, false] as const),
@@ -303,6 +307,37 @@ export const PRODUCT_TRYON_INPUT_MAP_DATA = [
     label: 'Try-on sub-category',
     type: 'select',
     placeholder: 'Select try-on sub-category',
+  },
+] as const;
+
+export const SELLER_BUSINESS_DETAILS_INPUT_MAP_DATA = [
+  {
+    label: 'Business name',
+    name: 'businessName',
+    type: 'text',
+    placeholder: 'Enter business name',
+    autoComplete: 'given-name',
+  },
+  {
+    label: 'Business type',
+    name: 'businessType',
+    type: 'select',
+    placeholder: 'Select business type',
+    options: SELLER_TYPES.map((type) => ({ label: type, value: type })),
+  },
+  {
+    label: 'GSTIN',
+    name: 'gstin',
+    type: 'text',
+    placeholder: 'Enter GSTIN',
+    autoComplete: 'given-name',
+  },
+  {
+    label: 'PAN',
+    name: 'pan',
+    type: 'text',
+    placeholder: 'Enter PAN',
+    autoComplete: 'given-name',
   },
 ] as const;
 

@@ -3,13 +3,9 @@
 // bump those shared packages on its own, so the seller onboarding wizard's schemas live here for
 // now, following the same `xZodSchema`/`TXZodSchema` naming convention used everywhere else.
 
-import { imageUnionZodSchema, object, string, type TInfer } from '@beautinique/frontend-zod';
+import { REGEX, SELLER_TYPES } from '@beautinique/frontend-constants';
+import { imageUnionZodSchema, object, string, type TInfer, z } from '@beautinique/frontend-zod';
 
-const MAX_DOCUMENT_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
-const ALLOWED_DOCUMENT_MIME_TYPES = ['image/jpeg', 'image/png', 'application/pdf'];
-
-const GSTIN_REGEX = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
-const PAN_REGEX = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
 const IFSC_REGEX = /^[A-Z]{4}0[A-Z0-9]{6}$/;
 const PINCODE_REGEX = /^[0-9]{6}$/;
 
@@ -18,10 +14,13 @@ const PINCODE_REGEX = /^[0-9]{6}$/;
 /* -------------------------------------------------------------------------- */
 
 export const sellerBusinessDetailsZodSchema = object({
-  businessName: string().trim().min(2, 'Business name is required'),
-  businessType: string().trim().min(1, 'Select a business type'),
-  gstin: string().trim().regex(GSTIN_REGEX, 'Enter a valid GSTIN'),
-  pan: string().trim().regex(PAN_REGEX, 'Enter a valid PAN'),
+  businessName: string('Business name is required')
+    .nonempty('Business name is required')
+    .trim()
+    .min(2, 'Business name must be at least 2 characters long'),
+  businessType: z.enum(SELLER_TYPES, 'Business type is required'),
+  gstin: string().trim().toUpperCase().regex(REGEX.GST, 'Enter a valid GSTIN'),
+  pan: string().trim().toUpperCase().regex(REGEX.PAN, 'Enter a valid PAN'),
 });
 
 export type TSellerBusinessDetailsZodSchema = TInfer<typeof sellerBusinessDetailsZodSchema>;

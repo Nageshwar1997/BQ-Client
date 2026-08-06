@@ -23,7 +23,7 @@ import ReviewStep from '../misc/become-seller/steps/ReviewStep';
 type TStep = 0 | 1 | 2 | 3;
 
 const BecomeSeller = () => {
-  const [activeStep, setActiveStep] = useState<TStep>(2);
+  const [activeStep, setActiveStep] = useState<TStep>(0);
 
   const businessForm = useForm<TSellerBusinessDetailsZodSchema>({
     resolver: zodResolver(sellerBusinessDetailsZodSchema),
@@ -43,14 +43,18 @@ const BecomeSeller = () => {
 
   const handleBusinessDetailsSubmit = (data: TSellerBusinessDetailsZodSchema) => {
     console.log('🚀 ~ handleBusinessDetailsSubmit ~ data:', data);
+    setActiveStep(1);
+    
   };
 
   const handleBankDetailsSubmit = (data: TSellerBankDetailsZodSchema) => {
     console.log('🚀 ~ handleBankDetailsSubmit ~ data:', data);
+    setActiveStep(2);
   };
-
+  
   const handleDocumentsSubmit = (data: TSellerDocumentsFormZodSchema) => {
     console.log('🚀 ~ handleDocumentsSubmit ~ data:', data);
+    setActiveStep(3);
   };
 
   const handleReviewSubmit = (data: TConfirmDetailsZodSchema) => {

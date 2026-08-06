@@ -2,8 +2,8 @@ import { Controller, type UseFormReturn } from 'react-hook-form';
 
 import Input from '@/components/ui/inputs/Input';
 import Select from '@/components/ui/inputs/Select';
+import { SELLER_BUSINESS_DETAILS_INPUT_MAP_DATA } from '@/constants/input.constants';
 
-import { SELLER_BUSINESS_TYPE_OPTIONS } from '../constants';
 import type { TSellerBusinessDetailsZodSchema } from '../schema/seller.schema';
 
 interface IBusinessDetailsStepProps {
@@ -20,58 +20,41 @@ const BusinessDetailsStep = ({ form, disabled = false }: IBusinessDetailsStepPro
 
   return (
     <div className="grid grid-cols-1 gap-x-4 gap-y-5 sm:grid-cols-2">
-      <Input
-        label="Business name"
-        inputProps={{
-          name: 'businessName',
-          placeholder: 'e.g. Glow & Co.',
-          disabled,
-        }}
-        register={register('businessName')}
-        error={errors.businessName?.message}
-      />
-
-      <Controller
-        control={control}
-        name="businessType"
-        render={({ field }) => (
-          <Select
-            label="Business type"
-            selectProps={{
-              value: field.value,
-              onChange: field.onChange,
-              placeholder: 'Select business type',
-              disabled,
-            }}
-            options={SELLER_BUSINESS_TYPE_OPTIONS}
-            error={errors.businessType?.message}
+      {SELLER_BUSINESS_DETAILS_INPUT_MAP_DATA.map((input) => {
+        return input.type === 'select' ? (
+          <Controller
+            control={control}
+            name={input.name}
+            render={({ field }) => (
+              <Select
+                label={input.label}
+                selectProps={{
+                  value: field.value,
+                  onChange: field.onChange,
+                  placeholder: input.placeholder,
+                  disabled,
+                }}
+                options={input.options}
+                error={errors[input.name]?.message}
+              />
+            )}
           />
-        )}
-      />
-
-      <Input
-        label="GSTIN"
-        inputProps={{
-          name: 'gstin',
-          placeholder: 'e.g. 22AAAAA0000A1Z5',
-          disabled,
-          className: 'uppercase',
-        }}
-        register={register('gstin')}
-        error={errors.gstin?.message}
-      />
-
-      <Input
-        label="PAN"
-        inputProps={{
-          name: 'pan',
-          placeholder: 'e.g. AAAAA0000A',
-          disabled,
-          className: 'uppercase',
-        }}
-        register={register('pan')}
-        error={errors.pan?.message}
-      />
+        ) : (
+          <Input
+            label={input.label}
+            inputProps={{
+              name: input.name,
+              placeholder: input.placeholder,
+              disabled,
+              className: ['gstin', 'pan'].includes(input.name)
+                ? 'not-placeholder-shown:uppercase'
+                : '',
+            }}
+            register={register(input.name)}
+            error={errors[input.name]?.message}
+          />
+        );
+      })}
     </div>
   );
 };
