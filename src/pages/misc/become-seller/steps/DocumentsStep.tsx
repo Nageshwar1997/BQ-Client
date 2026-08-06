@@ -92,13 +92,21 @@ const DocumentsStep = ({ form, disabled = false }: IDocumentsStepProps) => {
         />
       </div>
 
-      <div className="grid grid-cols-1 gap-x-4 gap-y-5 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-x-4 gap-y-5 sm:grid-cols-3">
         <Controller
           control={control}
           name="idProof"
           render={({ field: { onChange, value } }) => (
             <FileInput
-              fileInputProps={{ name: 'idProof', value, onChange, disabled }}
+              fileInputProps={{
+                name: 'idProof',
+                value,
+                disabled,
+                multiple: false,
+                onChange: ({ target: { files } }) => {
+                  onChange(files?.[0]);
+                },
+              }}
               label="ID proof (Aadhaar / Passport)"
               errors={[errors.idProof?.message]}
             />
@@ -109,7 +117,14 @@ const DocumentsStep = ({ form, disabled = false }: IDocumentsStepProps) => {
           name="addressProof"
           render={({ field: { onChange, value } }) => (
             <FileInput
-              fileInputProps={{ name: 'addressProof', value, onChange, disabled }}
+              fileInputProps={{
+                name: 'addressProof',
+                value,
+                onChange: ({ target: { files } }) => {
+                  onChange(files?.[0]);
+                },
+                disabled,
+              }}
               label="Address proof"
               errors={[errors.addressProof?.message]}
             />
@@ -120,7 +135,14 @@ const DocumentsStep = ({ form, disabled = false }: IDocumentsStepProps) => {
           name="businessLicense"
           render={({ field: { onChange, value } }) => (
             <FileInput
-              fileInputProps={{ name: 'businessLicense', value, onChange, disabled }}
+              fileInputProps={{
+                name: 'businessLicense',
+                value,
+                onChange: ({ target: { files } }) => {
+                  onChange(files?.[0]);
+                },
+                disabled,
+              }}
               label="Business license"
               errors={[errors.businessLicense?.message]}
             />
