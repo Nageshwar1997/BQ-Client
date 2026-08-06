@@ -59,7 +59,7 @@ const DocumentsStep = ({ form, disabled = false }: IDocumentsStepProps) => {
               selectProps={{
                 value: field.value,
                 onChange: field.onChange,
-                placeholder: 'e.g. Maharashtra',
+                placeholder: 'Select state',
                 disabled,
               }}
               options={STATES_AND_UTS.map((value) => ({ label: value, value }))}
@@ -82,7 +82,7 @@ const DocumentsStep = ({ form, disabled = false }: IDocumentsStepProps) => {
               selectProps={{
                 value: field.value,
                 onChange: field.onChange,
-                placeholder: 'e.g. India',
+                placeholder: 'Select country',
                 disabled,
               }}
               options={COUNTRIES.map((value) => ({ label: value, value }))}
