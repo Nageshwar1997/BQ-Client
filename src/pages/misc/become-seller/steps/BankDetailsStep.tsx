@@ -1,6 +1,7 @@
 import type { UseFormReturn } from 'react-hook-form';
 
 import Input from '@/components/ui/inputs/Input';
+import { SELLER_BANK_DETAILS_INPUT_MAP_DATA } from '@/constants/input.constants';
 
 import type { TSellerBankDetailsZodSchema } from '../schema/seller.schema';
 
@@ -17,40 +18,26 @@ const BankDetailsStep = ({ form, disabled = false }: IBankDetailsStepProps) => {
 
   return (
     <div className="grid grid-cols-1 gap-x-4 gap-y-5 sm:grid-cols-2">
-      <Input
-        label="Account holder name"
-        inputProps={{ name: 'accountHolderName', placeholder: 'As per bank records', disabled }}
-        register={register('accountHolderName')}
-        error={errors.accountHolderName?.message}
-        containerClassName="sm:col-span-2"
-      />
-
-      <Input
-        label="Account number"
-        inputProps={{ name: 'accountNumber', placeholder: 'e.g. 000123456789', disabled }}
-        register={register('accountNumber')}
-        error={errors.accountNumber?.message}
-      />
-
-      <Input
-        label="IFSC code"
-        inputProps={{
-          name: 'ifscCode',
-          placeholder: 'e.g. HDFC0001234',
-          disabled,
-          className: 'uppercase',
-        }}
-        register={register('ifscCode')}
-        error={errors.ifscCode?.message}
-      />
-
-      <Input
-        label="Bank name (optional)"
-        inputProps={{ name: 'bankName', placeholder: 'e.g. HDFC Bank', disabled }}
-        register={register('bankName')}
-        error={errors.bankName?.message}
-        containerClassName="sm:col-span-2"
-      />
+      {SELLER_BANK_DETAILS_INPUT_MAP_DATA.map((input) => {
+        return (
+          <Input
+            key={input.name}
+            label={input.label}
+            inputProps={{
+              name: input.name,
+              type: input.type,
+              placeholder: input.placeholder,
+              autoComplete: input.autoComplete,
+              disabled,
+              ...(input.name === 'ifscCode' && { className: 'not-placeholder-shown:uppercase' }),
+            }}
+            register={register(input.name)}
+            error={errors[input.name]?.message}
+            // containerClassName="sm:col-span-2"
+            className=""
+          />
+        );
+      })}
     </div>
   );
 };

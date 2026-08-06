@@ -341,6 +341,37 @@ export const SELLER_BUSINESS_DETAILS_INPUT_MAP_DATA = [
   },
 ] as const;
 
+export const SELLER_BANK_DETAILS_INPUT_MAP_DATA = [
+  {
+    label: 'Account holder name',
+    name: 'accountHolderName',
+    type: 'text',
+    placeholder: 'Enter name as per bank records',
+    autoComplete: 'given-name',
+  },
+  {
+    label: 'Account number',
+    name: 'accountNumber',
+    type: 'number',
+    placeholder: 'Enter account number',
+    autoComplete: 'tel',
+  },
+  {
+    label: 'IFSC code',
+    name: 'ifscCode',
+    type: 'text',
+    placeholder: 'Enter IFSC code',
+    autoComplete: 'given-name',
+  },
+  {
+    label: 'Bank name',
+    name: 'bankName',
+    type: 'text',
+    placeholder: 'Enter bank name',
+    autoComplete: 'given-name',
+  },
+] as const;
+
 export const CONTACT_INPUT_MAP_DATA = [
   NAME_INPUT_DATA,
   EMAIL_INPUT_DATA,

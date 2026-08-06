@@ -3,11 +3,11 @@
 // bump those shared packages on its own, so the seller onboarding wizard's schemas live here for
 // now, following the same `xZodSchema`/`TXZodSchema` naming convention used everywhere else.
 
-import { REGEX, SELLER_TYPES } from '@beautinique/frontend-constants';
+import { COUNTRIES, REGEX, SELLER_TYPES, STATES_AND_UTS } from '@beautinique/frontend-constants';
 import { imageUnionZodSchema, object, string, type TInfer, z } from '@beautinique/frontend-zod';
 
 const IFSC_REGEX = /^[A-Z]{4}0[A-Z0-9]{6}$/;
-const PINCODE_REGEX = /^[0-9]{6}$/;
+const BANK_ACCOUNT_NUMBER_REGEX = /^[0-9]{9,18}$/;
 
 /* -------------------------------------------------------------------------- */
 /*                          STEP 1 — BUSINESS DETAILS                         */
@@ -19,8 +19,16 @@ export const sellerBusinessDetailsZodSchema = object({
     .trim()
     .min(2, 'Business name must be at least 2 characters long'),
   businessType: z.enum(SELLER_TYPES, 'Business type is required'),
-  gstin: string().trim().toUpperCase().regex(REGEX.GST, 'Enter a valid GSTIN'),
-  pan: string().trim().toUpperCase().regex(REGEX.PAN, 'Enter a valid PAN'),
+  gstin: string('GSTIN is required')
+    .trim()
+    .nonempty('GSTIN is required')
+    .toUpperCase()
+    .regex(REGEX.GST, 'Enter a valid GSTIN'),
+  pan: string('PAN is required')
+    .trim()
+    .nonempty('PAN is required')
+    .toUpperCase()
+    .regex(REGEX.PAN, 'Enter a valid PAN'),
 });
 
 export type TSellerBusinessDetailsZodSchema = TInfer<typeof sellerBusinessDetailsZodSchema>;
@@ -30,12 +38,21 @@ export type TSellerBusinessDetailsZodSchema = TInfer<typeof sellerBusinessDetail
 /* -------------------------------------------------------------------------- */
 
 export const sellerBankDetailsZodSchema = object({
-  accountHolderName: string().trim().min(2, 'Account holder name is required'),
-  accountNumber: string()
+  accountHolderName: string('Account holder name is required')
     .trim()
-    .regex(/^[0-9]{9,18}$/, 'Enter a valid account number'),
-  ifscCode: string().trim().regex(IFSC_REGEX, 'Enter a valid IFSC code'),
-  bankName: string().trim().optional(),
+    .nonempty('Account holder name is required'),
+  accountNumber: string('Account number is required')
+    .trim()
+    .nonempty('Account number is required')
+    .min(9, 'Enter valid account number')
+    .max(18, 'Enter valid account number')
+    .regex(BANK_ACCOUNT_NUMBER_REGEX, 'Enter a valid account number'),
+  ifscCode: string('IFSC code is required')
+    .trim()
+    .nonempty('IFSC code is required')
+    .toUpperCase()
+    .regex(IFSC_REGEX, 'Enter a valid IFSC code'),
+  bankName: string('Bank name is required').trim().nonempty('Bank name is required'),
 });
 
 export type TSellerBankDetailsZodSchema = TInfer<typeof sellerBankDetailsZodSchema>;
@@ -45,12 +62,17 @@ export type TSellerBankDetailsZodSchema = TInfer<typeof sellerBankDetailsZodSche
 /* -------------------------------------------------------------------------- */
 
 export const sellerPickupAddressZodSchema = object({
-  addressLine1: string().trim().min(1, 'Address line 1 is required'),
-  addressLine2: string().trim().optional(),
-  city: string().trim().min(1, 'City is required'),
-  state: string().trim().min(1, 'State is required'),
-  pincode: string().trim().regex(PINCODE_REGEX, 'Enter a valid 6-digit pincode'),
-  country: string().trim().min(1, 'Country is required'),
+  addressLine1: string('Address line 1 is required').trim().nonempty('Address line 1 is required'),
+  addressLine2: string('Address line 2 (optional)').trim().optional(),
+  city: string('City is required').trim().nonempty('City is required'),
+  state: z.enum(STATES_AND_UTS, 'State is required'),
+  pincode: string('Pincode is required')
+    .trim()
+    .nonempty('Pincode is required')
+    .min(6, 'Enter valid pincode')
+    .max(6, 'Enter valid pincode')
+    .regex(REGEX.PIN_CODE, 'Enter a valid 6-digit pincode'),
+  country: z.enum(COUNTRIES, 'Country is required'),
 });
 
 export type TSellerPickupAddressZodSchema = TInfer<typeof sellerPickupAddressZodSchema>;

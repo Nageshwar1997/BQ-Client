@@ -23,6 +23,7 @@ const BusinessDetailsStep = ({ form, disabled = false }: IBusinessDetailsStepPro
       {SELLER_BUSINESS_DETAILS_INPUT_MAP_DATA.map((input) => {
         return input.type === 'select' ? (
           <Controller
+            key={input.name}
             control={control}
             name={input.name}
             render={({ field }) => (
@@ -41,6 +42,7 @@ const BusinessDetailsStep = ({ form, disabled = false }: IBusinessDetailsStepPro
           />
         ) : (
           <Input
+            key={input.name}
             label={input.label}
             inputProps={{
               name: input.name,
