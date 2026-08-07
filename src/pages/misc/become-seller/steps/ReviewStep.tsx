@@ -53,6 +53,8 @@ const ReviewStep = ({
           <GradientText type="silver" text="Business details" className="text-sm font-semibold" />
           <SummaryRow label="Business name" value={business.businessName} />
           <SummaryRow label="Business type" value={business.businessType} />
+          <SummaryRow label="Business email" value={business.businessEmail} />
+          <SummaryRow label="Business phone number" value={business.businessPhoneNumber} />
           <SummaryRow label="GSTIN" value={business.gstin} />
           <SummaryRow label="PAN" value={business.pan} />
         </div>

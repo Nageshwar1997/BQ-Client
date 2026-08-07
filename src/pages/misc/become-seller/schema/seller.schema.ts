@@ -4,7 +4,7 @@
 // now, following the same `xZodSchema`/`TXZodSchema` naming convention used everywhere else.
 
 import { COUNTRIES, REGEX, SELLER_TYPES, STATES_AND_UTS } from '@beautinique/frontend-constants';
-import { imageUnionZodSchema, object, string, type TInfer, z } from '@beautinique/frontend-zod';
+import { emailValidation, imageUnionZodSchema, object, phoneNumberValidation, string, type TInfer, z } from '@beautinique/frontend-zod';
 
 const IFSC_REGEX = /^[A-Z]{4}0[A-Z0-9]{6}$/;
 const BANK_ACCOUNT_NUMBER_REGEX = /^[0-9]{9,18}$/;
@@ -19,6 +19,8 @@ export const sellerBusinessDetailsZodSchema = object({
     .trim()
     .min(2, 'Business name must be at least 2 characters long'),
   businessType: z.enum(SELLER_TYPES, 'Business type is required'),
+  businessEmail: emailValidation,
+  businessPhoneNumber: phoneNumberValidation,
   gstin: string('GSTIN is required')
     .trim()
     .nonempty('GSTIN is required')

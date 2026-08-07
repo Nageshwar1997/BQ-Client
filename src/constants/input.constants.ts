@@ -328,6 +328,20 @@ export const SELLER_BUSINESS_DETAILS_INPUT_MAP_DATA = [
     options: SELLER_TYPES.map((type) => ({ label: type, value: type })),
   },
   {
+    label: 'Business email',
+    name: 'businessEmail',
+    type: 'text',
+    placeholder: 'Enter business email',
+    autoComplete: 'email',
+  },
+  {
+    label: 'Business phone number',
+    name: 'businessPhoneNumber',
+    type: 'number',
+    placeholder: 'Enter business phone number',
+    autoComplete: 'tel',
+  },
+  {
     label: 'GSTIN',
     name: 'gstin',
     type: 'text',
