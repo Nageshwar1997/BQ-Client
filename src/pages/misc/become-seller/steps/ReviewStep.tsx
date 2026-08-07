@@ -11,15 +11,17 @@ import type {
   TSellerBusinessDetailsZodSchema,
   TSellerDocumentsFormZodSchema,
 } from '../schema/seller.schema';
-import StepIntro from './StepIntro';
 
 interface IReviewStepProps {
   form: UseFormReturn<TConfirmDetailsZodSchema>;
-  business: TSellerBusinessDetailsZodSchema;
-  bank: TSellerBankDetailsZodSchema;
-  address: TSellerAddressZodSchema;
-  documents: TSellerDocumentsFormZodSchema;
+
   disabled?: boolean;
+  values: {
+    business: TSellerBusinessDetailsZodSchema;
+    bank: TSellerBankDetailsZodSchema;
+    address: TSellerAddressZodSchema;
+    documents: TSellerDocumentsFormZodSchema;
+  };
 }
 
 const SummaryRow = ({ label, value }: { label: string; value?: string }) => (
@@ -71,25 +73,11 @@ const DocumentPreview = ({ label, value }: { label: string; value?: File | strin
 
 const ReviewStep = ({
   form,
-  business,
-  bank,
-  address,
-  documents,
+  values: { business, bank, address, documents },
   disabled = false,
 }: IReviewStepProps) => {
-  const {
-    register,
-    formState: { errors },
-  } = form;
-
   return (
     <div className="flex flex-col gap-6">
-      <StepIntro
-        icon="solar:check-circle-linear"
-        title="Review & Submit"
-        description="Take a moment to check everything below — you can go back and fix anything before submitting."
-      />
-
       <div className="border-primary/10 divide-primary/10 divide-y rounded-lg border">
         <div className="p-4">
           <GradientText type="silver" text="Business details" className="text-sm font-semibold" />
@@ -130,12 +118,11 @@ const ReviewStep = ({
           </div>
         </div>
       </div>
-
       <Checkbox
-        register={register('confirm')}
+        register={form.register('confirm')}
         checkboxProps={{ name: 'confirm', disabled }}
         content="I confirm the above information is accurate."
-        error={errors.confirm?.message}
+        error={form.formState.errors.confirm?.message}
       />
     </div>
   );
