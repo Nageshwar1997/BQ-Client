@@ -374,7 +374,7 @@ export const SELLER_BANK_DETAILS_INPUT_MAP_DATA = [
   },
 ] as const;
 
-export const SELLER_DOCUMENTS_INPUT_MAP_DATA = [
+export const SELLER_ADDRESS_INPUT_MAP_DATA = [
   {
     label: 'Address line 1',
     name: 'addressLine1',
@@ -419,6 +419,9 @@ export const SELLER_DOCUMENTS_INPUT_MAP_DATA = [
     autoComplete: 'address-level1',
     options: COUNTRIES.map((value) => ({ label: value, value })),
   },
+] as const;
+
+export const SELLER_DOCUMENTS_INPUT_MAP_DATA = [
   {
     label: 'ID proof',
     name: 'idProof',

@@ -5,6 +5,7 @@ import GradientText from '@/components/ui/GradientText';
 import Checkbox from '@/components/ui/inputs/Checkbox';
 
 import type {
+  TSellerAddressZodSchema,
   TSellerBankDetailsZodSchema,
   TSellerBusinessDetailsZodSchema,
   TSellerDocumentsFormZodSchema,
@@ -14,6 +15,7 @@ interface IReviewStepProps {
   form: UseFormReturn<TConfirmDetailsZodSchema>;
   business: TSellerBusinessDetailsZodSchema;
   bank: TSellerBankDetailsZodSchema;
+  address: TSellerAddressZodSchema;
   documents: TSellerDocumentsFormZodSchema;
   disabled?: boolean;
 }
@@ -31,7 +33,14 @@ const documentName = (value?: File | string) => {
   return '—';
 };
 
-const ReviewStep = ({ form, business, bank, documents, disabled = false }: IReviewStepProps) => {
+const ReviewStep = ({
+  form,
+  business,
+  bank,
+  address,
+  documents,
+  disabled = false,
+}: IReviewStepProps) => {
   const {
     register,
     formState: { errors },
@@ -55,17 +64,17 @@ const ReviewStep = ({ form, business, bank, documents, disabled = false }: IRevi
           <SummaryRow label="Bank name" value={bank.bankName} />
         </div>
         <div className="p-4">
-          <GradientText
-            type="silver"
-            text="Address & documents"
-            className="text-sm font-semibold"
-          />
+          <GradientText type="silver" text="Address" className="text-sm font-semibold" />
           <SummaryRow
             label="Pickup address"
-            value={[documents.addressLine1, documents.city, documents.state, documents.pincode]
+            value={[address.addressLine1, address.city, address.state, address.pincode]
               .filter(Boolean)
               .join(', ')}
           />
+          <SummaryRow label="Country" value={address.country} />
+        </div>
+        <div className="p-4">
+          <GradientText type="silver" text="Documents" className="text-sm font-semibold" />
           <SummaryRow label="ID proof" value={documentName(documents.idProof)} />
           <SummaryRow label="Address proof" value={documentName(documents.addressProof)} />
           <SummaryRow label="Business license" value={documentName(documents.businessLicense)} />

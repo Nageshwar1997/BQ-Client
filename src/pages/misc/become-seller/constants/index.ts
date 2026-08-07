@@ -20,8 +20,13 @@ export const SELLER_ONBOARDING_STEPS: StepperStep[] = [
     icon: 'solar:card-linear',
   },
   {
-    title: 'Address & documents',
-    description: 'Pickup address and KYC document uploads',
+    title: 'Address',
+    description: 'Pickup address for orders',
+    icon: 'solar:map-point-linear',
+  },
+  {
+    title: 'Documents',
+    description: 'KYC document uploads',
     icon: 'solar:gallery-linear',
   },
   {
@@ -34,6 +39,7 @@ export const SELLER_ONBOARDING_STEPS: StepperStep[] = [
 export const SELLER_FORM_ID_MAP = {
   0: 'seller-business-details-form',
   1: 'seller-bank-details-form',
-  2: 'seller-documents-form',
-  3: 'seller-review-form',
+  2: 'seller-address-form',
+  3: 'seller-documents-form',
+  4: 'seller-review-form',
 } as const;

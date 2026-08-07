@@ -9,21 +9,24 @@ import Stepper from '@/components/ui/Stepper';
 
 import { SELLER_FORM_ID_MAP, SELLER_ONBOARDING_STEPS } from '../misc/become-seller/constants';
 import {
+  sellerAddressZodSchema,
   sellerBankDetailsZodSchema,
   sellerBusinessDetailsZodSchema,
   sellerDocumentsFormZodSchema,
+  type TSellerAddressZodSchema,
   type TSellerBankDetailsZodSchema,
   type TSellerBusinessDetailsZodSchema,
   type TSellerDocumentsFormZodSchema,
 } from '../misc/become-seller/schema/seller.schema';
+import AddressStep from '../misc/become-seller/steps/AddressStep';
 import BankDetailsStep from '../misc/become-seller/steps/BankDetailsStep';
 import BusinessDetailsStep from '../misc/become-seller/steps/BusinessDetailsStep';
 import DocumentsStep from '../misc/become-seller/steps/DocumentsStep';
 import ReviewStep from '../misc/become-seller/steps/ReviewStep';
-type TStep = 0 | 1 | 2 | 3;
+type TStep = 0 | 1 | 2 | 3 | 4;
 
 const BecomeSeller = () => {
-  const [activeStep, setActiveStep] = useState<TStep>(2);
+  const [activeStep, setActiveStep] = useState<TStep>(0);
 
   const businessForm = useForm<TSellerBusinessDetailsZodSchema>({
     resolver: zodResolver(sellerBusinessDetailsZodSchema),
@@ -31,6 +34,10 @@ const BecomeSeller = () => {
 
   const bankForm = useForm<TSellerBankDetailsZodSchema>({
     resolver: zodResolver(sellerBankDetailsZodSchema),
+  });
+
+  const addressForm = useForm<TSellerAddressZodSchema>({
+    resolver: zodResolver(sellerAddressZodSchema),
   });
 
   const documentsForm = useForm<TSellerDocumentsFormZodSchema>({
@@ -51,9 +58,14 @@ const BecomeSeller = () => {
     setActiveStep(2);
   };
 
+  const handleAddressSubmit = (data: TSellerAddressZodSchema) => {
+    console.log('🚀 ~ handleAddressSubmit ~ data:', data);
+    setActiveStep(3);
+  };
+
   const handleDocumentsSubmit = (data: TSellerDocumentsFormZodSchema) => {
     console.log('🚀 ~ handleDocumentsSubmit ~ data:', data);
-    setActiveStep(3);
+    setActiveStep(4);
   };
 
   const handleReviewSubmit = (data: TConfirmDetailsZodSchema) => {
@@ -80,19 +92,23 @@ const BecomeSeller = () => {
             : activeStep === 1
               ? bankForm.handleSubmit(handleBankDetailsSubmit)
               : activeStep === 2
-                ? documentsForm.handleSubmit(handleDocumentsSubmit)
-                : reviewForm.handleSubmit(handleReviewSubmit)
+                ? addressForm.handleSubmit(handleAddressSubmit)
+                : activeStep === 3
+                  ? documentsForm.handleSubmit(handleDocumentsSubmit)
+                  : reviewForm.handleSubmit(handleReviewSubmit)
         }
         className="flex flex-col gap-6"
       >
         {activeStep === 0 && <BusinessDetailsStep form={businessForm} />}
         {activeStep === 1 && <BankDetailsStep form={bankForm} />}
-        {activeStep === 2 && <DocumentsStep form={documentsForm} />}
-        {activeStep === 3 && (
+        {activeStep === 2 && <AddressStep form={addressForm} />}
+        {activeStep === 3 && <DocumentsStep form={documentsForm} />}
+        {activeStep === 4 && (
           <ReviewStep
             form={reviewForm}
             business={businessForm.getValues()}
             bank={bankForm.getValues()}
+            address={addressForm.getValues()}
             documents={documentsForm.getValues()}
           />
         )}
@@ -106,7 +122,7 @@ const BecomeSeller = () => {
           <Button
             pattern="primary"
             buttonProps={{ type: 'submit' }}
-            content={activeStep === 3 ? 'Submit' : 'Save'}
+            content={activeStep === 4 ? 'Submit' : 'Save'}
           />
         </div>
       </form>
