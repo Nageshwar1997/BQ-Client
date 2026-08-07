@@ -1,6 +1,8 @@
 import {
   CONTACT_QUERY_TYPES,
+  COUNTRIES,
   SELLER_TYPES,
+  STATES_AND_UTS,
   VARIANT_TYPES,
   VARIANT_TYPES_MAP,
 } from '@beautinique/frontend-constants';
@@ -369,6 +371,71 @@ export const SELLER_BANK_DETAILS_INPUT_MAP_DATA = [
     type: 'text',
     placeholder: 'Enter bank name',
     autoComplete: 'given-name',
+  },
+] as const;
+
+export const SELLER_DOCUMENTS_INPUT_MAP_DATA = [
+  {
+    label: 'Address line 1',
+    name: 'addressLine1',
+    type: 'text',
+    placeholder: 'Enter Building, street',
+    autoComplete: 'address-line1',
+  },
+  {
+    label: 'Address line 2 (optional)',
+    name: 'addressLine2',
+    type: 'text',
+    placeholder: 'Enter Landmark, area',
+    autoComplete: 'address-line2',
+  },
+  {
+    label: 'City / Town',
+    name: 'city',
+    type: 'text',
+    placeholder: 'Enter City / Town',
+    autoComplete: 'address-level2',
+  },
+  {
+    label: 'State / Province',
+    name: 'state',
+    type: 'select',
+    placeholder: 'Select State / Province',
+    autoComplete: 'address-level1',
+    options: STATES_AND_UTS.map((value) => ({ label: value, value })),
+  },
+  {
+    label: 'Pincode',
+    name: 'pincode',
+    type: 'number',
+    placeholder: 'Enter pincode',
+    autoComplete: 'postal-code',
+  },
+  {
+    label: 'Country',
+    name: 'country',
+    type: 'select',
+    placeholder: 'Select Country',
+    autoComplete: 'address-level1',
+    options: COUNTRIES.map((value) => ({ label: value, value })),
+  },
+  {
+    label: 'ID proof',
+    name: 'idProof',
+    type: 'file',
+    placeholder: 'Select ID proof',
+  },
+  {
+    label: 'Address proof',
+    name: 'addressProof',
+    type: 'file',
+    placeholder: 'Select address proof',
+  },
+  {
+    label: 'Business license',
+    name: 'businessLicense',
+    type: 'file',
+    placeholder: 'Select business license',
   },
 ] as const;
 

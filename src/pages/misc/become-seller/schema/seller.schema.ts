@@ -61,7 +61,7 @@ export type TSellerBankDetailsZodSchema = TInfer<typeof sellerBankDetailsZodSche
 /*                       STEP 3 — ADDRESS & DOCUMENTS                         */
 /* -------------------------------------------------------------------------- */
 
-export const sellerPickupAddressZodSchema = object({
+export const sellerDocumentsFormZodSchema = object({
   addressLine1: string('Address line 1 is required').trim().nonempty('Address line 1 is required'),
   addressLine2: string('Address line 2 (optional)').trim().optional(),
   city: string('City is required').trim().nonempty('City is required'),
@@ -73,12 +73,6 @@ export const sellerPickupAddressZodSchema = object({
     .max(6, 'Enter valid pincode')
     .regex(REGEX.PIN_CODE, 'Enter a valid 6-digit pincode'),
   country: z.enum(COUNTRIES, 'Country is required'),
-});
-
-export type TSellerPickupAddressZodSchema = TInfer<typeof sellerPickupAddressZodSchema>;
-
-export const sellerDocumentsFormZodSchema = object({
-  pickupAddress: sellerPickupAddressZodSchema,
   idProof: imageUnionZodSchema,
   addressProof: imageUnionZodSchema,
   businessLicense: imageUnionZodSchema,

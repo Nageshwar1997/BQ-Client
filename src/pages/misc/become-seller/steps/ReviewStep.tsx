@@ -21,7 +21,7 @@ interface IReviewStepProps {
 const SummaryRow = ({ label, value }: { label: string; value?: string }) => (
   <div className="flex items-center justify-between gap-4 py-1.5 text-[13px]">
     <span className="text-primary/50">{label}</span>
-    <span className="text-primary max-w-[60%] truncate text-right font-medium">{value ?? '—'}</span>
+    <span className="text-primary max-w-[60%] text-right font-medium line-clamp-2">{value ?? '—'}</span>
   </div>
 );
 
@@ -62,12 +62,7 @@ const ReviewStep = ({ form, business, bank, documents, disabled = false }: IRevi
           />
           <SummaryRow
             label="Pickup address"
-            value={[
-              documents.pickupAddress.addressLine1,
-              documents.pickupAddress.city,
-              documents.pickupAddress.state,
-              documents.pickupAddress.pincode,
-            ]
+            value={[documents.addressLine1, documents.city, documents.state, documents.pincode]
               .filter(Boolean)
               .join(', ')}
           />
