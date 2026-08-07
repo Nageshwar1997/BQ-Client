@@ -1,4 +1,5 @@
 import type { TConfirmDetailsZodSchema } from '@beautinique/frontend-types';
+import { useEffect, useMemo } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 
 import GradientText from '@/components/ui/GradientText';
@@ -29,10 +30,42 @@ const SummaryRow = ({ label, value }: { label: string; value?: string }) => (
   </div>
 );
 
-const documentName = (value?: File | string) => {
-  if (value instanceof File) return value.name;
-  if (typeof value === 'string' && value) return value.split('/').pop();
-  return '—';
+// A freshly-picked file lives in memory as a `File` (needs an object URL to preview); once saved
+// it comes back as a plain `string` URL from the server — either way this renders the actual image.
+const DocumentPreview = ({ label, value }: { label: string; value?: File | string }) => {
+  // Derived directly during render instead of via setState-in-effect (which would trigger an
+  // extra cascading render) — a `File` needs an object URL to preview, a saved value is already
+  // a plain URL string.
+  const previewUrl = useMemo(() => {
+    if (value instanceof File) return URL.createObjectURL(value);
+    return typeof value === 'string' ? value : undefined;
+  }, [value]);
+
+  // Revoking is the actual side effect here (freeing the object URL once it's replaced or this
+  // preview unmounts) — the value itself is computed above, not set from within the effect.
+  useEffect(() => {
+    if (!(value instanceof File) || !previewUrl) return;
+    return () => {
+      URL.revokeObjectURL(previewUrl);
+    };
+  }, [value, previewUrl]);
+
+  return (
+    <div className="flex flex-col gap-1.5">
+      <span className="text-primary/50 line-clamp-1 text-[13px]">{label}</span>
+      {previewUrl ? (
+        <img
+          src={previewUrl}
+          alt={label}
+          className="border-primary/10 bg-secondary-invert h-24 w-full rounded-lg border object-cover"
+        />
+      ) : (
+        <div className="border-primary/10 bg-secondary-invert text-primary/40 flex h-24 w-full items-center justify-center rounded-lg border text-xs">
+          Not uploaded
+        </div>
+      )}
+    </div>
+  );
 };
 
 const ReviewStep = ({
@@ -71,20 +104,23 @@ const ReviewStep = ({
           <GradientText type="silver" text="Address" className="text-sm font-semibold" />
           <SummaryRow
             label="Pickup address"
-            value={[address.line1, address.line2, address.city, address.state, address.pincode]
-              .filter(Boolean)
-              .join(', ')}
+            value={[address.line1, address.line2].filter(Boolean).join(', ')}
           />
+          <SummaryRow label="City / Town" value={address.city} />
+          <SummaryRow label="State" value={address.state} />
+          <SummaryRow label="Pincode" value={address.pincode} />
           <SummaryRow label="Country" value={address.country} />
         </div>
         <div className="p-4">
           <GradientText type="silver" text="Documents" className="text-sm font-semibold" />
-          <SummaryRow label="ID proof" value={documentName(documents.id)} />
-          <SummaryRow label="Address proof" value={documentName(documents.address)} />
-          <SummaryRow label="Business license" value={documentName(documents.license)} />
-          <SummaryRow label="PAN card" value={documentName(documents.pan)} />
-          <SummaryRow label="GST certificate" value={documentName(documents.gst)} />
-          <SummaryRow label="Passbook / Cancelled cheque" value={documentName(documents.bank)} />
+          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+            <DocumentPreview label="ID proof" value={documents.id} />
+            <DocumentPreview label="Address proof" value={documents.address} />
+            <DocumentPreview label="Business license" value={documents.license} />
+            <DocumentPreview label="PAN card" value={documents.pan} />
+            <DocumentPreview label="GST certificate" value={documents.gst} />
+            <DocumentPreview label="Passbook / Cancelled cheque" value={documents.bank} />
+          </div>
         </div>
       </div>
 
