@@ -3,13 +3,13 @@ import type { AxiosProgressEvent } from 'axios';
 import type Quill from 'quill';
 import type { RefObject } from 'react';
 
-import type { ADD_PRODUCT_FORM_ID_MAP } from '@/constants/form.constants';
+import type { SELLER_FORM_ID_MAP } from '@/constants/form.constants';
 
 import type { IQuillImageRef } from './component.type';
 
-export type TAddProductStepNumber = keyof typeof ADD_PRODUCT_FORM_ID_MAP;
+export type TSellerStepNumber = keyof typeof SELLER_FORM_ID_MAP;
 
-export type TAddProductFormId = (typeof ADD_PRODUCT_FORM_ID_MAP)[TAddProductStepNumber];
+export type TSellerFormId = (typeof SELLER_FORM_ID_MAP)[TSellerStepNumber];
 
 export type TProductContentFields = keyof Omit<
   TProductDescriptionAndContentZodSchema,

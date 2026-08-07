@@ -11,6 +11,7 @@ import type {
   TSellerBusinessDetailsZodSchema,
   TSellerDocumentsFormZodSchema,
 } from '../schema/seller.schema';
+import StepIntro from './StepIntro';
 
 interface IReviewStepProps {
   form: UseFormReturn<TConfirmDetailsZodSchema>;
@@ -82,7 +83,13 @@ const ReviewStep = ({
   } = form;
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-6">
+      <StepIntro
+        icon="solar:check-circle-linear"
+        title="Review & Submit"
+        description="Take a moment to check everything below — you can go back and fix anything before submitting."
+      />
+
       <div className="border-primary/10 divide-primary/10 divide-y rounded-lg border">
         <div className="p-4">
           <GradientText type="silver" text="Business details" className="text-sm font-semibold" />
