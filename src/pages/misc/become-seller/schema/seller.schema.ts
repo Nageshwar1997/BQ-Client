@@ -4,7 +4,15 @@
 // now, following the same `xZodSchema`/`TXZodSchema` naming convention used everywhere else.
 
 import { COUNTRIES, REGEX, SELLER_TYPES, STATES_AND_UTS } from '@beautinique/frontend-constants';
-import { emailValidation, imageUnionZodSchema, object, phoneNumberValidation, string, type TInfer, z } from '@beautinique/frontend-zod';
+import {
+  emailValidation,
+  imageUnionZodSchema,
+  object,
+  phoneNumberValidation,
+  string,
+  type TInfer,
+  z,
+} from '@beautinique/frontend-zod';
 
 const IFSC_REGEX = /^[A-Z]{4}0[A-Z0-9]{6}$/;
 const BANK_ACCOUNT_NUMBER_REGEX = /^[0-9]{9,18}$/;
@@ -64,8 +72,8 @@ export type TSellerBankDetailsZodSchema = TInfer<typeof sellerBankDetailsZodSche
 /* -------------------------------------------------------------------------- */
 
 export const sellerAddressZodSchema = object({
-  addressLine1: string('Address line 1 is required').trim().nonempty('Address line 1 is required'),
-  addressLine2: string('Address line 2 (optional)').trim().optional(),
+  line1: string('Address line 1 is required').trim().nonempty('Address line 1 is required'),
+  line2: string('Address line 2 (optional)').trim().optional(),
   city: string('City is required').trim().nonempty('City is required'),
   state: z.enum(STATES_AND_UTS, 'State is required'),
   pincode: string('Pincode is required')
@@ -84,9 +92,12 @@ export type TSellerAddressZodSchema = TInfer<typeof sellerAddressZodSchema>;
 /* -------------------------------------------------------------------------- */
 
 export const sellerDocumentsFormZodSchema = object({
-  idProof: imageUnionZodSchema,
-  addressProof: imageUnionZodSchema,
-  businessLicense: imageUnionZodSchema,
+  id: imageUnionZodSchema,
+  address: imageUnionZodSchema,
+  license: imageUnionZodSchema,
+  pan: imageUnionZodSchema,
+  gst: imageUnionZodSchema,
+  bank: imageUnionZodSchema,
 });
 
 export type TSellerDocumentsFormZodSchema = TInfer<typeof sellerDocumentsFormZodSchema>;

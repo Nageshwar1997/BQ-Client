@@ -391,14 +391,14 @@ export const SELLER_BANK_DETAILS_INPUT_MAP_DATA = [
 export const SELLER_ADDRESS_INPUT_MAP_DATA = [
   {
     label: 'Address line 1',
-    name: 'addressLine1',
+    name: 'line1',
     type: 'text',
     placeholder: 'Enter Building, street',
     autoComplete: 'address-line1',
   },
   {
     label: 'Address line 2 (optional)',
-    name: 'addressLine2',
+    name: 'line2',
     type: 'text',
     placeholder: 'Enter Landmark, area',
     autoComplete: 'address-line2',
@@ -438,21 +438,39 @@ export const SELLER_ADDRESS_INPUT_MAP_DATA = [
 export const SELLER_DOCUMENTS_INPUT_MAP_DATA = [
   {
     label: 'ID proof',
-    name: 'idProof',
+    name: 'id',
     type: 'file',
     placeholder: 'Select ID proof',
   },
   {
     label: 'Address proof',
-    name: 'addressProof',
+    name: 'address',
     type: 'file',
     placeholder: 'Select address proof',
   },
   {
     label: 'Business license',
-    name: 'businessLicense',
+    name: 'license',
     type: 'file',
     placeholder: 'Select business license',
+  },
+  {
+    label: 'PAN card copy',
+    name: 'pan',
+    type: 'file',
+    placeholder: 'Select PAN card copy',
+  },
+  {
+    label: 'GST certificate',
+    name: 'gst',
+    type: 'file',
+    placeholder: 'Select GST certificate',
+  },
+  {
+    label: 'Cancelled cheque / bank passbook',
+    name: 'bank',
+    type: 'file',
+    placeholder: 'Select cancelled cheque or passbook',
   },
 ] as const;
 

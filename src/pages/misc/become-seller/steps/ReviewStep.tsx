@@ -23,7 +23,9 @@ interface IReviewStepProps {
 const SummaryRow = ({ label, value }: { label: string; value?: string }) => (
   <div className="flex items-center justify-between gap-4 py-1.5 text-[13px]">
     <span className="text-primary/50">{label}</span>
-    <span className="text-primary max-w-[60%] text-right font-medium line-clamp-2">{value ?? '—'}</span>
+    <span className="text-primary line-clamp-2 max-w-[60%] text-right font-medium">
+      {value ?? '—'}
+    </span>
   </div>
 );
 
@@ -69,7 +71,7 @@ const ReviewStep = ({
           <GradientText type="silver" text="Address" className="text-sm font-semibold" />
           <SummaryRow
             label="Pickup address"
-            value={[address.addressLine1, address.city, address.state, address.pincode]
+            value={[address.line1, address.line2, address.city, address.state, address.pincode]
               .filter(Boolean)
               .join(', ')}
           />
@@ -77,9 +79,12 @@ const ReviewStep = ({
         </div>
         <div className="p-4">
           <GradientText type="silver" text="Documents" className="text-sm font-semibold" />
-          <SummaryRow label="ID proof" value={documentName(documents.idProof)} />
-          <SummaryRow label="Address proof" value={documentName(documents.addressProof)} />
-          <SummaryRow label="Business license" value={documentName(documents.businessLicense)} />
+          <SummaryRow label="ID proof" value={documentName(documents.id)} />
+          <SummaryRow label="Address proof" value={documentName(documents.address)} />
+          <SummaryRow label="Business license" value={documentName(documents.license)} />
+          <SummaryRow label="PAN card" value={documentName(documents.pan)} />
+          <SummaryRow label="GST certificate" value={documentName(documents.gst)} />
+          <SummaryRow label="Passbook / Cancelled cheque" value={documentName(documents.bank)} />
         </div>
       </div>
 
