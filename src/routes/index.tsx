@@ -56,7 +56,7 @@ const routes: RouteObject[] = [
       },
       {
         path: PROFILE.BASE,
-        // middleware: [authenticate],
+        middleware: [authenticate],
         lazy: loadPage(() => import('@/pages/profile')),
         children: [
           {
