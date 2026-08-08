@@ -7,12 +7,15 @@ import { COUNTRIES, REGEX, SELLER_TYPES, STATES_AND_UTS } from '@beautinique/fro
 import {
   emailValidation,
   imageUnionZodSchema,
+  literal,
   object,
   phoneNumberValidation,
   string,
   type TInfer,
   z,
 } from '@beautinique/frontend-zod';
+
+import { SELLER_FORM_ID_MAP } from '@/constants/form.constants';
 
 const IFSC_REGEX = /^[A-Z]{4}0[A-Z0-9]{6}$/;
 const BANK_ACCOUNT_NUMBER_REGEX = /^[0-9]{9,18}$/;
@@ -22,6 +25,7 @@ const BANK_ACCOUNT_NUMBER_REGEX = /^[0-9]{9,18}$/;
 /* -------------------------------------------------------------------------- */
 
 export const sellerBusinessDetailsZodSchema = object({
+  step: literal(SELLER_FORM_ID_MAP[0]),
   businessName: string('Business name is required')
     .nonempty('Business name is required')
     .trim()
@@ -46,8 +50,9 @@ export type TSellerBusinessDetailsZodSchema = TInfer<typeof sellerBusinessDetail
 /* -------------------------------------------------------------------------- */
 /*                         STEP 2 — BANK & TAX DETAILS                        */
 /* -------------------------------------------------------------------------- */
-
+// SELLER_STEPPER_STEP_COUNT_MAP;
 export const sellerBankDetailsZodSchema = object({
+  step: literal(SELLER_FORM_ID_MAP[1]),
   accountHolderName: string('Account holder name is required')
     .trim()
     .nonempty('Account holder name is required'),
@@ -72,6 +77,7 @@ export type TSellerBankDetailsZodSchema = TInfer<typeof sellerBankDetailsZodSche
 /* -------------------------------------------------------------------------- */
 
 export const sellerAddressZodSchema = object({
+  step: literal(SELLER_FORM_ID_MAP[2]),
   line1: string('Address line 1 is required').trim().nonempty('Address line 1 is required'),
   line2: string('Address line 2 (optional)').trim().optional(),
   city: string('City is required').trim().nonempty('City is required'),
@@ -92,6 +98,7 @@ export type TSellerAddressZodSchema = TInfer<typeof sellerAddressZodSchema>;
 /* -------------------------------------------------------------------------- */
 
 export const sellerDocumentsFormZodSchema = object({
+  step: literal(SELLER_FORM_ID_MAP[3]),
   id: imageUnionZodSchema,
   address: imageUnionZodSchema,
   license: imageUnionZodSchema,

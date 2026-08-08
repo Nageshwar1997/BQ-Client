@@ -35,18 +35,22 @@ const BecomeSeller = () => {
 
   const businessForm = useForm<TSellerBusinessDetailsZodSchema>({
     resolver: zodResolver(sellerBusinessDetailsZodSchema),
+    defaultValues: { step: SELLER_FORM_ID_MAP[0] },
   });
 
   const bankForm = useForm<TSellerBankDetailsZodSchema>({
     resolver: zodResolver(sellerBankDetailsZodSchema),
+    defaultValues: { step: SELLER_FORM_ID_MAP[1] },
   });
 
   const addressForm = useForm<TSellerAddressZodSchema>({
     resolver: zodResolver(sellerAddressZodSchema),
+    defaultValues: { step: SELLER_FORM_ID_MAP[2] },
   });
 
   const documentsForm = useForm<TSellerDocumentsFormZodSchema>({
     resolver: zodResolver(sellerDocumentsFormZodSchema),
+    defaultValues: { step: SELLER_FORM_ID_MAP[3] },
   });
 
   const reviewForm = useForm<TConfirmDetailsZodSchema>({
