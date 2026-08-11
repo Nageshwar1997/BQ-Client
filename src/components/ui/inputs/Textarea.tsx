@@ -43,7 +43,7 @@ const Textarea = ({
             id={textAreaProps.id ?? textAreaProps.name}
             onChange={handleChange}
             rows={textAreaProps.rows ?? 5}
-            className={`text-primary placeholder:text-primary/30 autofill-effect block w-full resize-y border-none bg-transparent px-3 py-2 text-[13px] outline-hidden placeholder:text-[13px] focus:border-none focus:outline-hidden disabled:cursor-not-allowed xl:py-3 ${textAreaProps.className ?? ''}`}
+            className={`text-primary placeholder:text-primary/30 autofill-effect block w-full resize-y border-none bg-transparent px-3 py-2 text-[13px] leading-normal outline-hidden placeholder:text-[13px] focus:border-none focus:outline-hidden disabled:cursor-not-allowed xl:py-3 ${textAreaProps.className ?? ''}`}
           />
         </div>
       </div>

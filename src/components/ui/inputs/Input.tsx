@@ -46,7 +46,7 @@ const Input = ({
             onWheel={(event) => {
               if (inputProps.type === 'number') event.currentTarget.blur();
             }}
-            className={`text-primary placeholder:text-primary/30 autofill-effect min-w-0 flex-1 border-none bg-transparent py-2 text-[13px] outline-hidden placeholder:text-[13px] focus:border-none focus:outline-hidden disabled:cursor-not-allowed xl:py-3 ${inputProps.className ?? ''}`}
+            className={`text-primary placeholder:text-primary/30 autofill-effect min-w-0 flex-1 border-none bg-transparent py-2 text-[13px] leading-normal outline-hidden placeholder:text-[13px] focus:border-none focus:outline-hidden disabled:cursor-not-allowed xl:py-3 ${inputProps.className ?? ''}`}
           />
           {/* Right Icon */}
           <InputIcon icon={icons?.right} />
