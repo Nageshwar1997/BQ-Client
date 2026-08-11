@@ -8,7 +8,7 @@ import { decryptData, encryptData } from '@/utils/crypto.util';
 
 const useUserStore = create<IUserStore>((set) => {
   const getInitialUser = (): IUser | null => {
-    const encrypted = sessionStorage.getItem(USER_KEY);
+    const encrypted = localStorage.getItem(USER_KEY);
     const decrypted = decryptData<IUser>(encrypted ?? '');
     return decrypted;
   };
@@ -21,10 +21,10 @@ const useUserStore = create<IUserStore>((set) => {
 
     setUser: (user) => {
       if (user) {
-        sessionStorage.setItem(USER_KEY, encryptData(user));
+        localStorage.setItem(USER_KEY, encryptData(user));
         resetAuthLogoutState();
       } else {
-        sessionStorage.removeItem(USER_KEY);
+        localStorage.removeItem(USER_KEY);
       }
 
       set({ user, authenticated: !!user });
