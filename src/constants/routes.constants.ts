@@ -59,6 +59,7 @@ export const ROUTES = {
     ORDER_TRACK: 'track',
     ADDRESSES: 'addresses',
     WISHLIST: 'wishlist',
+    CART: 'cart',
     REVIEWS: 'reviews',
     REFER_A_FRIEND: 'refer-a-friend',
     GIFT_CARDS: 'gift-cards',

@@ -1,3 +1,5 @@
+import { ROUTES } from '@/constants/routes.constants';
+
 import GradientText from './GradientText';
 
 const AuthBottomInstructions = () => {
@@ -7,14 +9,14 @@ const AuthBottomInstructions = () => {
       <GradientText
         text="Terms & Conditions"
         type="accent"
-        path="/terms-conditions"
+        path={`/${ROUTES.LEGAL.TERMS_CONDITIONS}`}
         className="font-medium"
       />{' '}
       of use It is one of Flytoday services and{' '}
       <GradientText
         text="Privacy Policy"
         type="accent"
-        path="/privacy-policy"
+        path={`/${ROUTES.LEGAL.PRIVACY_POLICY}`}
         className="font-medium"
       />{' '}
       rules.

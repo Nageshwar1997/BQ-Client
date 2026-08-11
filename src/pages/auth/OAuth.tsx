@@ -65,14 +65,14 @@ const OAuth = () => {
         showError ? (
           <>
             There was a problem signing you in. Please{' '}
-            <GradientText type="accent" path="/auth" text="Try again" />.
+            <GradientText type="accent" path={`/${ROUTES.AUTH.BASE}`} text="Try again" />.
           </>
         ) : isSuccess ? (
           'Redirecting you back shortly...'
         ) : (
           <>
             There was a problem finding user details. Please{' '}
-            <GradientText type="silver" path="/contact" text="Contact Us" />.
+            <GradientText type="silver" path={`/${ROUTES.SERVICES.CONTACT}`} text="Contact Us" />.
           </>
         )
       }

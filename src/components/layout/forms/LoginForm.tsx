@@ -187,7 +187,7 @@ const LoginForm = () => {
             <GradientText
               text="Forgot Password?"
               type="accent"
-              path="/auth/forgot-password"
+              path={`/${ROUTES.AUTH.BASE}/${ROUTES.AUTH.FORGOT_PASSWORD}`}
               className="text-xs font-semibold whitespace-nowrap hover:underline"
             />
           </p>
@@ -218,7 +218,7 @@ const LoginForm = () => {
           <GradientText
             text="Register"
             type="accent"
-            path="/auth/register"
+            path={`/${ROUTES.AUTH.BASE}/${ROUTES.AUTH.REGISTER}`}
             className="text-xs font-semibold md:text-sm"
           />
         </div>

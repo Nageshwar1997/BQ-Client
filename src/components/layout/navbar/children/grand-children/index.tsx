@@ -213,7 +213,7 @@ export const UserMenuIcons = ({
           <Icon
             icon="solar:bag-5-linear"
             onClick={() => {
-              handleAuthNavigation('/cart');
+              handleAuthNavigation(`/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.CART}`);
             }}
             className="text-tertiary hover:text-secondary size-5 cursor-pointer md:size-6"
           />
@@ -228,7 +228,7 @@ export const UserMenuIcons = ({
           <Icon
             icon="solar:heart-outline"
             onClick={() => {
-              handleAuthNavigation('/wishlist');
+              handleAuthNavigation(`/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.WISHLIST}`);
             }}
             className="text-tertiary hover:text-secondary size-5 cursor-pointer md:size-6"
           />

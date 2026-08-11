@@ -343,7 +343,7 @@ const Register = () => {
           <GradientText
             text="Login"
             type="accent"
-            path="/auth"
+            path={`/${ROUTES.AUTH.BASE}`}
             className="text-xs font-semibold md:text-sm"
           />
         </div>
