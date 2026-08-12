@@ -5,6 +5,16 @@ import { createQueryKeys, createRouteHelper } from '@/utils/api.util';
 
 const { DELETE, GET, PATCH, POST } = API_METHODS_MAP;
 
+// The gateway registers these at its own root (`/health`, `/wake-up`, `/overall-health`) -
+// not under `base` like everything below - so this stays a separate object. Running it
+// through `createRouteHelper` alongside `METHODS_AND_PATHS` would wrongly prefix these with
+// `/api/v1`, since the helper prepends every entry's `base` to all of its children.
+export const GATEWAY_ROOT_METHODS_AND_PATHS = {
+  health: { method: GET, path: '/health' },
+  overallHealth: { method: GET, path: '/overall-health' },
+  wakeUp: { method: GET, path: '/wake-up' },
+} as const;
+
 export const METHODS_AND_PATHS = {
   base: '/api/v1',
   gateway: {
@@ -118,6 +128,8 @@ export const METHODS_AND_PATHS = {
 } as const;
 
 export const API_METHODS_AND_URLS = createRouteHelper(METHODS_AND_PATHS);
+
+export const GATEWAY_ROOT_API_METHODS_AND_URLS = createRouteHelper(GATEWAY_ROOT_METHODS_AND_PATHS);
 
 export const API_QUERY_KEYS = createQueryKeys(METHODS_AND_PATHS);
 

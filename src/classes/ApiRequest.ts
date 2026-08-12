@@ -5,7 +5,7 @@ import axios, {
   type AxiosResponse,
 } from 'axios';
 
-import { API_METHODS_AND_URLS } from '@/constants/api.constants';
+import { API_METHODS_AND_URLS, GATEWAY_ROOT_API_METHODS_AND_URLS } from '@/constants/api.constants';
 import envs from '@/envs';
 import type { IErrorResponse } from '@/types/api.type';
 
@@ -31,6 +31,11 @@ let refreshIntervalId: ReturnType<typeof setInterval> | null = null;
 const REFRESH_TIMEOUT_MS = 15 * 1000;
 const REACTIVE_RETRY_DELAY_MS = 500;
 
+// Render's free tier can take 50-75s to cold-start a sleeping service. The gateway's own
+// `/wake-up` handler waits up to ~75s per downstream service (with a couple of retries) before
+// responding, so this needs a generous timeout too - well above the worst case.
+const WAKE_UP_TIMEOUT_MS = 100 * 1000;
+
 // Dedicated client used only for the refresh call itself. Every ApiRequest subclass instance
 // creates its own axios instance with identical config, so this avoids depending on any one of
 // them and keeps the periodic refresh (below) independent of which API classes exist.
@@ -39,6 +44,22 @@ const refreshClient = axios.create({
   withCredentials: true,
   timeout: REFRESH_TIMEOUT_MS,
 });
+
+// Dedicated client for the gateway's aggregate `/wake-up` ping - deliberately separate from
+// `refreshClient` (short timeout, auth-only) and from the per-resource `ApiRequest` instances
+// (which don't need a 100s timeout on every call).
+const wakeUpClient = axios.create({
+  baseURL: envs.urls.gateway,
+  timeout: WAKE_UP_TIMEOUT_MS,
+});
+
+/**
+ * Pings the gateway's `/wake-up` route, which in turn wakes every downstream microservice in
+ * parallel (see the gateway's `wakeUpController`). Call this once on app boot so a cold Render
+ * instance wakes up proactively instead of the user's first real request eating the delay.
+ */
+export const pingGatewayWakeUp = () =>
+  wakeUpClient.request(GATEWAY_ROOT_API_METHODS_AND_URLS.wakeUp);
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
