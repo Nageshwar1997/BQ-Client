@@ -1,4 +1,8 @@
-import { API_METHODS_MAP, PRODUCT_STATUSES_MAP } from '@beautinique/frontend-constants';
+import {
+  API_METHODS_MAP,
+  PRODUCT_STATUSES_MAP,
+  SERVICE_NAMES_MAP,
+} from '@beautinique/frontend-constants';
 
 import type { TProductSortBy } from '@/types/api.type';
 import { createQueryKeys, createRouteHelper } from '@/utils/api.util';
@@ -21,7 +25,7 @@ export const METHODS_AND_PATHS = {
     refreshAccessToken: { method: POST, path: '/refresh-access-token' },
   },
   user_service: {
-    base: '/user-service',
+    base: `/${SERVICE_NAMES_MAP.user}`,
     auth: {
       base: '/auth',
       login: {
@@ -74,7 +78,7 @@ export const METHODS_AND_PATHS = {
     },
   },
   media_service: {
-    base: '/media-service',
+    base: `/${SERVICE_NAMES_MAP.media}`,
     upload: {
       base: '/upload',
       single: { method: POST, path: '/single' },
@@ -82,7 +86,7 @@ export const METHODS_AND_PATHS = {
     },
   },
   product_service: {
-    base: '/product-service',
+    base: `/${SERVICE_NAMES_MAP.product}`,
     category: {
       base: '/category',
       add: { method: POST, path: '/' },
@@ -117,7 +121,7 @@ export const METHODS_AND_PATHS = {
     },
   },
   organization_service: {
-    base: '/organization-service',
+    base: `/${SERVICE_NAMES_MAP.organization}`,
     contact: {
       base: '/contact',
       create: { method: POST, path: '/' },
