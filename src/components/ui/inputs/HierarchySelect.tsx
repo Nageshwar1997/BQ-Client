@@ -54,9 +54,10 @@ const TreeNode = ({
   expanded,
   onToggle,
   onSelect,
+  forceExpanded = false,
 }: IHierarchySelectTreeNode) => {
   const hasChildren = !!node.children?.length;
-  const isExpanded = expanded[node.value];
+  const isExpanded = forceExpanded || expanded[node.value];
   const isSelected = value === node.value;
 
   return (
@@ -130,6 +131,7 @@ const TreeNode = ({
             expanded={expanded}
             onToggle={onToggle}
             onSelect={onSelect}
+            forceExpanded={forceExpanded}
           />
         ))}
     </>
@@ -266,7 +268,7 @@ const HierarchySelect = ({
             onClick={handleToggle}
           >
             <span
-              className={`flex-1 truncate py-2 xl:py-3 first-letter:capitalize ${!selectedOption?.value ? 'text-primary/30' : ''}`}
+              className={`flex-1 truncate py-2 first-letter:capitalize xl:py-3 ${!selectedOption?.value ? 'text-primary/30' : ''}`}
             >
               {selectedOption?.label ?? selectProps.placeholder ?? 'Select'}
             </span>
@@ -338,6 +340,7 @@ const HierarchySelect = ({
                     expanded={expanded}
                     onToggle={toggleExpand}
                     onSelect={handleSelect}
+                    forceExpanded={!!searchKeyword.trim()}
                   />
                 ))
               ) : (

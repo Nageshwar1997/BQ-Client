@@ -91,6 +91,10 @@ export interface IHierarchySelectTreeNode {
   expanded: Record<ISelectOption['value'], boolean>;
   onToggle: (value: ISelectOption['value']) => void;
   onSelect: (value: ISelectOption['value']) => void;
+  // When true (an active search), every branch renders expanded regardless
+  // of `expanded` - `filterTree` already pruned away anything that isn't a
+  // match or an ancestor of one, so everything left over is worth showing.
+  forceExpanded?: boolean;
 }
 
 export interface IColorInput
