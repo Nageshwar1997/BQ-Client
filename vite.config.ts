@@ -9,12 +9,7 @@ export default defineConfig(({ mode }) => ({
     react(),
     tailwindcss(),
     mode === 'analyze' &&
-      visualizer({
-        open: true,
-        filename: 'stats.html',
-        gzipSize: true,
-        brotliSize: true,
-      }),
+      visualizer({ open: true, filename: 'stats.html', gzipSize: true, brotliSize: true }),
   ].filter(Boolean),
   resolve: { alias: { '@': path.resolve(import.meta.dirname, './src') } },
   server: { port: 3001 },
