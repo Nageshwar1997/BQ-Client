@@ -17,8 +17,8 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
-    "@beautinique/frontend-constants": "^1.0.5",
-    "@beautinique/frontend-zod": "^1.0.19",
+    "@beautinique/frontend-constants": "^1.0.6",
+    "@beautinique/frontend-zod": "^1.0.20",
     "@beautinique/shared-utils": "^1.0.6",
     "@iconify/react": "^6.0.2",
     "@tanstack/react-table": "^9.1.2",
@@ -39,7 +39,7 @@
     "zustand": "^5.0.15"
   },
   "devDependencies": {
-    "@beautinique/frontend-types": "^1.0.16",
+    "@beautinique/frontend-types": "^1.0.17",
     "@eslint/js": "^10.0.1",
     "@hookform/resolvers": "^5.9.1",
     "@react-google-maps/api": "^2.20.8",
