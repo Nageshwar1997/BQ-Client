@@ -1,5 +1,5 @@
 import { MediaApi } from './MediaApi';
-import { ContactApi } from './OrganizationApi';
+import { ContactApi, SellerApi } from './OrganizationApi';
 import { CategoryApi, ProductApi } from './ProductApi';
 import { AuthApi, UserApi } from './UserApi';
 
@@ -12,3 +12,4 @@ export const productApi = new ProductApi();
 export const mediaApi = new MediaApi();
 
 export const contactApi = new ContactApi();
+export const sellerApi = new SellerApi();

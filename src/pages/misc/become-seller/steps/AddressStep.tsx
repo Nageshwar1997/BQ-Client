@@ -1,10 +1,9 @@
+import type { TSellerAddressZodSchema } from '@beautinique/frontend-types';
 import { Controller, type UseFormReturn } from 'react-hook-form';
 
 import Input from '@/components/ui/inputs/Input';
 import Select from '@/components/ui/inputs/Select';
 import { SELLER_ADDRESS_INPUT_MAP_DATA } from '@/constants/input.constants';
-
-import type { TSellerAddressZodSchema } from '../schema/seller.schema';
 
 interface IAddressStepProps {
   form: UseFormReturn<TSellerAddressZodSchema>;

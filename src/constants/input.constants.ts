@@ -315,28 +315,28 @@ export const PRODUCT_TRYON_INPUT_MAP_DATA = [
 export const SELLER_BUSINESS_DETAILS_INPUT_MAP_DATA = [
   {
     label: 'Business name',
-    name: 'businessName',
+    name: 'name',
     type: 'text',
     placeholder: 'Enter business name',
     autoComplete: 'given-name',
   },
   {
     label: 'Business type',
-    name: 'businessType',
+    name: 'type',
     type: 'select',
     placeholder: 'Select business type',
     options: SELLER_TYPES.map((type) => ({ label: type, value: type })),
   },
   {
     label: 'Business email',
-    name: 'businessEmail',
+    name: 'email',
     type: 'text',
     placeholder: 'Enter business email',
     autoComplete: 'email',
   },
   {
     label: 'Business phone number',
-    name: 'businessPhoneNumber',
+    name: 'phoneNumber',
     type: 'number',
     placeholder: 'Enter business phone number',
     autoComplete: 'tel',

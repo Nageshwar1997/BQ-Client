@@ -14,7 +14,11 @@ import type {
   TProductWithoutVariantsZodSchema,
   TProductWithVariantsZodSchema,
   TRegisterZodSchema,
+  TSellerApprovalStatus,
+  TSellerType,
   TSort,
+  TStateOrUT,
+  TTerritoryAssignmentReason,
   TTryOnSelection,
   TUserRole,
 } from '@beautinique/frontend-types';
@@ -218,4 +222,27 @@ export interface IDashboardProductsResponse {
   products: TApiProductPopulated[];
   pagination: IPagination;
   counts: Record<TProductStatus | 'ALL', number>;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                   SELLER                                   */
+/* -------------------------------------------------------------------------- */
+
+export interface ISellerAssignedAdminHistoryEntry {
+  admin: string;
+  assignedAt: string;
+  reason: TTerritoryAssignmentReason;
+}
+
+// The applicant's own submitted application (`GET /seller/me`) - only the
+// fields the status-tracking screen actually shows, not the full backend doc.
+export interface ISeller extends IId, ITimeStamp {
+  businessDetails: { name: string; type: TSellerType };
+  address: { city: string; state: TStateOrUT };
+  approvalStatus: TSellerApprovalStatus;
+  assignedAdmin?: string | null;
+  assignedAdminHistory: ISellerAssignedAdminHistoryEntry[];
+  history?: {
+    rejectReason?: string | null;
+  };
 }

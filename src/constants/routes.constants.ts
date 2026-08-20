@@ -54,6 +54,7 @@ export const ROUTES = {
   PROFILE: {
     BASE: 'profile',
     BECOME_SELLER: 'become-seller',
+    SELLER_APPLICATION: 'seller-application',
     ORDERS: 'orders',
     ORDER_RETURN_REFUND: 'return-refund',
     ORDER_TRACK: 'track',

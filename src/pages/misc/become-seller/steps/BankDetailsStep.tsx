@@ -1,9 +1,8 @@
+import type { TSellerBankDetailsZodSchema } from '@beautinique/frontend-types';
 import type { UseFormReturn } from 'react-hook-form';
 
 import Input from '@/components/ui/inputs/Input';
 import { SELLER_BANK_DETAILS_INPUT_MAP_DATA } from '@/constants/input.constants';
-
-import type { TSellerBankDetailsZodSchema } from '../schema/seller.schema';
 
 interface IBankDetailsStepProps {
   form: UseFormReturn<TSellerBankDetailsZodSchema>;

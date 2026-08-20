@@ -128,6 +128,17 @@ export const METHODS_AND_PATHS = {
       list: { method: GET, path: '/' },
       updateStatus: { method: PATCH, path: '/:ticketId' },
     },
+    seller: {
+      base: '/seller',
+      // Self - the applicant's own submitted application (status tracking).
+      me: { method: GET, path: '/me' },
+      draft: {
+        base: '/draft',
+        save: { method: POST, path: '/' }, // Save one wizard step
+        get: { method: GET, path: '/' }, // Resume - fetch existing draft
+        submit: { method: PATCH, path: '/submit' }, // Reassembles the draft, creates the Seller
+      },
+    },
   },
 } as const;
 

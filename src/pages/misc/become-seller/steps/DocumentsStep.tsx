@@ -1,12 +1,11 @@
+import type { TSellerDocumentsZodSchema } from '@beautinique/frontend-types';
 import { Controller, type UseFormReturn } from 'react-hook-form';
 
 import FileInput from '@/components/ui/inputs/FileInput';
 import { SELLER_DOCUMENTS_INPUT_MAP_DATA } from '@/constants/input.constants';
 
-import type { TSellerDocumentsFormZodSchema } from '../schema/seller.schema';
-
 interface IDocumentsStepProps {
-  form: UseFormReturn<TSellerDocumentsFormZodSchema>;
+  form: UseFormReturn<TSellerDocumentsZodSchema>;
   disabled?: boolean;
 }
 

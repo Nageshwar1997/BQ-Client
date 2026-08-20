@@ -1,84 +1,158 @@
 import { IMAGE_FORMATS, MAX_IMAGE_SIZE } from '@beautinique/frontend-constants';
-import type { TConfirmDetailsZodSchema } from '@beautinique/frontend-types';
-import { confirmDetailsZodSchema } from '@beautinique/frontend-zod';
+import type {
+  TConfirmDetailsZodSchema,
+  TDraftSellerDetailsZodSchema,
+  TSellerAddressZodSchema,
+  TSellerBankDetailsZodSchema,
+  TSellerBusinessDetailsZodSchema,
+  TSellerDocumentsZodSchema,
+} from '@beautinique/frontend-types';
+import {
+  confirmDetailsZodSchema,
+  sellerAddressZodSchema,
+  sellerBankDetailsZodSchema,
+  sellerBusinessDetailsZodSchema,
+  sellerDocumentsZodSchema,
+} from '@beautinique/frontend-zod';
 import { formatFileSize } from '@beautinique/shared-utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { Navigate, useNavigate } from 'react-router-dom';
 
+import LoadingPage from '@/components/layout/loaders/LoadingPage';
 import { HighlightNote, StaticPageHeader } from '@/components/layout/static-page';
 import Button from '@/components/ui/Button';
 import GradientText from '@/components/ui/GradientText';
 import Stepper from '@/components/ui/Stepper';
 import { SELLER_FORM_ID_MAP, SELLER_ONBOARDING_STEPS } from '@/constants/form.constants';
-import type { TSellerStepNumber } from '@/types/common.type';
-
+import { ROUTES } from '@/constants/routes.constants';
+import { useUploadSingleMedia } from '@/services/media-service/media.service.query';
 import {
-  sellerAddressZodSchema,
-  sellerBankDetailsZodSchema,
-  sellerBusinessDetailsZodSchema,
-  sellerDocumentsFormZodSchema,
-  type TSellerAddressZodSchema,
-  type TSellerBankDetailsZodSchema,
-  type TSellerBusinessDetailsZodSchema,
-  type TSellerDocumentsFormZodSchema,
-} from '../misc/become-seller/schema/seller.schema';
+  useGetDraftSeller,
+  useGetMySeller,
+  useSaveDraftSeller,
+  useSubmitSellerDraft,
+} from '@/services/organization-service/seller.service.query';
+import type { TSellerStepNumber } from '@/types/common.type';
+import { handleApiSuccessToaster } from '@/utils/api.util';
+
 import AddressStep from '../misc/become-seller/steps/AddressStep';
 import BankDetailsStep from '../misc/become-seller/steps/BankDetailsStep';
 import BusinessDetailsStep from '../misc/become-seller/steps/BusinessDetailsStep';
 import DocumentsStep from '../misc/become-seller/steps/DocumentsStep';
 import ReviewStep from '../misc/become-seller/steps/ReviewStep';
 
-const BecomeSeller = () => {
+type TDocumentKey = Exclude<keyof TSellerDocumentsZodSchema, 'step'>;
+
+const BecomeSellerWizard = ({
+  initialDraft,
+}: {
+  initialDraft: TDraftSellerDetailsZodSchema | null;
+}) => {
+  const navigate = useNavigate();
+
   const [activeStep, setActiveStep] = useState<TSellerStepNumber>(0);
+
+  const { mutateAsync: saveDraft, isPending: isSavingDraft } = useSaveDraftSeller();
+  const { mutateAsync: submitDraft, isPending: isSubmitting } = useSubmitSellerDraft();
+  const { mutateAsync: uploadSingle, isPending: isUploading } = useUploadSingleMedia();
+
+  const isPending = isSavingDraft || isSubmitting || isUploading;
 
   const businessForm = useForm<TSellerBusinessDetailsZodSchema>({
     resolver: zodResolver(sellerBusinessDetailsZodSchema),
-    defaultValues: { step: SELLER_FORM_ID_MAP[0] },
+    defaultValues: initialDraft?.businessDetails ?? { step: SELLER_FORM_ID_MAP[0] },
   });
 
   const bankForm = useForm<TSellerBankDetailsZodSchema>({
     resolver: zodResolver(sellerBankDetailsZodSchema),
-    defaultValues: { step: SELLER_FORM_ID_MAP[1] },
+    defaultValues: initialDraft?.bankDetails ?? { step: SELLER_FORM_ID_MAP[1] },
   });
 
   const addressForm = useForm<TSellerAddressZodSchema>({
     resolver: zodResolver(sellerAddressZodSchema),
-    defaultValues: { step: SELLER_FORM_ID_MAP[2] },
+    defaultValues: initialDraft?.address ?? { step: SELLER_FORM_ID_MAP[2] },
   });
 
-  const documentsForm = useForm<TSellerDocumentsFormZodSchema>({
-    resolver: zodResolver(sellerDocumentsFormZodSchema),
-    defaultValues: { step: SELLER_FORM_ID_MAP[3] },
+  const documentsForm = useForm<TSellerDocumentsZodSchema>({
+    resolver: zodResolver(sellerDocumentsZodSchema),
+    defaultValues: initialDraft?.documents ?? { step: SELLER_FORM_ID_MAP[3] },
   });
 
   const reviewForm = useForm<TConfirmDetailsZodSchema>({
     resolver: zodResolver(confirmDetailsZodSchema),
   });
 
-  const handleBusinessDetailsSubmit = (data: TSellerBusinessDetailsZodSchema) => {
-    console.log('🚀 ~ handleBusinessDetailsSubmit ~ data:', data);
-    setActiveStep(1);
+  const handleBusinessDetailsSubmit = async (data: TSellerBusinessDetailsZodSchema) => {
+    await saveDraft(data, {
+      onSuccess: () => {
+        setActiveStep(1);
+      },
+    });
   };
 
-  const handleBankDetailsSubmit = (data: TSellerBankDetailsZodSchema) => {
-    console.log('🚀 ~ handleBankDetailsSubmit ~ data:', data);
-    setActiveStep(2);
+  const handleBankDetailsSubmit = async (data: TSellerBankDetailsZodSchema) => {
+    await saveDraft(data, {
+      onSuccess: () => {
+        setActiveStep(2);
+      },
+    });
   };
 
-  const handleAddressSubmit = (data: TSellerAddressZodSchema) => {
-    console.log('🚀 ~ handleAddressSubmit ~ data:', data);
-    setActiveStep(3);
+  const handleAddressSubmit = async (data: TSellerAddressZodSchema) => {
+    await saveDraft(data, {
+      onSuccess: () => {
+        setActiveStep(3);
+      },
+    });
   };
 
-  const handleDocumentsSubmit = (data: TSellerDocumentsFormZodSchema) => {
-    console.log('🚀 ~ handleDocumentsSubmit ~ data:', data);
-    setActiveStep(4);
+  // Each document field holds either a freshly-picked `File` (needs uploading) or an
+  // already-uploaded URL `string` (kept as-is - re-uploading it would be wasted work,
+  // e.g. when the user comes Back to this step after it already saved once).
+  const handleDocumentsSubmit = async (data: TSellerDocumentsZodSchema) => {
+    const documentKeys = Object.keys(data).filter((key) => key !== 'step') as TDocumentKey[];
+
+    const uploadedEntries = await Promise.all(
+      documentKeys.map(async (key) => {
+        const value = data[key];
+
+        if (typeof value === 'string') return [key, value] as const;
+
+        const formData = new FormData();
+        formData.append('file', value);
+        formData.append('folder', 'SellerDocuments');
+
+        const { data: url } = await uploadSingle({
+          data: formData,
+          toasterInfo: { description: `Uploading ${key}...` },
+        });
+
+        return [key, url ?? ''] as const;
+      }),
+    );
+
+    const payload: TSellerDocumentsZodSchema = {
+      step: 'documents',
+      ...Object.fromEntries(uploadedEntries),
+    } as TSellerDocumentsZodSchema;
+
+    await saveDraft(payload, {
+      onSuccess: () => {
+        setActiveStep(4);
+      },
+    });
   };
 
-  const handleReviewSubmit = (data: TConfirmDetailsZodSchema) => {
-    console.log('🚀 ~ handleReviewSubmit ~ data:', data);
+  const handleReviewSubmit = async () => {
+    await submitDraft(undefined, {
+      onSuccess: ({ message }) => {
+        handleApiSuccessToaster(message);
+        void navigate(`/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.SELLER_APPLICATION}`);
+      },
+    });
   };
 
   const handleBack = () => {
@@ -90,7 +164,7 @@ const BecomeSeller = () => {
       icon: 'solar:case-round-linear',
       title: 'Business Details',
       description: "Tell us about your business so shoppers know who they're buying from.",
-      component: <BusinessDetailsStep form={businessForm} />,
+      component: <BusinessDetailsStep form={businessForm} disabled={isPending} />,
       onSubmit: businessForm.handleSubmit(handleBusinessDetailsSubmit),
       highlight: {
         icon: 'solar:shield-check-linear',
@@ -103,7 +177,7 @@ const BecomeSeller = () => {
       icon: 'solar:card-linear',
       title: 'Bank & Tax Details',
       description: "We'll use this account to send your payouts, minus applicable fees.",
-      component: <BankDetailsStep form={bankForm} />,
+      component: <BankDetailsStep form={bankForm} disabled={isPending} />,
       onSubmit: bankForm.handleSubmit(handleBankDetailsSubmit),
       highlight: {
         icon: 'solar:lock-keyhole-linear',
@@ -116,7 +190,7 @@ const BecomeSeller = () => {
       icon: 'solar:map-point-linear',
       title: 'Pickup Address',
       description: "This is where we'll collect orders from for shipping to your customers.",
-      component: <AddressStep form={addressForm} />,
+      component: <AddressStep form={addressForm} disabled={isPending} />,
       onSubmit: addressForm.handleSubmit(handleAddressSubmit),
       highlight: {
         icon: 'solar:delivery-linear',
@@ -129,7 +203,7 @@ const BecomeSeller = () => {
       icon: 'solar:gallery-linear',
       title: 'Upload Documents',
       description: 'A few documents to verify your identity, business, and bank account.',
-      component: <DocumentsStep form={documentsForm} />,
+      component: <DocumentsStep form={documentsForm} disabled={isPending} />,
       onSubmit: documentsForm.handleSubmit(handleDocumentsSubmit),
       highlight: {
         icon: 'solar:file-check-linear',
@@ -151,7 +225,7 @@ const BecomeSeller = () => {
             bank: bankForm.getValues(),
             documents: documentsForm.getValues(),
           }}
-          disabled={false}
+          disabled={isPending}
         />
       ),
       onSubmit: reviewForm.handleSubmit(handleReviewSubmit),
@@ -171,6 +245,7 @@ const BecomeSeller = () => {
         steps={SELLER_ONBOARDING_STEPS}
         activeStep={activeStep}
         onStepClick={(step) => {
+          if (isPending) return;
           setActiveStep(step as TSellerStepNumber);
         }}
       >
@@ -204,19 +279,48 @@ const BecomeSeller = () => {
           <div className="flex gap-4">
             <Button
               pattern="secondary"
-              buttonProps={{ type: 'button', onClick: handleBack, disabled: activeStep === 0 }}
+              buttonProps={{
+                type: 'button',
+                onClick: handleBack,
+                disabled: activeStep === 0 || isPending,
+              }}
               content="Back"
             />
             <Button
               pattern="primary"
-              buttonProps={{ type: 'submit' }}
-              content={activeStep === 4 ? 'Submit' : 'Save'}
+              buttonProps={{ type: 'submit', disabled: isPending }}
+              content={
+                activeStep === 4
+                  ? isSubmitting
+                    ? 'Submitting...'
+                    : 'Submit'
+                  : isPending
+                    ? 'Saving...'
+                    : 'Save'
+              }
             />
           </div>
         </form>
       </Stepper>
     </div>
   );
+};
+
+const BecomeSeller = () => {
+  const { data: mySeller, isLoading: isLoadingMySeller } = useGetMySeller();
+  const { data: draft, isLoading: isLoadingDraft } = useGetDraftSeller(true);
+
+  if (isLoadingMySeller || isLoadingDraft) {
+    return <LoadingPage text="Loading..." />;
+  }
+
+  // Already applied (any status) - the wizard can't be reused (unique per user
+  // server-side), send them to the status screen instead.
+  if (mySeller) {
+    return <Navigate to={`/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.SELLER_APPLICATION}`} replace />;
+  }
+
+  return <BecomeSellerWizard initialDraft={draft ?? null} />;
 };
 
 export default BecomeSeller;

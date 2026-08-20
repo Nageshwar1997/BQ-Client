@@ -68,6 +68,10 @@ const routes: RouteObject[] = [
             lazy: loadPage(() => import('@/pages/profile/BecomeSeller')),
           },
           {
+            path: PROFILE.SELLER_APPLICATION,
+            lazy: loadPage(() => import('@/pages/profile/SellerApplication')),
+          },
+          {
             path: PROFILE.ORDERS,
             element: <Outlet />,
             children: [

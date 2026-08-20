@@ -1,10 +1,9 @@
+import type { TSellerBusinessDetailsZodSchema } from '@beautinique/frontend-types';
 import { Controller, type UseFormReturn } from 'react-hook-form';
 
 import Input from '@/components/ui/inputs/Input';
 import Select from '@/components/ui/inputs/Select';
 import { SELLER_BUSINESS_DETAILS_INPUT_MAP_DATA } from '@/constants/input.constants';
-
-import type { TSellerBusinessDetailsZodSchema } from '../schema/seller.schema';
 
 interface IBusinessDetailsStepProps {
   form: UseFormReturn<TSellerBusinessDetailsZodSchema>;

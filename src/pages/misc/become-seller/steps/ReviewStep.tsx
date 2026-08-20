@@ -1,16 +1,15 @@
-import type { TConfirmDetailsZodSchema } from '@beautinique/frontend-types';
+import type {
+  TConfirmDetailsZodSchema,
+  TSellerAddressZodSchema,
+  TSellerBankDetailsZodSchema,
+  TSellerBusinessDetailsZodSchema,
+  TSellerDocumentsZodSchema,
+} from '@beautinique/frontend-types';
 import { useEffect, useMemo } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 
 import GradientText from '@/components/ui/GradientText';
 import Checkbox from '@/components/ui/inputs/Checkbox';
-
-import type {
-  TSellerAddressZodSchema,
-  TSellerBankDetailsZodSchema,
-  TSellerBusinessDetailsZodSchema,
-  TSellerDocumentsFormZodSchema,
-} from '../schema/seller.schema';
 
 interface IReviewStepProps {
   form: UseFormReturn<TConfirmDetailsZodSchema>;
@@ -20,7 +19,7 @@ interface IReviewStepProps {
     business: TSellerBusinessDetailsZodSchema;
     bank: TSellerBankDetailsZodSchema;
     address: TSellerAddressZodSchema;
-    documents: TSellerDocumentsFormZodSchema;
+    documents: TSellerDocumentsZodSchema;
   };
 }
 
@@ -81,10 +80,10 @@ const ReviewStep = ({
       <div className="border-primary/10 divide-primary/10 divide-y rounded-lg border">
         <div className="p-4">
           <GradientText type="silver" text="Business details" className="text-sm font-semibold" />
-          <SummaryRow label="Business name" value={business.businessName} />
-          <SummaryRow label="Business type" value={business.businessType} />
-          <SummaryRow label="Business email" value={business.businessEmail} />
-          <SummaryRow label="Business phone number" value={business.businessPhoneNumber} />
+          <SummaryRow label="Business name" value={business.name} />
+          <SummaryRow label="Business type" value={business.type} />
+          <SummaryRow label="Business email" value={business.email} />
+          <SummaryRow label="Business phone number" value={business.phoneNumber} />
           <SummaryRow label="GSTIN" value={business.gstin} />
           <SummaryRow label="PAN" value={business.pan} />
         </div>
