@@ -94,7 +94,10 @@ const LocationSearch = ({
 // narrow local shapes replace `google.maps.*` as the one place that
 // looseness gets cast away, so the rest of this component stays type-safe.
 interface IOlaMapInstance {
-  on: (event: 'click', handler: (event: { lngLat: { lat: number; lng: number } }) => void) => void;
+  on: {
+    (event: 'click', handler: (event: { lngLat: { lat: number; lng: number } }) => void): void;
+    (event: 'error', handler: (event: { error?: Error }) => void): void;
+  };
   flyTo: (options: { center: [number, number]; zoom: number }) => void;
   remove: () => void;
 }
@@ -136,21 +139,13 @@ const MapCanvas = ({
     if (!containerRef.current) return;
 
     let cancelled = false;
-    // const sdk = new OlaMaps({ apiKey: envs.ola_maps.api_key,mode:"3d" });
-    const sdk = new OlaMaps({
-      apiKey: envs.ola_maps.api_key,
-      mode: '3d',
-      threedTileset: 'https://api.olamaps.io/tiles/vector/v1/3dtiles/tileset.json',
-    });
+    // Plain 2D map - this is just an address-picker, no need for the 3D
+    // building tileset (`mode: '3d'` + `threedTileset`), and it was the
+    // likely trigger for a style bug in Ola's own hosted default style (see
+    // the `error` handler below).
+    const sdk = new OlaMaps({ apiKey: envs.ola_maps.api_key });
     sdkRef.current = sdk;
-    /*
-const myMap = await olaMaps.init({
-  style: "https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json",
-  container: 'map-3d',
-  center: [72.84185896191035, 19.04116993331655],
-  zoom: 15,
-})
-*/
+
     sdk
       .init({
         container: containerRef.current,
@@ -163,6 +158,17 @@ const myMap = await olaMaps.init({
         mapRef.current = map;
         map.on('click', (event) => {
           onMapClickRef.current(event.lngLat.lat, event.lngLat.lng);
+        });
+        // Ola's `default-light-standard` style itself references a
+        // `3d_model_data` layer (`minzoom: 12`) whose `source-layer` doesn't
+        // actually exist on the `vectordata` source (confirmed by fetching
+        // their live `style.json` - a gap in Ola's hosted style, not
+        // something this integration controls). MapLibre logs unhandled
+        // `error` events straight to the console when nothing's listening,
+        // which is exactly the noisy "Source layer ... does not exist"
+        // message this silences - every other layer keeps rendering fine.
+        map.on('error', () => {
+          // Intentionally silent - see the note above.
         });
       })
       .catch(() => {
