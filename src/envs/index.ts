@@ -16,7 +16,6 @@ const {
   // G
 
   VITE_GATEWAY_BASE_URL,
-  // VITE_GOOGLE_MAPS_API_KEY,
 
   // H
   // I
@@ -29,6 +28,7 @@ const {
   VITE_NODE_ENV,
 
   // O
+  VITE_OLA_MAPS_API_KEY,
   // VITE_OPENING_GOOGLE_APP_SCRIPTS_URL,
   // VITE_OPENING_GOOGLE_DEPLOYMENT_ID, // NOTE - This is not used anywhere It's just for convenience
   // VITE_OPENING_GOOGLE_SHEET_URL, // NOTE - This is not used anywhere It's just for convenience
@@ -69,7 +69,10 @@ const envs = {
   // L
   // M
   // N
+
   // O
+  ola_maps: { api_key: requireEnv(VITE_OLA_MAPS_API_KEY, 'VITE_OLA_MAPS_API_KEY') },
+
   // P
   // Q
   // R
