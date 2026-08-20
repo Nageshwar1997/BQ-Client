@@ -1,3 +1,4 @@
+import { AUTH_PROVIDER_MAP } from '@beautinique/frontend-constants';
 import type { TUpdateUserZodSchema } from '@beautinique/frontend-types';
 import { updateUserZodSchema } from '@beautinique/frontend-zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -243,7 +244,10 @@ const Profile = () => {
                   key={provider}
                   className="bg-secondary-invert border-primary/50 flex size-6 items-center justify-center rounded-full border"
                 >
-                  <Icon icon={PROVIDER_ICON_MAP[provider]} className="size-3.5" />
+                  <Icon
+                    icon={PROVIDER_ICON_MAP[provider]}
+                    className={`size-3.5 ${provider === AUTH_PROVIDER_MAP.GITHUB ? '[&>g]:fill-primary' : ''}`}
+                  />
                 </span>
               ))}
             </div>
