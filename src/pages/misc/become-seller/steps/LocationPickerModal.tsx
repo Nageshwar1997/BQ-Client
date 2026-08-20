@@ -97,7 +97,9 @@ interface IOlaMapInstance {
   on: {
     (event: 'click', handler: (event: { lngLat: { lat: number; lng: number } }) => void): void;
     (event: 'error', handler: (event: { error?: Error }) => void): void;
+    (event: 'styleimagemissing', handler: (event: { id: string }) => void): void;
   };
+  addImage: (id: string, image: { width: number; height: number; data: Uint8Array }) => void;
   flyTo: (options: { center: [number, number]; zoom: number }) => void;
   remove: () => void;
 }
@@ -136,7 +138,8 @@ const MapCanvas = ({
   });
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    const container = containerRef.current;
+    if (!container) return;
 
     let cancelled = false;
     // Plain 2D map - this is just an address-picker, no need for the 3D
@@ -148,7 +151,7 @@ const MapCanvas = ({
 
     sdk
       .init({
-        container: containerRef.current,
+        container,
         center: DEFAULT_CENTER,
         zoom: DEFAULT_ZOOM,
         style: 'https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json',
@@ -159,17 +162,18 @@ const MapCanvas = ({
         map.on('click', (event) => {
           onMapClickRef.current(event.lngLat.lat, event.lngLat.lng);
         });
-        // Ola's `default-light-standard` style itself references a
-        // `3d_model_data` layer (`minzoom: 12`) whose `source-layer` doesn't
-        // actually exist on the `vectordata` source (confirmed by fetching
-        // their live `style.json` - a gap in Ola's hosted style, not
-        // something this integration controls). MapLibre logs unhandled
-        // `error` events straight to the console when nothing's listening,
-        // which is exactly the noisy "Source layer ... does not exist"
-        // message this silences - every other layer keeps rendering fine.
-        map.on('error', () => {
-          // Intentionally silent - see the note above.
+        // Defensive fallback (not expected to fire with `positron`, see the
+        // note above) - a transparent 1x1 pixel beats MapLibre's default
+        // "Image ... could not be loaded" console warning for any icon a
+        // style references but doesn't actually ship in its sprite sheet.
+        map.on('styleimagemissing', (event) => {
+          map.addImage(event.id, { width: 1, height: 1, data: new Uint8Array(4) });
         });
+        // Non-fatal style/tile errors (if any) already log through
+        // MapLibre's other internal warnings - no need for a second,
+        // redundant console entry from the unhandled-`error`-event default.
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        map.on('error', () => {});
       })
       .catch(() => {
         // Map tiles/style failing to load (e.g. API key not yet whitelisted
