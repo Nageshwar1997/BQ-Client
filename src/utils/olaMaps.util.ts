@@ -105,7 +105,7 @@ interface IGeocodeResult {
   components: IAddressComponent[];
 }
 
-/** Reverse geocode: coordinates -> address. Used for map-click and "use my current location". */
+/** Reverse geocode: coordinates -> address. Used for map-click and "use current location". */
 export const reverseGeocode = async (lat: number, lng: number): Promise<IGeocodeResult | null> => {
   const url = new URL(`${OLA_MAPS_BASE_URL}/places/v1/reverse-geocode`);
   url.searchParams.set('latlng', `${String(lat)},${String(lng)}`);

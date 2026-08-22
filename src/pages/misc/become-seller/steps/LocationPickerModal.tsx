@@ -251,7 +251,7 @@ const LocationPickerModal = ({ isOpen, onClose, onConfirm }: ILocationPickerModa
               icon={isFetchingLocation ? 'solar:refresh-linear' : 'solar:gps-linear'}
               className={`size-4 ${isFetchingLocation ? 'animate-spin' : ''}`}
             />
-            Use my current location
+            Use current location
           </button>
         </div>
 

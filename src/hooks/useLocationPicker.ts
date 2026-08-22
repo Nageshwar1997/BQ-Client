@@ -9,7 +9,7 @@ export interface ISelectedLocation extends IParsedAddress {
 }
 
 // Adapted from `solar-host`'s hook of the same name - centralizes the two ways
-// a location can be picked (clicking the map, "use my current location"),
+// a location can be picked (clicking the map, "use current location"),
 // both of which need the same reverse-geocode-then-parse step.
 const useLocationPicker = () => {
   const [selectedLocation, setSelectedLocation] = useState<ISelectedLocation | null>(null);
