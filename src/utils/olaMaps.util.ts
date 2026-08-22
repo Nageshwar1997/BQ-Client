@@ -42,24 +42,60 @@ export const matchState = (olaStateName: string | undefined): TStateOrUT | undef
 const getComponent = (components: IAddressComponent[] | undefined, type: string) =>
   components?.find((component) => component.types.includes(type))?.long_name;
 
+/**
+ * `line1`/`line2` are derived from the plain `formattedAddress` string, not
+ * from individually-typed `address_components` - Ola's per-component
+ * `types` tagging turned out too unreliable to build them from directly
+ * (`street_number`/`route` never actually appear in practice, `locality`
+ * sometimes names a *bigger* area than what shows up in the formatted
+ * string - e.g. `locality` "Nanded Waghala" while the formatted address
+ * itself only ever says "Nanded", confirmed live). Instead: split
+ * `formattedAddress` on commas, drop every segment that exactly matches
+ * `city`/`state`/`pincode`/`country` (checked against every admin-level
+ * component - `locality` AND `administrative_area_level_1/2/3` - not just
+ * whichever one `city` ends up picking, since the formatted string can echo
+ * any of them), and split whatever's left evenly across `line1`/`line2`.
+ */
 export const parseAddressComponents = (
+  formattedAddress: string,
   components: IAddressComponent[] | undefined,
-  fallbackLine1?: string,
 ): IParsedAddress => {
-  const streetNumber = getComponent(components, 'street_number');
-  const route = getComponent(components, 'route');
-  const sublocality =
-    getComponent(components, 'sublocality_level_1') ?? getComponent(components, 'sublocality');
   const city =
     getComponent(components, 'locality') ?? getComponent(components, 'administrative_area_level_2');
-  const state = matchState(getComponent(components, 'administrative_area_level_1'));
+  const stateRaw = getComponent(components, 'administrative_area_level_1');
+  const state = matchState(stateRaw);
   const pincode = getComponent(components, 'postal_code');
-  const countryName = getComponent(components, 'country');
-  const country = COUNTRIES.find((value) => value === countryName);
+  const countryRaw = getComponent(components, 'country');
+  const country = COUNTRIES.find((value) => value === countryRaw);
 
-  const line1 = [streetNumber, route].filter(Boolean).join(' ') || (fallbackLine1 ?? '');
+  const excludedValues = new Set(
+    [
+      getComponent(components, 'locality'),
+      stateRaw,
+      getComponent(components, 'administrative_area_level_2'),
+      getComponent(components, 'administrative_area_level_3'),
+      pincode,
+      countryRaw,
+    ]
+      .filter((value): value is string => Boolean(value))
+      .map((value) => value.trim().toLowerCase()),
+  );
 
-  return { line1, line2: sublocality, city, state, pincode, country };
+  const remainingParts = formattedAddress
+    .split(',')
+    .map((part) => part.trim())
+    .filter((part) => part && !excludedValues.has(part.toLowerCase()));
+
+  const midpoint = Math.ceil(remainingParts.length / 2);
+
+  return {
+    line1: remainingParts.slice(0, midpoint).join(', '),
+    line2: remainingParts.slice(midpoint).join(', ') || undefined,
+    city,
+    state,
+    pincode,
+    country,
+  };
 };
 
 interface IGeocodeResult {

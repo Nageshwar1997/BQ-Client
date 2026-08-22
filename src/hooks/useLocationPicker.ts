@@ -32,7 +32,7 @@ const useLocationPicker = () => {
         lat: result.lat,
         lng: result.lng,
         formattedAddress: result.formattedAddress,
-        ...parseAddressComponents(result.components, result.formattedAddress),
+        ...parseAddressComponents(result.formattedAddress, result.components),
       });
     } catch {
       setLocationError('Something went wrong looking up that location. Please try again.');
