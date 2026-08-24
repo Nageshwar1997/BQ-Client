@@ -10,6 +10,7 @@ import useAutocompleteSuggestions, {
 } from '@/hooks/useAutocompleteSuggestions';
 import useDebounce from '@/hooks/useDebounce';
 import useLocationPicker, { type ISelectedLocation } from '@/hooks/useLocationPicker';
+import useThemeStore from '@/stores/theme.store';
 
 // India, roughly centered - shown before the applicant has picked/searched
 // anything. MapLibre (which `olamaps-web-sdk` wraps) orders coordinates
@@ -110,6 +111,11 @@ interface IOlaMarkerInstance {
   remove: () => void;
 }
 
+const OLA_DARK_STYLE_URL =
+  'https://api.olamaps.io/tiles/vector/v1/styles/default-dark-standard/style.json';
+const OLA_LIGHT_STYLE_URL =
+  'https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json';
+
 // -------- Interactive map (click-to-place marker) --------
 // Thin imperative wrapper around `olamaps-web-sdk` - unlike
 // `@vis.gl/react-google-maps`, it's not a React component library, it's a
@@ -124,6 +130,7 @@ const MapCanvas = ({
   selected: { lat: number; lng: number } | null;
   onMapClick: (lat: number, lng: number) => void;
 }) => {
+  const theme = useThemeStore((s) => s.theme);
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<IOlaMapInstance | null>(null);
   const sdkRef = useRef<OlaMaps | null>(null);
@@ -141,7 +148,14 @@ const MapCanvas = ({
     const container = containerRef.current;
     if (!container) return;
 
-    let cancelled = false;
+    // An object property, not a plain `let` - a closured `let` gets
+    // narrowed to a literal `false` by the time the check below runs (TS
+    // can't see that the cleanup function might have flipped it during the
+    // `await`s in between), which makes that check a false-positive
+    // "always falsy" lint error. A property read isn't narrowed the same
+    // way.
+    const cancelledRef = { current: false };
+
     // Plain 2D map - this is just an address-picker, no need for the 3D
     // building tileset (`mode: '3d'` + `threedTileset`), and it was the
     // likely trigger for a style bug in Ola's own hosted default style (see
@@ -149,45 +163,50 @@ const MapCanvas = ({
     const sdk = new OlaMaps({ apiKey: envs.ola_maps.api_key });
     sdkRef.current = sdk;
 
-    sdk
-      .init({
+    const boot = async () => {
+      const map = (await sdk.init({
         container,
         center: DEFAULT_CENTER,
         zoom: DEFAULT_ZOOM,
-        style: 'https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json',
-      })
-      .then((map: IOlaMapInstance) => {
-        if (cancelled) return;
-        mapRef.current = map;
-        map.on('click', (event) => {
-          onMapClickRef.current(event.lngLat.lat, event.lngLat.lng);
-        });
-        // Defensive fallback (not expected to fire with `positron`, see the
-        // note above) - a transparent 1x1 pixel beats MapLibre's default
-        // "Image ... could not be loaded" console warning for any icon a
-        // style references but doesn't actually ship in its sprite sheet.
-        map.on('styleimagemissing', (event) => {
-          map.addImage(event.id, { width: 1, height: 1, data: new Uint8Array(4) });
-        });
-        // Non-fatal style/tile errors (if any) already log through
-        // MapLibre's other internal warnings - no need for a second,
-        // redundant console entry from the unhandled-`error`-event default.
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        map.on('error', () => {});
-      })
-      .catch(() => {
-        // Map tiles/style failing to load (e.g. API key not yet whitelisted
-        // for this domain) shouldn't crash the wizard - `locationError` from
-        // `useLocationPicker` already covers "couldn't resolve a location",
-        // and every field stays manually editable regardless.
+        style: theme === 'dark' ? OLA_DARK_STYLE_URL : OLA_LIGHT_STYLE_URL,
+      })) as IOlaMapInstance;
+
+      if (cancelledRef.current) {
+        map.remove();
+        return;
+      }
+
+      mapRef.current = map;
+      map.on('click', (event) => {
+        onMapClickRef.current(event.lngLat.lat, event.lngLat.lng);
       });
+      // Defensive fallback (not expected to fire with `positron`, see the
+      // note above) - a transparent 1x1 pixel beats MapLibre's default
+      // "Image ... could not be loaded" console warning for any icon a
+      // style references but doesn't actually ship in its sprite sheet.
+      map.on('styleimagemissing', (event) => {
+        map.addImage(event.id, { width: 1, height: 1, data: new Uint8Array(4) });
+      });
+      // Non-fatal style/tile errors (if any) already log through
+      // MapLibre's other internal warnings - no need for a second,
+      // redundant console entry from the unhandled-`error`-event default.
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      map.on('error', () => {});
+    };
+
+    boot().catch(() => {
+      // Map tiles/style failing to load (e.g. API key not yet whitelisted
+      // for this domain) shouldn't crash the wizard - `locationError` from
+      // `useLocationPicker` already covers "couldn't resolve a location",
+      // and every field stays manually editable regardless.
+    });
 
     return () => {
-      cancelled = true;
+      cancelledRef.current = true;
       markerRef.current?.remove();
       mapRef.current?.remove();
     };
-  }, []);
+  }, [theme]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -245,13 +264,12 @@ const LocationPickerModal = ({ isOpen, onClose, onConfirm }: ILocationPickerModa
             type="button"
             onClick={useCurrentLocation}
             disabled={isFetchingLocation}
-            className="bg-secondary-invert border-primary/10 text-primary absolute bottom-3 left-3 flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-semibold shadow-md disabled:opacity-60"
+            className="bg-secondary-invert border-primary/10 text-primary absolute top-3 right-3 flex items-center justify-center rounded-lg border size-9 shrink-0 shadow-md disabled:opacity-60"
           >
             <Icon
               icon={isFetchingLocation ? 'solar:refresh-linear' : 'solar:gps-linear'}
-              className={`size-4 ${isFetchingLocation ? 'animate-spin' : ''}`}
+              className={`size-5 ${isFetchingLocation ? 'animate-spin' : ''}`}
             />
-            Use current location
           </button>
         </div>
 
