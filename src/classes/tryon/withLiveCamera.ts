@@ -2,14 +2,10 @@ import type { IMakeupState, ITryOnLiveEngineRef, TRunningMode } from '@/types/tr
 
 import type { TryOnEngineBase } from './TryOnEngineBase';
 
-// `(...args: any[])` (not named params) because this type also has to satisfy this mixin's
-// own required `(...args: any[])` constructor when it calls `super(...args)` - see the
-// comment on that constructor below. `TState`/`TAssets` still infer correctly from a real
-// argument (e.g. `LipEngineBase`) via its constructor's *return* type, independent of the
-// parameter list shape.
 type TEngineConstructor<TState extends IMakeupState, TAssets> = abstract new (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- required constructor shape, see above
-  ...args: any[]
+  canvas1: HTMLCanvasElement,
+  canvas2: HTMLCanvasElement,
+  initialState?: Partial<TState>,
 ) => TryOnEngineBase<TState, TAssets>;
 
 /**
@@ -34,15 +30,12 @@ export function withLiveCamera<TState extends IMakeupState, TAssets>(
     private restartToken = 0;
     private cameraAbort?: AbortController;
 
-    // TS requires a mixin class to declare an explicit `(...args: any[])` constructor - it
-    // doesn't accept a synthesized default one here, even though this one just forwards
-    // everything unchanged. Every real call site stays fully typed regardless (TState is
-    // fixed once `withLiveCamera(SomeEngineBase)` is called, and the function's own return
-    // type below is properly typed), so nothing upstream loses type safety over this.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    constructor(...args: any[]) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- required constructor shape, see above
-      super(...args);
+    constructor(
+      canvas1: HTMLCanvasElement,
+      canvas2: HTMLCanvasElement,
+      initialState?: Partial<TState>,
+    ) {
+      super(canvas1, canvas2, initialState);
       this.setMirror(true);
     }
 
