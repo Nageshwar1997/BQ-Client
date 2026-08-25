@@ -1,10 +1,11 @@
 import { Icon } from '@iconify/react';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 import ApiStatus from '@/components/layout/ApiStatus';
 import { MediaCarouselWithParentMedia } from '@/components/layout/carousels/MediaCarouselWithParentMedia';
 import ScrollableGradientContainer from '@/components/layout/containers/ScrollableGradientContainer';
 import Dropdown from '@/components/layout/dropdown';
+import TryOnModal from '@/components/layout/tryons';
 import Button from '@/components/ui/Button';
 import { QuillContent } from '@/components/ui/QuillContent';
 import usePathParams from '@/hooks/usePathParams';
@@ -17,6 +18,7 @@ const ProductDetails = () => {
   const { pathParams } = usePathParams();
   const { data: product, isLoading, isError } = useGetDashboardProductBySlug(pathParams.slug ?? '');
   const { queryParams, setParams,  } = useQueryParams();
+  const [isTryOnOpen, setIsTryOnOpen] = useState(false);
 
   const variant = useMemo(() => {
     if (!product) return null;
@@ -324,10 +326,23 @@ const ProductDetails = () => {
               <Button
                 content="Try-On"
                 pattern="secondary"
-                buttonProps={{ disabled: !product.tryOn.enabled }}
+                buttonProps={{
+                  disabled: !product.tryOn.enabled,
+                  onClick: () => {
+                    setIsTryOnOpen(true);
+                  },
+                }}
               />
               <Button content="Add Review" pattern="primary" />
             </div>
+
+            <TryOnModal
+              isOpen={isTryOnOpen}
+              onClose={() => {
+                setIsTryOnOpen(false);
+              }}
+              tryOn={product.tryOn.enabled && product.tryOn.configured ? product.tryOn : undefined}
+            />
             <div className="space-y-4">
               {[
                 { title: 'Description', content: product.description },

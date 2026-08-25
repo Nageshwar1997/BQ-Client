@@ -216,8 +216,7 @@ const MapCanvas = ({
     if (markerRef.current) {
       markerRef.current.setLngLat([selected.lng, selected.lat]);
     } else {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- `addMarker()`'s return type is an untyped `any`, see the note above `IOlaMapInstance`
-      const marker: IOlaMarkerInstance = sdk.addMarker({ color: '#dc2626' });
+      const marker = sdk.addMarker({ color: '#dc2626' }) as IOlaMarkerInstance;
       markerRef.current = marker.setLngLat([selected.lng, selected.lat]).addTo(map);
     }
 

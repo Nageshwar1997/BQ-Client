@@ -19,9 +19,13 @@ import type {
   TSort,
   TStateOrUT,
   TTerritoryAssignmentReason,
-  TTryOnSelection,
   TUserRole,
 } from '@beautinique/frontend-types';
+
+// TODO: swap back to `TTryOnSelection` from `@beautinique/frontend-types` once
+// `@beautinique/shared-constants` is republished with the extended TRY_ON_MAP -
+// see `@/types/tryon.type`.
+import type { TTryOnSelection } from './tryon.type';
 
 export interface IErrorResponse {
   message?: string;

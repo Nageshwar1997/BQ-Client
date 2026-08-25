@@ -13,6 +13,10 @@ export default defineConfig(({ mode }) => ({
   ].filter(Boolean),
   resolve: { alias: { '@': path.resolve(import.meta.dirname, './src') } },
   server: { port: 3001 },
+  // `@mediapipe/tasks-vision` ships its own WASM runtime that it loads itself
+  // (from a pinned CDN URL, see `FaceLandmarkerCache.ts`) - letting Vite's
+  // dep pre-bundler touch it breaks that loading at dev time, so it's excluded.
+  optimizeDeps: { exclude: ['@mediapipe/tasks-vision'] },
   build: {
     rollupOptions: {
       output: {

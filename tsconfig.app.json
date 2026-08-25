@@ -42,5 +42,9 @@
        `T | undefined` instead of just `T`, forcing an explicit check. */
     "noUncheckedIndexedAccess": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  // Reference-only code dump (not part of this app's build - no package.json, missing deps
+  // like three/@react-three), excluded so it doesn't clutter type-checking with unrelated
+  // pre-existing errors. See src/commverse/src/pages/virtual-tryon for context.
+  "exclude": ["src/commverse"]
 }

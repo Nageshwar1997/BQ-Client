@@ -1,0 +1,395 @@
+import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
+
+import {
+  LIP_TEXTURE_COMPOSITE_OPERATION,
+  LOWER_LIP_DOT_BLUR_AMOUNT,
+  LOWER_LIP_INDICES,
+  LOWER_WHITE_LIP_INDICES_INSET,
+  UPPER_LIP_INDICES,
+  UPPER_WHITE_LIP_INDICES_INSET,
+} from '@/constants/tryon-lip.constants';
+
+// LIP-specific canvas rendering, ported from the reference implementation's
+// `virtual-tryon/utils/index.ts` lip functions. The per-finish opacity numbers below (0.1,
+// 0.3, 0.6, 0.7, 0.9, ...) are hand-tuned visual constants from that reference, not derived
+// from anything - kept exactly as they were rather than "cleaned up" into a shared config,
+// since collapsing them risks silently changing the tuned look. What *is* safely deduplicated
+// is the outer orchestration (temp-canvas compositing + blurred dot-highlight pass), which was
+// byte-for-byte identical across glossy/crayon/shimmer in the reference.
+
+interface TDimension {
+  width: number;
+  height: number;
+}
+
+const isBrightColor = (r: number, g: number, b: number) => {
+  const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  return luminance > 128;
+};
+
+const fillColor = (ctx: CanvasRenderingContext2D, color: string, alpha: number) => {
+  ctx.fillStyle = color;
+  ctx.globalAlpha = alpha;
+  ctx.fill();
+};
+
+const clipLipsOnFace = (
+  canvasElement: HTMLCanvasElement,
+  ctx: CanvasRenderingContext2D,
+  face: NormalizedLandmark[],
+  indices: number[],
+) => {
+  ctx.beginPath();
+  indices.forEach((index, i) => {
+    // `index` only ever comes from our own fixed landmark-index constants (e.g.
+    // UPPER_LIP_INDICES), which point into MediaPipe's guaranteed 478-point face mesh - this
+    // check is just satisfying `noUncheckedIndexedAccess`, not expected to ever skip.
+    const point = face[index];
+    if (!point) return;
+
+    const x = point.x * canvasElement.width;
+    const y = point.y * canvasElement.height;
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.closePath();
+  ctx.clip();
+};
+
+const applyLipFilters = (ctx: CanvasRenderingContext2D, dimension: TDimension, alpha: number) => {
+  ctx.filter = 'contrast(1.1) saturate(1.1)';
+  ctx.globalAlpha = alpha;
+  ctx.fillRect(0, 0, dimension.width, dimension.height);
+  ctx.filter = 'none';
+};
+
+// Clips to a lip-region ring, then paints a texture image into that clip with rounded
+// (quadratic-curve-smoothed) corners rather than the sharp polygon `clipLipsOnFace` produces.
+export const applyLipTexture = (
+  ctx: CanvasRenderingContext2D,
+  face: NormalizedLandmark[],
+  indices: number[],
+  texture: HTMLImageElement,
+  opacity: number,
+) => {
+  const padding = 5;
+  // Same "fixed constant indices" reasoning as `clipLipsOnFace` above - `.filter` here is
+  // just satisfying `noUncheckedIndexedAccess`, not expected to ever drop a point.
+  const points = indices
+    .map((index) => face[index])
+    .filter((point): point is NormalizedLandmark => point !== undefined)
+    .map((point) => ({ x: point.x * ctx.canvas.width, y: point.y * ctx.canvas.height }));
+
+  const firstPoint = points[0];
+  if (!firstPoint) return;
+
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(firstPoint.x - padding, firstPoint.y - padding);
+
+  points.forEach((point, i) => {
+    if (i === 0) return;
+    const prev = points[i - 1];
+    if (!prev) return;
+
+    const cpX = (prev.x + point.x) / 2;
+    const cpY = (prev.y + point.y) / 2;
+    ctx.quadraticCurveTo(prev.x, prev.y, cpX, cpY);
+  });
+
+  const last = points[points.length - 1];
+  if (!last) {
+    ctx.restore();
+    return;
+  }
+
+  ctx.quadraticCurveTo(last.x, last.y, firstPoint.x - padding, firstPoint.y - padding);
+  ctx.closePath();
+  ctx.clip();
+
+  const minX = Math.min(...points.map((p) => p.x));
+  const minY = Math.min(...points.map((p) => p.y));
+  const maxX = Math.max(...points.map((p) => p.x));
+  const maxY = Math.max(...points.map((p) => p.y));
+
+  ctx.globalAlpha = opacity;
+  ctx.drawImage(texture, minX, minY, maxX - minX, maxY - minY);
+  ctx.restore();
+};
+
+const parseRGB = (color: string): [number, number, number] | null => {
+  const match = /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/.exec(color);
+  if (!match) return null;
+  return [Number(match[1]), Number(match[2]), Number(match[3])];
+};
+
+/* ================= MATTE ================= */
+
+const drawLipHalfMatte = (
+  canvasElement: HTMLCanvasElement,
+  ctx: CanvasRenderingContext2D,
+  face: NormalizedLandmark[],
+  indices: number[],
+  color: string,
+  alpha: number,
+) => {
+  ctx.save();
+  clipLipsOnFace(canvasElement, ctx, face, indices);
+  fillColor(ctx, color, alpha);
+  ctx.restore();
+};
+
+export const applyMatteLips = (
+  face: NormalizedLandmark[],
+  ctx: CanvasRenderingContext2D,
+  color: string,
+  dimension: TDimension,
+  alpha: number,
+) => {
+  const temp = document.createElement('canvas');
+  temp.width = dimension.width;
+  temp.height = dimension.height;
+  const tempCtx = temp.getContext('2d');
+  if (!tempCtx) return;
+
+  drawLipHalfMatte(temp, tempCtx, face, UPPER_LIP_INDICES, color, alpha);
+  drawLipHalfMatte(temp, tempCtx, face, LOWER_LIP_INDICES, color, alpha);
+
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.drawImage(temp, 0, 0);
+};
+
+/* ================= TEXTURED FINISHES (glossy / crayon / shimmer) ================= */
+
+// One entry per finish's hand-tuned opacities - see the file-level note on why these numbers
+// aren't further "simplified".
+interface ITexturedFinishTuning {
+  baseAlphaUpper: number;
+  baseAlphaLower: number;
+  brightOpacity: number;
+  darkPrimaryOpacity: number;
+  darkInsetOpacityUpper: number;
+  darkInsetOpacityLower: number;
+  applyFilters: boolean;
+}
+
+const TEXTURED_FINISH_TUNING: Record<'GLOSS' | 'CRAYON' | 'SHIMMER', ITexturedFinishTuning> = {
+  GLOSS: {
+    baseAlphaUpper: 0.6,
+    baseAlphaLower: 0.4,
+    brightOpacity: 0.3,
+    darkPrimaryOpacity: 0.1,
+    darkInsetOpacityUpper: 0.3,
+    darkInsetOpacityLower: 0.3,
+    applyFilters: true,
+  },
+  CRAYON: {
+    // Crayon fills with the caller's own alpha (waxy, more opaque than gloss) rather than a
+    // fixed base, and skips the final saturating filter pass (matte-ish finish, no shine boost).
+    baseAlphaUpper: -1, // sentinel: use the passed-in `alpha` instead
+    baseAlphaLower: -1,
+    brightOpacity: 0.1,
+    darkPrimaryOpacity: 0.1,
+    darkInsetOpacityUpper: 0.2,
+    darkInsetOpacityLower: 0.2,
+    applyFilters: false,
+  },
+  SHIMMER: {
+    baseAlphaUpper: 0.4,
+    baseAlphaLower: 0.4,
+    brightOpacity: 0.7,
+    darkPrimaryOpacity: 0.7,
+    darkInsetOpacityUpper: 0.9,
+    darkInsetOpacityLower: 0.9,
+    applyFilters: true,
+  },
+};
+
+const drawLipHalfTextured = (
+  canvasElement: HTMLCanvasElement,
+  ctx: CanvasRenderingContext2D,
+  face: NormalizedLandmark[],
+  indices: number[],
+  insetIndices: number[],
+  color: string,
+  texture: HTMLImageElement,
+  dimension: TDimension,
+  alpha: number,
+  baseAlpha: number,
+  brightOpacity: number,
+  darkPrimaryOpacity: number,
+  darkInsetOpacity: number,
+  applyFilters: boolean,
+) => {
+  ctx.save();
+  clipLipsOnFace(canvasElement, ctx, face, indices);
+  fillColor(ctx, color, baseAlpha === -1 ? alpha : baseAlpha);
+
+  const rgb = parseRGB(color);
+  if (!rgb) {
+    console.warn('Invalid lip color format:', color);
+    ctx.restore();
+    return;
+  }
+
+  if (isBrightColor(...rgb)) {
+    applyLipTexture(ctx, face, indices, texture, brightOpacity);
+  } else {
+    applyLipTexture(ctx, face, indices, texture, darkPrimaryOpacity);
+    applyLipTexture(ctx, face, insetIndices, texture, darkInsetOpacity);
+  }
+
+  if (applyFilters) applyLipFilters(ctx, dimension, alpha);
+  ctx.restore();
+};
+
+// Shared by GLOSS/CRAYON/SHIMMER - the reference had this exact orchestration (temp-canvas
+// composite + blurred "dot" highlight pass) copy-pasted three times with only the tuning
+// numbers differing; that part is safe to collapse since it never touches the tuned constants.
+const applyTexturedLips = (
+  finish: keyof typeof TEXTURED_FINISH_TUNING,
+  face: NormalizedLandmark[],
+  ctx: CanvasRenderingContext2D,
+  color: string,
+  textureUpper: HTMLImageElement,
+  textureLower: HTMLImageElement,
+  dimension: TDimension,
+  alpha: number,
+) => {
+  const t = TEXTURED_FINISH_TUNING[finish];
+
+  const temp = document.createElement('canvas');
+  temp.width = dimension.width;
+  temp.height = dimension.height;
+  const tempCtx = temp.getContext('2d');
+  if (!tempCtx) return;
+
+  drawLipHalfTextured(
+    temp, tempCtx, face, UPPER_LIP_INDICES, UPPER_WHITE_LIP_INDICES_INSET, color, textureUpper,
+    dimension, alpha, t.baseAlphaUpper, t.brightOpacity, t.darkPrimaryOpacity,
+    t.darkInsetOpacityUpper, t.applyFilters,
+  );
+  drawLipHalfTextured(
+    temp, tempCtx, face, LOWER_LIP_INDICES, LOWER_WHITE_LIP_INDICES_INSET, color, textureLower,
+    dimension, alpha, t.baseAlphaLower, t.brightOpacity, t.darkPrimaryOpacity,
+    t.darkInsetOpacityLower, t.applyFilters,
+  );
+
+  ctx.globalCompositeOperation = LIP_TEXTURE_COMPOSITE_OPERATION;
+  ctx.drawImage(temp, 0, 0);
+
+  // Soft blurred "dot" highlight, composited on top of the textured fill.
+  const lowerDot = document.createElement('canvas');
+  lowerDot.width = dimension.width;
+  lowerDot.height = dimension.height;
+  const lowerDotCtx = lowerDot.getContext('2d');
+
+  const upperDot = document.createElement('canvas');
+  upperDot.width = dimension.width;
+  upperDot.height = dimension.height;
+  const upperDotCtx = upperDot.getContext('2d');
+
+  if (!lowerDotCtx || !upperDotCtx) return;
+
+  clipLipsOnFace(lowerDot, lowerDotCtx, face, LOWER_LIP_INDICES);
+  lowerDotCtx.filter = `blur(${String(LOWER_LIP_DOT_BLUR_AMOUNT)}px)`;
+
+  clipLipsOnFace(upperDot, upperDotCtx, face, UPPER_LIP_INDICES);
+  upperDotCtx.filter = `blur(${String(LOWER_LIP_DOT_BLUR_AMOUNT)}px)`;
+
+  ctx.globalAlpha = 0.8;
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.drawImage(lowerDot, 0, 0);
+  ctx.drawImage(upperDot, 0, 0);
+  ctx.globalCompositeOperation = 'source-over';
+};
+
+export const applyGlossLips = (
+  face: NormalizedLandmark[],
+  ctx: CanvasRenderingContext2D,
+  color: string,
+  textureUpper: HTMLImageElement,
+  textureLower: HTMLImageElement,
+  dimension: TDimension,
+  alpha: number,
+) => {
+  applyTexturedLips('GLOSS', face, ctx, color, textureUpper, textureLower, dimension, alpha);
+};
+
+export const applyCrayonLips = (
+  face: NormalizedLandmark[],
+  ctx: CanvasRenderingContext2D,
+  color: string,
+  texture: HTMLImageElement,
+  dimension: TDimension,
+  alpha: number,
+) => {
+  // Crayon uses one texture file for both halves (see tryon-lip.constants.ts).
+  applyTexturedLips('CRAYON', face, ctx, color, texture, texture, dimension, alpha);
+};
+
+export const applyShimmerLips = (
+  face: NormalizedLandmark[],
+  ctx: CanvasRenderingContext2D,
+  color: string,
+  texture: HTMLImageElement,
+  dimension: TDimension,
+  alpha: number,
+) => {
+  // Shimmer also uses one texture file for both halves.
+  applyTexturedLips('SHIMMER', face, ctx, color, texture, texture, dimension, alpha);
+};
+
+/* ================= APPROXIMATED FINISHES (SATIN / STAIN / BALM / OIL) =================
+ * The reference only demonstrates matte/glossy/crayon/shimmer - these four are new,
+ * genuinely built on the same primitives above rather than invented pixel math, but the
+ * exact tuning is ours (not ported from a validated source), so it's called out here plainly
+ * rather than presented as equally battle-tested.
+ */
+
+// Matte base + a single light sheen pass - not a full glossy composite (no dot-highlight).
+export const applySatinLips = (
+  face: NormalizedLandmark[],
+  ctx: CanvasRenderingContext2D,
+  color: string,
+  textureUpper: HTMLImageElement,
+  textureLower: HTMLImageElement,
+  dimension: TDimension,
+  alpha: number,
+) => {
+  applyMatteLips(face, ctx, color, dimension, alpha);
+  ctx.save();
+  applyLipTexture(ctx, face, UPPER_LIP_INDICES, textureUpper, 0.15);
+  applyLipTexture(ctx, face, LOWER_LIP_INDICES, textureLower, 0.15);
+  ctx.restore();
+};
+
+// Sheer/washed tint - matte fill with a capped-down alpha.
+export const applyStainLips = (
+  face: NormalizedLandmark[],
+  ctx: CanvasRenderingContext2D,
+  color: string,
+  dimension: TDimension,
+  alpha: number,
+) => {
+  applyMatteLips(face, ctx, color, dimension, Math.min(alpha, 0.35));
+};
+
+// Sheer glossy tint - the gloss composite at reduced intensity.
+export const applyBalmLips = (
+  face: NormalizedLandmark[],
+  ctx: CanvasRenderingContext2D,
+  color: string,
+  textureUpper: HTMLImageElement,
+  textureLower: HTMLImageElement,
+  dimension: TDimension,
+  alpha: number,
+) => {
+  applyTexturedLips(
+    'GLOSS', face, ctx, color, textureUpper, textureLower, dimension, alpha * 0.5,
+  );
+};
+
+// High-gloss fluid shine - placeholder alias of GLOSS pending a dedicated oil-shine texture
+// (see docs/tryons/LIP.md).
+export const applyOilLips = applyGlossLips;

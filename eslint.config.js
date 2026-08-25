@@ -20,6 +20,9 @@ export default tseslint.config(
       '*.min.js',
       '*.tsbuildinfo',
       'backend-setup',
+      // Reference-only code dump, not part of this app's build - see tsconfig.app.json's
+      // exclude for the same reasoning.
+      'src/commverse',
     ],
   },
 

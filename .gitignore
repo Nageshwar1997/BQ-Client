@@ -110,3 +110,6 @@ Thumbs.db
 
 # TEMP (TODO: Remove it later)
 prevRoutes.txt
+
+# commverse-studio-frontend (reference-only code dump, not part of this app's build)
+src/commverse/

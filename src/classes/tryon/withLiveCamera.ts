@@ -1,0 +1,216 @@
+import type { IMakeupState, ITryOnLiveEngineRef, TRunningMode } from '@/types/tryon-engine.type';
+
+import type { TryOnEngineBase } from './TryOnEngineBase';
+
+// `(...args: any[])` (not named params) because this type also has to satisfy this mixin's
+// own required `(...args: any[])` constructor when it calls `super(...args)` - see the
+// comment on that constructor below. `TState`/`TAssets` still infer correctly from a real
+// argument (e.g. `LipEngineBase`) via its constructor's *return* type, independent of the
+// parameter list shape.
+type TEngineConstructor<TState extends IMakeupState, TAssets> = abstract new (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- required constructor shape, see above
+  ...args: any[]
+) => TryOnEngineBase<TState, TAssets>;
+
+/**
+ * Attaches webcam (getUserMedia + `requestAnimationFrame` render loop) behavior to *any*
+ * category's engine base class. Written once - every category gets Live mode by writing
+ * `class <Category>LiveEngine extends withLiveCamera(<Category>EngineBase) {}`, instead of
+ * hand-copying this ~90 lines per category (confirmed byte-for-byte duplicate boilerplate in
+ * the reference implementation across every category it has).
+ */
+export function withLiveCamera<TState extends IMakeupState, TAssets>(
+  Base: TEngineConstructor<TState, TAssets>,
+): new (
+  canvas1: HTMLCanvasElement,
+  canvas2: HTMLCanvasElement,
+  initialState?: Partial<TState>,
+) => ITryOnLiveEngineRef<TState> {
+  abstract class TryOnLiveEngine extends Base {
+    private video: HTMLVideoElement | null = null;
+    private stream: MediaStream | null = null;
+    private rafId: number | null = null;
+    private isRunning = false;
+    private restartToken = 0;
+    private cameraAbort?: AbortController;
+
+    // TS requires a mixin class to declare an explicit `(...args: any[])` constructor - it
+    // doesn't accept a synthesized default one here, even though this one just forwards
+    // everything unchanged. Every real call site stays fully typed regardless (TState is
+    // fixed once `withLiveCamera(SomeEngineBase)` is called, and the function's own return
+    // type below is properly typed), so nothing upstream loses type safety over this.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    constructor(...args: any[]) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- required constructor shape, see above
+      super(...args);
+      this.setMirror(true);
+    }
+
+    // Called by the React wrapper right after mounting the <video> ref, before startCamera().
+    public attachVideo(video: HTMLVideoElement) {
+      this.video = video;
+    }
+
+    /* ================= REQUIRED OVERRIDES ================= */
+
+    protected getRunningMode(): TRunningMode {
+      return 'VIDEO';
+    }
+
+    protected onTryOnReady() {
+      // Engine (landmarker + assets) is ready - the camera itself is started/stopped by the
+      // React wrapper's imperative `startCamera`/`stopCamera`, not automatically here.
+    }
+
+    protected onStateUpdated() {
+      // Live mode re-renders continuously via the RAF loop below - no forced re-render needed
+      // on a plain state change (the compare-slider path is handled separately in the base).
+    }
+
+    /* ================= CAMERA ================= */
+
+    public async startCamera() {
+      if (!this.video) {
+        console.error('startCamera called before attachVideo()');
+        return;
+      }
+
+      this.cameraAbort?.abort();
+      this.cameraAbort = new AbortController();
+      const { signal } = this.cameraAbort;
+
+      const token = ++this.restartToken;
+      this.isRunning = true;
+      this.updateState.setError(undefined);
+
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: 'user' },
+          audio: false,
+        });
+
+        if (signal.aborted || token !== this.restartToken) {
+          stream.getTracks().forEach((track) => {
+            track.stop();
+          });
+          return;
+        }
+
+        this.stream = stream;
+        this.video.srcObject = stream;
+        await this.video.play();
+
+        // Same "can genuinely change during the await above" reasoning as `startTryOn`'s
+        // check in TryOnEngineBase.ts.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        if (signal.aborted || token !== this.restartToken) return;
+
+        this.updateState.setCameraReady(true);
+        this.loop(token);
+      } catch (err) {
+        if (err instanceof DOMException && err.name === 'AbortError') return;
+        console.error('startCamera failed', err);
+        this.isRunning = false;
+
+        const denied =
+          err instanceof DOMException &&
+          (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError');
+        this.updateState.setError(
+          denied
+            ? 'Camera access was denied. Allow camera access in your browser settings and try again.'
+            : "Couldn't access your camera. Make sure it's connected and not in use by another app.",
+        );
+      }
+    }
+
+    public stopCamera() {
+      this.cameraAbort?.abort();
+      this.cameraAbort = undefined;
+
+      this.restartToken++;
+      this.isRunning = false;
+
+      if (this.rafId !== null) {
+        cancelAnimationFrame(this.rafId);
+        this.rafId = null;
+      }
+
+      if (this.stream) {
+        this.stream.getTracks().forEach((track) => {
+          track.stop();
+        });
+        this.stream = null;
+      }
+
+      if (this.video?.srcObject) {
+        this.video.pause();
+        this.video.srcObject = null;
+      }
+
+      this.landmark = null;
+
+      if (this.ensureAlive()) {
+        this.updateState.setCameraReady(false);
+      }
+    }
+
+    public async restartCamera() {
+      this.stopCamera();
+      await new Promise((resolve) => {
+        setTimeout(resolve, 150);
+      });
+      await this.startCamera();
+    }
+
+    public getStream() {
+      return this.stream;
+    }
+
+    /* ================= LOOP ================= */
+
+    private loop = (token: number) => {
+      if (
+        !this.isRunning ||
+        token !== this.restartToken ||
+        !this.landmarker ||
+        !this.video ||
+        !this.ensureAlive()
+      ) {
+        return;
+      }
+
+      this.landmark = this.landmarker.detectForVideo(this.video, performance.now());
+      this.renderFrame(this.video);
+
+      this.rafId = requestAnimationFrame(() => {
+        this.loop(token);
+      });
+    };
+
+    /* ================= SNAPSHOT ================= */
+
+    public takeSnapshot() {
+      return this.video ? this.takeSnapshotInternal(this.video) : null;
+    }
+
+    protected override cleanup() {
+      this.stopCamera();
+      super.cleanup();
+    }
+  }
+
+  // `TryOnLiveEngine` really is fully concrete at runtime - `Base` is always a category class
+  // that already implements `getInitialState`/`loadCategoryAssets`/`applyEffect` (this mixin
+  // only ever touches the other three abstract members). TS can't verify that through a
+  // generic `abstract new (...)` parameter type, though, and worse - casting to the
+  // `TryOnEngineBase` *class* type (even concretely) still drags its abstract-member
+  // bookkeeping into any `extends` clause built on top of it. Casting to the plain
+  // `ITryOnLiveEngineRef` interface instead sidesteps both problems: it's the exact contract
+  // the React layer needs, and being a plain interface, it carries none of that baggage - see
+  // `LipLiveEngine.ts` for the (now warning-free) result.
+  return TryOnLiveEngine as unknown as new (
+    canvas1: HTMLCanvasElement,
+    canvas2: HTMLCanvasElement,
+    initialState?: Partial<TState>,
+  ) => ITryOnLiveEngineRef<TState>;
+}
