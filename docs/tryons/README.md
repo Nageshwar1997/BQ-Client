@@ -7,17 +7,17 @@ Virtual try-on ko 6 main categories me build karna hai — **LIP, EYE, HAIR, FAC
 
 Per-category detail aur checklist alag file me hai. Ye file sirf overall status aur un cheezon ke liye hai jo **sab categories ke liye common/shared** hai (ek baar ban gayi to sabko fayda).
 
-> Status snapshot: koi bhi category abhi build nahi hui. `ProductDetails` page pe "Try-On" button already hai but disabled/no-op — [ProductDetails/index.tsx:324](../../src/pages/product/ProductDetails/index.tsx#L324). `TryOn` layout component sirf placeholder stub hai — [components/layout/tryons/index.tsx](../../src/components/layout/tryons/index.tsx). Category/subcategory taxonomy `@beautinique/shared-constants` package se aata hai (`TRY_ON_MAP`), yaha isi ko reference kiya gaya hai.
+> Status snapshot: LIP ka real engine ban gaya hai (MediaPipe FaceLandmarker + canvas rendering) aur end-to-end verify ho chuka hai — Live aur Upload dono modes me MATTE/SATIN/GLOSS/SHIMMER/STAIN/BALM/CRAYON/OIL finishes actually render karte hain, shade+finish picker se driven. `ProductDetails` page pe "Try-On" button wired hai — [ProductDetails/index.tsx:324](../../src/pages/product/ProductDetails/index.tsx#L324). Engine architecture class-based hai (reference `src/commverse` se adapt kiya, dekh [LIP.md](./LIP.md)) — per-category `EngineBase` + do generic mixins (`withLiveCamera`/`withImageUpload`) jo sabhi categories reuse karenge. Category/subcategory taxonomy abhi `src/constants/temp.constants.ts` se aa raha hai (extended `TRY_ON_MAP`), `@beautinique/shared-constants` package baad me update hoga.
 
 ## Shared prerequisites (ye pehle banao — sabko block karte hain)
 
-- [ ] Face-landmark tracking engine select + integrate (MediaPipe / Banuba / ModiFace jaisa kuch) — LIP, EYE, FACE, HAIR, SKIN sab isi pe depend karte hain
+- [x] Face-landmark tracking engine select + integrate — MediaPipe `@mediapipe/tasks-vision`, shared/cached singleton — [FaceLandmarkerCache.ts](../../src/classes/tryon/FaceLandmarkerCache.ts). LIP/EYE/FACE/HAIR/SKIN sab isi ko reuse kar sakte hain (same face mesh, alag landmark indices bas)
 - [ ] Hand/finger-landmark tracking engine select + integrate — sirf NAIL ke liye alag model chahiye
-- [ ] Shared camera-access module (permission handling, live `<video>` stream component, mirror/orientation fix)
-- [ ] Shared photo-upload module (file input, preview, crop/align, image validation)
-- [ ] Shared Try-On modal/page shell — "Try-On" button se open ho, Live ⇄ Upload switcher ho, product ke `tryOn.category`/`subCategory` se sahi renderer load ho
-- [ ] Generic color/texture blend engine — matte/gloss/shimmer/metallic jaise finishes reuse kar sake
-- [ ] Result actions — screenshot save/download/share, aur "Add to Cart" seedha try-on screen se
+- [x] Shared camera-access module (permission handling, live `<video>` stream, mirror) — [withLiveCamera.ts](../../src/classes/tryon/withLiveCamera.ts) (mixin, ek baar likha, saari categories reuse karengi)
+- [x] Shared photo-upload module (file input, preview, image validation) — [useTryOnUpload.ts](../../src/hooks/useTryOnUpload.ts) (validation) + [withImageUpload.ts](../../src/classes/tryon/withImageUpload.ts) (mixin, load+detect+render)
+- [x] Shared Try-On modal/page shell — [components/layout/tryons/](../../src/components/layout/tryons/index.tsx)
+- [x] Generic color/texture blend engine — [TryOnEngineBase.ts](../../src/classes/tryon/TryOnEngineBase.ts) ka `applyEffect` abstraction + category-specific rendering (LIP ke liye [tryon-lip.util.ts](../../src/utils/tryon-lip.util.ts))
+- [x] Result actions (partial) — screenshot/download ban gaya (`takeSnapshot()`); "Add to Cart" seedha try-on screen se abhi pending
 
 Inme se koi bhi cheez kisi ek category ke andar dobara nahi likhni — ek baar yaha ban jaye to har category file usko "reused" maan legi.
 
@@ -25,13 +25,13 @@ Inme se koi bhi cheez kisi ek category ke andar dobara nahi likhni — ek baar y
 
 | Category | Subcategories | Progress | File |
 |---|---|---|---|
-| LIP | 11 | 0% (0/88) | [LIP.md](./LIP.md) |
+| LIP | 11 | 55% (48/88) | [LIP.md](./LIP.md) |
 | EYE | 7 | 0% (0/56) | [EYE.md](./EYE.md) |
 | HAIR | 4 | 0% (0/32) | [HAIR.md](./HAIR.md) |
 | FACE | 8 | 0% (0/64) | [FACE.md](./FACE.md) |
 | NAIL | 5 | 0% (0/40) | [NAIL.md](./NAIL.md) |
 | SKIN | 8 | 0% (0/64) | [SKIN.md](./SKIN.md) |
-| **Overall** | **43** | **0% (0/344)** | — |
+| **Overall** | **43** | **14% (48/344)** | — |
 
 ## Suggested build order
 
