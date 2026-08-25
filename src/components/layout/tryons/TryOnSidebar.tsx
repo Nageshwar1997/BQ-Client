@@ -47,7 +47,7 @@ const TryOnSidebar = ({
         {mode === 'upload' && previewImageUrl && (
           <img
             src={previewImageUrl}
-            alt=""
+            alt="Model preview"
             className="absolute inset-0 size-full object-cover blur-sm"
           />
         )}
