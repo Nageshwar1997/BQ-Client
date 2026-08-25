@@ -12,6 +12,7 @@ import usePathParams from '@/hooks/usePathParams';
 import useQueryParams from '@/hooks/useQueryParams';
 import { useGetDashboardProductBySlug } from '@/services/product-service/product.service.query';
 import type { TMediaOption } from '@/types/component.type';
+import type { IShade } from '@/types/tryon-engine.type';
 import { formatDate, formatINRCurrency, isNullOrUndefined } from '@/utils/common.util';
 
 const ProductDetails = () => {
@@ -66,6 +67,16 @@ const ProductDetails = () => {
 
     return index >= 0 ? index : 0;
   }, [media, variant]);
+
+  // Real product shade data (not user-invented via a color picker) - same source as the
+  // "Color" variant swatches already rendered further down this page.
+  const shades = useMemo((): IShade[] => {
+    if (!product?.hasVariants) return [];
+
+    return product.variants
+      .filter((v) => v.type === 'Color')
+      .map((v) => ({ name: v.label, hexColor: v.value }));
+  }, [product]);
 
   const { discount, originalPrice, sellingPrice, stock } = useMemo(() => {
     if (!product) return { discount: 0, sellingPrice: 0, originalPrice: 0, stock: null };
@@ -342,6 +353,7 @@ const ProductDetails = () => {
                 setIsTryOnOpen(false);
               }}
               tryOn={product.tryOn.enabled && product.tryOn.configured ? product.tryOn : undefined}
+              shades={shades}
             />
             <div className="space-y-4">
               {[

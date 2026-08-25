@@ -52,3 +52,23 @@ export interface ITryOnLiveEngineRef<TState> extends ITryOnEngineBaseRef<TState>
 export interface ITryOnUploadEngineRef<TState> extends ITryOnEngineBaseRef<TState> {
   loadImageUrl: (url: string) => Promise<void>;
 }
+
+// Minimal imperative surface a category's `<Category>TryOnStage` exposes to the orchestrating
+// modal (e.g. `TryOnModal`) - just enough to drive shade selection and snapshotting, whichever
+// of Live/Upload is currently mounted underneath. Mirrors the reference implementation's
+// `ITryOnCommonRef`, trimmed to what this app actually uses (no compare-slider/reset yet).
+export interface ITryOnStageRef<TState> {
+  setMakeupState: (state: Partial<TState>) => void;
+  getState: () => TState | undefined;
+  takeSnapshot: () => string | null;
+  // Only meaningful in Live mode - `null` otherwise (Upload mode has no camera stream). Used to
+  // feed the same stream into the sidebar's small blurred preview.
+  getStream: () => MediaStream | null;
+}
+
+// A product's shade/color variant - real data (`product.variants`, `type === 'Color'`), not
+// user-invented via a color picker. See `ProductDetails/index.tsx`'s `shades` memo.
+export interface IShade {
+  name: string;
+  hexColor: string;
+}
