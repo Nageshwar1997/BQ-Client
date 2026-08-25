@@ -1,0 +1,362 @@
+@import url('https://fonts.googleapis.com/css2?family=Basic&family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&family=Jost:ital,wght@0,100..900;1,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=MuseoModerno:ital,wght@0,100..900;1,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import 'tailwindcss';
+
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+*::-webkit-scrollbar {
+  @apply hidden;
+}
+
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+/* Degular */
+@font-face {
+  font-family: 'degular';
+  src: url('/fonts/Degular/Degular-Thin.otf') format('opentype');
+  font-style: normal;
+  font-weight: 200;
+  /* Thin */
+}
+
+@font-face {
+  font-family: 'degular';
+  src: url('/fonts/Degular/Degular-Light.otf') format('opentype');
+  font-style: normal;
+  font-weight: 300;
+  /* Light */
+}
+
+@font-face {
+  font-family: 'degular';
+  src: url('/fonts/Degular/Degular-Regular.otf') format('opentype');
+  font-style: normal;
+  font-weight: 400;
+  /* Regular */
+}
+
+@font-face {
+  font-family: 'degular';
+  src: url('/fonts/Degular/Degular-Medium.otf') format('opentype');
+  font-style: normal;
+  font-weight: 500;
+  /* Medium */
+}
+
+@font-face {
+  font-family: 'degular';
+  src: url('/fonts/Degular/Degular-Semibold.otf') format('opentype');
+  font-style: normal;
+  font-weight: 600;
+  /* SemiBold */
+}
+
+@font-face {
+  font-family: 'degular';
+  src: url('/fonts/Degular/Degular-Bold.otf') format('opentype');
+  font-style: normal;
+  font-weight: 700;
+  /* Bold */
+}
+
+@font-face {
+  font-family: 'degular';
+  src: url('/fonts/Degular/Degular-Black.otf') format('opentype');
+  font-style: normal;
+  font-weight: 900;
+  /* Black */
+}
+
+/* Metropolis */
+@font-face {
+  font-family: 'metropolis';
+  src: url('/fonts/metropolis/Metropolis-Light.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 300;
+  /* Light */
+}
+
+@font-face {
+  font-family: 'metropolis';
+  src: url('/fonts/metropolis/Metropolis-Regular.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  /* Regular */
+}
+
+@font-face {
+  font-family: 'metropolis';
+  src: url('/fonts/metropolis/Metropolis-Medium.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 500;
+  /* Medium */
+}
+
+@font-face {
+  font-family: 'metropolis';
+  src: url('/fonts/metropolis/Metropolis-SemiBold.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 600;
+  /* SemiBold */
+}
+
+@font-face {
+  font-family: 'metropolis';
+  src: url('/fonts/metropolis/Metropolis-Bold.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 700;
+  /* Bold */
+}
+
+@theme {
+  --font-metropolis: 'metropolis', sans-serif;
+  --font-degular: 'degular', sans-serif;
+  --font-google-sans: 'google-sans', sans-serif;
+
+  --color-brand: #002dffff;
+  --color-brand-hover: #0024ccff;
+  --color-brand-pressed: #001b99ff;
+  --color-brand-disabled: #8096ffff;
+  --color-neutral-gray-100: #ffffffff;
+  --color-neutral-gray-150: #f7f8fa;
+  --color-neutral-gray-200: #f0f1f7ff;
+  --color-neutral-gray-300: #eaebf1ff;
+  --color-neutral-gray-400: #d0d1d9ff;
+  --color-neutral-gray-500: #b6b7bfff;
+  --color-neutral-gray-600: #797a80ff;
+  --color-neutral-gray-700: #48494dff;
+  --color-neutral-gray-800: #242426ff;
+  --color-neutral-gray-900: #18181aff;
+  --color-module-3d-viz: #1d5fffff;
+  --color-module-ar: #00c2a1ff;
+  --color-module-tryon: #5a3fffff;
+  --color-module-configurator: #ff7c1fff;
+  --color-module-storefront: #e5a417ff;
+  --color-module-video: #ff2e63ff;
+  --color-module-social: #a74effff;
+  --color-overlay-light: #ffffff1a;
+  --color-overlay-dark: #0000001a;
+  --color-green-success: #059669;
+  --color-ui-success: #52ac0b;
+  --color-ui-success-light: #f1ffe5;
+  --color-ui-warning: #ffc300;
+  --color-ui-warning-light: #fff9e6;
+  --color-ui-error: #f90a06;
+  --color-ui-warning: #ffc300;
+  --color-ui-warning-light: #fff9e6;
+  --color-ui-error-light: #ffe6e5;
+  --color-utility-blue-dark-50: #eff4ff;
+  --color-utility-blue-dark-600: #155eef;
+  --color-utility-indigo-200: #c7d7fe;
+  --color-utility-warning-700: #b54708;
+
+  --background-image-gradient-3d-viz:
+    linear-gradient(
+      40deg,
+      rgba(46, 156, 255, 0) 22.87%,
+      rgba(46, 156, 255, 0.2) 100%
+    ),
+    linear-gradient(40deg, #ffffffff, #ffffffff);
+
+  --background-image-gradient-ar:
+    linear-gradient(
+      40deg,
+      rgba(61, 235, 178, 0) 22.87%,
+      rgba(61, 235, 178, 0.2) 100%
+    ),
+    linear-gradient(40deg, #ffffffff, #ffffffff);
+
+  --background-image-gradient-tryon:
+    linear-gradient(
+      40deg,
+      rgba(122, 108, 255, 0) 22.87%,
+      rgba(122, 108, 255, 0.2) 100%
+    ),
+    linear-gradient(40deg, #ffffffff, #ffffffff);
+
+  --background-image-gradient-configurator:
+    linear-gradient(
+      40deg,
+      rgba(251, 139, 40, 0) 22.87%,
+      rgba(251, 139, 40, 0.2) 100%
+    ),
+    linear-gradient(40deg, #ffffffff, #ffffffff);
+
+  --background-image-gradient-storefront:
+    linear-gradient(
+      40deg,
+      rgba(253, 198, 51, 0) 22.87%,
+      rgba(253, 198, 51, 0.2) 100%
+    ),
+    linear-gradient(40deg, #ffffffff, #ffffffff);
+
+  --background-image-gradient-video:
+    linear-gradient(
+      40deg,
+      rgba(250, 53, 50, 0) 22.87%,
+      rgba(250, 53, 50, 0.2) 100%
+    ),
+    linear-gradient(40deg, #ffffffff, #ffffffff);
+
+  --background-image-gradient-social:
+    linear-gradient(
+      40deg,
+      rgba(217, 108, 255, 0) 22.87%,
+      rgba(217, 108, 255, 0.2) 100%
+    ),
+    linear-gradient(40deg, #ffffffff, #ffffffff);
+
+  --background-image-gradient-versa: linear-gradient(
+    114deg,
+    #00e5d1 6.19%,
+    #25adf9 37.23%,
+    #2553f8 94.85%
+  );
+  --background-image-gradient-degular: linear-gradient(
+    180deg,
+    #4d4d4d 24.54%,
+    #080808 87.96%
+  );
+  --background-image-gradient-onboarding: linear-gradient(
+    90deg,
+    #0035c5 0%,
+    #3b82f6 50%,
+    #0047ff 100%
+  );
+  --animate-ghost: ghost 2.5s steps(15) infinite;
+
+  /* Shadows */
+  --shadow-toast-card: 0 4px 20px 0 rgba(0, 0, 0, 0.1);
+}
+
+@utility stroke-round {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@utility bg-auth-img {
+  background-image: url('/assets/images/auth-bg.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@keyframes ghost {
+  from {
+    background-position: var(--from-x) var(--from-y);
+  }
+
+  to {
+    background-position: var(--to-x) var(--to-y);
+  }
+}
+
+@keyframes shine {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.shine-text {
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.6) 40%,
+    rgba(255, 255, 255, 0.9) 50%,
+    rgba(255, 255, 255, 0.6) 60%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 1.5s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideLoader {
+  0% {
+    left: -33%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes bigStarMove {
+  0%,
+  15% {
+    transform: translateX(-35px) scale(1) rotate(45deg);
+  }
+  60% {
+    transform: translateX(0px) scale(0.8) rotate(45deg);
+  }
+  85%,
+  100% {
+    transform: translateX(-35px) scale(1) rotate(45deg);
+  }
+}
+
+@keyframes smallStarMove {
+  0%,
+  15% {
+    transform: translateX(35px) scale(1) rotate(45deg);
+  }
+  60% {
+    transform: translateX(0px) scale(1.5) rotate(45deg);
+  }
+  85%,
+  100% {
+    transform: translateX(35px) scale(1) rotate(45deg);
+  }
+}
+
+@keyframes aiStatusShimmer {
+  0% {
+    background-position: 200% 50%;
+  }
+  100% {
+    background-position: -200% 50%;
+  }
+}
+
+.ai-status-gradient-text {
+  background-image: linear-gradient(90deg, #18181a, #a5a6b2, #18181a);
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: aiStatusShimmer 1.8s linear infinite;
+}
+
+.animate-thinking-sweep {
+  animation: aiStatusShimmer 1.8s linear infinite;
+}
+
+.leading-trim {
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
+}
