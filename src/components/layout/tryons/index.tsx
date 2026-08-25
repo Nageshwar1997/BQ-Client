@@ -1,11 +1,12 @@
+// eslint-disable-next-line simple-import-sort/imports
 import { Icon } from '@iconify/react';
 import { useEffect, useRef, useState } from 'react';
 
 import type { ILipTryOnState } from '@/classes/tryon/categories/lip';
 import { ModalWrapper } from '@/components/layout/modals/ModalWrapper';
 import useTryOnUpload from '@/hooks/useTryOnUpload';
-import type { TTryOnSelection } from '@/types/tryon.type';
 import type { IShade, ITryOnStageRef } from '@/types/tryon-engine.type';
+import type { TTryOnSelection } from '@/types/tryon.type';
 
 import LipTryOnStage, { LipTryOnStatusOverlay } from './LipTryOnStage';
 import TryOnShadeSwatches from './TryOnShadeSwatches';
@@ -28,7 +29,11 @@ interface ITryOnFlowState {
   engineState: ILipTryOnState | null;
 }
 
-const INITIAL_FLOW_STATE: ITryOnFlowState = { mode: 'live', uploadedImageUrl: null, engineState: null };
+const INITIAL_FLOW_STATE: ITryOnFlowState = {
+  mode: 'live',
+  uploadedImageUrl: null,
+  engineState: null,
+};
 
 const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
   const [flow, setFlow] = useState<ITryOnFlowState>(INITIAL_FLOW_STATE);
@@ -102,7 +107,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
       isOpen={isOpen}
       onClose={onClose}
       header={{ title: 'Try-On', showCloseIcon: true }}
-      className="min-w-[80dvw]! max-w-full h-full"
+      className="h-full max-w-full min-w-[80dvw]!"
     >
       {/* Only LIP has a rendering engine built so far - see docs/tryons/README.md. */}
       {tryOn?.category !== 'LIP' ? (
@@ -121,7 +126,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
         // absolutely-positioned), so the row would collapse to just the sidebar's width without
         // an explicit size here. `w-[min(90vw,800px)]` sidesteps that: it's a real length, not a
         // percentage of an ambiguously-sized ancestor.
-        <div className="flex w-full h-full gap-3">
+        <div className="flex h-full w-full gap-3">
           <div className="border-primary/10 relative flex-1 overflow-hidden rounded-2xl border">
             <LipTryOnStage
               ref={stageRef}
@@ -167,7 +172,9 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
               onFileSelected={setFile}
               onModelSelect={handleModelSelect}
             />
-            {uploadError && <p className="text-primary-red text-center text-[10px]">{uploadError}</p>}
+            {uploadError && (
+              <p className="text-primary-red text-center text-[10px]">{uploadError}</p>
+            )}
           </div>
         </div>
       )}
