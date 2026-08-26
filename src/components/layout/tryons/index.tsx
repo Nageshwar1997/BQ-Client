@@ -136,10 +136,16 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
   const handleModelSelect = (url: string) => {
     resetUpload();
     setFlow((prev) => ({ ...prev, mode: 'upload', uploadedImageUrl: url, step: 'tryon' }));
-    // This path keeps the engine's lifted state (color/range) across the switch, but the
-    // engine itself is a fresh instance - its own `comparePosition` always starts back at
-    // `null`, so the toggle would otherwise show "active" for a split that isn't there anymore.
+    // If we were already in upload mode, `TryOnUploadStage` doesn't remount for a new photo -
+    // the *same* engine instance just loads the new image (see its `imageUrl` effect), so its
+    // own `comparePosition` field would otherwise carry over from before this switch. Turning
+    // off `isCompareActive` alone only hides the React-level drag UI - it doesn't stop
+    // `renderFrame` from still drawing the split/divider line on the canvas itself, so this has
+    // to explicitly clear the engine's own state too (harmless no-op on the old engine if we
+    // were in live mode instead, since that path gets a fresh, already-null one regardless).
+    stageRef.current?.setComparePosition(null);
     setIsCompareActive(false);
+    setCompareCanvas(null);
   };
 
   // `hexColor` is `null` when re-clicking the already-active shade to deselect it - the engine's
