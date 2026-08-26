@@ -48,11 +48,13 @@ const INITIAL_FLOW_STATE: ITryOnFlowState = {
 
 const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
   const [flow, setFlow] = useState<ITryOnFlowState>(INITIAL_FLOW_STATE);
-  // Not part of `flow`/the engine's own state - purely a UI toggle, reset alongside every flow
-  // reset below (a fresh engine mount always starts with no split anyway, see
-  // TryOnEngineBase's `comparePosition` field default).
-  const [isCompareActive, setIsCompareActive] = useState(false);
-  // Resolved once, in the toggle handler below (an event handler, not render - reading a ref's
+  // `null` = compare mode off; the actual canvas element = compare mode on. Its own truthiness
+  // *is* "is compare active" - there used to be a separate `isCompareActive` boolean alongside
+  // this, but the two had to be set together at every single call site anyway (nothing ever
+  // needed them to disagree), which is exactly the kind of manually-synced duplicate state that
+  // can drift out of sync by accident - the same class of bug `handleModelSelect` below had to
+  // fix for `comparePosition` itself. One piece of state, nothing to forget to update.
+  // Resolved in the toggle handler below (an event handler, not render - reading a ref's
   // `.current` during render itself is unsafe/lint-forbidden) - TryOnCompareSlider needs the
   // actual canvas element to account for its `object-fit` sizing.
   const [compareCanvas, setCompareCanvas] = useState<HTMLCanvasElement | null>(null);
@@ -72,7 +74,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
      */
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setFlow(INITIAL_FLOW_STATE);
-    setIsCompareActive(false);
+    setCompareCanvas(null);
     resetUpload();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
@@ -102,7 +104,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
   // Step 1 -> 2: picking a mode always starts a fresh flow for it.
   const handleSelectMode = (mode: 'live' | 'upload') => {
     setFlow({ ...INITIAL_FLOW_STATE, step: 'instructions', mode });
-    setIsCompareActive(false);
+    setCompareCanvas(null);
   };
 
   // Step 2 -> 3/4 (live only) - the engine only mounts once we're in the 'tryon' step, and its
@@ -125,12 +127,12 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
   // reference's onCameraClick/onUploadClick; doubles as "start over"/"pick a different photo").
   const handleModeToggle = (mode: 'live' | 'upload') => {
     setFlow({ ...INITIAL_FLOW_STATE, step: 'instructions', mode });
-    setIsCompareActive(false);
+    setCompareCanvas(null);
   };
 
   const handleBackToSelect = () => {
     setFlow(INITIAL_FLOW_STATE);
-    setIsCompareActive(false);
+    setCompareCanvas(null);
   };
 
   const handleModelSelect = (url: string) => {
@@ -138,13 +140,12 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
     setFlow((prev) => ({ ...prev, mode: 'upload', uploadedImageUrl: url, step: 'tryon' }));
     // If we were already in upload mode, `TryOnUploadStage` doesn't remount for a new photo -
     // the *same* engine instance just loads the new image (see its `imageUrl` effect), so its
-    // own `comparePosition` field would otherwise carry over from before this switch. Turning
-    // off `isCompareActive` alone only hides the React-level drag UI - it doesn't stop
-    // `renderFrame` from still drawing the split/divider line on the canvas itself, so this has
-    // to explicitly clear the engine's own state too (harmless no-op on the old engine if we
-    // were in live mode instead, since that path gets a fresh, already-null one regardless).
+    // own `comparePosition` field would otherwise carry over from before this switch. Clearing
+    // `compareCanvas` alone only hides the React-level drag UI - it doesn't stop `renderFrame`
+    // from still drawing the split/divider line on the canvas itself, so this has to explicitly
+    // clear the engine's own state too (harmless no-op on the old engine if we were in live mode
+    // instead, since that path gets a fresh, already-null one regardless).
     stageRef.current?.setComparePosition(null);
-    setIsCompareActive(false);
     setCompareCanvas(null);
   };
 
@@ -158,10 +159,9 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
   // Toggling on always (re)centers the split - toggling off clears it back to the normal
   // full render (`null`), matching `TryOnEngineBase`'s own semantics for `comparePosition`.
   const handleCompareToggle = () => {
-    setIsCompareActive((prev) => {
-      const next = !prev;
+    setCompareCanvas((prev) => {
+      const next = prev ? null : (stageRef.current?.getCanvas() ?? null);
       stageRef.current?.setComparePosition(next ? 0.5 : null);
-      setCompareCanvas(next ? (stageRef.current?.getCanvas() ?? null) : null);
       return next;
     });
   };
@@ -256,7 +256,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                   />
                 )}
 
-                {isTryOnReady && isCompareActive && (
+                {isTryOnReady && compareCanvas && (
                   <TryOnCompareSlider
                     canvas={compareCanvas}
                     onDrag={(value) => {
@@ -271,12 +271,12 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                   <button
                     type="button"
                     aria-label={
-                      isCompareActive ? 'Hide before/after compare' : 'Compare before/after'
+                      compareCanvas ? 'Hide before/after compare' : 'Compare before/after'
                     }
                     onClick={handleCompareToggle}
                     disabled={!isTryOnReady || !flow.engineState?.color}
                     className={`flex size-9 cursor-pointer items-center justify-center rounded-full border backdrop-blur-xs transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-50 ${
-                      isCompareActive
+                      compareCanvas
                         ? 'bg-sky-blue-burst border-transparent text-white'
                         : 'bg-primary-invert/70 text-primary border-primary/10'
                     }`}
@@ -288,7 +288,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                     type="button"
                     aria-label="Download snapshot"
                     onClick={handleDownload}
-                    disabled={!flow.engineState?.color || isCompareActive}
+                    disabled={!flow.engineState?.color || !!compareCanvas}
                     className="bg-primary-invert/70 text-primary border-primary/10 flex size-9 cursor-pointer items-center justify-center rounded-full border backdrop-blur-xs disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <Icon icon="solar:download-linear" className="size-4" />
@@ -298,7 +298,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                 {/* Hidden while comparing - both would otherwise sit on top of the drag
                     surface and fight it for clicks, and neither is meaningful mid-comparison. */}
                 <div
-                  className={`absolute inset-x-0 bottom-0 z-3 flex flex-col items-center gap-2 ${isCompareActive ? 'hidden' : ''}`}
+                  className={`absolute inset-x-0 bottom-0 z-3 flex flex-col items-center gap-2 ${compareCanvas ? 'hidden' : ''}`}
                 >
                   {/* Intensity slider - only meaningful once a shade is actually applied. */}
                   {flow.engineState?.color && (
