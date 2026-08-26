@@ -1,15 +1,14 @@
 // eslint-disable-next-line simple-import-sort/imports
-import { IMAGE_MIMES } from '@beautinique/frontend-constants';
 import { Icon } from '@iconify/react';
-import { type ChangeEvent, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import type { ILipTryOnState } from '@/classes/tryon/categories/lip';
 import { ModalWrapper } from '@/components/layout/modals/ModalWrapper';
+import { LIVE_INSTRUCTIONS, UPLOAD_INSTRUCTIONS } from '@/constants/tryon.constants';
 import useTryOnUpload from '@/hooks/useTryOnUpload';
 import type { IShade, ITryOnStageRef } from '@/types/tryon-engine.type';
 import type { TTryOnSelection } from '@/types/tryon.type';
 
-import { LIVE_INSTRUCTIONS, UPLOAD_INSTRUCTIONS } from '@/constants/tryon.constants';
 import LipTryOnStage, { LipTryOnStatusOverlay } from './LipTryOnStage';
 import TryOnInstructions from './TryOnInstructions';
 import TryOnModeSelect from './TryOnModeSelect';
@@ -48,7 +47,6 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
 
   const stageRef = useRef<ITryOnStageRef<ILipTryOnState>>(null);
   const cameraVideoRef = useRef<HTMLVideoElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { previewUrl, error: uploadError, setFile, reset: resetUpload } = useTryOnUpload();
 
@@ -99,19 +97,12 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
     setFlow((prev) => ({ ...prev, step: 'tryon' }));
   };
 
-  const handleChoosePhoto = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    event.target.value = '';
-    if (!file) return;
-
+  // Step 2 -> 3/4 (upload only), passed to TryOnInstructions - which owns the file input/picker
+  // trigger itself, since nothing else needs it - lands directly in 'tryon'; the upload stage's
+  // own status overlay covers the "processing photo" loading state until `imageReady`.
+  const handleFileSelected = (file: File) => {
     resetUpload();
     setFile(file);
-    // Step 2 -> 3/4 (upload only) - lands directly in 'tryon'; the upload stage's own status
-    // overlay covers the "processing photo" loading state until `imageReady`.
     setFlow((prev) => ({ ...prev, step: 'tryon' }));
   };
 
@@ -177,7 +168,8 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
               <TryOnInstructions
                 mode={flow.mode}
                 instructions={flow.mode === 'live' ? LIVE_INSTRUCTIONS : UPLOAD_INSTRUCTIONS}
-                onAction={flow.mode === 'live' ? handleStartLive : handleChoosePhoto}
+                onStartLive={handleStartLive}
+                onFileSelected={handleFileSelected}
                 onBack={handleBackToSelect}
               />
             ) : (
@@ -236,16 +228,6 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
           </div>
         </div>
       )}
-
-      {/* Shared across the instructions screen's "Choose Photo" action and (indirectly, via a
-          mode-toggle reset) the sidebar - one input, always mounted, never rendered visibly. */}
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept={IMAGE_MIMES.join(', ')}
-        className="sr-only"
-        onChange={handleFileChange}
-      />
     </ModalWrapper>
   );
 };
