@@ -2,6 +2,8 @@ import { Icon } from '@iconify/react';
 
 import type { IShade } from '@/types/tryon-engine.type';
 
+import ScrollableGradientContainer from '../containers/ScrollableGradientContainer';
+
 interface ITryOnShadeSwatchesProps {
   shades: IShade[];
   appliedColor: string | null;
@@ -21,7 +23,14 @@ const TryOnShadeSwatches = ({
 
   return (
     <div className={`bg-primary-invert/10 rounded-b-2xl backdrop-blur-xs ${className}`}>
-      <div className="no-scrollbar flex items-center gap-3 overflow-x-auto px-4 py-3">
+      <ScrollableGradientContainer
+        direction="horizontal"
+        className="from: px-4 py-3 [&>div]:gap-3"
+        gradientClassNames={{
+          left: 'from-primary-invert/30 w-10!',
+          right: 'from-primary-invert/30 w-10!',
+        }}
+      >
         {shades.map((shade) => {
           const active = shade.hexColor === appliedColor;
 
@@ -44,7 +53,7 @@ const TryOnShadeSwatches = ({
             </div>
           );
         })}
-      </div>
+      </ScrollableGradientContainer>
     </div>
   );
 };
