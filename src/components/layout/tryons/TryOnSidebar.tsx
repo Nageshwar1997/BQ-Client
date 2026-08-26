@@ -1,19 +1,22 @@
-import { IMAGE_MIMES } from '@beautinique/frontend-constants';
 import { Icon } from '@iconify/react';
-import { type ChangeEvent, type RefObject } from 'react';
+import { type RefObject } from 'react';
 
 import Divider from '@/components/ui/Divider';
-import { TRYON_MODEL_IMAGES } from '@/constants/tryon.constants';
+import GradientText from '@/components/ui/GradientText';
+import { TRYON_MODE_OPTIONS, TRYON_MODEL_IMAGES } from '@/constants/tryon.constants';
 
 import ScrollableGradientContainer from '../containers/ScrollableGradientContainer';
 
 interface ITryOnSidebarProps {
   mode: 'live' | 'upload';
-  onModeChange: (mode: 'live' | 'upload') => void;
+  // Always resets the flow back to that mode's instructions screen (even re-clicking the
+  // already-active mode) - matches the reference's onCameraClick/onUploadClick, and doubles as
+  // a "start over"/"pick a different photo" action. The actual camera-start/file-picker trigger
+  // lives on the instructions screen from there, not here.
+  onModeToggle: (mode: 'live' | 'upload') => void;
   cameraVideoRef: RefObject<HTMLVideoElement | null>;
   cameraReady: boolean;
   previewImageUrl: string | null;
-  onFileSelected: (file: File) => void;
   onModelSelect: (url: string) => void;
 }
 
@@ -22,19 +25,12 @@ interface ITryOnSidebarProps {
 // scroll container), and only the preset model photos below scroll.
 const TryOnSidebar = ({
   mode,
-  onModeChange,
+  onModeToggle,
   cameraVideoRef,
   cameraReady,
   previewImageUrl,
-  onFileSelected,
   onModelSelect,
 }: ITryOnSidebarProps) => {
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    event.target.value = '';
-    if (file) onFileSelected(file);
-  };
-
   return (
     // `min-h-0` lets this shrink below its content's natural height instead of pushing the
     // modal taller - required for the models list below to actually clip/scroll rather than
@@ -59,45 +55,31 @@ const TryOnSidebar = ({
         )}
         <div className="bg-primary-invert/20 absolute inset-0 flex flex-col items-center justify-center gap-2">
           <div className="border-primary/20 bg-secondary-invert flex h-8 w-16 shrink-0 items-center overflow-hidden rounded-lg border">
-            <button
-              type="button"
-              aria-label="Try it live"
-              onClick={() => {
-                onModeChange('live');
-              }}
-              className={`flex h-full flex-1 cursor-pointer items-center justify-center transition-colors duration-300 ${
-                mode === 'live' ? 'bg-sky-blue-burst text-white' : 'text-secondary'
-              }`}
-            >
-              <Icon icon="solar:camera-linear" className="size-4" />
-            </button>
-            <label
-              htmlFor="tryon-sidebar-upload"
-              onClick={() => {
-                onModeChange('upload');
-              }}
-              className={`flex h-full flex-1 cursor-pointer items-center justify-center transition-colors duration-300 ${
-                mode === 'upload' ? 'bg-sky-blue-burst text-white' : 'text-secondary'
-              }`}
-            >
-              <Icon icon="solar:gallery-send-linear" className="size-4" />
-            </label>
+            {TRYON_MODE_OPTIONS.map((option) => (
+              <button
+                key={option.mode}
+                type="button"
+                aria-label={option.title}
+                onClick={() => {
+                  onModeToggle(option.mode);
+                }}
+                className={`flex size-full p-1.5 cursor-pointer items-center justify-center ${
+                  option.mode === mode ? 'bg-sky-blue-burst text-white' : 'text-secondary'
+                }`}
+              >
+                <Icon icon={option.icon} className="size-full" />
+              </button>
+            ))}
           </div>
-          <span className="text-[10px] font-medium text-white drop-shadow">
-            {mode === 'live' ? 'Camera' : 'Upload'}
-          </span>
+          <GradientText
+            type="silver"
+            text={mode === 'live' ? 'Camera' : 'Upload'}
+            className="text-xs font-semibold"
+          />
         </div>
-
-        <input
-          id="tryon-sidebar-upload"
-          type="file"
-          accept={IMAGE_MIMES.join(', ')}
-          className="sr-only"
-          onChange={handleFileChange}
-        />
       </div>
       <Divider className="shrink-0" />
-      <ScrollableGradientContainer direction="vertical">
+      <ScrollableGradientContainer direction="vertical" className="[&>div]:justify-start">
         {TRYON_MODEL_IMAGES.map((url) => (
           <button
             key={url}

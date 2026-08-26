@@ -61,8 +61,17 @@ const TryOnUploadStage = forwardRef<ITryOnStageRef<ILipTryOnState>, ITryOnUpload
 
     return (
       <div className="relative size-full">
-        <canvas ref={canvas1Ref} className="absolute inset-0 z-0 size-full object-cover" />
-        <canvas ref={canvas2Ref} className="absolute inset-0 z-1 size-full object-cover" />
+        {!!imageUrl && (
+          <img src={imageUrl} alt="Background" className="size-full object-cover blur-md" />
+        )}
+        <canvas
+          ref={canvas1Ref}
+          className="absolute inset-0 z-0 mx-auto size-full object-contain"
+        />
+        <canvas
+          ref={canvas2Ref}
+          className="absolute inset-0 z-1 mx-auto size-full object-contain"
+        />
         {!imageUrl && (
           <div className="absolute inset-0 z-2 flex flex-col items-center justify-center gap-2 p-6 text-center">
             <Icon icon="solar:gallery-add-linear" className="text-primary/40 size-8" />

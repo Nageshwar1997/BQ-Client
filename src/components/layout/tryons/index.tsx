@@ -1,6 +1,7 @@
 // eslint-disable-next-line simple-import-sort/imports
+import { IMAGE_MIMES } from '@beautinique/frontend-constants';
 import { Icon } from '@iconify/react';
-import { useEffect, useRef, useState } from 'react';
+import { type ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import type { ILipTryOnState } from '@/classes/tryon/categories/lip';
 import { ModalWrapper } from '@/components/layout/modals/ModalWrapper';
@@ -8,7 +9,10 @@ import useTryOnUpload from '@/hooks/useTryOnUpload';
 import type { IShade, ITryOnStageRef } from '@/types/tryon-engine.type';
 import type { TTryOnSelection } from '@/types/tryon.type';
 
+import { LIVE_INSTRUCTIONS, UPLOAD_INSTRUCTIONS } from '@/constants/tryon.constants';
 import LipTryOnStage, { LipTryOnStatusOverlay } from './LipTryOnStage';
+import TryOnInstructions from './TryOnInstructions';
+import TryOnModeSelect from './TryOnModeSelect';
 import TryOnShadeSwatches from './TryOnShadeSwatches';
 import TryOnSidebar from './TryOnSidebar';
 
@@ -24,12 +28,16 @@ interface ITryOnModalProps {
 }
 
 interface ITryOnFlowState {
+  // select: mode pick. instructions: mode-specific tips screen. tryon: engine mounted (with its
+  // own loading overlay until camera/image is ready).
+  step: 'select' | 'instructions' | 'tryon';
   mode: 'live' | 'upload';
   uploadedImageUrl: string | null;
   engineState: ILipTryOnState | null;
 }
 
 const INITIAL_FLOW_STATE: ITryOnFlowState = {
+  step: 'select',
   mode: 'live',
   uploadedImageUrl: null,
   engineState: null,
@@ -40,6 +48,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
 
   const stageRef = useRef<ITryOnStageRef<ILipTryOnState>>(null);
   const cameraVideoRef = useRef<HTMLVideoElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { previewUrl, error: uploadError, setFile, reset: resetUpload } = useTryOnUpload();
 
@@ -79,13 +88,47 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
     }
   }, [flow.mode, flow.engineState?.cameraReady]);
 
-  const handleModeChange = (mode: 'live' | 'upload') => {
-    setFlow((prev) => ({ ...prev, mode }));
+  // Step 1 -> 2: picking a mode always starts a fresh flow for it.
+  const handleSelectMode = (mode: 'live' | 'upload') => {
+    setFlow({ ...INITIAL_FLOW_STATE, step: 'instructions', mode });
+  };
+
+  // Step 2 -> 3/4 (live only) - the engine only mounts once we're in the 'tryon' step, and its
+  // own status overlay covers the "waiting for camera" loading state from there.
+  const handleStartLive = () => {
+    setFlow((prev) => ({ ...prev, step: 'tryon' }));
+  };
+
+  const handleChoosePhoto = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+
+    resetUpload();
+    setFile(file);
+    // Step 2 -> 3/4 (upload only) - lands directly in 'tryon'; the upload stage's own status
+    // overlay covers the "processing photo" loading state until `imageReady`.
+    setFlow((prev) => ({ ...prev, step: 'tryon' }));
+  };
+
+  // Sidebar's mode-toggle, reachable from within the 'tryon' step - always resets back to that
+  // mode's instructions screen, even re-clicking the already-active mode (matches the
+  // reference's onCameraClick/onUploadClick; doubles as "start over"/"pick a different photo").
+  const handleModeToggle = (mode: 'live' | 'upload') => {
+    setFlow({ ...INITIAL_FLOW_STATE, step: 'instructions', mode });
+  };
+
+  const handleBackToSelect = () => {
+    setFlow(INITIAL_FLOW_STATE);
   };
 
   const handleModelSelect = (url: string) => {
     resetUpload();
-    setFlow((prev) => ({ ...prev, mode: 'upload', uploadedImageUrl: url }));
+    setFlow((prev) => ({ ...prev, mode: 'upload', uploadedImageUrl: url, step: 'tryon' }));
   };
 
   const handleShadeSelect = (hexColor: string) => {
@@ -120,56 +163,71 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
           </p>
         </div>
       ) : (
-        // `ModalWrapper`'s scrollable content wrapper sizes itself with `w-fit` (shrink-to-fit) -
-        // fine for its usual centered-dialog content, but a `flex-1` canvas panel has no
-        // intrinsic width of its own to shrink-fit around (its children are all
-        // absolutely-positioned), so the row would collapse to just the sidebar's width without
-        // an explicit size here. `w-[min(90vw,800px)]` sidesteps that: it's a real length, not a
-        // percentage of an ambiguously-sized ancestor.
+        // The sidebar (mode-toggle + model list) is always visible, on every step - only the
+        // left panel's content swaps between select/instructions/the actual canvas. `w-fit`
+        // (`ModalWrapper`'s scrollable content wrapper default, for its usual centered-dialog
+        // content) can't size a `flex-1` panel with no intrinsic width of its own (its children
+        // are all absolutely-positioned), so the row would collapse to just the sidebar's width
+        // without an explicit size here - `min-w-[80dvw]!` on ModalWrapper sidesteps that.
         <div className="flex h-full w-full gap-3">
           <div className="border-primary/10 relative flex-1 overflow-hidden rounded-2xl border">
-            <LipTryOnStage
-              ref={stageRef}
-              mode={flow.mode}
-              uploadedImageUrl={flow.uploadedImageUrl}
-              initialState={{ type: tryOn.subCategory, color: flow.engineState?.color ?? null }}
-              onStateChange={(engineState) => {
-                setFlow((prev) => ({ ...prev, engineState }));
-              }}
-            />
+            {flow.step === 'select' ? (
+              <TryOnModeSelect onSelect={handleSelectMode} />
+            ) : flow.step === 'instructions' ? (
+              <TryOnInstructions
+                mode={flow.mode}
+                instructions={flow.mode === 'live' ? LIVE_INSTRUCTIONS : UPLOAD_INSTRUCTIONS}
+                onAction={flow.mode === 'live' ? handleStartLive : handleChoosePhoto}
+                onBack={handleBackToSelect}
+              />
+            ) : (
+              <>
+                <LipTryOnStage
+                  ref={stageRef}
+                  mode={flow.mode}
+                  uploadedImageUrl={flow.uploadedImageUrl}
+                  initialState={{
+                    type: tryOn.subCategory,
+                    color: flow.engineState?.color ?? null,
+                  }}
+                  onStateChange={(engineState) => {
+                    setFlow((prev) => ({ ...prev, engineState }));
+                  }}
+                />
 
-            <LipTryOnStatusOverlay
-              mode={flow.mode}
-              uploadedImageUrl={flow.uploadedImageUrl}
-              state={flow.engineState}
-            />
+                <LipTryOnStatusOverlay
+                  mode={flow.mode}
+                  uploadedImageUrl={flow.uploadedImageUrl}
+                  state={flow.engineState}
+                />
 
-            <button
-              type="button"
-              aria-label="Download snapshot"
-              onClick={handleDownload}
-              disabled={!flow.engineState?.color}
-              className="bg-primary-invert/70 text-primary border-primary/10 absolute top-3 right-3 z-3 flex size-9 cursor-pointer items-center justify-center rounded-full border backdrop-blur-xs disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              <Icon icon="solar:download-linear" className="size-4" />
-            </button>
+                <button
+                  type="button"
+                  aria-label="Download snapshot"
+                  onClick={handleDownload}
+                  disabled={!flow.engineState?.color}
+                  className="bg-primary-invert/70 text-primary border-primary/10 absolute top-3 right-3 z-3 flex size-9 cursor-pointer items-center justify-center rounded-full border backdrop-blur-xs disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <Icon icon="solar:download-linear" className="size-4" />
+                </button>
 
-            <TryOnShadeSwatches
-              className="absolute inset-x-0 bottom-0 z-3"
-              shades={shades}
-              appliedColor={flow.engineState?.color ?? null}
-              onSelect={handleShadeSelect}
-            />
+                <TryOnShadeSwatches
+                  className="absolute inset-x-0 bottom-0 z-3"
+                  shades={shades}
+                  appliedColor={flow.engineState?.color ?? null}
+                  onSelect={handleShadeSelect}
+                />
+              </>
+            )}
           </div>
 
           <div className="flex flex-col gap-2">
             <TryOnSidebar
               mode={flow.mode}
-              onModeChange={handleModeChange}
+              onModeToggle={handleModeToggle}
               cameraVideoRef={cameraVideoRef}
               cameraReady={!!flow.engineState?.cameraReady}
               previewImageUrl={flow.uploadedImageUrl}
-              onFileSelected={setFile}
               onModelSelect={handleModelSelect}
             />
             {uploadError && (
@@ -178,6 +236,16 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
           </div>
         </div>
       )}
+
+      {/* Shared across the instructions screen's "Choose Photo" action and (indirectly, via a
+          mode-toggle reset) the sidebar - one input, always mounted, never rendered visibly. */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept={IMAGE_MIMES.join(', ')}
+        className="sr-only"
+        onChange={handleFileChange}
+      />
     </ModalWrapper>
   );
 };
