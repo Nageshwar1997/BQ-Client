@@ -30,6 +30,7 @@ const TryOnUploadStage = forwardRef<ITryOnStageRef<ILipTryOnState>, ITryOnUpload
         // LipTryOnStage can treat both refs identically.
         getStream: () => null,
         setComparePosition: (value) => engineRef.current?.setComparePosition(value),
+        getCanvas: () => engineRef.current?.getCanvas() ?? null,
       }),
       [],
     );

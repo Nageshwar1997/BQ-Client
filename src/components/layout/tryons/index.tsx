@@ -52,6 +52,10 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
   // reset below (a fresh engine mount always starts with no split anyway, see
   // TryOnEngineBase's `comparePosition` field default).
   const [isCompareActive, setIsCompareActive] = useState(false);
+  // Resolved once, in the toggle handler below (an event handler, not render - reading a ref's
+  // `.current` during render itself is unsafe/lint-forbidden) - TryOnCompareSlider needs the
+  // actual canvas element to account for its `object-fit` sizing.
+  const [compareCanvas, setCompareCanvas] = useState<HTMLCanvasElement | null>(null);
 
   const stageRef = useRef<ITryOnStageRef<ILipTryOnState>>(null);
   const cameraVideoRef = useRef<HTMLVideoElement>(null);
@@ -151,6 +155,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
     setIsCompareActive((prev) => {
       const next = !prev;
       stageRef.current?.setComparePosition(next ? 0.5 : null);
+      setCompareCanvas(next ? (stageRef.current?.getCanvas() ?? null) : null);
       return next;
     });
   };
@@ -247,6 +252,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
 
                 {isTryOnReady && isCompareActive && (
                   <TryOnCompareSlider
+                    canvas={compareCanvas}
                     onDrag={(value) => {
                       stageRef.current?.setComparePosition(value);
                     }}

@@ -69,6 +69,10 @@ export interface ITryOnStageRef<TState> {
   // position and "after" (the makeup-composited render) right of it. See `TryOnEngineBase`'s
   // `renderFrame` for the actual split/divider draw.
   setComparePosition: (value: number | null) => void;
+  // The canvas actually being drawn to - lets a UI-side compare-slider account for its CSS
+  // `object-fit` (contain/cover) sizing, so the draggable divider lines up with the one
+  // `renderFrame` itself draws instead of assuming the canvas fills its box edge-to-edge.
+  getCanvas: () => HTMLCanvasElement | null;
 }
 
 // A product's shade/color variant - real data (`product.variants`, `type === 'Color'`), not

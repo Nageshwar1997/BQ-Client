@@ -1,3 +1,4 @@
+import type { IObjectFitContentRect } from '@/types/tryon.type';
 import type { ColorTuple } from '@/types/tryon-engine.type';
 
 // Category-agnostic helpers for the Try-On rendering engine (`@/classes/tryon`) - canvas
@@ -77,6 +78,61 @@ export const hexToRGBA = (hex: string, alpha = 1): ColorTuple => {
         ];
 
   return [r, g, b, alpha];
+};
+
+// Computes where a CSS `object-fit`-sized element's content actually renders within its own
+// box, as a horizontal offset/width in percent of that box. `object-fit` only changes how the
+// *content* fits inside an element's box, never the box itself - `object-contain` can letterbox
+// it smaller (see TryOnUploadStage.tsx), `object-cover` can crop it larger (see
+// TryOnLiveStage.tsx) - so naive box-relative positioning (e.g. an overlay driven by plain
+// percentages of the box) can end up visibly misaligned with what's actually drawn. Handles
+// every standard `object-fit` value, not just contain/cover, so a future category's stage
+// canvas can use any of them without this silently going wrong again. Assumes the default
+// centered `object-position: 50% 50%` - every current/planned category's stage centers its
+// subject, so this isn't expected to need generalizing further; used by
+// TryOnCompareSlider.tsx to line its drag handle up with `TryOnEngineBase.renderFrame`'s split.
+export const getObjectFitContentRect = (
+  boxWidth: number,
+  boxHeight: number,
+  contentWidth: number,
+  contentHeight: number,
+  objectFit: string,
+): IObjectFitContentRect => {
+  if (!boxWidth || !boxHeight || !contentWidth || !contentHeight) {
+    return { leftPercent: 0, widthPercent: 100 };
+  }
+
+  const widthScale = boxWidth / contentWidth;
+  const heightScale = boxHeight / contentHeight;
+
+  let scale: number;
+  switch (objectFit) {
+    case 'cover':
+      scale = Math.max(widthScale, heightScale);
+      break;
+    case 'fill':
+      // Stretches independently per axis to exactly match the box - width always ends up
+      // exactly `boxWidth`, which `widthScale` alone already produces here.
+      scale = widthScale;
+      break;
+    case 'none':
+      scale = 1;
+      break;
+    case 'scale-down':
+      scale = Math.min(1, widthScale, heightScale);
+      break;
+    case 'contain':
+    default:
+      scale = Math.min(widthScale, heightScale);
+  }
+
+  const renderedWidth = contentWidth * scale;
+  const offsetX = (boxWidth - renderedWidth) / 2;
+
+  return {
+    leftPercent: (offsetX / boxWidth) * 100,
+    widthPercent: (renderedWidth / boxWidth) * 100,
+  };
 };
 
 // Abort-aware image loader - used for both texture assets (once, at engine start) and

@@ -15,3 +15,8 @@ export type TTryOnSubCategory<TCategory extends TTryOnCategory = TTryOnCategory>
 export type TTryOnSelection = {
   [K in TTryOnCategory]: { category: K; subCategory: TTryOnSubCategory<K> };
 }[TTryOnCategory];
+
+export interface IObjectFitContentRect {
+  leftPercent: number;
+  widthPercent: number;
+}
