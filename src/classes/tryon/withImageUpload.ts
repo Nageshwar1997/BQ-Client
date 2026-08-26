@@ -43,12 +43,17 @@ export function withImageUpload<TState extends IMakeupState, TAssets>(
 
         this.image = img;
 
+        // Only report ready once a frame has actually been detected + drawn. On first mount,
+        // the landmarker (slow - downloads WASM/model) and the image (fast - a local asset) load
+        // concurrently; if this resolves first, `this.landmarker` is still null here, so there's
+        // nothing to render yet - `onTryOnReady` picks it up once the landmarker itself finishes
+        // loading instead. Setting `imageReady` unconditionally here used to hide the loading
+        // overlay before any frame existed, leaving a blank canvas until that later render.
         if (this.landmarker) {
           this.landmark = this.landmarker.detect(img);
           this.renderFrame(img);
+          this.updateState.setImageReady(true);
         }
-
-        this.updateState.setImageReady(true);
       } catch (err) {
         if (err instanceof DOMException && err.name === 'AbortError') return;
         console.error('Image load failed', err);
