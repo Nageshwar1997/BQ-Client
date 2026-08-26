@@ -20,7 +20,7 @@ const TryOnShadeSwatches = ({
   if (!shades.length) return null;
 
   return (
-    <div className={`bg-primary-invert/70 backdrop-blur-xs ${className}`}>
+    <div className={`bg-primary-invert/10 rounded-b-2xl backdrop-blur-xs ${className}`}>
       <div className="no-scrollbar flex items-center gap-3 overflow-x-auto px-4 py-3">
         {shades.map((shade) => {
           const active = shade.hexColor === appliedColor;
