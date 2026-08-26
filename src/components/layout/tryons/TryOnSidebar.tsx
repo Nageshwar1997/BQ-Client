@@ -3,9 +3,9 @@ import { type RefObject } from 'react';
 
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
-import { TRYON_MODE_OPTIONS, TRYON_MODEL_IMAGES } from '@/constants/tryon.constants';
+import { TRYON_MODE_OPTIONS } from '@/constants/tryon.constants';
 
-import ScrollableGradientContainer from '../containers/ScrollableGradientContainer';
+import TryOnModelList from './TryOnModelList';
 
 interface ITryOnSidebarProps {
   mode: 'live' | 'upload';
@@ -84,28 +84,13 @@ const TryOnSidebar = ({
         </div>
       </div>
       <Divider className="shrink-0" />
-      <ScrollableGradientContainer
+      <TryOnModelList
         direction="vertical"
-        className={`[&>div]:justify-start ${modelsDisabled ? 'opacity-50' : ''}`}
-      >
-        {TRYON_MODEL_IMAGES.map((url) => (
-          <button
-            key={url}
-            type="button"
-            disabled={modelsDisabled}
-            onClick={() => {
-              onModelSelect(url);
-            }}
-            className={`aspect-square shrink-0 cursor-pointer overflow-hidden rounded-2xl border-2 transition-colors duration-300 disabled:cursor-not-allowed ${
-              mode === 'upload' && previewImageUrl === url
-                ? 'border-primary'
-                : 'border-primary/10 hover:border-primary/30'
-            }`}
-          >
-            <img src={url} alt="Model" className="size-full object-cover" />
-          </button>
-        ))}
-      </ScrollableGradientContainer>
+        mode={mode}
+        previewImageUrl={previewImageUrl}
+        onModelSelect={onModelSelect}
+        disabled={modelsDisabled}
+      />
     </div>
   );
 };
