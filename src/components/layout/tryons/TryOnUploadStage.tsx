@@ -5,8 +5,6 @@ import type { ILipTryOnState } from '@/classes/tryon/categories/lip';
 import { LipUploadEngine } from '@/classes/tryon/categories/lip';
 import type { ITryOnStageRef } from '@/types/tryon-engine.type';
 
-import ApiStatus from '../ApiStatus';
-
 interface ITryOnUploadStageProps {
   imageUrl: string | null;
   initialState?: Partial<ILipTryOnState>;
@@ -88,25 +86,3 @@ const TryOnUploadStage = forwardRef<ITryOnStageRef<ILipTryOnState>, ITryOnUpload
 TryOnUploadStage.displayName = 'TryOnUploadStage';
 
 export default TryOnUploadStage;
-
-export const TryOnUploadStatusOverlay = ({
-  imageUrl,
-  state,
-}: {
-  imageUrl: string | null;
-  state: ILipTryOnState | null;
-}) => {
-  if (!imageUrl || state?.imageReady) return null;
-
-  return (
-    <div className="bg-primary-invert absolute inset-0 z-2">
-      <ApiStatus
-        className="scale-75"
-        status={state?.error ? 'error' : 'loading'}
-        text="Processing photo..."
-        title="Couldn't process photo"
-        description={state?.error}
-      />
-    </div>
-  );
-};

@@ -9,11 +9,12 @@ import useTryOnUpload from '@/hooks/useTryOnUpload';
 import type { IShade, ITryOnStageRef } from '@/types/tryon-engine.type';
 import type { TTryOnSelection } from '@/types/tryon.type';
 
-import LipTryOnStage, { LipTryOnStatusOverlay } from './LipTryOnStage';
+import LipTryOnStage from './LipTryOnStage';
 import TryOnInstructions from './TryOnInstructions';
 import TryOnModeSelect from './TryOnModeSelect';
 import TryOnShadeSwatches from './TryOnShadeSwatches';
 import TryOnSidebar from './TryOnSidebar';
+import TryOnStatusOverlay from './TryOnStatusOverlay';
 
 interface ITryOnModalProps {
   isOpen: boolean;
@@ -187,11 +188,24 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                   }}
                 />
 
-                <LipTryOnStatusOverlay
-                  mode={flow.mode}
-                  uploadedImageUrl={flow.uploadedImageUrl}
-                  state={flow.engineState}
-                />
+                {/* Not-ready-yet overlay - each mode has its own readiness signal (camera
+                    permission vs. image processing), computed here since only the orchestrator
+                    knows which mode is active; the overlay itself is just content + a status. */}
+                {(flow.mode === 'live'
+                  ? !flow.engineState?.cameraReady
+                  : !!flow.uploadedImageUrl && !flow.engineState?.imageReady) && (
+                  <TryOnStatusOverlay
+                    loadingText={
+                      flow.mode === 'live'
+                        ? 'Waiting for camera permission...'
+                        : 'Processing photo...'
+                    }
+                    errorTitle={
+                      flow.mode === 'live' ? 'Camera unavailable' : "Couldn't process photo"
+                    }
+                    error={flow.engineState?.error}
+                  />
+                )}
 
                 <button
                   type="button"

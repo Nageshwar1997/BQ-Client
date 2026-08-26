@@ -3,8 +3,8 @@ import { forwardRef, useImperativeHandle, useRef } from 'react';
 import type { ILipTryOnState } from '@/classes/tryon/categories/lip';
 import type { ITryOnStageRef } from '@/types/tryon-engine.type';
 
-import TryOnLiveStage, { TryOnLiveStatusOverlay } from './TryOnLiveStage';
-import TryOnUploadStage, { TryOnUploadStatusOverlay } from './TryOnUploadStage';
+import TryOnLiveStage from './TryOnLiveStage';
+import TryOnUploadStage from './TryOnUploadStage';
 
 interface ILipTryOnStageProps {
   mode: 'live' | 'upload';
@@ -56,20 +56,3 @@ const LipTryOnStage = forwardRef<ITryOnStageRef<ILipTryOnState>, ILipTryOnStageP
 LipTryOnStage.displayName = 'LipTryOnStage';
 
 export default LipTryOnStage;
-
-// Status/placeholder overlays (permission prompts, processing spinners) for whichever mode is
-// active - kept alongside the stage picker so `TryOnModal` doesn't need its own mode switch.
-export const LipTryOnStatusOverlay = ({
-  mode,
-  uploadedImageUrl,
-  state,
-}: {
-  mode: 'live' | 'upload';
-  uploadedImageUrl: string | null;
-  state: ILipTryOnState | null;
-}) =>
-  mode === 'live' ? (
-    <TryOnLiveStatusOverlay state={state} />
-  ) : (
-    <TryOnUploadStatusOverlay imageUrl={uploadedImageUrl} state={state} />
-  );

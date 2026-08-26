@@ -4,8 +4,6 @@ import type { ILipTryOnState } from '@/classes/tryon/categories/lip';
 import { LipLiveEngine } from '@/classes/tryon/categories/lip';
 import type { ITryOnStageRef } from '@/types/tryon-engine.type';
 
-import ApiStatus from '../ApiStatus';
-
 interface ITryOnLiveStageProps {
   initialState?: Partial<ILipTryOnState>;
   onStateChange: (state: ILipTryOnState) => void;
@@ -81,19 +79,3 @@ const TryOnLiveStage = forwardRef<ITryOnStageRef<ILipTryOnState>, ITryOnLiveStag
 TryOnLiveStage.displayName = 'TryOnLiveStage';
 
 export default TryOnLiveStage;
-
-export const TryOnLiveStatusOverlay = ({ state }: { state: ILipTryOnState | null }) => {
-  if (state?.cameraReady) return null;
-
-  return (
-    <div className="bg-primary-invert absolute inset-0 z-2">
-      <ApiStatus
-        className="scale-75"
-        status={state?.error ? 'error' : 'loading'}
-        text="Waiting for camera permission..."
-        title="Camera unavailable"
-        description={state?.error}
-      />
-    </div>
-  );
-};
