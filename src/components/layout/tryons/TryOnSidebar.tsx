@@ -57,7 +57,6 @@ const TryOnSidebar = ({
             className="absolute inset-0 size-full object-cover blur-sm"
           />
         )}
-
         <div className="bg-primary-invert/20 absolute inset-0 flex flex-col items-center justify-center gap-2">
           <div className="border-primary/20 bg-secondary-invert flex h-8 w-16 shrink-0 items-center overflow-hidden rounded-lg border">
             <button
@@ -97,7 +96,7 @@ const TryOnSidebar = ({
           onChange={handleFileChange}
         />
       </div>
-      <Divider className='shrink-0' />
+      <Divider className="shrink-0" />
       <ScrollableGradientContainer direction="vertical">
         {TRYON_MODEL_IMAGES.map((url) => (
           <button

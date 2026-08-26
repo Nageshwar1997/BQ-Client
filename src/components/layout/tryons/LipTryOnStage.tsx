@@ -36,7 +36,7 @@ const LipTryOnStage = forwardRef<ITryOnStageRef<ILipTryOnState>, ILipTryOnStageP
         };
       },
       // Rebuilt when `mode` changes so callers always reach the currently-mounted stage.
-       
+
       [mode],
     );
 
