@@ -40,9 +40,9 @@ const TryOnBottomSheet = ({ isOpen, onClose, title, children }: ITryOnBottomShee
           type="button"
           aria-label="Close"
           onClick={onClose}
-          className="text-tertiary hover:text-primary cursor-pointer p-1 transition-colors duration-300"
+          className="text-tertiary hover:text-primary size-6 cursor-pointer p-1 transition-colors duration-300"
         >
-          <Icon icon="lucide:x" className="size-4" />
+          <Icon icon="lucide:x" className="size-full" />
         </button>
       </div>
       {children}

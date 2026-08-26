@@ -10,7 +10,8 @@ import useTryOnUpload from '@/hooks/useTryOnUpload';
 import type { IShade, ITryOnStageRef } from '@/types/tryon-engine.type';
 import type { TTryOnSelection } from '@/types/tryon.type';
 
-import Button from '@/components/ui/Button';
+import { InputError } from '@/components/ui/inputs/children';
+import BottomButtons from './BottomButtons';
 import LipTryOnStage from './LipTryOnStage';
 import TryOnBottomSheet from './TryOnBottomSheet';
 import TryOnCompareSlider from './TryOnCompareSlider';
@@ -203,12 +204,17 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
       onClose={onClose}
       header={{ title: 'Try-On', showCloseIcon: true }}
       // Mobile/tablet: edge-to-edge, no backdrop margin - matches a native full-screen sheet.
-      // `lg:` restores the original centered-dialog sizing exactly. Both the base and the `lg:`
-      // override need `!` - ModalWrapper's own classes (`max-w-md rounded-xl border` etc.) would
-      // otherwise win at that breakpoint regardless of source order (see `min-w-[80dvw]!`
-      // above, already needed for the same reason).
+      // `lg:` restores the original centered-dialog sizing exactly. Every one of these needs
+      // `!` - ModalWrapper's own classes (`max-w-md rounded-xl border` etc.) can otherwise win
+      // regardless of source order (`max-w-full` without `!` here once genuinely lost to the
+      // component's own `max-w-md`, which - combined with `min-w-[80dvw]!` - clamped the whole
+      // modal to exactly 80dvw even where `w-full!` should have taken it edge-to-edge instead,
+      // since a conflicting `min-width` always wins over `max-width` regardless of importance).
+      // `lg:w-auto!` un-forces the mobile `w-full!` back on large screens - width there is
+      // meant to be driven by `min-w-[80dvw]` as a floor (content can still grow past it), not
+      // pinned to 100% of the backdrop's padded space, which `w-full!` alone would do.
       containerProps={{ className: 'p-0! lg:p-8!' }}
-      className="h-full max-h-full! w-full! max-w-full min-w-[80dvw]! rounded-none! border-0! lg:max-h-[90dvh]! lg:rounded-xl! lg:border!"
+      className="h-full max-h-full! w-full! max-w-full! min-w-[80dvw]! rounded-none! border-0! lg:max-h-[90dvh]! lg:w-auto! lg:rounded-xl! lg:border!"
     >
       {/* Only LIP has a rendering engine built so far - see docs/tryons/README.md. */}
       {tryOn?.category !== 'LIP' ? (
@@ -363,47 +369,18 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                 // already inside 'tryon' and still not ready, never on the earlier steps.
                 modelsDisabled={flow.step === 'tryon' && !isTryOnReady}
               />
-              {uploadError && (
-                <p className="text-primary-red text-center text-[10px]">{uploadError}</p>
-              )}
+              <InputError error={uploadError} className="text-center" />
             </div>
 
-            {/* Mobile/tablet only - stands in for the sidebar above. The mode button toggles
-              directly (matching the desktop sidebar's own mode-toggle icons) - no picker UI
-              needed for a straight either/or choice; Models still opens a sheet since there
-              are more than two of those to choose from. */}
-            <div className="flex shrink-0 gap-2 lg:hidden">
-              <Button
-                pattern="secondary"
-                content={flow.mode}
-                className="capitalize"
-                buttonProps={{
-                  onClick: () => {
-                    handleModeToggle(flow.mode === 'live' ? 'upload' : 'live');
-                  },
-                }}
-                leftIcon={{
-                  icon: flow.mode === 'live' ? 'solar:camera-linear' : 'solar:gallery-send-linear',
-                }}
-              />
-              <Button
-                pattern="secondary"
-                content="Models"
-                className="capitalize"
-                buttonProps={{
-                  onClick: () => {
-                    setActiveSheet('models');
-                  },
-                  disabled: flow.step === 'tryon' && !isTryOnReady,
-                }}
-                leftIcon={{ icon: 'solar:gallery-linear' }}
-              />
-            </div>
-            {uploadError && (
-              <p className="text-primary-red text-center text-[10px] lg:hidden">{uploadError}</p>
-            )}
+            <BottomButtons
+              isTryOnReady={isTryOnReady}
+              step={flow.step}
+              mode={flow.mode}
+              onModeToggle={handleModeToggle}
+              onModelsClick={setActiveSheet}
+            />
+            <InputError error={uploadError} className="text-center lg:hidden" />
           </div>
-
           <TryOnBottomSheet
             isOpen={activeSheet === 'models'}
             onClose={() => {
