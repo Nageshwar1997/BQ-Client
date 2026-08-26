@@ -29,6 +29,7 @@ const TryOnUploadStage = forwardRef<ITryOnStageRef<ILipTryOnState>, ITryOnUpload
         // Upload mode has no camera - always null, matches TryOnLiveStage's shape so
         // LipTryOnStage can treat both refs identically.
         getStream: () => null,
+        setComparePosition: (value) => engineRef.current?.setComparePosition(value),
       }),
       [],
     );

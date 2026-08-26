@@ -54,9 +54,10 @@ export interface ITryOnUploadEngineRef<TState> extends ITryOnEngineBaseRef<TStat
 }
 
 // Minimal imperative surface a category's `<Category>TryOnStage` exposes to the orchestrating
-// modal (e.g. `TryOnModal`) - just enough to drive shade selection and snapshotting, whichever
-// of Live/Upload is currently mounted underneath. Mirrors the reference implementation's
-// `ITryOnCommonRef`, trimmed to what this app actually uses (no compare-slider/reset yet).
+// modal (e.g. `TryOnModal`) - just enough to drive shade selection, snapshotting, and the
+// before/after compare split, whichever of Live/Upload is currently mounted underneath. Mirrors
+// the reference implementation's `ITryOnCommonRef`, trimmed to what this app actually uses (no
+// reset yet).
 export interface ITryOnStageRef<TState> {
   setMakeupState: (state: Partial<TState>) => void;
   getState: () => TState | undefined;
@@ -64,6 +65,10 @@ export interface ITryOnStageRef<TState> {
   // Only meaningful in Live mode - `null` otherwise (Upload mode has no camera stream). Used to
   // feed the same stream into the sidebar's small blurred preview.
   getStream: () => MediaStream | null;
+  // `null` clears the split (normal render); a 0-1 fraction shows "before" left of that x
+  // position and "after" (the makeup-composited render) right of it. See `TryOnEngineBase`'s
+  // `renderFrame` for the actual split/divider draw.
+  setComparePosition: (value: number | null) => void;
 }
 
 // A product's shade/color variant - real data (`product.variants`, `type === 'Color'`), not

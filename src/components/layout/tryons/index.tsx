@@ -11,6 +11,7 @@ import type { IShade, ITryOnStageRef } from '@/types/tryon-engine.type';
 import type { TTryOnSelection } from '@/types/tryon.type';
 
 import LipTryOnStage from './LipTryOnStage';
+import TryOnCompareSlider from './TryOnCompareSlider';
 import TryOnInstructions from './TryOnInstructions';
 import TryOnModeSelect from './TryOnModeSelect';
 import TryOnRangeSlider from './TryOnRangeSlider';
@@ -47,6 +48,10 @@ const INITIAL_FLOW_STATE: ITryOnFlowState = {
 
 const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
   const [flow, setFlow] = useState<ITryOnFlowState>(INITIAL_FLOW_STATE);
+  // Not part of `flow`/the engine's own state - purely a UI toggle, reset alongside every flow
+  // reset below (a fresh engine mount always starts with no split anyway, see
+  // TryOnEngineBase's `comparePosition` field default).
+  const [isCompareActive, setIsCompareActive] = useState(false);
 
   const stageRef = useRef<ITryOnStageRef<ILipTryOnState>>(null);
   const cameraVideoRef = useRef<HTMLVideoElement>(null);
@@ -63,6 +68,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
      */
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setFlow(INITIAL_FLOW_STATE);
+    setIsCompareActive(false);
     resetUpload();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
@@ -92,6 +98,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
   // Step 1 -> 2: picking a mode always starts a fresh flow for it.
   const handleSelectMode = (mode: 'live' | 'upload') => {
     setFlow({ ...INITIAL_FLOW_STATE, step: 'instructions', mode });
+    setIsCompareActive(false);
   };
 
   // Step 2 -> 3/4 (live only) - the engine only mounts once we're in the 'tryon' step, and its
@@ -114,15 +121,21 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
   // reference's onCameraClick/onUploadClick; doubles as "start over"/"pick a different photo").
   const handleModeToggle = (mode: 'live' | 'upload') => {
     setFlow({ ...INITIAL_FLOW_STATE, step: 'instructions', mode });
+    setIsCompareActive(false);
   };
 
   const handleBackToSelect = () => {
     setFlow(INITIAL_FLOW_STATE);
+    setIsCompareActive(false);
   };
 
   const handleModelSelect = (url: string) => {
     resetUpload();
     setFlow((prev) => ({ ...prev, mode: 'upload', uploadedImageUrl: url, step: 'tryon' }));
+    // This path keeps the engine's lifted state (color/range) across the switch, but the
+    // engine itself is a fresh instance - its own `comparePosition` always starts back at
+    // `null`, so the toggle would otherwise show "active" for a split that isn't there anymore.
+    setIsCompareActive(false);
   };
 
   // `hexColor` is `null` when re-clicking the already-active shade to deselect it - the engine's
@@ -130,6 +143,16 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
   // clear the makeup.
   const handleShadeSelect = (hexColor: string | null) => {
     stageRef.current?.setMakeupState({ color: hexColor });
+  };
+
+  // Toggling on always (re)centers the split - toggling off clears it back to the normal
+  // full render (`null`), matching `TryOnEngineBase`'s own semantics for `comparePosition`.
+  const handleCompareToggle = () => {
+    setIsCompareActive((prev) => {
+      const next = !prev;
+      stageRef.current?.setComparePosition(next ? 0.5 : null);
+      return next;
+    });
   };
 
   const handleDownload = () => {
@@ -222,17 +245,49 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                   />
                 )}
 
-                <button
-                  type="button"
-                  aria-label="Download snapshot"
-                  onClick={handleDownload}
-                  disabled={!flow.engineState?.color}
-                  className="bg-primary-invert/70 text-primary border-primary/10 absolute top-3 right-3 z-3 flex size-9 cursor-pointer items-center justify-center rounded-full border backdrop-blur-xs disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  <Icon icon="solar:download-linear" className="size-4" />
-                </button>
+                {isTryOnReady && isCompareActive && (
+                  <TryOnCompareSlider
+                    onDrag={(value) => {
+                      stageRef.current?.setComparePosition(value);
+                    }}
+                  />
+                )}
 
-                <div className="absolute inset-x-0 bottom-0 z-3 flex flex-col items-center gap-2">
+                {/* Above TryOnCompareSlider's full-canvas z-4 drag surface, so the toggle
+                    itself (to turn compare back off) stays clickable while it's active. */}
+                <div className="absolute top-3 right-3 z-5 flex items-center gap-2">
+                  <button
+                    type="button"
+                    aria-label={
+                      isCompareActive ? 'Hide before/after compare' : 'Compare before/after'
+                    }
+                    onClick={handleCompareToggle}
+                    disabled={!isTryOnReady || !flow.engineState?.color}
+                    className={`flex size-9 cursor-pointer items-center justify-center rounded-full border backdrop-blur-xs transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-50 ${
+                      isCompareActive
+                        ? 'bg-sky-blue-burst border-transparent text-white'
+                        : 'bg-primary-invert/70 text-primary border-primary/10'
+                    }`}
+                  >
+                    <Icon icon="solar:transfer-horizontal-linear" className="size-4" />
+                  </button>
+
+                  <button
+                    type="button"
+                    aria-label="Download snapshot"
+                    onClick={handleDownload}
+                    disabled={!flow.engineState?.color || isCompareActive}
+                    className="bg-primary-invert/70 text-primary border-primary/10 flex size-9 cursor-pointer items-center justify-center rounded-full border backdrop-blur-xs disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <Icon icon="solar:download-linear" className="size-4" />
+                  </button>
+                </div>
+
+                {/* Hidden while comparing - both would otherwise sit on top of the drag
+                    surface and fight it for clicks, and neither is meaningful mid-comparison. */}
+                <div
+                  className={`absolute inset-x-0 bottom-0 z-3 flex flex-col items-center gap-2 ${isCompareActive ? 'hidden' : ''}`}
+                >
                   {/* Intensity slider - only meaningful once a shade is actually applied. */}
                   {flow.engineState?.color && (
                     <TryOnRangeSlider

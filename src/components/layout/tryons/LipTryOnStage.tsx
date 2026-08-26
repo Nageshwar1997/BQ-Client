@@ -33,6 +33,7 @@ const LipTryOnStage = forwardRef<ITryOnStageRef<ILipTryOnState>, ILipTryOnStageP
           getState: () => getActiveRef()?.getState(),
           takeSnapshot: () => getActiveRef()?.takeSnapshot() ?? null,
           getStream: () => getActiveRef()?.getStream() ?? null,
+          setComparePosition: (value) => getActiveRef()?.setComparePosition(value),
         };
       },
       // Rebuilt when `mode` changes so callers always reach the currently-mounted stage.

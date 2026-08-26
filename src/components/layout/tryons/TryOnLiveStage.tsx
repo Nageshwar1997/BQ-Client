@@ -29,6 +29,7 @@ const TryOnLiveStage = forwardRef<ITryOnStageRef<ILipTryOnState>, ITryOnLiveStag
         getState: () => engineRef.current?.getState(),
         takeSnapshot: () => engineRef.current?.takeSnapshot() ?? null,
         getStream: () => engineRef.current?.getStream() ?? null,
+        setComparePosition: (value) => engineRef.current?.setComparePosition(value),
       }),
       [],
     );
