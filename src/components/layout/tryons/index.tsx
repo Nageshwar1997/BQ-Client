@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { ILipTryOnState } from '@/classes/tryon/categories/lip';
 import { ModalWrapper } from '@/components/layout/modals/ModalWrapper';
 import { LIVE_INSTRUCTIONS, UPLOAD_INSTRUCTIONS } from '@/constants/tryon.constants';
+import { LIP_RANGE_BOUNDS } from '@/constants/tryon-lip.constants';
 import useTryOnUpload from '@/hooks/useTryOnUpload';
 import type { IShade, ITryOnStageRef } from '@/types/tryon-engine.type';
 import type { TTryOnSelection } from '@/types/tryon.type';
@@ -12,6 +13,7 @@ import type { TTryOnSelection } from '@/types/tryon.type';
 import LipTryOnStage from './LipTryOnStage';
 import TryOnInstructions from './TryOnInstructions';
 import TryOnModeSelect from './TryOnModeSelect';
+import TryOnRangeSlider from './TryOnRangeSlider';
 import TryOnShadeSwatches from './TryOnShadeSwatches';
 import TryOnSidebar from './TryOnSidebar';
 import TryOnStatusOverlay from './TryOnStatusOverlay';
@@ -123,7 +125,10 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
     setFlow((prev) => ({ ...prev, mode: 'upload', uploadedImageUrl: url, step: 'tryon' }));
   };
 
-  const handleShadeSelect = (hexColor: string) => {
+  // `hexColor` is `null` when re-clicking the already-active shade to deselect it - the engine's
+  // `applyEffect` already treats `color: null` as "nothing to draw", so this alone is enough to
+  // clear the makeup.
+  const handleShadeSelect = (hexColor: string | null) => {
     stageRef.current?.setMakeupState({ color: hexColor });
   };
 
@@ -190,6 +195,10 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                   initialState={{
                     type: tryOn.subCategory,
                     color: flow.engineState?.color ?? null,
+                    // Persists the intensity slider's position across Live<->Upload toggles too,
+                    // same reasoning as `color` above - falls back to the engine's own default
+                    // rather than `undefined` (which would win the spread in getInitialState()).
+                    range: flow.engineState?.range ?? LIP_RANGE_BOUNDS.default,
                   }}
                   onStateChange={(engineState) => {
                     setFlow((prev) => ({ ...prev, engineState }));
@@ -223,13 +232,29 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                   <Icon icon="solar:download-linear" className="size-4" />
                 </button>
 
-                <TryOnShadeSwatches
-                  className="absolute inset-x-0 bottom-0 z-3"
-                  shades={shades}
-                  appliedColor={flow.engineState?.color ?? null}
-                  onSelect={handleShadeSelect}
-                  disabled={!isTryOnReady}
-                />
+                <div className="absolute inset-x-0 bottom-0 z-3 flex flex-col items-center gap-2">
+                  {/* Intensity slider - only meaningful once a shade is actually applied. */}
+                  {flow.engineState?.color && (
+                    <TryOnRangeSlider
+                      value={flow.engineState.range}
+                      min={LIP_RANGE_BOUNDS.min}
+                      max={LIP_RANGE_BOUNDS.max}
+                      color={flow.engineState.color}
+                      disabled={!isTryOnReady}
+                      onChange={(value) => {
+                        stageRef.current?.setMakeupState({ range: value });
+                      }}
+                    />
+                  )}
+
+                  <TryOnShadeSwatches
+                    className="w-full"
+                    shades={shades}
+                    appliedColor={flow.engineState?.color ?? null}
+                    onSelect={handleShadeSelect}
+                    disabled={!isTryOnReady}
+                  />
+                </div>
               </>
             )}
           </div>
