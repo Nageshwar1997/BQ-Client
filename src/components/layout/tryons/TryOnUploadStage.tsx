@@ -68,11 +68,11 @@ const TryOnUploadStage = forwardRef<ITryOnStageRef<ILipTryOnState>, ITryOnUpload
         )}
         <canvas
           ref={canvas1Ref}
-          className="absolute inset-x-0 inset-y-1/2 -translate-y-1/2 z-0 mx-auto size-full object-contain border-2 border-[red]"
+          className="absolute inset-x-0 inset-y-1/2 z-0 mx-auto size-full -translate-y-1/2 object-contain"
         />
         <canvas
           ref={canvas2Ref}
-          className="absolute inset-x-0 inset-y-1/2 -translate-y-1/2 z-1 mx-auto size-full object-contain border-2 border-[blue]"
+          className="absolute inset-x-0 inset-y-1/2 z-1 mx-auto size-full -translate-y-1/2 object-contain"
         />
         {!imageUrl && (
           <div className="absolute inset-0 z-2 flex flex-col items-center justify-center gap-2 p-6 text-center">
