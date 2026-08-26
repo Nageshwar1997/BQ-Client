@@ -49,6 +49,17 @@ const getCachedObjectFit = (canvas: HTMLCanvasElement): string => {
   return objectFit;
 };
 
+// Ceiling on how far `resizeElements` below will scale `canvas2`'s backing store up for device
+// pixel density. Perceived sharpness past 2x is marginal, while every per-frame `drawImage`/
+// fill/stroke cost in Live mode's continuous render loop scales with the *square* of this
+// number - uncapped, a 3x phone would pay 2.25x the render cost of a capped 2x for a difference
+// nobody can actually see. 2 is the same ceiling most canvas/WebGL apps settle on for this exact
+// tradeoff. Read fresh every call (not cached like `object-fit` above) since, unlike a fixed CSS
+// class, `devicePixelRatio` can genuinely change mid-session (dragging the window to a different
+// monitor, browser zoom) - it's a plain property read, not a forced style recalculation, so
+// there's no real cost to staying correct here.
+const MAX_RENDER_DEVICE_PIXEL_RATIO = 2;
+
 // Sizes both render canvases to the source's native resolution, then scales their CSS display
 // size to fit within the parent container on *both* axes - matching whichever `object-fit` the
 // canvas is actually set to (`contain` for Upload, `cover` for Live - see TryOnUploadStage.tsx/
@@ -68,10 +79,15 @@ export const resizeElements = (
 
   if (!width || !height) return;
 
+  // `canvas1` only ever feeds MediaPipe's FaceLandmarker (as a GL-context host at init - see
+  // `getSharedFaceLandmarker` - detection itself runs directly against the source `<video>`/
+  // `<img>` element, see `withLiveCamera.ts`/`withImageUpload.ts`, never against this canvas's
+  // pixels). Detection accuracy comes from the source's own real pixel content, not from how
+  // many pixels the canvas *holding a GL context* has, so this always stays at the source's
+  // native resolution - the device-pixel-ratio upscaling below deliberately never touches it,
+  // since that would only add cost for zero detection benefit.
   canvas1.width = width;
   canvas1.height = height;
-  canvas2.width = width;
-  canvas2.height = height;
 
   const parent = canvas1.parentElement?.getBoundingClientRect();
   const parentWidth = parent?.width ?? width;
@@ -91,6 +107,24 @@ export const resizeElements = (
   canvas1.style.height = `${String(displayHeight)}px`;
   canvas2.style.width = `${String(displayWidth)}px`;
   canvas2.style.height = `${String(displayHeight)}px`;
+
+  // `canvas2` is the actual visible/downloadable output (see `TryOnEngineBase.renderFrame`,
+  // `captureSnapShot`) - every draw call there already reads its own width/height back off
+  // `canvas2` rather than assuming it matches `canvas1`, so scaling only this one up is fully
+  // self-contained: nothing downstream needs to know it happened. `scale * dpr` is exactly the
+  // backing-store multiplier `displayWidth`/`displayHeight` (CSS px) need to be fully covered by
+  // real device pixels - one multiplication covers both axes because `getObjectFitScale`
+  // guarantees a single *uniform* factor for both (true for `cover`/`contain`, the only two
+  // modes either stage class uses; only `fill`'s independent per-axis stretch would break this).
+  // `Math.max(1, ...)` means this only ever *adds* resolution for a source that's genuinely
+  // under-resolved for its display size (e.g. Live's webcam feed shown large on a high-DPR
+  // screen) - never shrinks `canvas2` below the source's native resolution, which an uploaded
+  // photo already exceeds in the common case.
+  const dpr = Math.min(window.devicePixelRatio || 1, MAX_RENDER_DEVICE_PIXEL_RATIO);
+  const renderScale = Math.max(1, scale * dpr);
+
+  canvas2.width = width * renderScale;
+  canvas2.height = height * renderScale;
 };
 
 // Composites the source frame (mirrored for a live camera, as-is for an uploaded image)
