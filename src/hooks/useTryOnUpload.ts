@@ -1,4 +1,4 @@
-import { IMAGE_FORMATS, IMAGE_MIMES, MAX_IMAGE_SIZE } from '@beautinique/frontend-constants';
+import { IMAGE_FORMATS, IMAGE_MIMES, MB } from '@beautinique/frontend-constants';
 import type { TImageFormat, TImageMime } from '@beautinique/frontend-types';
 import { formatFileSize } from '@beautinique/shared-utils';
 import { useEffect, useState } from 'react';
@@ -31,9 +31,9 @@ const useTryOnUpload = () => {
   }, [file]);
 
   const setFile = (candidate: File) => {
-    if (candidate.size > MAX_IMAGE_SIZE) {
+    if (candidate.size > 5 * MB) {
       setError(
-        `Image size is ${formatFileSize(candidate.size)}. Max allowed size is ${formatFileSize(MAX_IMAGE_SIZE)}.`,
+        `Image size is ${formatFileSize(candidate.size)}. Max allowed size is ${formatFileSize(5 * MB)}.`,
       );
       return;
     }
@@ -45,7 +45,9 @@ const useTryOnUpload = () => {
       !ext ||
       !IMAGE_FORMATS.includes(ext as TImageFormat)
     ) {
-      setError(`File extension is .${ext ?? 'unknown'}. Allowed extensions are ${IMAGE_FORMATS.join(', ')}.`);
+      setError(
+        `File extension is .${ext ?? 'unknown'}. Allowed extensions are ${IMAGE_FORMATS.join(', ')}.`,
+      );
       return;
     }
 

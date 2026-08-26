@@ -6,8 +6,58 @@ import type { ColorTuple } from '@/types/tryon-engine.type';
 // reference implementation's `virtual-tryon/utils/index.ts`; nothing here is LIP-specific
 // (that lives in `tryon-lip.util.ts`).
 
-// Sizes both render canvases to the source's native resolution, then scales their CSS
-// display size to fill the parent container height while preserving aspect ratio.
+// The core `object-fit` scale-factor math, shared by `resizeElements` and
+// `getObjectFitContentRect` below - see that function's own comment for what each value means.
+const getObjectFitScale = (
+  boxWidth: number,
+  boxHeight: number,
+  contentWidth: number,
+  contentHeight: number,
+  objectFit: string,
+): number => {
+  const widthScale = boxWidth / contentWidth;
+  const heightScale = boxHeight / contentHeight;
+
+  switch (objectFit) {
+    case 'cover':
+      return Math.max(widthScale, heightScale);
+    case 'fill':
+      // Stretches independently per axis to exactly match the box - width always ends up
+      // exactly `boxWidth`, which `widthScale` alone already produces here.
+      return widthScale;
+    case 'none':
+      return 1;
+    case 'scale-down':
+      return Math.min(1, widthScale, heightScale);
+    case 'contain':
+    default:
+      return Math.min(widthScale, heightScale);
+  }
+};
+
+// `object-fit` is a static class on a Try-On canvas - never toggled at runtime - so it's safe
+// (and, for `resizeElements` below, important - it runs on every video frame in Live mode) to
+// read it only once per canvas rather than forcing a style recalculation on every call.
+const objectFitCache = new WeakMap<HTMLCanvasElement, string>();
+
+const getCachedObjectFit = (canvas: HTMLCanvasElement): string => {
+  let objectFit = objectFitCache.get(canvas);
+  if (objectFit === undefined) {
+    objectFit = getComputedStyle(canvas).objectFit;
+    objectFitCache.set(canvas, objectFit);
+  }
+  return objectFit;
+};
+
+// Sizes both render canvases to the source's native resolution, then scales their CSS display
+// size to fit within the parent container on *both* axes - matching whichever `object-fit` the
+// canvas is actually set to (`contain` for Upload, `cover` for Live - see TryOnUploadStage.tsx/
+// TryOnLiveStage.tsx). This used to only scale to fill the parent's height, uncapped on width;
+// on a narrow/tall container (a mobile canvas panel) with a landscape-aspect photo, that could
+// size the canvas wider than its box - `overflow-hidden` on the panel then silently cropped the
+// sides instead of showing the whole photo, which is exactly wrong for Upload's intended
+// `contain` behavior (Live's `cover` happened to still look fine, since cropping overflow *is*
+// what `cover` wants - this was only ever visibly broken for Upload).
 export const resizeElements = (
   source: HTMLVideoElement | HTMLImageElement,
   canvas1: HTMLCanvasElement,
@@ -24,8 +74,18 @@ export const resizeElements = (
   canvas2.height = height;
 
   const parent = canvas1.parentElement?.getBoundingClientRect();
-  const displayHeight = parent?.height ?? height;
-  const displayWidth = displayHeight * (width / height);
+  const parentWidth = parent?.width ?? width;
+  const parentHeight = parent?.height ?? height;
+
+  const scale = getObjectFitScale(
+    parentWidth,
+    parentHeight,
+    width,
+    height,
+    getCachedObjectFit(canvas1),
+  );
+  const displayWidth = width * scale;
+  const displayHeight = height * scale;
 
   canvas1.style.width = `${String(displayWidth)}px`;
   canvas1.style.height = `${String(displayHeight)}px`;
@@ -102,30 +162,7 @@ export const getObjectFitContentRect = (
     return { leftPercent: 0, widthPercent: 100 };
   }
 
-  const widthScale = boxWidth / contentWidth;
-  const heightScale = boxHeight / contentHeight;
-
-  let scale: number;
-  switch (objectFit) {
-    case 'cover':
-      scale = Math.max(widthScale, heightScale);
-      break;
-    case 'fill':
-      // Stretches independently per axis to exactly match the box - width always ends up
-      // exactly `boxWidth`, which `widthScale` alone already produces here.
-      scale = widthScale;
-      break;
-    case 'none':
-      scale = 1;
-      break;
-    case 'scale-down':
-      scale = Math.min(1, widthScale, heightScale);
-      break;
-    case 'contain':
-    default:
-      scale = Math.min(widthScale, heightScale);
-  }
-
+  const scale = getObjectFitScale(boxWidth, boxHeight, contentWidth, contentHeight, objectFit);
   const renderedWidth = contentWidth * scale;
   const offsetX = (boxWidth - renderedWidth) / 2;
 
