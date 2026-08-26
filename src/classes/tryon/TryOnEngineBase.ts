@@ -49,6 +49,15 @@ export abstract class TryOnEngineBase<TState extends IMakeupState, TAssets = nul
     this.canvas1 = canvas1;
     this.canvas2 = canvas2;
     this.state = { ...this.getInitialState(), ...initialState };
+
+    // `updateState.set` computes this for UI-driven color changes, but a color seeded straight
+    // through `initialState` (e.g. switching Live<->Upload, or picking a different model, with a
+    // shade already applied - see TryOnModal's `initialState`) never goes through that path.
+    // Without this, `renderFrame` silently no-ops (it bails on `!this.cachedRGBA`) even though
+    // `state.color` - and so the UI's "selected" swatch - is correct.
+    if (this.state.color) {
+      this.cachedRGBA = hexToRGBA(this.state.color);
+    }
   }
 
   /* ================= STATE ================= */
