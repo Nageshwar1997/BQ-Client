@@ -8,6 +8,9 @@ interface ITryOnShadeSwatchesProps {
   shades: IShade[];
   appliedColor: string | null;
   onSelect: (hexColor: string) => void;
+  // Picking a shade before the engine can actually render it is a no-op at best - disable the
+  // whole strip until the stage reports ready (see TryOnModal's `isTryOnReady`).
+  disabled?: boolean;
   className?: string;
 }
 
@@ -17,12 +20,15 @@ const TryOnShadeSwatches = ({
   shades,
   appliedColor,
   onSelect,
+  disabled = false,
   className = '',
 }: ITryOnShadeSwatchesProps) => {
   if (!shades.length) return null;
 
   return (
-    <div className={`bg-primary-invert/10 rounded-b-2xl backdrop-blur-xs ${className}`}>
+    <div
+      className={`bg-primary-invert/10 rounded-b-2xl backdrop-blur-xs ${disabled ? 'opacity-50' : ''} ${className}`}
+    >
       <ScrollableGradientContainer
         direction="horizontal"
         className="from: px-4 py-3 [&>div]:gap-3"
@@ -39,12 +45,11 @@ const TryOnShadeSwatches = ({
               <button
                 type="button"
                 aria-label={shade.name}
+                disabled={disabled}
                 onClick={() => {
                   onSelect(shade.hexColor);
                 }}
-                className={`flex size-12 cursor-pointer items-center justify-center rounded-full border-2 transition-colors duration-300 ${
-                  active ? 'border-white' : 'border-white/30 hover:border-white/60'
-                }`}
+                className={`flex size-12 cursor-pointer items-center justify-center rounded-full border-2 transition-colors duration-300 disabled:cursor-not-allowed ${active ? 'border-white' : 'border-white/30 hover:border-white/60'}`}
                 style={{ backgroundColor: shade.hexColor }}
               >
                 {active && <Icon icon="solar:check-circle-bold" className="size-5 text-white" />}

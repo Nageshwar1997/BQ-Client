@@ -18,6 +18,10 @@ interface ITryOnSidebarProps {
   cameraReady: boolean;
   previewImageUrl: string | null;
   onModelSelect: (url: string) => void;
+  // Picking a different model before the current one has even finished loading is a no-op at
+  // best - disable just the model list (mode-toggle stays clickable, so switching away or
+  // retrying is always possible).
+  modelsDisabled?: boolean;
 }
 
 // Right-side sidebar: the mode-toggle box + Divider stay fixed at the top (not part of any
@@ -30,6 +34,7 @@ const TryOnSidebar = ({
   cameraReady,
   previewImageUrl,
   onModelSelect,
+  modelsDisabled = false,
 }: ITryOnSidebarProps) => {
   return (
     // `min-h-0` lets this shrink below its content's natural height instead of pushing the
@@ -63,7 +68,7 @@ const TryOnSidebar = ({
                 onClick={() => {
                   onModeToggle(option.mode);
                 }}
-                className={`flex size-full p-1.5 cursor-pointer items-center justify-center ${
+                className={`flex size-full cursor-pointer items-center justify-center p-1.5 ${
                   option.mode === mode ? 'bg-sky-blue-burst text-white' : 'text-secondary'
                 }`}
               >
@@ -79,15 +84,19 @@ const TryOnSidebar = ({
         </div>
       </div>
       <Divider className="shrink-0" />
-      <ScrollableGradientContainer direction="vertical" className="[&>div]:justify-start">
+      <ScrollableGradientContainer
+        direction="vertical"
+        className={`[&>div]:justify-start ${modelsDisabled ? 'opacity-50' : ''}`}
+      >
         {TRYON_MODEL_IMAGES.map((url) => (
           <button
             key={url}
             type="button"
+            disabled={modelsDisabled}
             onClick={() => {
               onModelSelect(url);
             }}
-            className={`aspect-square shrink-0 cursor-pointer overflow-hidden rounded-2xl border-2 transition-colors duration-300 ${
+            className={`aspect-square shrink-0 cursor-pointer overflow-hidden rounded-2xl border-2 transition-colors duration-300 disabled:cursor-not-allowed ${
               mode === 'upload' && previewImageUrl === url
                 ? 'border-primary'
                 : 'border-primary/10 hover:border-primary/30'

@@ -137,6 +137,14 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
     link.click();
   };
 
+  // Shared readiness check - drives both the not-ready overlay and disabling shade/model
+  // selection until the stage can actually act on either.
+  const isTryOnReady =
+    flow.step === 'tryon' &&
+    (flow.mode === 'live'
+      ? !!flow.engineState?.cameraReady
+      : !!flow.uploadedImageUrl && !!flow.engineState?.imageReady);
+
   return (
     <ModalWrapper
       isOpen={isOpen}
@@ -189,11 +197,9 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                 />
 
                 {/* Not-ready-yet overlay - each mode has its own readiness signal (camera
-                    permission vs. image processing), computed here since only the orchestrator
-                    knows which mode is active; the overlay itself is just content + a status. */}
-                {(flow.mode === 'live'
-                  ? !flow.engineState?.cameraReady
-                  : !!flow.uploadedImageUrl && !flow.engineState?.imageReady) && (
+                    permission vs. image processing), rolled into `isTryOnReady` since only the
+                    orchestrator knows which mode is active. */}
+                {!isTryOnReady && (
                   <TryOnStatusOverlay
                     loadingText={
                       flow.mode === 'live'
@@ -222,6 +228,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                   shades={shades}
                   appliedColor={flow.engineState?.color ?? null}
                   onSelect={handleShadeSelect}
+                  disabled={!isTryOnReady}
                 />
               </>
             )}
@@ -235,6 +242,10 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
               cameraReady={!!flow.engineState?.cameraReady}
               previewImageUrl={flow.uploadedImageUrl}
               onModelSelect={handleModelSelect}
+              // The model list is visible on every step, including select/instructions, where
+              // picking one is a valid shortcut straight into 'tryon' - only disable it once
+              // already inside 'tryon' and still not ready, never on the earlier steps.
+              modelsDisabled={flow.step === 'tryon' && !isTryOnReady}
             />
             {uploadError && (
               <p className="text-primary-red text-center text-[10px]">{uploadError}</p>
