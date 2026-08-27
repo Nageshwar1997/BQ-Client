@@ -5,12 +5,12 @@
 // Matches the reference implementation's hardcoded `COSMETIC_MODEL_IMAGES` (same 6 assets,
 // already present under public/images/try-on/models/).
 export const TRYON_MODEL_IMAGES = [
-  '/images/try-on/models/1.webp',
-  '/images/try-on/models/2.webp',
-  '/images/try-on/models/3.webp',
-  '/images/try-on/models/4.webp',
-  '/images/try-on/models/5.webp',
-  '/images/try-on/models/6.webp',
+  '/images/try-on/models/Central-Indian.webp',
+  '/images/try-on/models/East-Indian.webp',
+  '/images/try-on/models/North-Indian.webp',
+  '/images/try-on/models/Northeast-Indian.webp',
+  '/images/try-on/models/South-Indian.webp',
+  '/images/try-on/models/West-Indian.webp',
 ];
 
 export interface ITryOnInstruction {
