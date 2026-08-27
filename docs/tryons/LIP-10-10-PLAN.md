@@ -13,11 +13,11 @@ Last review score: **8.5/10** (breakdown below). Sabhi 11 subcategories (MATTE/S
 
 | #   | Dimension            | Current                | Target                                                                                     | Items                               |
 | --- | -------------------- | ---------------------- | ------------------------------------------------------------------------------------------ | ----------------------------------- |
-| 1   | Robustness           | ~~7/10~~ **9.5/10**    | 10/10                                                                                      | 3 (✅ 2 core done + 1 stretch left) |
+| 1   | Robustness           | ~~7/10~~ **10/10** ✅  | 10/10                                                                                      | 3 (done)                            |
 | 2   | Test coverage        | ~~5/10~~ **9.5/10**    | 10/10                                                                                      | 7 (✅ 6 core done + 1 stretch left) |
 | 3   | Docs accuracy        | ~~—~~ **10/10** ✅     | 10/10                                                                                      | 3 (done)                            |
 | 4   | Real-device QA       | — (never actually run) | 10/10                                                                                      | 4                                   |
-| 5   | UX polish            | 9/10                   | 10/10                                                                                      | 2                                   |
+| 5   | UX polish            | ~~9/10~~ **10/10** ✅  | 10/10                                                                                      | 2 (done)                            |
 | —   | Architecture         | 9.5/10                 | _(already effectively 10 — no action item)_                                                | —                                   |
 | —   | Feature completeness | 10/10                  | _(already done)_                                                                           | —                                   |
 | —   | Performance          | 9/10                   | _(folds into #4 — the missing point is unverified real-device numbers, not a code change)_ | —                                   |
@@ -25,11 +25,11 @@ Last review score: **8.5/10** (breakdown below). Sabhi 11 subcategories (MATTE/S
 
 ---
 
-## 1. Robustness → 10/10 ✅ core done
+## 1. Robustness → 10/10 ✅ done
 
 - [x] Fix `TryOnEngineBase.startTryOn()`'s catch block ([TryOnEngineBase.ts:211-224](../../src/classes/tryon/TryOnEngineBase.ts#L211)) — abhi landmarker/texture-asset load fail hone pe sirf `console.error` + silent reset karta hai, `setError` kabhi nahi bulata. **Deeper issue mila implement karte waqt**: purana `this.cleanup()` call sirf `setError` missing nahi karta tha - uska pehla line `this.listeners = []` hai, jo is (still-mounted, non-fatal) path pe React ke `onChange` listener ko permanently disconnect kar deta, isliye sirf `setError` add karna bhi kaam nahi karta (silently notify(0 listeners) hota). Fix: `cleanup()` ko bilkul mat bulao yaha - sirf `this.landmarker = null` + `setError(...)`. **Live verified**: `window.fetch` ko monkey-patch karke MediaPipe CDN request force-fail kiya, confirm kiya UI me error message aa raha hai ("Couldn't set up the try-on...") jaha pehle hamesha ke liye "Processing photo..." pe atka rehta.
 - [x] **(Naya mila, review turn me nahi tha)** `withLiveCamera.ts`'s RAF `loop()` ([withLiveCamera.ts:164-197](../../src/classes/tryon/withLiveCamera.ts#L164)) `detectForVideo`/`renderFrame` ko try/catch me nahi leta tha — agar MediaPipe kisi frame pe throw kare, to recursive `requestAnimationFrame` call kabhi nahi chalega aur poora loop silently freeze ho jayega. Fix: try/catch add kiya, catch me `stopCamera()` + `setError('Something went wrong with the live preview. Try restarting the camera.')`. Camera is sandbox me blocked hai isliye live-test nahi ho saka - tsc/eslint clean, logic simple/low-risk hai (bas ek try/catch wrapper).
-- [ ] _(stretch, abhi skip)_ Error overlay pe ek "Retry" action add karo — abhi sirf message dikhta hai, poora modal band-khol karna padta hai. UX polish (#5) ke saath karenge.
+- [x] Error overlay pe "Retry" action add kiya — implement/verify detail #5 (UX polish) me hai, shared item tha dono ke beech.
 
 ## 2. Test coverage → 9.5/10 (core done)
 
@@ -62,10 +62,13 @@ Ye ek hi section hai jo **mujhse nahi ho sakta** — is sandboxed browser pane m
 
 Baaki sab (1, 2, 3, 5) mujhse ho sakta hai — ye akela manual/external step hai.
 
-## 5. UX polish → 10/10
+## 5. UX polish → 10/10 ✅ done
 
-- [ ] Accessibility pass — poore flow ka keyboard-only walkthrough (tab order, focus rings, Escape se modal close), har icon-only button pe aria-label (compare/download pe already hai — shade swatches, mode toggle, model list audit karo)
-- [ ] #1 ka "Retry" action bhi isi me count hota hai (robustness aur UX dono improve karta hai)
+- [x] Accessibility pass — audit karte waqt 2 real gaps mile:
+  - **[TryOnModelList.tsx](../../src/components/layout/tryons/TryOnModelList.tsx)**: har model button ka accessible name identically `"Model"` tha (generic `alt="Model"`, koi `aria-label` nahi) — screen reader user ke liye sab buttons distinguish-nahi-ho-sakte the. Fix: filename se hi label derive kiya (`Central-Indian.webp` → "Central Indian"), har button ko `aria-label="Try on with the X model"` + `aria-pressed` diya. Baaki sab (shade swatches, mode toggle, range slider, compare/download) already sahi the — visible text ya explicit aria-label pehle se mojood tha.
+  - **[global.css](../../src/styles/global.css)**: `button, a { outline: none; }` - poori app me har button/link ka keyboard focus ring hata hua tha, kahi bhi replacement nahi tha. Sitewide gap hai (try-on-specific nahi), lekin try-on flow isi se affected hota, isliye root cause pe hi fix kiya: `:focus-visible` scoped rule add ki (`--primary` token se, theme-aware) - mouse/touch click pe invisible rehta hai (jaisa native browser behavior hai), sirf Tab-navigation pe dikhta hai. Live verified: real Tab keypress ke baad `outlineStyle: solid` confirm kiya.
+  - `ModalWrapper` already Escape-key se close hota tha - koi fix nahi chahiye tha.
+- [x] Retry action — [TryOnOverlay.tsx](../../src/components/layout/tryons/TryOnOverlay.tsx) me optional `action` prop add kiya (sirf error case me dikhta hai, plain loading/face-guide me nahi). Mechanism: `LipTryOnStage` pe `key={retryKey}` - Retry click pe `retryKey` bump hoti hai, jo poore stage ko fresh remount kar deti hai (naya engine, `startTryOn()`/`startCamera()`/`loadImageUrl()` sab dobara chalte hai) - ek hi mechanism se camera-permission, image-decode, aur landmarker/asset-load, teeno failure paths cover ho jate hai, alag-alag retry method har engine pe expose karne ki zaroorat nahi padi. **Live verified end-to-end**: fetch monkey-patch karke error force kiya → Retry button dikha → fetch restore karke Retry click kiya → successful recovery confirm ki (ready state, no error)।
 
 ---
 

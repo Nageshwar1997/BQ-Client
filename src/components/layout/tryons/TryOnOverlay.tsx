@@ -4,6 +4,10 @@ interface ITryOnOverlayProps {
   icon: string;
   title: string;
   description: string;
+  // Only meaningful for an actual error (not the plain loading/face-guide cases - there's
+  // nothing to retry mid-load, and the face guide already resolves itself the moment the user
+  // repositions) - see TryOnModal's `handleRetry`.
+  action?: { label: string; onClick: () => void };
 }
 
 // One L-shaped bracket, positioned per corner by the `position` classes passed in - four of
@@ -23,7 +27,7 @@ const FrameCorner = ({ position, border }: { position: string; border: string })
 // sits inside. Content sits on a dimmed scrim either way, so both frame and text stay readable
 // over any live video/photo underneath, regardless of that content's own brightness or the app's
 // own light/dark theme.
-const TryOnOverlay = ({ icon, title, description }: ITryOnOverlayProps) => (
+const TryOnOverlay = ({ icon, title, description, action }: ITryOnOverlayProps) => (
   <div className="absolute inset-0 z-2 flex items-center justify-center bg-black/45 p-6">
     <div className="relative aspect-3/4 w-full max-w-60">
       <FrameCorner
@@ -48,6 +52,16 @@ const TryOnOverlay = ({ icon, title, description }: ITryOnOverlayProps) => (
         </div>
         <p className="text-sm font-semibold text-white sm:text-base">{title}</p>
         <p className="text-xs leading-6 text-white/70 sm:text-sm">{description}</p>
+        {action && (
+          <button
+            type="button"
+            onClick={action.onClick}
+            className="bg-sky-blue-burst mt-1 flex cursor-pointer items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold text-white transition-opacity hover:opacity-90"
+          >
+            <Icon icon="solar:refresh-linear" className="size-3.5" />
+            {action.label}
+          </button>
+        )}
       </div>
     </div>
   </div>

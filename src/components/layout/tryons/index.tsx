@@ -74,6 +74,14 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
   // always-visible right column once the screen's too narrow for one. Mode itself doesn't need
   // a sheet - the bottom bar's mode button just toggles directly (see `handleModeToggle` below).
   const [activeSheet, setActiveSheet] = useState<'models' | null>(null);
+  // Bumped only by the error overlay's "Retry" action (see `handleRetry` below) - passed as
+  // `key` on the stage below, so changing it forces React to fully unmount+remount it. That's
+  // deliberately heavier than calling some narrower "retry" method on the engine: a fresh mount
+  // re-runs the exact same setup path that worked the first time (new engine, `startTryOn()`,
+  // `startCamera()`/`loadImageUrl()`) for *any* of the ways that setup can fail - camera
+  // permission, image decode, or the shared landmarker/texture load - without needing a
+  // separate recovery method wired up per failure mode.
+  const [retryKey, setRetryKey] = useState(0);
   // Debounced view of `flow.engineState?.faceDetection` (see the effect below) - the overlay/
   // disabled-controls logic further down reads this instead of the raw per-frame value, so both
   // stay in sync with each other (never "controls disabled but no overlay explains why").
@@ -156,6 +164,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
     setFlow(INITIAL_FLOW_STATE);
     setCompareCanvas(null);
     setActiveSheet(null);
+    setRetryKey(0);
     resetUpload();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
@@ -255,6 +264,13 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
     });
   };
 
+  // Wired to the not-ready overlay's "Retry" action (only shown once `flow.engineState?.error`
+  // is actually set - see `notReadyError` below) - bumping `retryKey` remounts the stage fresh
+  // (see its own comment above).
+  const handleRetry = () => {
+    setRetryKey((prev) => prev + 1);
+  };
+
   const handleDownload = () => {
     const dataUrl = stageRef.current?.takeSnapshot();
     if (!dataUrl) return;
@@ -346,6 +362,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
               ) : (
                 <>
                   <LipTryOnStage
+                    key={retryKey}
                     ref={stageRef}
                     mode={flow.mode}
                     uploadedImageUrl={flow.uploadedImageUrl}
@@ -370,6 +387,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                       icon={notReadyIcon}
                       title={notReadyTitle}
                       description={notReadyDescription}
+                      action={notReadyError ? { label: 'Retry', onClick: handleRetry } : undefined}
                     />
                   )}
 

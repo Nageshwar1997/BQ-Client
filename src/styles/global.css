@@ -19,6 +19,12 @@
     outline: none;
   }
 
+  button:focus-visible,
+  a:focus-visible {
+    outline: 1px solid var(--primary, currentcolor);
+    outline-offset: -1px;
+  }
+
   a {
     text-decoration: none;
   }
