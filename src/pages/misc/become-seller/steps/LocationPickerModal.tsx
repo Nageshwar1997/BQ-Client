@@ -54,7 +54,7 @@ const LocationSearch = ({
             debounce(event.target.value);
           }}
           placeholder="Search for your business address..."
-          className="text-primary placeholder:text-primary/30 min-w-0 flex-1 border-none bg-transparent py-2.5 text-sm outline-hidden"
+          className="text-primary placeholder:text-primary/30 min-w-0 flex-1 border-none bg-transparent py-2.5 text-sm"
         />
       </div>
 

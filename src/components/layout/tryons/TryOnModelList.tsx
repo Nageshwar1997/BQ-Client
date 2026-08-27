@@ -50,7 +50,7 @@ const TryOnModelList = ({
           onClick={() => {
             onModelSelect(url);
           }}
-          className={`aspect-square shrink-0 cursor-pointer overflow-hidden rounded-2xl border-2 transition-colors duration-300 disabled:cursor-not-allowed ${
+          className={`aspect-square shrink-0 cursor-pointer overflow-hidden rounded-2xl border-2 transition-colors duration-300 focus-visible:-outline-offset-1 disabled:cursor-not-allowed ${
             direction === 'horizontal' ? 'size-20' : ''
           } ${selected ? 'border-primary' : 'border-primary/10 hover:border-primary/30'}`}
         >
