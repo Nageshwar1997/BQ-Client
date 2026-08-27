@@ -30,17 +30,16 @@ export const LIP_TEXTURE_COMPOSITE_OPERATION: GlobalCompositeOperation = 'overla
 // upper/lower lip passes; gloss has dedicated upper/lower textures) - files already exist
 // under public/images/try-on/lips/textures/.
 //
+const TEXTURE_FOLDER = '/images/try-on/lips/textures' as const;
 // `gloss-or-plumper-*` is genuinely shared: GLOSS/SATIN/BALM read it via the constants below,
 // and PLUMPER (see GLOSS_OR_PLUMPER_TEXTURE_PATH_UPPER/_LOWER further down) currently points at the
 // exact same file too - named this way (rather than just "gloss") so that sharing is obvious
 // at the filename, not something you only discover by reading LipEngineBase.ts.
-export const GLOSS_OR_SATIN_OR_BALM_OR_PLUMPER_TEXTURE_PATH_UPPER =
-  '/images/try-on/lips/textures/lipstick_texture_gloss-or-plumper-u.webp';
-export const GLOSS_OR_SATIN_OR_BALM_OR_PLUMPER_TEXTURE_PATH_LOWER =
-  '/images/try-on/lips/textures/lipstick_texture_gloss-or-plumper-l.webp';
+export const GLOSS_OR_SATIN_OR_BALM_OR_PLUMPER_TEXTURE_PATH_UPPER = `${TEXTURE_FOLDER}/Gloss-or-Satin-or-Balm-or-Plumper-Upper.webp`;
+export const GLOSS_OR_SATIN_OR_BALM_OR_PLUMPER_TEXTURE_PATH_LOWER = `${TEXTURE_FOLDER}/Gloss-or-Satin-or-Balm-or-Plumper-Lower.webp`;
 
-export const CRAYON_TEXTURE_PATH = '/images/try-on/lips/textures/lipstick_texture_crayon.webp';
-export const SHIMMER_TEXTURE_PATH = '/images/try-on/lips/textures/lipstick_texture_shimmer.webp';
+export const CRAYON_TEXTURE_PATH = `${TEXTURE_FOLDER}/Crayon.webp`;
+export const SHIMMER_TEXTURE_PATH = `${TEXTURE_FOLDER}/Shimmer.webp`;
 
 // OIL and METALLIC are derived from the same originals above (no new photography/AI generation
 // - see docs/tryons/LIP.md) rather than sourced separately:
@@ -49,20 +48,14 @@ export const SHIMMER_TEXTURE_PATH = '/images/try-on/lips/textures/lipstick_textu
 //  - METALLIC: `gloss-or-plumper-u`/`-l` contrast-boosted (a harder, more mirror-like highlight
 //    core) with a contrast-boosted `shimmer` layered on top via 'lighten' (tiny sharp
 //    metallic-flake glints, distinct from shimmer's own softer glitter look).
-export const OIL_TEXTURE_PATH_UPPER = '/images/try-on/lips/textures/lipstick_texture_oil-u.webp';
-export const OIL_TEXTURE_PATH_LOWER = '/images/try-on/lips/textures/lipstick_texture_oil-l.webp';
-export const METALLIC_TEXTURE_PATH_UPPER =
-  '/images/try-on/lips/textures/lipstick_texture_metallic-u.webp';
-export const METALLIC_TEXTURE_PATH_LOWER =
-  '/images/try-on/lips/textures/lipstick_texture_metallic-l.webp';
+export const OIL_TEXTURE_PATH_UPPER = `${TEXTURE_FOLDER}/Oil-Upper.webp`;
+export const OIL_TEXTURE_PATH_LOWER = `${TEXTURE_FOLDER}/Oil-Lower.webp`;
+export const METALLIC_TEXTURE_PATH_UPPER = `${TEXTURE_FOLDER}/Metallic-Upper.webp`;
+export const METALLIC_TEXTURE_PATH_LOWER = `${TEXTURE_FOLDER}/Metallic-Lower.webp`;
 
 // Intensity-slider bounds per finish (maps to engine state's `range`, i.e. how strongly the
 // finish's texture/filter pass shows through - see tryon-lip.util.ts). Values for
 // MATTE/GLOSS/SHIMMER/CRAYON are ported from the reference's `getRangeValues`; the rest
 // (SATIN/STAIN/BALM/OIL/LINER/METALLIC/PLUMPER) reuse a sensible default rather than
 // invented per-finish numbers, since those finishes don't have validated tuning yet either.
-export const LIP_RANGE_BOUNDS = {
-  min: 0.3,
-  max: 0.9,
-  default: 0.5,
-} as const;
+export const LIP_RANGE_BOUNDS = { min: 0.3, max: 0.9, default: 0.5 } as const;
