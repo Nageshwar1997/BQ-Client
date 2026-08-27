@@ -69,7 +69,7 @@ const TryOnLiveStage = forwardRef<ITryOnStageRef<ILipTryOnState>, ITryOnLiveStag
           autoPlay
           playsInline
           muted
-          className="absolute inset-0 z-0 size-full object-cover"
+          className="absolute inset-0 z-0 size-full scale-x-[-1] object-cover"
         />
         {/* Opaque - fully covers the raw video above with the mirrored, makeup-composited frame */}
         <canvas ref={canvas2Ref} className="absolute inset-0 z-1 size-full! object-cover" />
