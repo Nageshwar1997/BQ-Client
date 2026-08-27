@@ -12,6 +12,19 @@ export const LOWER_LIP_INDICES = [
   78,
 ];
 
+// The first 11 entries of each array above are exactly its OUTER arc, corner-to-corner (61 is
+// the left mouth corner, 291 the right) - the remaining entries trace back along the INNER
+// edge, where the lip meets the mouth opening, which is only needed to close off each array's
+// own fill *region* (see `clipLipsOnFace`), not for an outline. Concatenating just those outer
+// arcs (lower one reversed, since it runs the same corner-to-corner direction as the upper one)
+// traces one continuous closed loop around the outer lip border - what a lip LINER actually
+// follows (see `applyLinerLips`). Derived rather than hand-transcribed so it can never drift out
+// of sync with the two vetted arrays above.
+export const LIP_OUTER_CONTOUR_INDICES = [
+  ...UPPER_LIP_INDICES.slice(0, 11),
+  ...LOWER_LIP_INDICES.slice(0, 10).reverse(),
+];
+
 // Secondary "inner highlight" rings used to add a lighter texture pass on dark shades
 // (see `applyTexture` usage in `tryon-lip.util.ts`) - not the same rings as above.
 export const UPPER_WHITE_LIP_INDICES_INSET = [74, 39, 37, 11, 267, 269, 304, 271, 268, 13, 38, 41];

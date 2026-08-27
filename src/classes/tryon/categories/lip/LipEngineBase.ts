@@ -18,6 +18,7 @@ import {
   applyBalmLips,
   applyCrayonLips,
   applyGlossLips,
+  applyLinerLips,
   applyMatteLips,
   applyMetallicLips,
   applyOilLips,
@@ -52,9 +53,11 @@ export interface ILipAssets {
 
 // Finishes that don't have dedicated rendering yet (need new texture art or new stroke/
 // dilation logic that doesn't exist in the reference this was ported from) - see
-// docs/tryons/LIP.md. Rendered as MATTE with a console warning rather than silently
-// pretending to be correct.
-const UNSUPPORTED_LIP_FINISHES = new Set<TLipFinish>(['LINER']);
+// docs/tryons/LIP.md. Rendered as MATTE with a console warning rather than silently pretending
+// to be correct. Empty now that all 11 LIP subcategories have dedicated rendering - kept (not
+// deleted) as the landing spot for any future subcategory added to `TLipFinish` before its own
+// renderer exists.
+const UNSUPPORTED_LIP_FINISHES = new Set<TLipFinish>([]);
 
 /**
  * LIP category engine: loads the 4 lip texture images once, and applies the right finish
@@ -165,6 +168,9 @@ export abstract class LipEngineBase extends TryOnEngineBase<ILipTryOnState, ILip
         return;
       case 'STAIN':
         applyStainLips(face, ctx, color, size, alpha);
+        return;
+      case 'LINER':
+        applyLinerLips(face, ctx, color, size, alpha);
         return;
     }
 
