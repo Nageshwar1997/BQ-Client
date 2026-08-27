@@ -8,11 +8,22 @@ export type TRunningMode = 'VIDEO' | 'IMAGE';
 
 export type ColorTuple = [r: number, g: number, b: number, a: number];
 
+// Recomputed every `renderFrame` call (see `TryOnEngineBase`) from that frame's landmark
+// detection, not a one-time setup flag like `cameraReady`/`imageReady` below - it can flip back
+// and forth as the user moves in and out of frame while Live mode keeps running.
+// 'not-in-frame': no face detected at all, or one that's partially cut off by the frame edge.
+// 'not-clear': a face is detected and fully inside the frame, but too small to trust (too far
+// from the camera, or - by the same "too little of the face is confidently visible" reasoning -
+// too obscured/blurry in practice).
+// 'detected': good enough to try makeup on.
+export type TFaceDetectionStatus = 'detected' | 'not-in-frame' | 'not-clear';
+
 export interface IMakeupBaseState {
   cameraReady: boolean;
   imageReady: boolean;
   tryOnStarted: boolean;
   error?: string;
+  faceDetection: TFaceDetectionStatus;
 }
 
 // `TType` is a category's finish/variant union (e.g. a LIP subcategory like

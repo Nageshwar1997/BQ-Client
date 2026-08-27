@@ -75,6 +75,9 @@ export abstract class LipEngineBase extends TryOnEngineBase<ILipTryOnState, ILip
       cameraReady: false,
       imageReady: false,
       tryOnStarted: false,
+      // Matches `getFaceDetectionStatus`'s own no-landmarks-yet result - nothing's been
+      // through a `renderFrame` pass at this point to say otherwise.
+      faceDetection: 'not-in-frame',
     };
   }
 

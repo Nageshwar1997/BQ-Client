@@ -5,7 +5,12 @@ import type {
 } from '@mediapipe/tasks-vision';
 
 import type { ColorTuple, IMakeupState, TRunningMode } from '@/types/tryon-engine.type';
-import { captureSnapShot, hexToRGBA, resizeElements } from '@/utils/tryon.util';
+import {
+  captureSnapShot,
+  getFaceDetectionStatus,
+  hexToRGBA,
+  resizeElements,
+} from '@/utils/tryon.util';
 
 import { getSharedFaceLandmarker } from './FaceLandmarkerCache';
 
@@ -152,6 +157,16 @@ export abstract class TryOnEngineBase<TState extends IMakeupState, TAssets = nul
       this.state = { ...this.state, error: message };
       this.notify();
     },
+
+    // Called every `renderFrame` (see below), unlike every other setter here which only ever
+    // fires at an explicit lifecycle transition - guarded so a run of frames reporting the same
+    // status doesn't `notify()` (and so re-render React) on every single one of them, only on
+    // an actual change.
+    setFaceDetectionStatus: (value: TState['faceDetection']) => {
+      if (this.state.faceDetection === value) return;
+      this.state = { ...this.state, faceDetection: value };
+      this.notify();
+    },
   };
 
   private notify() {
@@ -214,6 +229,7 @@ export abstract class TryOnEngineBase<TState extends IMakeupState, TAssets = nul
     ctx.clearRect(0, 0, width, height);
 
     const face = this.landmark.faceLandmarks[0];
+    this.updateState.setFaceDetectionStatus(getFaceDetectionStatus(face));
 
     ctx.save();
 

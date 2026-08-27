@@ -15,6 +15,7 @@ import BottomButtons from './BottomButtons';
 import LipTryOnStage from './LipTryOnStage';
 import TryOnBottomSheet from './TryOnBottomSheet';
 import TryOnCompareSlider from './TryOnCompareSlider';
+import TryOnFaceGuideOverlay from './TryOnFaceGuideOverlay';
 import TryOnInstructions from './TryOnInstructions';
 import TryOnModelList from './TryOnModelList';
 import TryOnModeSelect from './TryOnModeSelect';
@@ -202,6 +203,15 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
       ? !!flow.engineState?.cameraReady
       : !!flow.uploadedImageUrl && !!flow.engineState?.imageReady);
 
+  // Only meaningful once already `isTryOnReady` - a face-detection reading from a `renderFrame`
+  // pass that hasn't happened yet (still waiting on camera permission/photo processing) isn't a
+  // real "no face" result, just the engine's un-started default (see LipEngineBase's
+  // `getInitialState`). Reused below both to show TryOnFaceGuideOverlay and to keep shade/
+  // compare/download actions disabled while it's showing - applying a shade with no reliably-
+  // placed face doesn't do anything useful.
+  const faceDetection = isTryOnReady ? flow.engineState?.faceDetection : undefined;
+  const canInteract = isTryOnReady && faceDetection === 'detected';
+
   return (
     <ModalWrapper
       isOpen={isOpen}
@@ -288,7 +298,31 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                     />
                   )}
 
-                  {isTryOnReady && compareCanvas && (
+                  {/* Continuously reactive (recomputed every renderFrame, not a one-time
+                    setup gate like the overlay above) - covers the canvas again if the user
+                    drifts out of frame or too far away mid-session, even after already having
+                    been ready once. */}
+                  {isTryOnReady && faceDetection && faceDetection !== 'detected' && (
+                    <TryOnFaceGuideOverlay
+                      icon={
+                        faceDetection === 'not-in-frame'
+                          ? 'solar:scanner-linear'
+                          : 'solar:danger-triangle-linear'
+                      }
+                      title={
+                        faceDetection === 'not-in-frame'
+                          ? 'Face not in frame'
+                          : 'Face not clearly visible'
+                      }
+                      description={
+                        faceDetection === 'not-in-frame'
+                          ? 'Move so your whole face is inside the frame.'
+                          : 'Move closer, and make sure there’s good, even lighting.'
+                      }
+                    />
+                  )}
+
+                  {canInteract && compareCanvas && (
                     <TryOnCompareSlider
                       canvas={compareCanvas}
                       onDrag={(value) => {
@@ -306,7 +340,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                         compareCanvas ? 'Hide before/after compare' : 'Compare before/after'
                       }
                       onClick={handleCompareToggle}
-                      disabled={!isTryOnReady || !flow.engineState?.color}
+                      disabled={!canInteract || !flow.engineState?.color}
                       className={`flex size-9 cursor-pointer items-center justify-center rounded-full border backdrop-blur-xs transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-50 ${
                         compareCanvas
                           ? 'bg-sky-blue-burst border-transparent text-white'
@@ -320,7 +354,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                       type="button"
                       aria-label="Download snapshot"
                       onClick={handleDownload}
-                      disabled={!flow.engineState?.color || !!compareCanvas}
+                      disabled={!canInteract || !flow.engineState?.color || !!compareCanvas}
                       className="bg-primary-invert/70 text-primary border-primary/10 flex size-9 cursor-pointer items-center justify-center rounded-full border backdrop-blur-xs disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       <Icon icon="solar:download-linear" className="size-4" />
@@ -339,7 +373,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                         min={LIP_RANGE_BOUNDS.min}
                         max={LIP_RANGE_BOUNDS.max}
                         color={flow.engineState.color}
-                        disabled={!isTryOnReady}
+                        disabled={!canInteract}
                         onChange={(value) => {
                           stageRef.current?.setMakeupState({ range: value });
                         }}
@@ -351,7 +385,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                       shades={shades}
                       appliedColor={flow.engineState?.color ?? null}
                       onSelect={handleShadeSelect}
-                      disabled={!isTryOnReady}
+                      disabled={!canInteract}
                     />
                   </div>
                 </>

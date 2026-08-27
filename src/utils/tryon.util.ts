@@ -1,10 +1,54 @@
+import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
+
 import type { IObjectFitContentRect } from '@/types/tryon.type';
-import type { ColorTuple } from '@/types/tryon-engine.type';
+import type { ColorTuple, TFaceDetectionStatus } from '@/types/tryon-engine.type';
 
 // Category-agnostic helpers for the Try-On rendering engine (`@/classes/tryon`) - canvas
 // sizing, snapshot capture, color parsing, abort-aware image loading. Ported from the
 // reference implementation's `virtual-tryon/utils/index.ts`; nothing here is LIP-specific
 // (that lives in `tryon-lip.util.ts`).
+
+// Landmark x/y are normalized 0-1 fractions of the analyzed frame - a point at/past this margin
+// from any edge counts as the face being cut off by the frame boundary, not fully "in frame".
+const FACE_FRAME_EDGE_MARGIN = 0.02;
+// The detected face's own bounding box (in that same 0-1 space) must span at least this much of
+// the frame on both axes - below it, the face is too small/far away to trust makeup placement
+// on, even though MediaPipe still reports landmarks for it.
+const FACE_MIN_SIZE_RATIO = 0.15;
+
+// Derives a coarse "can we trust this frame's face enough to draw makeup on it" signal purely
+// from landmark positions (no pixel/brightness analysis) - see `TFaceDetectionStatus`'s own
+// comment for what each result means and why it's recomputed every frame rather than latched
+// once. `face` is `TryOnEngineBase`'s `this.landmark.faceLandmarks[0]` - `undefined` when
+// MediaPipe found no face at all this frame.
+export const getFaceDetectionStatus = (
+  face: NormalizedLandmark[] | undefined,
+): TFaceDetectionStatus => {
+  if (!face || face.length === 0) return 'not-in-frame';
+
+  let minX = 1;
+  let maxX = 0;
+  let minY = 1;
+  let maxY = 0;
+  for (const point of face) {
+    if (point.x < minX) minX = point.x;
+    if (point.x > maxX) maxX = point.x;
+    if (point.y < minY) minY = point.y;
+    if (point.y > maxY) maxY = point.y;
+  }
+
+  const touchesFrameEdge =
+    minX <= FACE_FRAME_EDGE_MARGIN ||
+    maxX >= 1 - FACE_FRAME_EDGE_MARGIN ||
+    minY <= FACE_FRAME_EDGE_MARGIN ||
+    maxY >= 1 - FACE_FRAME_EDGE_MARGIN;
+  if (touchesFrameEdge) return 'not-in-frame';
+
+  const isTooSmall = maxX - minX < FACE_MIN_SIZE_RATIO || maxY - minY < FACE_MIN_SIZE_RATIO;
+  if (isTooSmall) return 'not-clear';
+
+  return 'detected';
+};
 
 // The core `object-fit` scale-factor math, shared by `resizeElements` and
 // `getObjectFitContentRect` below - see that function's own comment for what each value means.
