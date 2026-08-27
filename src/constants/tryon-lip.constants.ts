@@ -34,9 +34,9 @@ export const LIP_TEXTURE_COMPOSITE_OPERATION: GlobalCompositeOperation = 'overla
 // and PLUMPER (see GLOSS_OR_PLUMPER_TEXTURE_PATH_UPPER/_LOWER further down) currently points at the
 // exact same file too - named this way (rather than just "gloss") so that sharing is obvious
 // at the filename, not something you only discover by reading LipEngineBase.ts.
-export const GLOSS_OR_PLUMPER_TEXTURE_PATH_UPPER =
+export const GLOSS_OR_SATIN_OR_BALM_OR_PLUMPER_TEXTURE_PATH_UPPER =
   '/images/try-on/lips/textures/lipstick_texture_gloss-or-plumper-u.webp';
-export const GLOSS_OR_PLUMPER_TEXTURE_PATH_LOWER =
+export const GLOSS_OR_SATIN_OR_BALM_OR_PLUMPER_TEXTURE_PATH_LOWER =
   '/images/try-on/lips/textures/lipstick_texture_gloss-or-plumper-l.webp';
 
 export const CRAYON_TEXTURE_PATH = '/images/try-on/lips/textures/lipstick_texture_crayon.webp';

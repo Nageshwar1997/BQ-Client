@@ -3,8 +3,8 @@ import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
 import {
   CRAYON_TEXTURE_PATH,
-  GLOSS_OR_PLUMPER_TEXTURE_PATH_LOWER,
-  GLOSS_OR_PLUMPER_TEXTURE_PATH_UPPER,
+  GLOSS_OR_SATIN_OR_BALM_OR_PLUMPER_TEXTURE_PATH_LOWER,
+  GLOSS_OR_SATIN_OR_BALM_OR_PLUMPER_TEXTURE_PATH_UPPER,
   LIP_RANGE_BOUNDS,
   METALLIC_TEXTURE_PATH_LOWER,
   METALLIC_TEXTURE_PATH_UPPER,
@@ -42,11 +42,12 @@ export interface ILipAssets {
   oilLower: HTMLImageElement;
   metallicUpper: HTMLImageElement;
   metallicLower: HTMLImageElement;
-  // Loaded from its own GLOSS_OR_PLUMPER_TEXTURE_PATH_UPPER/_LOWER, kept separate from glossUpper/
-  // glossLower even though both constants currently point at the same file (see the comment
-  // on those constants) - so a future dedicated PLUMPER texture is a constants-only change.
   plumperUpper: HTMLImageElement;
   plumperLower: HTMLImageElement;
+  satinUpper: HTMLImageElement;
+  satinLower: HTMLImageElement;
+  balmUpper: HTMLImageElement;
+  balmLower: HTMLImageElement;
 }
 
 // Finishes that don't have dedicated rendering yet (need new texture art or new stroke/
@@ -76,8 +77,8 @@ export abstract class LipEngineBase extends TryOnEngineBase<ILipTryOnState, ILip
 
   protected async loadCategoryAssets(signal: AbortSignal): Promise<ILipAssets | null> {
     const [
-      glossOrPlumperUpper,
-      glossOrPlumperLower,
+      glossOrSatinOrBalmOrPlumperUpper,
+      glossOrSatinOrBalmOrPlumperLower,
       crayon,
       shimmer,
       oilUpper,
@@ -85,8 +86,8 @@ export abstract class LipEngineBase extends TryOnEngineBase<ILipTryOnState, ILip
       metallicUpper,
       metallicLower,
     ] = await Promise.allSettled([
-      loadImage(GLOSS_OR_PLUMPER_TEXTURE_PATH_UPPER, signal),
-      loadImage(GLOSS_OR_PLUMPER_TEXTURE_PATH_LOWER, signal),
+      loadImage(GLOSS_OR_SATIN_OR_BALM_OR_PLUMPER_TEXTURE_PATH_UPPER, signal),
+      loadImage(GLOSS_OR_SATIN_OR_BALM_OR_PLUMPER_TEXTURE_PATH_LOWER, signal),
       loadImage(CRAYON_TEXTURE_PATH, signal),
       loadImage(SHIMMER_TEXTURE_PATH, signal),
       loadImage(OIL_TEXTURE_PATH_UPPER, signal),
@@ -96,8 +97,8 @@ export abstract class LipEngineBase extends TryOnEngineBase<ILipTryOnState, ILip
     ]);
 
     if (
-      glossOrPlumperUpper.status !== 'fulfilled' ||
-      glossOrPlumperLower.status !== 'fulfilled' ||
+      glossOrSatinOrBalmOrPlumperUpper.status !== 'fulfilled' ||
+      glossOrSatinOrBalmOrPlumperLower.status !== 'fulfilled' ||
       crayon.status !== 'fulfilled' ||
       shimmer.status !== 'fulfilled' ||
       oilUpper.status !== 'fulfilled' ||
@@ -106,8 +107,8 @@ export abstract class LipEngineBase extends TryOnEngineBase<ILipTryOnState, ILip
       metallicLower.status !== 'fulfilled'
     ) {
       console.error('Failed to load one or more lip textures', {
-        glossOrPlumperUpper,
-        glossOrPlumperLower,
+        glossOrSatinOrBalmOrPlumperUpper,
+        glossOrSatinOrBalmOrPlumperLower,
         crayon,
         shimmer,
         oilUpper,
@@ -119,16 +120,20 @@ export abstract class LipEngineBase extends TryOnEngineBase<ILipTryOnState, ILip
     }
 
     return {
-      glossUpper: glossOrPlumperUpper.value,
-      glossLower: glossOrPlumperLower.value,
       crayon: crayon.value,
       shimmer: shimmer.value,
       oilUpper: oilUpper.value,
       oilLower: oilLower.value,
+      glossUpper: glossOrSatinOrBalmOrPlumperUpper.value,
+      glossLower: glossOrSatinOrBalmOrPlumperLower.value,
+      plumperUpper: glossOrSatinOrBalmOrPlumperUpper.value,
+      plumperLower: glossOrSatinOrBalmOrPlumperLower.value,
+      balmLower: glossOrSatinOrBalmOrPlumperLower.value,
+      balmUpper: glossOrSatinOrBalmOrPlumperUpper.value,
+      satinLower: glossOrSatinOrBalmOrPlumperLower.value,
+      satinUpper: glossOrSatinOrBalmOrPlumperUpper.value,
       metallicUpper: metallicUpper.value,
       metallicLower: metallicLower.value,
-      plumperUpper: glossOrPlumperUpper.value,
-      plumperLower: glossOrPlumperLower.value,
     };
   }
 
@@ -168,13 +173,16 @@ export abstract class LipEngineBase extends TryOnEngineBase<ILipTryOnState, ILip
 
     switch (state.type) {
       case 'SATIN':
-        applySatinLips(face, ctx, color, assets.glossUpper, assets.glossLower, size, alpha);
+        applySatinLips(face, ctx, color, assets.satinUpper, assets.satinLower, size, alpha);
         return;
       case 'GLOSS':
         applyGlossLips(face, ctx, color, assets.glossUpper, assets.glossLower, size, alpha);
         return;
       case 'BALM':
-        applyBalmLips(face, ctx, color, assets.glossUpper, assets.glossLower, size, alpha);
+        applyBalmLips(face, ctx, color, assets.balmUpper, assets.balmLower, size, alpha);
+        return;
+      case 'PLUMPER':
+        applyPlumperLips(face, ctx, color, assets.plumperUpper, assets.plumperLower, size, alpha);
         return;
       case 'OIL':
         applyOilLips(face, ctx, color, assets.oilUpper, assets.oilLower, size, alpha);
@@ -195,9 +203,6 @@ export abstract class LipEngineBase extends TryOnEngineBase<ILipTryOnState, ILip
           size,
           alpha,
         );
-        return;
-      case 'PLUMPER':
-        applyPlumperLips(face, ctx, color, assets.plumperUpper, assets.plumperLower, size, alpha);
         return;
     }
   }
