@@ -21,26 +21,32 @@ export const LOWER_WHITE_LIP_INDICES_INSET = [
 ];
 
 // Blur amount for the soft "dot highlight" compositing pass in the texture-based finishes
-// (glossy/crayon/shimmer).
+// (gloss/crayon/shimmer).
 export const LOWER_LIP_DOT_BLUR_AMOUNT = 2.5;
 
 export const LIP_TEXTURE_COMPOSITE_OPERATION: GlobalCompositeOperation = 'overlay';
 
 // Same asset naming as the reference (crayon and shimmer each reuse one file for both the
-// upper/lower lip passes; glossy has dedicated upper/lower textures) - files already exist
+// upper/lower lip passes; gloss has dedicated upper/lower textures) - files already exist
 // under public/images/try-on/lips/textures/.
-export const GLOSSY_TEXTURE_PATH_LOWER =
-  '/images/try-on/lips/textures/lipstick_texture_glossy-l.webp';
-export const GLOSSY_TEXTURE_PATH_UPPER =
-  '/images/try-on/lips/textures/lipstick_texture_glossy-u.webp';
+//
+// `gloss-or-plumper-*` is genuinely shared: GLOSS/SATIN/BALM read it via the constants below,
+// and PLUMPER (see GLOSS_OR_PLUMPER_TEXTURE_PATH_UPPER/_LOWER further down) currently points at the
+// exact same file too - named this way (rather than just "gloss") so that sharing is obvious
+// at the filename, not something you only discover by reading LipEngineBase.ts.
+export const GLOSS_OR_PLUMPER_TEXTURE_PATH_UPPER =
+  '/images/try-on/lips/textures/lipstick_texture_gloss-or-plumper-u.webp';
+export const GLOSS_OR_PLUMPER_TEXTURE_PATH_LOWER =
+  '/images/try-on/lips/textures/lipstick_texture_gloss-or-plumper-l.webp';
+
 export const CRAYON_TEXTURE_PATH = '/images/try-on/lips/textures/lipstick_texture_crayon.webp';
 export const SHIMMER_TEXTURE_PATH = '/images/try-on/lips/textures/lipstick_texture_shimmer.webp';
 
-// OIL and METALLIC are derived from the same 3 originals above (no new photography/AI
-// generation - see docs/tryons/LIP.md) rather than sourced separately:
-//  - OIL: `glossy-u`/`glossy-l` Gaussian-blurred (softer, more spread-out - a fluid "wet" glow
-//    instead of glossy's tighter, more defined catch-light).
-//  - METALLIC: `glossy-u`/`glossy-l` contrast-boosted (a harder, more mirror-like highlight
+// OIL and METALLIC are derived from the same originals above (no new photography/AI generation
+// - see docs/tryons/LIP.md) rather than sourced separately:
+//  - OIL: `gloss-or-plumper-u`/`-l` Gaussian-blurred (softer, more spread-out - a fluid "wet"
+//    glow instead of gloss's tighter, more defined catch-light).
+//  - METALLIC: `gloss-or-plumper-u`/`-l` contrast-boosted (a harder, more mirror-like highlight
 //    core) with a contrast-boosted `shimmer` layered on top via 'lighten' (tiny sharp
 //    metallic-flake glints, distinct from shimmer's own softer glitter look).
 export const OIL_TEXTURE_PATH_UPPER = '/images/try-on/lips/textures/lipstick_texture_oil-u.webp';

@@ -1,9 +1,10 @@
+// eslint-disable-next-line simple-import-sort/imports
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
 import {
   CRAYON_TEXTURE_PATH,
-  GLOSSY_TEXTURE_PATH_LOWER,
-  GLOSSY_TEXTURE_PATH_UPPER,
+  GLOSS_OR_PLUMPER_TEXTURE_PATH_LOWER,
+  GLOSS_OR_PLUMPER_TEXTURE_PATH_UPPER,
   LIP_RANGE_BOUNDS,
   METALLIC_TEXTURE_PATH_LOWER,
   METALLIC_TEXTURE_PATH_UPPER,
@@ -11,9 +12,8 @@ import {
   OIL_TEXTURE_PATH_UPPER,
   SHIMMER_TEXTURE_PATH,
 } from '@/constants/tryon-lip.constants';
-import type { TTryOnSubCategory } from '@/types/tryon.type';
 import type { ColorTuple, IMakeupState } from '@/types/tryon-engine.type';
-import { loadImage } from '@/utils/tryon.util';
+import type { TTryOnSubCategory } from '@/types/tryon.type';
 import {
   applyBalmLips,
   applyCrayonLips,
@@ -21,10 +21,12 @@ import {
   applyMatteLips,
   applyMetallicLips,
   applyOilLips,
+  applyPlumperLips,
   applySatinLips,
   applyShimmerLips,
   applyStainLips,
 } from '@/utils/tryon-lip.util';
+import { loadImage } from '@/utils/tryon.util';
 
 import { TryOnEngineBase } from '../../TryOnEngineBase';
 
@@ -32,21 +34,26 @@ export type TLipFinish = TTryOnSubCategory<'LIP'>;
 export type ILipTryOnState = IMakeupState<TLipFinish>;
 
 export interface ILipAssets {
-  glossyUpper: HTMLImageElement;
-  glossyLower: HTMLImageElement;
+  glossUpper: HTMLImageElement;
+  glossLower: HTMLImageElement;
   crayon: HTMLImageElement;
   shimmer: HTMLImageElement;
   oilUpper: HTMLImageElement;
   oilLower: HTMLImageElement;
   metallicUpper: HTMLImageElement;
   metallicLower: HTMLImageElement;
+  // Loaded from its own GLOSS_OR_PLUMPER_TEXTURE_PATH_UPPER/_LOWER, kept separate from glossUpper/
+  // glossLower even though both constants currently point at the same file (see the comment
+  // on those constants) - so a future dedicated PLUMPER texture is a constants-only change.
+  plumperUpper: HTMLImageElement;
+  plumperLower: HTMLImageElement;
 }
 
 // Finishes that don't have dedicated rendering yet (need new texture art or new stroke/
 // dilation logic that doesn't exist in the reference this was ported from) - see
 // docs/tryons/LIP.md. Rendered as MATTE with a console warning rather than silently
 // pretending to be correct.
-const UNSUPPORTED_LIP_FINISHES = new Set<TLipFinish>(['LINER', 'PLUMPER']);
+const UNSUPPORTED_LIP_FINISHES = new Set<TLipFinish>(['LINER']);
 
 /**
  * LIP category engine: loads the 4 lip texture images once, and applies the right finish
@@ -69,8 +76,8 @@ export abstract class LipEngineBase extends TryOnEngineBase<ILipTryOnState, ILip
 
   protected async loadCategoryAssets(signal: AbortSignal): Promise<ILipAssets | null> {
     const [
-      glossyUpper,
-      glossyLower,
+      glossOrPlumperUpper,
+      glossOrPlumperLower,
       crayon,
       shimmer,
       oilUpper,
@@ -78,8 +85,8 @@ export abstract class LipEngineBase extends TryOnEngineBase<ILipTryOnState, ILip
       metallicUpper,
       metallicLower,
     ] = await Promise.allSettled([
-      loadImage(GLOSSY_TEXTURE_PATH_UPPER, signal),
-      loadImage(GLOSSY_TEXTURE_PATH_LOWER, signal),
+      loadImage(GLOSS_OR_PLUMPER_TEXTURE_PATH_UPPER, signal),
+      loadImage(GLOSS_OR_PLUMPER_TEXTURE_PATH_LOWER, signal),
       loadImage(CRAYON_TEXTURE_PATH, signal),
       loadImage(SHIMMER_TEXTURE_PATH, signal),
       loadImage(OIL_TEXTURE_PATH_UPPER, signal),
@@ -89,8 +96,8 @@ export abstract class LipEngineBase extends TryOnEngineBase<ILipTryOnState, ILip
     ]);
 
     if (
-      glossyUpper.status !== 'fulfilled' ||
-      glossyLower.status !== 'fulfilled' ||
+      glossOrPlumperUpper.status !== 'fulfilled' ||
+      glossOrPlumperLower.status !== 'fulfilled' ||
       crayon.status !== 'fulfilled' ||
       shimmer.status !== 'fulfilled' ||
       oilUpper.status !== 'fulfilled' ||
@@ -99,8 +106,8 @@ export abstract class LipEngineBase extends TryOnEngineBase<ILipTryOnState, ILip
       metallicLower.status !== 'fulfilled'
     ) {
       console.error('Failed to load one or more lip textures', {
-        glossyUpper,
-        glossyLower,
+        glossOrPlumperUpper,
+        glossOrPlumperLower,
         crayon,
         shimmer,
         oilUpper,
@@ -112,14 +119,16 @@ export abstract class LipEngineBase extends TryOnEngineBase<ILipTryOnState, ILip
     }
 
     return {
-      glossyUpper: glossyUpper.value,
-      glossyLower: glossyLower.value,
+      glossUpper: glossOrPlumperUpper.value,
+      glossLower: glossOrPlumperLower.value,
       crayon: crayon.value,
       shimmer: shimmer.value,
       oilUpper: oilUpper.value,
       oilLower: oilLower.value,
       metallicUpper: metallicUpper.value,
       metallicLower: metallicLower.value,
+      plumperUpper: glossOrPlumperUpper.value,
+      plumperLower: glossOrPlumperLower.value,
     };
   }
 
@@ -159,13 +168,13 @@ export abstract class LipEngineBase extends TryOnEngineBase<ILipTryOnState, ILip
 
     switch (state.type) {
       case 'SATIN':
-        applySatinLips(face, ctx, color, assets.glossyUpper, assets.glossyLower, size, alpha);
+        applySatinLips(face, ctx, color, assets.glossUpper, assets.glossLower, size, alpha);
         return;
       case 'GLOSS':
-        applyGlossLips(face, ctx, color, assets.glossyUpper, assets.glossyLower, size, alpha);
+        applyGlossLips(face, ctx, color, assets.glossUpper, assets.glossLower, size, alpha);
         return;
       case 'BALM':
-        applyBalmLips(face, ctx, color, assets.glossyUpper, assets.glossyLower, size, alpha);
+        applyBalmLips(face, ctx, color, assets.glossUpper, assets.glossLower, size, alpha);
         return;
       case 'OIL':
         applyOilLips(face, ctx, color, assets.oilUpper, assets.oilLower, size, alpha);
@@ -186,6 +195,9 @@ export abstract class LipEngineBase extends TryOnEngineBase<ILipTryOnState, ILip
           size,
           alpha,
         );
+        return;
+      case 'PLUMPER':
+        applyPlumperLips(face, ctx, color, assets.plumperUpper, assets.plumperLower, size, alpha);
         return;
     }
   }

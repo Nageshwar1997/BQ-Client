@@ -15,7 +15,7 @@ import {
 // from anything - kept exactly as they were rather than "cleaned up" into a shared config,
 // since collapsing them risks silently changing the tuned look. What *is* safely deduplicated
 // is the outer orchestration (temp-canvas compositing + blurred dot-highlight pass), which was
-// byte-for-byte identical across glossy/crayon/shimmer in the reference.
+// byte-for-byte identical across gloss/crayon/shimmer in the reference.
 
 interface TDimension {
   width: number;
@@ -159,7 +159,7 @@ export const applyMatteLips = (
   ctx.drawImage(temp, 0, 0);
 };
 
-/* ================= TEXTURED FINISHES (glossy / crayon / shimmer) ================= */
+/* ================= TEXTURED FINISHES (gloss / crayon / shimmer) ================= */
 
 // One entry per finish's hand-tuned opacities - see the file-level note on why these numbers
 // aren't further "simplified".
@@ -174,7 +174,7 @@ interface ITexturedFinishTuning {
 }
 
 const TEXTURED_FINISH_TUNING: Record<
-  'GLOSS' | 'CRAYON' | 'SHIMMER' | 'OIL' | 'METALLIC',
+  'GLOSS' | 'CRAYON' | 'SHIMMER' | 'OIL' | 'METALLIC' | 'PLUMPER',
   ITexturedFinishTuning
 > = {
   GLOSS: {
@@ -229,6 +229,20 @@ const TEXTURED_FINISH_TUNING: Record<
     darkPrimaryOpacity: 0.3,
     darkInsetOpacityUpper: 0.5,
     darkInsetOpacityLower: 0.5,
+    applyFilters: true,
+  },
+  // Uses the same gloss-or-plumper-u/-l textures as GLOSS (see GLOSS_OR_PLUMPER_TEXTURE_PATH_UPPER/
+  // _LOWER - no dedicated art yet), differentiated purely by a lower base alpha: a dewy
+  // "plumped" shine sitting between BALM's sheer wash (GLOSS's own tuning at a caller-side
+  // alpha*0.5) and GLOSS's full shine. Everything else matches GLOSS's tuning - only the base
+  // intensity was the original design intent here.
+  PLUMPER: {
+    baseAlphaUpper: 0.5,
+    baseAlphaLower: 0.35,
+    brightOpacity: 0.3,
+    darkPrimaryOpacity: 0.1,
+    darkInsetOpacityUpper: 0.3,
+    darkInsetOpacityLower: 0.3,
     applyFilters: true,
   },
 };
@@ -406,14 +420,14 @@ export const applyMetallicLips = (
   applyTexturedLips('METALLIC', face, ctx, color, textureUpper, textureLower, dimension, alpha);
 };
 
-/* ================= APPROXIMATED FINISHES (SATIN / STAIN / BALM / OIL) =================
- * The reference only demonstrates matte/glossy/crayon/shimmer - these four are new,
- * genuinely built on the same primitives above rather than invented pixel math, but the
- * exact tuning is ours (not ported from a validated source), so it's called out here plainly
- * rather than presented as equally battle-tested.
+/* ================= APPROXIMATED FINISHES (SATIN / STAIN / BALM / OIL / PLUMPER) =============
+ * The reference only demonstrates matte/gloss/crayon/shimmer - these five are new, genuinely
+ * built on the same primitives above rather than invented pixel math, but the exact tuning is
+ * ours (not ported from a validated source), so it's called out here plainly rather than
+ * presented as equally battle-tested.
  */
 
-// Matte base + a single light sheen pass - not a full glossy composite (no dot-highlight).
+// Matte base + a single light sheen pass - not a full gloss composite (no dot-highlight).
 export const applySatinLips = (
   face: NormalizedLandmark[],
   ctx: CanvasRenderingContext2D,
@@ -441,7 +455,7 @@ export const applyStainLips = (
   applyMatteLips(face, ctx, color, dimension, Math.min(alpha, 0.35));
 };
 
-// Sheer glossy tint - the gloss composite at reduced intensity.
+// Sheer gloss tint - the gloss composite at reduced intensity.
 export const applyBalmLips = (
   face: NormalizedLandmark[],
   ctx: CanvasRenderingContext2D,
@@ -454,7 +468,23 @@ export const applyBalmLips = (
   applyTexturedLips('GLOSS', face, ctx, color, textureUpper, textureLower, dimension, alpha * 0.5);
 };
 
-// High-gloss fluid shine - the oil-u/oil-l textures are the same glossy highlights blurred into
+// Dewy "plumped" shine - PLUMPER's own tuning entry (see TEXTURED_FINISH_TUNING) sets the
+// intensity, currently over the same gloss-or-plumper-u/-l textures GLOSS uses (no dedicated
+// art yet - see GLOSS_OR_PLUMPER_TEXTURE_PATH_UPPER/_LOWER's comment). `alpha` passes straight through
+// like every other textured finish here - no caller-side multiplier hack.
+export const applyPlumperLips = (
+  face: NormalizedLandmark[],
+  ctx: CanvasRenderingContext2D,
+  color: string,
+  textureUpper: HTMLImageElement,
+  textureLower: HTMLImageElement,
+  dimension: TDimension,
+  alpha: number,
+) => {
+  applyTexturedLips('PLUMPER', face, ctx, color, textureUpper, textureLower, dimension, alpha);
+};
+
+// High-gloss fluid shine - the oil-u/oil-l textures are the same gloss highlights blurred into
 // a broader, softer glow (see OIL_TEXTURE_PATH_UPPER/_LOWER), paired with a slightly higher
 // base alpha (OIL in TEXTURED_FINISH_TUNING) for a wetter, more saturated look than GLOSS.
 export const applyOilLips = (
