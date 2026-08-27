@@ -231,11 +231,12 @@ const TEXTURED_FINISH_TUNING: Record<
     darkInsetOpacityLower: 0.5,
     applyFilters: true,
   },
-  // Uses the same gloss-or-plumper-u/-l textures as GLOSS (see GLOSS_OR_PLUMPER_TEXTURE_PATH_UPPER/
-  // _LOWER - no dedicated art yet), differentiated purely by a lower base alpha: a dewy
-  // "plumped" shine sitting between BALM's sheer wash (GLOSS's own tuning at a caller-side
-  // alpha*0.5) and GLOSS's full shine. Everything else matches GLOSS's tuning - only the base
-  // intensity was the original design intent here.
+  // Uses the same shared texture as GLOSS (see
+  // GLOSS_OR_SATIN_OR_BALM_OR_PLUMPER_TEXTURE_PATH_UPPER/_LOWER - no dedicated art yet),
+  // differentiated purely by a lower base alpha: a dewy "plumped" shine sitting between BALM's
+  // sheer wash (GLOSS's own tuning at a caller-side alpha*0.5) and GLOSS's full shine.
+  // Everything else matches GLOSS's tuning - only the base intensity was the original design
+  // intent here.
   PLUMPER: {
     baseAlphaUpper: 0.5,
     baseAlphaLower: 0.35,
@@ -469,9 +470,9 @@ export const applyBalmLips = (
 };
 
 // Dewy "plumped" shine - PLUMPER's own tuning entry (see TEXTURED_FINISH_TUNING) sets the
-// intensity, currently over the same gloss-or-plumper-u/-l textures GLOSS uses (no dedicated
-// art yet - see GLOSS_OR_PLUMPER_TEXTURE_PATH_UPPER/_LOWER's comment). `alpha` passes straight through
-// like every other textured finish here - no caller-side multiplier hack.
+// intensity, currently over the same shared texture GLOSS uses (no dedicated art yet - see
+// GLOSS_OR_SATIN_OR_BALM_OR_PLUMPER_TEXTURE_PATH_UPPER/_LOWER's comment). `alpha` passes
+// straight through like every other textured finish here - no caller-side multiplier hack.
 export const applyPlumperLips = (
   face: NormalizedLandmark[],
   ctx: CanvasRenderingContext2D,

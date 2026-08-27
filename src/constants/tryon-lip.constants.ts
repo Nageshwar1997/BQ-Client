@@ -31,10 +31,13 @@ export const LIP_TEXTURE_COMPOSITE_OPERATION: GlobalCompositeOperation = 'overla
 // under public/images/try-on/lips/textures/.
 //
 const TEXTURE_FOLDER = '/images/try-on/lips/textures' as const;
-// `gloss-or-plumper-*` is genuinely shared: GLOSS/SATIN/BALM read it via the constants below,
-// and PLUMPER (see GLOSS_OR_PLUMPER_TEXTURE_PATH_UPPER/_LOWER further down) currently points at the
-// exact same file too - named this way (rather than just "gloss") so that sharing is obvious
-// at the filename, not something you only discover by reading LipEngineBase.ts.
+// Genuinely shared by all four finish - GLOSS/SATIN/BALM/PLUMPER (see LipEngineBase.ts's
+// `loadCategoryAssets`, which loads this once and assigns the same loaded image to each
+// finish's own `ILipAssets` field) - named this way so the sharing is obvious at the filename,
+// not something you only discover by reading that file. If any one of these four ever gets its
+// own dedicated art, give it its own constant here and its own `loadImage` call in
+// `loadCategoryAssets` - nothing else needs to change, since every finish already reads from
+// its own named `assets.<finish>Upper/Lower` field in LipEngineBase.applyEffect.
 export const GLOSS_OR_SATIN_OR_BALM_OR_PLUMPER_TEXTURE_PATH_UPPER = `${TEXTURE_FOLDER}/Gloss-or-Satin-or-Balm-or-Plumper-Upper.webp`;
 export const GLOSS_OR_SATIN_OR_BALM_OR_PLUMPER_TEXTURE_PATH_LOWER = `${TEXTURE_FOLDER}/Gloss-or-Satin-or-Balm-or-Plumper-Lower.webp`;
 
@@ -43,11 +46,11 @@ export const SHIMMER_TEXTURE_PATH = `${TEXTURE_FOLDER}/Shimmer.webp`;
 
 // OIL and METALLIC are derived from the same originals above (no new photography/AI generation
 // - see docs/tryons/LIP.md) rather than sourced separately:
-//  - OIL: `gloss-or-plumper-u`/`-l` Gaussian-blurred (softer, more spread-out - a fluid "wet"
-//    glow instead of gloss's tighter, more defined catch-light).
-//  - METALLIC: `gloss-or-plumper-u`/`-l` contrast-boosted (a harder, more mirror-like highlight
-//    core) with a contrast-boosted `shimmer` layered on top via 'lighten' (tiny sharp
-//    metallic-flake glints, distinct from shimmer's own softer glitter look).
+//  - OIL: Gloss-or-Satin-or-Balm-or-Plumper-Upper/Lower Gaussian-blurred (softer, more
+//    spread-out - a fluid "wet" glow instead of gloss's tighter, more defined catch-light).
+//  - METALLIC: Gloss-or-Satin-or-Balm-or-Plumper-Upper/Lower contrast-boosted (a harder, more
+//    mirror-like highlight core) with a contrast-boosted `shimmer` layered on top via 'lighten'
+//    (tiny sharp metallic-flake glints, distinct from shimmer's own softer glitter look).
 export const OIL_TEXTURE_PATH_UPPER = `${TEXTURE_FOLDER}/Oil-Upper.webp`;
 export const OIL_TEXTURE_PATH_LOWER = `${TEXTURE_FOLDER}/Oil-Lower.webp`;
 export const METALLIC_TEXTURE_PATH_UPPER = `${TEXTURE_FOLDER}/Metallic-Upper.webp`;
