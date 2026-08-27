@@ -1,6 +1,6 @@
 import { Icon } from '@iconify/react';
 
-interface ITryOnFaceGuideOverlayProps {
+interface ITryOnOverlayProps {
   icon: string;
   title: string;
   description: string;
@@ -13,14 +13,17 @@ const FrameCorner = ({ position, border }: { position: string; border: string })
   <div className={`absolute size-8 sm:size-10 ${position} ${border}`} />
 );
 
-// Shown over the canvas whenever the current frame's `faceDetection` status isn't 'detected' -
-// distinct from TryOnStatusOverlay (a one-time "still setting up" gate for camera permission/
-// photo processing): this reacts continuously frame-to-frame as the user moves in and out of
-// frame or too close/far. The corner-bracket frame doubles as the instruction itself (this is
-// the area your face should be in) - content (icon/title/description) sits centered inside it,
-// on a dimmed scrim so the frame and text stay readable over any live video/photo underneath,
-// regardless of that content's own brightness or the app's own light/dark theme.
-const TryOnFaceGuideOverlay = ({ icon, title, description }: ITryOnFaceGuideOverlayProps) => (
+// The one overlay for every "can't interact with the canvas right now" reason - camera
+// permission/photo-processing loading, a load error, and the live face-detection guide (out of
+// frame / not clearly visible). These used to be two different designs (a spinner-based
+// ApiStatus wrapper for loading/error, this corner-bracket frame just for the face guide); now
+// every caller gets the same look, driven entirely by the icon/title/description passed in. For
+// the face-guide case the corner-bracket frame doubles as the instruction itself (this is the
+// area your face should be in); for loading/error it's just the consistent frame the message
+// sits inside. Content sits on a dimmed scrim either way, so both frame and text stay readable
+// over any live video/photo underneath, regardless of that content's own brightness or the app's
+// own light/dark theme.
+const TryOnOverlay = ({ icon, title, description }: ITryOnOverlayProps) => (
   <div className="absolute inset-0 z-2 flex items-center justify-center bg-black/45 p-6">
     <div className="relative aspect-3/4 w-full max-w-60">
       <FrameCorner
@@ -50,4 +53,4 @@ const TryOnFaceGuideOverlay = ({ icon, title, description }: ITryOnFaceGuideOver
   </div>
 );
 
-export default TryOnFaceGuideOverlay;
+export default TryOnOverlay;

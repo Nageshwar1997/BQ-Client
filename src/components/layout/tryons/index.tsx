@@ -16,14 +16,13 @@ import BottomButtons from './BottomButtons';
 import LipTryOnStage from './LipTryOnStage';
 import TryOnBottomSheet from './TryOnBottomSheet';
 import TryOnCompareSlider from './TryOnCompareSlider';
-import TryOnFaceGuideOverlay from './TryOnFaceGuideOverlay';
 import TryOnInstructions from './TryOnInstructions';
 import TryOnModelList from './TryOnModelList';
 import TryOnModeSelect from './TryOnModeSelect';
+import TryOnOverlay from './TryOnOverlay';
 import TryOnRangeSlider from './TryOnRangeSlider';
 import TryOnShadeSwatches from './TryOnShadeSwatches';
 import TryOnSidebar from './TryOnSidebar';
-import TryOnStatusOverlay from './TryOnStatusOverlay';
 
 interface ITryOnModalProps {
   isOpen: boolean;
@@ -52,8 +51,8 @@ const INITIAL_FLOW_STATE: ITryOnFlowState = {
   engineState: null,
 };
 
-// How long a non-'detected' `faceDetection` reading has to hold continuously before
-// TryOnFaceGuideOverlay actually shows (see the debounce effect below) - showing it the instant
+// How long a non-'detected' `faceDetection` reading has to hold continuously before the
+// face-guide TryOnOverlay actually shows (see the debounce effect below) - showing it the instant
 // a single frame reports one flickers constantly, since a stray frame or two of jitter/motion-
 // blur/momentary occlusion is normal and shouldn't interrupt the flow.
 const FACE_GUIDE_DEBOUNCE_MS = 1500;
@@ -114,8 +113,8 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
   // renderFrame pass only arrives in a following update). Reading the raw value unconditionally
   // here would prime `debouncedFaceDetection` with that stale default the moment the stage
   // became ready, which - since 'not-in-frame' is falsy-different-from-'detected' - could flash
-  // TryOnFaceGuideOverlay on for that one render before the real reading corrects it a moment
-  // later. Forcing this to stay `undefined` until `isTryOnReady` is true sidesteps that: the
+  // the face-guide TryOnOverlay on for that one render before the real reading corrects it a
+  // moment later. Forcing this to stay `undefined` until `isTryOnReady` is true sidesteps that: the
   // first value it can ever take on is whatever the *next* real update reports, never the
   // engine's un-started default.
   const rawFaceDetection = isTryOnReady ? flow.engineState?.faceDetection : undefined;
@@ -267,12 +266,32 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
   };
 
   // Reads the *debounced* signal (see the effect above, already gated on `isTryOnReady` at the
-  // source), not the raw per-frame one, so this and TryOnFaceGuideOverlay's visibility never
-  // disagree. Reused below both to show that overlay and to keep shade/compare/download actions
-  // disabled while it's showing - applying a shade with no reliably-placed face doesn't do
-  // anything useful.
+  // source), not the raw per-frame one, so this and the face-guide TryOnOverlay's visibility
+  // never disagree. Reused below both to show that overlay and to keep shade/compare/download
+  // actions disabled while it's showing - applying a shade with no reliably-placed face doesn't
+  // do anything useful.
   const faceDetection = isTryOnReady ? debouncedFaceDetection : undefined;
   const canInteract = isTryOnReady && faceDetection === 'detected';
+
+  // Copy for the not-ready overlay below (TryOnOverlay - the very same component the
+  // face-detection guide further down uses) - split out here since it's a 2x2 matrix (loading/
+  // error x live/upload), too much for the JSX to carry inline. `notReadyError` set is exactly
+  // when this used to switch from a spinner to an error card, so the icon/title mirror that
+  // same split.
+  const notReadyError = flow.engineState?.error;
+  const notReadyIcon = notReadyError
+    ? 'solar:danger-triangle-linear'
+    : flow.mode === 'live'
+      ? 'solar:videocamera-record-linear'
+      : 'solar:gallery-add-linear';
+  const notReadyTitle = notReadyError
+    ? flow.mode === 'live'
+      ? 'Camera unavailable'
+      : "Couldn't process photo"
+    : flow.mode === 'live'
+      ? 'Waiting for camera permission...'
+      : 'Processing photo...';
+  const notReadyDescription = notReadyError ?? 'This should only take a moment.';
 
   return (
     <ModalWrapper
@@ -347,16 +366,10 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                     permission vs. image processing), rolled into `isTryOnReady` since only the
                     orchestrator knows which mode is active. */}
                   {!isTryOnReady && (
-                    <TryOnStatusOverlay
-                      loadingText={
-                        flow.mode === 'live'
-                          ? 'Waiting for camera permission...'
-                          : 'Processing photo...'
-                      }
-                      errorTitle={
-                        flow.mode === 'live' ? 'Camera unavailable' : "Couldn't process photo"
-                      }
-                      error={flow.engineState?.error}
+                    <TryOnOverlay
+                      icon={notReadyIcon}
+                      title={notReadyTitle}
+                      description={notReadyDescription}
                     />
                   )}
 
@@ -365,7 +378,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                     drifts out of frame or too far away mid-session, even after already having
                     been ready once. */}
                   {isTryOnReady && faceDetection && faceDetection !== 'detected' && (
-                    <TryOnFaceGuideOverlay
+                    <TryOnOverlay
                       icon={
                         faceDetection === 'not-in-frame'
                           ? 'solar:scanner-linear'
@@ -379,7 +392,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                       description={
                         faceDetection === 'not-in-frame'
                           ? 'Move so your whole face is inside the frame.'
-                          : 'Move closer, and make sure there’s good, even lighting.'
+                          : "Move closer, and make sure there's good, even lighting."
                       }
                     />
                   )}
