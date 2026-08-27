@@ -211,7 +211,17 @@ export abstract class TryOnEngineBase<TState extends IMakeupState, TAssets = nul
     } catch (err) {
       if (err instanceof DOMException && err.name === 'AbortError') return;
       console.error('startTryOn failed', err);
-      this.cleanup();
+
+      // Deliberately NOT `this.cleanup()` - that's the teardown path (see `destroy()` below),
+      // and its first line wipes `this.listeners`. This engine is still mounted and still the
+      // exact instance the React wrapper subscribed to via `onChange` - clearing listeners here
+      // would permanently sever that connection while the component is still alive, so the
+      // `setError` call right below would silently reach nobody (`notify()` iterating an empty
+      // array) and the UI would stay stuck on its loading overlay forever, no error and no way
+      // out short of remounting the whole stage. Setup never got far enough to produce a usable
+      // landmarker, so only that reference needs dropping.
+      this.landmarker = null;
+      this.updateState.setError("Couldn't set up the try-on. Check your connection and try again.");
     }
   }
 

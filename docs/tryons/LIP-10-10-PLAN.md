@@ -12,7 +12,7 @@ Last review score: **8.5/10** (breakdown below). Sabhi 11 subcategories (MATTE/S
 
 | # | Dimension | Current | Target | Items |
 |---|---|---|---|---|
-| 1 | Robustness | 7/10 | 10/10 | 3 (2 core + 1 stretch) |
+| 1 | Robustness | ~~7/10~~ **9.5/10** | 10/10 | 3 (✅ 2 core done + 1 stretch left) |
 | 2 | Test coverage | 5/10 | 10/10 | 7 (6 core + 1 stretch) |
 | 3 | Docs accuracy | — | 10/10 | 3 |
 | 4 | Real-device QA | — (never actually run) | 10/10 | 4 |
@@ -24,11 +24,11 @@ Last review score: **8.5/10** (breakdown below). Sabhi 11 subcategories (MATTE/S
 
 ---
 
-## 1. Robustness → 10/10
+## 1. Robustness → 10/10 ✅ core done
 
-- [ ] Fix `TryOnEngineBase.startTryOn()`'s catch block ([TryOnEngineBase.ts:211-215](../../src/classes/tryon/TryOnEngineBase.ts#L211)) — abhi landmarker/texture-asset load fail hone pe sirf `console.error` + silent reset karta hai, `setError` kabhi nahi bulata. User "Waiting.../Processing..." overlay pe hamesha ke liye atak jata hai, koi explanation nahi, modal band karne ke alawa koi rasta nahi. Fix: catch me `this.updateState.setError(...)` call karo ek clear message ke saath (e.g. "Couldn't set up the try-on. Check your connection and try again.").
-- [ ] **(Naya mila, review turn me nahi tha)** `withLiveCamera.ts`'s RAF `loop()` ([withLiveCamera.ts:164-181](../../src/classes/tryon/withLiveCamera.ts#L164)) `detectForVideo`/`renderFrame` ko try/catch me nahi leta — agar MediaPipe kisi frame pe throw kare (rare, lekin kuch devices/inputs pe possible), to recursive `requestAnimationFrame` call kabhi nahi chalega aur poora loop silently freeze ho jayega, koi error nahi dikhega, controls bhi enabled hi rahenge ek frozen frame ke upar. Fix: loop body ko try/catch me wrap karo, catch me error surface karo (`setError`) aur loop ko cleanly stop karo (silently freeze hone ke bajay).
-- [ ] *(stretch)* Error overlay pe ek "Retry" action add karo (abhi sirf message dikhta hai) — taaki ek transient failure (flaky network, browser hiccup) ke liye poora modal band-khol na karna pade.
+- [x] Fix `TryOnEngineBase.startTryOn()`'s catch block ([TryOnEngineBase.ts:211-224](../../src/classes/tryon/TryOnEngineBase.ts#L211)) — abhi landmarker/texture-asset load fail hone pe sirf `console.error` + silent reset karta hai, `setError` kabhi nahi bulata. **Deeper issue mila implement karte waqt**: purana `this.cleanup()` call sirf `setError` missing nahi karta tha - uska pehla line `this.listeners = []` hai, jo is (still-mounted, non-fatal) path pe React ke `onChange` listener ko permanently disconnect kar deta, isliye sirf `setError` add karna bhi kaam nahi karta (silently notify(0 listeners) hota). Fix: `cleanup()` ko bilkul mat bulao yaha - sirf `this.landmarker = null` + `setError(...)`. **Live verified**: `window.fetch` ko monkey-patch karke MediaPipe CDN request force-fail kiya, confirm kiya UI me error message aa raha hai ("Couldn't set up the try-on...") jaha pehle hamesha ke liye "Processing photo..." pe atka rehta.
+- [x] **(Naya mila, review turn me nahi tha)** `withLiveCamera.ts`'s RAF `loop()` ([withLiveCamera.ts:164-197](../../src/classes/tryon/withLiveCamera.ts#L164)) `detectForVideo`/`renderFrame` ko try/catch me nahi leta tha — agar MediaPipe kisi frame pe throw kare, to recursive `requestAnimationFrame` call kabhi nahi chalega aur poora loop silently freeze ho jayega. Fix: try/catch add kiya, catch me `stopCamera()` + `setError('Something went wrong with the live preview. Try restarting the camera.')`. Camera is sandbox me blocked hai isliye live-test nahi ho saka - tsc/eslint clean, logic simple/low-risk hai (bas ek try/catch wrapper).
+- [ ] *(stretch, abhi skip)* Error overlay pe ek "Retry" action add karo — abhi sirf message dikhta hai, poora modal band-khol karna padta hai. UX polish (#5) ke saath karenge.
 
 ## 2. Test coverage → 10/10
 

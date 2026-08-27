@@ -172,8 +172,22 @@ export function withLiveCamera<TState extends IMakeupState, TAssets>(
         return;
       }
 
-      this.landmark = this.landmarker.detectForVideo(this.video, performance.now());
-      this.renderFrame(this.video);
+      // MediaPipe (or a canvas draw call inside `renderFrame`) throwing mid-frame is rare, but
+      // without this try/catch it's silent and total: the throw happens before the
+      // `requestAnimationFrame` call below ever runs, so the loop just stops scheduling itself -
+      // a frozen last frame, controls still enabled, no error, no indication anything's wrong
+      // short of the preview visibly not moving anymore.
+      try {
+        this.landmark = this.landmarker.detectForVideo(this.video, performance.now());
+        this.renderFrame(this.video);
+      } catch (err) {
+        console.error('Live render loop failed', err);
+        this.stopCamera();
+        this.updateState.setError(
+          'Something went wrong with the live preview. Try restarting the camera.',
+        );
+        return;
+      }
 
       this.rafId = requestAnimationFrame(() => {
         this.loop(token);
