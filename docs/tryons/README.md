@@ -7,7 +7,7 @@ Virtual try-on ko 6 main categories me build karna hai — **LIP, EYE, HAIR, FAC
 
 Per-category detail aur checklist alag file me hai. Ye file sirf overall status aur un cheezon ke liye hai jo **sab categories ke liye common/shared** hai (ek baar ban gayi to sabko fayda).
 
-> Status snapshot: LIP ka real engine ban gaya hai (MediaPipe FaceLandmarker + canvas rendering) aur end-to-end verify ho chuka hai — Live aur Upload dono modes me MATTE/SATIN/GLOSS/SHIMMER/STAIN/BALM/CRAYON/OIL finishes actually render karte hain, shade+finish picker se driven. `ProductDetails` page pe "Try-On" button wired hai — [ProductDetails/index.tsx:324](../../src/pages/product/ProductDetails/index.tsx#L324). Engine architecture class-based hai (reference `src/commverse` se adapt kiya, dekh [LIP.md](./LIP.md)) — per-category `EngineBase` + do generic mixins (`withLiveCamera`/`withImageUpload`) jo sabhi categories reuse karenge. Category/subcategory taxonomy abhi `src/constants/temp.constants.ts` se aa raha hai (extended `TRY_ON_MAP`), `@beautinique/shared-constants` package baad me update hoga.
+> Status snapshot: LIP ka real engine ban gaya hai (MediaPipe FaceLandmarker + canvas rendering) aur end-to-end verify ho chuka hai — Live aur Upload dono modes me sabhi 11 subcategories (MATTE/STAIN/SATIN/GLOSS/BALM/SHIMMER/CRAYON/OIL/METALLIC/PLUMPER/LINER) actually render karte hain, shade+finish picker se driven. Ab LIP ko 10/10 tak polish karne ka plan hai — [LIP-10-10-PLAN.md](./LIP-10-10-PLAN.md). `ProductDetails` page pe "Try-On" button wired hai — [ProductDetails/index.tsx:324](../../src/pages/product/ProductDetails/index.tsx#L324). Engine architecture class-based hai (reference `src/commverse` se adapt kiya, dekh [LIP.md](./LIP.md)) — per-category `EngineBase` + do generic mixins (`withLiveCamera`/`withImageUpload`) jo sabhi categories reuse karenge. Category/subcategory taxonomy abhi `src/constants/temp.constants.ts` se aa raha hai (extended `TRY_ON_MAP`), `@beautinique/shared-constants` package baad me update hoga.
 
 ## Shared prerequisites (ye pehle banao — sabko block karte hain)
 
@@ -23,15 +23,15 @@ Inme se koi bhi cheez kisi ek category ke andar dobara nahi likhni — ek baar y
 
 ## Category trackers
 
-| Category | Subcategories | Progress | File |
-|---|---|---|---|
-| LIP | 11 | 55% (48/88) | [LIP.md](./LIP.md) |
-| EYE | 7 | 0% (0/56) | [EYE.md](./EYE.md) |
-| HAIR | 4 | 0% (0/32) | [HAIR.md](./HAIR.md) |
-| FACE | 8 | 0% (0/64) | [FACE.md](./FACE.md) |
-| NAIL | 5 | 0% (0/40) | [NAIL.md](./NAIL.md) |
-| SKIN | 8 | 0% (0/64) | [SKIN.md](./SKIN.md) |
-| **Overall** | **43** | **14% (48/344)** | — |
+| Category    | Subcategories | Progress         | File                 |
+| ----------- | ------------- | ---------------- | -------------------- |
+| LIP         | 11            | 75% (66/88)      | [LIP.md](./LIP.md)   |
+| EYE         | 7             | 0% (0/56)        | [EYE.md](./EYE.md)   |
+| HAIR        | 4             | 0% (0/32)        | [HAIR.md](./HAIR.md) |
+| FACE        | 8             | 0% (0/64)        | [FACE.md](./FACE.md) |
+| NAIL        | 5             | 0% (0/40)        | [NAIL.md](./NAIL.md) |
+| SKIN        | 8             | 0% (0/64)        | [SKIN.md](./SKIN.md) |
+| **Overall** | **43**        | **19% (66/344)** | —                    |
 
 ## Suggested build order
 
