@@ -5,6 +5,10 @@ import {
   GLOSSY_TEXTURE_PATH_LOWER,
   GLOSSY_TEXTURE_PATH_UPPER,
   LIP_RANGE_BOUNDS,
+  METALLIC_TEXTURE_PATH_LOWER,
+  METALLIC_TEXTURE_PATH_UPPER,
+  OIL_TEXTURE_PATH_LOWER,
+  OIL_TEXTURE_PATH_UPPER,
   SHIMMER_TEXTURE_PATH,
 } from '@/constants/tryon-lip.constants';
 import type { TTryOnSubCategory } from '@/types/tryon.type';
@@ -15,6 +19,7 @@ import {
   applyCrayonLips,
   applyGlossLips,
   applyMatteLips,
+  applyMetallicLips,
   applyOilLips,
   applySatinLips,
   applyShimmerLips,
@@ -31,13 +36,17 @@ export interface ILipAssets {
   glossyLower: HTMLImageElement;
   crayon: HTMLImageElement;
   shimmer: HTMLImageElement;
+  oilUpper: HTMLImageElement;
+  oilLower: HTMLImageElement;
+  metallicUpper: HTMLImageElement;
+  metallicLower: HTMLImageElement;
 }
 
 // Finishes that don't have dedicated rendering yet (need new texture art or new stroke/
 // dilation logic that doesn't exist in the reference this was ported from) - see
 // docs/tryons/LIP.md. Rendered as MATTE with a console warning rather than silently
 // pretending to be correct.
-const UNSUPPORTED_LIP_FINISHES = new Set<TLipFinish>(['LINER', 'METALLIC', 'PLUMPER']);
+const UNSUPPORTED_LIP_FINISHES = new Set<TLipFinish>(['LINER', 'PLUMPER']);
 
 /**
  * LIP category engine: loads the 4 lip texture images once, and applies the right finish
@@ -59,24 +68,45 @@ export abstract class LipEngineBase extends TryOnEngineBase<ILipTryOnState, ILip
   }
 
   protected async loadCategoryAssets(signal: AbortSignal): Promise<ILipAssets | null> {
-    const [glossyUpper, glossyLower, crayon, shimmer] = await Promise.allSettled([
+    const [
+      glossyUpper,
+      glossyLower,
+      crayon,
+      shimmer,
+      oilUpper,
+      oilLower,
+      metallicUpper,
+      metallicLower,
+    ] = await Promise.allSettled([
       loadImage(GLOSSY_TEXTURE_PATH_UPPER, signal),
       loadImage(GLOSSY_TEXTURE_PATH_LOWER, signal),
       loadImage(CRAYON_TEXTURE_PATH, signal),
       loadImage(SHIMMER_TEXTURE_PATH, signal),
+      loadImage(OIL_TEXTURE_PATH_UPPER, signal),
+      loadImage(OIL_TEXTURE_PATH_LOWER, signal),
+      loadImage(METALLIC_TEXTURE_PATH_UPPER, signal),
+      loadImage(METALLIC_TEXTURE_PATH_LOWER, signal),
     ]);
 
     if (
       glossyUpper.status !== 'fulfilled' ||
       glossyLower.status !== 'fulfilled' ||
       crayon.status !== 'fulfilled' ||
-      shimmer.status !== 'fulfilled'
+      shimmer.status !== 'fulfilled' ||
+      oilUpper.status !== 'fulfilled' ||
+      oilLower.status !== 'fulfilled' ||
+      metallicUpper.status !== 'fulfilled' ||
+      metallicLower.status !== 'fulfilled'
     ) {
       console.error('Failed to load one or more lip textures', {
         glossyUpper,
         glossyLower,
         crayon,
         shimmer,
+        oilUpper,
+        oilLower,
+        metallicUpper,
+        metallicLower,
       });
       return null;
     }
@@ -86,6 +116,10 @@ export abstract class LipEngineBase extends TryOnEngineBase<ILipTryOnState, ILip
       glossyLower: glossyLower.value,
       crayon: crayon.value,
       shimmer: shimmer.value,
+      oilUpper: oilUpper.value,
+      oilLower: oilLower.value,
+      metallicUpper: metallicUpper.value,
+      metallicLower: metallicLower.value,
     };
   }
 
@@ -134,13 +168,24 @@ export abstract class LipEngineBase extends TryOnEngineBase<ILipTryOnState, ILip
         applyBalmLips(face, ctx, color, assets.glossyUpper, assets.glossyLower, size, alpha);
         return;
       case 'OIL':
-        applyOilLips(face, ctx, color, assets.glossyUpper, assets.glossyLower, size, alpha);
+        applyOilLips(face, ctx, color, assets.oilUpper, assets.oilLower, size, alpha);
         return;
       case 'SHIMMER':
         applyShimmerLips(face, ctx, color, assets.shimmer, size, alpha);
         return;
       case 'CRAYON':
         applyCrayonLips(face, ctx, color, assets.crayon, size, alpha);
+        return;
+      case 'METALLIC':
+        applyMetallicLips(
+          face,
+          ctx,
+          color,
+          assets.metallicUpper,
+          assets.metallicLower,
+          size,
+          alpha,
+        );
         return;
     }
   }

@@ -8,8 +8,8 @@ export const UPPER_LIP_INDICES = [
 ];
 
 export const LOWER_LIP_INDICES = [
-  61, 146, 91, 181, 84, 17, 314, 405, 321, 375, 291, 308, 324, 318, 402, 317, 14, 87, 178, 88,
-  95, 78,
+  61, 146, 91, 181, 84, 17, 314, 405, 321, 375, 291, 308, 324, 318, 402, 317, 14, 87, 178, 88, 95,
+  78,
 ];
 
 // Secondary "inner highlight" rings used to add a lighter texture pass on dark shades
@@ -29,10 +29,26 @@ export const LIP_TEXTURE_COMPOSITE_OPERATION: GlobalCompositeOperation = 'overla
 // Same asset naming as the reference (crayon and shimmer each reuse one file for both the
 // upper/lower lip passes; glossy has dedicated upper/lower textures) - files already exist
 // under public/images/try-on/lips/textures/.
-export const GLOSSY_TEXTURE_PATH_LOWER = '/images/try-on/lips/textures/lipstick_texture_glossy-l.webp';
-export const GLOSSY_TEXTURE_PATH_UPPER = '/images/try-on/lips/textures/lipstick_texture_glossy-u.webp';
+export const GLOSSY_TEXTURE_PATH_LOWER =
+  '/images/try-on/lips/textures/lipstick_texture_glossy-l.webp';
+export const GLOSSY_TEXTURE_PATH_UPPER =
+  '/images/try-on/lips/textures/lipstick_texture_glossy-u.webp';
 export const CRAYON_TEXTURE_PATH = '/images/try-on/lips/textures/lipstick_texture_crayon.webp';
 export const SHIMMER_TEXTURE_PATH = '/images/try-on/lips/textures/lipstick_texture_shimmer.webp';
+
+// OIL and METALLIC are derived from the same 3 originals above (no new photography/AI
+// generation - see docs/tryons/LIP.md) rather than sourced separately:
+//  - OIL: `glossy-u`/`glossy-l` Gaussian-blurred (softer, more spread-out - a fluid "wet" glow
+//    instead of glossy's tighter, more defined catch-light).
+//  - METALLIC: `glossy-u`/`glossy-l` contrast-boosted (a harder, more mirror-like highlight
+//    core) with a contrast-boosted `shimmer` layered on top via 'lighten' (tiny sharp
+//    metallic-flake glints, distinct from shimmer's own softer glitter look).
+export const OIL_TEXTURE_PATH_UPPER = '/images/try-on/lips/textures/lipstick_texture_oil-u.webp';
+export const OIL_TEXTURE_PATH_LOWER = '/images/try-on/lips/textures/lipstick_texture_oil-l.webp';
+export const METALLIC_TEXTURE_PATH_UPPER =
+  '/images/try-on/lips/textures/lipstick_texture_metallic-u.webp';
+export const METALLIC_TEXTURE_PATH_LOWER =
+  '/images/try-on/lips/textures/lipstick_texture_metallic-l.webp';
 
 // Intensity-slider bounds per finish (maps to engine state's `range`, i.e. how strongly the
 // finish's texture/filter pass shows through - see tryon-lip.util.ts). Values for

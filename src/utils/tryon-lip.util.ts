@@ -173,7 +173,10 @@ interface ITexturedFinishTuning {
   applyFilters: boolean;
 }
 
-const TEXTURED_FINISH_TUNING: Record<'GLOSS' | 'CRAYON' | 'SHIMMER', ITexturedFinishTuning> = {
+const TEXTURED_FINISH_TUNING: Record<
+  'GLOSS' | 'CRAYON' | 'SHIMMER' | 'OIL' | 'METALLIC',
+  ITexturedFinishTuning
+> = {
   GLOSS: {
     baseAlphaUpper: 0.6,
     baseAlphaLower: 0.4,
@@ -201,6 +204,31 @@ const TEXTURED_FINISH_TUNING: Record<'GLOSS' | 'CRAYON' | 'SHIMMER', ITexturedFi
     darkPrimaryOpacity: 0.7,
     darkInsetOpacityUpper: 0.9,
     darkInsetOpacityLower: 0.9,
+    applyFilters: true,
+  },
+  // Same shape as GLOSS's tuning - the blurred oil-u/oil-l textures (see
+  // OIL_TEXTURE_PATH_UPPER/_LOWER) already carry the "softer, more spread-out" difference, so
+  // only a slightly higher base alpha is added here for a wetter, more saturated-looking sheen.
+  OIL: {
+    baseAlphaUpper: 0.65,
+    baseAlphaLower: 0.5,
+    brightOpacity: 0.3,
+    darkPrimaryOpacity: 0.1,
+    darkInsetOpacityUpper: 0.3,
+    darkInsetOpacityLower: 0.3,
+    applyFilters: true,
+  },
+  // Higher across the board than GLOSS - the metallic-u/metallic-l textures already bake in a
+  // sharper highlight core plus a flake-sparkle layer (see METALLIC_TEXTURE_PATH_UPPER/_LOWER),
+  // and a more opaque/higher-contrast fill here makes that flake texture actually read as
+  // reflective foil rather than getting lost under GLOSS-level opacity.
+  METALLIC: {
+    baseAlphaUpper: 0.7,
+    baseAlphaLower: 0.55,
+    brightOpacity: 0.5,
+    darkPrimaryOpacity: 0.3,
+    darkInsetOpacityUpper: 0.5,
+    darkInsetOpacityLower: 0.5,
     applyFilters: true,
   },
 };
@@ -265,14 +293,36 @@ const applyTexturedLips = (
   if (!tempCtx) return;
 
   drawLipHalfTextured(
-    temp, tempCtx, face, UPPER_LIP_INDICES, UPPER_WHITE_LIP_INDICES_INSET, color, textureUpper,
-    dimension, alpha, t.baseAlphaUpper, t.brightOpacity, t.darkPrimaryOpacity,
-    t.darkInsetOpacityUpper, t.applyFilters,
+    temp,
+    tempCtx,
+    face,
+    UPPER_LIP_INDICES,
+    UPPER_WHITE_LIP_INDICES_INSET,
+    color,
+    textureUpper,
+    dimension,
+    alpha,
+    t.baseAlphaUpper,
+    t.brightOpacity,
+    t.darkPrimaryOpacity,
+    t.darkInsetOpacityUpper,
+    t.applyFilters,
   );
   drawLipHalfTextured(
-    temp, tempCtx, face, LOWER_LIP_INDICES, LOWER_WHITE_LIP_INDICES_INSET, color, textureLower,
-    dimension, alpha, t.baseAlphaLower, t.brightOpacity, t.darkPrimaryOpacity,
-    t.darkInsetOpacityLower, t.applyFilters,
+    temp,
+    tempCtx,
+    face,
+    LOWER_LIP_INDICES,
+    LOWER_WHITE_LIP_INDICES_INSET,
+    color,
+    textureLower,
+    dimension,
+    alpha,
+    t.baseAlphaLower,
+    t.brightOpacity,
+    t.darkPrimaryOpacity,
+    t.darkInsetOpacityLower,
+    t.applyFilters,
   );
 
   ctx.globalCompositeOperation = LIP_TEXTURE_COMPOSITE_OPERATION;
@@ -340,6 +390,22 @@ export const applyShimmerLips = (
   applyTexturedLips('SHIMMER', face, ctx, color, texture, texture, dimension, alpha);
 };
 
+// Sharp, foil-like reflective finish - the metallic-u/metallic-l textures already bake in both
+// a harder highlight core and a flake-sparkle layer (see METALLIC_TEXTURE_PATH_UPPER/_LOWER),
+// so this needs no extra runtime compositing beyond what GLOSS/SHIMMER already do - only the
+// texture assets and METALLIC's own (punchier) tuning in TEXTURED_FINISH_TUNING differ.
+export const applyMetallicLips = (
+  face: NormalizedLandmark[],
+  ctx: CanvasRenderingContext2D,
+  color: string,
+  textureUpper: HTMLImageElement,
+  textureLower: HTMLImageElement,
+  dimension: TDimension,
+  alpha: number,
+) => {
+  applyTexturedLips('METALLIC', face, ctx, color, textureUpper, textureLower, dimension, alpha);
+};
+
 /* ================= APPROXIMATED FINISHES (SATIN / STAIN / BALM / OIL) =================
  * The reference only demonstrates matte/glossy/crayon/shimmer - these four are new,
  * genuinely built on the same primitives above rather than invented pixel math, but the
@@ -385,11 +451,20 @@ export const applyBalmLips = (
   dimension: TDimension,
   alpha: number,
 ) => {
-  applyTexturedLips(
-    'GLOSS', face, ctx, color, textureUpper, textureLower, dimension, alpha * 0.5,
-  );
+  applyTexturedLips('GLOSS', face, ctx, color, textureUpper, textureLower, dimension, alpha * 0.5);
 };
 
-// High-gloss fluid shine - placeholder alias of GLOSS pending a dedicated oil-shine texture
-// (see docs/tryons/LIP.md).
-export const applyOilLips = applyGlossLips;
+// High-gloss fluid shine - the oil-u/oil-l textures are the same glossy highlights blurred into
+// a broader, softer glow (see OIL_TEXTURE_PATH_UPPER/_LOWER), paired with a slightly higher
+// base alpha (OIL in TEXTURED_FINISH_TUNING) for a wetter, more saturated look than GLOSS.
+export const applyOilLips = (
+  face: NormalizedLandmark[],
+  ctx: CanvasRenderingContext2D,
+  color: string,
+  textureUpper: HTMLImageElement,
+  textureLower: HTMLImageElement,
+  dimension: TDimension,
+  alpha: number,
+) => {
+  applyTexturedLips('OIL', face, ctx, color, textureUpper, textureLower, dimension, alpha);
+};

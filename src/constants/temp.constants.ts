@@ -1,16 +1,16 @@
 export const TRY_ON_MAP = {
   LIP: [
-    'MATTE',
-    'SATIN',
-    'GLOSS',
-    'SHIMMER',
-    'STAIN',
-    'BALM',
-    'LINER',
-    'CRAYON',
-    'OIL',
-    'METALLIC',
-    'PLUMPER',
+    'MATTE', // Done
+    'SATIN', // Done
+    'GLOSS', // Done
+    'SHIMMER', // Done
+    'STAIN', // Done
+    'BALM', // Done
+    'LINER', //
+    'CRAYON', // Done
+    'OIL', // Done
+    'METALLIC', // Done
+    'PLUMPER', //
   ],
   EYE: ['EYEBROW', 'EYELINER', 'KAJAL', 'EYESHADOW', 'MASCARA', 'LASHES', 'BROWGEL'],
   HAIR: ['COLOR', 'HIGHLIGHTS', 'HENNA', 'OMBRE'],
