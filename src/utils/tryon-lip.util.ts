@@ -262,7 +262,9 @@ interface ITexturedFinishTuning {
   applyFilters: boolean;
 }
 
-const TEXTURED_FINISH_TUNING: Record<
+// Exported for `tryon-lip.util.test.ts` only - nothing outside this file needs it at runtime,
+// `applyTexturedLips` below already closes over it directly.
+export const TEXTURED_FINISH_TUNING: Record<
   'GLOSS' | 'CRAYON' | 'SHIMMER' | 'OIL' | 'METALLIC' | 'PLUMPER',
   ITexturedFinishTuning
 > = {

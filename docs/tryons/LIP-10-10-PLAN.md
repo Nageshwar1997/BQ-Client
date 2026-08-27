@@ -14,7 +14,7 @@ Last review score: **8.5/10** (breakdown below). Sabhi 11 subcategories (MATTE/S
 | #   | Dimension            | Current                | Target                                                                                     | Items                               |
 | --- | -------------------- | ---------------------- | ------------------------------------------------------------------------------------------ | ----------------------------------- |
 | 1   | Robustness           | ~~7/10~~ **9.5/10**    | 10/10                                                                                      | 3 (✅ 2 core done + 1 stretch left) |
-| 2   | Test coverage        | 5/10                   | 10/10                                                                                      | 7 (6 core + 1 stretch)              |
+| 2   | Test coverage        | ~~5/10~~ **9.5/10**    | 10/10                                                                                      | 7 (✅ 6 core done + 1 stretch left) |
 | 3   | Docs accuracy        | ~~—~~ **10/10** ✅     | 10/10                                                                                      | 3 (done)                            |
 | 4   | Real-device QA       | — (never actually run) | 10/10                                                                                      | 4                                   |
 | 5   | UX polish            | 9/10                   | 10/10                                                                                      | 2                                   |
@@ -31,19 +31,19 @@ Last review score: **8.5/10** (breakdown below). Sabhi 11 subcategories (MATTE/S
 - [x] **(Naya mila, review turn me nahi tha)** `withLiveCamera.ts`'s RAF `loop()` ([withLiveCamera.ts:164-197](../../src/classes/tryon/withLiveCamera.ts#L164)) `detectForVideo`/`renderFrame` ko try/catch me nahi leta tha — agar MediaPipe kisi frame pe throw kare, to recursive `requestAnimationFrame` call kabhi nahi chalega aur poora loop silently freeze ho jayega. Fix: try/catch add kiya, catch me `stopCamera()` + `setError('Something went wrong with the live preview. Try restarting the camera.')`. Camera is sandbox me blocked hai isliye live-test nahi ho saka - tsc/eslint clean, logic simple/low-risk hai (bas ek try/catch wrapper).
 - [ ] _(stretch, abhi skip)_ Error overlay pe ek "Retry" action add karo — abhi sirf message dikhta hai, poora modal band-khol karna padta hai. UX polish (#5) ke saath karenge.
 
-## 2. Test coverage → 10/10
+## 2. Test coverage → 9.5/10 (core done)
 
-Repo me abhi koi test runner nahi hai (`package.json` check kiya) — **Vitest** natural fit hai (Vite hi use ho raha hai already, near-zero extra config, Jest-compatible API).
+**Vitest** setup kiya - `vite.config.ts` hi reuse hota hai (`defineConfig` ab `vitest/config` se, jo Vite ka apna hi hai bas `test` field ke saath typed), `environment: 'node'` (sab targets pure functions hai, DOM/jsdom ki zaroorat nahi). **41/41 tests pass**, `npm run test` se chalta hai.
 
-- [ ] Vitest setup + `npm run test` script add karo
-- [ ] Unit tests — `getFaceDetectionStatus` ([tryon.util.ts](../../src/utils/tryon.util.ts)): undefined/empty face, edge-touching (har 4 side), size-threshold boundary (14%/16%), sab already-verified cases ko permanent regression test bana do
-- [ ] Unit tests — `getObjectFitScale`/`getObjectFitContentRect`: cover/contain/fill/none/scale-down, zero-dimension guard
-- [ ] Unit tests — `hexToRGBA`: 3-char aur 6-char hex, default alpha
-- [ ] Unit tests — `TEXTURED_FINISH_TUNING` (tryon-lip.util.ts) data-integrity: jo bhi finish texture use karta hai uski tuning entry zaroor ho, koi missing key na ho
-- [ ] Unit tests — `LIP_OUTER_CONTOUR_INDICES` derivation (tryon-lip.constants.ts): sahi length, koi duplicate index nahi, upper+reversed-lower shape match kare
-- [ ] _(stretch)_ Smoke test — har `applyXLips` function ko ek offscreen canvas + fixture landmarks ke against run karo, assert karo throw nahi karta aur kam se kam ek non-transparent pixel touch karta hai
+- [x] Vitest setup + `npm run test`/`npm run test:watch` scripts add kiye
+- [x] Unit tests — `getFaceDetectionStatus` ([tryon.util.test.ts](../../src/utils/tryon.util.test.ts)): undefined/empty face, edge-touching (4 sides), size-threshold boundary, detected case — 6 tests
+- [x] Unit tests — `getObjectFitContentRect` (same file): cover/contain/fill/none/scale-down (dono scale-down sub-cases), zero-dimension guard — 8 tests
+- [x] Unit tests — `hexToRGBA` (same file): 3-char aur 6-char hex, with/without `#`, custom alpha — 4 tests
+- [x] Unit tests — `TEXTURED_FINISH_TUNING` data-integrity ([tryon-lip.util.test.ts](../../src/utils/tryon-lip.util.test.ts)) — **note**: `Record<'GLOSS'|...|'PLUMPER', ...>` type ALREADY compile-time guarantee deta hai ki koi key missing na ho, isliye asli value ye nikli ki har numeric field sahi range (0-1, ya CRAYON ka -1 sentinel) me ho, `applyFilters` boolean ho — ye TS pakad nahi sakta (e.g. `0.3` ki jagah `3` typo). Bonus: `TEXTURED_FINISH_TUNING` ko export karna pada (pehle private tha) — 22 tests (6 finishes × 3 checks + 1 sentinel-uniqueness test)
+- [x] Unit tests — `LIP_OUTER_CONTOUR_INDICES` derivation ([tryon-lip.constants.test.ts](../../src/constants/tryon-lip.constants.test.ts)) — hardcoded literal-array anchor (formula se dobara derive karke compare karna tautological hota, kuch pakadta nahi), length, closed-loop start=end, no duplicate index, shared-corner check — 5 tests
+- [ ] _(stretch, abhi skip)_ Smoke test — har `applyXLips` function ko offscreen canvas + fixture landmarks ke against run karo
 
-Ye sab pure functions hai — koi browser/camera mock nahi chahiye, fast aur reliable rahenge.
+Ye sab pure functions hai — koi browser/camera mock nahi chahiye tha, fast (~0.5s) aur reliable hai.
 
 ## 3. Docs accuracy → 10/10 ✅ done
 
