@@ -6,8 +6,9 @@ import type { ILipTryOnState } from '@/classes/tryon/categories/lip';
 import { ModalWrapper } from '@/components/layout/modals/ModalWrapper';
 import { LIP_RANGE_BOUNDS } from '@/constants/tryon-lip.constants';
 import { LIVE_INSTRUCTIONS, UPLOAD_INSTRUCTIONS } from '@/constants/tryon.constants';
+import useDebounce from '@/hooks/useDebounce';
 import useTryOnUpload from '@/hooks/useTryOnUpload';
-import type { IShade, ITryOnStageRef } from '@/types/tryon-engine.type';
+import type { IShade, ITryOnStageRef, TFaceDetectionStatus } from '@/types/tryon-engine.type';
 import type { TTryOnSelection } from '@/types/tryon.type';
 
 import { InputError } from '@/components/ui/inputs/children';
@@ -51,6 +52,12 @@ const INITIAL_FLOW_STATE: ITryOnFlowState = {
   engineState: null,
 };
 
+// How long a non-'detected' `faceDetection` reading has to hold continuously before
+// TryOnFaceGuideOverlay actually shows (see the debounce effect below) - showing it the instant
+// a single frame reports one flickers constantly, since a stray frame or two of jitter/motion-
+// blur/momentary occlusion is normal and shouldn't interrupt the flow.
+const FACE_GUIDE_DEBOUNCE_MS = 1500;
+
 const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
   const [flow, setFlow] = useState<ITryOnFlowState>(INITIAL_FLOW_STATE);
   // `null` = compare mode off; the actual canvas element = compare mode on. Its own truthiness
@@ -68,11 +75,75 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
   // always-visible right column once the screen's too narrow for one. Mode itself doesn't need
   // a sheet - the bottom bar's mode button just toggles directly (see `handleModeToggle` below).
   const [activeSheet, setActiveSheet] = useState<'models' | null>(null);
+  // Debounced view of `flow.engineState?.faceDetection` (see the effect below) - the overlay/
+  // disabled-controls logic further down reads this instead of the raw per-frame value, so both
+  // stay in sync with each other (never "controls disabled but no overlay explains why").
+  const [debouncedFaceDetection, setDebouncedFaceDetection] = useState<
+    TFaceDetectionStatus | undefined
+  >(undefined);
 
   const stageRef = useRef<ITryOnStageRef<ILipTryOnState>>(null);
   const cameraVideoRef = useRef<HTMLVideoElement>(null);
 
   const { previewUrl, error: uploadError, setFile, reset: resetUpload } = useTryOnUpload();
+
+  // Shared debounce-a-callback hook (see useDebounce.ts) instead of a hand-rolled setTimeout/
+  // cleanup pair - owns the timer/cleanup mechanics, this just supplies what to call and when.
+  // `cancel` matters here specifically - see the effect below.
+  const { trigger: debounceFaceDetection, cancel: cancelFaceDetectionDebounce } = useDebounce<
+    [TFaceDetectionStatus | undefined]
+  >({
+    callback: setDebouncedFaceDetection,
+    delay: FACE_GUIDE_DEBOUNCE_MS,
+  });
+
+  // Shared readiness check - drives both the not-ready overlay and disabling shade/model
+  // selection until the stage can actually act on either. Declared up here (not just further
+  // down where it's also used for render) because the face-detection debounce right below needs
+  // it too.
+  const isTryOnReady =
+    flow.step === 'tryon' &&
+    (flow.mode === 'live'
+      ? !!flow.engineState?.cameraReady
+      : !!flow.uploadedImageUrl && !!flow.engineState?.imageReady);
+
+  // Gated on `isTryOnReady`, not read unconditionally - `cameraReady`/`imageReady` and
+  // `faceDetection` becoming correct don't land in the same state update (the engine's own
+  // `getInitialState` default, `'not-in-frame'`, is what `flow.engineState.faceDetection` holds
+  // the instant `cameraReady`/`imageReady` first flips true - the *real* reading from an actual
+  // renderFrame pass only arrives in a following update). Reading the raw value unconditionally
+  // here would prime `debouncedFaceDetection` with that stale default the moment the stage
+  // became ready, which - since 'not-in-frame' is falsy-different-from-'detected' - could flash
+  // TryOnFaceGuideOverlay on for that one render before the real reading corrects it a moment
+  // later. Forcing this to stay `undefined` until `isTryOnReady` is true sidesteps that: the
+  // first value it can ever take on is whatever the *next* real update reports, never the
+  // engine's un-started default.
+  const rawFaceDetection = isTryOnReady ? flow.engineState?.faceDetection : undefined;
+  useEffect(() => {
+    // Recovering to 'detected' (or resetting to no reading at all, e.g. on mode/model switch -
+    // see `flow.engineState` getting set back to `null` in several handlers below, or
+    // `isTryOnReady` itself going false again while a new engine spins up) is never debounced -
+    // only showing the warning needs the "did this actually last a while" check, not clearing
+    // it once things are genuinely fine again.
+    if (!rawFaceDetection || rawFaceDetection === 'detected') {
+      // Must cancel, not just skip scheduling a new one - a mode/model switch remounts the
+      // stage's engine, whose fresh initial state briefly reports 'not-in-frame' (see
+      // LipEngineBase.getInitialState) before the first real detection comes in. That
+      // transient reading already started a debounced timer below; if the *real* 'detected'
+      // reading (this branch) only set state directly without cancelling it, that stale timer
+      // would still fire ~FACE_GUIDE_DEBOUNCE_MS later and clobber this correct value right
+      // back to 'not-in-frame' - the overlay flashing on for no visible reason well after the
+      // switch. See useDebounce.ts's `cancel` comment.
+      cancelFaceDetectionDebounce();
+      // Mirrors an external signal (the engine's own state), not a render-derived value - a
+      // plain useMemo can't run this "only sometimes" conditionally against a timer.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setDebouncedFaceDetection(rawFaceDetection);
+      return;
+    }
+
+    debounceFaceDetection(rawFaceDetection);
+  }, [rawFaceDetection, debounceFaceDetection, cancelFaceDetectionDebounce]);
 
   useEffect(() => {
     if (isOpen) return;
@@ -195,21 +266,12 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
     link.click();
   };
 
-  // Shared readiness check - drives both the not-ready overlay and disabling shade/model
-  // selection until the stage can actually act on either.
-  const isTryOnReady =
-    flow.step === 'tryon' &&
-    (flow.mode === 'live'
-      ? !!flow.engineState?.cameraReady
-      : !!flow.uploadedImageUrl && !!flow.engineState?.imageReady);
-
-  // Only meaningful once already `isTryOnReady` - a face-detection reading from a `renderFrame`
-  // pass that hasn't happened yet (still waiting on camera permission/photo processing) isn't a
-  // real "no face" result, just the engine's un-started default (see LipEngineBase's
-  // `getInitialState`). Reused below both to show TryOnFaceGuideOverlay and to keep shade/
-  // compare/download actions disabled while it's showing - applying a shade with no reliably-
-  // placed face doesn't do anything useful.
-  const faceDetection = isTryOnReady ? flow.engineState?.faceDetection : undefined;
+  // Reads the *debounced* signal (see the effect above, already gated on `isTryOnReady` at the
+  // source), not the raw per-frame one, so this and TryOnFaceGuideOverlay's visibility never
+  // disagree. Reused below both to show that overlay and to keep shade/compare/download actions
+  // disabled while it's showing - applying a shade with no reliably-placed face doesn't do
+  // anything useful.
+  const faceDetection = isTryOnReady ? debouncedFaceDetection : undefined;
   const canInteract = isTryOnReady && faceDetection === 'detected';
 
   return (

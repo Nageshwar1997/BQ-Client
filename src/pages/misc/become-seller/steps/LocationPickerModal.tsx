@@ -34,7 +34,7 @@ const LocationSearch = ({
 }) => {
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
-  const debounce = useDebounce({ callback: setDebouncedQuery, delay: 400 });
+  const { trigger: debounce } = useDebounce({ callback: setDebouncedQuery, delay: 400 });
   const { suggestions, isLoading } = useAutocompleteSuggestions(debouncedQuery);
 
   const handleSuggestionClick = (suggestion: IPlacePrediction) => {
@@ -263,7 +263,7 @@ const LocationPickerModal = ({ isOpen, onClose, onConfirm }: ILocationPickerModa
             type="button"
             onClick={useCurrentLocation}
             disabled={isFetchingLocation}
-            className="bg-secondary-invert border-primary/10 text-primary absolute top-3 right-3 flex items-center justify-center rounded-lg border size-9 shrink-0 shadow-md disabled:opacity-60"
+            className="bg-secondary-invert border-primary/10 text-primary absolute top-3 right-3 flex size-9 shrink-0 items-center justify-center rounded-lg border shadow-md disabled:opacity-60"
           >
             <Icon
               icon={isFetchingLocation ? 'solar:refresh-linear' : 'solar:gps-linear'}

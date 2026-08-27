@@ -10,7 +10,13 @@ import type { ColorTuple, TFaceDetectionStatus } from '@/types/tryon-engine.type
 
 // Landmark x/y are normalized 0-1 fractions of the analyzed frame - a point at/past this margin
 // from any edge counts as the face being cut off by the frame boundary, not fully "in frame".
-const FACE_FRAME_EDGE_MARGIN = 0.02;
+// Deliberately tiny: MediaPipe's face mesh covers the *whole* face oval, including the jaw,
+// ears, and hairline - for any normal, reasonably-close headshot (the expected framing for a
+// makeup try-on, since people want to actually see their lips), those outer contour points
+// routinely sit within a few percent of the image edge even though nothing is actually cut off.
+// A looser margin (this was 0.02) was flagging completely normal framing as "not in frame" -
+// this should only trip for a landmark genuinely at/past the boundary.
+const FACE_FRAME_EDGE_MARGIN = 0.002;
 // The detected face's own bounding box (in that same 0-1 space) must span at least this much of
 // the frame on both axes - below it, the face is too small/far away to trust makeup placement
 // on, even though MediaPipe still reports landmarks for it.
