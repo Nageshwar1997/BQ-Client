@@ -4,6 +4,8 @@
 
 Last review score: **8.5/10** (breakdown below). Sabhi 11 subcategories (MATTE/STAIN/SATIN/GLOSS/BALM/SHIMMER/CRAYON/OIL/METALLIC/PLUMPER/LINER) already real hai — koi finish add nahi karni, sirf jo gaps score neeche kheech rahe the unko close karna hai.
 
+> **Status**: Robustness, Test coverage, Docs accuracy, aur UX polish - char ke char **10/10** ✅. Mere side se ab is plan me **koi code-side kaam nahi bacha**. Sirf **#4 Real-device QA** bacha hai, jo sirf tumhara manual step hai (real phone/browser pe test) - main isse camera-blocked sandbox se nahi kar sakta.
+
 **Explicitly out of scope for this plan:**
 
 - "Add to Cart" try-on screen ke andar — deferred, alag se karenge baad me.
@@ -11,17 +13,17 @@ Last review score: **8.5/10** (breakdown below). Sabhi 11 subcategories (MATTE/S
 
 ## Score breakdown (current → target)
 
-| #   | Dimension            | Current                | Target                                                                                     | Items                               |
-| --- | -------------------- | ---------------------- | ------------------------------------------------------------------------------------------ | ----------------------------------- |
-| 1   | Robustness           | ~~7/10~~ **10/10** ✅  | 10/10                                                                                      | 3 (done)                            |
-| 2   | Test coverage        | ~~5/10~~ **9.5/10**    | 10/10                                                                                      | 7 (✅ 6 core done + 1 stretch left) |
-| 3   | Docs accuracy        | ~~—~~ **10/10** ✅     | 10/10                                                                                      | 3 (done)                            |
-| 4   | Real-device QA       | — (never actually run) | 10/10                                                                                      | 4                                   |
-| 5   | UX polish            | ~~9/10~~ **10/10** ✅  | 10/10                                                                                      | 2 (done)                            |
-| —   | Architecture         | 9.5/10                 | _(already effectively 10 — no action item)_                                                | —                                   |
-| —   | Feature completeness | 10/10                  | _(already done)_                                                                           | —                                   |
-| —   | Performance          | 9/10                   | _(folds into #4 — the missing point is unverified real-device numbers, not a code change)_ | —                                   |
-| —   | Code hygiene         | 9/10                   | _(folds into #1-3 — stays clean as a byproduct, no separate task)_                         | —                                   |
+| #   | Dimension            | Current                | Target                                                                                     | Items    |
+| --- | -------------------- | ---------------------- | ------------------------------------------------------------------------------------------ | -------- |
+| 1   | Robustness           | ~~7/10~~ **10/10** ✅  | 10/10                                                                                      | 3 (done) |
+| 2   | Test coverage        | ~~5/10~~ **10/10** ✅  | 10/10                                                                                      | 7 (done) |
+| 3   | Docs accuracy        | ~~—~~ **10/10** ✅     | 10/10                                                                                      | 3 (done) |
+| 4   | Real-device QA       | — (never actually run) | 10/10                                                                                      | 4        |
+| 5   | UX polish            | ~~9/10~~ **10/10** ✅  | 10/10                                                                                      | 2 (done) |
+| —   | Architecture         | 9.5/10                 | _(already effectively 10 — no action item)_                                                | —        |
+| —   | Feature completeness | 10/10                  | _(already done)_                                                                           | —        |
+| —   | Performance          | 9/10                   | _(folds into #4 — the missing point is unverified real-device numbers, not a code change)_ | —        |
+| —   | Code hygiene         | 9/10                   | _(folds into #1-3 — stays clean as a byproduct, no separate task)_                         | —        |
 
 ---
 
@@ -31,9 +33,9 @@ Last review score: **8.5/10** (breakdown below). Sabhi 11 subcategories (MATTE/S
 - [x] **(Naya mila, review turn me nahi tha)** `withLiveCamera.ts`'s RAF `loop()` ([withLiveCamera.ts:164-197](../../src/classes/tryon/withLiveCamera.ts#L164)) `detectForVideo`/`renderFrame` ko try/catch me nahi leta tha — agar MediaPipe kisi frame pe throw kare, to recursive `requestAnimationFrame` call kabhi nahi chalega aur poora loop silently freeze ho jayega. Fix: try/catch add kiya, catch me `stopCamera()` + `setError('Something went wrong with the live preview. Try restarting the camera.')`. Camera is sandbox me blocked hai isliye live-test nahi ho saka - tsc/eslint clean, logic simple/low-risk hai (bas ek try/catch wrapper).
 - [x] Error overlay pe "Retry" action add kiya — implement/verify detail #5 (UX polish) me hai, shared item tha dono ke beech.
 
-## 2. Test coverage → 9.5/10 (core done)
+## 2. Test coverage → 10/10 ✅ done
 
-**Vitest** setup kiya - `vite.config.ts` hi reuse hota hai (`defineConfig` ab `vitest/config` se, jo Vite ka apna hi hai bas `test` field ke saath typed), `environment: 'node'` (sab targets pure functions hai, DOM/jsdom ki zaroorat nahi). **41/41 tests pass**, `npm run test` se chalta hai.
+**Vitest** setup kiya - `vite.config.ts` hi reuse hota hai (`defineConfig` ab `vitest/config` se, jo Vite ka apna hi hai bas `test` field ke saath typed), `environment: 'node'` (sab pure-function targets DOM ke bina chalte hai). **52/52 tests pass**, `npm run test` se chalta hai.
 
 - [x] Vitest setup + `npm run test`/`npm run test:watch` scripts add kiye
 - [x] Unit tests — `getFaceDetectionStatus` ([tryon.util.test.ts](../../src/utils/tryon.util.test.ts)): undefined/empty face, edge-touching (4 sides), size-threshold boundary, detected case — 6 tests
@@ -41,9 +43,9 @@ Last review score: **8.5/10** (breakdown below). Sabhi 11 subcategories (MATTE/S
 - [x] Unit tests — `hexToRGBA` (same file): 3-char aur 6-char hex, with/without `#`, custom alpha — 4 tests
 - [x] Unit tests — `TEXTURED_FINISH_TUNING` data-integrity ([tryon-lip.util.test.ts](../../src/utils/tryon-lip.util.test.ts)) — **note**: `Record<'GLOSS'|...|'PLUMPER', ...>` type ALREADY compile-time guarantee deta hai ki koi key missing na ho, isliye asli value ye nikli ki har numeric field sahi range (0-1, ya CRAYON ka -1 sentinel) me ho, `applyFilters` boolean ho — ye TS pakad nahi sakta (e.g. `0.3` ki jagah `3` typo). Bonus: `TEXTURED_FINISH_TUNING` ko export karna pada (pehle private tha) — 22 tests (6 finishes × 3 checks + 1 sentinel-uniqueness test)
 - [x] Unit tests — `LIP_OUTER_CONTOUR_INDICES` derivation ([tryon-lip.constants.test.ts](../../src/constants/tryon-lip.constants.test.ts)) — hardcoded literal-array anchor (formula se dobara derive karke compare karna tautological hota, kuch pakadta nahi), length, closed-loop start=end, no duplicate index, shared-corner check — 5 tests
-- [ ] _(stretch, abhi skip)_ Smoke test — har `applyXLips` function ko offscreen canvas + fixture landmarks ke against run karo
+- [x] Smoke tests — sabhi 11 `applyXLips` finish functions ([tryon-lip.util.smoke.test.ts](../../src/utils/tryon-lip.util.smoke.test.ts)) — 11 tests, `it.each` table-driven, dono check karte hai: throw nahi karta + kam se kam ek non-transparent pixel actually paint karta hai (sirf "throw nahi hua" nahi - ek galat landmark-index se function silently kuch bhi draw na kare, wo bhi pakadta hai). **Technical challenge tha**: in functions ko real `document.createElement('canvas')` chahiye (kai internally temp-canvas banate hai), jo plain Node me exist hi nahi karta. Fix: `canvas` (node-canvas, real Cairo-backed rendering) + `jsdom` dono devDependency add kiye, is ek file ko `// @vitest-environment jsdom` se override kiya (baaki sab files `node` environment me hi chalte rahe) - jsdom `canvas` package ko auto-detect kar leta hai, `getContext('2d')` real kaam karta hai. Texture fixtures bhi real image load karne ke bajay ek chota solid-fill canvas bana ke diye (async decode step avoid ho gaya). Dono packages live-verify kiye standalone install karne se pehle ki actually kaam karte hai is machine pe.
 
-Ye sab pure functions hai — koi browser/camera mock nahi chahiye tha, fast (~0.5s) aur reliable hai.
+Ye sab pure functions hai (smoke tests ke alawa) — koi browser/camera mock nahi chahiye tha, poori suite fast (~2.5s) aur reliable hai.
 
 ## 3. Docs accuracy → 10/10 ✅ done
 
