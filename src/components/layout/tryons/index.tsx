@@ -126,10 +126,14 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
 
   // Step 2 -> 3/4 (upload only), passed to TryOnInstructions - which owns the file input/picker
   // trigger itself, since nothing else needs it - lands directly in 'tryon'; the upload stage's
-  // own status overlay covers the "processing photo" loading state until `imageReady`.
+  // own status overlay covers the "processing photo" loading state until `imageReady`. Only
+  // advances on a file `setFile` actually accepted - staying on 'instructions' when it's
+  // rejected (oversized, wrong type) leaves the engine unmounted rather than stuck forever on
+  // its own loading overlay for an image that's never coming, with `uploadError`'s rejection
+  // message rendered right below it at the same time (see `useTryOnUpload.setFile`'s comment).
   const handleFileSelected = (file: File) => {
     resetUpload();
-    setFile(file);
+    if (!setFile(file)) return;
     setFlow((prev) => ({ ...prev, step: 'tryon' }));
   };
 

@@ -30,12 +30,17 @@ const useTryOnUpload = () => {
     };
   }, [file]);
 
-  const setFile = (candidate: File) => {
+  // Returns whether `candidate` was actually accepted - the caller (TryOnModal) needs this to
+  // know whether it's safe to advance the flow into the 'tryon' step, which mounts the engine
+  // against `file`/`previewUrl` - advancing on a rejected file would mount it against nothing,
+  // stuck showing a "processing..." loading overlay forever since no image ever arrives, right
+  // alongside this hook's own rejection message rendered elsewhere on the same screen.
+  const setFile = (candidate: File): boolean => {
     if (candidate.size > 5 * MB) {
       setError(
         `Image size is ${formatFileSize(candidate.size)}. Max allowed size is ${formatFileSize(5 * MB)}.`,
       );
-      return;
+      return false;
     }
 
     const ext = candidate.name.split('.').pop()?.toLowerCase();
@@ -48,11 +53,12 @@ const useTryOnUpload = () => {
       setError(
         `File extension is .${ext ?? 'unknown'}. Allowed extensions are ${IMAGE_FORMATS.join(', ')}.`,
       );
-      return;
+      return false;
     }
 
     setError('');
     setFileState(candidate);
+    return true;
   };
 
   const reset = () => {
