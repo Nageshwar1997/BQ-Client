@@ -66,7 +66,7 @@ const applyLipFilters = (ctx: CanvasRenderingContext2D, dimension: TDimension, a
 
 // Clips to a lip-region ring, then paints a texture image into that clip with rounded
 // (quadratic-curve-smoothed) corners rather than the sharp polygon `clipLipsOnFace` produces.
-export const applyLipTexture = (
+const applyLipTexture = (
   ctx: CanvasRenderingContext2D,
   face: NormalizedLandmark[],
   indices: number[],
