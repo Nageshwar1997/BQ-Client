@@ -23,21 +23,19 @@ const BottomButtons = ({
     <div className="flex shrink-0 gap-2 lg:hidden">
       <Button
         pattern="secondary"
-        content={mode}
-        className="capitalize"
+        content={`Try ${mode === 'live' ? 'Upload' : 'Live'}`}
         buttonProps={{
           onClick: () => {
             onModeToggle(mode === 'live' ? 'upload' : 'live');
           },
         }}
         leftIcon={{
-          icon: mode === 'live' ? 'solar:camera-linear' : 'solar:gallery-send-linear',
+          icon: mode === 'live' ? 'solar:gallery-send-linear' : 'solar:camera-linear',
         }}
       />
       <Button
         pattern="secondary"
         content="Models"
-        className="capitalize"
         buttonProps={{
           onClick: () => {
             onModelsClick('models');

@@ -8,7 +8,6 @@ import type { ILipTryOnState } from '@/classes/tryon/categories/lip';
 import { ModalWrapper } from '@/components/layout/modals/ModalWrapper';
 import { FACE_RANGE_BOUNDS } from '@/constants/tryon-face.constants';
 import { LIP_RANGE_BOUNDS } from '@/constants/tryon-lip.constants';
-import { LIVE_INSTRUCTIONS, UPLOAD_INSTRUCTIONS } from '@/constants/tryon.constants';
 import useDebounce from '@/hooks/useDebounce';
 import useTryOnUpload from '@/hooks/useTryOnUpload';
 import type {
@@ -393,7 +392,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
               ) : flow.step === 'instructions' ? (
                 <TryOnInstructions
                   mode={flow.mode}
-                  instructions={flow.mode === 'live' ? LIVE_INSTRUCTIONS : UPLOAD_INSTRUCTIONS}
+                  category={tryOn.category}
                   onStartLive={handleStartLive}
                   onFileSelected={handleFileSelected}
                   onBack={handleBackToSelect}

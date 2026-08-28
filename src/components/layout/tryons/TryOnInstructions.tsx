@@ -1,14 +1,15 @@
 import { IMAGE_MIMES } from '@beautinique/frontend-constants';
+import type { TTryOnCategory } from '@beautinique/frontend-types';
 import { Icon } from '@iconify/react';
-import { type ChangeEvent, useRef } from 'react';
+import { type ChangeEvent, useMemo, useRef } from 'react';
 
 import Button from '@/components/ui/Button';
 import GradientText from '@/components/ui/GradientText';
-import type { ITryOnInstruction } from '@/constants/tryon.constants';
+import { getTryOnInstructions } from '@/constants/tryon.constants';
 
 interface ITryOnInstructions {
   mode: 'live' | 'upload';
-  instructions: ITryOnInstruction[];
+  category: TTryOnCategory;
   onBack: () => void;
   // Live mode only - advances the flow straight to the 'tryon' step (the engine mounts there
   // and requests the camera).
@@ -23,13 +24,15 @@ interface ITryOnInstructions {
 // Step 2 of the flow - shown after picking Live/Upload, before the engine ever mounts.
 const TryOnInstructions = ({
   mode,
-  instructions,
+  category,
   onStartLive,
   onFileSelected,
   onBack,
   className = '',
 }: ITryOnInstructions) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const instructions = useMemo(() => getTryOnInstructions(category, mode), [category, mode]);
 
   const handleChoosePhoto = () => {
     fileInputRef.current?.click();
@@ -43,7 +46,7 @@ const TryOnInstructions = ({
 
   return (
     <div
-      className={`mx-auto flex h-full max-w-md flex-col items-center justify-center text-center p-4 ${className}`}
+      className={`mx-auto flex h-full max-w-md flex-col items-center justify-center p-4 text-center ${className}`}
     >
       <span className="mb-2 size-8 shrink-0">
         <Icon
