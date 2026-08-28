@@ -1,5 +1,6 @@
 // eslint-disable-next-line simple-import-sort/imports
 import { Icon } from '@iconify/react';
+import type { TTryOnSelection } from '@beautinique/frontend-types';
 import type { Ref } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
@@ -16,7 +17,6 @@ import type {
   ITryOnStageRef,
   TFaceDetectionStatus,
 } from '@/types/tryon-engine.type';
-import type { TTryOnSelection } from '@/types/tryon.type';
 
 import { InputError } from '@/components/ui/inputs/children';
 import BottomButtons from './BottomButtons';

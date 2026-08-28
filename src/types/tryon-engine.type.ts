@@ -1,8 +1,7 @@
 // Generic types for the class-based Try-On rendering engine (canvas + MediaPipe
 // FaceLandmarker) in `@/classes/tryon`. Shared by every category's engine
-// (LipEngineBase today, EyeEngineBase/FaceEngineBase/... later) - not to be
-// confused with `@/types/tryon.type`, which holds the product-taxonomy types
-// (TRY_ON_MAP category/subCategory) and is a temporary shim for that concern.
+// (LipEngineBase today, EyeEngineBase/FaceEngineBase/... later). Product-taxonomy types
+// (TRY_ON_MAP category/subCategory) live in `@beautinique/frontend-types` instead - not here.
 
 import type { FaceDetectorOptions } from '@mediapipe/tasks-vision';
 
@@ -93,4 +92,13 @@ export interface ITryOnStageRef<TState> {
 export interface IShade {
   name: string;
   hexColor: string;
+}
+
+// How much of a canvas's own box its actual rendered content occupies, horizontally, once CSS
+// `object-fit` has scaled it (see `getObjectFitContentRect` in tryon.util.ts) - lets UI drawn
+// *over* the canvas (the compare-slider divider, see `TryOnCompareSlider.tsx`) line up with the
+// actual rendered frame instead of the box's raw edges.
+export interface IObjectFitContentRect {
+  leftPercent: number;
+  widthPercent: number;
 }

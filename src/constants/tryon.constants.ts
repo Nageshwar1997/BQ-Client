@@ -1,4 +1,4 @@
-import type { TTryOnCategory } from '@/types/tryon.type';
+import type { TTryOnCategory } from '@beautinique/frontend-types';
 
 // Category-agnostic Try-On constants - shared by every category's modal, not just LIP
 // (compare to `tryon-lip.constants.ts`, which is LIP-specific rendering data).
@@ -103,9 +103,9 @@ const FACE_LIVE_INSTRUCTIONS: ITryOnInstruction[] = [
 ];
 
 // Central registry - one entry per category that has a real try-on flow built (see `TRY_ON_MAP`
-// in temp.constants.ts for the full, eventual category list; only LIP/FACE exist today).
-// `Partial` on purpose: a category without its own try-on flow yet has nothing real to give
-// tips about - `getTryOnInstructions` falls back to an empty list rather than guessing.
+// in `@beautinique/frontend-types` for the full, eventual category list; only LIP/FACE exist
+// today). `Partial` on purpose: a category without its own try-on flow yet has nothing real to
+// give tips about - `getTryOnInstructions` falls back to an empty list rather than guessing.
 const TRY_ON_INSTRUCTIONS: Partial<
   Record<TTryOnCategory, Record<TTryOnMode, ITryOnInstruction[]>>
 > = {

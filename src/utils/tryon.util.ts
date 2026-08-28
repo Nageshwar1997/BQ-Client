@@ -1,7 +1,10 @@
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
-import type { IObjectFitContentRect } from '@/types/tryon.type';
-import type { ColorTuple, TFaceDetectionStatus } from '@/types/tryon-engine.type';
+import type {
+  ColorTuple,
+  IObjectFitContentRect,
+  TFaceDetectionStatus,
+} from '@/types/tryon-engine.type';
 
 // Category-agnostic helpers for the Try-On rendering engine (`@/classes/tryon`) - canvas
 // sizing, snapshot capture, color parsing, abort-aware image loading. Ported from the

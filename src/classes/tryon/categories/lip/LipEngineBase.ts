@@ -1,5 +1,6 @@
 // eslint-disable-next-line simple-import-sort/imports
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
+import type { TTryOnSubCategory } from '@beautinique/frontend-types';
 
 import {
   CRAYON_TEXTURE_PATH,
@@ -13,7 +14,6 @@ import {
   SHIMMER_TEXTURE_PATH,
 } from '@/constants/tryon-lip.constants';
 import type { ColorTuple, IMakeupState } from '@/types/tryon-engine.type';
-import type { TTryOnSubCategory } from '@/types/tryon.type';
 import {
   applyBalmLips,
   applyCrayonLips,
