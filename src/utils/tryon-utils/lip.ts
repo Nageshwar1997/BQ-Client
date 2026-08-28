@@ -34,26 +34,55 @@ const fillColor = (ctx: CanvasRenderingContext2D, color: string, alpha: number) 
   ctx.fill();
 };
 
+interface IPoint {
+  x: number;
+  y: number;
+}
+
+const midpoint = (a: IPoint, b: IPoint): IPoint => ({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 });
+
+// Traces a *smoothed* closed loop through a set of points - each point becomes a quadratic-
+// curve control point, with the curve actually passing through the midpoint before/after it,
+// rather than a sharp `lineTo` polygon corner at the point itself. Landmark rings this sparse
+// (UPPER_LIP_INDICES etc. are a couple dozen points at most) read as a visibly faceted polygon
+// with straight `lineTo` edges - this is what makes the lip shape itself look naturally rounded
+// instead. Same technique `applyLipTexture` below already uses for its own overlay passes, just
+// generalized here so every lip clip region (not just the texture overlays) gets it.
+const traceSmoothClosedPath = (ctx: CanvasRenderingContext2D, points: IPoint[]) => {
+  if (points.length < 3) return;
+
+  const last = points[points.length - 1];
+  const first = points[0];
+  if (!last || !first) return;
+
+  const start = midpoint(last, first);
+  ctx.moveTo(start.x, start.y);
+
+  points.forEach((point, i) => {
+    const next = points[(i + 1) % points.length];
+    if (!next) return;
+    const mid = midpoint(point, next);
+    ctx.quadraticCurveTo(point.x, point.y, mid.x, mid.y);
+  });
+
+  ctx.closePath();
+};
+
 const clipLipsOnFace = (
   canvasElement: HTMLCanvasElement,
   ctx: CanvasRenderingContext2D,
   face: NormalizedLandmark[],
   indices: number[],
 ) => {
-  ctx.beginPath();
-  indices.forEach((index, i) => {
-    // `index` only ever comes from our own fixed landmark-index constants (e.g.
-    // UPPER_LIP_INDICES), which point into MediaPipe's guaranteed 478-point face mesh - this
-    // check is just satisfying `noUncheckedIndexedAccess`, not expected to ever skip.
-    const point = face[index];
-    if (!point) return;
+  // Same "fixed constant indices" reasoning as elsewhere in this file - `.filter` here is just
+  // satisfying `noUncheckedIndexedAccess`, not expected to ever drop a point.
+  const points = indices
+    .map((index) => face[index])
+    .filter((point): point is NormalizedLandmark => point !== undefined)
+    .map((point) => ({ x: point.x * canvasElement.width, y: point.y * canvasElement.height }));
 
-    const x = point.x * canvasElement.width;
-    const y = point.y * canvasElement.height;
-    if (i === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
-  });
-  ctx.closePath();
+  ctx.beginPath();
+  traceSmoothClosedPath(ctx, points);
   ctx.clip();
 };
 
@@ -176,15 +205,11 @@ const clipToFullLipFill = (
 ) => {
   ctx.beginPath();
   [UPPER_LIP_INDICES, LOWER_LIP_INDICES].forEach((indices) => {
-    indices.forEach((index, i) => {
-      const point = face[index];
-      if (!point) return;
-      const x = point.x * dimension.width;
-      const y = point.y * dimension.height;
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    });
-    ctx.closePath();
+    const points = indices
+      .map((index) => face[index])
+      .filter((point): point is NormalizedLandmark => point !== undefined)
+      .map((point) => ({ x: point.x * dimension.width, y: point.y * dimension.height }));
+    traceSmoothClosedPath(ctx, points);
   });
   ctx.clip();
 };
