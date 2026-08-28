@@ -15,6 +15,18 @@ export const FACE_OVAL_INDICES = [
   176, 149, 150, 136, 172, 58, 132, 93, 234, 127, 162, 21, 54, 103, 67, 109,
 ];
 
+// `FACE_OVAL_INDICES`' own topmost points sit right at the hairline, not partway up the
+// forehead - a full-face fill clipped to the raw oval visibly stops short of covering real
+// forehead skin. `applyForeheadExtension` (tryon-face.util.ts) pushes just the near-top points
+// upward by this fraction of the face's own detected height, tapering off by
+// `FOREHEAD_EXTENSION_TAPER_RATIO` down from the top so the deformation blends smoothly into
+// the unchanged sides/jaw rather than kinking at a hard cutoff. Deliberately conservative -
+// overshooting here paints into the hairline instead (hair itself was never covered - no
+// landmark data distinguishes hair from skin at all, only real segmentation could), so this
+// trades some residual forehead gap for staying clear of hair on most face shapes/hairlines.
+export const FOREHEAD_EXTENSION_RATIO = 0.14;
+export const FOREHEAD_EXTENSION_TAPER_RATIO = 0.25;
+
 // Eyes/eyebrows/lips - excluded (as holes) from every full-face fill below, so foundation/
 // bronzer/etc. never paints over them.
 export const LEFT_EYE_INDICES = [
@@ -25,16 +37,25 @@ export const RIGHT_EYE_INDICES = [
 ];
 export const LEFT_EYEBROW_INDICES = [70, 63, 105, 66, 107, 55, 65, 52, 53, 46];
 export const RIGHT_EYEBROW_INDICES = [300, 293, 334, 296, 336, 285, 295, 282, 283, 276];
-// Same outer-lip fill regions LIP's own engine uses (see tryon-lip.constants.ts) - duplicated
-// rather than imported cross-category, since these are generic face-mesh facts, not LIP
-// business logic, and every category's constants file stays self-contained (no category ever
-// imports another's constants file).
-export const LIPS_UPPER_INDICES = [
-  61, 185, 40, 39, 37, 0, 267, 269, 270, 409, 291, 308, 415, 311, 312, 13, 82, 81, 80, 191, 78,
-];
-export const LIPS_LOWER_INDICES = [
-  61, 146, 91, 181, 84, 17, 314, 405, 321, 375, 291, 308, 324, 318, 402, 317, 14, 87, 178, 88, 95,
-  78,
+// One ring around the *whole* mouth opening (outer lip boundary, upper arc + lower arc), not
+// two separate upper-lip/lower-lip bands - same derivation LIP's own `LIP_OUTER_CONTOUR_INDICES`
+// uses (see tryon-lip.constants.ts), duplicated rather than imported cross-category since these
+// are generic face-mesh facts, not LIP business logic (every category's constants file stays
+// self-contained). This distinction actually matters here in a way it doesn't for LIP: excluding
+// "upper lip band" and "lower lip band" as two *separate* holes only closes the gap between them
+// while the mouth is shut - the moment it opens, the space between suddenly isn't inside either
+// hole any more, and a full-face fill paints straight over the visible teeth/mouth interior. One
+// ring around the outer boundary excludes the whole opening regardless of how wide it is, since
+// MediaPipe moves these exact points with the actual jaw/lip position every frame.
+const MOUTH_UPPER_OUTER_ARC = [61, 185, 40, 39, 37, 0, 267, 269, 270, 409, 291];
+const MOUTH_LOWER_OUTER_ARC = [61, 146, 91, 181, 84, 17, 314, 405, 321, 375, 291];
+// Same "outer arc forward, then the other outer arc's first 10 points reversed" derivation as
+// LIP_OUTER_CONTOUR_INDICES (see tryon-lip.constants.ts) - both arcs start at the same left
+// corner (61) and run to the same right corner (291), so dropping the lower arc's own trailing
+// 291 (already the upper arc's last point) before reversing avoids visiting that corner twice.
+export const MOUTH_OUTER_CONTOUR_INDICES = [
+  ...MOUTH_UPPER_OUTER_ARC,
+  ...MOUTH_LOWER_OUTER_ARC.slice(0, -1).reverse(),
 ];
 
 // Single-point anchors for the localized (not full-face) finishes - blush/highlighter/contour
