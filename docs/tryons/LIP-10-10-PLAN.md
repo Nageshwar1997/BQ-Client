@@ -57,6 +57,8 @@ Ye sab pure functions hai (smoke tests ke alawa) — koi browser/camera mock nah
 
 Ye ek hi section hai jo **mujhse nahi ho sakta** — is sandboxed browser pane me camera access hi blocked hai, isliye Live mode ki real performance/behavior kabhi actually measure nahi hui hai.
 
+**Detailed step-by-step checklist**: [LIP-REAL-DEVICE-QA.md](./LIP-REAL-DEVICE-QA.md) — setup (phone se dev server tak pahunchna), poora item-by-item kya check karna hai + kya problem jaisa dikhega, sab likha hai.
+
 - [ ] Live mode ek real phone pe (Android + iOS dono, at least ek-ek pass) — real FPS, real lighting conditions, kuch minute continuous use ke baad thermal/battery behavior
 - [ ] Upload mode real phone camera-roll photo ke saath (AI-generated/downloaded model image nahi) — real EXIF orientation, real file sizes
 - [ ] Safari specifically test karo — `getUserMedia`/canvas quirks ka historically sabse zyada risk yahi browser hai
