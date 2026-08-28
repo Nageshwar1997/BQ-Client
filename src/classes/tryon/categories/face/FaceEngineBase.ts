@@ -1,10 +1,10 @@
 // eslint-disable-next-line simple-import-sort/imports
-import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 import type { TTryOnSubCategory } from '@beautinique/frontend-types';
+import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
-import { FACE_RANGE_BOUNDS } from '@/constants/tryon-face.constants';
+import { FACE_RANGE_BOUNDS } from '@/constants/tryon-constants/face';
 import type { ColorTuple, IMakeupState } from '@/types/tryon-engine.type';
-import { applyFoundationFace } from '@/utils/tryon-face.util';
+import { applyFoundationFace } from '@/utils/tryon-utils/face';
 
 import { TryOnEngineBase } from '../../TryOnEngineBase';
 

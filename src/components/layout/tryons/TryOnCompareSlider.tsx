@@ -2,7 +2,7 @@ import { Icon } from '@iconify/react';
 import { type PointerEvent, useEffect, useRef, useState } from 'react';
 
 import type { IObjectFitContentRect } from '@/types/tryon-engine.type';
-import { getObjectFitContentRect } from '@/utils/tryon.util';
+import { getObjectFitContentRect } from '@/utils/tryon-utils';
 
 interface ITryOnCompareSliderProps {
   // Fires with a 0-1 fraction as the handle is dragged, throttled to at most once per animation

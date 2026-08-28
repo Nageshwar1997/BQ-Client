@@ -3,7 +3,7 @@ import { type RefObject } from 'react';
 
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
-import { TRYON_MODE_OPTIONS } from '@/constants/tryon.constants';
+import { TRYON_MODE_OPTIONS } from '@/constants/tryon-constants';
 
 import TryOnModelList from './TryOnModelList';
 

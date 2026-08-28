@@ -1,3 +1,5 @@
+import type { ITryOnInstruction } from '.';
+
 // Face landmark indices (into MediaPipe FaceLandmarker's 478-point face mesh) for the FACE
 // try-on engine. Fresh design (not ported from any reference implementation - see
 // docs/tryons/FACE.md) - the index arrays below trace MediaPipe's own standard, publicly
@@ -17,8 +19,8 @@ export const FACE_OVAL_INDICES = [
 
 // `FACE_OVAL_INDICES`' own topmost points sit right at the hairline, not partway up the
 // forehead - a full-face fill clipped to the raw oval visibly stops short of covering real
-// forehead skin. `applyForeheadExtension` (tryon-face.util.ts) pushes just the near-top points
-// upward by this fraction of the face's own detected height, tapering off by
+// forehead skin. `applyForeheadExtension` (utils/tryon-utils/face.ts) pushes just the near-top
+// points upward by this fraction of the face's own detected height, tapering off by
 // `FOREHEAD_EXTENSION_TAPER_RATIO` down from the top so the deformation blends smoothly into
 // the unchanged sides/jaw rather than kinking at a hard cutoff. Deliberately conservative -
 // overshooting here paints into the hairline instead (hair itself was never covered - no
@@ -39,7 +41,7 @@ export const LEFT_EYEBROW_INDICES = [70, 63, 105, 66, 107, 55, 65, 52, 53, 46];
 export const RIGHT_EYEBROW_INDICES = [300, 293, 334, 296, 336, 285, 295, 282, 283, 276];
 // One ring around the *whole* mouth opening (outer lip boundary, upper arc + lower arc), not
 // two separate upper-lip/lower-lip bands - same derivation LIP's own `LIP_OUTER_CONTOUR_INDICES`
-// uses (see tryon-lip.constants.ts), duplicated rather than imported cross-category since these
+// uses (see ./lip.ts), duplicated rather than imported cross-category since these
 // are generic face-mesh facts, not LIP business logic (every category's constants file stays
 // self-contained). This distinction actually matters here in a way it doesn't for LIP: excluding
 // "upper lip band" and "lower lip band" as two *separate* holes only closes the gap between them
@@ -50,7 +52,7 @@ export const RIGHT_EYEBROW_INDICES = [300, 293, 334, 296, 336, 285, 295, 282, 28
 const MOUTH_UPPER_OUTER_ARC = [61, 185, 40, 39, 37, 0, 267, 269, 270, 409, 291];
 const MOUTH_LOWER_OUTER_ARC = [61, 146, 91, 181, 84, 17, 314, 405, 321, 375, 291];
 // Same "outer arc forward, then the other outer arc's first 10 points reversed" derivation as
-// LIP_OUTER_CONTOUR_INDICES (see tryon-lip.constants.ts) - both arcs start at the same left
+// LIP_OUTER_CONTOUR_INDICES (see ./lip.ts) - both arcs start at the same left
 // corner (61) and run to the same right corner (291), so dropping the lower arc's own trailing
 // 291 (already the upper arc's last point) before reversing avoids visiting that corner twice.
 export const MOUTH_OUTER_CONTOUR_INDICES = [
@@ -76,3 +78,48 @@ export const LOCALIZED_BLOB_RADIUS_RATIO = 0.16;
 // Same shape/role as LIP's own `LIP_RANGE_BOUNDS` - the intensity slider's bounds, per category
 // since each category's finishes read differently at the same raw alpha.
 export const FACE_RANGE_BOUNDS = { min: 0.2, max: 0.8, default: 0.45 } as const;
+
+/* ================= INSTRUCTIONS =================
+ * Shown before a shopper picks/takes a photo - see `getTryOnInstructions` in `./index` for why
+ * these are independent per category instead of built off one shared base list. The last two
+ * tips here (facing the camera directly, hair off the forehead) exist specifically because of
+ * how FACE's full-face finishes render (see utils/tryon-utils/face.ts) - a turned head can
+ * project part of the face oval past what the camera actually sees (no true 3D/occlusion
+ * awareness), and there's no reliable way to tell hair from skin by color alone (see that
+ * file's own history) - so the shopper is asked for a good frame up front instead of the app
+ * trying to algorithmically fix a bad one after the fact.
+ */
+
+export const FACE_UPLOAD_INSTRUCTIONS: ITryOnInstruction[] = [
+  { icon: 'solar:sun-2-linear', text: 'Good, even lighting - avoid backlight or heavy shadows' },
+  { icon: 'solar:radial-blur-linear', text: 'Sharp and in focus, not blurry' },
+  {
+    icon: 'solar:user-rounded-linear',
+    text: 'Face fully visible, facing the camera directly - not turned to the side',
+  },
+  {
+    icon: 'solar:glasses-linear',
+    text: 'No sunglasses, masks, or heavy filters covering your face',
+  },
+  {
+    icon: 'solar:face-scan-circle-linear',
+    text: 'Hair pulled back, away from your forehead and face',
+  },
+];
+
+export const FACE_LIVE_INSTRUCTIONS: ITryOnInstruction[] = [
+  { icon: 'solar:sun-2-linear', text: 'Find good, even lighting - avoid strong backlight' },
+  { icon: 'solar:user-rounded-linear', text: 'Keep your face centered and clearly visible' },
+  {
+    icon: 'solar:videocamera-record-linear',
+    text: 'Hold still, facing the camera directly - not turned to the side',
+  },
+  {
+    icon: 'solar:glasses-linear',
+    text: 'Remove sunglasses, masks, or anything covering your face',
+  },
+  {
+    icon: 'solar:face-scan-circle-linear',
+    text: 'Pull hair back, away from your forehead and face',
+  },
+];

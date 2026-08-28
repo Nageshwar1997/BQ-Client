@@ -8,7 +8,7 @@ import {
   LOWER_WHITE_LIP_INDICES_INSET,
   UPPER_LIP_INDICES,
   UPPER_WHITE_LIP_INDICES_INSET,
-} from '@/constants/tryon-lip.constants';
+} from '@/constants/tryon-constants/lip';
 
 // LIP-specific canvas rendering, ported from the reference implementation's
 // `virtual-tryon/utils/index.ts` lip functions. The per-finish opacity numbers below (0.1,
@@ -262,7 +262,7 @@ interface ITexturedFinishTuning {
   applyFilters: boolean;
 }
 
-// Exported for `tryon-lip.util.test.ts` only - nothing outside this file needs it at runtime,
+// Exported for `lip.test.ts` only - nothing outside this file needs it at runtime,
 // `applyTexturedLips` below already closes over it directly.
 export const TEXTURED_FINISH_TUNING: Record<
   'GLOSS' | 'CRAYON' | 'SHIMMER' | 'OIL' | 'METALLIC' | 'PLUMPER',
@@ -480,7 +480,7 @@ export const applyCrayonLips = (
   dimension: TDimension,
   alpha: number,
 ) => {
-  // Crayon uses one texture file for both halves (see tryon-lip.constants.ts).
+  // Crayon uses one texture file for both halves (see constants/tryon-constants/lip.ts).
   applyTexturedLips('CRAYON', face, ctx, color, texture, texture, dimension, alpha);
 };
 

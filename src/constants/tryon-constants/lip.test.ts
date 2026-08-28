@@ -1,10 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import {
-  LIP_OUTER_CONTOUR_INDICES,
-  LOWER_LIP_INDICES,
-  UPPER_LIP_INDICES,
-} from './tryon-lip.constants';
+import { LIP_OUTER_CONTOUR_INDICES, LOWER_LIP_INDICES, UPPER_LIP_INDICES } from './lip';
 
 describe('LIP_OUTER_CONTOUR_INDICES', () => {
   // Hardcoded, not re-derived with the same slice/reverse formula the source uses - a

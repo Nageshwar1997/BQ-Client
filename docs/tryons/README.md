@@ -16,7 +16,7 @@ Per-category detail aur checklist alag file me hai. Ye file sirf overall status 
 - [x] Shared camera-access module (permission handling, live `<video>` stream, mirror) — [withLiveCamera.ts](../../src/classes/tryon/withLiveCamera.ts) (mixin, ek baar likha, saari categories reuse karengi)
 - [x] Shared photo-upload module (file input, preview, image validation) — [useTryOnUpload.ts](../../src/hooks/useTryOnUpload.ts) (validation) + [withImageUpload.ts](../../src/classes/tryon/withImageUpload.ts) (mixin, load+detect+render)
 - [x] Shared Try-On modal/page shell — [components/layout/tryons/](../../src/components/layout/tryons/index.tsx)
-- [x] Generic color/texture blend engine — [TryOnEngineBase.ts](../../src/classes/tryon/TryOnEngineBase.ts) ka `applyEffect` abstraction + category-specific rendering (LIP ke liye [tryon-lip.util.ts](../../src/utils/tryon-lip.util.ts))
+- [x] Generic color/texture blend engine — [TryOnEngineBase.ts](../../src/classes/tryon/TryOnEngineBase.ts) ka `applyEffect` abstraction + category-specific rendering (LIP ke liye [tryon-utils/lip.ts](../../src/utils/tryon-utils/lip.ts))
 - [x] Result actions (partial) — screenshot/download ban gaya (`takeSnapshot()`); "Add to Cart" seedha try-on screen se abhi pending
 
 Inme se koi bhi cheez kisi ek category ke andar dobara nahi likhni — ek baar yaha ban jaye to har category file usko "reused" maan legi.

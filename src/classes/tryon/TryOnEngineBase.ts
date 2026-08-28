@@ -10,7 +10,7 @@ import {
   getFaceDetectionStatus,
   hexToRGBA,
   resizeElements,
-} from '@/utils/tryon.util';
+} from '@/utils/tryon-utils';
 
 import { getSharedFaceLandmarker } from './FaceLandmarkerCache';
 
@@ -71,7 +71,7 @@ export abstract class TryOnEngineBase<TState extends IMakeupState, TAssets = nul
     return this.state;
   }
 
-  // Flat aliases matching `ITryOnEngineBaseRef` (see `@/types/tryon-engine.type`) - the
+  // Flat aliases matching `ITryOnEngineBaseRef` (see `@/types/tryon-engine.types`) - the
   // React wrapper's imperative ref is typed against that plain interface rather than this
   // class directly (see `withLiveCamera`/`withImageUpload`'s comments on why), so these exist
   // purely to give it something to point at.

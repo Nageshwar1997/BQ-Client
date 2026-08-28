@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { getFaceDetectionStatus, getObjectFitContentRect, hexToRGBA } from './tryon.util';
+import { getFaceDetectionStatus, getObjectFitContentRect, hexToRGBA } from '.';
 
 // `getFaceDetectionStatus` only ever reads `x`/`y` - `z`/`visibility` are filled with inert
 // values purely to satisfy `NormalizedLandmark`'s shape.

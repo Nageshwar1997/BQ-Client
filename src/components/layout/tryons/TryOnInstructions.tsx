@@ -5,7 +5,7 @@ import { type ChangeEvent, useMemo, useRef } from 'react';
 
 import Button from '@/components/ui/Button';
 import GradientText from '@/components/ui/GradientText';
-import { getTryOnInstructions } from '@/constants/tryon.constants';
+import { getTryOnInstructions } from '@/constants/tryon-constants';
 
 interface ITryOnInstructions {
   mode: 'live' | 'upload';

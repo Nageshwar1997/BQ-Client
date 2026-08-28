@@ -1,3 +1,5 @@
+import type { ITryOnInstruction } from '.';
+
 // Lip landmark indices (into MediaPipe FaceLandmarker's 478-point face mesh) and texture
 // asset paths for the LIP try-on engine. Ported from the reference implementation at
 // `src/commverse/src/pages/virtual-tryon/data/index.ts` (lip-relevant subset only) - the
@@ -26,7 +28,7 @@ export const LIP_OUTER_CONTOUR_INDICES = [
 ];
 
 // Secondary "inner highlight" rings used to add a lighter texture pass on dark shades
-// (see `applyTexture` usage in `tryon-lip.util.ts`) - not the same rings as above.
+// (see `applyTexture` usage in `utils/tryon-utils/lip.ts`) - not the same rings as above.
 export const UPPER_WHITE_LIP_INDICES_INSET = [74, 39, 37, 11, 267, 269, 304, 271, 268, 13, 38, 41];
 
 export const LOWER_WHITE_LIP_INDICES_INSET = [
@@ -70,8 +72,36 @@ export const METALLIC_TEXTURE_PATH_UPPER = `${TEXTURE_FOLDER}/Metallic-Upper.web
 export const METALLIC_TEXTURE_PATH_LOWER = `${TEXTURE_FOLDER}/Metallic-Lower.webp`;
 
 // Intensity-slider bounds per finish (maps to engine state's `range`, i.e. how strongly the
-// finish's texture/filter pass shows through - see tryon-lip.util.ts). Values for
+// finish's texture/filter pass shows through - see utils/tryon-utils/lip.ts). Values for
 // MATTE/GLOSS/SHIMMER/CRAYON are ported from the reference's `getRangeValues`; the rest
 // (SATIN/STAIN/BALM/OIL/LINER/METALLIC/PLUMPER) reuse a sensible default rather than
 // invented per-finish numbers, since those finishes don't have validated tuning yet either.
 export const LIP_RANGE_BOUNDS = { min: 0.3, max: 0.9, default: 0.5 } as const;
+
+/* ================= INSTRUCTIONS =================
+ * Shown before a shopper picks/takes a photo - see `getTryOnInstructions` in `./index` for why
+ * these are independent per category instead of built off one shared base list.
+ */
+
+export const LIP_UPLOAD_INSTRUCTIONS: ITryOnInstruction[] = [
+  { icon: 'solar:sun-2-linear', text: 'Good, even lighting - avoid backlight or heavy shadows' },
+  { icon: 'solar:radial-blur-linear', text: 'Sharp and in focus, not blurry' },
+  {
+    icon: 'solar:user-rounded-linear',
+    text: 'Face fully visible and looking straight at the camera',
+  },
+  {
+    icon: 'solar:glasses-linear',
+    text: 'No sunglasses, masks, or heavy filters covering your face',
+  },
+];
+
+export const LIP_LIVE_INSTRUCTIONS: ITryOnInstruction[] = [
+  { icon: 'solar:sun-2-linear', text: 'Find good, even lighting - avoid strong backlight' },
+  { icon: 'solar:user-rounded-linear', text: 'Keep your face centered and clearly visible' },
+  { icon: 'solar:videocamera-record-linear', text: 'Hold still and look straight at the camera' },
+  {
+    icon: 'solar:glasses-linear',
+    text: 'Remove sunglasses, masks, or anything covering your face',
+  },
+];

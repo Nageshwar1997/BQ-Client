@@ -1,4 +1,4 @@
-import { TRYON_MODEL_IMAGES } from '@/constants/tryon.constants';
+import { TRYON_MODEL_IMAGES } from '@/constants/tryon-constants';
 
 import ScrollableGradientContainer from '../containers/ScrollableGradientContainer';
 

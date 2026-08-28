@@ -9,7 +9,7 @@ import type {
 // Category-agnostic helpers for the Try-On rendering engine (`@/classes/tryon`) - canvas
 // sizing, snapshot capture, color parsing, abort-aware image loading. Ported from the
 // reference implementation's `virtual-tryon/utils/index.ts`; nothing here is LIP-specific
-// (that lives in `tryon-lip.util.ts`).
+// (that lives in `./lip.ts`).
 
 // Landmark x/y are normalized 0-1 fractions of the analyzed frame - a point at/past this margin
 // from any edge counts as the face being cut off by the frame boundary, not fully "in frame".

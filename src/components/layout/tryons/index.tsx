@@ -1,14 +1,14 @@
 // eslint-disable-next-line simple-import-sort/imports
-import { Icon } from '@iconify/react';
 import type { TTryOnSelection } from '@beautinique/frontend-types';
+import { Icon } from '@iconify/react';
 import type { Ref } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
 import type { IFaceTryOnState } from '@/classes/tryon/categories/face';
 import type { ILipTryOnState } from '@/classes/tryon/categories/lip';
 import { ModalWrapper } from '@/components/layout/modals/ModalWrapper';
-import { FACE_RANGE_BOUNDS } from '@/constants/tryon-face.constants';
-import { LIP_RANGE_BOUNDS } from '@/constants/tryon-lip.constants';
+import { FACE_RANGE_BOUNDS } from '@/constants/tryon-constants/face';
+import { LIP_RANGE_BOUNDS } from '@/constants/tryon-constants/lip';
 import useDebounce from '@/hooks/useDebounce';
 import useTryOnUpload from '@/hooks/useTryOnUpload';
 import type {

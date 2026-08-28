@@ -34,7 +34,7 @@ import {
   applySatinLips,
   applyShimmerLips,
   applyStainLips,
-} from './tryon-lip.util';
+} from './lip';
 
 // MediaPipe FaceLandmarker's full mesh size - the highest index any of this file's constants
 // reference (415, in UPPER_LIP_INDICES) comfortably fits, same as the real engine always gets.

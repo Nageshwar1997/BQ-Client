@@ -145,7 +145,7 @@ _Tracking model: face landmarks (lip contour ring). Depends on the shared face-l
 **Live**
 
 - [x] Camera capture + lip-contour edge tracking wired
-- [x] Wide, blurred stroke along the outer lip contour rendered in real-time, hard-clipped to the lip fill region — crisp cutoff on the outward (skin) side, soft natural fade on the inward (lip) side (`applyLinerLips`, `tryon-lip.util.ts`)
+- [x] Wide, blurred stroke along the outer lip contour rendered in real-time, hard-clipped to the lip fill region — crisp cutoff on the outward (skin) side, soft natural fade on the inward (lip) side (`applyLinerLips`, `utils/tryon-utils/lip.ts`)
 - [x] Shade/variant picker functional
 - [x] Performance & cross-device QA
 
@@ -221,7 +221,7 @@ _Tracking model: face landmarks (lip contour ring). Depends on the shared face-l
 **Live**
 
 - [x] Camera capture + lip-landmark tracking wired
-- [x] Gloss-texture overlay rendered in real-time with its own dedicated alpha tuning (`TEXTURED_FINISH_TUNING.PLUMPER`) — deliberately shares GLOSS/SATIN/BALM's texture asset (`GLOSS_OR_SATIN_OR_BALM_OR_PLUMPER_TEXTURE_PATH_*`, see `tryon-lip.constants.ts`) rather than duplicating it, but stays independently swappable later since it's its own named field/tuning entry, not an alias. No geometric volume/distortion effect — not achievable with a canvas-2D color/texture overlay, out of scope
+- [x] Gloss-texture overlay rendered in real-time with its own dedicated alpha tuning (`TEXTURED_FINISH_TUNING.PLUMPER`) — deliberately shares GLOSS/SATIN/BALM's texture asset (`GLOSS_OR_SATIN_OR_BALM_OR_PLUMPER_TEXTURE_PATH_*`, see `constants/tryon-constants/lip.ts`) rather than duplicating it, but stays independently swappable later since it's its own named field/tuning entry, not an alias. No geometric volume/distortion effect — not achievable with a canvas-2D color/texture overlay, out of scope
 - [x] Shade/variant picker functional
 - [x] Performance & cross-device QA
 

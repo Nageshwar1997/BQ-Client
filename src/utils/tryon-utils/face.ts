@@ -9,7 +9,7 @@ import {
   MOUTH_OUTER_CONTOUR_INDICES,
   RIGHT_EYE_INDICES,
   RIGHT_EYEBROW_INDICES,
-} from '@/constants/tryon-face.constants';
+} from '@/constants/tryon-constants/face';
 
 // FACE-specific canvas rendering - fresh design (not ported from any reference
 // implementation, see docs/tryons/FACE.md), built directly on the same primitives LIP's own
@@ -22,10 +22,10 @@ import {
 // no real way to tell dark hair from dark *skin*, so any threshold that catches hair reliably
 // also risks misreading a deeper skin tone as hair near the face's edges - a fairness problem,
 // not just a tuning one. Instead, the upload/live instructions screen (see
-// `UPLOAD_INSTRUCTIONS`/`LIVE_INSTRUCTIONS` in tryon.constants.ts) tells the shopper up front to
-// keep hair off their face - the same "set the shopper up for a good frame" approach already
-// used there for lighting/framing/no-sunglasses, rather than trying to algorithmically fix a bad
-// frame after the fact.
+// `FACE_UPLOAD_INSTRUCTIONS`/`FACE_LIVE_INSTRUCTIONS` in constants/tryon-constants/face.ts)
+// tells the shopper up front to keep hair off their face - the same "set the shopper up for a
+// good frame" approach already used there for lighting/framing/no-sunglasses, rather than
+// trying to algorithmically fix a bad frame after the fact.
 
 interface TDimension {
   width: number;

@@ -95,9 +95,9 @@ export interface IShade {
 }
 
 // How much of a canvas's own box its actual rendered content occupies, horizontally, once CSS
-// `object-fit` has scaled it (see `getObjectFitContentRect` in tryon.util.ts) - lets UI drawn
-// *over* the canvas (the compare-slider divider, see `TryOnCompareSlider.tsx`) line up with the
-// actual rendered frame instead of the box's raw edges.
+// `object-fit` has scaled it (see `getObjectFitContentRect` in utils/tryon-utils/index.ts) -
+// lets UI drawn *over* the canvas (the compare-slider divider, see `TryOnCompareSlider.tsx`)
+// line up with the actual rendered frame instead of the box's raw edges.
 export interface IObjectFitContentRect {
   leftPercent: number;
   widthPercent: number;

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { TEXTURED_FINISH_TUNING } from './tryon-lip.util';
+import { TEXTURED_FINISH_TUNING } from './lip';
 
 // The `Record<'GLOSS'|'CRAYON'|'SHIMMER'|'OIL'|'METALLIC'|'PLUMPER', ITexturedFinishTuning>`
 // type already forces every one of those 6 finishes to have a complete entry at compile time -

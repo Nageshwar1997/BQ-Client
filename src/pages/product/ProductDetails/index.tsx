@@ -18,7 +18,7 @@ import { formatDate, formatINRCurrency, isNullOrUndefined } from '@/utils/common
 const ProductDetails = () => {
   const { pathParams } = usePathParams();
   const { data: product, isLoading, isError } = useGetDashboardProductBySlug(pathParams.slug ?? '');
-  const { queryParams, setParams,  } = useQueryParams();
+  const { queryParams, setParams } = useQueryParams();
   const [isTryOnOpen, setIsTryOnOpen] = useState(false);
 
   const variant = useMemo(() => {

@@ -1,6 +1,6 @@
 import { Icon } from '@iconify/react';
 
-import { TRYON_MODE_OPTIONS } from '@/constants/tryon.constants';
+import { TRYON_MODE_OPTIONS } from '@/constants/tryon-constants';
 
 interface ITryOnModeSelectProps {
   onSelect: (mode: 'live' | 'upload') => void;
