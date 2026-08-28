@@ -7,8 +7,19 @@ import type { TRunningMode } from '@/types/tryon-engine.type';
 // `ASM_CONSTS[code] is not a function`. Bump both together, deliberately.
 const MEDIAPIPE_TASKS_VISION_VERSION = '0.10.32';
 const MEDIAPIPE_WASM_BASE_URL = `https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@${MEDIAPIPE_TASKS_VISION_VERSION}/wasm`;
-const FACE_LANDMARKER_MODEL_URL =
-  'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task';
+
+// Self-hosted rather than fetched from Google's `storage.googleapis.com` (where this file
+// originally comes from - float16 face_landmarker.task, ~3.7MB) - that URL sends
+// `Cache-Control: max-age=3600`, just 1 hour, so any return visit past that re-downloads the
+// full model over the network. Same-origin static assets get this app's own (far longer) cache
+// policy instead, same as every other file in `public/` - no code-side caching logic needed for
+// that win. Also sidesteps relying on Google's CORS headers staying permissive, and drops one
+// extra DNS/TLS handshake to a third-party origin. Purely a hosting change - the file's bytes
+// are unmodified from the original download, and `FilesetResolver`/`FaceLandmarker` read it
+// exactly the same way regardless of where it came from. The WASM runtime above is NOT moved
+// here - jsDelivr already serves it `immutable, max-age=31536000` (1 year), so there's nothing
+// left to win there.
+const FACE_LANDMARKER_MODEL_URL = '/models/try-on/face_landmarker.task';
 
 const createLandmarker = async (
   canvas: HTMLCanvasElement,

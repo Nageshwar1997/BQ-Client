@@ -4,7 +4,9 @@
 // confused with `@/types/tryon.type`, which holds the product-taxonomy types
 // (TRY_ON_MAP category/subCategory) and is a temporary shim for that concern.
 
-export type TRunningMode = 'VIDEO' | 'IMAGE';
+import type { FaceDetectorOptions } from '@mediapipe/tasks-vision';
+
+export type TRunningMode = FaceDetectorOptions['runningMode'];
 
 export type ColorTuple = [r: number, g: number, b: number, a: number];
 
