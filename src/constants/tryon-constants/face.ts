@@ -77,7 +77,7 @@ export const LOCALIZED_BLOB_RADIUS_RATIO = 0.16;
 
 // Same shape/role as LIP's own `LIP_RANGE_BOUNDS` - the intensity slider's bounds, per category
 // since each category's finishes read differently at the same raw alpha.
-export const FACE_RANGE_BOUNDS = { min: 0.2, max: 0.8, default: 0.45 } as const;
+export const FACE_RANGE_BOUNDS = { min: 0.1, max: 0.3, default: 0.2 } as const;
 
 /* ================= INSTRUCTIONS =================
  * Shown before a shopper picks/takes a photo - see `getTryOnInstructions` in `./index` for why
