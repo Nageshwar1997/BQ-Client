@@ -4,7 +4,7 @@ import type {
   NormalizedLandmark,
 } from '@mediapipe/tasks-vision';
 
-import type { ColorTuple, IMakeupState, TRunningMode } from '@/types/tryon-engine.type';
+import type { ColorTuple, IMakeupState, TRunningMode } from '@/types/tryon-types';
 import {
   captureSnapShot,
   getFaceDetectionStatus,
@@ -71,7 +71,7 @@ export abstract class TryOnEngineBase<TState extends IMakeupState, TAssets = nul
     return this.state;
   }
 
-  // Flat aliases matching `ITryOnEngineBaseRef` (see `@/types/tryon-engine.types`) - the
+  // Flat aliases matching `ITryOnEngineBaseRef` (see `@/types/tryon-types`) - the
   // React wrapper's imperative ref is typed against that plain interface rather than this
   // class directly (see `withLiveCamera`/`withImageUpload`'s comments on why), so these exist
   // purely to give it something to point at.

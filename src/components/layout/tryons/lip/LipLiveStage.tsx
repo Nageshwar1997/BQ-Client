@@ -1,30 +1,30 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 
-import type { IFaceTryOnState } from '@/classes/tryon/categories/face';
-import { FaceLiveEngine } from '@/classes/tryon/categories/face';
-import type { ITryOnStageRef } from '@/types/tryon-engine.type';
+import type { ILipTryOnState } from '@/classes/tryon/categories/lip';
+import { LipLiveEngine } from '@/classes/tryon/categories/lip';
+import type { ITryOnStageRef } from '@/types/tryon-types';
 
-interface IFaceLiveStageProps {
-  initialState?: Partial<IFaceTryOnState>;
-  onStateChange: (state: IFaceTryOnState) => void;
+interface ILipLiveStageProps {
+  initialState?: Partial<ILipTryOnState>;
+  onStateChange: (state: ILipTryOnState) => void;
 }
 
-// Mirrors TryOnLiveStage.tsx exactly, just wired to FaceLiveEngine instead of LipLiveEngine -
-// TryOnLiveStage/TryOnUploadStage are LIP-specific components (hardcode `LipLiveEngine`, not
-// generic over an engine class), so FACE needs its own pair rather than reusing them as-is.
-// Deliberate, temporary duplication - worth generalizing those into a shared,
-// engine-class-as-prop component once a third category needs the same pair again (premature
-// abstraction off of two examples is as much a risk as too much duplication).
-const FaceLiveStage = forwardRef<ITryOnStageRef<IFaceTryOnState>, IFaceLiveStageProps>(
+// Just the camera + rendered canvas - no picker UI. `TryOnModal` drives shade/finish via the
+// forwarded ref (only the trimmed `ITryOnStageRef` surface - see LipTryOnStage.tsx) and
+// renders its own overlays (shade swatches, sidebar) around this.
+const LipLiveStage = forwardRef<ITryOnStageRef<ILipTryOnState>, ILipLiveStageProps>(
   ({ initialState, onStateChange }, ref) => {
     const canvas1Ref = useRef<HTMLCanvasElement>(null);
     const canvas2Ref = useRef<HTMLCanvasElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
-    const engineRef = useRef<FaceLiveEngine | null>(null);
+    const engineRef = useRef<LipLiveEngine | null>(null);
 
     useImperativeHandle(
       ref,
       () => ({
+        // Every method reads `engineRef.current` fresh on each call (not captured once here) -
+        // the engine instance itself is only created later, in the effect below, so this handle
+        // has to stay lazy about it rather than closing over a snapshot.
         setMakeupState: (state) => engineRef.current?.setMakeupState(state),
         getState: () => engineRef.current?.getState(),
         takeSnapshot: () => engineRef.current?.takeSnapshot() ?? null,
@@ -41,7 +41,7 @@ const FaceLiveStage = forwardRef<ITryOnStageRef<IFaceTryOnState>, IFaceLiveStage
       const video = videoRef.current;
       if (!canvas1 || !canvas2 || !video) return;
 
-      const engine = new FaceLiveEngine(canvas1, canvas2, initialState);
+      const engine = new LipLiveEngine(canvas1, canvas2, initialState);
       engineRef.current = engine;
 
       const unsubscribe = engine.onChange(onStateChange);
@@ -56,6 +56,8 @@ const FaceLiveStage = forwardRef<ITryOnStageRef<IFaceTryOnState>, IFaceLiveStage
         engine.destroy();
         engineRef.current = null;
       };
+      // Set up once per mount - `TryOnModal` remounts this component (via `key` or conditional
+      // rendering) rather than expecting it to react to prop changes mid-life.
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -69,12 +71,13 @@ const FaceLiveStage = forwardRef<ITryOnStageRef<IFaceTryOnState>, IFaceLiveStage
           muted
           className="absolute inset-0 z-0 size-full scale-x-[-1] object-cover"
         />
+        {/* Opaque - fully covers the raw video above with the mirrored, makeup-composited frame */}
         <canvas ref={canvas2Ref} className="absolute inset-0 z-1 size-full! object-cover" />
       </div>
     );
   },
 );
 
-FaceLiveStage.displayName = 'FaceLiveStage';
+LipLiveStage.displayName = 'LipLiveStage';
 
-export default FaceLiveStage;
+export default LipLiveStage;

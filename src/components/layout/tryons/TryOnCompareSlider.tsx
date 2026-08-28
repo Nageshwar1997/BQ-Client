@@ -1,7 +1,7 @@
 import { Icon } from '@iconify/react';
 import { type PointerEvent, useEffect, useRef, useState } from 'react';
 
-import type { IObjectFitContentRect } from '@/types/tryon-engine.type';
+import type { IObjectFitContentRect } from '@/types/tryon-types';
 import { getObjectFitContentRect } from '@/utils/tryon-utils';
 
 interface ITryOnCompareSliderProps {

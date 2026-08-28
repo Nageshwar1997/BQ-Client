@@ -1,6 +1,6 @@
 import { FaceLandmarker, FilesetResolver } from '@mediapipe/tasks-vision';
 
-import type { TRunningMode } from '@/types/tryon-engine.type';
+import type { TRunningMode } from '@/types/tryon-types';
 
 // Pinned to match the CDN WASM version below - an unversioned WASM URL can let the browser
 // cache mismatched JS/WASM assets, which fails at runtime with errors like

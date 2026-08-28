@@ -1,4 +1,4 @@
-import type { IMakeupState, ITryOnUploadEngineRef, TRunningMode } from '@/types/tryon-engine.type';
+import type { IMakeupState, ITryOnUploadEngineRef, TRunningMode } from '@/types/tryon-types';
 import { loadImage } from '@/utils/tryon-utils';
 
 import type { TryOnEngineBase } from './TryOnEngineBase';

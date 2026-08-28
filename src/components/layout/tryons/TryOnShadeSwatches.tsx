@@ -1,6 +1,6 @@
 import { Icon } from '@iconify/react';
 
-import type { IShade } from '@/types/tryon-engine.type';
+import type { IShade } from '@/types/tryon-types';
 
 import ScrollableGradientContainer from '../containers/ScrollableGradientContainer';
 

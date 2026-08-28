@@ -1,10 +1,10 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 
 import type { ILipTryOnState } from '@/classes/tryon/categories/lip';
-import type { ITryOnStageRef } from '@/types/tryon-engine.type';
+import type { ITryOnStageRef } from '@/types/tryon-types';
 
-import TryOnLiveStage from './TryOnLiveStage';
-import TryOnUploadStage from './TryOnUploadStage';
+import LipLiveStage from './LipLiveStage';
+import LipUploadStage from './LipUploadStage';
 
 interface ILipTryOnStageProps {
   mode: 'live' | 'upload';
@@ -13,7 +13,7 @@ interface ILipTryOnStageProps {
   onStateChange: (state: ILipTryOnState) => void;
 }
 
-// Mounts whichever of TryOnLiveStage/TryOnUploadStage matches `mode`, and forwards its ref
+// Mounts whichever of LipLiveStage/LipUploadStage matches `mode`, and forwards its ref
 // straight through - both expose the identical `ITryOnStageRef` shape, so the parent
 // (`TryOnModal`) never needs to know which mode is active to set a shade or take a snapshot.
 // Mirrors the reference implementation's per-category `<Category>TryOn.tsx` (e.g.
@@ -43,9 +43,9 @@ const LipTryOnStage = forwardRef<ITryOnStageRef<ILipTryOnState>, ILipTryOnStageP
     );
 
     return mode === 'live' ? (
-      <TryOnLiveStage ref={liveRef} initialState={initialState} onStateChange={onStateChange} />
+      <LipLiveStage ref={liveRef} initialState={initialState} onStateChange={onStateChange} />
     ) : (
-      <TryOnUploadStage
+      <LipUploadStage
         ref={uploadRef}
         imageUrl={uploadedImageUrl}
         initialState={initialState}

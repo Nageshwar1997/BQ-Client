@@ -12,7 +12,7 @@ import usePathParams from '@/hooks/usePathParams';
 import useQueryParams from '@/hooks/useQueryParams';
 import { useGetDashboardProductBySlug } from '@/services/product-service/product.service.query';
 import type { TMediaOption } from '@/types/component.type';
-import type { IShade } from '@/types/tryon-engine.type';
+import type { IShade } from '@/types/tryon-types';
 import { formatDate, formatINRCurrency, isNullOrUndefined } from '@/utils/common.util';
 
 const ProductDetails = () => {

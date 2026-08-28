@@ -16,12 +16,12 @@ import type {
   IShade,
   ITryOnStageRef,
   TFaceDetectionStatus,
-} from '@/types/tryon-engine.type';
+} from '@/types/tryon-types';
 
 import { InputError } from '@/components/ui/inputs/children';
 import BottomButtons from './BottomButtons';
-import FaceTryOnStage from './FaceTryOnStage';
-import LipTryOnStage from './LipTryOnStage';
+import FaceTryOnStage from './face/FaceTryOnStage';
+import LipTryOnStage from './lip/LipTryOnStage';
 import TryOnBottomSheet from './TryOnBottomSheet';
 import TryOnCompareSlider from './TryOnCompareSlider';
 import TryOnInstructions from './TryOnInstructions';

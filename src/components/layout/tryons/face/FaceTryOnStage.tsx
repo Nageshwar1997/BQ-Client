@@ -1,7 +1,7 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 
 import type { IFaceTryOnState } from '@/classes/tryon/categories/face';
-import type { ITryOnStageRef } from '@/types/tryon-engine.type';
+import type { ITryOnStageRef } from '@/types/tryon-types';
 
 import FaceLiveStage from './FaceLiveStage';
 import FaceUploadStage from './FaceUploadStage';

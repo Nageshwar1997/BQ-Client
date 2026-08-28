@@ -1,10 +1,6 @@
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
-import type {
-  ColorTuple,
-  IObjectFitContentRect,
-  TFaceDetectionStatus,
-} from '@/types/tryon-engine.type';
+import type { ColorTuple, IObjectFitContentRect, TFaceDetectionStatus } from '@/types/tryon-types';
 
 // Category-agnostic helpers for the Try-On rendering engine (`@/classes/tryon`) - canvas
 // sizing, snapshot capture, color parsing, abort-aware image loading. Ported from the
@@ -115,8 +111,9 @@ const MAX_RENDER_DEVICE_PIXEL_RATIO = 2;
 
 // Sizes both render canvases to the source's native resolution, then scales their CSS display
 // size to fit within the parent container on *both* axes - matching whichever `object-fit` the
-// canvas is actually set to (`contain` for Upload, `cover` for Live - see TryOnUploadStage.tsx/
-// TryOnLiveStage.tsx). This used to only scale to fill the parent's height, uncapped on width;
+// canvas is actually set to (`contain` for Upload, `cover` for Live - see
+// components/layout/tryons/lip/LipUploadStage.tsx/LipLiveStage.tsx, or their FACE equivalents).
+// This used to only scale to fill the parent's height, uncapped on width;
 // on a narrow/tall container (a mobile canvas panel) with a landscape-aspect photo, that could
 // size the canvas wider than its box - `overflow-hidden` on the panel then silently cropped the
 // sides instead of showing the whole photo, which is exactly wrong for Upload's intended

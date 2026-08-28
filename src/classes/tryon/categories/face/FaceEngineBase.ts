@@ -1,20 +1,11 @@
-// eslint-disable-next-line simple-import-sort/imports
-import type { TTryOnSubCategory } from '@beautinique/frontend-types';
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
 import { FACE_RANGE_BOUNDS } from '@/constants/tryon-constants/face';
-import type { ColorTuple, IMakeupState } from '@/types/tryon-engine.type';
+import type { ColorTuple } from '@/types/tryon-types';
+import type { IFaceAssets, IFaceTryOnState, TFaceFinish } from '@/types/tryon-types/face';
 import { applyFoundationFace } from '@/utils/tryon-utils/face';
 
 import { TryOnEngineBase } from '../../TryOnEngineBase';
-
-export type TFaceFinish = TTryOnSubCategory<'FACE'>;
-export type IFaceTryOnState = IMakeupState<TFaceFinish>;
-
-// No textures yet - every finish built so far is a pure color/blend effect, no asset needed.
-// Follows LIP's own precedent (MATTE/STAIN/LINER need none either) - add fields here only once
-// a finish genuinely needs one, same as LIP's `ILipAssets` grew incrementally.
-export type IFaceAssets = null;
 
 // Finishes that don't have dedicated rendering yet - same landing-spot pattern as LIP's
 // `UNSUPPORTED_LIP_FINISHES` (see LipEngineBase.ts), falls back to FOUNDATION (the most basic

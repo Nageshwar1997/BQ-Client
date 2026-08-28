@@ -1,23 +1,24 @@
 import { Icon } from '@iconify/react';
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 
-import type { IFaceTryOnState } from '@/classes/tryon/categories/face';
-import { FaceUploadEngine } from '@/classes/tryon/categories/face';
-import type { ITryOnStageRef } from '@/types/tryon-engine.type';
+import type { ILipTryOnState } from '@/classes/tryon/categories/lip';
+import { LipUploadEngine } from '@/classes/tryon/categories/lip';
+import type { ITryOnStageRef } from '@/types/tryon-types';
 
-interface IFaceUploadStageProps {
+interface ILipUploadStageProps {
   imageUrl: string | null;
-  initialState?: Partial<IFaceTryOnState>;
-  onStateChange: (state: IFaceTryOnState) => void;
+  initialState?: Partial<ILipTryOnState>;
+  onStateChange: (state: ILipTryOnState) => void;
 }
 
-// Mirrors TryOnUploadStage.tsx exactly, just wired to FaceUploadEngine - see FaceLiveStage.tsx's
-// comment for why this duplicates rather than reuses the LIP-specific stage components.
-const FaceUploadStage = forwardRef<ITryOnStageRef<IFaceTryOnState>, IFaceUploadStageProps>(
+// Just the rendered canvas - no file input, no picker UI. `imageUrl` comes from `TryOnModal`
+// (either the sidebar's upload button or a clicked model thumbnail feed the same prop), and
+// `TryOnModal` drives shade/finish via the forwarded ref (see LipTryOnStage.tsx).
+const LipUploadStage = forwardRef<ITryOnStageRef<ILipTryOnState>, ILipUploadStageProps>(
   ({ imageUrl, initialState, onStateChange }, ref) => {
     const canvas1Ref = useRef<HTMLCanvasElement>(null);
     const canvas2Ref = useRef<HTMLCanvasElement>(null);
-    const engineRef = useRef<FaceUploadEngine | null>(null);
+    const engineRef = useRef<LipUploadEngine | null>(null);
 
     useImperativeHandle(
       ref,
@@ -25,6 +26,8 @@ const FaceUploadStage = forwardRef<ITryOnStageRef<IFaceTryOnState>, IFaceUploadS
         setMakeupState: (state) => engineRef.current?.setMakeupState(state),
         getState: () => engineRef.current?.getState(),
         takeSnapshot: () => engineRef.current?.takeSnapshot() ?? null,
+        // Upload mode has no camera - always null, matches LipLiveStage's shape so
+        // LipTryOnStage can treat both refs identically.
         getStream: () => null,
         setComparePosition: (value) => engineRef.current?.setComparePosition(value),
         getCanvas: () => engineRef.current?.getCanvas() ?? null,
@@ -37,7 +40,7 @@ const FaceUploadStage = forwardRef<ITryOnStageRef<IFaceTryOnState>, IFaceUploadS
       const canvas2 = canvas2Ref.current;
       if (!canvas1 || !canvas2) return;
 
-      const engine = new FaceUploadEngine(canvas1, canvas2, initialState);
+      const engine = new LipUploadEngine(canvas1, canvas2, initialState);
       engineRef.current = engine;
 
       const unsubscribe = engine.onChange(onStateChange);
@@ -50,6 +53,7 @@ const FaceUploadStage = forwardRef<ITryOnStageRef<IFaceTryOnState>, IFaceUploadS
         engine.destroy();
         engineRef.current = null;
       };
+      // Same reasoning as LipLiveStage.tsx's identical effect.
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -81,6 +85,6 @@ const FaceUploadStage = forwardRef<ITryOnStageRef<IFaceTryOnState>, IFaceUploadS
   },
 );
 
-FaceUploadStage.displayName = 'FaceUploadStage';
+LipUploadStage.displayName = 'LipUploadStage';
 
-export default FaceUploadStage;
+export default LipUploadStage;

@@ -1,5 +1,3 @@
-// eslint-disable-next-line simple-import-sort/imports
-import type { TTryOnSubCategory } from '@beautinique/frontend-types';
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
 import {
@@ -13,7 +11,8 @@ import {
   OIL_TEXTURE_PATH_UPPER,
   SHIMMER_TEXTURE_PATH,
 } from '@/constants/tryon-constants/lip';
-import type { ColorTuple, IMakeupState } from '@/types/tryon-engine.type';
+import type { ColorTuple } from '@/types/tryon-types';
+import type { ILipAssets, ILipTryOnState, TLipFinish } from '@/types/tryon-types/lip';
 import { loadImage } from '@/utils/tryon-utils';
 import {
   applyBalmLips,
@@ -30,26 +29,6 @@ import {
 } from '@/utils/tryon-utils/lip';
 
 import { TryOnEngineBase } from '../../TryOnEngineBase';
-
-export type TLipFinish = TTryOnSubCategory<'LIP'>;
-export type ILipTryOnState = IMakeupState<TLipFinish>;
-
-export interface ILipAssets {
-  glossUpper: HTMLImageElement;
-  glossLower: HTMLImageElement;
-  crayon: HTMLImageElement;
-  shimmer: HTMLImageElement;
-  oilUpper: HTMLImageElement;
-  oilLower: HTMLImageElement;
-  metallicUpper: HTMLImageElement;
-  metallicLower: HTMLImageElement;
-  plumperUpper: HTMLImageElement;
-  plumperLower: HTMLImageElement;
-  satinUpper: HTMLImageElement;
-  satinLower: HTMLImageElement;
-  balmUpper: HTMLImageElement;
-  balmLower: HTMLImageElement;
-}
 
 // Finishes that don't have dedicated rendering yet (need new texture art or new stroke/
 // dilation logic that doesn't exist in the reference this was ported from) - see
