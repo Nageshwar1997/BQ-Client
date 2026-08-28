@@ -7,7 +7,7 @@ Virtual try-on ko 6 main categories me build karna hai — **LIP, EYE, HAIR, FAC
 
 Per-category detail aur checklist alag file me hai. Ye file sirf overall status aur un cheezon ke liye hai jo **sab categories ke liye common/shared** hai (ek baar ban gayi to sabko fayda).
 
-> Status snapshot: LIP ka real engine ban gaya hai (MediaPipe FaceLandmarker + canvas rendering) aur end-to-end verify ho chuka hai — Live aur Upload dono modes me sabhi 11 subcategories (MATTE/STAIN/SATIN/GLOSS/BALM/SHIMMER/CRAYON/OIL/METALLIC/PLUMPER/LINER) actually render karte hain, shade+finish picker se driven. Ab LIP ko 10/10 tak polish karne ka plan hai — [LIP-10-10-PLAN.md](./LIP-10-10-PLAN.md). `ProductDetails` page pe "Try-On" button wired hai — [ProductDetails/index.tsx:324](../../src/pages/product/ProductDetails/index.tsx#L324). Engine architecture class-based hai (reference `src/commverse` se adapt kiya, dekh [LIP.md](./LIP.md)) — per-category `EngineBase` + do generic mixins (`withLiveCamera`/`withImageUpload`) jo sabhi categories reuse karenge. Category/subcategory taxonomy abhi `src/constants/temp.constants.ts` se aa raha hai (extended `TRY_ON_MAP`), `@beautinique/shared-constants` package baad me update hoga.
+> Status snapshot: **LIP category ab poori tarah complete hai (10/10, [LIP-10-10-PLAN.md](./LIP-10-10-PLAN.md) done)** — real engine ban gaya (MediaPipe FaceLandmarker + canvas rendering), Live aur Upload dono modes me sabhi 11 subcategories (MATTE/STAIN/SATIN/GLOSS/BALM/SHIMMER/CRAYON/OIL/METALLIC/PLUMPER/LINER) actually render karte hain, shade+finish picker se driven, aur real-device QA (Android/iOS/Safari) bhi ho chuki hai. `ProductDetails` page pe "Try-On" button wired hai — [ProductDetails/index.tsx:324](../../src/pages/product/ProductDetails/index.tsx#L324). Engine architecture class-based hai (reference `src/commverse` se adapt kiya, dekh [LIP.md](./LIP.md)) — per-category `EngineBase` + do generic mixins (`withLiveCamera`/`withImageUpload`) jo sabhi categories reuse karenge. Category/subcategory taxonomy abhi `src/constants/temp.constants.ts` se aa raha hai (extended `TRY_ON_MAP`), `@beautinique/shared-constants` package baad me update hoga.
 
 ## Shared prerequisites (ye pehle banao — sabko block karte hain)
 
@@ -25,17 +25,17 @@ Inme se koi bhi cheez kisi ek category ke andar dobara nahi likhni — ek baar y
 
 | Category    | Subcategories | Progress         | File                 |
 | ----------- | ------------- | ---------------- | -------------------- |
-| LIP         | 11            | 75% (66/88)      | [LIP.md](./LIP.md)   |
+| LIP         | 11            | 100% (88/88) ✅  | [LIP.md](./LIP.md)   |
 | EYE         | 7             | 0% (0/56)        | [EYE.md](./EYE.md)   |
 | HAIR        | 4             | 0% (0/32)        | [HAIR.md](./HAIR.md) |
 | FACE        | 8             | 0% (0/64)        | [FACE.md](./FACE.md) |
 | NAIL        | 5             | 0% (0/40)        | [NAIL.md](./NAIL.md) |
 | SKIN        | 8             | 0% (0/64)        | [SKIN.md](./SKIN.md) |
-| **Overall** | **43**        | **19% (66/344)** | —                    |
+| **Overall** | **43**        | **26% (88/344)** | —                    |
 
 ## Suggested build order
 
-1. **LIP** — sabse simple region (single landmark ring), high product volume, sabse zyada learning yahi milegi baaki categories ke liye
+1. **LIP** ✅ done — sabse simple region (single landmark ring), high product volume, sabse zyada learning yahi milegi baaki categories ke liye
 2. **FACE** — same face-landmark engine reuse, thoda bada region set
 3. **EYE** — precision-heavy (thin lines, lash detail), zyada QA chahiye
 4. **HAIR** — segmentation-based (landmark nahi, poore strand ka mask), alag technique
