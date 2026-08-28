@@ -1,18 +1,27 @@
 // eslint-disable-next-line simple-import-sort/imports
 import { Icon } from '@iconify/react';
+import type { Ref } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
+import type { IFaceTryOnState } from '@/classes/tryon/categories/face';
 import type { ILipTryOnState } from '@/classes/tryon/categories/lip';
 import { ModalWrapper } from '@/components/layout/modals/ModalWrapper';
+import { FACE_RANGE_BOUNDS } from '@/constants/tryon-face.constants';
 import { LIP_RANGE_BOUNDS } from '@/constants/tryon-lip.constants';
 import { LIVE_INSTRUCTIONS, UPLOAD_INSTRUCTIONS } from '@/constants/tryon.constants';
 import useDebounce from '@/hooks/useDebounce';
 import useTryOnUpload from '@/hooks/useTryOnUpload';
-import type { IShade, ITryOnStageRef, TFaceDetectionStatus } from '@/types/tryon-engine.type';
+import type {
+  IMakeupState,
+  IShade,
+  ITryOnStageRef,
+  TFaceDetectionStatus,
+} from '@/types/tryon-engine.type';
 import type { TTryOnSelection } from '@/types/tryon.type';
 
 import { InputError } from '@/components/ui/inputs/children';
 import BottomButtons from './BottomButtons';
+import FaceTryOnStage from './FaceTryOnStage';
 import LipTryOnStage from './LipTryOnStage';
 import TryOnBottomSheet from './TryOnBottomSheet';
 import TryOnCompareSlider from './TryOnCompareSlider';
@@ -41,7 +50,28 @@ interface ITryOnFlowState {
   step: 'select' | 'instructions' | 'tryon';
   mode: 'live' | 'upload';
   uploadedImageUrl: string | null;
-  engineState: ILipTryOnState | null;
+  engineState: ILipTryOnState | IFaceTryOnState | null;
+}
+
+// `stageRef` below has to hold whichever category's stage is currently mounted - not the full
+// `ITryOnStageRef<ILipTryOnState> | ITryOnStageRef<IFaceTryOnState>` union, though. That union
+// fails wherever a `<XTryOnStage>` component's own single-category ref prop needs it:
+// `setMakeupState`'s `type` field is contravariant per category (LIP's finishes aren't
+// assignable where FACE's are expected, and vice versa), so a value valid for a *union* target
+// isn't guaranteed valid for either concrete one alone. This narrower interface sidesteps that -
+// it only declares what this file actually calls, with `setMakeupState` narrowed to exactly the
+// fields ever passed here (`color`/`range`, never `type`). Every category's full
+// `ITryOnStageRef<TState>` is still structurally assignable *to* this narrower shape (accepting
+// `Partial<TState>` already covers accepting a plain `{color, range}`), so passing this as
+// either stage's `ref` still type-checks correctly - only the reverse (using the narrow type
+// somewhere a full one is required) wouldn't.
+interface ITryOnStageColorRangeRef {
+  setMakeupState: (state: { color?: string | null; range?: number }) => void;
+  getState: () => IMakeupState;
+  takeSnapshot: () => string | null;
+  getStream: () => MediaStream | null;
+  setComparePosition: (value: number | null) => void;
+  getCanvas: () => HTMLCanvasElement;
 }
 
 const INITIAL_FLOW_STATE: ITryOnFlowState = {
@@ -89,7 +119,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
     TFaceDetectionStatus | undefined
   >(undefined);
 
-  const stageRef = useRef<ITryOnStageRef<ILipTryOnState>>(null);
+  const stageRef = useRef<ITryOnStageColorRangeRef>(null);
   const cameraVideoRef = useRef<HTMLVideoElement>(null);
 
   const { previewUrl, error: uploadError, setFile, reset: resetUpload } = useTryOnUpload();
@@ -309,6 +339,12 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
       : 'Processing photo...';
   const notReadyDescription = notReadyError ?? 'This should only take a moment.';
 
+  // Only meaningful inside the supported-category branch below, but declared here (not
+  // further down) to stay next to the other pre-render derived values. Each category tunes its
+  // own intensity-slider bounds (see FACE_RANGE_BOUNDS/LIP_RANGE_BOUNDS's own comments) - same
+  // raw alpha reads differently depending on what's being blended.
+  const rangeBounds = tryOn?.category === 'FACE' ? FACE_RANGE_BOUNDS : LIP_RANGE_BOUNDS;
+
   return (
     <ModalWrapper
       isOpen={isOpen}
@@ -327,8 +363,11 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
       containerProps={{ className: 'p-0! lg:p-8!' }}
       className="h-full max-h-full! w-full! max-w-full! min-w-[80dvw]! rounded-none! border-0! lg:max-h-[90dvh]! lg:w-auto! lg:rounded-xl! lg:border!"
     >
-      {/* Only LIP has a rendering engine built so far - see docs/tryons/README.md. */}
-      {tryOn?.category !== 'LIP' ? (
+      {/* Only LIP and FACE have a rendering engine built so far - see docs/tryons/README.md.
+          The discriminant check stays inline (not a separately-computed boolean) so TS keeps
+          narrowing `tryOn` to `{category: 'LIP' | 'FACE', ...}` for every access inside the
+          branch below - a plain boolean variable would lose that link. */}
+      {!tryOn || (tryOn.category !== 'LIP' && tryOn.category !== 'FACE') ? (
         <div className="flex flex-col items-center gap-2 p-6 text-center">
           <Icon icon="solar:hourglass-linear" className="text-primary/40 size-8" />
           <p className="text-tertiary text-sm">
@@ -361,23 +400,50 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                 />
               ) : (
                 <>
-                  <LipTryOnStage
-                    key={retryKey}
-                    ref={stageRef}
-                    mode={flow.mode}
-                    uploadedImageUrl={flow.uploadedImageUrl}
-                    initialState={{
-                      type: tryOn.subCategory,
-                      color: flow.engineState?.color ?? null,
-                      // Persists the intensity slider's position across Live<->Upload toggles too,
-                      // same reasoning as `color` above - falls back to the engine's own default
-                      // rather than `undefined` (which would win the spread in getInitialState()).
-                      range: flow.engineState?.range ?? LIP_RANGE_BOUNDS.default,
-                    }}
-                    onStateChange={(engineState) => {
-                      setFlow((prev) => ({ ...prev, engineState }));
-                    }}
-                  />
+                  {tryOn.category === 'LIP' ? (
+                    <LipTryOnStage
+                      key={retryKey}
+                      // `stageRef` is deliberately typed narrower than `ITryOnStageRef<TState>`
+                      // (see its own comment) - TS can't verify a shared ref object is safe
+                      // across two different categories' full ref shapes (its `RefObject.current`
+                      // is mutable, so it wants exact bidirectional compatibility, which two
+                      // *different* concrete `TState`s structurally can't give it), even though
+                      // it genuinely is: every method this file actually calls through it stays
+                      // within the narrower shape, and whichever stage is mounted still assigns
+                      // its own full, correct ref object into `.current` regardless of this cast.
+                      ref={stageRef as Ref<ITryOnStageRef<ILipTryOnState>>}
+                      mode={flow.mode}
+                      uploadedImageUrl={flow.uploadedImageUrl}
+                      initialState={{
+                        type: tryOn.subCategory,
+                        color: flow.engineState?.color ?? null,
+                        // Persists the intensity slider's position across Live<->Upload toggles
+                        // too, same reasoning as `color` above - falls back to the engine's own
+                        // default rather than `undefined` (which would win the spread in
+                        // getInitialState()).
+                        range: flow.engineState?.range ?? rangeBounds.default,
+                      }}
+                      onStateChange={(engineState) => {
+                        setFlow((prev) => ({ ...prev, engineState }));
+                      }}
+                    />
+                  ) : (
+                    <FaceTryOnStage
+                      key={retryKey}
+                      // See the matching cast comment on <LipTryOnStage> above.
+                      ref={stageRef as Ref<ITryOnStageRef<IFaceTryOnState>>}
+                      mode={flow.mode}
+                      uploadedImageUrl={flow.uploadedImageUrl}
+                      initialState={{
+                        type: tryOn.subCategory,
+                        color: flow.engineState?.color ?? null,
+                        range: flow.engineState?.range ?? rangeBounds.default,
+                      }}
+                      onStateChange={(engineState) => {
+                        setFlow((prev) => ({ ...prev, engineState }));
+                      }}
+                    />
+                  )}
 
                   {/* Not-ready-yet overlay - each mode has its own readiness signal (camera
                     permission vs. image processing), rolled into `isTryOnReady` since only the
@@ -463,8 +529,8 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                     {flow.engineState?.color && (
                       <TryOnRangeSlider
                         value={flow.engineState.range}
-                        min={LIP_RANGE_BOUNDS.min}
-                        max={LIP_RANGE_BOUNDS.max}
+                        min={rangeBounds.min}
+                        max={rangeBounds.max}
                         color={flow.engineState.color}
                         disabled={!canInteract}
                         onChange={(value) => {
