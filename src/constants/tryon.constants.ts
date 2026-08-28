@@ -26,7 +26,7 @@ export const UPLOAD_INSTRUCTIONS: ITryOnInstruction[] = [
   { icon: 'solar:radial-blur-linear', text: 'Sharp and in focus, not blurry' },
   {
     icon: 'solar:user-rounded-linear',
-    text: 'Face fully visible and looking straight at the camera',
+    text: 'Face fully visible, facing the camera directly - not turned to the side',
   },
   {
     icon: 'solar:glasses-linear',
@@ -41,7 +41,10 @@ export const UPLOAD_INSTRUCTIONS: ITryOnInstruction[] = [
 export const LIVE_INSTRUCTIONS: ITryOnInstruction[] = [
   { icon: 'solar:sun-2-linear', text: 'Find good, even lighting - avoid strong backlight' },
   { icon: 'solar:user-rounded-linear', text: 'Keep your face centered and clearly visible' },
-  { icon: 'solar:videocamera-record-linear', text: 'Hold still and look straight at the camera' },
+  {
+    icon: 'solar:videocamera-record-linear',
+    text: 'Hold still, facing the camera directly - not turned to the side',
+  },
   {
     icon: 'solar:glasses-linear',
     text: 'Remove sunglasses, masks, or anything covering your face',
