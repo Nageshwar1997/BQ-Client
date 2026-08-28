@@ -260,7 +260,7 @@ export abstract class TryOnEngineBase<TState extends IMakeupState, TAssets = nul
     const size = { width, height };
     const rgb = this.cachedRGBA;
     const applyMakeup = () => {
-      this.applyEffect(face, ctx, size, rgb, this.state, this.assets, drawSource);
+      this.applyEffect(face, ctx, size, rgb, this.state, this.assets);
     };
 
     // ===== NORMAL MODE (NO SPLIT) =====
@@ -367,11 +367,5 @@ export abstract class TryOnEngineBase<TState extends IMakeupState, TAssets = nul
     rgb: ColorTuple,
     state: TState,
     assets: TAssets | null,
-    // The raw, unmirrored video/image frame - only FACE's full-face finishes read this so far
-    // (to sample real skin-vs-hair color under the landmark region, see tryon-face.util.ts's
-    // skin mask), LIP's own `applyEffect` implementations just don't declare this last
-    // parameter at all (valid - JS/TS both allow an override with fewer params than the
-    // abstract signature, the extra call-time argument is simply unused).
-    drawSource: HTMLVideoElement | HTMLImageElement,
   ): void;
 }

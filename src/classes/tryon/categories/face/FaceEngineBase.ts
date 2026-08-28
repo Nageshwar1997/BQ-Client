@@ -60,7 +60,6 @@ export abstract class FaceEngineBase extends TryOnEngineBase<IFaceTryOnState> {
     rgb: ColorTuple,
     state: IFaceTryOnState,
     _assets: IFaceAssets,
-    drawSource: HTMLVideoElement | HTMLImageElement,
   ): void {
     if (!state.type) return;
 
@@ -72,13 +71,13 @@ export abstract class FaceEngineBase extends TryOnEngineBase<IFaceTryOnState> {
       console.warn(
         `FACE finish "${state.type}" doesn't have dedicated rendering yet - falling back to FOUNDATION.`,
       );
-      applyFoundationFace(face, ctx, color, size, alpha, drawSource);
+      applyFoundationFace(face, ctx, color, size, alpha);
       return;
     }
 
     switch (state.type) {
       case 'FOUNDATION':
-        applyFoundationFace(face, ctx, color, size, alpha, drawSource);
+        applyFoundationFace(face, ctx, color, size, alpha);
         return;
     }
   }

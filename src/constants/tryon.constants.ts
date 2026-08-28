@@ -32,6 +32,10 @@ export const UPLOAD_INSTRUCTIONS: ITryOnInstruction[] = [
     icon: 'solar:glasses-linear',
     text: 'No sunglasses, masks, or heavy filters covering your face',
   },
+  {
+    icon: 'solar:face-scan-circle-linear',
+    text: 'Hair pulled back, away from your forehead and face',
+  },
 ];
 
 export const LIVE_INSTRUCTIONS: ITryOnInstruction[] = [
@@ -41,6 +45,10 @@ export const LIVE_INSTRUCTIONS: ITryOnInstruction[] = [
   {
     icon: 'solar:glasses-linear',
     text: 'Remove sunglasses, masks, or anything covering your face',
+  },
+  {
+    icon: 'solar:face-scan-circle-linear',
+    text: 'Pull hair back, away from your forehead and face',
   },
 ];
 
