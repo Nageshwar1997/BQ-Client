@@ -1,12 +1,15 @@
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
 import {
+  CHEEKBONE_LEFT_INDEX,
+  CHEEKBONE_RIGHT_INDEX,
   FACE_OVAL_INDICES,
   FOREHEAD_EXTENSION_RATIO,
   FOREHEAD_EXTENSION_TAPER_RATIO,
   LEFT_EYE_INDICES,
   LEFT_EYEBROW_INDICES,
   MOUTH_OUTER_CONTOUR_INDICES,
+  NOSE_TIP_INDEX,
   RIGHT_EYE_INDICES,
   RIGHT_EYEBROW_INDICES,
 } from '@/constants/tryon-constants/face';
@@ -93,6 +96,48 @@ const applyForeheadExtension = (points: IPoint[]): IPoint[] => {
     const falloff = 1 - distanceFromTop / taperBand;
     return { x: point.x, y: point.y - extension * falloff };
   });
+};
+
+/* ================= POSE CHECK ================================================================
+ * A head turned too far to one side is a hard case for every full-face finish here: the clip
+ * region is built entirely from 2D landmark positions with no real notion of depth/occlusion
+ * (see `eraseExcludedFeatures`'s own comment on the self-intersection bug a turned head already
+ * exposed once, and `applyFoundationFace`'s history on the same root cause painting past the
+ * visible nose). Fully solving that would need real 3D pose awareness - this instead catches the
+ * clearly-too-far cases up front and asks for a better frame, the same "set the shopper up
+ * right" approach `FACE_UPLOAD_INSTRUCTIONS`/`FACE_LIVE_INSTRUCTIONS` (constants/
+ * tryon-constants/face.ts) already take for lighting/hair, rather than trying to render through
+ * an angle this approach was never going to handle well.
+ */
+
+// How symmetric the two side-to-nose distances have to stay before a head reads as "turned too
+// far" - 1 is perfectly frontal (both sides equidistant from the nose), 0 is a full profile (one
+// side has collapsed to the nose itself). Picked to allow a real, natural amount of turn (a
+// shopper glancing slightly to the side, or a head that isn't perfectly square to the camera)
+// without flagging it - only meaningfully lopsided readings trip this.
+const FACE_TURN_SYMMETRY_THRESHOLD = 0.5;
+
+// Purely landmark-position based (no pixel/color analysis, same reasoning as
+// `getFaceDetectionStatus` in tryon-utils/index.ts) - compares how far the nose tip sits from
+// each cheekbone horizontally. A frontal face keeps these two distances close to equal; turning
+// the head (yaw) foreshortens the far side toward the nose while the near side stays roughly put,
+// skewing the ratio well before the landmark-oval rendering itself visibly breaks down. Doesn't
+// need to know which cheekbone is anatomically left/right - only the ratio between the two
+// matters, so `CHEEKBONE_LEFT_INDEX`/`CHEEKBONE_RIGHT_INDEX`'s own camera-vs-anatomical labeling
+// is irrelevant here.
+export const isFaceTurnedTooMuch = (face: NormalizedLandmark[]): boolean => {
+  const nose = face[NOSE_TIP_INDEX];
+  const leftCheek = face[CHEEKBONE_LEFT_INDEX];
+  const rightCheek = face[CHEEKBONE_RIGHT_INDEX];
+  if (!nose || !leftCheek || !rightCheek) return false;
+
+  const leftDistance = Math.abs(nose.x - leftCheek.x);
+  const rightDistance = Math.abs(rightCheek.x - nose.x);
+  const larger = Math.max(leftDistance, rightDistance);
+  if (larger === 0) return false;
+
+  const symmetry = Math.min(leftDistance, rightDistance) / larger;
+  return symmetry < FACE_TURN_SYMMETRY_THRESHOLD;
 };
 
 /* ================= FULL-FACE FINISHES (FOUNDATION / BBCREAM / BRONZER / COMPACTPOWDER) ======

@@ -338,6 +338,34 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
       : 'Processing photo...';
   const notReadyDescription = notReadyError ?? 'This should only take a moment.';
 
+  // Copy for the face-guide overlay below, keyed by every non-'detected' `TFaceDetectionStatus`
+  // value - a `Record` (not another inline ternary chain like `notReadyIcon` above) specifically
+  // so TS forces a new entry here the moment a category ever adds another status value, instead
+  // of that new case silently falling through to the wrong copy. 'turned' only ever actually
+  // shows for FACE (see `FaceEngineBase.refineFaceDetectionStatus`) - LIP's `faceDetection` can
+  // never take that value, but the copy still lives here rather than forked per category, same
+  // reasoning as everything else in this shared overlay.
+  const FACE_GUIDE_COPY: Record<
+    Exclude<TFaceDetectionStatus, 'detected'>,
+    { icon: string; title: string; description: string }
+  > = {
+    'not-in-frame': {
+      icon: 'solar:scanner-linear',
+      title: 'Face not in frame',
+      description: 'Move so your whole face is inside the frame.',
+    },
+    'not-clear': {
+      icon: 'solar:danger-triangle-linear',
+      title: 'Face not clearly visible',
+      description: "Move closer, and make sure there's good, even lighting.",
+    },
+    turned: {
+      icon: 'solar:scanner-linear',
+      title: 'Face turned too much',
+      description: 'Face the camera directly - a slight turn is fine, just not a big one.',
+    },
+  };
+
   // Only meaningful inside the supported-category branch below, but declared here (not
   // further down) to stay next to the other pre-render derived values. Each category tunes its
   // own intensity-slider bounds (see FACE_RANGE_BOUNDS/LIP_RANGE_BOUNDS's own comments) - same
@@ -462,21 +490,9 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                     been ready once. */}
                   {isTryOnReady && faceDetection && faceDetection !== 'detected' && (
                     <TryOnOverlay
-                      icon={
-                        faceDetection === 'not-in-frame'
-                          ? 'solar:scanner-linear'
-                          : 'solar:danger-triangle-linear'
-                      }
-                      title={
-                        faceDetection === 'not-in-frame'
-                          ? 'Face not in frame'
-                          : 'Face not clearly visible'
-                      }
-                      description={
-                        faceDetection === 'not-in-frame'
-                          ? 'Move so your whole face is inside the frame.'
-                          : "Move closer, and make sure there's good, even lighting."
-                      }
+                      icon={FACE_GUIDE_COPY[faceDetection].icon}
+                      title={FACE_GUIDE_COPY[faceDetection].title}
+                      description={FACE_GUIDE_COPY[faceDetection].description}
                     />
                   )}
 

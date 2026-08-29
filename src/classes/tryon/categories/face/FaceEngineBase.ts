@@ -3,7 +3,7 @@ import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 import { FACE_RANGE_BOUNDS } from '@/constants/tryon-constants/face';
 import type { ColorTuple } from '@/types/tryon-types';
 import type { IFaceAssets, IFaceTryOnState, TFaceFinish } from '@/types/tryon-types/face';
-import { applyFoundationFace } from '@/utils/tryon-utils/face';
+import { applyFoundationFace, isFaceTurnedTooMuch } from '@/utils/tryon-utils/face';
 
 import { TryOnEngineBase } from '../../TryOnEngineBase';
 
@@ -42,6 +42,19 @@ export abstract class FaceEngineBase extends TryOnEngineBase<IFaceTryOnState> {
 
   protected loadCategoryAssets(): Promise<IFaceAssets> {
     return Promise.resolve(null);
+  }
+
+  // Only downgrades an already-'detected' reading - a face that's out of frame or too small is
+  // already flagged for a more basic reason, and checking turn on landmarks that unreliable
+  // would just be noise. See `isFaceTurnedTooMuch`'s own comment for why FACE specifically needs
+  // this (its full-face finishes, unlike LIP's lip-only region) and why no other category
+  // overrides this hook.
+  protected refineFaceDetectionStatus(
+    status: IFaceTryOnState['faceDetection'],
+    face: NormalizedLandmark[] | undefined,
+  ): IFaceTryOnState['faceDetection'] {
+    if (status !== 'detected' || !face) return status;
+    return isFaceTurnedTooMuch(face) ? 'turned' : status;
   }
 
   protected applyEffect(

@@ -69,6 +69,11 @@ export const CHEEKBONE_RIGHT_INDEX = 345;
 export const JAW_HOLLOW_LEFT_INDEX = 172;
 export const JAW_HOLLOW_RIGHT_INDEX = 397;
 
+// MediaPipe's standard, widely-documented nose-tip landmark - used (alongside
+// CHEEKBONE_LEFT/RIGHT_INDEX above) purely as a head-turn signal, see `isFaceTurnedTooMuch` in
+// utils/tryon-utils/face.ts, not for any rendering placement.
+export const NOSE_TIP_INDEX = 1;
+
 // How wide a localized blob (blush/highlighter/contour) renders, as a fraction of the face's
 // own width (the detected face oval's bounding box) - scales automatically with face size/
 // distance from camera instead of a fixed pixel radius, same reasoning as every size in this

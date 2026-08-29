@@ -16,8 +16,12 @@ export type ColorTuple = [r: number, g: number, b: number, a: number];
 // 'not-clear': a face is detected and fully inside the frame, but too small to trust (too far
 // from the camera, or - by the same "too little of the face is confidently visible" reasoning -
 // too obscured/blurry in practice).
+// 'turned': a face is detected, in frame, and large enough, but turned too far to one side -
+// only ever produced by categories whose rendering genuinely needs a frontal-ish pose (see
+// `TryOnEngineBase.refineFaceDetectionStatus` and `FaceEngineBase`'s override); a category that
+// never overrides that hook can never report this value.
 // 'detected': good enough to try makeup on.
-export type TFaceDetectionStatus = 'detected' | 'not-in-frame' | 'not-clear';
+export type TFaceDetectionStatus = 'detected' | 'not-in-frame' | 'not-clear' | 'turned';
 
 export interface IMakeupBaseState {
   cameraReady: boolean;

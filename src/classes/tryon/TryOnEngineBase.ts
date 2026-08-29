@@ -227,6 +227,20 @@ export abstract class TryOnEngineBase<TState extends IMakeupState, TAssets = nul
 
   /* ================= RENDER ================= */
 
+  // Lets a category tighten `getFaceDetectionStatus`'s purely position/size-based reading with
+  // its own extra condition - only FACE overrides this today (see `FaceEngineBase`'s override),
+  // to catch a head turned too far to one side for its full-face finishes' landmark-oval fill to
+  // render correctly (see tryon-utils/face.ts's own history on why that specifically needs a
+  // frontal-ish pose). Most categories never need this and just inherit this no-op default -
+  // deliberately a plain overridable method, not another abstract member every category would
+  // have to implement for a check only FACE cares about.
+  protected refineFaceDetectionStatus(
+    status: TState['faceDetection'],
+    _face: NormalizedLandmark[] | undefined,
+  ): TState['faceDetection'] {
+    return status;
+  }
+
   protected renderFrame(drawSource: HTMLVideoElement | HTMLImageElement) {
     const ctx = this.canvas2.getContext('2d');
     if (!ctx || !this.landmark) return;
@@ -239,7 +253,9 @@ export abstract class TryOnEngineBase<TState extends IMakeupState, TAssets = nul
     ctx.clearRect(0, 0, width, height);
 
     const face = this.landmark.faceLandmarks[0];
-    this.updateState.setFaceDetectionStatus(getFaceDetectionStatus(face));
+    this.updateState.setFaceDetectionStatus(
+      this.refineFaceDetectionStatus(getFaceDetectionStatus(face), face),
+    );
 
     ctx.save();
 
