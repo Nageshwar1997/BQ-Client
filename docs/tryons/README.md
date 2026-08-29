@@ -7,7 +7,7 @@ Virtual try-on ko 6 main categories me build karna hai — **LIP, EYE, HAIR, FAC
 
 Per-category detail aur checklist alag file me hai. Ye file sirf overall status aur un cheezon ke liye hai jo **sab categories ke liye common/shared** hai (ek baar ban gayi to sabko fayda).
 
-> Status snapshot: **LIP category ab poori tarah complete hai (10/10, [LIP-10-10-PLAN.md](./LIP-10-10-PLAN.md) done)** — real engine ban gaya (MediaPipe FaceLandmarker + canvas rendering), Live aur Upload dono modes me sabhi 11 subcategories (MATTE/STAIN/SATIN/GLOSS/BALM/SHIMMER/CRAYON/OIL/METALLIC/PLUMPER/LINER) actually render karte hain, shade+finish picker se driven, aur real-device QA (Android/iOS/Safari) bhi ho chuki hai. `ProductDetails` page pe "Try-On" button wired hai — [ProductDetails/index.tsx:324](../../src/pages/product/ProductDetails/index.tsx#L324). Engine architecture class-based hai (reference `src/commverse` se adapt kiya, dekh [LIP.md](./LIP.md)) — per-category `EngineBase` + do generic mixins (`withLiveCamera`/`withImageUpload`) jo sabhi categories reuse karenge.
+> Status snapshot: **LIP category ab poori tarah complete hai (10/10, [LIP-10-10-PLAN.md](./LIP-10-10-PLAN.md) done)** — real engine ban gaya (MediaPipe FaceLandmarker + canvas rendering), Live aur Upload dono modes me sabhi 11 subcategories (MATTE/STAIN/SATIN/GLOSS/BALM/SHIMMER/CRAYON/OIL/METALLIC/PLUMPER/LINER) actually render karte hain, shade+finish picker se driven, aur real-device QA (Android/iOS/Safari) bhi ho chuki hai. `ProductDetails` page pe "Try-On" button wired hai — [ProductDetails/index.tsx:324](../../src/pages/product/ProductDetails/index.tsx#L324). Engine architecture class-based hai (reference `src/commverse` se adapt kiya, dekh [LIP.md](./LIP.md)) — per-category `EngineBase` + do generic mixins (`withLiveCamera`/`withImageUpload`) jo sabhi categories reuse karenge, aur FACE ne ye bina kisi change ke prove kiya. **FACE category shuru ho chuki hai** — FOUNDATION build ho chuki hai (~7.5/10, [FOUNDATION.md](./FOUNDATION.md)), baaki 7 subcategories abhi unbuilt hain. Sabse bada baaki gap wahi hai jo LIP ke shuru mein bhi tha - **real-device QA**.
 
 ## Shared prerequisites (ye pehle banao — sabko block karte hain)
 
@@ -16,27 +16,27 @@ Per-category detail aur checklist alag file me hai. Ye file sirf overall status 
 - [x] Shared camera-access module (permission handling, live `<video>` stream, mirror) — [withLiveCamera.ts](../../src/classes/tryon/withLiveCamera.ts) (mixin, ek baar likha, saari categories reuse karengi)
 - [x] Shared photo-upload module (file input, preview, image validation) — [useTryOnUpload.ts](../../src/hooks/useTryOnUpload.ts) (validation) + [withImageUpload.ts](../../src/classes/tryon/withImageUpload.ts) (mixin, load+detect+render)
 - [x] Shared Try-On modal/page shell — [components/layout/tryons/](../../src/components/layout/tryons/index.tsx)
-- [x] Generic color/texture blend engine — [TryOnEngineBase.ts](../../src/classes/tryon/TryOnEngineBase.ts) ka `applyEffect` abstraction + category-specific rendering (LIP ke liye [tryon-utils/lip.ts](../../src/utils/tryon-utils/lip.ts))
+- [x] Generic color/texture blend engine — [TryOnEngineBase.ts](../../src/classes/tryon/TryOnEngineBase.ts) ka `applyEffect` abstraction + category-specific rendering (LIP ke liye [tryon-utils/lip.ts](../../src/utils/tryon-utils/lip.ts), FACE ke liye [tryon-utils/face.ts](../../src/utils/tryon-utils/face.ts)) — dono categories ne bina kisi shared-code change ke reuse kiya
 - [x] Result actions (partial) — screenshot/download ban gaya (`takeSnapshot()`); "Add to Cart" seedha try-on screen se abhi pending
 
 Inme se koi bhi cheez kisi ek category ke andar dobara nahi likhni — ek baar yaha ban jaye to har category file usko "reused" maan legi.
 
 ## Category trackers
 
-| Category    | Subcategories | Progress         | File                 |
-| ----------- | ------------- | ---------------- | -------------------- |
-| LIP         | 11            | 100% (88/88) ✅  | [LIP.md](./LIP.md)   |
-| EYE         | 7             | 0% (0/56)        | [EYE.md](./EYE.md)   |
-| HAIR        | 4             | 0% (0/32)        | [HAIR.md](./HAIR.md) |
-| FACE        | 8             | 0% (0/64)        | [FACE.md](./FACE.md) |
-| NAIL        | 5             | 0% (0/40)        | [NAIL.md](./NAIL.md) |
-| SKIN        | 8             | 0% (0/64)        | [SKIN.md](./SKIN.md) |
-| **Overall** | **43**        | **26% (88/344)** | —                    |
+| Category    | Subcategories | Progress         | File                                                        |
+| ----------- | ------------- | ---------------- | ----------------------------------------------------------- |
+| LIP         | 11            | 100% (88/88) ✅   | [LIP.md](./LIP.md)                                          |
+| EYE         | 7             | 0% (0/56)        | [EYE.md](./EYE.md)                                          |
+| HAIR        | 4             | 0% (0/32)        | [HAIR.md](./HAIR.md)                                        |
+| FACE        | 8             | 9% (6/64)        | [FACE.md](./FACE.md) — FOUNDATION [detail](./FOUNDATION.md) |
+| NAIL        | 5             | 0% (0/40)        | [NAIL.md](./NAIL.md)                                        |
+| SKIN        | 8             | 0% (0/64)        | [SKIN.md](./SKIN.md)                                        |
+| **Overall** | **43**        | **27% (94/344)** | —                                                           |
 
 ## Suggested build order
 
 1. **LIP** ✅ done — sabse simple region (single landmark ring), high product volume, sabse zyada learning yahi milegi baaki categories ke liye
-2. **FACE** — same face-landmark engine reuse, thoda bada region set
+2. **FACE** 🔄 in progress (FOUNDATION done, 7 aur baaki) — same face-landmark engine reuse, thoda bada region set
 3. **EYE** — precision-heavy (thin lines, lash detail), zyada QA chahiye
 4. **HAIR** — segmentation-based (landmark nahi, poore strand ka mask), alag technique
 5. **NAIL** — naya tracking model (hand/finger) integrate karna padega, isliye baad me
