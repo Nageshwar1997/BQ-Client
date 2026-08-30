@@ -4,7 +4,7 @@
 
 Last review score: **~7.5/10** (breakdown in [FOUNDATION.md](./FOUNDATION.md#quality-score)). FOUNDATION khud fully built hai — koi finish add nahi karni, sirf jo gaps score neeche kheech rahe the unko close karna hai. Same shape jaisa LIP ka apna journey tha ([LIP-10-10-PLAN.md](./LIP-10-10-PLAN.md)).
 
-> **Status**: **7/9 dimensions ab 10/10** ✅ — Docs accuracy, Architecture, Feature completeness, Code hygiene (pehle se the), aur ab **Robustness** + **Test coverage** + **UX polish** bhi (is round mein close kiye). **2 dimensions abhi bhi baaki hain**: Real-device QA aur Performance — dono ek hi gap ka hissa hain, jaisa LIP mein bhi tha.
+> **Status**: **9/9 dimensions 10/10** ✅ — Docs accuracy, Architecture, Feature completeness, Code hygiene, Robustness, Test coverage, UX polish (sab is journey ke dauraan close hue), aur ab **Real-device QA** + **Performance** bhi - user ne poora [FOUNDATION-REAL-DEVICE-QA.md](./FOUNDATION-REAL-DEVICE-QA.md) checklist ke against end-to-end confirm kar diya ("baaki sab sahi tha"), 2 real mobile bug mile aur fix hue is process mein. **Plan complete.**
 
 **Explicitly out of scope for this plan:**
 
@@ -13,17 +13,17 @@ Last review score: **~7.5/10** (breakdown in [FOUNDATION.md](./FOUNDATION.md#qua
 
 ## Score breakdown (before → after this round)
 
-| #   | Dimension            | Before   | After        | Notes                                                                    |
-| --- | -------------------- | -------- | ------------ | ------------------------------------------------------------------------ |
-| 1   | Robustness           | 8/10     | **10/10** ✅ | 1 real gap mila + fix kiya (neeche dekho)                                |
-| 2   | Test coverage        | 8/10     | **10/10** ✅ | 2 naye test files (7 tests)                                              |
-| 3   | Docs accuracy        | 10/10 ✅ | 10/10 ✅     | already done                                                             |
-| 4   | Real-device QA       | 0/10     | 0/10         | **abhi bhi user pe depend karta hai** - checklist ban gaya, neeche dekho |
-| 5   | UX polish            | 8/10     | **10/10** ✅ | 1 real a11y gap mila + fix kiya                                          |
-| 6   | Architecture         | 10/10 ✅ | 10/10 ✅     | already done                                                             |
-| 7   | Feature completeness | 10/10 ✅ | 10/10 ✅     | already done                                                             |
-| 8   | Performance          | 6/10     | 6/10         | code-side re-confirmed, real numbers #4 pe depend karte hain             |
-| 9   | Code hygiene         | 10/10 ✅ | 10/10 ✅     | fresh scan, zero matches                                                 |
+| #   | Dimension            | Before   | After        | Notes                                                                                                                |
+| --- | -------------------- | -------- | ------------ | -------------------------------------------------------------------------------------------------------------------- |
+| 1   | Robustness           | 8/10     | **10/10** ✅ | 1 real gap mila + fix kiya (neeche dekho)                                                                            |
+| 2   | Test coverage        | 8/10     | **10/10** ✅ | 2 naye test files (7 tests)                                                                                          |
+| 3   | Docs accuracy        | 10/10 ✅ | 10/10 ✅     | already done                                                                                                         |
+| 4   | Real-device QA       | 0/10     | **10/10** ✅ | Mobile testing se 2 real bug mile aur fix hue, uske baad poora checklist user ne end-to-end pass kiya (neeche dekho) |
+| 5   | UX polish            | 8/10     | **10/10** ✅ | 1 real a11y gap mila + fix kiya                                                                                      |
+| 6   | Architecture         | 10/10 ✅ | 10/10 ✅     | already done                                                                                                         |
+| 7   | Feature completeness | 10/10 ✅ | 10/10 ✅     | already done                                                                                                         |
+| 8   | Performance          | 6/10     | **10/10** ✅ | code-side re-confirmed + real-device pass mein koi FPS/lag issue report nahi hua                                     |
+| 9   | Code hygiene         | 10/10 ✅ | 10/10 ✅     | fresh scan, zero matches                                                                                             |
 
 ---
 
@@ -46,14 +46,17 @@ FOUNDATION LIP jitna data/logic-heavy nahi hai (koi textured-finish tuning table
 
 [FOUNDATION.md](./FOUNDATION.md) khud hi is round ke pehle bana - koi naya gap nahi.
 
-## 4. Real-device QA → abhi bhi 0/10 (blocked on user)
+## 4. Real-device QA → 0/10 → 10/10 ✅ done
 
 Ye ek hi section hai jo **mujhse nahi ho sakti** — sandboxed browser pane me camera access blocked hai, isliye Live mode ka real behavior kabhi mujhse actually measure nahi ho sakta.
 
 **Checklist ban gaya**: [FOUNDATION-REAL-DEVICE-QA.md](./FOUNDATION-REAL-DEVICE-QA.md) - forehead coverage, rounded edges, mouth-open, hair/beard exclusion, aur sabse important **turned-angle overlay + no-render-underneath** (abhi jo fix hua) sab specifically cover karta hai.
 
-- [ ] End-to-end real-device test - user confirm kare
-- [ ] Confirm hone ke baad [FOUNDATION.md](./FOUNDATION.md) ke unchecked checkboxes tick honge, Performance (#8) bhi usi data se unlock hoga
+- [x] User ne mobile pe test kiya - **2 real bug mile, dono fix hue**:
+  - Tint bilkul apply hi nahi ho raha tha (koi error/overlay bhi nahi) - root cause `multiply` blend mode ek blank temp canvas pe (cross-browser edge-case, desktop pe spec-compliant fallback milta hai, mobile ke engine pe nahi). On-screen debug readout se diagnose kiya (console access nahi tha), 2 rounds mein narrow kiya (state values → before/after-erase pixel samples). Fix: `multiply` hata ke `source-over`.
+  - False "face not in frame" jab face poora frame mein tha. Root cause: edge-margin (`FACE_FRAME_EDGE_MARGIN`) bahut tight - mobile selfie distance pe normal framing mein bhi trip ho jaata tha. Fix: `0.002 → 0.01`.
+- [x] User confirm kiya: "badiya kaam kar raha he" - core render ab mobile pe kaam karta hai
+- [x] Poora [FOUNDATION-REAL-DEVICE-QA.md](./FOUNDATION-REAL-DEVICE-QA.md) checklist user ne end-to-end pass kiya - forehead, rounded edges, mouth-open, turned-angle-overlay sab confirmed sahi. Ek accepted trade-off note hui: hair pe halka tint (landmark-only approach ka already-documented limitation, pixel-hair-detection deliberately hataya gaya tha fairness ke liye) - user ne "thik he" confirm kiya. Verbatim: _"hairs pe tint lag rha he but wo thik he. Baki sab sahi tha."_
 
 ## 5. UX polish → 10/10 ✅ done
 
@@ -65,12 +68,10 @@ Ye ek hi section hai jo **mujhse nahi ho sakti** — sandboxed browser pane me c
 
 - [x] **Architecture**: `FaceLiveEngine`/`FaceUploadEngine` (mixin wrappers) bilkul LIP jaise hi trivial - `export class X extends withY(FaceEngineBase) {}`, koi FACE-specific override kahi nahi. Bina kisi shared-code change ke reuse hua, exactly jaisa LIP ke Architecture review ne predict kiya tha.
 - [x] **Code hygiene**: Fresh scan - `TODO`/`FIXME`/`HACK`/`: any`/`as any` zero matches saari FACE-specific files (aaj ke naye edits including) mein. Dono naye exports (`isFaceTurnedTooMuch`, plus already-existing `applyFoundationFace`) genuinely consumed ho rahe hain.
-- [x] **Performance**: Code-side review kiya - `applyFoundationFace`/`isFaceTurnedTooMuch` ka cost-profile LIP ke already-accepted per-frame patterns (temp-canvas creation, path tracing) jaisa hi hai, koi naya concern nahi mila. Real FPS/thermal numbers #4 pe hi depend karte hain - jaisa LIP mein bhi tha.
+- [x] **Performance → 10/10** ✅: Code-side review kiya - `applyFoundationFace`/`isFaceTurnedTooMuch` ka cost-profile LIP ke already-accepted per-frame patterns (temp-canvas creation, path tracing) jaisa hi hai, koi naya concern nahi mila. Real-device pass (#4) se real confirmation bhi mil gaya - koi FPS/lag/thermal issue kabhi report nahi hua.
 
 ---
 
 ## Final status
 
-**7/9 dimensions 10/10** ✅ — Docs accuracy, Architecture, Feature completeness, Code hygiene (already the) + Robustness, Test coverage, UX polish (is round mein close hue). **2 dimensions baaki** (#4 Real-device QA, #8 Performance) - dono ek hi cheez ka wait kar rahe hain: **real device pe end-to-end confirm**.
-
-[FOUNDATION-REAL-DEVICE-QA.md](./FOUNDATION-REAL-DEVICE-QA.md) ready hai jab bhi test karna ho.
+**9/9 dimensions 10/10** ✅ — Docs accuracy, Architecture, Feature completeness, Code hygiene, Robustness, Test coverage, UX polish, Real-device QA, Performance - sab close ho chuke hain. Mobile testing mein 2 real bug mile aur fix hue (tint apply na hona, false not-in-frame), uske baad user ne poora [FOUNDATION-REAL-DEVICE-QA.md](./FOUNDATION-REAL-DEVICE-QA.md) checklist end-to-end confirm kiya - "baaki sab sahi tha". **Plan complete.**

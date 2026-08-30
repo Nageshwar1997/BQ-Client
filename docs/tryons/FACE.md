@@ -8,17 +8,17 @@ _Tracking model: face landmarks + full-face segmentation. Depends on the shared 
 
 ## Summary
 
-| Subcategory   | Live     | Upload   | Overall                         |
-| ------------- | -------- | -------- | ------------------------------- |
-| CONCEALER     | 0/4      | 0/4      | 0%                              |
-| FOUNDATION    | 3/4      | 3/4      | 75% — [detail](./FOUNDATION.md) |
-| HIGHLIGHTER   | 0/4      | 0/4      | 0%                              |
-| BLUSH         | 0/4      | 0/4      | 0%                              |
-| CONTOUR       | 0/4      | 0/4      | 0%                              |
-| BRONZER       | 0/4      | 0/4      | 0%                              |
-| BBCREAM       | 0/4      | 0/4      | 0%                              |
-| COMPACTPOWDER | 0/4      | 0/4      | 0%                              |
-| **Total**     | **3/32** | **3/32** | **9% (6/64)**                   |
+| Subcategory   | Live     | Upload   | Overall                             |
+| ------------- | -------- | -------- | ----------------------------------- |
+| CONCEALER     | 0/4      | 0/4      | 0%                                  |
+| FOUNDATION    | 4/4      | 4/4      | 100% ✅ — [detail](./FOUNDATION.md) |
+| HIGHLIGHTER   | 0/4      | 0/4      | 0%                                  |
+| BLUSH         | 0/4      | 0/4      | 0%                                  |
+| CONTOUR       | 0/4      | 0/4      | 0%                                  |
+| BRONZER       | 0/4      | 0/4      | 0%                                  |
+| BBCREAM       | 0/4      | 0/4      | 0%                                  |
+| COMPACTPOWDER | 0/4      | 0/4      | 0%                                  |
+| **Total**     | **4/32** | **4/32** | **12.5% (8/64)**                    |
 
 ## Details
 
@@ -42,7 +42,7 @@ _Tracking model: face landmarks + full-face segmentation. Depends on the shared 
 </details>
 
 <details>
-<summary><strong>FOUNDATION</strong> — 75% — see <a href="./FOUNDATION.md">FOUNDATION.md</a> for the full checklist, bugs-fixed log, and quality score</summary>
+<summary><strong>FOUNDATION</strong> — 100% ✅ — see <a href="./FOUNDATION.md">FOUNDATION.md</a> for the full checklist, bugs-fixed log, and quality score</summary>
 
 Ab yaha inline nahi hai - apni dedicated file mil chuki hai: **[FOUNDATION.md](./FOUNDATION.md)**.
 

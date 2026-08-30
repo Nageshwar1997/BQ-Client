@@ -23,20 +23,20 @@ Inme se koi bhi cheez kisi ek category ke andar dobara nahi likhni — ek baar y
 
 ## Category trackers
 
-| Category    | Subcategories | Progress         | File                                                        |
-| ----------- | ------------- | ---------------- | ----------------------------------------------------------- |
-| LIP         | 11            | 100% (88/88) ✅   | [LIP.md](./LIP.md)                                          |
-| EYE         | 7             | 0% (0/56)        | [EYE.md](./EYE.md)                                          |
-| HAIR        | 4             | 0% (0/32)        | [HAIR.md](./HAIR.md)                                        |
-| FACE        | 8             | 9% (6/64)        | [FACE.md](./FACE.md) — FOUNDATION [detail](./FOUNDATION.md) |
-| NAIL        | 5             | 0% (0/40)        | [NAIL.md](./NAIL.md)                                        |
-| SKIN        | 8             | 0% (0/64)        | [SKIN.md](./SKIN.md)                                        |
-| **Overall** | **43**        | **27% (94/344)** | —                                                           |
+| Category    | Subcategories | Progress         | File                                                           |
+| ----------- | ------------- | ---------------- | -------------------------------------------------------------- |
+| LIP         | 11            | 100% (88/88) ✅  | [LIP.md](./LIP.md)                                             |
+| EYE         | 7             | 0% (0/56)        | [EYE.md](./EYE.md)                                             |
+| HAIR        | 4             | 0% (0/32)        | [HAIR.md](./HAIR.md)                                           |
+| FACE        | 8             | 12.5% (8/64)     | [FACE.md](./FACE.md) — FOUNDATION [detail](./FOUNDATION.md) ✅ |
+| NAIL        | 5             | 0% (0/40)        | [NAIL.md](./NAIL.md)                                           |
+| SKIN        | 8             | 0% (0/64)        | [SKIN.md](./SKIN.md)                                           |
+| **Overall** | **43**        | **28% (96/344)** | —                                                              |
 
 ## Suggested build order
 
 1. **LIP** ✅ done — sabse simple region (single landmark ring), high product volume, sabse zyada learning yahi milegi baaki categories ke liye
-2. **FACE** 🔄 in progress (FOUNDATION done, 7 aur baaki) — same face-landmark engine reuse, thoda bada region set
+2. **FACE** 🔄 in progress (FOUNDATION ✅ done 10/10, 7 aur subcategories baaki) — same face-landmark engine reuse, thoda bada region set
 3. **EYE** — precision-heavy (thin lines, lash detail), zyada QA chahiye
 4. **HAIR** — segmentation-based (landmark nahi, poore strand ka mask), alag technique
 5. **NAIL** — naya tracking model (hand/finger) integrate karna padega, isliye baad me
