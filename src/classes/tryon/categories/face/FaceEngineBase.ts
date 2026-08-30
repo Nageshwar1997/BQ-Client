@@ -66,6 +66,16 @@ export abstract class FaceEngineBase extends TryOnEngineBase<IFaceTryOnState> {
     _assets: IFaceAssets,
   ): void {
     if (!state.type) return;
+    // `renderFrame` (TryOnEngineBase) only ever uses `faceDetection` to drive the overlay - it
+    // still calls this on a 'not-clear'/'not-in-frame' reading too, deliberately (a stray frame
+    // of jitter shouldn't blank the canvas before the debounced overlay even shows), and for
+    // those two a face that's just small/blurry still renders a reasonably faithful tint anyway.
+    // 'turned' is different on purpose: the whole reason it exists is that a turned head can
+    // render a genuinely *wrong* shape here (see tryon-utils/face.ts's own history - tint
+    // bulging past the visible nose). The overlay (`TryOnOverlay`) sits on a semi-transparent
+    // `bg-black/45` scrim, not a fully opaque one, so without this guard that bad shape would
+    // still show dimly *through* the "face the camera" message instead of actually going away.
+    if (state.faceDetection === 'turned') return;
 
     const [r, g, b] = rgb;
     const color = `rgba(${String(r)},${String(g)},${String(b)},0.6)`;

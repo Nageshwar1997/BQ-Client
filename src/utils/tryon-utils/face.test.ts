@@ -46,4 +46,9 @@ describe('isFaceTurnedTooMuch', () => {
     // Cheekbone points intentionally left unset.
     expect(isFaceTurnedTooMuch(face)).toBe(false);
   });
+
+  it('reads false exactly at the symmetry threshold (only strictly below it counts as turned)', () => {
+    // leftDistance=0.1, rightDistance=0.2 -> symmetry = 0.1/0.2 = 0.5, the threshold itself.
+    expect(isFaceTurnedTooMuch(makeFace(0.5, 0.4, 0.7))).toBe(false);
+  });
 });

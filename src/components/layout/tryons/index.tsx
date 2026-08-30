@@ -360,7 +360,12 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
       description: "Move closer, and make sure there's good, even lighting.",
     },
     turned: {
-      icon: 'solar:scanner-linear',
+      // Same icon as the "facing the camera directly" instruction-screen tip
+      // (FACE_UPLOAD_INSTRUCTIONS/FACE_LIVE_INSTRUCTIONS) - deliberately not 'not-in-frame's
+      // scanner icon, even though both guide the shopper toward a better frame, since this one
+      // reads as its own distinct situation (in frame, just angled) rather than another flavor
+      // of "not in frame at all".
+      icon: 'solar:face-scan-circle-linear',
       title: 'Face turned too much',
       description: 'Face the camera directly - a slight turn is fine, just not a big one.',
     },

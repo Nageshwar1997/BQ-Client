@@ -28,7 +28,15 @@ const FrameCorner = ({ position, border }: { position: string; border: string })
 // over any live video/photo underneath, regardless of that content's own brightness or the app's
 // own light/dark theme.
 const TryOnOverlay = ({ icon, title, description, action }: ITryOnOverlayProps) => (
-  <div className="absolute inset-0 z-2 flex items-center justify-center bg-black/45 p-6">
+  <div
+    // A screen-reader user has no other way to learn this appeared - it's a canvas-driven
+    // overlay, not a focus change or a navigation, so nothing else would announce it. `alert`
+    // (an actual error, `action` set) is the more urgent, `status` (loading, or the live
+    // face-guide - out of frame/not clear/turned) the calmer one; both are `aria-live` roles
+    // under the hood, so either way this doesn't need an explicit `aria-live` attribute too.
+    role={action ? 'alert' : 'status'}
+    className="absolute inset-0 z-2 flex items-center justify-center bg-black/45 p-6"
+  >
     <div className="relative aspect-3/4 w-full max-w-60">
       <FrameCorner
         position="top-0 left-0 rounded-tl-2xl"
