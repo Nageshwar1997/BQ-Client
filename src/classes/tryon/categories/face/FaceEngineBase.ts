@@ -3,7 +3,7 @@ import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 import { FACE_RANGE_BOUNDS } from '@/constants/tryon-constants/face';
 import type { ColorTuple } from '@/types/tryon-types';
 import type { IFaceAssets, IFaceTryOnState, TFaceFinish } from '@/types/tryon-types/face';
-import { applyFoundationFace, isFaceTurnedTooMuch } from '@/utils/tryon-utils/face';
+import { applyBlushFace, applyFoundationFace, isFaceTurnedTooMuch } from '@/utils/tryon-utils/face';
 
 import { TryOnEngineBase } from '../../TryOnEngineBase';
 
@@ -13,7 +13,6 @@ import { TryOnEngineBase } from '../../TryOnEngineBase';
 const UNSUPPORTED_FACE_FINISHES = new Set<TFaceFinish>([
   'CONCEALER',
   'HIGHLIGHTER',
-  'BLUSH',
   'CONTOUR',
   'BRONZER',
   'BBCREAM',
@@ -92,6 +91,9 @@ export abstract class FaceEngineBase extends TryOnEngineBase<IFaceTryOnState> {
     switch (state.type) {
       case 'FOUNDATION':
         applyFoundationFace(face, ctx, color, size, alpha);
+        return;
+      case 'BLUSH':
+        applyBlushFace(face, ctx, rgb, size, alpha);
         return;
     }
   }

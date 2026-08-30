@@ -4,7 +4,7 @@
 
 _Tracking model: face landmarks + full-face segmentation. Depends on the shared face-landmark engine — see [README.md](./README.md#shared-prerequisites-ye-pehle-banao--sabko-block-karte-hain)._
 
-> **Per-subcategory tracking**: jaise-jaise ek FACE subcategory actually build hoti hai, uski apni dedicated tracker file bhi ban jaati hai (LIP ke [LIP.md](./LIP.md) jaisi) - is file (FACE.md) mein sirf uska summary-row + link reh jaata hai, poora detail nahi. Abhi tak sirf FOUNDATION ban chuki hai - [FOUNDATION.md](./FOUNDATION.md). Baaki 7 abhi bhi neeche inline hain (unbuilt).
+> **Per-subcategory tracking**: jaise-jaise ek FACE subcategory actually build hoti hai, uski apni dedicated tracker file bhi ban jaati hai (LIP ke [LIP.md](./LIP.md) jaisi) - is file (FACE.md) mein sirf uska summary-row + link reh jaata hai, poora detail nahi. Abhi tak FOUNDATION aur BLUSH ban chuki hain - [FOUNDATION.md](./FOUNDATION.md), [BLUSH.md](./BLUSH.md). Baaki 6 abhi bhi neeche inline hain (unbuilt).
 
 ## Summary
 
@@ -13,12 +13,12 @@ _Tracking model: face landmarks + full-face segmentation. Depends on the shared 
 | CONCEALER     | 0/4      | 0/4      | 0%                                  |
 | FOUNDATION    | 4/4      | 4/4      | 100% ✅ — [detail](./FOUNDATION.md) |
 | HIGHLIGHTER   | 0/4      | 0/4      | 0%                                  |
-| BLUSH         | 0/4      | 0/4      | 0%                                  |
+| BLUSH         | 3/4      | 3/4      | 75% — [detail](./BLUSH.md)          |
 | CONTOUR       | 0/4      | 0/4      | 0%                                  |
 | BRONZER       | 0/4      | 0/4      | 0%                                  |
 | BBCREAM       | 0/4      | 0/4      | 0%                                  |
 | COMPACTPOWDER | 0/4      | 0/4      | 0%                                  |
-| **Total**     | **4/32** | **4/32** | **12.5% (8/64)**                    |
+| **Total**     | **7/32** | **7/32** | **21.9% (14/64)**                   |
 
 ## Details
 
@@ -68,21 +68,9 @@ Ab yaha inline nahi hai - apni dedicated file mil chuki hai: **[FOUNDATION.md](.
 </details>
 
 <details>
-<summary><strong>BLUSH</strong> — 0%</summary>
+<summary><strong>BLUSH</strong> — 75% — see <a href="./BLUSH.md">BLUSH.md</a> for the full checklist, design notes, and quality score</summary>
 
-**Live**
-
-- [ ] Camera capture + cheek-region landmark tracking wired
-- [ ] Soft cheek color-wash blend rendered in real-time
-- [ ] Shade/variant picker functional
-- [ ] Performance & cross-device QA
-
-**Upload**
-
-- [ ] Photo upload + cheek-region detection on static image
-- [ ] Soft cheek color-wash blend applied to image
-- [ ] Shade/variant picker functional
-- [ ] Output preview/download QA
+Ab yaha inline nahi hai - apni dedicated file mil chuki hai: **[BLUSH.md](./BLUSH.md)**.
 
 </details>
 

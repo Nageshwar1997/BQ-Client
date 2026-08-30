@@ -1,6 +1,8 @@
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
 import {
+  CHEEK_APPLE_LEFT_INDEX,
+  CHEEK_APPLE_RIGHT_INDEX,
   CHEEKBONE_LEFT_INDEX,
   CHEEKBONE_RIGHT_INDEX,
   FACE_OVAL_INDICES,
@@ -8,11 +10,13 @@ import {
   FOREHEAD_EXTENSION_TAPER_RATIO,
   LEFT_EYE_INDICES,
   LEFT_EYEBROW_INDICES,
+  LOCALIZED_BLOB_RADIUS_RATIO,
   MOUTH_OUTER_CONTOUR_INDICES,
   NOSE_TIP_INDEX,
   RIGHT_EYE_INDICES,
   RIGHT_EYEBROW_INDICES,
 } from '@/constants/tryon-constants/face';
+import type { ColorTuple } from '@/types/tryon-types';
 
 // FACE-specific canvas rendering - fresh design (not ported from any reference
 // implementation, see docs/tryons/FACE.md), built directly on the same primitives LIP's own
@@ -230,6 +234,86 @@ export const applyFoundationFace = (
   tempCtx.restore();
 
   eraseExcludedFeatures(tempCtx, face, dimension);
+
+  ctx.drawImage(temp, 0, 0);
+};
+
+/* ================= LOCALIZED FINISHES (BLUSH / HIGHLIGHTER / CONTOUR) ========================
+ * Unlike the full-face finishes above, these don't fill a region - they place a single soft,
+ * feathered blob at one anchor point per cheek (`CHEEK_APPLE_LEFT_INDEX`/`CHEEK_APPLE_RIGHT_INDEX`
+ * in constants/tryon-constants/face.ts), the same way a real blush/highlighter/contour stick is
+ * actually applied - a dab at one spot, blended outward - rather than an even wash across a
+ * whole area.
+ */
+
+// Solid-ish at `center`, fading to fully transparent by `radius` - a radial gradient, not a flat
+// circle blurred afterward: blur only softens edges that already exist, it can't produce this
+// "concentrated in the middle, gone by the edge" falloff on its own, and a blur wide enough to
+// look this soft would need to be wide enough to noticeably shrink the visible color too - an
+// extra tuning knob this sidesteps by building the falloff directly into the fill instead.
+const drawFeatheredBlob = (
+  ctx: CanvasRenderingContext2D,
+  center: IPoint,
+  radius: number,
+  rgb: ColorTuple,
+  alpha: number,
+) => {
+  const [r, g, b] = rgb;
+  const gradient = ctx.createRadialGradient(center.x, center.y, 0, center.x, center.y, radius);
+  // 0.6 base opacity at dead center - same fixed "how strong the pure color reads" baseline
+  // `FaceEngineBase.applyEffect` already bakes into every other FACE finish's color string
+  // (see `applyFoundationFace`'s own `rgba(...,0.6)`), multiplied here by the caller's own
+  // `alpha` (the intensity slider) directly into the color-stop math rather than via
+  // `ctx.globalAlpha` - two blobs get drawn per call (left/right cheek) and baking the alpha into
+  // each gradient's own stops keeps them independent instead of relying on shared canvas state.
+  gradient.addColorStop(0, `rgba(${String(r)},${String(g)},${String(b)},${String(0.6 * alpha)})`);
+  gradient.addColorStop(1, `rgba(${String(r)},${String(g)},${String(b)},0)`);
+
+  ctx.beginPath();
+  ctx.arc(center.x, center.y, radius, 0, Math.PI * 2);
+  ctx.fillStyle = gradient;
+  ctx.fill();
+};
+
+// Cheek color-wash - a feathered blob centered on each cheek apple, radius scaled off the
+// face's own detected width (`LOCALIZED_BLOB_RADIUS_RATIO`) so it stays proportional across
+// face sizes/camera distances, same reasoning as every other size in this app. Clipped to the
+// face oval first (same helper the full-face finishes use) purely as a safety net - the blob's
+// own radius is already small enough to stay well inside the face under normal proportions, this
+// just guarantees it can never paint past the face oval even on an unusual face shape.
+export const applyBlushFace = (
+  face: NormalizedLandmark[],
+  ctx: CanvasRenderingContext2D,
+  rgb: ColorTuple,
+  dimension: TDimension,
+  alpha: number,
+) => {
+  const leftCheek = face[CHEEK_APPLE_LEFT_INDEX];
+  const rightCheek = face[CHEEK_APPLE_RIGHT_INDEX];
+  if (!leftCheek || !rightCheek) return;
+
+  const ovalXs = toPoints(face, FACE_OVAL_INDICES, dimension).map((point) => point.x);
+  const faceWidth = Math.max(...ovalXs) - Math.min(...ovalXs);
+  const radius = faceWidth * LOCALIZED_BLOB_RADIUS_RATIO;
+
+  const temp = document.createElement('canvas');
+  temp.width = dimension.width;
+  temp.height = dimension.height;
+  const tempCtx = temp.getContext('2d');
+  if (!tempCtx) return;
+
+  tempCtx.save();
+  clipToFaceOval(tempCtx, face, dimension);
+  [leftCheek, rightCheek].forEach((point) => {
+    drawFeatheredBlob(
+      tempCtx,
+      { x: point.x * dimension.width, y: point.y * dimension.height },
+      radius,
+      rgb,
+      alpha,
+    );
+  });
+  tempCtx.restore();
 
   ctx.drawImage(temp, 0, 0);
 };

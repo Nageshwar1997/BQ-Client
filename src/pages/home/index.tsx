@@ -14,8 +14,8 @@ const Home = () => {
         isOpen
         // eslint-disable-next-line @typescript-eslint/no-empty-function -- always open, nothing to close here
         onClose={() => { }}
-        // Don't change this until the Try-On FOUNDATION flow is completed and stable
-        tryOn={{ category: 'FACE', subCategory: 'FOUNDATION' }}
+        // Don't change this until the Try-On BLUSH flow is completed and stable
+        tryOn={{ category: 'FACE', subCategory: 'BLUSH' }}
         shades={[
           { name: 'Ruby Red', hexColor: '#B0202E' },
           { name: 'Coral Pink', hexColor: '#F2795D' },
