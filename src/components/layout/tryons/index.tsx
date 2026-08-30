@@ -372,10 +372,19 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
   };
 
   // Only meaningful inside the supported-category branch below, but declared here (not
-  // further down) to stay next to the other pre-render derived values. Each category tunes its
-  // own intensity-slider bounds (see FACE_RANGE_BOUNDS/LIP_RANGE_BOUNDS's own comments) - same
-  // raw alpha reads differently depending on what's being blended.
-  const rangeBounds = tryOn?.category === 'FACE' ? FACE_RANGE_BOUNDS : LIP_RANGE_BOUNDS;
+  // further down) to stay next to the other pre-render derived values. Each *finish* tunes its
+  // own intensity-slider bounds now (see FACE_RANGE_BOUNDS/LIP_RANGE_BOUNDS's own per-finish
+  // comments) - keyed by `tryOn.subCategory`, not just `tryOn.category`, since e.g. FOUNDATION
+  // and BLUSH read very differently at the same raw alpha. The fallback below is never actually
+  // reached by the UI (both real usages further down sit inside the branch that's already
+  // confirmed `tryOn.category` is 'LIP' | 'FACE') - it exists purely so this stays a plain
+  // object instead of `IRangeBounds | undefined`.
+  const rangeBounds =
+    tryOn?.category === 'FACE'
+      ? FACE_RANGE_BOUNDS[tryOn.subCategory]
+      : tryOn?.category === 'LIP'
+        ? LIP_RANGE_BOUNDS[tryOn.subCategory]
+        : { min: 0, max: 1, default: 0.5 };
 
   return (
     <ModalWrapper

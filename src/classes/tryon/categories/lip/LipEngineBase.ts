@@ -4,7 +4,7 @@ import {
   CRAYON_TEXTURE_PATH,
   GLOSS_OR_SATIN_OR_BALM_OR_PLUMPER_TEXTURE_PATH_LOWER,
   GLOSS_OR_SATIN_OR_BALM_OR_PLUMPER_TEXTURE_PATH_UPPER,
-  LIP_RANGE_BOUNDS,
+  LIP_DEFAULT_RANGE,
   METALLIC_TEXTURE_PATH_LOWER,
   METALLIC_TEXTURE_PATH_UPPER,
   OIL_TEXTURE_PATH_LOWER,
@@ -50,7 +50,12 @@ export abstract class LipEngineBase extends TryOnEngineBase<ILipTryOnState, ILip
     return {
       type: null,
       color: null,
-      range: LIP_RANGE_BOUNDS.default,
+      // No `type` yet to pick a finish-specific default from (`LIP_RANGE_BOUNDS` is now keyed
+      // per finish) - this blank-slate value only matters for the brief moment before the
+      // caller's own `initialState` (which does know the finish - see TryOnModal's `rangeBounds`)
+      // merges in, so it uses the category-wide `LIP_DEFAULT_RANGE` rather than borrowing any
+      // one finish's own default (see that constant's own comment for why).
+      range: LIP_DEFAULT_RANGE,
       cameraReady: false,
       imageReady: false,
       tryOnStarted: false,

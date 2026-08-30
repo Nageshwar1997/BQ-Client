@@ -1,3 +1,5 @@
+import type { TFaceFinish } from '@/types/tryon-types/face';
+
 import type { ITryOnInstruction } from '.';
 
 // Face landmark indices (into MediaPipe FaceLandmarker's 478-point face mesh) for the FACE
@@ -80,9 +82,49 @@ export const NOSE_TIP_INDEX = 1;
 // app being derived from the detected face rather than a screen-space constant.
 export const LOCALIZED_BLOB_RADIUS_RATIO = 0.16;
 
-// Same shape/role as LIP's own `LIP_RANGE_BOUNDS` - the intensity slider's bounds, per category
-// since each category's finishes read differently at the same raw alpha.
-export const FACE_RANGE_BOUNDS = { min: 0.1, max: 0.3, default: 0.2 } as const;
+interface IRangeBounds {
+  min: number;
+  max: number;
+  default: number;
+}
+
+// Same shape/role as LIP's own `LIP_RANGE_BOUNDS` - the intensity slider's bounds, one entry per
+// finish (not one shared per category) since each finish reads differently at the same raw
+// alpha - a slider position that looks right on FOUNDATION's full-face wash can be way too
+// strong or too faint on a small localized blob like BLUSH.
+export const FACE_RANGE_BOUNDS: Record<TFaceFinish, IRangeBounds> = {
+  // Real-device tuned + confirmed (see docs/tryons/FOUNDATION.md) - do not change without
+  // re-testing on a real device, same reasoning as FACE_FRAME_EDGE_MARGIN above.
+  FOUNDATION: { min: 0.1, max: 0.8, default: 0.2 },
+  // Derived from the reference implementation's own Blush bounds
+  // (`getRangeValues` in commverse: `{ min: 0, max: 0.15, default: 0.1 }`), converted for this
+  // app's different alpha convention - the reference applies `state.range` directly as the
+  // gradient's own alpha, this app instead multiplies it by a fixed 0.6 base first (see
+  // `drawFeatheredBlob` in utils/tryon-utils/face.ts, the same "0.6 base x range" convention
+  // FOUNDATION and every LIP finish also use), so hitting the reference's ~0.15 visual peak needs
+  // a raw max here around 0.15 / 0.6 = 0.25. Min kept non-zero (unlike the reference's 0) so the
+  // slider can never render an effectively invisible blush - a shopper who wants none can just
+  // close the try-on instead.
+  BLUSH: { min: 0.08, max: 0.25, default: 0.15 },
+  // Everything below doesn't have dedicated rendering yet - falls back to FOUNDATION's full-face
+  // wash (see `UNSUPPORTED_FACE_FINISHES` in FaceEngineBase.ts). These bounds are placeholders
+  // chosen for each finish's eventual intended character (concealer meant to read more
+  // pigmented/opaque, powder/highlighter meant to stay subtle, BB cream explicitly "lighter than
+  // foundation" per FACE.md) rather than validated tuning - revisit once each gets its own
+  // dedicated renderer, same as FOUNDATION/BLUSH did.
+  CONCEALER: { min: 0.15, max: 0.9, default: 0.35 },
+  HIGHLIGHTER: { min: 0.05, max: 0.3, default: 0.15 },
+  CONTOUR: { min: 0.1, max: 0.5, default: 0.25 },
+  BRONZER: { min: 0.08, max: 0.4, default: 0.2 },
+  BBCREAM: { min: 0.08, max: 0.5, default: 0.15 },
+  COMPACTPOWDER: { min: 0.05, max: 0.3, default: 0.12 },
+};
+
+// Category-wide fallback, deliberately NOT any one finish's own default above - same reasoning
+// as LIP's identical `LIP_DEFAULT_RANGE`. Used only for the brief blank-slate moment before a
+// real `type` is known (`FaceEngineBase.getInitialState()`) - picking FOUNDATION's default there
+// would be misleading, since it isn't actually FOUNDATION at that point, just "no finish yet".
+export const FACE_DEFAULT_RANGE = 0.2;
 
 /* ================= INSTRUCTIONS =================
  * Shown before a shopper picks/takes a photo - see `getTryOnInstructions` in `./index` for why

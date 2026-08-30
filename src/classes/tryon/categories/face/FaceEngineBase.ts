@@ -1,6 +1,6 @@
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
-import { FACE_RANGE_BOUNDS } from '@/constants/tryon-constants/face';
+import { FACE_DEFAULT_RANGE } from '@/constants/tryon-constants/face';
 import type { ColorTuple } from '@/types/tryon-types';
 import type { IFaceAssets, IFaceTryOnState, TFaceFinish } from '@/types/tryon-types/face';
 import { applyBlushFace, applyFoundationFace, isFaceTurnedTooMuch } from '@/utils/tryon-utils/face';
@@ -31,7 +31,10 @@ export abstract class FaceEngineBase extends TryOnEngineBase<IFaceTryOnState> {
     return {
       type: null,
       color: null,
-      range: FACE_RANGE_BOUNDS.default,
+      // No `type` yet to pick a finish-specific default from (`FACE_RANGE_BOUNDS` is now keyed
+      // per finish) - same reasoning as LipEngineBase's identical comment. Uses the category-wide
+      // `FACE_DEFAULT_RANGE` rather than borrowing FOUNDATION's own default.
+      range: FACE_DEFAULT_RANGE,
       cameraReady: false,
       imageReady: false,
       tryOnStarted: false,
