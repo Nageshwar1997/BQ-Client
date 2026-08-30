@@ -192,11 +192,18 @@ const eraseExcludedFeatures = (
   ctx.restore();
 };
 
-// Base-tone color correction, blended rather than flatly painted - `multiply` (not the default
-// `source-over`) lets the skin's own natural light/shadow variation show through the tint
-// instead of flattening the whole face into one uniform flat color, which would read as a mask
-// rather than makeup. Foundation especially needs this - unlike lips, a face has a lot of
-// natural shading variance the eye is sensitive to losing.
+// Base-tone color correction. Plain `source-over` (not `multiply`) - `multiply` was here before
+// specifically to let the skin's own natural light/shadow variation show through the tint
+// instead of flattening the whole face into one uniform flat color, but `temp` (below) is a
+// *blank* canvas at the point this fills it, so there's nothing underneath to actually multiply
+// against - the "show shading through" only ever came from the final `ctx.drawImage(temp, 0, 0)`
+// alpha-compositing this semi-transparent layer over the real photo already on `ctx`, not from
+// this fill's own blend mode. Confirmed the hard way via real-device testing: a multiply blend
+// over a fully-transparent backdrop is a genuine cross-engine inconsistency (desktop Chrome's
+// canvas engine resolves it to the source color per the compositing spec's edge-case formula;
+// at least one mobile browser's engine instead produced a fully transparent - and so entirely
+// invisible - result). `source-over` has no such edge case and is what this was already
+// functionally equivalent to everywhere it happened to work.
 export const applyFoundationFace = (
   face: NormalizedLandmark[],
   ctx: CanvasRenderingContext2D,
@@ -217,7 +224,6 @@ export const applyFoundationFace = (
 
   tempCtx.save();
   clipToFaceOval(tempCtx, face, dimension);
-  tempCtx.globalCompositeOperation = 'multiply';
   tempCtx.fillStyle = color;
   tempCtx.globalAlpha = alpha;
   tempCtx.fillRect(0, 0, dimension.width, dimension.height);

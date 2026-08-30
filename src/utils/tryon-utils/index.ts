@@ -15,7 +15,16 @@ import type { ColorTuple, IObjectFitContentRect, TFaceDetectionStatus } from '@/
 // routinely sit within a few percent of the image edge even though nothing is actually cut off.
 // A looser margin (this was 0.02) was flagging completely normal framing as "not in frame" -
 // this should only trip for a landmark genuinely at/past the boundary.
-const FACE_FRAME_EDGE_MARGIN = 0.002;
+//
+// Loosened again (0.002 -> 0.01) after real-device testing: a phone held at typical selfie
+// distance/arm's length sits closer to the face than a desktop webcam usually does, so the
+// whole-face-oval landmarks this reads (ears/jaw/hairline included - the same full mesh
+// regardless of category) naturally spread closer to the raw frame's own edges even with
+// completely normal framing, just because the face fills more of the frame. Still tight enough
+// to catch a landmark genuinely at/past the boundary (nowhere near the original 0.02 that was
+// too loose in the other direction) - this only ever makes "in frame" *more* forgiving, so it
+// can't reintroduce that original problem for any category already relying on this check.
+const FACE_FRAME_EDGE_MARGIN = 0.01;
 // The detected face's own bounding box (in that same 0-1 space) must span at least this much of
 // the frame on both axes - below it, the face is too small/far away to trust makeup placement
 // on, even though MediaPipe still reports landmarks for it.
