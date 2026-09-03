@@ -72,6 +72,24 @@ export const CHEEKBONE_RIGHT_INDEX = 345;
 export const JAW_HOLLOW_LEFT_INDEX = 172;
 export const JAW_HOLLOW_RIGHT_INDEX = 397;
 
+// Bottom-center point of each eye's own ring (already part of LEFT_EYE_INDICES/
+// RIGHT_EYE_INDICES above) - CONCEALER's under-eye anchor. Not the under-eye hollow itself
+// (there's no dedicated landmark for that - MediaPipe's mesh only covers the eyelid margin), so
+// `applyConcealerFace` (utils/tryon-utils/face.ts) offsets downward from this point by
+// `UNDER_EYE_OFFSET_RATIO` of the face's own height to land in the hollow instead of right on
+// the lash line.
+export const UNDER_EYE_LEFT_INDEX = 145;
+export const UNDER_EYE_RIGHT_INDEX = 374;
+export const UNDER_EYE_OFFSET_RATIO = 0.03;
+
+// CONCEALER's own blob shape - wider than tall (unlike BLUSH's plain circular blob), matching
+// the real under-eye crescent's shape. `_WIDTH_RATIO` is a fraction of the eye's own detected
+// width (not the face's - the under-eye area scales with the eye itself, not overall face
+// size), `_ASPECT_RATIO` flattens that circle into an ellipse (`radiusY = radiusX *
+// CONCEALER_BLOB_ASPECT_RATIO`).
+export const CONCEALER_BLOB_WIDTH_RATIO = 0.65;
+export const CONCEALER_BLOB_ASPECT_RATIO = 0.55;
+
 // MediaPipe's standard, widely-documented nose-tip landmark - used (alongside
 // CHEEKBONE_LEFT/RIGHT_INDEX above) purely as a head-turn signal, see `isFaceTurnedTooMuch` in
 // utils/tryon-utils/face.ts, not for any rendering placement.
@@ -101,13 +119,18 @@ export const FACE_RANGE_BOUNDS: Record<TFaceFinish, IRangeBounds> = {
   // slider can never render an effectively invisible blush - a shopper who wants none can just
   // close the try-on instead.
   BLUSH: { min: 0.25, max: 1, default: 0.5 },
+  // No reference equivalent (the commverse reference has no standalone "Concealer" category) -
+  // own judgment call. Concealer is meant to read more opaque/pigmented than a sheer blush or
+  // foundation wash (its whole job is fully covering a dark circle/blemish, not just tinting),
+  // so the ceiling sits notably higher than BLUSH's - 0.9 raw x the fixed 0.6 base
+  // (`drawFeatheredBlob`) tops out around 0.54 effective opacity, meaningfully more solid.
+  CONCEALER: { min: 0.15, max: 0.9, default: 0.35 },
   // Everything below doesn't have dedicated rendering yet - falls back to FOUNDATION's full-face
   // wash (see `UNSUPPORTED_FACE_FINISHES` in FaceEngineBase.ts). These bounds are placeholders
-  // chosen for each finish's eventual intended character (concealer meant to read more
-  // pigmented/opaque, powder/highlighter meant to stay subtle, BB cream explicitly "lighter than
-  // foundation" per FACE.md) rather than validated tuning - revisit once each gets its own
-  // dedicated renderer, same as FOUNDATION/BLUSH did.
-  CONCEALER: { min: 0.15, max: 0.9, default: 0.35 },
+  // chosen for each finish's eventual intended character (powder/highlighter meant to stay
+  // subtle, BB cream explicitly "lighter than foundation" per FACE.md) rather than validated
+  // tuning - revisit once each gets its own dedicated renderer, same as FOUNDATION/BLUSH/
+  // CONCEALER did.
   HIGHLIGHTER: { min: 0.05, max: 0.3, default: 0.15 },
   CONTOUR: { min: 0.1, max: 0.5, default: 0.25 },
   BRONZER: { min: 0.08, max: 0.4, default: 0.2 },

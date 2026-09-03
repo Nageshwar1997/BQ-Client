@@ -3,7 +3,12 @@ import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 import { FACE_DEFAULT_RANGE } from '@/constants/tryon-constants/face';
 import type { ColorTuple } from '@/types/tryon-types';
 import type { IFaceAssets, IFaceTryOnState, TFaceFinish } from '@/types/tryon-types/face';
-import { applyBlushFace, applyFoundationFace, isFaceTurnedTooMuch } from '@/utils/tryon-utils/face';
+import {
+  applyBlushFace,
+  applyConcealerFace,
+  applyFoundationFace,
+  isFaceTurnedTooMuch,
+} from '@/utils/tryon-utils/face';
 
 import { TryOnEngineBase } from '../../TryOnEngineBase';
 
@@ -11,7 +16,6 @@ import { TryOnEngineBase } from '../../TryOnEngineBase';
 // `UNSUPPORTED_LIP_FINISHES` (see LipEngineBase.ts), falls back to FOUNDATION (the most basic
 // full-face tint) with a console warning rather than silently doing nothing.
 const UNSUPPORTED_FACE_FINISHES = new Set<TFaceFinish>([
-  'CONCEALER',
   'HIGHLIGHTER',
   'CONTOUR',
   'BRONZER',
@@ -97,6 +101,9 @@ export abstract class FaceEngineBase extends TryOnEngineBase<IFaceTryOnState> {
         return;
       case 'BLUSH':
         applyBlushFace(face, ctx, rgb, size, alpha);
+        return;
+      case 'CONCEALER':
+        applyConcealerFace(face, ctx, rgb, size, alpha);
         return;
     }
   }

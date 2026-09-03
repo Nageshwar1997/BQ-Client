@@ -14,7 +14,7 @@ import 'canvas';
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 import { describe, expect, it } from 'vitest';
 
-import { applyBlushFace, applyFoundationFace } from './face';
+import { applyBlushFace, applyConcealerFace, applyFoundationFace } from './face';
 
 // Same fixture-face approach as lip.smoke.test.ts (see its own comment) - a deterministic
 // sunflower-seed spiral guarantees every index `applyFoundationFace` might read (face oval,
@@ -80,6 +80,19 @@ describe('applyBlushFace smoke test', () => {
 
     expect(() => {
       applyBlushFace(face, ctx, rgb, DIMENSION, ALPHA);
+    }).not.toThrow();
+    expect(hasNonTransparentPixel(ctx)).toBe(true);
+  });
+});
+
+describe('applyConcealerFace smoke test', () => {
+  it('renders without throwing and paints at least one pixel', () => {
+    const face = makeFixtureFace();
+    const ctx = makeCtx();
+    const rgb: [number, number, number, number] = [230, 190, 160, 1];
+
+    expect(() => {
+      applyConcealerFace(face, ctx, rgb, DIMENSION, ALPHA);
     }).not.toThrow();
     expect(hasNonTransparentPixel(ctx)).toBe(true);
   });

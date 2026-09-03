@@ -4,40 +4,28 @@
 
 _Tracking model: face landmarks + full-face segmentation. Depends on the shared face-landmark engine — see [README.md](./README.md#shared-prerequisites-ye-pehle-banao--sabko-block-karte-hain)._
 
-> **Per-subcategory tracking**: jaise-jaise ek FACE subcategory actually build hoti hai, uski apni dedicated tracker file bhi ban jaati hai (LIP ke [LIP.md](./LIP.md) jaisi) - is file (FACE.md) mein sirf uska summary-row + link reh jaata hai, poora detail nahi. Abhi tak FOUNDATION aur BLUSH ban chuki hain - [FOUNDATION.md](./FOUNDATION.md), [BLUSH.md](./BLUSH.md). Baaki 6 abhi bhi neeche inline hain (unbuilt).
+> **Per-subcategory tracking**: jaise-jaise ek FACE subcategory actually build hoti hai, uski apni dedicated tracker file bhi ban jaati hai (LIP ke [LIP.md](./LIP.md) jaisi) - is file (FACE.md) mein sirf uska summary-row + link reh jaata hai, poora detail nahi. Abhi tak FOUNDATION, BLUSH aur CONCEALER ban chuki hain - [FOUNDATION.md](./FOUNDATION.md), [BLUSH.md](./BLUSH.md), [CONCEALER.md](./CONCEALER.md). Baaki 5 abhi bhi neeche inline hain (unbuilt).
 
 ## Summary
 
-| Subcategory   | Live     | Upload   | Overall                             |
-| ------------- | -------- | -------- | ----------------------------------- |
-| CONCEALER     | 0/4      | 0/4      | 0%                                  |
-| FOUNDATION    | 4/4      | 4/4      | 100% ✅ — [detail](./FOUNDATION.md) |
-| HIGHLIGHTER   | 0/4      | 0/4      | 0%                                  |
-| BLUSH         | 3/4      | 3/4      | 75% — [detail](./BLUSH.md)          |
-| CONTOUR       | 0/4      | 0/4      | 0%                                  |
-| BRONZER       | 0/4      | 0/4      | 0%                                  |
-| BBCREAM       | 0/4      | 0/4      | 0%                                  |
-| COMPACTPOWDER | 0/4      | 0/4      | 0%                                  |
-| **Total**     | **7/32** | **7/32** | **21.9% (14/64)**                   |
+| Subcategory   | Live      | Upload    | Overall                             |
+| ------------- | --------- | --------- | ----------------------------------- |
+| CONCEALER     | 3/4       | 3/4       | 75% — [detail](./CONCEALER.md)      |
+| FOUNDATION    | 4/4       | 4/4       | 100% ✅ — [detail](./FOUNDATION.md) |
+| HIGHLIGHTER   | 0/4       | 0/4       | 0%                                  |
+| BLUSH         | 3/4       | 3/4       | 75% — [detail](./BLUSH.md)          |
+| CONTOUR       | 0/4       | 0/4       | 0%                                  |
+| BRONZER       | 0/4       | 0/4       | 0%                                  |
+| BBCREAM       | 0/4       | 0/4       | 0%                                  |
+| COMPACTPOWDER | 0/4       | 0/4       | 0%                                  |
+| **Total**     | **10/32** | **10/32** | **31.25% (20/64)**                  |
 
 ## Details
 
 <details>
-<summary><strong>CONCEALER</strong> — 0%</summary>
+<summary><strong>CONCEALER</strong> — 75% — see <a href="./CONCEALER.md">CONCEALER.md</a> for the full checklist, design notes, and quality score</summary>
 
-**Live**
-
-- [ ] Camera capture + under-eye/blemish-region tracking wired
-- [ ] Spot-blend color correction rendered in real-time
-- [ ] Shade/variant picker functional (linked to product variants)
-- [ ] Performance & cross-device QA (FPS, lighting conditions)
-
-**Upload**
-
-- [ ] Photo upload + under-eye/blemish-region detection on static image
-- [ ] Spot-blend color correction applied to image
-- [ ] Shade/variant picker functional
-- [ ] Output preview/download QA
+Ab yaha inline nahi hai - apni dedicated file mil chuki hai: **[CONCEALER.md](./CONCEALER.md)**.
 
 </details>
 

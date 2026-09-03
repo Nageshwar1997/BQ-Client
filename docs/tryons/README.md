@@ -7,7 +7,7 @@ Virtual try-on ko 6 main categories me build karna hai — **LIP, EYE, HAIR, FAC
 
 Per-category detail aur checklist alag file me hai. Ye file sirf overall status aur un cheezon ke liye hai jo **sab categories ke liye common/shared** hai (ek baar ban gayi to sabko fayda).
 
-> Status snapshot: **LIP category ab poori tarah complete hai (10/10, [LIP-10-10-PLAN.md](./LIP-10-10-PLAN.md) done)** — real engine ban gaya (MediaPipe FaceLandmarker + canvas rendering), Live aur Upload dono modes me sabhi 11 subcategories (MATTE/STAIN/SATIN/GLOSS/BALM/SHIMMER/CRAYON/OIL/METALLIC/PLUMPER/LINER) actually render karte hain, shade+finish picker se driven, aur real-device QA (Android/iOS/Safari) bhi ho chuki hai. `ProductDetails` page pe "Try-On" button wired hai — [ProductDetails/index.tsx:324](../../src/pages/product/ProductDetails/index.tsx#L324). Engine architecture class-based hai (reference `src/commverse` se adapt kiya, dekh [LIP.md](./LIP.md)) — per-category `EngineBase` + do generic mixins (`withLiveCamera`/`withImageUpload`) jo sabhi categories reuse karenge, aur FACE ne ye bina kisi change ke prove kiya. **FACE category shuru ho chuki hai** — FOUNDATION poori tarah complete hai (**10/10** ✅, [FOUNDATION.md](./FOUNDATION.md), real-device QA bhi ho chuki hai), BLUSH build ho chuki hai (~7.7/10, [BLUSH.md](./BLUSH.md), abhi real-device QA baaki hai), baaki 6 subcategories abhi unbuilt hain.
+> Status snapshot: **LIP category ab poori tarah complete hai (10/10, [LIP-10-10-PLAN.md](./LIP-10-10-PLAN.md) done)** — real engine ban gaya (MediaPipe FaceLandmarker + canvas rendering), Live aur Upload dono modes me sabhi 11 subcategories (MATTE/STAIN/SATIN/GLOSS/BALM/SHIMMER/CRAYON/OIL/METALLIC/PLUMPER/LINER) actually render karte hain, shade+finish picker se driven, aur real-device QA (Android/iOS/Safari) bhi ho chuki hai. `ProductDetails` page pe "Try-On" button wired hai — [ProductDetails/index.tsx:324](../../src/pages/product/ProductDetails/index.tsx#L324). Engine architecture class-based hai (reference `src/commverse` se adapt kiya, dekh [LIP.md](./LIP.md)) — per-category `EngineBase` + do generic mixins (`withLiveCamera`/`withImageUpload`) jo sabhi categories reuse karenge, aur FACE ne ye bina kisi change ke prove kiya. **FACE category shuru ho chuki hai** — FOUNDATION poori tarah complete hai (**10/10** ✅, [FOUNDATION.md](./FOUNDATION.md), real-device QA bhi ho chuki hai), BLUSH aur CONCEALER dono build ho chuke hain (~7.7/10 each, [BLUSH.md](./BLUSH.md), [CONCEALER.md](./CONCEALER.md), dono abhi real-device QA ka wait kar rahe hain), baaki 5 subcategories abhi unbuilt hain.
 
 ## Shared prerequisites (ye pehle banao — sabko block karte hain)
 
@@ -23,20 +23,20 @@ Inme se koi bhi cheez kisi ek category ke andar dobara nahi likhni — ek baar y
 
 ## Category trackers
 
-| Category    | Subcategories | Progress          | File                                                                                       |
-| ----------- | ------------- | ----------------- | ------------------------------------------------------------------------------------------ |
-| LIP         | 11            | 100% (88/88) ✅   | [LIP.md](./LIP.md)                                                                         |
-| EYE         | 7             | 0% (0/56)         | [EYE.md](./EYE.md)                                                                         |
-| HAIR        | 4             | 0% (0/32)         | [HAIR.md](./HAIR.md)                                                                       |
-| FACE        | 8             | 21.9% (14/64)     | [FACE.md](./FACE.md) — FOUNDATION [detail](./FOUNDATION.md) ✅, BLUSH [detail](./BLUSH.md) |
-| NAIL        | 5             | 0% (0/40)         | [NAIL.md](./NAIL.md)                                                                       |
-| SKIN        | 8             | 0% (0/64)         | [SKIN.md](./SKIN.md)                                                                       |
-| **Overall** | **43**        | **30% (102/344)** | —                                                                                          |
+| Category    | Subcategories | Progress          | File                                                                                                                           |
+| ----------- | ------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| LIP         | 11            | 100% (88/88) ✅   | [LIP.md](./LIP.md)                                                                                                             |
+| EYE         | 7             | 0% (0/56)         | [EYE.md](./EYE.md)                                                                                                             |
+| HAIR        | 4             | 0% (0/32)         | [HAIR.md](./HAIR.md)                                                                                                           |
+| FACE        | 8             | 31.25% (20/64)    | [FACE.md](./FACE.md) — FOUNDATION [detail](./FOUNDATION.md) ✅, BLUSH [detail](./BLUSH.md), CONCEALER [detail](./CONCEALER.md) |
+| NAIL        | 5             | 0% (0/40)         | [NAIL.md](./NAIL.md)                                                                                                           |
+| SKIN        | 8             | 0% (0/64)         | [SKIN.md](./SKIN.md)                                                                                                           |
+| **Overall** | **43**        | **31% (108/344)** | —                                                                                                                              |
 
 ## Suggested build order
 
 1. **LIP** ✅ done — sabse simple region (single landmark ring), high product volume, sabse zyada learning yahi milegi baaki categories ke liye
-2. **FACE** 🔄 in progress (FOUNDATION ✅ done 10/10, BLUSH 🔄 built/pending real-device QA, 6 aur subcategories baaki) — same face-landmark engine reuse, thoda bada region set
+2. **FACE** 🔄 in progress (FOUNDATION ✅ done 10/10, BLUSH aur CONCEALER 🔄 built/pending real-device QA, 5 aur subcategories baaki) — same face-landmark engine reuse, thoda bada region set
 3. **EYE** — precision-heavy (thin lines, lash detail), zyada QA chahiye
 4. **HAIR** — segmentation-based (landmark nahi, poore strand ka mask), alag technique
 5. **NAIL** — naya tracking model (hand/finger) integrate karna padega, isliye baad me

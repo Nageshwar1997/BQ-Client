@@ -5,6 +5,8 @@ import {
   CHEEK_APPLE_RIGHT_INDEX,
   CHEEKBONE_LEFT_INDEX,
   CHEEKBONE_RIGHT_INDEX,
+  CONCEALER_BLOB_ASPECT_RATIO,
+  CONCEALER_BLOB_WIDTH_RATIO,
   FACE_OVAL_INDICES,
   FOREHEAD_EXTENSION_RATIO,
   FOREHEAD_EXTENSION_TAPER_RATIO,
@@ -15,6 +17,9 @@ import {
   NOSE_TIP_INDEX,
   RIGHT_EYE_INDICES,
   RIGHT_EYEBROW_INDICES,
+  UNDER_EYE_LEFT_INDEX,
+  UNDER_EYE_OFFSET_RATIO,
+  UNDER_EYE_RIGHT_INDEX,
 } from '@/constants/tryon-constants/face';
 import type { ColorTuple } from '@/types/tryon-types';
 
@@ -246,33 +251,45 @@ export const applyFoundationFace = (
  * whole area.
  */
 
-// Solid-ish at `center`, fading to fully transparent by `radius` - a radial gradient, not a flat
-// circle blurred afterward: blur only softens edges that already exist, it can't produce this
-// "concentrated in the middle, gone by the edge" falloff on its own, and a blur wide enough to
-// look this soft would need to be wide enough to noticeably shrink the visible color too - an
-// extra tuning knob this sidesteps by building the falloff directly into the fill instead.
+// Solid-ish at `center`, fading to fully transparent by `radiusX`, fed through a non-uniform
+// scale (`radiusY / radiusX`) to turn the circle into an ellipse when the two differ (CONCEALER's
+// wide, short under-eye shape) - a radial gradient either way, not a flat shape blurred
+// afterward: blur only softens edges that already exist, it can't produce this "concentrated in
+// the middle, gone by the edge" falloff on its own, and a blur wide enough to look this soft
+// would need to be wide enough to noticeably shrink the visible color too - an extra tuning knob
+// this sidesteps by building the falloff directly into the fill instead. `radiusX === radiusY`
+// (BLUSH's plain circular blob) makes the scale a no-op, so this is a strict generalization of
+// the original circle-only version - BLUSH's own call/output is unchanged.
 const drawFeatheredBlob = (
   ctx: CanvasRenderingContext2D,
   center: IPoint,
-  radius: number,
+  radiusX: number,
+  radiusY: number,
   rgb: ColorTuple,
   alpha: number,
 ) => {
   const [r, g, b] = rgb;
-  const gradient = ctx.createRadialGradient(center.x, center.y, 0, center.x, center.y, radius);
+
+  ctx.save();
+  ctx.translate(center.x, center.y);
+  ctx.scale(1, radiusY / radiusX);
+
+  const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, radiusX);
   // 0.6 base opacity at dead center - same fixed "how strong the pure color reads" baseline
   // `FaceEngineBase.applyEffect` already bakes into every other FACE finish's color string
   // (see `applyFoundationFace`'s own `rgba(...,0.6)`), multiplied here by the caller's own
   // `alpha` (the intensity slider) directly into the color-stop math rather than via
-  // `ctx.globalAlpha` - two blobs get drawn per call (left/right cheek) and baking the alpha into
-  // each gradient's own stops keeps them independent instead of relying on shared canvas state.
+  // `ctx.globalAlpha` - multiple blobs get drawn per call (e.g. left/right cheek or eye) and
+  // baking the alpha into each gradient's own stops keeps them independent instead of relying on
+  // shared canvas state.
   gradient.addColorStop(0, `rgba(${String(r)},${String(g)},${String(b)},${String(0.6 * alpha)})`);
   gradient.addColorStop(1, `rgba(${String(r)},${String(g)},${String(b)},0)`);
 
   ctx.beginPath();
-  ctx.arc(center.x, center.y, radius, 0, Math.PI * 2);
+  ctx.arc(0, 0, radiusX, 0, Math.PI * 2);
   ctx.fillStyle = gradient;
   ctx.fill();
+  ctx.restore();
 };
 
 // Cheek color-wash - a feathered blob centered on each cheek apple, radius scaled off the
@@ -309,10 +326,88 @@ export const applyBlushFace = (
       tempCtx,
       { x: point.x * dimension.width, y: point.y * dimension.height },
       radius,
+      radius,
       rgb,
       alpha,
     );
   });
+  tempCtx.restore();
+
+  ctx.drawImage(temp, 0, 0);
+};
+
+/* ================= CONCEALER ================================================================
+ * Under-eye spot color correction - a wide, short feathered ellipse per eye (not a plain circle
+ * like BLUSH's cheek dab), matching the real under-eye crescent's shape. There's no landmark for
+ * genuine blemish detection (that needs real skin analysis, out of scope for a landmark-only
+ * approach - see this file's own header comment on why hair-detection was dropped for the same
+ * reason), so this covers the one universal, always-present concealer use case every shopper
+ * has: brightening under the eyes.
+ */
+
+// Punches the eye openings themselves out of whatever's already painted on `ctx` - unlike BLUSH's
+// cheek-apple blob (which sits far enough from any excluded feature that a gradient's soft tail
+// never reaches one), CONCEALER's anchor sits right next to the eye by design, so its gradient's
+// upward tail can realistically bleed onto the eyelid/eye opening without this. Same independent-
+// per-feature `destination-out` technique `eraseExcludedFeatures` already uses for the full-face
+// finishes, scoped down to just the two eyes here (eyebrows/mouth are irrelevant to concealer).
+const eraseEyes = (
+  ctx: CanvasRenderingContext2D,
+  face: NormalizedLandmark[],
+  dimension: TDimension,
+) => {
+  ctx.save();
+  ctx.globalCompositeOperation = 'destination-out';
+  [LEFT_EYE_INDICES, RIGHT_EYE_INDICES].forEach((indices) => {
+    ctx.beginPath();
+    traceSmoothClosedPath(ctx, toPoints(face, indices, dimension));
+    ctx.fill();
+  });
+  ctx.restore();
+};
+
+export const applyConcealerFace = (
+  face: NormalizedLandmark[],
+  ctx: CanvasRenderingContext2D,
+  rgb: ColorTuple,
+  dimension: TDimension,
+  alpha: number,
+) => {
+  const leftAnchor = face[UNDER_EYE_LEFT_INDEX];
+  const rightAnchor = face[UNDER_EYE_RIGHT_INDEX];
+  if (!leftAnchor || !rightAnchor) return;
+
+  const ovalYs = toPoints(face, FACE_OVAL_INDICES, dimension).map((point) => point.y);
+  const faceHeight = Math.max(...ovalYs) - Math.min(...ovalYs);
+  const verticalOffset = faceHeight * UNDER_EYE_OFFSET_RATIO;
+
+  const temp = document.createElement('canvas');
+  temp.width = dimension.width;
+  temp.height = dimension.height;
+  const tempCtx = temp.getContext('2d');
+  if (!tempCtx) return;
+
+  tempCtx.save();
+  clipToFaceOval(tempCtx, face, dimension);
+  [
+    { anchor: leftAnchor, eyeIndices: LEFT_EYE_INDICES },
+    { anchor: rightAnchor, eyeIndices: RIGHT_EYE_INDICES },
+  ].forEach(({ anchor, eyeIndices }) => {
+    const eyeXs = toPoints(face, eyeIndices, dimension).map((point) => point.x);
+    const eyeWidth = Math.max(...eyeXs) - Math.min(...eyeXs);
+    const radiusX = eyeWidth * CONCEALER_BLOB_WIDTH_RATIO;
+    const radiusY = radiusX * CONCEALER_BLOB_ASPECT_RATIO;
+
+    drawFeatheredBlob(
+      tempCtx,
+      { x: anchor.x * dimension.width, y: anchor.y * dimension.height + verticalOffset },
+      radiusX,
+      radiusY,
+      rgb,
+      alpha,
+    );
+  });
+  eraseEyes(tempCtx, face, dimension);
   tempCtx.restore();
 
   ctx.drawImage(temp, 0, 0);
