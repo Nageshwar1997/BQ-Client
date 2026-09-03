@@ -1,6 +1,7 @@
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
 import {
+  BBCREAM_BASE_ALPHA,
   BRONZER_WARM_RATIO,
   BRONZER_WARM_SHIFT,
   CHEEK_APPLE_LEFT_INDEX,
@@ -604,5 +605,27 @@ export const applyBronzerFace = (
 ) => {
   const [r, g, b] = applyWarmShift(rgb, BRONZER_WARM_RATIO);
   const color = `rgba(${String(r)},${String(g)},${String(b)},0.6)`;
+  fillFaceOvalRegion(face, ctx, color, dimension, alpha);
+};
+
+/* ================= BB CREAM ================================================================
+ * Sheer full-face wash - same `fillFaceOvalRegion` full-face wash FOUNDATION/BRONZER use, no
+ * color-mix transform at all (unlike HIGHLIGHTER's whitening or BRONZER's warm-shift), because
+ * "BB cream" isn't a different hue effect - FACE.md describes it as literally "lighter than
+ * foundation". That's an alpha concern, not a color one, so the only difference from
+ * `applyFoundationFace` is baking in `BBCREAM_BASE_ALPHA` (0.35) instead of FOUNDATION's fixed
+ * 0.6 base opacity - see `BBCREAM_BASE_ALPHA`'s own comment for why this is baked into the render
+ * itself rather than relying purely on `FACE_RANGE_BOUNDS.BBCREAM`'s lower ceiling.
+ */
+
+export const applyBbCreamFace = (
+  face: NormalizedLandmark[],
+  ctx: CanvasRenderingContext2D,
+  rgb: ColorTuple,
+  dimension: TDimension,
+  alpha: number,
+) => {
+  const [r, g, b] = rgb;
+  const color = `rgba(${String(r)},${String(g)},${String(b)},${String(BBCREAM_BASE_ALPHA)})`;
   fillFaceOvalRegion(face, ctx, color, dimension, alpha);
 };

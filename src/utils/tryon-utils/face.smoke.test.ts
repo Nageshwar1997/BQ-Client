@@ -15,6 +15,7 @@ import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 import { describe, expect, it } from 'vitest';
 
 import {
+  applyBbCreamFace,
   applyBlushFace,
   applyBronzerFace,
   applyConcealerFace,
@@ -139,6 +140,19 @@ describe('applyBronzerFace smoke test', () => {
 
     expect(() => {
       applyBronzerFace(face, ctx, rgb, DIMENSION, ALPHA);
+    }).not.toThrow();
+    expect(hasNonTransparentPixel(ctx)).toBe(true);
+  });
+});
+
+describe('applyBbCreamFace smoke test', () => {
+  it('renders without throwing and paints at least one pixel', () => {
+    const face = makeFixtureFace();
+    const ctx = makeCtx();
+    const rgb: [number, number, number, number] = [235, 200, 175, 1];
+
+    expect(() => {
+      applyBbCreamFace(face, ctx, rgb, DIMENSION, ALPHA);
     }).not.toThrow();
     expect(hasNonTransparentPixel(ctx)).toBe(true);
   });

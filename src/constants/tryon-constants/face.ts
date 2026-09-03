@@ -144,6 +144,15 @@ export const CONTOUR_DARKEN_RATIO = 0.35;
 export const BRONZER_WARM_SHIFT = 35;
 export const BRONZER_WARM_RATIO = 0.5;
 
+// The base opacity `applyBbCreamFace` bakes into its own color string - the same role
+// FOUNDATION's own fixed 0.6 plays (see `FaceEngineBase.applyEffect`'s `color` line), just
+// lower. FACE.md describes BB cream as explicitly "lighter than foundation" - a lower range
+// ceiling alone (`FACE_RANGE_BOUNDS.BBCREAM`) only makes that true if nobody ever raises it, so
+// this bakes "sheerer than foundation" into the render itself as a structural guarantee, the
+// same "don't rely purely on the slider's own bounds" reasoning LIP's `applyStainLips` already
+// used (`Math.min(alpha, 0.35)`) to keep STAIN genuinely sheer regardless of what the slider says.
+export const BBCREAM_BASE_ALPHA = 0.35;
+
 // MediaPipe's standard, widely-documented nose-tip landmark - used (alongside
 // CHEEKBONE_LEFT/RIGHT_INDEX above) purely as a head-turn signal, see `isFaceTurnedTooMuch` in
 // utils/tryon-utils/face.ts, not for any rendering placement.
@@ -196,12 +205,16 @@ export const FACE_RANGE_BOUNDS: Record<TFaceFinish, IRangeBounds> = {
   // does the "read as a warm glow, not a neutral color-match" work, so this doesn't need a wider
   // range than FOUNDATION's own to compensate.
   BRONZER: { min: 0.08, max: 0.4, default: 0.2 },
-  // Everything below doesn't have dedicated rendering yet - falls back to FOUNDATION's full-face
-  // wash (see `UNSUPPORTED_FACE_FINISHES` in FaceEngineBase.ts). These bounds are placeholders
-  // chosen for each finish's eventual intended character (BB cream explicitly "lighter than
-  // foundation" per FACE.md) rather than validated tuning - revisit once each gets its own
-  // dedicated renderer, same as FOUNDATION/BLUSH/CONCEALER/HIGHLIGHTER/CONTOUR/BRONZER did.
+  // No reference equivalent either. Same full-face-wash mechanism as FOUNDATION, but
+  // `BBCREAM_BASE_ALPHA` already bakes "sheerer than foundation" into the render itself (see its
+  // own comment), so this range doesn't need to be dramatically lower than FOUNDATION's own to
+  // stay lighter - the two work together, not one compensating for the other missing.
   BBCREAM: { min: 0.08, max: 0.5, default: 0.15 },
+  // Doesn't have dedicated rendering yet - falls back to FOUNDATION's full-face wash (see
+  // `UNSUPPORTED_FACE_FINISHES` in FaceEngineBase.ts). These bounds are a placeholder chosen for
+  // the finish's eventual intended character (matte/shine-reduction meant to stay subtle) rather
+  // than validated tuning - revisit once it gets its own dedicated renderer, same as every other
+  // FACE finish did.
   COMPACTPOWDER: { min: 0.05, max: 0.3, default: 0.12 },
 };
 
