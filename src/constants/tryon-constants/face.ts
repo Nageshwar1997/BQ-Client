@@ -133,6 +133,17 @@ export const CONTOUR_BLOB_ASPECT_RATIO = 1.4;
 // hue still recognizable while reading clearly darker/shadow-like.
 export const CONTOUR_DARKEN_RATIO = 0.35;
 
+// How far `applyBronzerFace` (utils/tryon-utils/face.ts) shifts the chosen shade's color toward
+// warm (more red, a touch more green, less blue) before painting it as a full-face wash - a
+// temperature-style channel shift rather than mixing toward one fixed absolute bronze color
+// (which would flatten every different bronzer shade toward the same hue, the same reasoning
+// `HIGHLIGHTER_WHITEN_RATIO`/`CONTOUR_DARKEN_RATIO` already used for why a plain color wash
+// alone doesn't read as the real cosmetic effect). `_SHIFT` is the raw per-channel amount at
+// full ratio (1.0); `_RATIO` is how much of that actually applies - 0.5 keeps the shade's own
+// hue recognizable while still reading meaningfully warmer/sun-kissed than a flat wash.
+export const BRONZER_WARM_SHIFT = 35;
+export const BRONZER_WARM_RATIO = 0.5;
+
 // MediaPipe's standard, widely-documented nose-tip landmark - used (alongside
 // CHEEKBONE_LEFT/RIGHT_INDEX above) purely as a head-turn signal, see `isFaceTurnedTooMuch` in
 // utils/tryon-utils/face.ts, not for any rendering placement.
@@ -180,12 +191,16 @@ export const FACE_RANGE_BOUNDS: Record<TFaceFinish, IRangeBounds> = {
   // still does most of the "read as shadow, not a colored patch" work, so this doesn't need to
   // lean as hard on alpha as CONCEALER's opacity-driven coverage does.
   CONTOUR: { min: 0.1, max: 0.5, default: 0.25 },
+  // No reference equivalent either. Same full-face-wash mechanism as FOUNDATION (see
+  // `applyBronzerFace`'s own comment), so a similar bounds shape - `BRONZER_WARM_RATIO` already
+  // does the "read as a warm glow, not a neutral color-match" work, so this doesn't need a wider
+  // range than FOUNDATION's own to compensate.
+  BRONZER: { min: 0.08, max: 0.4, default: 0.2 },
   // Everything below doesn't have dedicated rendering yet - falls back to FOUNDATION's full-face
   // wash (see `UNSUPPORTED_FACE_FINISHES` in FaceEngineBase.ts). These bounds are placeholders
   // chosen for each finish's eventual intended character (BB cream explicitly "lighter than
   // foundation" per FACE.md) rather than validated tuning - revisit once each gets its own
-  // dedicated renderer, same as FOUNDATION/BLUSH/CONCEALER/HIGHLIGHTER/CONTOUR did.
-  BRONZER: { min: 0.08, max: 0.4, default: 0.2 },
+  // dedicated renderer, same as FOUNDATION/BLUSH/CONCEALER/HIGHLIGHTER/CONTOUR/BRONZER did.
   BBCREAM: { min: 0.08, max: 0.5, default: 0.15 },
   COMPACTPOWDER: { min: 0.05, max: 0.3, default: 0.12 },
 };

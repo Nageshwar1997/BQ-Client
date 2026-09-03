@@ -16,6 +16,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   applyBlushFace,
+  applyBronzerFace,
   applyConcealerFace,
   applyContourFace,
   applyFoundationFace,
@@ -125,6 +126,19 @@ describe('applyContourFace smoke test', () => {
 
     expect(() => {
       applyContourFace(face, ctx, rgb, DIMENSION, ALPHA);
+    }).not.toThrow();
+    expect(hasNonTransparentPixel(ctx)).toBe(true);
+  });
+});
+
+describe('applyBronzerFace smoke test', () => {
+  it('renders without throwing and paints at least one pixel', () => {
+    const face = makeFixtureFace();
+    const ctx = makeCtx();
+    const rgb: [number, number, number, number] = [180, 130, 90, 1];
+
+    expect(() => {
+      applyBronzerFace(face, ctx, rgb, DIMENSION, ALPHA);
     }).not.toThrow();
     expect(hasNonTransparentPixel(ctx)).toBe(true);
   });

@@ -1,6 +1,8 @@
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
 import {
+  BRONZER_WARM_RATIO,
+  BRONZER_WARM_SHIFT,
   CHEEK_APPLE_LEFT_INDEX,
   CHEEK_APPLE_RIGHT_INDEX,
   CHEEKBONE_LEFT_INDEX,
@@ -210,8 +212,13 @@ const eraseExcludedFeatures = (
   ctx.restore();
 };
 
-// Base-tone color correction. Plain `source-over` (not `multiply`) - `multiply` was here before
-// specifically to let the skin's own natural light/shadow variation show through the tint
+// Fills the face-oval region (forehead-extended, eyes/eyebrows/mouth punched out) with a single
+// flat color at a given alpha - shared by every full-face finish (FOUNDATION and now BRONZER;
+// BBCREAM/COMPACTPOWDER will reuse this too once they get their own dedicated renderers).
+// Extracted out of what was FOUNDATION's own function body once BRONZER needed the exact same
+// fill/clip/erase/composite shape, just with a warmed color computed first - see
+// `applyBronzerFace`'s own comment. Plain `source-over` (not `multiply`) - `multiply` was here
+// before specifically to let the skin's own natural light/shadow variation show through the tint
 // instead of flattening the whole face into one uniform flat color, but `temp` (below) is a
 // *blank* canvas at the point this fills it, so there's nothing underneath to actually multiply
 // against - the "show shading through" only ever came from the final `ctx.drawImage(temp, 0, 0)`
@@ -222,7 +229,7 @@ const eraseExcludedFeatures = (
 // at least one mobile browser's engine instead produced a fully transparent - and so entirely
 // invisible - result). `source-over` has no such edge case and is what this was already
 // functionally equivalent to everywhere it happened to work.
-export const applyFoundationFace = (
+const fillFaceOvalRegion = (
   face: NormalizedLandmark[],
   ctx: CanvasRenderingContext2D,
   color: string,
@@ -250,6 +257,16 @@ export const applyFoundationFace = (
   eraseExcludedFeatures(tempCtx, face, dimension);
 
   ctx.drawImage(temp, 0, 0);
+};
+
+export const applyFoundationFace = (
+  face: NormalizedLandmark[],
+  ctx: CanvasRenderingContext2D,
+  color: string,
+  dimension: TDimension,
+  alpha: number,
+) => {
+  fillFaceOvalRegion(face, ctx, color, dimension, alpha);
 };
 
 /* ================= LOCALIZED FINISHES (BLUSH / HIGHLIGHTER / CONTOUR) ========================
@@ -557,4 +574,35 @@ export const applyContourFace = (
   tempCtx.restore();
 
   ctx.drawImage(temp, 0, 0);
+};
+
+/* ================= BRONZER ================================================================
+ * Warm all-over glow - the same full-face wash FOUNDATION uses (`fillFaceOvalRegion`: face-oval
+ * clip, eyes/eyebrows/mouth punched out), but the chosen shade gets warmed first so it reads as
+ * a sun-kissed bronze glow rather than a neutral color-match wash - the same "make it read as
+ * the real cosmetic effect, not just a colored patch" reasoning HIGHLIGHTER's whitening and
+ * CONTOUR's darkening already established for the localized finishes.
+ */
+
+// Shifts `rgb` warmer (more red, a touch more green, less blue) by `ratio` - a temperature-style
+// channel shift rather than mixing toward one fixed absolute bronze color (which would flatten
+// every different bronzer shade toward the same hue - see `BRONZER_WARM_SHIFT`'s own comment).
+// Plain per-channel RGB math, not a canvas blend mode - same reasoning as `mixTowardWhite`/
+// `mixTowardBlack` above.
+const applyWarmShift = (rgb: ColorTuple, ratio: number): ColorTuple => {
+  const [r, g, b, a] = rgb;
+  const shift = BRONZER_WARM_SHIFT * ratio;
+  return [Math.min(255, r + shift), Math.min(255, g + shift * 0.4), Math.max(0, b - shift), a];
+};
+
+export const applyBronzerFace = (
+  face: NormalizedLandmark[],
+  ctx: CanvasRenderingContext2D,
+  rgb: ColorTuple,
+  dimension: TDimension,
+  alpha: number,
+) => {
+  const [r, g, b] = applyWarmShift(rgb, BRONZER_WARM_RATIO);
+  const color = `rgba(${String(r)},${String(g)},${String(b)},0.6)`;
+  fillFaceOvalRegion(face, ctx, color, dimension, alpha);
 };
