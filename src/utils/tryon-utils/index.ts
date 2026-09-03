@@ -304,3 +304,7 @@ export const loadImage = (src: string, signal?: AbortSignal): Promise<HTMLImageE
     img.src = src;
   });
 };
+
+export const toColorString = (r: number, g: number, b: number, a: number) => {
+  return `rgba(${String(r)},${String(g)},${String(b)},${String(a)})`;
+};
