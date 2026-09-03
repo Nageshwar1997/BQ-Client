@@ -10,6 +10,11 @@ import {
   UPPER_WHITE_LIP_INDICES_INSET,
 } from '@/constants/tryon-constants/lip';
 import type { TDimension, TPoint } from '@/types/tryon-types';
+import type {
+  ILipDoubleTextureRenderParams,
+  ILipRenderParams,
+  ILipSingleTextureRenderParams,
+} from '@/types/tryon-types/lip';
 
 // LIP-specific canvas rendering, ported from the reference implementation's
 // `virtual-tryon/utils/index.ts` lip functions. The per-finish opacity numbers below (0.1,
@@ -160,13 +165,7 @@ const drawLipHalfMatte = (
   ctx.restore();
 };
 
-export const applyMatteLips = (
-  face: NormalizedLandmark[],
-  ctx: CanvasRenderingContext2D,
-  color: string,
-  dimension: TDimension,
-  alpha: number,
-) => {
+export const applyMatteLips = ({ face, ctx, color, dimension, alpha }: ILipRenderParams) => {
   const temp = document.createElement('canvas');
   temp.width = dimension.width;
   temp.height = dimension.height;
@@ -212,13 +211,7 @@ const clipToFullLipFill = (
 // always hard-edged regardless of what's drawn inside it, so the half of the blurred stroke
 // bleeding outward (onto skin) gets cut off crisply right at the boundary, while the half
 // bleeding inward (into the lip) stays and shows the blur's natural soft falloff.
-export const applyLinerLips = (
-  face: NormalizedLandmark[],
-  ctx: CanvasRenderingContext2D,
-  color: string,
-  dimension: TDimension,
-  alpha: number,
-) => {
+export const applyLinerLips = ({ face, ctx, color, dimension, alpha }: ILipRenderParams) => {
   const points = LIP_OUTER_CONTOUR_INDICES.map((index) => face[index])
     .filter((point): point is NormalizedLandmark => point !== undefined)
     .map((point) => ({ x: point.x * dimension.width, y: point.y * dimension.height }));
@@ -476,38 +469,38 @@ const applyTexturedLips = (
   ctx.globalCompositeOperation = 'source-over';
 };
 
-export const applyGlossLips = (
-  face: NormalizedLandmark[],
-  ctx: CanvasRenderingContext2D,
-  color: string,
-  textureUpper: HTMLImageElement,
-  textureLower: HTMLImageElement,
-  dimension: TDimension,
-  alpha: number,
-) => {
+export const applyGlossLips = ({
+  face,
+  ctx,
+  color,
+  textureUpper,
+  textureLower,
+  dimension,
+  alpha,
+}: ILipDoubleTextureRenderParams) => {
   applyTexturedLips('GLOSS', face, ctx, color, textureUpper, textureLower, dimension, alpha);
 };
 
-export const applyCrayonLips = (
-  face: NormalizedLandmark[],
-  ctx: CanvasRenderingContext2D,
-  color: string,
-  texture: HTMLImageElement,
-  dimension: TDimension,
-  alpha: number,
-) => {
+export const applyCrayonLips = ({
+  face,
+  ctx,
+  color,
+  texture,
+  dimension,
+  alpha,
+}: ILipSingleTextureRenderParams) => {
   // Crayon uses one texture file for both halves (see constants/tryon-constants/lip.ts).
   applyTexturedLips('CRAYON', face, ctx, color, texture, texture, dimension, alpha);
 };
 
-export const applyShimmerLips = (
-  face: NormalizedLandmark[],
-  ctx: CanvasRenderingContext2D,
-  color: string,
-  texture: HTMLImageElement,
-  dimension: TDimension,
-  alpha: number,
-) => {
+export const applyShimmerLips = ({
+  face,
+  ctx,
+  color,
+  texture,
+  dimension,
+  alpha,
+}: ILipSingleTextureRenderParams) => {
   // Shimmer also uses one texture file for both halves.
   applyTexturedLips('SHIMMER', face, ctx, color, texture, texture, dimension, alpha);
 };
@@ -516,15 +509,15 @@ export const applyShimmerLips = (
 // a harder highlight core and a flake-sparkle layer (see METALLIC_TEXTURE_PATH_UPPER/_LOWER),
 // so this needs no extra runtime compositing beyond what GLOSS/SHIMMER already do - only the
 // texture assets and METALLIC's own (punchier) tuning in TEXTURED_FINISH_TUNING differ.
-export const applyMetallicLips = (
-  face: NormalizedLandmark[],
-  ctx: CanvasRenderingContext2D,
-  color: string,
-  textureUpper: HTMLImageElement,
-  textureLower: HTMLImageElement,
-  dimension: TDimension,
-  alpha: number,
-) => {
+export const applyMetallicLips = ({
+  face,
+  ctx,
+  color,
+  textureUpper,
+  textureLower,
+  dimension,
+  alpha,
+}: ILipDoubleTextureRenderParams) => {
   applyTexturedLips('METALLIC', face, ctx, color, textureUpper, textureLower, dimension, alpha);
 };
 
@@ -536,16 +529,16 @@ export const applyMetallicLips = (
  */
 
 // Matte base + a single light sheen pass - not a full gloss composite (no dot-highlight).
-export const applySatinLips = (
-  face: NormalizedLandmark[],
-  ctx: CanvasRenderingContext2D,
-  color: string,
-  textureUpper: HTMLImageElement,
-  textureLower: HTMLImageElement,
-  dimension: TDimension,
-  alpha: number,
-) => {
-  applyMatteLips(face, ctx, color, dimension, alpha);
+export const applySatinLips = ({
+  face,
+  ctx,
+  color,
+  textureUpper,
+  textureLower,
+  dimension,
+  alpha,
+}: ILipDoubleTextureRenderParams) => {
+  applyMatteLips({ face, ctx, color, dimension, alpha });
   ctx.save();
   applyLipTexture(ctx, face, UPPER_LIP_INDICES, textureUpper, 0.15);
   applyLipTexture(ctx, face, LOWER_LIP_INDICES, textureLower, 0.15);
@@ -553,26 +546,20 @@ export const applySatinLips = (
 };
 
 // Sheer/washed tint - matte fill with a capped-down alpha.
-export const applyStainLips = (
-  face: NormalizedLandmark[],
-  ctx: CanvasRenderingContext2D,
-  color: string,
-  dimension: TDimension,
-  alpha: number,
-) => {
-  applyMatteLips(face, ctx, color, dimension, Math.min(alpha, 0.35));
+export const applyStainLips = ({ face, ctx, color, dimension, alpha }: ILipRenderParams) => {
+  applyMatteLips({ face, ctx, color, dimension, alpha: Math.min(alpha, 0.35) });
 };
 
 // Sheer gloss tint - the gloss composite at reduced intensity.
-export const applyBalmLips = (
-  face: NormalizedLandmark[],
-  ctx: CanvasRenderingContext2D,
-  color: string,
-  textureUpper: HTMLImageElement,
-  textureLower: HTMLImageElement,
-  dimension: TDimension,
-  alpha: number,
-) => {
+export const applyBalmLips = ({
+  face,
+  ctx,
+  color,
+  textureUpper,
+  textureLower,
+  dimension,
+  alpha,
+}: ILipDoubleTextureRenderParams) => {
   applyTexturedLips('GLOSS', face, ctx, color, textureUpper, textureLower, dimension, alpha * 0.5);
 };
 
@@ -580,29 +567,29 @@ export const applyBalmLips = (
 // intensity, currently over the same shared texture GLOSS uses (no dedicated art yet - see
 // GLOSS_OR_SATIN_OR_BALM_OR_PLUMPER_TEXTURE_PATH_UPPER/_LOWER's comment). `alpha` passes
 // straight through like every other textured finish here - no caller-side multiplier hack.
-export const applyPlumperLips = (
-  face: NormalizedLandmark[],
-  ctx: CanvasRenderingContext2D,
-  color: string,
-  textureUpper: HTMLImageElement,
-  textureLower: HTMLImageElement,
-  dimension: TDimension,
-  alpha: number,
-) => {
+export const applyPlumperLips = ({
+  face,
+  ctx,
+  color,
+  textureUpper,
+  textureLower,
+  dimension,
+  alpha,
+}: ILipDoubleTextureRenderParams) => {
   applyTexturedLips('PLUMPER', face, ctx, color, textureUpper, textureLower, dimension, alpha);
 };
 
 // High-gloss fluid shine - the oil-u/oil-l textures are the same gloss highlights blurred into
 // a broader, softer glow (see OIL_TEXTURE_PATH_UPPER/_LOWER), paired with a slightly higher
 // base alpha (OIL in TEXTURED_FINISH_TUNING) for a wetter, more saturated look than GLOSS.
-export const applyOilLips = (
-  face: NormalizedLandmark[],
-  ctx: CanvasRenderingContext2D,
-  color: string,
-  textureUpper: HTMLImageElement,
-  textureLower: HTMLImageElement,
-  dimension: TDimension,
-  alpha: number,
-) => {
+export const applyOilLips = ({
+  face,
+  ctx,
+  color,
+  textureUpper,
+  textureLower,
+  dimension,
+  alpha,
+}: ILipDoubleTextureRenderParams) => {
   applyTexturedLips('OIL', face, ctx, color, textureUpper, textureLower, dimension, alpha);
 };

@@ -1,5 +1,3 @@
-import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
-
 import {
   CRAYON_TEXTURE_PATH,
   GLOSS_OR_SATIN_OR_BALM_OR_PLUMPER_TEXTURE_PATH_LOWER,
@@ -11,7 +9,7 @@ import {
   OIL_TEXTURE_PATH_UPPER,
   SHIMMER_TEXTURE_PATH,
 } from '@/constants/tryon-constants/lip';
-import type { TRGBTuple } from '@/types/tryon-types';
+import type { IApplyEffectParams } from '@/types/tryon-types';
 import type { ILipAssets, ILipTryOnState, TLipFinish } from '@/types/tryon-types/lip';
 import { loadImage, toColorString } from '@/utils/tryon-utils';
 import {
@@ -127,37 +125,38 @@ export abstract class LipEngineBase extends TryOnEngineBase<ILipTryOnState, ILip
     };
   }
 
-  protected applyEffect(
-    face: NormalizedLandmark[],
-    ctx: CanvasRenderingContext2D,
-    size: { width: number; height: number },
-    rgb: TRGBTuple,
-    state: ILipTryOnState,
-    assets: ILipAssets | null,
-  ): void {
+  protected applyEffect({
+    face,
+    ctx,
+    dimension,
+    rgb,
+    state,
+    assets,
+  }: IApplyEffectParams<ILipTryOnState, ILipAssets>): void {
     if (!state.type) return;
 
     const [r, g, b] = rgb;
     const color = toColorString(r, g, b, 0.6);
     const alpha = state.range;
+    const base = { face, ctx, color, dimension, alpha };
 
     if (UNSUPPORTED_LIP_FINISHES.has(state.type)) {
       console.warn(
         `LIP finish "${state.type}" doesn't have dedicated rendering yet - falling back to MATTE.`,
       );
-      applyMatteLips(face, ctx, color, size, alpha);
+      applyMatteLips(base);
       return;
     }
 
     switch (state.type) {
       case 'MATTE':
-        applyMatteLips(face, ctx, color, size, alpha);
+        applyMatteLips(base);
         return;
       case 'STAIN':
-        applyStainLips(face, ctx, color, size, alpha);
+        applyStainLips(base);
         return;
       case 'LINER':
-        applyLinerLips(face, ctx, color, size, alpha);
+        applyLinerLips(base);
         return;
     }
 
@@ -166,36 +165,44 @@ export abstract class LipEngineBase extends TryOnEngineBase<ILipTryOnState, ILip
 
     switch (state.type) {
       case 'SATIN':
-        applySatinLips(face, ctx, color, assets.satinUpper, assets.satinLower, size, alpha);
+        applySatinLips({
+          ...base,
+          textureUpper: assets.satinUpper,
+          textureLower: assets.satinLower,
+        });
         return;
       case 'GLOSS':
-        applyGlossLips(face, ctx, color, assets.glossUpper, assets.glossLower, size, alpha);
+        applyGlossLips({
+          ...base,
+          textureUpper: assets.glossUpper,
+          textureLower: assets.glossLower,
+        });
         return;
       case 'BALM':
-        applyBalmLips(face, ctx, color, assets.balmUpper, assets.balmLower, size, alpha);
+        applyBalmLips({ ...base, textureUpper: assets.balmUpper, textureLower: assets.balmLower });
         return;
       case 'PLUMPER':
-        applyPlumperLips(face, ctx, color, assets.plumperUpper, assets.plumperLower, size, alpha);
+        applyPlumperLips({
+          ...base,
+          textureUpper: assets.plumperUpper,
+          textureLower: assets.plumperLower,
+        });
         return;
       case 'OIL':
-        applyOilLips(face, ctx, color, assets.oilUpper, assets.oilLower, size, alpha);
+        applyOilLips({ ...base, textureUpper: assets.oilUpper, textureLower: assets.oilLower });
         return;
       case 'SHIMMER':
-        applyShimmerLips(face, ctx, color, assets.shimmer, size, alpha);
+        applyShimmerLips({ ...base, texture: assets.shimmer });
         return;
       case 'CRAYON':
-        applyCrayonLips(face, ctx, color, assets.crayon, size, alpha);
+        applyCrayonLips({ ...base, texture: assets.crayon });
         return;
       case 'METALLIC':
-        applyMetallicLips(
-          face,
-          ctx,
-          color,
-          assets.metallicUpper,
-          assets.metallicLower,
-          size,
-          alpha,
-        );
+        applyMetallicLips({
+          ...base,
+          textureUpper: assets.metallicUpper,
+          textureLower: assets.metallicLower,
+        });
         return;
     }
   }

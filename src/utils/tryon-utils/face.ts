@@ -36,6 +36,7 @@ import {
   UNDER_EYE_RIGHT_INDEX,
 } from '@/constants/tryon-constants/face';
 import type { TDimension, TPoint, TRGBTuple } from '@/types/tryon-types';
+import type { IFaceRenderParams } from '@/types/tryon-types/face';
 import { toColorString } from '@/utils/tryon-utils';
 
 // FACE-specific canvas rendering - fresh design (not ported from any reference
@@ -253,13 +254,13 @@ const fillFaceOvalRegion = (
   ctx.drawImage(temp, 0, 0);
 };
 
-export const applyFoundationFace = (
-  face: NormalizedLandmark[],
-  ctx: CanvasRenderingContext2D,
-  color: string,
-  dimension: TDimension,
-  alpha: number,
-) => {
+export const applyFoundationFace = ({ face, ctx, rgb, dimension, alpha }: IFaceRenderParams) => {
+  // Used to take a pre-built `color: string` directly - the one FACE finish that did, while
+  // every other finish took raw `rgb` (see `IFaceRenderParams`'s own comment on why that got
+  // unified). Builds it here now instead, the same `toColorString(...,0.6)` FaceEngineBase's
+  // `applyEffect` used to build on FOUNDATION's behalf before every finish shared one param shape.
+  const [r, g, b] = rgb;
+  const color = toColorString(r, g, b, 0.6);
   fillFaceOvalRegion(face, ctx, color, dimension, alpha);
 };
 
@@ -318,13 +319,7 @@ const drawFeatheredBlob = (
 // face oval first (same helper the full-face finishes use) purely as a safety net - the blob's
 // own radius is already small enough to stay well inside the face under normal proportions, this
 // just guarantees it can never paint past the face oval even on an unusual face shape.
-export const applyBlushFace = (
-  face: NormalizedLandmark[],
-  ctx: CanvasRenderingContext2D,
-  rgb: TRGBTuple,
-  dimension: TDimension,
-  alpha: number,
-) => {
+export const applyBlushFace = ({ face, ctx, rgb, dimension, alpha }: IFaceRenderParams) => {
   const leftCheek = face[CHEEK_APPLE_LEFT_INDEX];
   const rightCheek = face[CHEEK_APPLE_RIGHT_INDEX];
   if (!leftCheek || !rightCheek) return;
@@ -386,13 +381,7 @@ const eraseEyes = (
   ctx.restore();
 };
 
-export const applyConcealerFace = (
-  face: NormalizedLandmark[],
-  ctx: CanvasRenderingContext2D,
-  rgb: TRGBTuple,
-  dimension: TDimension,
-  alpha: number,
-) => {
+export const applyConcealerFace = ({ face, ctx, rgb, dimension, alpha }: IFaceRenderParams) => {
   const leftAnchor = face[UNDER_EYE_LEFT_INDEX];
   const rightAnchor = face[UNDER_EYE_RIGHT_INDEX];
   if (!leftAnchor || !rightAnchor) return;
@@ -455,13 +444,7 @@ const mixTowardWhite = (rgb: TRGBTuple, ratio: number): TRGBTuple => {
 // higher on the face and further from the eyes than CONCEALER's under-eye anchor, so - like
 // BLUSH - no eye-erase pass is needed here (verified via a synthetic-face render, same as
 // BLUSH/CONCEALER's own verification).
-export const applyHighlighterFace = (
-  face: NormalizedLandmark[],
-  ctx: CanvasRenderingContext2D,
-  rgb: TRGBTuple,
-  dimension: TDimension,
-  alpha: number,
-) => {
+export const applyHighlighterFace = ({ face, ctx, rgb, dimension, alpha }: IFaceRenderParams) => {
   const leftCheekbone = face[CHEEKBONE_LEFT_INDEX];
   const rightCheekbone = face[CHEEKBONE_RIGHT_INDEX];
   if (!leftCheekbone || !rightCheekbone) return;
@@ -519,13 +502,7 @@ const mixTowardBlack = (rgb: TRGBTuple, ratio: number): TRGBTuple => {
 // under-eye shape) to follow the hollow's own vertical drop, and darkened toward black
 // (`mixTowardBlack`) instead of painted at the shade's raw color, same "read as the real
 // cosmetic effect, not just a colored patch" reasoning as HIGHLIGHTER's own whitening.
-export const applyContourFace = (
-  face: NormalizedLandmark[],
-  ctx: CanvasRenderingContext2D,
-  rgb: TRGBTuple,
-  dimension: TDimension,
-  alpha: number,
-) => {
+export const applyContourFace = ({ face, ctx, rgb, dimension, alpha }: IFaceRenderParams) => {
   const leftAnchor = face[JAW_HOLLOW_LEFT_INDEX];
   const rightAnchor = face[JAW_HOLLOW_RIGHT_INDEX];
   if (!leftAnchor || !rightAnchor) return;
@@ -589,13 +566,7 @@ const applyWarmShift = (rgb: TRGBTuple, ratio: number): TRGBTuple => {
   return [Math.min(255, r + shift), Math.min(255, g + shift * 0.4), Math.max(0, b - shift)];
 };
 
-export const applyBronzerFace = (
-  face: NormalizedLandmark[],
-  ctx: CanvasRenderingContext2D,
-  rgb: TRGBTuple,
-  dimension: TDimension,
-  alpha: number,
-) => {
+export const applyBronzerFace = ({ face, ctx, rgb, dimension, alpha }: IFaceRenderParams) => {
   const [r, g, b] = applyWarmShift(rgb, BRONZER_WARM_RATIO);
   const color = toColorString(r, g, b, 0.6);
   fillFaceOvalRegion(face, ctx, color, dimension, alpha);
@@ -611,13 +582,7 @@ export const applyBronzerFace = (
  * itself rather than relying purely on `FACE_RANGE_BOUNDS.BBCREAM`'s lower ceiling.
  */
 
-export const applyBbCreamFace = (
-  face: NormalizedLandmark[],
-  ctx: CanvasRenderingContext2D,
-  rgb: TRGBTuple,
-  dimension: TDimension,
-  alpha: number,
-) => {
+export const applyBbCreamFace = ({ face, ctx, rgb, dimension, alpha }: IFaceRenderParams) => {
   const [r, g, b] = rgb;
   const color = toColorString(r, g, b, BBCREAM_BASE_ALPHA);
   fillFaceOvalRegion(face, ctx, color, dimension, alpha);
@@ -647,13 +612,7 @@ const desaturateTowardGray = (rgb: TRGBTuple, ratio: number): TRGBTuple => {
   return [r + (gray - r) * ratio, g + (gray - g) * ratio, b + (gray - b) * ratio];
 };
 
-export const applyCompactPowderFace = (
-  face: NormalizedLandmark[],
-  ctx: CanvasRenderingContext2D,
-  rgb: TRGBTuple,
-  dimension: TDimension,
-  alpha: number,
-) => {
+export const applyCompactPowderFace = ({ face, ctx, rgb, dimension, alpha }: IFaceRenderParams) => {
   const [r, g, b] = desaturateTowardGray(rgb, COMPACTPOWDER_MATTIFY_RATIO);
   const color = toColorString(r, g, b, COMPACTPOWDER_BASE_ALPHA);
   fillFaceOvalRegion(face, ctx, color, dimension, alpha);

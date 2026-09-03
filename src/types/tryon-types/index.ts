@@ -3,7 +3,7 @@
 // (LipEngineBase today, EyeEngineBase/FaceEngineBase/... later). Product-taxonomy types
 // (TRY_ON_MAP category/subCategory) live in `@beautinique/frontend-types` instead - not here.
 
-import type { FaceDetectorOptions, Landmark } from '@mediapipe/tasks-vision';
+import type { FaceDetectorOptions, Landmark, NormalizedLandmark } from '@mediapipe/tasks-vision';
 
 export type TRunningMode = FaceDetectorOptions['runningMode'];
 
@@ -14,6 +14,49 @@ export type TRGBATuple = [r: number, g: number, b: number, a: number];
 export type TDimension = Record<'width' | 'height', number>;
 
 export type TPoint = Pick<Landmark, 'x' | 'y'>;
+
+// The 3 fields every shape in this render-param hierarchy needs, no matter which "level" it's
+// at - the landmark mesh to read from, the 2D context to paint into, and the canvas's own pixel
+// dimensions (landmark coords are 0-1 normalized, so every level needs this to convert to actual
+// pixels). Both `IRenderEffectBaseParams` and `IApplyEffectParams` below extend this rather than
+// each repeating the same 3 fields.
+export interface IRenderTargetParams {
+  face: NormalizedLandmark[];
+  ctx: CanvasRenderingContext2D;
+  dimension: TDimension;
+}
+
+// Shared param-object shape every category's per-finish render function takes, regardless of
+// category - previously these were 4-5 positional args (`face, ctx, dimension, alpha` plus
+// whatever the category adds), repeated identically across every one of LIP's 11 and FACE's 8
+// render functions. Object params make the call site self-documenting (`applyBlushFace({ face,
+// ctx, rgb, dimension, alpha })` vs remembering positional order) and let a category extend this
+// with just its own additional field(s) - see `IFaceRenderParams` (types/tryon-types/face.ts) and
+// `ILipRenderParams`/`ILipSingleTextureRenderParams`/`ILipDoubleTextureRenderParams`
+// (types/tryon-types/lip.ts). Purely the render-function boundary - `TryOnEngineBase.applyEffect`
+// itself (one level up, also carries engine-only concerns like `state`/`assets`) has its own
+// wider shape, `IApplyEffectParams` below. Internal, single-file-only helpers (e.g.
+// `drawFeatheredBlob`/`fillFaceOvalRegion` in utils/tryon-utils/face.ts) deliberately stay
+// positional - they're never called across a file boundary, so there's no "consumer" for an
+// object param to clarify anything for.
+export interface IRenderEffectBaseParams extends IRenderTargetParams {
+  alpha: number;
+}
+
+// `TryOnEngineBase.applyEffect`'s own abstract-method shape - one level above
+// `IRenderEffectBaseParams` (both share `IRenderTargetParams`, but this one branches off with its
+// own extra fields rather than also extending `IRenderEffectBaseParams` - `alpha` isn't one of
+// them, `state.range` is the actual intensity value at this level, `alpha` only gets derived from
+// it inside each category's own `applyEffect` override). Still category-agnostic (generic over
+// `TState`/`TAssets`, mirroring the class itself), but carries the engine's own raw `rgb` (every
+// category receives the same `TRGBTuple` here; what each category's *render functions* actually
+// want - raw `rgb` for FACE, a pre-built `color` string for LIP - is each category's own
+// `applyEffect` override's job to adapt, not this shared boundary's).
+export interface IApplyEffectParams<TState, TAssets> extends IRenderTargetParams {
+  rgb: TRGBTuple;
+  state: TState;
+  assets: TAssets | null;
+}
 
 // Recomputed every `renderFrame` call (see `TryOnEngineBase`) from that frame's landmark
 // detection, not a one-time setup flag like `cameraReady`/`imageReady` below - it can flip back

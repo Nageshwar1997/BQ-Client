@@ -4,7 +4,12 @@ import type {
   NormalizedLandmark,
 } from '@mediapipe/tasks-vision';
 
-import type { IMakeupState, TRGBTuple, TRunningMode } from '@/types/tryon-types';
+import type {
+  IApplyEffectParams,
+  IMakeupState,
+  TRGBTuple,
+  TRunningMode,
+} from '@/types/tryon-types';
 import {
   captureSnapShot,
   getFaceDetectionStatus,
@@ -279,10 +284,10 @@ export abstract class TryOnEngineBase<TState extends IMakeupState, TAssets = nul
       return;
     }
 
-    const size = { width, height };
+    const dimension = { width, height };
     const rgb = this.cachedRGB;
     const applyMakeup = () => {
-      this.applyEffect(face, ctx, size, rgb, this.state, this.assets);
+      this.applyEffect({ face, ctx, dimension, rgb, state: this.state, assets: this.assets });
     };
 
     // ===== NORMAL MODE (NO SPLIT) =====
@@ -382,12 +387,5 @@ export abstract class TryOnEngineBase<TState extends IMakeupState, TAssets = nul
   protected abstract onStateUpdated(): void;
   protected abstract getInitialState(): TState;
   protected abstract loadCategoryAssets(signal: AbortSignal): Promise<TAssets | null>;
-  protected abstract applyEffect(
-    face: NormalizedLandmark[],
-    ctx: CanvasRenderingContext2D,
-    size: { width: number; height: number },
-    rgb: TRGBTuple,
-    state: TState,
-    assets: TAssets | null,
-  ): void;
+  protected abstract applyEffect(params: IApplyEffectParams<TState, TAssets>): void;
 }

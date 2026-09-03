@@ -1,9 +1,8 @@
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
 import { FACE_DEFAULT_RANGE } from '@/constants/tryon-constants/face';
-import type { TRGBTuple } from '@/types/tryon-types';
+import type { IApplyEffectParams } from '@/types/tryon-types';
 import type { IFaceAssets, IFaceTryOnState, TFaceFinish } from '@/types/tryon-types/face';
-import { toColorString } from '@/utils/tryon-utils';
 import {
   applyBbCreamFace,
   applyBlushFace,
@@ -65,14 +64,13 @@ export abstract class FaceEngineBase extends TryOnEngineBase<IFaceTryOnState> {
     return isFaceTurnedTooMuch(face) ? 'turned' : status;
   }
 
-  protected applyEffect(
-    face: NormalizedLandmark[],
-    ctx: CanvasRenderingContext2D,
-    size: { width: number; height: number },
-    rgb: TRGBTuple,
-    state: IFaceTryOnState,
-    _assets: IFaceAssets,
-  ): void {
+  protected applyEffect({
+    face,
+    ctx,
+    dimension,
+    rgb,
+    state,
+  }: IApplyEffectParams<IFaceTryOnState, IFaceAssets>): void {
     if (!state.type) return;
     // `renderFrame` (TryOnEngineBase) only ever uses `faceDetection` to drive the overlay - it
     // still calls this on a 'not-clear'/'not-in-frame' reading too, deliberately (a stray frame
@@ -85,42 +83,41 @@ export abstract class FaceEngineBase extends TryOnEngineBase<IFaceTryOnState> {
     // still show dimly *through* the "face the camera" message instead of actually going away.
     if (state.faceDetection === 'turned') return;
 
-    const [r, g, b] = rgb;
-    const color = toColorString(r, g, b, 0.6);
     const alpha = state.range;
+    const params = { face, ctx, rgb, dimension, alpha };
 
     if (UNSUPPORTED_FACE_FINISHES.has(state.type)) {
       console.warn(
         `FACE finish "${state.type}" doesn't have dedicated rendering yet - falling back to FOUNDATION.`,
       );
-      applyFoundationFace(face, ctx, color, size, alpha);
+      applyFoundationFace(params);
       return;
     }
 
     switch (state.type) {
       case 'FOUNDATION':
-        applyFoundationFace(face, ctx, color, size, alpha);
+        applyFoundationFace(params);
         return;
       case 'BLUSH':
-        applyBlushFace(face, ctx, rgb, size, alpha);
+        applyBlushFace(params);
         return;
       case 'CONCEALER':
-        applyConcealerFace(face, ctx, rgb, size, alpha);
+        applyConcealerFace(params);
         return;
       case 'HIGHLIGHTER':
-        applyHighlighterFace(face, ctx, rgb, size, alpha);
+        applyHighlighterFace(params);
         return;
       case 'CONTOUR':
-        applyContourFace(face, ctx, rgb, size, alpha);
+        applyContourFace(params);
         return;
       case 'BRONZER':
-        applyBronzerFace(face, ctx, rgb, size, alpha);
+        applyBronzerFace(params);
         return;
       case 'BBCREAM':
-        applyBbCreamFace(face, ctx, rgb, size, alpha);
+        applyBbCreamFace(params);
         return;
       case 'COMPACTPOWDER':
-        applyCompactPowderFace(face, ctx, rgb, size, alpha);
+        applyCompactPowderFace(params);
         return;
     }
   }

@@ -105,6 +105,8 @@ const face = makeFixtureFace();
 // One row per finish - texture-based ones get a fixture texture, the 3 texture-free ones
 // (MATTE lives in the util test's non-smoke file already; STAIN/LINER are covered here since
 // they're texture-free too) don't.
+const base = { face, color: COLOR, dimension: DIMENSION, alpha: ALPHA };
+
 const cases: [
   name: string,
   run: (ctx: CanvasRenderingContext2D, texture: HTMLImageElement) => void,
@@ -112,67 +114,67 @@ const cases: [
   [
     'applyMatteLips',
     (ctx) => {
-      applyMatteLips(face, ctx, COLOR, DIMENSION, ALPHA);
+      applyMatteLips({ ...base, ctx });
     },
   ],
   [
     'applyStainLips',
     (ctx) => {
-      applyStainLips(face, ctx, COLOR, DIMENSION, ALPHA);
+      applyStainLips({ ...base, ctx });
     },
   ],
   [
     'applyLinerLips',
     (ctx) => {
-      applyLinerLips(face, ctx, COLOR, DIMENSION, ALPHA);
+      applyLinerLips({ ...base, ctx });
     },
   ],
   [
     'applySatinLips',
     (ctx, texture) => {
-      applySatinLips(face, ctx, COLOR, texture, texture, DIMENSION, ALPHA);
+      applySatinLips({ ...base, ctx, textureUpper: texture, textureLower: texture });
     },
   ],
   [
     'applyGlossLips',
     (ctx, texture) => {
-      applyGlossLips(face, ctx, COLOR, texture, texture, DIMENSION, ALPHA);
+      applyGlossLips({ ...base, ctx, textureUpper: texture, textureLower: texture });
     },
   ],
   [
     'applyBalmLips',
     (ctx, texture) => {
-      applyBalmLips(face, ctx, COLOR, texture, texture, DIMENSION, ALPHA);
+      applyBalmLips({ ...base, ctx, textureUpper: texture, textureLower: texture });
     },
   ],
   [
     'applyShimmerLips',
     (ctx, texture) => {
-      applyShimmerLips(face, ctx, COLOR, texture, DIMENSION, ALPHA);
+      applyShimmerLips({ ...base, ctx, texture });
     },
   ],
   [
     'applyCrayonLips',
     (ctx, texture) => {
-      applyCrayonLips(face, ctx, COLOR, texture, DIMENSION, ALPHA);
+      applyCrayonLips({ ...base, ctx, texture });
     },
   ],
   [
     'applyOilLips',
     (ctx, texture) => {
-      applyOilLips(face, ctx, COLOR, texture, texture, DIMENSION, ALPHA);
+      applyOilLips({ ...base, ctx, textureUpper: texture, textureLower: texture });
     },
   ],
   [
     'applyMetallicLips',
     (ctx, texture) => {
-      applyMetallicLips(face, ctx, COLOR, texture, texture, DIMENSION, ALPHA);
+      applyMetallicLips({ ...base, ctx, textureUpper: texture, textureLower: texture });
     },
   ],
   [
     'applyPlumperLips',
     (ctx, texture) => {
-      applyPlumperLips(face, ctx, COLOR, texture, texture, DIMENSION, ALPHA);
+      applyPlumperLips({ ...base, ctx, textureUpper: texture, textureLower: texture });
     },
   ],
 ];

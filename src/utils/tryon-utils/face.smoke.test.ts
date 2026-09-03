@@ -46,7 +46,7 @@ const makeFixtureFace = (): NormalizedLandmark[] => {
 };
 
 const DIMENSION = { width: 200, height: 200 };
-const COLOR = 'rgba(200, 150, 120, 0.6)';
+const RGB: [number, number, number] = [200, 150, 120];
 const ALPHA = 0.45;
 
 const makeCtx = (): CanvasRenderingContext2D => {
@@ -75,7 +75,7 @@ describe('applyFoundationFace smoke test', () => {
     const ctx = makeCtx();
 
     expect(() => {
-      applyFoundationFace(face, ctx, COLOR, DIMENSION, ALPHA);
+      applyFoundationFace({ face, ctx, rgb: RGB, dimension: DIMENSION, alpha: ALPHA });
     }).not.toThrow();
     expect(hasNonTransparentPixel(ctx)).toBe(true);
   });
@@ -88,7 +88,7 @@ describe('applyBlushFace smoke test', () => {
     const rgb: [number, number, number] = [200, 150, 120];
 
     expect(() => {
-      applyBlushFace(face, ctx, rgb, DIMENSION, ALPHA);
+      applyBlushFace({ face, ctx, rgb, dimension: DIMENSION, alpha: ALPHA });
     }).not.toThrow();
     expect(hasNonTransparentPixel(ctx)).toBe(true);
   });
@@ -101,7 +101,7 @@ describe('applyConcealerFace smoke test', () => {
     const rgb: [number, number, number] = [230, 190, 160];
 
     expect(() => {
-      applyConcealerFace(face, ctx, rgb, DIMENSION, ALPHA);
+      applyConcealerFace({ face, ctx, rgb, dimension: DIMENSION, alpha: ALPHA });
     }).not.toThrow();
     expect(hasNonTransparentPixel(ctx)).toBe(true);
   });
@@ -114,7 +114,7 @@ describe('applyHighlighterFace smoke test', () => {
     const rgb: [number, number, number] = [255, 235, 205];
 
     expect(() => {
-      applyHighlighterFace(face, ctx, rgb, DIMENSION, ALPHA);
+      applyHighlighterFace({ face, ctx, rgb, dimension: DIMENSION, alpha: ALPHA });
     }).not.toThrow();
     expect(hasNonTransparentPixel(ctx)).toBe(true);
   });
@@ -127,7 +127,7 @@ describe('applyContourFace smoke test', () => {
     const rgb: [number, number, number] = [150, 100, 80];
 
     expect(() => {
-      applyContourFace(face, ctx, rgb, DIMENSION, ALPHA);
+      applyContourFace({ face, ctx, rgb, dimension: DIMENSION, alpha: ALPHA });
     }).not.toThrow();
     expect(hasNonTransparentPixel(ctx)).toBe(true);
   });
@@ -140,7 +140,7 @@ describe('applyBronzerFace smoke test', () => {
     const rgb: [number, number, number] = [180, 130, 90];
 
     expect(() => {
-      applyBronzerFace(face, ctx, rgb, DIMENSION, ALPHA);
+      applyBronzerFace({ face, ctx, rgb, dimension: DIMENSION, alpha: ALPHA });
     }).not.toThrow();
     expect(hasNonTransparentPixel(ctx)).toBe(true);
   });
@@ -153,7 +153,7 @@ describe('applyBbCreamFace smoke test', () => {
     const rgb: [number, number, number] = [235, 200, 175];
 
     expect(() => {
-      applyBbCreamFace(face, ctx, rgb, DIMENSION, ALPHA);
+      applyBbCreamFace({ face, ctx, rgb, dimension: DIMENSION, alpha: ALPHA });
     }).not.toThrow();
     expect(hasNonTransparentPixel(ctx)).toBe(true);
   });
@@ -166,7 +166,7 @@ describe('applyCompactPowderFace smoke test', () => {
     const rgb: [number, number, number] = [220, 190, 165];
 
     expect(() => {
-      applyCompactPowderFace(face, ctx, rgb, DIMENSION, ALPHA);
+      applyCompactPowderFace({ face, ctx, rgb, dimension: DIMENSION, alpha: ALPHA });
     }).not.toThrow();
     expect(hasNonTransparentPixel(ctx)).toBe(true);
   });
