@@ -100,7 +100,7 @@ export const FACE_RANGE_BOUNDS: Record<TFaceFinish, IRangeBounds> = {
   // a raw max here around 0.15 / 0.6 = 0.25. Min kept non-zero (unlike the reference's 0) so the
   // slider can never render an effectively invisible blush - a shopper who wants none can just
   // close the try-on instead.
-  BLUSH: { min: 0.08, max: 0.25, default: 0.15 },
+  BLUSH: { min: 0.25, max: 1, default: 0.5 },
   // Everything below doesn't have dedicated rendering yet - falls back to FOUNDATION's full-face
   // wash (see `UNSUPPORTED_FACE_FINISHES` in FaceEngineBase.ts). These bounds are placeholders
   // chosen for each finish's eventual intended character (concealer meant to read more
