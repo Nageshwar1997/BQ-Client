@@ -18,6 +18,7 @@ import {
   applyBbCreamFace,
   applyBlushFace,
   applyBronzerFace,
+  applyCompactPowderFace,
   applyConcealerFace,
   applyContourFace,
   applyFoundationFace,
@@ -153,6 +154,19 @@ describe('applyBbCreamFace smoke test', () => {
 
     expect(() => {
       applyBbCreamFace(face, ctx, rgb, DIMENSION, ALPHA);
+    }).not.toThrow();
+    expect(hasNonTransparentPixel(ctx)).toBe(true);
+  });
+});
+
+describe('applyCompactPowderFace smoke test', () => {
+  it('renders without throwing and paints at least one pixel', () => {
+    const face = makeFixtureFace();
+    const ctx = makeCtx();
+    const rgb: [number, number, number, number] = [220, 190, 165, 1];
+
+    expect(() => {
+      applyCompactPowderFace(face, ctx, rgb, DIMENSION, ALPHA);
     }).not.toThrow();
     expect(hasNonTransparentPixel(ctx)).toBe(true);
   });

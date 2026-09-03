@@ -4,7 +4,7 @@
 
 _Tracking model: face landmarks + full-face segmentation. Depends on the shared face-landmark engine — see [README.md](./README.md#shared-prerequisites-ye-pehle-banao--sabko-block-karte-hain)._
 
-> **Per-subcategory tracking**: jaise-jaise ek FACE subcategory actually build hoti hai, uski apni dedicated tracker file bhi ban jaati hai (LIP ke [LIP.md](./LIP.md) jaisi) - is file (FACE.md) mein sirf uska summary-row + link reh jaata hai, poora detail nahi. Abhi tak FOUNDATION, BLUSH, CONCEALER, HIGHLIGHTER, CONTOUR, BRONZER aur BBCREAM ban chuki hain - [FOUNDATION.md](./FOUNDATION.md), [BLUSH.md](./BLUSH.md), [CONCEALER.md](./CONCEALER.md), [HIGHLIGHTER.md](./HIGHLIGHTER.md), [CONTOUR.md](./CONTOUR.md), [BRONZER.md](./BRONZER.md), [BBCREAM.md](./BBCREAM.md). Baaki 1 (COMPACTPOWDER) abhi bhi neeche inline hai (unbuilt).
+> **Per-subcategory tracking**: jaise-jaise ek FACE subcategory actually build hoti hai, uski apni dedicated tracker file bhi ban jaati hai (LIP ke [LIP.md](./LIP.md) jaisi) - is file (FACE.md) mein sirf uska summary-row + link reh jaata hai, poora detail nahi. **Ab FACE ki saari 8 subcategories ban chuki hain** - [FOUNDATION.md](./FOUNDATION.md), [BLUSH.md](./BLUSH.md), [CONCEALER.md](./CONCEALER.md), [HIGHLIGHTER.md](./HIGHLIGHTER.md), [CONTOUR.md](./CONTOUR.md), [BRONZER.md](./BRONZER.md), [BBCREAM.md](./BBCREAM.md), [COMPACTPOWDER.md](./COMPACTPOWDER.md). Ye file ab sirf ek index/summary hai, poora detail nahi.
 
 ## Summary
 
@@ -17,8 +17,8 @@ _Tracking model: face landmarks + full-face segmentation. Depends on the shared 
 | CONTOUR       | 3/4       | 3/4       | 75% — [detail](./CONTOUR.md)        |
 | BRONZER       | 3/4       | 3/4       | 75% — [detail](./BRONZER.md)        |
 | BBCREAM       | 3/4       | 3/4       | 75% — [detail](./BBCREAM.md)        |
-| COMPACTPOWDER | 0/4       | 0/4       | 0%                                  |
-| **Total**     | **22/32** | **22/32** | **68.75% (44/64)**                  |
+| COMPACTPOWDER | 3/4       | 3/4       | 75% — [detail](./COMPACTPOWDER.md)  |
+| **Total**     | **25/32** | **25/32** | **78.125% (50/64)**                 |
 
 ## Details
 
@@ -72,21 +72,9 @@ Ab yaha inline nahi hai - apni dedicated file mil chuki hai: **[BBCREAM.md](./BB
 </details>
 
 <details>
-<summary><strong>COMPACTPOWDER</strong> — 0%</summary>
+<summary><strong>COMPACTPOWDER</strong> — 75% — see <a href="./COMPACTPOWDER.md">COMPACTPOWDER.md</a> for the full checklist, design notes, and quality score</summary>
 
-**Live**
-
-- [ ] Camera capture + full-face segmentation wired
-- [ ] Matte-finish overlay (shine reduction) rendered in real-time
-- [ ] Shade/variant picker functional
-- [ ] Performance & cross-device QA
-
-**Upload**
-
-- [ ] Photo upload + full-face segmentation on static image
-- [ ] Matte-finish overlay applied to image
-- [ ] Shade/variant picker functional
-- [ ] Output preview/download QA
+Ab yaha inline nahi hai - apni dedicated file mil chuki hai: **[COMPACTPOWDER.md](./COMPACTPOWDER.md)**.
 
 </details>
 

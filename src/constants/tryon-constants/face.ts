@@ -153,6 +153,24 @@ export const BRONZER_WARM_RATIO = 0.5;
 // used (`Math.min(alpha, 0.35)`) to keep STAIN genuinely sheer regardless of what the slider says.
 export const BBCREAM_BASE_ALPHA = 0.35;
 
+// How far `applyCompactPowderFace` (utils/tryon-utils/face.ts) desaturates the chosen shade
+// toward its own grayscale equivalent before painting it - see that file's `desaturateTowardGray`
+// for why a mattifying effect gets approximated this way (this app's flat, lighting-agnostic fill
+// has no specular-highlight data to directly dampen, so "less shine" is rendered as "less
+// vibrant/saturated" instead - the closest 2D-color-math analogy to a real matte powder's job).
+// 0 would render the shade at full saturation (no mattifying at all); 1 would render it fully
+// neutral gray, losing the shade's own hue entirely - 0.3 keeps the shade clearly recognizable
+// while still reading flatter/less glossy than a straight wash.
+export const COMPACTPOWDER_MATTIFY_RATIO = 0.3;
+
+// The base opacity `applyCompactPowderFace` bakes into its own color string - structurally the
+// lowest of any full-face FACE finish (lower than even `BBCREAM_BASE_ALPHA`). A real compact
+// powder's job is a near-invisible finishing veil (set makeup, knock down shine), not a color
+// layer meant to be consciously seen, unlike FOUNDATION's coverage or even BB cream's sheer tint -
+// same "bake it into the render, don't rely purely on the slider's own bounds" reasoning
+// `BBCREAM_BASE_ALPHA`'s own comment already used.
+export const COMPACTPOWDER_BASE_ALPHA = 0.25;
+
 // MediaPipe's standard, widely-documented nose-tip landmark - used (alongside
 // CHEEKBONE_LEFT/RIGHT_INDEX above) purely as a head-turn signal, see `isFaceTurnedTooMuch` in
 // utils/tryon-utils/face.ts, not for any rendering placement.
@@ -210,11 +228,10 @@ export const FACE_RANGE_BOUNDS: Record<TFaceFinish, IRangeBounds> = {
   // own comment), so this range doesn't need to be dramatically lower than FOUNDATION's own to
   // stay lighter - the two work together, not one compensating for the other missing.
   BBCREAM: { min: 0.08, max: 0.5, default: 0.15 },
-  // Doesn't have dedicated rendering yet - falls back to FOUNDATION's full-face wash (see
-  // `UNSUPPORTED_FACE_FINISHES` in FaceEngineBase.ts). These bounds are a placeholder chosen for
-  // the finish's eventual intended character (matte/shine-reduction meant to stay subtle) rather
-  // than validated tuning - revisit once it gets its own dedicated renderer, same as every other
-  // FACE finish did.
+  // No reference equivalent either. Same full-face-wash mechanism as FOUNDATION/BRONZER/BBCREAM,
+  // but the lowest bounds of any FACE finish - `COMPACTPOWDER_BASE_ALPHA` already bakes "barely-
+  // there finishing veil" into the render itself (see its own comment), so this range works
+  // together with that baked alpha rather than being the only thing keeping it subtle.
   COMPACTPOWDER: { min: 0.05, max: 0.3, default: 0.12 },
 };
 

@@ -8,6 +8,8 @@ import {
   CHEEK_APPLE_RIGHT_INDEX,
   CHEEKBONE_LEFT_INDEX,
   CHEEKBONE_RIGHT_INDEX,
+  COMPACTPOWDER_BASE_ALPHA,
+  COMPACTPOWDER_MATTIFY_RATIO,
   CONCEALER_BLOB_ASPECT_RATIO,
   CONCEALER_BLOB_WIDTH_RATIO,
   CONTOUR_BLOB_ASPECT_RATIO,
@@ -627,5 +629,41 @@ export const applyBbCreamFace = (
 ) => {
   const [r, g, b] = rgb;
   const color = `rgba(${String(r)},${String(g)},${String(b)},${String(BBCREAM_BASE_ALPHA)})`;
+  fillFaceOvalRegion(face, ctx, color, dimension, alpha);
+};
+
+/* ================= COMPACT POWDER ==========================================================
+ * Matte-finish full-face wash - same `fillFaceOvalRegion` full-face wash FOUNDATION/BRONZER/
+ * BBCREAM use, but the effect it's chasing ("shine reduction") is genuinely different from any
+ * of those three: it's not about coverage (FOUNDATION), warmth (BRONZER), or sheerness alone
+ * (BB cream) - a real compact powder's job is to flatten shine/gloss into a matte finish. This
+ * app's flat, lighting-agnostic canvas fill has no specular-highlight data to directly dampen,
+ * so "less shine" gets approximated the closest color-math way available: desaturating the
+ * chosen shade toward its own grayscale equivalent (`desaturateTowardGray`), which reads as
+ * "flatter/less vibrant" the same way a mattifying powder visually reads on skin.
+ */
+
+// Mixes `rgb` toward its own luminance-matched gray by `ratio` - unlike `mixTowardWhite`/
+// `mixTowardBlack` (which push every shade toward the same fixed absolute color), this mixes
+// toward each shade's OWN gray equivalent, so it never shifts hue or overall brightness, only
+// flattens vibrancy - which is what "matte" actually means, as opposed to "lighter" or "darker".
+// Rec. 601 luma weights - the same standard "perceived brightness" approximation any grayscale
+// conversion uses. Plain per-channel RGB math, not a canvas blend mode - same reasoning as
+// `mixTowardWhite`/`mixTowardBlack`/`applyWarmShift` above.
+const desaturateTowardGray = (rgb: ColorTuple, ratio: number): ColorTuple => {
+  const [r, g, b, a] = rgb;
+  const gray = 0.299 * r + 0.587 * g + 0.114 * b;
+  return [r + (gray - r) * ratio, g + (gray - g) * ratio, b + (gray - b) * ratio, a];
+};
+
+export const applyCompactPowderFace = (
+  face: NormalizedLandmark[],
+  ctx: CanvasRenderingContext2D,
+  rgb: ColorTuple,
+  dimension: TDimension,
+  alpha: number,
+) => {
+  const [r, g, b] = desaturateTowardGray(rgb, COMPACTPOWDER_MATTIFY_RATIO);
+  const color = `rgba(${String(r)},${String(g)},${String(b)},${String(COMPACTPOWDER_BASE_ALPHA)})`;
   fillFaceOvalRegion(face, ctx, color, dimension, alpha);
 };

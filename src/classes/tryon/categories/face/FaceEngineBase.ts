@@ -7,6 +7,7 @@ import {
   applyBbCreamFace,
   applyBlushFace,
   applyBronzerFace,
+  applyCompactPowderFace,
   applyConcealerFace,
   applyContourFace,
   applyFoundationFace,
@@ -18,8 +19,10 @@ import { TryOnEngineBase } from '../../TryOnEngineBase';
 
 // Finishes that don't have dedicated rendering yet - same landing-spot pattern as LIP's
 // `UNSUPPORTED_LIP_FINISHES` (see LipEngineBase.ts), falls back to FOUNDATION (the most basic
-// full-face tint) with a console warning rather than silently doing nothing.
-const UNSUPPORTED_FACE_FINISHES = new Set<TFaceFinish>(['COMPACTPOWDER']);
+// full-face tint) with a console warning rather than silently doing nothing. Empty now that every
+// FACE finish has dedicated rendering - kept (rather than deleted) as the landing spot for any
+// future FACE finish added later, same as LIP's own set never got removed either.
+const UNSUPPORTED_FACE_FINISHES = new Set<TFaceFinish>([]);
 
 /**
  * FACE category engine - fresh design (not ported from any reference implementation, see
@@ -114,6 +117,9 @@ export abstract class FaceEngineBase extends TryOnEngineBase<IFaceTryOnState> {
         return;
       case 'BBCREAM':
         applyBbCreamFace(face, ctx, rgb, size, alpha);
+        return;
+      case 'COMPACTPOWDER':
+        applyCompactPowderFace(face, ctx, rgb, size, alpha);
         return;
     }
   }
