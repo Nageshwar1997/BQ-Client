@@ -1,3 +1,4 @@
+import type { IRangeBounds } from '@/types/tryon-types';
 import type { TFaceFinish } from '@/types/tryon-types/face';
 
 import type { ITryOnInstruction } from '.';
@@ -81,12 +82,6 @@ export const NOSE_TIP_INDEX = 1;
 // distance from camera instead of a fixed pixel radius, same reasoning as every size in this
 // app being derived from the detected face rather than a screen-space constant.
 export const LOCALIZED_BLOB_RADIUS_RATIO = 0.16;
-
-interface IRangeBounds {
-  min: number;
-  max: number;
-  default: number;
-}
 
 // Same shape/role as LIP's own `LIP_RANGE_BOUNDS` - the intensity slider's bounds, one entry per
 // finish (not one shared per category) since each finish reads differently at the same raw

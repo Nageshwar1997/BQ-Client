@@ -1,3 +1,4 @@
+import type { IRangeBounds } from '@/types/tryon-types';
 import type { TLipFinish } from '@/types/tryon-types/lip';
 
 import type { ITryOnInstruction } from '.';
@@ -72,12 +73,6 @@ export const OIL_TEXTURE_PATH_UPPER = `${TEXTURE_FOLDER}/Oil-Upper.webp`;
 export const OIL_TEXTURE_PATH_LOWER = `${TEXTURE_FOLDER}/Oil-Lower.webp`;
 export const METALLIC_TEXTURE_PATH_UPPER = `${TEXTURE_FOLDER}/Metallic-Upper.webp`;
 export const METALLIC_TEXTURE_PATH_LOWER = `${TEXTURE_FOLDER}/Metallic-Lower.webp`;
-
-interface IRangeBounds {
-  min: number;
-  max: number;
-  default: number;
-}
 
 // Intensity-slider bounds, one entry per finish (maps to engine state's `range`, i.e. how
 // strongly the finish's texture/filter pass shows through - see utils/tryon-utils/lip.ts).

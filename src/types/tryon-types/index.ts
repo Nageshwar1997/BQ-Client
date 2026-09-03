@@ -106,3 +106,10 @@ export interface IObjectFitContentRect {
   leftPercent: number;
   widthPercent: number;
 }
+
+
+export interface IRangeBounds {
+  min: number;
+  max: number;
+  default: number;
+}
