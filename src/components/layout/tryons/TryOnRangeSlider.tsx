@@ -26,23 +26,31 @@ const TryOnRangeSlider = ({
   onChange,
   className = '',
 }: ITryOnRangeSliderProps) => (
-  <div
-    className={`bg-primary-invert/10 mx-auto flex w-full max-w-xs items-center justify-center rounded-full px-3 py-2 backdrop-blur-xs ${disabled ? 'opacity-50' : ''} ${className}`}
-  >
-    <input
-      type="range"
-      aria-label="Shade intensity"
-      min={min}
-      max={max}
-      step={step}
-      value={value}
-      disabled={disabled}
-      onChange={(event) => {
-        onChange(Number(event.target.value));
-      }}
-      className="border-primary/50 h-3 w-full cursor-pointer appearance-none rounded-full border disabled:cursor-not-allowed [&::-moz-range-thumb]:size-5 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-white [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:shadow-sm [&::-webkit-slider-thumb]:size-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-sm"
-      style={{ background: `linear-gradient(to right, ${color}00, ${color})` }}
-    />
+  <div className="flex w-full max-w-lg flex-col items-center gap-2">
+    <div className="flex items-center gap-2">
+      <span className="leading-none text-[red]">Min: {min}</span>
+      <span className="leading-none text-[yellow]">Value: {value}</span>
+      <span className="leading-none text-[green]">Max: {max}</span>
+    </div>
+    {/* TODO: Keep only this div and remove above html (Once All TryOns done). */}
+    <div
+      className={`bg-primary-invert/10 mx-auto flex w-full max-w-xs items-center justify-center rounded-full px-3 py-2 backdrop-blur-xs ${disabled ? 'opacity-50' : ''} ${className}`}
+    >
+      <input
+        type="range"
+        aria-label="Shade intensity"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        disabled={disabled}
+        onChange={(event) => {
+          onChange(Number(event.target.value));
+        }}
+        className="border-primary/50 h-3 w-full cursor-pointer appearance-none rounded-full border disabled:cursor-not-allowed [&::-moz-range-thumb]:size-5 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-white [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:shadow-sm [&::-webkit-slider-thumb]:size-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-sm"
+        style={{ background: `linear-gradient(to right, ${color}00, ${color})` }}
+      />
+    </div>
   </div>
 );
 
