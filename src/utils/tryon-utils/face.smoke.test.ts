@@ -14,6 +14,8 @@ import 'canvas';
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 import { describe, expect, it } from 'vitest';
 
+import { createOffscreenCtx } from '@/utils/tryon-utils';
+
 import {
   applyBbCreamFace,
   applyBlushFace,
@@ -50,10 +52,7 @@ const RGB: [number, number, number] = [200, 150, 120];
 const ALPHA = 0.45;
 
 const makeCtx = (): CanvasRenderingContext2D => {
-  const canvas = document.createElement('canvas');
-  canvas.width = DIMENSION.width;
-  canvas.height = DIMENSION.height;
-  const ctx = canvas.getContext('2d');
+  const ctx = createOffscreenCtx(DIMENSION);
   if (!ctx) throw new Error('2D context unavailable - is the `canvas` package installed?');
   return ctx;
 };

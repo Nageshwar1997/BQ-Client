@@ -15,6 +15,7 @@ import type {
   ILipRenderParams,
   ILipSingleTextureRenderParams,
 } from '@/types/tryon-types/lip';
+import { createOffscreenCtx } from '@/utils/tryon-utils';
 
 // LIP-specific canvas rendering, ported from the reference implementation's
 // `virtual-tryon/utils/index.ts` lip functions. The per-finish opacity numbers below (0.1,
@@ -166,11 +167,9 @@ const drawLipHalfMatte = (
 };
 
 export const applyMatteLips = ({ face, ctx, color, dimension, alpha }: ILipRenderParams) => {
-  const temp = document.createElement('canvas');
-  temp.width = dimension.width;
-  temp.height = dimension.height;
-  const tempCtx = temp.getContext('2d');
+  const tempCtx = createOffscreenCtx(dimension);
   if (!tempCtx) return;
+  const temp = tempCtx.canvas;
 
   drawLipHalfMatte(temp, tempCtx, face, UPPER_LIP_INDICES, color, alpha);
   drawLipHalfMatte(temp, tempCtx, face, LOWER_LIP_INDICES, color, alpha);
@@ -229,10 +228,7 @@ export const applyLinerLips = ({ face, ctx, color, dimension, alpha }: ILipRende
   const lineWidth = Math.max(3, contourWidth * 0.1);
   const blurAmount = lineWidth * 0.35;
 
-  const temp = document.createElement('canvas');
-  temp.width = dimension.width;
-  temp.height = dimension.height;
-  const tempCtx = temp.getContext('2d');
+  const tempCtx = createOffscreenCtx(dimension);
   if (!tempCtx) return;
 
   tempCtx.save();
@@ -254,7 +250,7 @@ export const applyLinerLips = ({ face, ctx, color, dimension, alpha }: ILipRende
   tempCtx.restore();
 
   ctx.globalCompositeOperation = 'source-over';
-  ctx.drawImage(temp, 0, 0);
+  ctx.drawImage(tempCtx.canvas, 0, 0);
 };
 
 /* ================= TEXTURED FINISHES (gloss / crayon / shimmer) ================= */
@@ -401,11 +397,9 @@ const applyTexturedLips = (
 ) => {
   const t = TEXTURED_FINISH_TUNING[finish];
 
-  const temp = document.createElement('canvas');
-  temp.width = dimension.width;
-  temp.height = dimension.height;
-  const tempCtx = temp.getContext('2d');
+  const tempCtx = createOffscreenCtx(dimension);
   if (!tempCtx) return;
+  const temp = tempCtx.canvas;
 
   drawLipHalfTextured(
     temp,
@@ -444,17 +438,11 @@ const applyTexturedLips = (
   ctx.drawImage(temp, 0, 0);
 
   // Soft blurred "dot" highlight, composited on top of the textured fill.
-  const lowerDot = document.createElement('canvas');
-  lowerDot.width = dimension.width;
-  lowerDot.height = dimension.height;
-  const lowerDotCtx = lowerDot.getContext('2d');
-
-  const upperDot = document.createElement('canvas');
-  upperDot.width = dimension.width;
-  upperDot.height = dimension.height;
-  const upperDotCtx = upperDot.getContext('2d');
-
+  const lowerDotCtx = createOffscreenCtx(dimension);
+  const upperDotCtx = createOffscreenCtx(dimension);
   if (!lowerDotCtx || !upperDotCtx) return;
+  const lowerDot = lowerDotCtx.canvas;
+  const upperDot = upperDotCtx.canvas;
 
   clipLipsOnFace(lowerDot, lowerDotCtx, face, LOWER_LIP_INDICES);
   lowerDotCtx.filter = `blur(${String(LOWER_LIP_DOT_BLUR_AMOUNT)}px)`;

@@ -37,7 +37,7 @@ import {
 } from '@/constants/tryon-constants/face';
 import type { TDimension, TPoint, TRGBTuple } from '@/types/tryon-types';
 import type { IFaceRenderParams } from '@/types/tryon-types/face';
-import { toColorString } from '@/utils/tryon-utils';
+import { createOffscreenCtx, toColorString } from '@/utils/tryon-utils';
 
 // FACE-specific canvas rendering - fresh design (not ported from any reference
 // implementation, see docs/tryons/FACE.md), built directly on the same primitives LIP's own
@@ -236,10 +236,7 @@ const fillFaceOvalRegion = (
   // shape as LIP's own `applyMatteLips`, and for the same reason: `ctx` may have a mirror
   // transform active (Live mode) that only the *final* draw should go through, not every
   // intermediate step.
-  const temp = document.createElement('canvas');
-  temp.width = dimension.width;
-  temp.height = dimension.height;
-  const tempCtx = temp.getContext('2d');
+  const tempCtx = createOffscreenCtx(dimension);
   if (!tempCtx) return;
 
   tempCtx.save();
@@ -251,7 +248,7 @@ const fillFaceOvalRegion = (
 
   eraseExcludedFeatures(tempCtx, face, dimension);
 
-  ctx.drawImage(temp, 0, 0);
+  ctx.drawImage(tempCtx.canvas, 0, 0);
 };
 
 export const applyFoundationFace = ({ face, ctx, rgb, dimension, alpha }: IFaceRenderParams) => {
@@ -328,10 +325,7 @@ export const applyBlushFace = ({ face, ctx, rgb, dimension, alpha }: IFaceRender
   const faceWidth = Math.max(...ovalXs) - Math.min(...ovalXs);
   const radius = faceWidth * LOCALIZED_BLOB_RADIUS_RATIO;
 
-  const temp = document.createElement('canvas');
-  temp.width = dimension.width;
-  temp.height = dimension.height;
-  const tempCtx = temp.getContext('2d');
+  const tempCtx = createOffscreenCtx(dimension);
   if (!tempCtx) return;
 
   tempCtx.save();
@@ -348,7 +342,7 @@ export const applyBlushFace = ({ face, ctx, rgb, dimension, alpha }: IFaceRender
   });
   tempCtx.restore();
 
-  ctx.drawImage(temp, 0, 0);
+  ctx.drawImage(tempCtx.canvas, 0, 0);
 };
 
 /* ================= CONCEALER ================================================================
@@ -390,10 +384,7 @@ export const applyConcealerFace = ({ face, ctx, rgb, dimension, alpha }: IFaceRe
   const faceHeight = Math.max(...ovalYs) - Math.min(...ovalYs);
   const verticalOffset = faceHeight * UNDER_EYE_OFFSET_RATIO;
 
-  const temp = document.createElement('canvas');
-  temp.width = dimension.width;
-  temp.height = dimension.height;
-  const tempCtx = temp.getContext('2d');
+  const tempCtx = createOffscreenCtx(dimension);
   if (!tempCtx) return;
 
   tempCtx.save();
@@ -419,7 +410,7 @@ export const applyConcealerFace = ({ face, ctx, rgb, dimension, alpha }: IFaceRe
   eraseEyes(tempCtx, face, dimension);
   tempCtx.restore();
 
-  ctx.drawImage(temp, 0, 0);
+  ctx.drawImage(tempCtx.canvas, 0, 0);
 };
 
 /* ================= HIGHLIGHTER ================================================================
@@ -454,10 +445,7 @@ export const applyHighlighterFace = ({ face, ctx, rgb, dimension, alpha }: IFace
   const radius = faceWidth * HIGHLIGHTER_BLOB_RADIUS_RATIO;
   const glowColor = mixTowardWhite(rgb, HIGHLIGHTER_WHITEN_RATIO);
 
-  const temp = document.createElement('canvas');
-  temp.width = dimension.width;
-  temp.height = dimension.height;
-  const tempCtx = temp.getContext('2d');
+  const tempCtx = createOffscreenCtx(dimension);
   if (!tempCtx) return;
 
   tempCtx.save();
@@ -474,7 +462,7 @@ export const applyHighlighterFace = ({ face, ctx, rgb, dimension, alpha }: IFace
   });
   tempCtx.restore();
 
-  ctx.drawImage(temp, 0, 0);
+  ctx.drawImage(tempCtx.canvas, 0, 0);
 };
 
 /* ================= CONTOUR ================================================================
@@ -518,10 +506,7 @@ export const applyContourFace = ({ face, ctx, rgb, dimension, alpha }: IFaceRend
   const radiusY = radiusX * CONTOUR_BLOB_ASPECT_RATIO;
   const shadowColor = mixTowardBlack(rgb, CONTOUR_DARKEN_RATIO);
 
-  const temp = document.createElement('canvas');
-  temp.width = dimension.width;
-  temp.height = dimension.height;
-  const tempCtx = temp.getContext('2d');
+  const tempCtx = createOffscreenCtx(dimension);
   if (!tempCtx) return;
 
   tempCtx.save();
@@ -544,7 +529,7 @@ export const applyContourFace = ({ face, ctx, rgb, dimension, alpha }: IFaceRend
   });
   tempCtx.restore();
 
-  ctx.drawImage(temp, 0, 0);
+  ctx.drawImage(tempCtx.canvas, 0, 0);
 };
 
 /* ================= BRONZER ================================================================

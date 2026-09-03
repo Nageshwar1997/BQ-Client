@@ -1,6 +1,11 @@
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
-import type { IObjectFitContentRect, TFaceDetectionStatus, TRGBATuple } from '@/types/tryon-types';
+import type {
+  IObjectFitContentRect,
+  TDimension,
+  TFaceDetectionStatus,
+  TRGBATuple,
+} from '@/types/tryon-types';
 
 // Category-agnostic helpers for the Try-On rendering engine (`@/classes/tryon`) - canvas
 // sizing, snapshot capture, color parsing, abort-aware image loading. Ported from the
@@ -186,18 +191,34 @@ export const resizeElements = (
   canvas2.height = height * renderScale;
 };
 
+// Creates a fresh off-screen canvas at `dimension`'s size and returns its 2D context - the
+// "build on a scratch canvas, composite once" shape every temp-canvas compositing step in this
+// app repeats (`captureSnapShot` right below; LIP's `applyMatteLips`/`applyLinerLips`/
+// `applyTexturedLips`; FACE's `fillFaceOvalRegion`/`applyBlushFace`/`applyConcealerFace`/
+// `applyHighlighterFace`/`applyContourFace`) - needed because the *real* canvas ultimately being
+// painted onto may have a mirror transform active (Live mode) that only the final composite draw
+// should go through, not every intermediate step. Returns `null` (never throws) when
+// `getContext('2d')` fails, matching every existing caller's own "if (!ctx) return/return null"
+// shape - a returned context's own `.canvas` property is the backing `HTMLCanvasElement` itself
+// (see `captureSnapShot`), so callers never need to hold onto both separately. Takes anything
+// shaped like `TDimension` (an actual `HTMLCanvasElement`'s own `width`/`height` qualify too, see
+// `captureSnapShot`'s own call), not just a plain dimension object.
+export const createOffscreenCtx = (dimension: TDimension): CanvasRenderingContext2D | null => {
+  const canvas = document.createElement('canvas');
+  canvas.width = dimension.width;
+  canvas.height = dimension.height;
+  return canvas.getContext('2d');
+};
+
 // Composites the source frame (mirrored for a live camera, as-is for an uploaded image)
 // with the makeup overlay canvas on top, and returns a downloadable PNG data URL.
 export const captureSnapShot = (
   source: HTMLVideoElement | HTMLImageElement,
   overlayCanvas: HTMLCanvasElement,
 ): string | null => {
-  const tempCanvas = document.createElement('canvas');
-  const ctx = tempCanvas.getContext('2d');
+  const ctx = createOffscreenCtx(overlayCanvas);
   if (!ctx) return null;
-
-  tempCanvas.width = overlayCanvas.width;
-  tempCanvas.height = overlayCanvas.height;
+  const tempCanvas = ctx.canvas;
 
   if (source instanceof HTMLVideoElement) {
     ctx.save();

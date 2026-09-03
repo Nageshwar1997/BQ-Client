@@ -22,6 +22,8 @@ import 'canvas';
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 import { describe, expect, it } from 'vitest';
 
+import { createOffscreenCtx } from '@/utils/tryon-utils';
+
 import {
   applyBalmLips,
   applyCrayonLips,
@@ -64,10 +66,7 @@ const COLOR = 'rgba(200, 50, 80, 0.6)';
 const ALPHA = 0.6;
 
 const makeCtx = (): CanvasRenderingContext2D => {
-  const canvas = document.createElement('canvas');
-  canvas.width = DIMENSION.width;
-  canvas.height = DIMENSION.height;
-  const ctx = canvas.getContext('2d');
+  const ctx = createOffscreenCtx(DIMENSION);
   if (!ctx) throw new Error('2D context unavailable - is the `canvas` package installed?');
   return ctx;
 };
@@ -78,14 +77,11 @@ const makeCtx = (): CanvasRenderingContext2D => {
 // parameter type these functions declare is safe. Building this beats loading a real image
 // file, which would need an async decode step these synchronous smoke tests don't want.
 const makeFixtureTexture = (): HTMLImageElement => {
-  const canvas = document.createElement('canvas');
-  canvas.width = 8;
-  canvas.height = 8;
-  const ctx = canvas.getContext('2d');
+  const ctx = createOffscreenCtx({ width: 8, height: 8 });
   if (!ctx) throw new Error('2D context unavailable for the fixture texture');
   ctx.fillStyle = 'white';
   ctx.fillRect(0, 0, 8, 8);
-  return canvas as unknown as HTMLImageElement;
+  return ctx.canvas as unknown as HTMLImageElement;
 };
 
 // Counts non-transparent pixels in the canvas's alpha channel - confirms each finish actually
