@@ -1,8 +1,9 @@
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
 import { FACE_DEFAULT_RANGE } from '@/constants/tryon-constants/face';
-import type { ColorTuple } from '@/types/tryon-types';
+import type { TRGBTuple } from '@/types/tryon-types';
 import type { IFaceAssets, IFaceTryOnState, TFaceFinish } from '@/types/tryon-types/face';
+import { toColorString } from '@/utils/tryon-utils';
 import {
   applyBbCreamFace,
   applyBlushFace,
@@ -68,7 +69,7 @@ export abstract class FaceEngineBase extends TryOnEngineBase<IFaceTryOnState> {
     face: NormalizedLandmark[],
     ctx: CanvasRenderingContext2D,
     size: { width: number; height: number },
-    rgb: ColorTuple,
+    rgb: TRGBTuple,
     state: IFaceTryOnState,
     _assets: IFaceAssets,
   ): void {
@@ -85,7 +86,7 @@ export abstract class FaceEngineBase extends TryOnEngineBase<IFaceTryOnState> {
     if (state.faceDetection === 'turned') return;
 
     const [r, g, b] = rgb;
-    const color = `rgba(${String(r)},${String(g)},${String(b)},0.6)`;
+    const color = toColorString(r, g, b, 0.6);
     const alpha = state.range;
 
     if (UNSUPPORTED_FACE_FINISHES.has(state.type)) {

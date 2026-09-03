@@ -7,7 +7,9 @@ import type { FaceDetectorOptions, Landmark } from '@mediapipe/tasks-vision';
 
 export type TRunningMode = FaceDetectorOptions['runningMode'];
 
-export type ColorTuple = [r: number, g: number, b: number, a: number];
+export type TRGBTuple = [r: number, g: number, b: number];
+
+export type TRGBATuple = [r: number, g: number, b: number, a: number];
 
 export type TDimension = Record<'width' | 'height', number>;
 

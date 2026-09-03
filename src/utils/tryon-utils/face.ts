@@ -35,7 +35,8 @@ import {
   UNDER_EYE_OFFSET_RATIO,
   UNDER_EYE_RIGHT_INDEX,
 } from '@/constants/tryon-constants/face';
-import type { ColorTuple, TDimension, TPoint } from '@/types/tryon-types';
+import type { TDimension, TPoint, TRGBTuple } from '@/types/tryon-types';
+import { toColorString } from '@/utils/tryon-utils';
 
 // FACE-specific canvas rendering - fresh design (not ported from any reference
 // implementation, see docs/tryons/FACE.md), built directly on the same primitives LIP's own
@@ -284,7 +285,7 @@ const drawFeatheredBlob = (
   center: TPoint,
   radiusX: number,
   radiusY: number,
-  rgb: ColorTuple,
+  rgb: TRGBTuple,
   alpha: number,
 ) => {
   const [r, g, b] = rgb;
@@ -301,8 +302,8 @@ const drawFeatheredBlob = (
   // `ctx.globalAlpha` - multiple blobs get drawn per call (e.g. left/right cheek or eye) and
   // baking the alpha into each gradient's own stops keeps them independent instead of relying on
   // shared canvas state.
-  gradient.addColorStop(0, `rgba(${String(r)},${String(g)},${String(b)},${String(0.6 * alpha)})`);
-  gradient.addColorStop(1, `rgba(${String(r)},${String(g)},${String(b)},0)`);
+  gradient.addColorStop(0, toColorString(r, g, b, 0.6 * alpha));
+  gradient.addColorStop(1, toColorString(r, g, b, 0));
 
   ctx.beginPath();
   ctx.arc(0, 0, radiusX, 0, Math.PI * 2);
@@ -320,7 +321,7 @@ const drawFeatheredBlob = (
 export const applyBlushFace = (
   face: NormalizedLandmark[],
   ctx: CanvasRenderingContext2D,
-  rgb: ColorTuple,
+  rgb: TRGBTuple,
   dimension: TDimension,
   alpha: number,
 ) => {
@@ -388,7 +389,7 @@ const eraseEyes = (
 export const applyConcealerFace = (
   face: NormalizedLandmark[],
   ctx: CanvasRenderingContext2D,
-  rgb: ColorTuple,
+  rgb: TRGBTuple,
   dimension: TDimension,
   alpha: number,
 ) => {
@@ -443,9 +444,9 @@ export const applyConcealerFace = (
 // math, not a canvas blend mode (see `HIGHLIGHTER_WHITEN_RATIO`'s own comment on why that
 // matters here specifically). Lightening the color itself, rather than leaning on a wider alpha
 // range, is what makes this read as a glow instead of a pale flat wash of the shade.
-const mixTowardWhite = (rgb: ColorTuple, ratio: number): ColorTuple => {
-  const [r, g, b, a] = rgb;
-  return [r + (255 - r) * ratio, g + (255 - g) * ratio, b + (255 - b) * ratio, a];
+const mixTowardWhite = (rgb: TRGBTuple, ratio: number): TRGBTuple => {
+  const [r, g, b] = rgb;
+  return [r + (255 - r) * ratio, g + (255 - g) * ratio, b + (255 - b) * ratio];
 };
 
 // Cheekbone glow - same feathered-blob primitive BLUSH/CONCEALER already use, just tighter
@@ -457,7 +458,7 @@ const mixTowardWhite = (rgb: ColorTuple, ratio: number): ColorTuple => {
 export const applyHighlighterFace = (
   face: NormalizedLandmark[],
   ctx: CanvasRenderingContext2D,
-  rgb: ColorTuple,
+  rgb: TRGBTuple,
   dimension: TDimension,
   alpha: number,
 ) => {
@@ -506,9 +507,9 @@ export const applyHighlighterFace = (
 // as `HIGHLIGHTER_WHITEN_RATIO`'s own comment). Darkening the color itself, rather than leaning
 // on a higher alpha, is what makes this read as shadow instead of a saturated patch of the
 // shade's own color.
-const mixTowardBlack = (rgb: ColorTuple, ratio: number): ColorTuple => {
-  const [r, g, b, a] = rgb;
-  return [r * (1 - ratio), g * (1 - ratio), b * (1 - ratio), a];
+const mixTowardBlack = (rgb: TRGBTuple, ratio: number): TRGBTuple => {
+  const [r, g, b] = rgb;
+  return [r * (1 - ratio), g * (1 - ratio), b * (1 - ratio)];
 };
 
 // Jaw-hollow shadow - `JAW_HOLLOW_LEFT_INDEX`/`JAW_HOLLOW_RIGHT_INDEX` sit right on the face
@@ -521,7 +522,7 @@ const mixTowardBlack = (rgb: ColorTuple, ratio: number): ColorTuple => {
 export const applyContourFace = (
   face: NormalizedLandmark[],
   ctx: CanvasRenderingContext2D,
-  rgb: ColorTuple,
+  rgb: TRGBTuple,
   dimension: TDimension,
   alpha: number,
 ) => {
@@ -582,21 +583,21 @@ export const applyContourFace = (
 // every different bronzer shade toward the same hue - see `BRONZER_WARM_SHIFT`'s own comment).
 // Plain per-channel RGB math, not a canvas blend mode - same reasoning as `mixTowardWhite`/
 // `mixTowardBlack` above.
-const applyWarmShift = (rgb: ColorTuple, ratio: number): ColorTuple => {
-  const [r, g, b, a] = rgb;
+const applyWarmShift = (rgb: TRGBTuple, ratio: number): TRGBTuple => {
+  const [r, g, b] = rgb;
   const shift = BRONZER_WARM_SHIFT * ratio;
-  return [Math.min(255, r + shift), Math.min(255, g + shift * 0.4), Math.max(0, b - shift), a];
+  return [Math.min(255, r + shift), Math.min(255, g + shift * 0.4), Math.max(0, b - shift)];
 };
 
 export const applyBronzerFace = (
   face: NormalizedLandmark[],
   ctx: CanvasRenderingContext2D,
-  rgb: ColorTuple,
+  rgb: TRGBTuple,
   dimension: TDimension,
   alpha: number,
 ) => {
   const [r, g, b] = applyWarmShift(rgb, BRONZER_WARM_RATIO);
-  const color = `rgba(${String(r)},${String(g)},${String(b)},0.6)`;
+  const color = toColorString(r, g, b, 0.6);
   fillFaceOvalRegion(face, ctx, color, dimension, alpha);
 };
 
@@ -613,12 +614,12 @@ export const applyBronzerFace = (
 export const applyBbCreamFace = (
   face: NormalizedLandmark[],
   ctx: CanvasRenderingContext2D,
-  rgb: ColorTuple,
+  rgb: TRGBTuple,
   dimension: TDimension,
   alpha: number,
 ) => {
   const [r, g, b] = rgb;
-  const color = `rgba(${String(r)},${String(g)},${String(b)},${String(BBCREAM_BASE_ALPHA)})`;
+  const color = toColorString(r, g, b, BBCREAM_BASE_ALPHA);
   fillFaceOvalRegion(face, ctx, color, dimension, alpha);
 };
 
@@ -640,20 +641,20 @@ export const applyBbCreamFace = (
 // Rec. 601 luma weights - the same standard "perceived brightness" approximation any grayscale
 // conversion uses. Plain per-channel RGB math, not a canvas blend mode - same reasoning as
 // `mixTowardWhite`/`mixTowardBlack`/`applyWarmShift` above.
-const desaturateTowardGray = (rgb: ColorTuple, ratio: number): ColorTuple => {
-  const [r, g, b, a] = rgb;
+const desaturateTowardGray = (rgb: TRGBTuple, ratio: number): TRGBTuple => {
+  const [r, g, b] = rgb;
   const gray = 0.299 * r + 0.587 * g + 0.114 * b;
-  return [r + (gray - r) * ratio, g + (gray - g) * ratio, b + (gray - b) * ratio, a];
+  return [r + (gray - r) * ratio, g + (gray - g) * ratio, b + (gray - b) * ratio];
 };
 
 export const applyCompactPowderFace = (
   face: NormalizedLandmark[],
   ctx: CanvasRenderingContext2D,
-  rgb: ColorTuple,
+  rgb: TRGBTuple,
   dimension: TDimension,
   alpha: number,
 ) => {
   const [r, g, b] = desaturateTowardGray(rgb, COMPACTPOWDER_MATTIFY_RATIO);
-  const color = `rgba(${String(r)},${String(g)},${String(b)},${String(COMPACTPOWDER_BASE_ALPHA)})`;
+  const color = toColorString(r, g, b, COMPACTPOWDER_BASE_ALPHA);
   fillFaceOvalRegion(face, ctx, color, dimension, alpha);
 };

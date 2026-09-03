@@ -11,9 +11,9 @@ import {
   OIL_TEXTURE_PATH_UPPER,
   SHIMMER_TEXTURE_PATH,
 } from '@/constants/tryon-constants/lip';
-import type { ColorTuple } from '@/types/tryon-types';
+import type { TRGBTuple } from '@/types/tryon-types';
 import type { ILipAssets, ILipTryOnState, TLipFinish } from '@/types/tryon-types/lip';
-import { loadImage } from '@/utils/tryon-utils';
+import { loadImage, toColorString } from '@/utils/tryon-utils';
 import {
   applyBalmLips,
   applyCrayonLips,
@@ -131,14 +131,14 @@ export abstract class LipEngineBase extends TryOnEngineBase<ILipTryOnState, ILip
     face: NormalizedLandmark[],
     ctx: CanvasRenderingContext2D,
     size: { width: number; height: number },
-    rgb: ColorTuple,
+    rgb: TRGBTuple,
     state: ILipTryOnState,
     assets: ILipAssets | null,
   ): void {
     if (!state.type) return;
 
     const [r, g, b] = rgb;
-    const color = `rgba(${String(r)},${String(g)},${String(b)},0.6)`;
+    const color = toColorString(r, g, b, 0.6);
     const alpha = state.range;
 
     if (UNSUPPORTED_LIP_FINISHES.has(state.type)) {

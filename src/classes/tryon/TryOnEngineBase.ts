@@ -4,7 +4,7 @@ import type {
   NormalizedLandmark,
 } from '@mediapipe/tasks-vision';
 
-import type { ColorTuple, IMakeupState, TRunningMode } from '@/types/tryon-types';
+import type { IMakeupState, TRGBTuple, TRunningMode } from '@/types/tryon-types';
 import {
   captureSnapShot,
   getFaceDetectionStatus,
@@ -35,7 +35,7 @@ export abstract class TryOnEngineBase<TState extends IMakeupState, TAssets = nul
   protected landmark: FaceLandmarkerResult | null = null;
   protected assets: TAssets | null = null;
 
-  protected cachedRGBA: ColorTuple | null = null;
+  protected cachedRGB: TRGBTuple | null = null;
   protected comparePosition: number | null = null;
   protected isMirrored = false;
 
@@ -58,10 +58,15 @@ export abstract class TryOnEngineBase<TState extends IMakeupState, TAssets = nul
     // `updateState.set` computes this for UI-driven color changes, but a color seeded straight
     // through `initialState` (e.g. switching Live<->Upload, or picking a different model, with a
     // shade already applied - see TryOnModal's `initialState`) never goes through that path.
-    // Without this, `renderFrame` silently no-ops (it bails on `!this.cachedRGBA`) even though
-    // `state.color` - and so the UI's "selected" swatch - is correct.
+    // Without this, `renderFrame` silently no-ops (it bails on `!this.cachedRGB`) even though
+    // `state.color` - and so the UI's "selected" swatch - is correct. `hexToRGBA` still returns
+    // a 4-tuple (it's a general-purpose parser, and its own alpha param is genuinely variable -
+    // see its own tests) but nothing downstream of this engine ever reads a color's alpha
+    // channel (`state.range` is the real, separately-tracked opacity knob every render function
+    // actually uses) - so only the RGB slice gets cached/threaded through `applyEffect`.
     if (this.state.color) {
-      this.cachedRGBA = hexToRGBA(this.state.color);
+      const [r, g, b] = hexToRGBA(this.state.color);
+      this.cachedRGB = [r, g, b];
     }
   }
 
@@ -125,7 +130,8 @@ export abstract class TryOnEngineBase<TState extends IMakeupState, TAssets = nul
       this.state = { ...prev, ...safePartial };
 
       if (safePartial.color && safePartial.color !== prev.color) {
-        this.cachedRGBA = hexToRGBA(safePartial.color);
+        const [r, g, b] = hexToRGBA(safePartial.color);
+        this.cachedRGB = [r, g, b];
       }
 
       this.notify();
@@ -134,7 +140,7 @@ export abstract class TryOnEngineBase<TState extends IMakeupState, TAssets = nul
 
     internalReset: () => {
       this.state = this.getInitialState();
-      this.cachedRGBA = null;
+      this.cachedRGB = null;
       this.notify();
     },
 
@@ -268,13 +274,13 @@ export abstract class TryOnEngineBase<TState extends IMakeupState, TAssets = nul
     // Always draw the base frame, even with nothing selected yet.
     ctx.drawImage(drawSource, 0, 0, width, height);
 
-    if (!face || !this.state.color || !this.cachedRGBA) {
+    if (!face || !this.state.color || !this.cachedRGB) {
       ctx.restore();
       return;
     }
 
     const size = { width, height };
-    const rgb = this.cachedRGBA;
+    const rgb = this.cachedRGB;
     const applyMakeup = () => {
       this.applyEffect(face, ctx, size, rgb, this.state, this.assets);
     };
@@ -380,7 +386,7 @@ export abstract class TryOnEngineBase<TState extends IMakeupState, TAssets = nul
     face: NormalizedLandmark[],
     ctx: CanvasRenderingContext2D,
     size: { width: number; height: number },
-    rgb: ColorTuple,
+    rgb: TRGBTuple,
     state: TState,
     assets: TAssets | null,
   ): void;

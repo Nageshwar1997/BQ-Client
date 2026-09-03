@@ -1,6 +1,6 @@
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
-import type { ColorTuple, IObjectFitContentRect, TFaceDetectionStatus } from '@/types/tryon-types';
+import type { IObjectFitContentRect, TFaceDetectionStatus, TRGBATuple } from '@/types/tryon-types';
 
 // Category-agnostic helpers for the Try-On rendering engine (`@/classes/tryon`) - canvas
 // sizing, snapshot capture, color parsing, abort-aware image loading. Ported from the
@@ -214,7 +214,7 @@ export const captureSnapShot = (
   return tempCanvas.toDataURL('image/png');
 };
 
-export const hexToRGBA = (hex: string, alpha = 1): ColorTuple => {
+export const hexToRGBA = (hex: string, alpha = 1): TRGBATuple => {
   const clean = hex.replace('#', '');
 
   const [r, g, b] =

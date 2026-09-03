@@ -85,7 +85,7 @@ describe('applyBlushFace smoke test', () => {
   it('renders without throwing and paints at least one pixel', () => {
     const face = makeFixtureFace();
     const ctx = makeCtx();
-    const rgb: [number, number, number, number] = [200, 150, 120, 1];
+    const rgb: [number, number, number] = [200, 150, 120];
 
     expect(() => {
       applyBlushFace(face, ctx, rgb, DIMENSION, ALPHA);
@@ -98,7 +98,7 @@ describe('applyConcealerFace smoke test', () => {
   it('renders without throwing and paints at least one pixel', () => {
     const face = makeFixtureFace();
     const ctx = makeCtx();
-    const rgb: [number, number, number, number] = [230, 190, 160, 1];
+    const rgb: [number, number, number] = [230, 190, 160];
 
     expect(() => {
       applyConcealerFace(face, ctx, rgb, DIMENSION, ALPHA);
@@ -111,7 +111,7 @@ describe('applyHighlighterFace smoke test', () => {
   it('renders without throwing and paints at least one pixel', () => {
     const face = makeFixtureFace();
     const ctx = makeCtx();
-    const rgb: [number, number, number, number] = [255, 235, 205, 1];
+    const rgb: [number, number, number] = [255, 235, 205];
 
     expect(() => {
       applyHighlighterFace(face, ctx, rgb, DIMENSION, ALPHA);
@@ -124,7 +124,7 @@ describe('applyContourFace smoke test', () => {
   it('renders without throwing and paints at least one pixel', () => {
     const face = makeFixtureFace();
     const ctx = makeCtx();
-    const rgb: [number, number, number, number] = [150, 100, 80, 1];
+    const rgb: [number, number, number] = [150, 100, 80];
 
     expect(() => {
       applyContourFace(face, ctx, rgb, DIMENSION, ALPHA);
@@ -137,7 +137,7 @@ describe('applyBronzerFace smoke test', () => {
   it('renders without throwing and paints at least one pixel', () => {
     const face = makeFixtureFace();
     const ctx = makeCtx();
-    const rgb: [number, number, number, number] = [180, 130, 90, 1];
+    const rgb: [number, number, number] = [180, 130, 90];
 
     expect(() => {
       applyBronzerFace(face, ctx, rgb, DIMENSION, ALPHA);
@@ -150,7 +150,7 @@ describe('applyBbCreamFace smoke test', () => {
   it('renders without throwing and paints at least one pixel', () => {
     const face = makeFixtureFace();
     const ctx = makeCtx();
-    const rgb: [number, number, number, number] = [235, 200, 175, 1];
+    const rgb: [number, number, number] = [235, 200, 175];
 
     expect(() => {
       applyBbCreamFace(face, ctx, rgb, DIMENSION, ALPHA);
@@ -163,7 +163,7 @@ describe('applyCompactPowderFace smoke test', () => {
   it('renders without throwing and paints at least one pixel', () => {
     const face = makeFixtureFace();
     const ctx = makeCtx();
-    const rgb: [number, number, number, number] = [220, 190, 165, 1];
+    const rgb: [number, number, number] = [220, 190, 165];
 
     expect(() => {
       applyCompactPowderFace(face, ctx, rgb, DIMENSION, ALPHA);
