@@ -35,7 +35,7 @@ import {
   UNDER_EYE_OFFSET_RATIO,
   UNDER_EYE_RIGHT_INDEX,
 } from '@/constants/tryon-constants/face';
-import type { ColorTuple } from '@/types/tryon-types';
+import type { ColorTuple, TDimension, TPoint } from '@/types/tryon-types';
 
 // FACE-specific canvas rendering - fresh design (not ported from any reference
 // implementation, see docs/tryons/FACE.md), built directly on the same primitives LIP's own
@@ -53,23 +53,13 @@ import type { ColorTuple } from '@/types/tryon-types';
 // good frame" approach already used there for lighting/framing/no-sunglasses, rather than
 // trying to algorithmically fix a bad frame after the fact.
 
-interface TDimension {
-  width: number;
-  height: number;
-}
-
-interface IPoint {
-  x: number;
-  y: number;
-}
-
 const toPoints = (face: NormalizedLandmark[], indices: number[], dimension: TDimension) =>
   indices
     .map((index) => face[index])
     .filter((point): point is NormalizedLandmark => point !== undefined)
     .map((point) => ({ x: point.x * dimension.width, y: point.y * dimension.height }));
 
-const midpoint = (a: IPoint, b: IPoint): IPoint => ({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 });
+const midpoint = (a: TPoint, b: TPoint): TPoint => ({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 });
 
 // Traces a *smoothed* closed loop through every point - each point becomes a quadratic-curve
 // control point, with the curve actually passing through the midpoint before/after it, rather
@@ -79,7 +69,7 @@ const midpoint = (a: IPoint, b: IPoint): IPoint => ({ x: (a.x + b.x) / 2, y: (a.
 // exclusion hole traced this way reads as a naturally rounded contour instead of a faceted
 // polygon - most noticeable on the eyebrows/mouth, whose landmark rings are sparse enough that
 // straight edges between them look visibly angular.
-const traceSmoothClosedPath = (ctx: CanvasRenderingContext2D, points: IPoint[]) => {
+const traceSmoothClosedPath = (ctx: CanvasRenderingContext2D, points: TPoint[]) => {
   if (points.length < 3) return;
 
   const last = points[points.length - 1];
@@ -104,7 +94,7 @@ const traceSmoothClosedPath = (ctx: CanvasRenderingContext2D, points: IPoint[]) 
 // smoothly down to unchanged by `FOREHEAD_EXTENSION_TAPER_RATIO` of the face's own detected
 // height, so the added coverage blends into the untouched sides/jaw rather than kinking at a
 // hard cutoff.
-const applyForeheadExtension = (points: IPoint[]): IPoint[] => {
+const applyForeheadExtension = (points: TPoint[]): TPoint[] => {
   const ys = points.map((p) => p.y);
   const minY = Math.min(...ys);
   const maxY = Math.max(...ys);
@@ -291,7 +281,7 @@ export const applyFoundationFace = (
 // the original circle-only version - BLUSH's own call/output is unchanged.
 const drawFeatheredBlob = (
   ctx: CanvasRenderingContext2D,
-  center: IPoint,
+  center: TPoint,
   radiusX: number,
   radiusY: number,
   rgb: ColorTuple,

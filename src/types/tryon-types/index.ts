@@ -3,11 +3,15 @@
 // (LipEngineBase today, EyeEngineBase/FaceEngineBase/... later). Product-taxonomy types
 // (TRY_ON_MAP category/subCategory) live in `@beautinique/frontend-types` instead - not here.
 
-import type { FaceDetectorOptions } from '@mediapipe/tasks-vision';
+import type { FaceDetectorOptions, Landmark } from '@mediapipe/tasks-vision';
 
 export type TRunningMode = FaceDetectorOptions['runningMode'];
 
 export type ColorTuple = [r: number, g: number, b: number, a: number];
+
+export type TDimension = Record<'width' | 'height', number>;
+
+export type TPoint = Pick<Landmark, 'x' | 'y'>;
 
 // Recomputed every `renderFrame` call (see `TryOnEngineBase`) from that frame's landmark
 // detection, not a one-time setup flag like `cameraReady`/`imageReady` below - it can flip back
@@ -106,7 +110,6 @@ export interface IObjectFitContentRect {
   leftPercent: number;
   widthPercent: number;
 }
-
 
 export interface IRangeBounds {
   min: number;

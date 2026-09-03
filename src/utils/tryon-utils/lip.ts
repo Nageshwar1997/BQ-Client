@@ -9,6 +9,7 @@ import {
   UPPER_LIP_INDICES,
   UPPER_WHITE_LIP_INDICES_INSET,
 } from '@/constants/tryon-constants/lip';
+import type { TDimension, TPoint } from '@/types/tryon-types';
 
 // LIP-specific canvas rendering, ported from the reference implementation's
 // `virtual-tryon/utils/index.ts` lip functions. The per-finish opacity numbers below (0.1,
@@ -17,11 +18,6 @@ import {
 // since collapsing them risks silently changing the tuned look. What *is* safely deduplicated
 // is the outer orchestration (temp-canvas compositing + blurred dot-highlight pass), which was
 // byte-for-byte identical across gloss/crayon/shimmer in the reference.
-
-interface TDimension {
-  width: number;
-  height: number;
-}
 
 const isBrightColor = (r: number, g: number, b: number) => {
   const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
@@ -34,12 +30,7 @@ const fillColor = (ctx: CanvasRenderingContext2D, color: string, alpha: number) 
   ctx.fill();
 };
 
-interface IPoint {
-  x: number;
-  y: number;
-}
-
-const midpoint = (a: IPoint, b: IPoint): IPoint => ({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 });
+const midpoint = (a: TPoint, b: TPoint): TPoint => ({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 });
 
 // Traces a *smoothed* closed loop through a set of points - each point becomes a quadratic-
 // curve control point, with the curve actually passing through the midpoint before/after it,
@@ -48,7 +39,7 @@ const midpoint = (a: IPoint, b: IPoint): IPoint => ({ x: (a.x + b.x) / 2, y: (a.
 // with straight `lineTo` edges - this is what makes the lip shape itself look naturally rounded
 // instead. Same technique `applyLipTexture` below already uses for its own overlay passes, just
 // generalized here so every lip clip region (not just the texture overlays) gets it.
-const traceSmoothClosedPath = (ctx: CanvasRenderingContext2D, points: IPoint[]) => {
+const traceSmoothClosedPath = (ctx: CanvasRenderingContext2D, points: TPoint[]) => {
   if (points.length < 3) return;
 
   const last = points[points.length - 1];
