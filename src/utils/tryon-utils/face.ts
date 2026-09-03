@@ -10,6 +10,8 @@ import {
   FACE_OVAL_INDICES,
   FOREHEAD_EXTENSION_RATIO,
   FOREHEAD_EXTENSION_TAPER_RATIO,
+  HIGHLIGHTER_BLOB_RADIUS_RATIO,
+  HIGHLIGHTER_WHITEN_RATIO,
   LEFT_EYE_INDICES,
   LEFT_EYEBROW_INDICES,
   LOCALIZED_BLOB_RADIUS_RATIO,
@@ -408,6 +410,67 @@ export const applyConcealerFace = (
     );
   });
   eraseEyes(tempCtx, face, dimension);
+  tempCtx.restore();
+
+  ctx.drawImage(temp, 0, 0);
+};
+
+/* ================= HIGHLIGHTER ================================================================
+ * Glow at the face's high points - a tight, feathered blob at the top of each cheekbone (the
+ * classic, always-present highlighter placement every shopper recognizes; brow-bone/nose-bridge/
+ * chin are real placements too, but BLUSH/CONCEALER's own v1 scope stuck to two anchors and this
+ * follows the same precedent rather than trying to cover every real-world placement at once).
+ */
+
+// Mixes `rgb` toward white by `ratio` (0 = unchanged, 1 = pure white) - plain per-channel RGB
+// math, not a canvas blend mode (see `HIGHLIGHTER_WHITEN_RATIO`'s own comment on why that
+// matters here specifically). Lightening the color itself, rather than leaning on a wider alpha
+// range, is what makes this read as a glow instead of a pale flat wash of the shade.
+const mixTowardWhite = (rgb: ColorTuple, ratio: number): ColorTuple => {
+  const [r, g, b, a] = rgb;
+  return [r + (255 - r) * ratio, g + (255 - g) * ratio, b + (255 - b) * ratio, a];
+};
+
+// Cheekbone glow - same feathered-blob primitive BLUSH/CONCEALER already use, just tighter
+// (`HIGHLIGHTER_BLOB_RADIUS_RATIO`) and lightened toward white (`mixTowardWhite`) instead of
+// painted at the shade's own raw color. `CHEEKBONE_LEFT_INDEX`/`CHEEKBONE_RIGHT_INDEX` sit
+// higher on the face and further from the eyes than CONCEALER's under-eye anchor, so - like
+// BLUSH - no eye-erase pass is needed here (verified via a synthetic-face render, same as
+// BLUSH/CONCEALER's own verification).
+export const applyHighlighterFace = (
+  face: NormalizedLandmark[],
+  ctx: CanvasRenderingContext2D,
+  rgb: ColorTuple,
+  dimension: TDimension,
+  alpha: number,
+) => {
+  const leftCheekbone = face[CHEEKBONE_LEFT_INDEX];
+  const rightCheekbone = face[CHEEKBONE_RIGHT_INDEX];
+  if (!leftCheekbone || !rightCheekbone) return;
+
+  const ovalXs = toPoints(face, FACE_OVAL_INDICES, dimension).map((point) => point.x);
+  const faceWidth = Math.max(...ovalXs) - Math.min(...ovalXs);
+  const radius = faceWidth * HIGHLIGHTER_BLOB_RADIUS_RATIO;
+  const glowColor = mixTowardWhite(rgb, HIGHLIGHTER_WHITEN_RATIO);
+
+  const temp = document.createElement('canvas');
+  temp.width = dimension.width;
+  temp.height = dimension.height;
+  const tempCtx = temp.getContext('2d');
+  if (!tempCtx) return;
+
+  tempCtx.save();
+  clipToFaceOval(tempCtx, face, dimension);
+  [leftCheekbone, rightCheekbone].forEach((point) => {
+    drawFeatheredBlob(
+      tempCtx,
+      { x: point.x * dimension.width, y: point.y * dimension.height },
+      radius,
+      radius,
+      glowColor,
+      alpha,
+    );
+  });
   tempCtx.restore();
 
   ctx.drawImage(temp, 0, 0);

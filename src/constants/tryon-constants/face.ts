@@ -90,6 +90,24 @@ export const UNDER_EYE_OFFSET_RATIO = 0.03;
 export const CONCEALER_BLOB_WIDTH_RATIO = 0.65;
 export const CONCEALER_BLOB_ASPECT_RATIO = 0.55;
 
+// HIGHLIGHTER's own blob size - notably tighter than BLUSH's broader cheek wash
+// (`LOCALIZED_BLOB_RADIUS_RATIO`), since a real highlight sits as a concentrated point at the
+// top of the cheekbone rather than a wide flush across the whole cheek. Same face-width-relative
+// scaling reasoning as every other size in this app.
+export const HIGHLIGHTER_BLOB_RADIUS_RATIO = 0.1;
+
+// How far `applyHighlighterFace` (utils/tryon-utils/face.ts) mixes the chosen shade's color
+// toward white before painting it - a real highlighter's whole job is to catch and reflect
+// light (read lighter than the product's own swatch color, not as a flat tint of it), which a
+// plain color wash at low alpha (BLUSH's approach) can't reproduce on its own. This is a cheap,
+// blend-mode-free way to fake that "lightened" look: pure RGB math done before the fill, not a
+// canvas blend mode - deliberately avoided after FOUNDATION's own real-device history (see that
+// file's bug log) of blend modes over a blank temp canvas being a genuine cross-browser
+// inconsistency. 0 would render the shade as-is (BLUSH-like); 1 would render pure white
+// regardless of shade - 0.45 keeps the shade's own hue recognizable while still reading
+// meaningfully lighter/glowier than a straight wash.
+export const HIGHLIGHTER_WHITEN_RATIO = 0.45;
+
 // MediaPipe's standard, widely-documented nose-tip landmark - used (alongside
 // CHEEKBONE_LEFT/RIGHT_INDEX above) purely as a head-turn signal, see `isFaceTurnedTooMuch` in
 // utils/tryon-utils/face.ts, not for any rendering placement.
@@ -125,13 +143,17 @@ export const FACE_RANGE_BOUNDS: Record<TFaceFinish, IRangeBounds> = {
   // so the ceiling sits notably higher than BLUSH's - 0.9 raw x the fixed 0.6 base
   // (`drawFeatheredBlob`) tops out around 0.54 effective opacity, meaningfully more solid.
   CONCEALER: { min: 0.15, max: 0.9, default: 0.35 },
+  // No reference equivalent either. Meant to stay subtle - a highlighter that reads too strong
+  // stops looking like light catching the skin and starts looking like a flat pale patch, so the
+  // ceiling sits well below both BLUSH's and CONCEALER's. `HIGHLIGHTER_WHITEN_RATIO`
+  // (`drawFeatheredBlob`'s caller, `applyHighlighterFace`) already does most of the "make it read
+  // as a glow" work, so this doesn't need to lean on a wide alpha range to compensate.
+  HIGHLIGHTER: { min: 0.05, max: 0.5, default: 0.25 },
   // Everything below doesn't have dedicated rendering yet - falls back to FOUNDATION's full-face
   // wash (see `UNSUPPORTED_FACE_FINISHES` in FaceEngineBase.ts). These bounds are placeholders
-  // chosen for each finish's eventual intended character (powder/highlighter meant to stay
-  // subtle, BB cream explicitly "lighter than foundation" per FACE.md) rather than validated
-  // tuning - revisit once each gets its own dedicated renderer, same as FOUNDATION/BLUSH/
-  // CONCEALER did.
-  HIGHLIGHTER: { min: 0.05, max: 0.3, default: 0.15 },
+  // chosen for each finish's eventual intended character (BB cream explicitly "lighter than
+  // foundation" per FACE.md) rather than validated tuning - revisit once each gets its own
+  // dedicated renderer, same as FOUNDATION/BLUSH/CONCEALER/HIGHLIGHTER did.
   CONTOUR: { min: 0.1, max: 0.5, default: 0.25 },
   BRONZER: { min: 0.08, max: 0.4, default: 0.2 },
   BBCREAM: { min: 0.08, max: 0.5, default: 0.15 },

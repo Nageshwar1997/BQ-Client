@@ -4,7 +4,7 @@
 
 _Tracking model: face landmarks + full-face segmentation. Depends on the shared face-landmark engine — see [README.md](./README.md#shared-prerequisites-ye-pehle-banao--sabko-block-karte-hain)._
 
-> **Per-subcategory tracking**: jaise-jaise ek FACE subcategory actually build hoti hai, uski apni dedicated tracker file bhi ban jaati hai (LIP ke [LIP.md](./LIP.md) jaisi) - is file (FACE.md) mein sirf uska summary-row + link reh jaata hai, poora detail nahi. Abhi tak FOUNDATION, BLUSH aur CONCEALER ban chuki hain - [FOUNDATION.md](./FOUNDATION.md), [BLUSH.md](./BLUSH.md), [CONCEALER.md](./CONCEALER.md). Baaki 5 abhi bhi neeche inline hain (unbuilt).
+> **Per-subcategory tracking**: jaise-jaise ek FACE subcategory actually build hoti hai, uski apni dedicated tracker file bhi ban jaati hai (LIP ke [LIP.md](./LIP.md) jaisi) - is file (FACE.md) mein sirf uska summary-row + link reh jaata hai, poora detail nahi. Abhi tak FOUNDATION, BLUSH, CONCEALER aur HIGHLIGHTER ban chuki hain - [FOUNDATION.md](./FOUNDATION.md), [BLUSH.md](./BLUSH.md), [CONCEALER.md](./CONCEALER.md), [HIGHLIGHTER.md](./HIGHLIGHTER.md). Baaki 4 abhi bhi neeche inline hain (unbuilt).
 
 ## Summary
 
@@ -12,13 +12,13 @@ _Tracking model: face landmarks + full-face segmentation. Depends on the shared 
 | ------------- | --------- | --------- | ----------------------------------- |
 | CONCEALER     | 3/4       | 3/4       | 75% — [detail](./CONCEALER.md)      |
 | FOUNDATION    | 4/4       | 4/4       | 100% ✅ — [detail](./FOUNDATION.md) |
-| HIGHLIGHTER   | 0/4       | 0/4       | 0%                                  |
+| HIGHLIGHTER   | 3/4       | 3/4       | 75% — [detail](./HIGHLIGHTER.md)    |
 | BLUSH         | 3/4       | 3/4       | 75% — [detail](./BLUSH.md)          |
 | CONTOUR       | 0/4       | 0/4       | 0%                                  |
 | BRONZER       | 0/4       | 0/4       | 0%                                  |
 | BBCREAM       | 0/4       | 0/4       | 0%                                  |
 | COMPACTPOWDER | 0/4       | 0/4       | 0%                                  |
-| **Total**     | **10/32** | **10/32** | **31.25% (20/64)**                  |
+| **Total**     | **13/32** | **13/32** | **40.6% (26/64)**                   |
 
 ## Details
 
@@ -37,21 +37,9 @@ Ab yaha inline nahi hai - apni dedicated file mil chuki hai: **[FOUNDATION.md](.
 </details>
 
 <details>
-<summary><strong>HIGHLIGHTER</strong> — 0%</summary>
+<summary><strong>HIGHLIGHTER</strong> — 75% — see <a href="./HIGHLIGHTER.md">HIGHLIGHTER.md</a> for the full checklist, design notes, and quality score</summary>
 
-**Live**
-
-- [ ] Camera capture + cheekbone/brow-bone landmark tracking wired
-- [ ] Glow overlay rendered along high points in real-time
-- [ ] Shade/variant picker functional
-- [ ] Performance & cross-device QA
-
-**Upload**
-
-- [ ] Photo upload + cheekbone/brow-bone detection on static image
-- [ ] Glow overlay applied along high points on image
-- [ ] Shade/variant picker functional
-- [ ] Output preview/download QA
+Ab yaha inline nahi hai - apni dedicated file mil chuki hai: **[HIGHLIGHTER.md](./HIGHLIGHTER.md)**.
 
 </details>
 

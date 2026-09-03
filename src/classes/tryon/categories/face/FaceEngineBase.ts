@@ -7,6 +7,7 @@ import {
   applyBlushFace,
   applyConcealerFace,
   applyFoundationFace,
+  applyHighlighterFace,
   isFaceTurnedTooMuch,
 } from '@/utils/tryon-utils/face';
 
@@ -16,7 +17,6 @@ import { TryOnEngineBase } from '../../TryOnEngineBase';
 // `UNSUPPORTED_LIP_FINISHES` (see LipEngineBase.ts), falls back to FOUNDATION (the most basic
 // full-face tint) with a console warning rather than silently doing nothing.
 const UNSUPPORTED_FACE_FINISHES = new Set<TFaceFinish>([
-  'HIGHLIGHTER',
   'CONTOUR',
   'BRONZER',
   'BBCREAM',
@@ -104,6 +104,9 @@ export abstract class FaceEngineBase extends TryOnEngineBase<IFaceTryOnState> {
         return;
       case 'CONCEALER':
         applyConcealerFace(face, ctx, rgb, size, alpha);
+        return;
+      case 'HIGHLIGHTER':
+        applyHighlighterFace(face, ctx, rgb, size, alpha);
         return;
     }
   }
