@@ -6,6 +6,7 @@ import type { IFaceAssets, IFaceTryOnState, TFaceFinish } from '@/types/tryon-ty
 import {
   applyBlushFace,
   applyConcealerFace,
+  applyContourFace,
   applyFoundationFace,
   applyHighlighterFace,
   isFaceTurnedTooMuch,
@@ -16,12 +17,7 @@ import { TryOnEngineBase } from '../../TryOnEngineBase';
 // Finishes that don't have dedicated rendering yet - same landing-spot pattern as LIP's
 // `UNSUPPORTED_LIP_FINISHES` (see LipEngineBase.ts), falls back to FOUNDATION (the most basic
 // full-face tint) with a console warning rather than silently doing nothing.
-const UNSUPPORTED_FACE_FINISHES = new Set<TFaceFinish>([
-  'CONTOUR',
-  'BRONZER',
-  'BBCREAM',
-  'COMPACTPOWDER',
-]);
+const UNSUPPORTED_FACE_FINISHES = new Set<TFaceFinish>(['BRONZER', 'BBCREAM', 'COMPACTPOWDER']);
 
 /**
  * FACE category engine - fresh design (not ported from any reference implementation, see
@@ -107,6 +103,9 @@ export abstract class FaceEngineBase extends TryOnEngineBase<IFaceTryOnState> {
         return;
       case 'HIGHLIGHTER':
         applyHighlighterFace(face, ctx, rgb, size, alpha);
+        return;
+      case 'CONTOUR':
+        applyContourFace(face, ctx, rgb, size, alpha);
         return;
     }
   }

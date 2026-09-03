@@ -108,6 +108,31 @@ export const HIGHLIGHTER_BLOB_RADIUS_RATIO = 0.1;
 // meaningfully lighter/glowier than a straight wash.
 export const HIGHLIGHTER_WHITEN_RATIO = 0.45;
 
+// CONTOUR's anchor offset - `JAW_HOLLOW_LEFT_INDEX`/`JAW_HOLLOW_RIGHT_INDEX` sit right on
+// `FACE_OVAL_INDICES`' own boundary (they're part of that same outer loop), not inside the
+// hollow of the cheek a real contour shades - `applyContourFace` (utils/tryon-utils/face.ts)
+// nudges the anchor inward (toward the face's horizontal center) and upward (toward the cheek
+// hollow, above the jawline itself) by these fractions of the face's own width/height, same
+// "anchor + offset" pattern CONCEALER's `UNDER_EYE_OFFSET_RATIO` already established.
+export const CONTOUR_INWARD_OFFSET_RATIO = 0.04;
+export const CONTOUR_UPWARD_OFFSET_RATIO = 0.03;
+
+// CONTOUR's own blob shape - taller than wide (unlike CONCEALER's flatter under-eye ellipse),
+// following the jaw hollow's own vertical drop rather than a horizontal crescent.
+// `_RADIUS_RATIO` is a fraction of the face's own detected width (medium-sized - bigger than
+// HIGHLIGHTER's tight point, smaller than BLUSH's broad cheek wash), `_ASPECT_RATIO` stretches
+// that circle taller (`radiusY = radiusX * CONTOUR_BLOB_ASPECT_RATIO`, > 1 this time).
+export const CONTOUR_BLOB_RADIUS_RATIO = 0.13;
+export const CONTOUR_BLOB_ASPECT_RATIO = 1.4;
+
+// How far `applyContourFace` mixes the chosen shade's color toward black before painting it -
+// the mirror image of `HIGHLIGHTER_WHITEN_RATIO`. A real contour product's whole job is to read
+// as *shadow* (a hollow catching less light), not just a darker-hued wash of the shade - mixing
+// toward black first, rather than leaning on a plain color wash at higher alpha, is what makes
+// it read as shading instead of a muddy patch of the shade's own color. 0.35 keeps the shade's
+// hue still recognizable while reading clearly darker/shadow-like.
+export const CONTOUR_DARKEN_RATIO = 0.35;
+
 // MediaPipe's standard, widely-documented nose-tip landmark - used (alongside
 // CHEEKBONE_LEFT/RIGHT_INDEX above) purely as a head-turn signal, see `isFaceTurnedTooMuch` in
 // utils/tryon-utils/face.ts, not for any rendering placement.
@@ -149,12 +174,17 @@ export const FACE_RANGE_BOUNDS: Record<TFaceFinish, IRangeBounds> = {
   // (`drawFeatheredBlob`'s caller, `applyHighlighterFace`) already does most of the "make it read
   // as a glow" work, so this doesn't need to lean on a wide alpha range to compensate.
   HIGHLIGHTER: { min: 0.05, max: 0.5, default: 0.25 },
+  // No reference equivalent either. Shading needs a genuine, moderate presence to read as a
+  // hollow rather than disappear against the skin - notably higher floor than HIGHLIGHTER's
+  // (a barely-there contour just looks like a smudge, not shadow), but `CONTOUR_DARKEN_RATIO`
+  // still does most of the "read as shadow, not a colored patch" work, so this doesn't need to
+  // lean as hard on alpha as CONCEALER's opacity-driven coverage does.
+  CONTOUR: { min: 0.1, max: 0.5, default: 0.25 },
   // Everything below doesn't have dedicated rendering yet - falls back to FOUNDATION's full-face
   // wash (see `UNSUPPORTED_FACE_FINISHES` in FaceEngineBase.ts). These bounds are placeholders
   // chosen for each finish's eventual intended character (BB cream explicitly "lighter than
   // foundation" per FACE.md) rather than validated tuning - revisit once each gets its own
-  // dedicated renderer, same as FOUNDATION/BLUSH/CONCEALER/HIGHLIGHTER did.
-  CONTOUR: { min: 0.1, max: 0.5, default: 0.25 },
+  // dedicated renderer, same as FOUNDATION/BLUSH/CONCEALER/HIGHLIGHTER/CONTOUR did.
   BRONZER: { min: 0.08, max: 0.4, default: 0.2 },
   BBCREAM: { min: 0.08, max: 0.5, default: 0.15 },
   COMPACTPOWDER: { min: 0.05, max: 0.3, default: 0.12 },

@@ -7,11 +7,18 @@ import {
   CHEEKBONE_RIGHT_INDEX,
   CONCEALER_BLOB_ASPECT_RATIO,
   CONCEALER_BLOB_WIDTH_RATIO,
+  CONTOUR_BLOB_ASPECT_RATIO,
+  CONTOUR_BLOB_RADIUS_RATIO,
+  CONTOUR_DARKEN_RATIO,
+  CONTOUR_INWARD_OFFSET_RATIO,
+  CONTOUR_UPWARD_OFFSET_RATIO,
   FACE_OVAL_INDICES,
   FOREHEAD_EXTENSION_RATIO,
   FOREHEAD_EXTENSION_TAPER_RATIO,
   HIGHLIGHTER_BLOB_RADIUS_RATIO,
   HIGHLIGHTER_WHITEN_RATIO,
+  JAW_HOLLOW_LEFT_INDEX,
+  JAW_HOLLOW_RIGHT_INDEX,
   LEFT_EYE_INDICES,
   LEFT_EYEBROW_INDICES,
   LOCALIZED_BLOB_RADIUS_RATIO,
@@ -468,6 +475,82 @@ export const applyHighlighterFace = (
       radius,
       radius,
       glowColor,
+      alpha,
+    );
+  });
+  tempCtx.restore();
+
+  ctx.drawImage(temp, 0, 0);
+};
+
+/* ================= CONTOUR ================================================================
+ * Shading along the jaw hollow - the mirror image of HIGHLIGHTER: same feathered-blob
+ * primitive, but darkened instead of lightened, and shaped/positioned for the hollow of the
+ * cheek/jaw rather than the top of the cheekbone. Nose-hollow/temple are real contour placements
+ * too, but - same precedent as BLUSH/CONCEALER/HIGHLIGHTER's own v1 scope - this sticks to the
+ * two jaw-hollow anchors rather than covering every real-world placement at once.
+ */
+
+// Mixes `rgb` toward black by `ratio` (0 = unchanged, 1 = pure black) - the mirror image of
+// `mixTowardWhite` above, same plain per-channel RGB math (no canvas blend mode, same reasoning
+// as `HIGHLIGHTER_WHITEN_RATIO`'s own comment). Darkening the color itself, rather than leaning
+// on a higher alpha, is what makes this read as shadow instead of a saturated patch of the
+// shade's own color.
+const mixTowardBlack = (rgb: ColorTuple, ratio: number): ColorTuple => {
+  const [r, g, b, a] = rgb;
+  return [r * (1 - ratio), g * (1 - ratio), b * (1 - ratio), a];
+};
+
+// Jaw-hollow shadow - `JAW_HOLLOW_LEFT_INDEX`/`JAW_HOLLOW_RIGHT_INDEX` sit right on the face
+// oval's own boundary (see their own constant comment), so the anchor is nudged inward and
+// upward first to land in the actual hollow of the cheek rather than right on the jaw edge.
+// Taller-than-wide ellipse (`CONTOUR_BLOB_ASPECT_RATIO > 1`, the opposite of CONCEALER's flatter
+// under-eye shape) to follow the hollow's own vertical drop, and darkened toward black
+// (`mixTowardBlack`) instead of painted at the shade's raw color, same "read as the real
+// cosmetic effect, not just a colored patch" reasoning as HIGHLIGHTER's own whitening.
+export const applyContourFace = (
+  face: NormalizedLandmark[],
+  ctx: CanvasRenderingContext2D,
+  rgb: ColorTuple,
+  dimension: TDimension,
+  alpha: number,
+) => {
+  const leftAnchor = face[JAW_HOLLOW_LEFT_INDEX];
+  const rightAnchor = face[JAW_HOLLOW_RIGHT_INDEX];
+  if (!leftAnchor || !rightAnchor) return;
+
+  const ovalPoints = toPoints(face, FACE_OVAL_INDICES, dimension);
+  const ovalXs = ovalPoints.map((point) => point.x);
+  const ovalYs = ovalPoints.map((point) => point.y);
+  const faceWidth = Math.max(...ovalXs) - Math.min(...ovalXs);
+  const faceHeight = Math.max(...ovalYs) - Math.min(...ovalYs);
+  const inwardOffset = faceWidth * CONTOUR_INWARD_OFFSET_RATIO;
+  const upwardOffset = faceHeight * CONTOUR_UPWARD_OFFSET_RATIO;
+  const radiusX = faceWidth * CONTOUR_BLOB_RADIUS_RATIO;
+  const radiusY = radiusX * CONTOUR_BLOB_ASPECT_RATIO;
+  const shadowColor = mixTowardBlack(rgb, CONTOUR_DARKEN_RATIO);
+
+  const temp = document.createElement('canvas');
+  temp.width = dimension.width;
+  temp.height = dimension.height;
+  const tempCtx = temp.getContext('2d');
+  if (!tempCtx) return;
+
+  tempCtx.save();
+  clipToFaceOval(tempCtx, face, dimension);
+  [
+    { anchor: leftAnchor, direction: 1 },
+    { anchor: rightAnchor, direction: -1 },
+  ].forEach(({ anchor, direction }) => {
+    drawFeatheredBlob(
+      tempCtx,
+      {
+        x: anchor.x * dimension.width + inwardOffset * direction,
+        y: anchor.y * dimension.height - upwardOffset,
+      },
+      radiusX,
+      radiusY,
+      shadowColor,
       alpha,
     );
   });
