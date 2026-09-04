@@ -4,20 +4,22 @@
 
 _Tracking model: face landmarks (eye/brow region — precision-heavy, thin lines/lashes). Depends on the shared face-landmark engine — see [README.md](./README.md#shared-prerequisites-ye-pehle-banao--sabko-block-karte-hain)._
 
-> **Build plan**: EYE is the first category with a **color + pattern** dimension (LIP/FACE were color-only) — which subcategories get a pattern, what the pattern options are, and the suggested build order are all planned out in [EYE-PLAN.md](./EYE-PLAN.md), written before any EYE code exists. Checklists below are still the generic placeholder shape every category starts with (see FACE.md's own history) — they'll get replaced by real per-subcategory detail as each one actually gets built.
+> **Build plan**: EYE is the first category with a **color + pattern** dimension (LIP/FACE were color-only) — which subcategories get a pattern, what the pattern options are, and the suggested build order are all planned out in [EYE-PLAN.md](./EYE-PLAN.md), written before any EYE code exists.
+
+> **Per-subcategory tracking**: same convention FACE's own tracker docs already established - as a subcategory actually gets built, it gets its own dedicated tracker file and this file's own inline checklist for it gets replaced with a summary-row + link. EYELINER is the first one built - [EYELINER.md](./EYELINER.md). The other 6 are still the generic placeholder checklist shape every category starts with (see FACE.md's own history).
 
 ## Summary
 
-| Subcategory | Live (0/4) | Upload (0/4) | Overall       |
-| ----------- | ---------- | ------------ | ------------- |
-| EYEBROW     | 0/4        | 0/4          | 0%            |
-| EYELINER    | 0/4        | 0/4          | 0%            |
-| KAJAL       | 0/4        | 0/4          | 0%            |
-| EYESHADOW   | 0/4        | 0/4          | 0%            |
-| MASCARA     | 0/4        | 0/4          | 0%            |
-| LASHES      | 0/4        | 0/4          | 0%            |
-| BROWGEL     | 0/4        | 0/4          | 0%            |
-| **Total**   | **0/28**   | **0/28**     | **0% (0/56)** |
+| Subcategory | Live (0/4) | Upload (0/4) | Overall                       |
+| ----------- | ---------- | ------------ | ----------------------------- |
+| EYEBROW     | 0/4        | 0/4          | 0%                            |
+| EYELINER    | 3/4        | 3/4          | 75% — [detail](./EYELINER.md) |
+| KAJAL       | 0/4        | 0/4          | 0%                            |
+| EYESHADOW   | 0/4        | 0/4          | 0%                            |
+| MASCARA     | 0/4        | 0/4          | 0%                            |
+| LASHES      | 0/4        | 0/4          | 0%                            |
+| BROWGEL     | 0/4        | 0/4          | 0%                            |
+| **Total**   | **3/28**   | **3/28**     | **10.7% (6/56)**              |
 
 ## Details
 
@@ -41,21 +43,9 @@ _Tracking model: face landmarks (eye/brow region — precision-heavy, thin lines
 </details>
 
 <details>
-<summary><strong>EYELINER</strong> — 0%</summary>
+<summary><strong>EYELINER</strong> — 75% — see <a href="./EYELINER.md">EYELINER.md</a> for the full checklist, design notes, and quality score</summary>
 
-**Live**
-
-- [ ] Camera capture + lash-line edge tracking wired
-- [ ] Thin stroke rendered along lash line in real-time
-- [ ] Shade/variant picker functional
-- [ ] Performance & cross-device QA
-
-**Upload**
-
-- [ ] Photo upload + lash-line edge detection on static image
-- [ ] Thin stroke rendered along lash line on image
-- [ ] Shade/variant picker functional
-- [ ] Output preview/download QA
+Ab yaha inline nahi hai - apni dedicated file mil chuki hai: **[EYELINER.md](./EYELINER.md)**.
 
 </details>
 
