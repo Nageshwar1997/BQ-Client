@@ -9,14 +9,14 @@ import { LIP_LIVE_INSTRUCTIONS, LIP_UPLOAD_INSTRUCTIONS } from './lip';
 
 // Preset stock-model photos a shopper can try a shade on without their own camera/photo.
 // Matches the reference implementation's hardcoded `COSMETIC_MODEL_IMAGES` (same 6 assets,
-// already present under public/images/try-on/models/).
+// already present under public/images/tryon/models/).
 export const TRYON_MODEL_IMAGES = [
-  '/images/try-on/models/Central-Indian.webp',
-  '/images/try-on/models/East-Indian.webp',
-  '/images/try-on/models/North-Indian.webp',
-  '/images/try-on/models/Northeast-Indian.webp',
-  '/images/try-on/models/South-Indian.webp',
-  '/images/try-on/models/West-Indian.webp',
+  '/images/tryon/models/Central-Indian.webp',
+  '/images/tryon/models/East-Indian.webp',
+  '/images/tryon/models/North-Indian.webp',
+  '/images/tryon/models/Northeast-Indian.webp',
+  '/images/tryon/models/South-Indian.webp',
+  '/images/tryon/models/West-Indian.webp',
 ];
 
 export interface ITryOnInstruction {
@@ -28,12 +28,12 @@ type TTryOnMode = 'live' | 'upload';
 
 /* ================= PER-CATEGORY INSTRUCTIONS ==================================================
  * Shown before a shopper picks/takes a photo - in the sidebar's compact popover and the full
- * instructions screen - so they know what makes a try-on actually work well, before finding out
+ * instructions screen - so they know what makes a tryon actually work well, before finding out
  * after a bad shot/frame gives a bad result.
  *
  * Deliberately one full, independent list per category (defined in that category's own file -
  * `./lip.ts`'s `LIP_UPLOAD_INSTRUCTIONS`/`LIP_LIVE_INSTRUCTIONS`, `./face.ts`'s equivalents)
- * rather than a shared base list every category extends: each category's own try-on pipeline has
+ * rather than a shared base list every category extends: each category's own tryon pipeline has
  * its own real constraints, and those don't generalize. FACE's full-face fill genuinely breaks
  * on a turned head or hair falling across the forehead in a way LIP's lip-only region never has
  * to care about; a future NAIL flow wouldn't need "face" advice at all. A shared base would
@@ -47,9 +47,9 @@ type TTryOnMode = 'live' | 'upload';
  * any instruction text itself.
  */
 
-// Central registry - one entry per category that has a real try-on flow built (see `TRY_ON_MAP`
+// Central registry - one entry per category that has a real tryon flow built (see `TRY_ON_MAP`
 // in `@beautinique/frontend-types` for the full, eventual category list; only LIP/FACE exist
-// today). `Partial` on purpose: a category without its own try-on flow yet has nothing real to
+// today). `Partial` on purpose: a category without its own tryon flow yet has nothing real to
 // give tips about - `getTryOnInstructions` falls back to an empty list rather than guessing.
 const TRY_ON_INSTRUCTIONS: Partial<
   Record<TTryOnCategory, Record<TTryOnMode, ITryOnInstruction[]>>
@@ -68,12 +68,12 @@ export const TRYON_MODE_OPTIONS = [
     icon: 'solar:camera-linear',
     mode: 'live',
     title: 'Try it Live',
-    description: 'Use your camera for a real-time try-on',
+    description: 'Use your camera for a real-time Try-On',
   },
   {
     icon: 'solar:gallery-send-linear',
     mode: 'upload',
     title: 'Upload Photo',
-    description: 'Upload a photo for a static try-on',
+    description: 'Upload a photo for a static Try-On',
   },
 ] as const;

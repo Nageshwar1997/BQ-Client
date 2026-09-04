@@ -32,7 +32,7 @@ const OUR_VALUES = [
   {
     icon: 'solar:lightbulb-linear',
     title: 'Innovation',
-    description: 'From virtual try-on to smart recommendations, we keep pushing forward.',
+    description: 'From virtual Try-On to smart recommendations, we keep pushing forward.',
   },
   {
     icon: 'solar:shield-check-linear',
@@ -50,7 +50,7 @@ const HOW_WE_LIVE_IT = [
   'Every seller is verified before their products go live on the marketplace.',
   'Reviews are only accepted from customers who actually purchased the product.',
   'Product descriptions and shade guides are written to set accurate expectations.',
-  'We invest in tools like virtual try-on to remove guesswork from online shopping.',
+  'We invest in tools like virtual Try-On to remove guesswork from online shopping.',
 ] as const;
 
 const MissionVisionValues = () => {

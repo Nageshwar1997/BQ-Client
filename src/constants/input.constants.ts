@@ -295,20 +295,20 @@ export const PRODUCT_VARIANT_INPUT_MAP_DATA = [
 export const PRODUCT_TRYON_INPUT_MAP_DATA = [
   {
     name: 'enabled',
-    content: 'Enable try-on',
+    content: 'Enable Try-On',
     type: 'checkbox',
   },
   {
     name: 'category',
     label: 'Try-on category',
     type: 'select',
-    placeholder: 'Select try-on category',
+    placeholder: 'Select Try-On category',
   },
   {
     name: 'subCategory',
     label: 'Try-on sub-category',
     type: 'select',
-    placeholder: 'Select try-on sub-category',
+    placeholder: 'Select Try-On sub-category',
   },
 ] as const;
 

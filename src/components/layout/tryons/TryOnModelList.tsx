@@ -2,7 +2,7 @@ import { TRYON_MODEL_IMAGES } from '@/constants/tryon-constants';
 
 import ScrollableGradientContainer from '../containers/ScrollableGradientContainer';
 
-// `/images/try-on/models/Central-Indian.webp` -> "Central Indian" - every button below used to
+// `/images/tryon/models/Central-Indian.webp` -> "Central Indian" - every button below used to
 // share the exact same generic `alt="Model"`/no aria-label, so a screen reader announced every
 // single one identically ("Model, button") with no way to tell them apart. The filenames
 // themselves already carry a real, human-readable label (see TRYON_MODEL_IMAGES) - deriving from

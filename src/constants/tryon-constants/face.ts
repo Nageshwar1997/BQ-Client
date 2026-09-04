@@ -4,7 +4,7 @@ import type { TFaceFinish } from '@/types/tryon-types/face';
 import type { ITryOnInstruction } from '.';
 
 // Face landmark indices (into MediaPipe FaceLandmarker's 478-point face mesh) for the FACE
-// try-on engine. Fresh design (not ported from any reference implementation - see
+// Try-On engine. Fresh design (not ported from any reference implementation - see
 // docs/tryons/FACE.md) - the index arrays below trace MediaPipe's own standard, publicly
 // documented face-mesh topology (face oval, eyes, eyebrows), the same public data every
 // MediaPipe-based face-filter app draws from, not anything proprietary. Exact single-point
@@ -198,7 +198,7 @@ export const FACE_RANGE_BOUNDS: Record<TFaceFinish, IRangeBounds> = {
   // FOUNDATION and every LIP finish also use), so hitting the reference's ~0.15 visual peak needs
   // a raw max here around 0.15 / 0.6 = 0.25. Min kept non-zero (unlike the reference's 0) so the
   // slider can never render an effectively invisible blush - a shopper who wants none can just
-  // close the try-on instead.
+  // close the Try-On instead.
   BLUSH: { min: 0.25, max: 1, default: 0.5 },
   // No reference equivalent (the commverse reference has no standalone "Concealer" category) -
   // own judgment call. Concealer is meant to read more opaque/pigmented than a sheer blush or

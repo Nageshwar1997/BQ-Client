@@ -16,7 +16,7 @@ import type {
 // from any edge counts as the face being cut off by the frame boundary, not fully "in frame".
 // Deliberately tiny: MediaPipe's face mesh covers the *whole* face oval, including the jaw,
 // ears, and hairline - for any normal, reasonably-close headshot (the expected framing for a
-// makeup try-on, since people want to actually see their lips), those outer contour points
+// makeup tryon, since people want to actually see their lips), those outer contour points
 // routinely sit within a few percent of the image edge even though nothing is actually cut off.
 // A looser margin (this was 0.02) was flagging completely normal framing as "not in frame" -
 // this should only trip for a landmark genuinely at/past the boundary.

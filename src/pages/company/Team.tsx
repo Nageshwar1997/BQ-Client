@@ -31,7 +31,7 @@ const WHAT_DRIVES_US = [
   {
     icon: 'solar:lightbulb-linear',
     title: 'Always Building',
-    description: 'From virtual try-on to smarter search, we keep pushing the platform forward.',
+    description: 'From virtual Try-On to smarter search, we keep pushing the platform forward.',
   },
 ] as const;
 

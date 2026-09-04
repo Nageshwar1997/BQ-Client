@@ -306,7 +306,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
 
     const link = document.createElement('a');
     link.href = dataUrl;
-    link.download = 'try-on.png';
+    link.download = 'Try-On.png';
     link.click();
   };
 
@@ -414,7 +414,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
           <p className="text-tertiary text-sm">
             {tryOn
               ? `Try-on for ${tryOn.category} is coming soon.`
-              : 'This product has no try-on configured yet.'}
+              : 'This product has no Try-On configured yet.'}
           </p>
         </div>
       ) : (

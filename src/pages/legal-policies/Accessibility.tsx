@@ -37,7 +37,7 @@ const ACCESSIBILITY_FEATURES = [
   {
     icon: 'solar:gallery-linear',
     title: 'Alt Text for Media',
-    description: 'Images, videos, and try-on previews carry descriptive alternative text.',
+    description: 'Images, videos, and Try-On previews carry descriptive alternative text.',
   },
   {
     icon: 'solar:text-square-linear',
@@ -86,7 +86,7 @@ const KEYBOARD_SHORTCUTS = [
 
 const KNOWN_LIMITATIONS = [
   'A few third-party embeds (like payment gateways) are outside our direct control and may not fully meet our accessibility standards yet.',
-  'The virtual try-on experience relies on camera access and visual feedback; a fully non-visual alternative is still in progress.',
+  'The virtual Try-On experience relies on camera access and visual feedback; a fully non-visual alternative is still in progress.',
   'Some older product images uploaded by sellers may be missing descriptive alt text while we complete a full content audit.',
 ] as const;
 
@@ -207,7 +207,7 @@ const Accessibility = () => {
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
           We regularly audit and enhance our site against WCAG 2.1 AA standards using both automated
           tools and manual screen-reader testing, so our beauty products, tutorials, and virtual
-          try-on experiences can be enjoyed by everyone. Every new feature we ship goes through an
+          Try-On experiences can be enjoyed by everyone. Every new feature we ship goes through an
           accessibility review before it reaches you.
         </p>
       </StaticPageSection>

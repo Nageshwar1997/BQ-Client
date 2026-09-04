@@ -232,7 +232,7 @@ export abstract class TryOnEngineBase<TState extends IMakeupState, TAssets = nul
       // out short of remounting the whole stage. Setup never got far enough to produce a usable
       // landmarker, so only that reference needs dropping.
       this.landmarker = null;
-      this.updateState.setError("Couldn't set up the try-on. Check your connection and try again.");
+      this.updateState.setError("Couldn't set up the Try-On. Check your connection and try again.");
     }
   }
 

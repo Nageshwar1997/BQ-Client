@@ -133,14 +133,14 @@ const FAQ_CATEGORIES = [
     title: 'Virtual Try-On',
     questions: [
       {
-        question: 'How does the virtual try-on feature work?',
+        question: 'How does the virtual Try-On feature work?',
         answer:
           'On supported products, you can preview how a shade or item looks using your device camera, live, before adding it to your cart.',
       },
       {
         question: 'Do I need to grant camera access?',
         answer:
-          'Yes, your browser will ask for camera permission the first time you use try-on. You can decline and shop normally without it.',
+          'Yes, your browser will ask for camera permission the first time you use Try-On. You can decline and shop normally without it.',
       },
       {
         question: 'Is my camera data stored?',

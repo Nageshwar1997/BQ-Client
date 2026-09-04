@@ -18,7 +18,7 @@ const NEWS_ITEMS = [
     key: 'Forbes',
     tagline: 'Featured in Forbes’ "Rising Beauty-Tech Startups to Watch"',
     description:
-      'Forbes recognized Beautinique for reimagining online beauty shopping through virtual try-on technology and a verified-seller marketplace model.',
+      'Forbes recognized Beautinique for reimagining online beauty shopping through virtual Try-On technology and a verified-seller marketplace model.',
   },
   {
     key: 'TalentAward',

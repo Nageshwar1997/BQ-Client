@@ -4,7 +4,7 @@ import type { TLipFinish } from '@/types/tryon-types/lip';
 import type { ITryOnInstruction } from '.';
 
 // Lip landmark indices (into MediaPipe FaceLandmarker's 478-point face mesh) and texture
-// asset paths for the LIP try-on engine. Ported from the reference implementation at
+// asset paths for the LIP Try-On engine. Ported from the reference implementation at
 // `src/commverse/src/pages/virtual-tryon/data/index.ts` (lip-relevant subset only) - the
 // index arrays trace the actual lip contour, they aren't values to tweak by feel.
 
@@ -46,9 +46,9 @@ export const LIP_TEXTURE_COMPOSITE_OPERATION: GlobalCompositeOperation = 'overla
 
 // Same asset naming as the reference (crayon and shimmer each reuse one file for both the
 // upper/lower lip passes; gloss has dedicated upper/lower textures) - files already exist
-// under public/images/try-on/lips/textures/.
+// under public/images/tryon/lips/textures/.
 //
-const TEXTURE_FOLDER = '/images/try-on/lips/textures' as const;
+const TEXTURE_FOLDER = '/images/tryon/lips/textures' as const;
 // Genuinely shared by all four finish - GLOSS/SATIN/BALM/PLUMPER (see LipEngineBase.ts's
 // `loadCategoryAssets`, which loads this once and assigns the same loaded image to each
 // finish's own `ILipAssets` field) - named this way so the sharing is obvious at the filename,

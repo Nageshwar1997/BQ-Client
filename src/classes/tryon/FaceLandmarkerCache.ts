@@ -19,7 +19,7 @@ const MEDIAPIPE_WASM_BASE_URL = `https://cdn.jsdelivr.net/npm/@mediapipe/tasks-v
 // exactly the same way regardless of where it came from. The WASM runtime above is NOT moved
 // here - jsDelivr already serves it `immutable, max-age=31536000` (1 year), so there's nothing
 // left to win there.
-const FACE_LANDMARKER_MODEL_URL = '/models/try-on/face_landmarker.task';
+const FACE_LANDMARKER_MODEL_URL = '/models/tryon/face_landmarker.task';
 
 const createLandmarker = async (
   canvas: HTMLCanvasElement,
