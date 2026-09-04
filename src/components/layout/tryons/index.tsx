@@ -4,9 +4,11 @@ import { Icon } from '@iconify/react';
 import type { Ref } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
+import type { IEyeTryOnState } from '@/classes/tryon/categories/eye';
 import type { IFaceTryOnState } from '@/classes/tryon/categories/face';
 import type { ILipTryOnState } from '@/classes/tryon/categories/lip';
 import { ModalWrapper } from '@/components/layout/modals/ModalWrapper';
+import { EYE_PATTERNS, EYE_RANGE_BOUNDS } from '@/constants/tryon-constants/eye';
 import { FACE_RANGE_BOUNDS } from '@/constants/tryon-constants/face';
 import { LIP_RANGE_BOUNDS } from '@/constants/tryon-constants/lip';
 import useDebounce from '@/hooks/useDebounce';
@@ -20,6 +22,7 @@ import type {
 
 import { InputError } from '@/components/ui/inputs/children';
 import BottomButtons from './BottomButtons';
+import EyeTryOnStage from './eye/EyeTryOnStage';
 import FaceTryOnStage from './face/FaceTryOnStage';
 import LipTryOnStage from './lip/LipTryOnStage';
 import TryOnBottomSheet from './TryOnBottomSheet';
@@ -28,6 +31,7 @@ import TryOnInstructions from './TryOnInstructions';
 import TryOnModelList from './TryOnModelList';
 import TryOnModeSelect from './TryOnModeSelect';
 import TryOnOverlay from './TryOnOverlay';
+import TryOnPatternSwatches from './TryOnPatternSwatches';
 import TryOnRangeSlider from './TryOnRangeSlider';
 import TryOnShadeSwatches from './TryOnShadeSwatches';
 import TryOnSidebar from './TryOnSidebar';
@@ -49,7 +53,7 @@ interface ITryOnFlowState {
   step: 'select' | 'instructions' | 'tryon';
   mode: 'live' | 'upload';
   uploadedImageUrl: string | null;
-  engineState: ILipTryOnState | IFaceTryOnState | null;
+  engineState: ILipTryOnState | IFaceTryOnState | IEyeTryOnState | null;
 }
 
 // `stageRef` below has to hold whichever category's stage is currently mounted - not the full
@@ -65,7 +69,11 @@ interface ITryOnFlowState {
 // either stage's `ref` still type-checks correctly - only the reverse (using the narrow type
 // somewhere a full one is required) wouldn't.
 interface ITryOnStageColorRangeRef {
-  setMakeupState: (state: { color?: string | null; range?: number }) => void;
+  // `pattern` is EYE-only (see `IEyeTryOnState`) - optional here since LIP/FACE never pass it,
+  // but declaring it lets this one shared ref type also cover the EYE branch below. A concrete
+  // engine that doesn't know about `pattern` (LIP/FACE) just never receives it at runtime -
+  // TryOnModal only ever calls `setMakeupState({ pattern })` from EYE-specific handlers.
+  setMakeupState: (state: { color?: string | null; range?: number; pattern?: string }) => void;
   getState: () => IMakeupState;
   takeSnapshot: () => string | null;
   getStream: () => MediaStream | null;
@@ -283,6 +291,12 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
     stageRef.current?.setMakeupState({ color: hexColor });
   };
 
+  // EYE-only (see TryOnPatternSwatches) - unlike shades, there's no deselect-to-null here, a
+  // pattern-bearing finish always has *some* pattern applied once picked.
+  const handlePatternSelect = (patternId: string) => {
+    stageRef.current?.setMakeupState({ pattern: patternId });
+  };
+
   // Toggling on always (re)centers the split - toggling off clears it back to the normal
   // full render (`null`), matching `TryOnEngineBase`'s own semantics for `comparePosition`.
   const handleCompareToggle = () => {
@@ -384,7 +398,14 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
       ? FACE_RANGE_BOUNDS[tryOn.subCategory]
       : tryOn?.category === 'LIP'
         ? LIP_RANGE_BOUNDS[tryOn.subCategory]
-        : { min: 0, max: 1, default: 0.5 };
+        : tryOn?.category === 'EYE'
+          ? EYE_RANGE_BOUNDS[tryOn.subCategory]
+          : { min: 0, max: 1, default: 0.5 };
+
+  // Only meaningful inside the EYE branch below, same "declared up top, next to rangeBounds"
+  // reasoning - `undefined` for any EYE subcategory without a pattern picker yet (see
+  // EYE_PATTERNS's own comment), which the render below already treats as "don't show the row".
+  const eyePatterns = tryOn?.category === 'EYE' ? EYE_PATTERNS[tryOn.subCategory] : undefined;
 
   return (
     <ModalWrapper
@@ -404,11 +425,12 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
       containerProps={{ className: 'p-0! lg:p-8!' }}
       className="h-full max-h-full! w-full! max-w-full! min-w-[80dvw]! rounded-none! border-0! lg:max-h-[90dvh]! lg:w-auto! lg:rounded-xl! lg:border!"
     >
-      {/* Only LIP and FACE have a rendering engine built so far - see docs/tryons/README.md.
-          The discriminant check stays inline (not a separately-computed boolean) so TS keeps
-          narrowing `tryOn` to `{category: 'LIP' | 'FACE', ...}` for every access inside the
-          branch below - a plain boolean variable would lose that link. */}
-      {!tryOn || (tryOn.category !== 'LIP' && tryOn.category !== 'FACE') ? (
+      {/* Only LIP, FACE, and EYE have a rendering engine built so far - see
+          docs/tryons/README.md. The discriminant check stays inline (not a separately-computed
+          boolean) so TS keeps narrowing `tryOn` to `{category: 'LIP' | 'FACE' | 'EYE', ...}` for
+          every access inside the branch below - a plain boolean variable would lose that link. */}
+      {!tryOn ||
+      (tryOn.category !== 'LIP' && tryOn.category !== 'FACE' && tryOn.category !== 'EYE') ? (
         <div className="flex flex-col items-center gap-2 p-6 text-center">
           <Icon icon="solar:hourglass-linear" className="text-primary/40 size-8" />
           <p className="text-tertiary text-sm">
@@ -463,6 +485,28 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                         // default rather than `undefined` (which would win the spread in
                         // getInitialState()).
                         range: flow.engineState?.range ?? rangeBounds.default,
+                      }}
+                      onStateChange={(engineState) => {
+                        setFlow((prev) => ({ ...prev, engineState }));
+                      }}
+                    />
+                  ) : tryOn.category === 'EYE' ? (
+                    <EyeTryOnStage
+                      key={retryKey}
+                      // See the matching cast comment on <LipTryOnStage> above.
+                      ref={stageRef as Ref<ITryOnStageRef<IEyeTryOnState>>}
+                      mode={flow.mode}
+                      uploadedImageUrl={flow.uploadedImageUrl}
+                      initialState={{
+                        type: tryOn.subCategory,
+                        color: flow.engineState?.color ?? null,
+                        range: flow.engineState?.range ?? rangeBounds.default,
+                        // Persists the pattern picker's position across Live<->Upload toggles
+                        // too, same reasoning as `color`/`range` above - `IEyeTryOnState` only
+                        // (LIP/FACE's `flow.engineState` can never have a `pattern` field, so
+                        // this reads `undefined` there rather than a type error, falling back to
+                        // EYELINER_DEFAULT_PATTERN via `EyeEngineBase.getInitialState()`).
+                        pattern: (flow.engineState as IEyeTryOnState | null)?.pattern ?? undefined,
                       }}
                       onStateChange={(engineState) => {
                         setFlow((prev) => ({ ...prev, engineState }));
@@ -575,6 +619,19 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                       onSelect={handleShadeSelect}
                       disabled={!canInteract}
                     />
+
+                    {/* EYE-only, same "only meaningful once a shade is applied" gate as the
+                      intensity slider above - and only for a subCategory that actually has a
+                      pattern list (see EYE_PATTERNS's own comment). */}
+                    {eyePatterns && flow.engineState?.color && (
+                      <TryOnPatternSwatches
+                        className="w-full"
+                        patterns={eyePatterns}
+                        appliedPattern={(flow.engineState as IEyeTryOnState).pattern}
+                        onSelect={handlePatternSelect}
+                        disabled={!canInteract}
+                      />
+                    )}
                   </div>
                 </>
               )}
