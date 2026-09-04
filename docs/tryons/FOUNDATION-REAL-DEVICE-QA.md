@@ -6,7 +6,7 @@ Ye guide **FOUNDATION.md ke Quality score #4 (Real-device QA)** ke liye hai — 
 
 ## Setup — phone se dev server tak pahunchna
 
-Same as LIP's own checklist - [LIP-REAL-DEVICE-QA.md](./LIP-REAL-DEVICE-QA.md)'s setup section, dobara nahi likh raha. `npm run dev` chalao, terminal ka `Network:` URL phone ke browser me kholo, product/try-on modal tak pahuncho, FOUNDATION select karo.
+Same as LIP's own checklist - [LIP-REAL-DEVICE-QA.md](./LIP-REAL-DEVICE-QA.md)'s setup section, dobara nahi likh raha. `npm run dev` chalao, terminal ka `Network:` URL phone ke browser me kholo, product/tryon modal tak pahuncho, FOUNDATION select karo.
 
 ---
 

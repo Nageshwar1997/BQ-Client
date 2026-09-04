@@ -2,23 +2,23 @@
 
 [← Back to master tracker](./README.md)
 
-> ⚠️ **Design decision pending before starting this category.** Skincare products (moisturizer, serum, sunscreen, etc.) don't have a "shade" to match like makeup — a real try-on here means simulating a **finish/glow effect**, not applying a color. Confirm the visual approach (e.g. a subtle "after" overlay showing dewiness/brightness/matte-ness) before building. `CLEANSER` especially has almost nothing visual to try on — consider deprioritizing or dropping it in favor of a simple before/after marketing visual instead of a true AR filter.
+> ⚠️ **Design decision pending before starting this category.** Skincare products (moisturizer, serum, sunscreen, etc.) don't have a "shade" to match like makeup — a real tryon here means simulating a **finish/glow effect**, not applying a color. Confirm the visual approach (e.g. a subtle "after" overlay showing dewiness/brightness/matte-ness) before building. `CLEANSER` especially has almost nothing visual to try on — consider deprioritizing or dropping it in favor of a simple before/after marketing visual instead of a true AR filter.
 
 *Tracking model: face segmentation (skin region only, no fine landmarks needed). Depends on the shared face-landmark engine — see [README.md](./README.md#shared-prerequisites-ye-pehle-banao--sabko-block-karte-hain).*
 
 ## Summary
 
-| Subcategory | Live (0/4) | Upload (0/4) | Overall |
-|---|---|---|---|
-| MOISTURIZER | 0/4 | 0/4 | 0% |
-| SERUM | 0/4 | 0/4 | 0% |
-| TONER | 0/4 | 0/4 | 0% |
-| CLEANSER | 0/4 | 0/4 | 0% |
-| SUNSCREEN | 0/4 | 0/4 | 0% |
-| MASK | 0/4 | 0/4 | 0% |
-| EYECREAM | 0/4 | 0/4 | 0% |
-| EXFOLIATOR | 0/4 | 0/4 | 0% |
-| **Total** | **0/32** | **0/32** | **0% (0/64)** |
+| Subcategory | Live (0/4) | Upload (0/4) | Overall       |
+| ----------- | ---------- | ------------ | ------------- |
+| MOISTURIZER | 0/4        | 0/4          | 0%            |
+| SERUM       | 0/4        | 0/4          | 0%            |
+| TONER       | 0/4        | 0/4          | 0%            |
+| CLEANSER    | 0/4        | 0/4          | 0%            |
+| SUNSCREEN   | 0/4        | 0/4          | 0%            |
+| MASK        | 0/4        | 0/4          | 0%            |
+| EYECREAM    | 0/4        | 0/4          | 0%            |
+| EXFOLIATOR  | 0/4        | 0/4          | 0%            |
+| **Total**   | **0/32**   | **0/32**     | **0% (0/64)** |
 
 ## Details
 

@@ -13,7 +13,7 @@ Ye guide **#4 Real-device QA** ke liye hai — is poore session me jo bhi fix/fe
    ```
 3. Terminal me do URLs print honge — ek `Local:` (sirf computer pe kaam karega), ek `Network:` jaisa `http://192.168.x.x:3001/` (`vite --host` isliye hi likha hai package.json me — sab network interfaces pe bind karta hai). **Yehi Network wala URL phone ke browser me kholo.**
 4. Agar phone-computer alag network pe hai (WiFi nahi, sirf mobile data), to ye kaam nahi karega — same WiFi zaroori hai.
-5. Product/try-on modal tak pahuncho jaise normally pahunchte ho.
+5. Product/tryon modal tak pahuncho jaise normally pahunchte ho.
 
 ---
 
