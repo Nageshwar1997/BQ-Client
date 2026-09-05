@@ -482,16 +482,35 @@ const mixTowardBlack = (rgb: TRGBTuple, ratio: number): TRGBTuple => {
   return [r * (1 - ratio), g * (1 - ratio), b * (1 - ratio)];
 };
 
+// A floor under the band's own height curve, as a ratio of its peak - even right at the two
+// corners (`t` = 0 or 1), the band never tapers thinner than this. Without a floor,
+// `Math.sin(Math.PI * t) ** sharpness` pinches all the way to a literal 0px width exactly at the
+// corner landmarks, and on a real photo a width that thin doesn't reliably rasterize as visible
+// color at all - reading as the wash stopping short of the eye's own true corner with a visible
+// gap, rather than smoothly reaching and blending into it (the same "technically drawing
+// something, but too thin to actually see" lesson EYELINER's own `baseWidthRatio` bump already
+// discovered for its inner-corner taper - see that constant's own comment).
+const MIN_BAND_HEIGHT_RATIO = 0.22;
+
+// Every pattern's edges get at least this much blur, as a ratio of eye width - real eyeshadow
+// never has a razor-sharp boundary against bare skin, even a "single wash" reads as blended
+// rather than a flat sticker-like shape. `tuning.blurRatio` (Smokey Eye/Under-Eye Smudge) only
+// ever asks for *more* softening on top of this baseline, never less.
+const BASE_EDGE_BLUR_RATIO = 0.022;
+
 // The lid band's own height curve across `t` (0 at the inner corner, 1 at the outer) -
 // `Math.sin(Math.PI * t)` alone gives a smooth single arch (0 at both ends, peak at the middle);
 // raising it to `sharpness` reshapes that arch without needing a second "taper zone" parameter the
 // way EYELINER's own wing/tip ratios do - below 1 flattens the peak into a wider plateau (more
 // even coverage across the lid, not just a peak in the middle), above 1 narrows it into a tighter
-// peak concentrated at the center.
+// peak concentrated at the center. `MIN_BAND_HEIGHT_RATIO` then lifts the whole curve so it never
+// actually reaches 0, even right at the two ends.
 const eyelidBandHeight =
   (peakHeight: number, sharpness: number) =>
-  (t: number): number =>
-    peakHeight * Math.sin(Math.PI * t) ** sharpness;
+  (t: number): number => {
+    const floor = peakHeight * MIN_BAND_HEIGHT_RATIO;
+    return floor + (peakHeight - floor) * Math.sin(Math.PI * t) ** sharpness;
+  };
 
 const applyEyeshadowForEye = (
   tempCtx: CanvasRenderingContext2D,
@@ -531,14 +550,13 @@ const applyEyeshadowForEye = (
     }
   };
 
-  if (tuning.blurRatio) {
-    tempCtx.save();
-    tempCtx.filter = `blur(${String(eyeWidth * tuning.blurRatio)}px)`;
-    renderBand();
-    tempCtx.restore();
-  } else {
-    renderBand();
-  }
+  // Every pattern blurs at least `BASE_EDGE_BLUR_RATIO` - Smokey Eye/Under-Eye Smudge's own
+  // (larger) `blurRatio` only ever asks for more, never replaces this baseline with less.
+  const edgeBlurPx = eyeWidth * Math.max(BASE_EDGE_BLUR_RATIO, tuning.blurRatio ?? 0);
+  tempCtx.save();
+  tempCtx.filter = `blur(${String(edgeBlurPx)}px)`;
+  renderBand();
+  tempCtx.restore();
 
   // Cut Crease: a crisp, unblurred stroke exactly along the synthesized crease line (the band's
   // own outer edge at full height) - the "sharp defined line" a soft wash alone can't give.
@@ -549,19 +567,22 @@ const applyEyeshadowForEye = (
     fillTaperedPath(tempCtx, creasePts, center, () => creaseWidth, creaseColor);
   }
 
-  // Two-Tone Gradient/Halo Eye: an extra lighter tone laid over the same band shape, clipped to
-  // its exact tapered-ribbon outline so neither ever paints past the lid itself - a plain vertical
-  // linear fade for Two-Tone (lighter toward the crease/brow-bone side, the base tone toward the
-  // lash line - see EYESHADOW_PATTERN_TUNING's own comment on why "toward the brow bone" is this
-  // band's own top edge rather than a separately-tracked brow landmark), or a radial glow
-  // concentrated at the band's own horizontal center for Halo (light middle, the darker base tone
-  // still showing at the corners and crease).
+  // Two-Tone Gradient/Halo Eye: an extra lighter tone laid over the same band shape - a plain
+  // vertical linear fade for Two-Tone (lighter toward the crease/brow-bone side, the base tone
+  // toward the lash line - see EYESHADOW_PATTERN_TUNING's own comment on why "toward the brow
+  // bone" is this band's own top edge rather than a separately-tracked brow landmark), or a
+  // radial glow concentrated at the band's own horizontal center for Halo (light middle, the
+  // darker base tone still showing at the corners and crease). Built as a direct *fill* of the
+  // exact same tapered-ribbon path (not a clip + full-canvas `fillRect`) specifically so it can be
+  // blurred the same way `renderBand` is - a hard `ctx.clip()` boundary stays a crisp boolean mask
+  // regardless of `ctx.filter`, which would leave this layer's own edge sharp even while
+  // everything underneath it got a soft one.
   if (tuning.highlightRatio) {
     const [hr, hg, hb] = mixTowardWhite(rgb, tuning.highlightRatio);
 
     tempCtx.save();
+    tempCtx.filter = `blur(${String(edgeBlurPx)}px)`;
     buildTaperedRibbonPath(tempCtx, lashPts, center, heightFn);
-    tempCtx.clip();
 
     if (tuning.darkenRatio) {
       const mid = lashPts[Math.round((lashPts.length - 1) / 2)];
@@ -585,7 +606,7 @@ const applyEyeshadowForEye = (
         gradient.addColorStop(0, toColorString(hr, hg, hb, alpha * 0.85));
         gradient.addColorStop(1, toColorString(hr, hg, hb, 0));
         tempCtx.fillStyle = gradient;
-        tempCtx.fillRect(0, 0, tempCtx.canvas.width, tempCtx.canvas.height);
+        tempCtx.fill();
       }
     } else {
       const topPts = offsetPointsAlongNormals(lashPts, center, heightFn);
@@ -595,7 +616,7 @@ const applyEyeshadowForEye = (
       gradient.addColorStop(0, toColorString(hr, hg, hb, alpha));
       gradient.addColorStop(1, baseColorString);
       tempCtx.fillStyle = gradient;
-      tempCtx.fillRect(0, 0, tempCtx.canvas.width, tempCtx.canvas.height);
+      tempCtx.fill();
     }
     tempCtx.restore();
   }
@@ -608,14 +629,12 @@ const applyEyeshadowForEye = (
       eyeWidth * tuning.underSmudgeHeightRatio,
       tuning.peakSharpness,
     );
-    if (tuning.underSmudgeBlurRatio) {
-      tempCtx.save();
-      tempCtx.filter = `blur(${String(eyeWidth * tuning.underSmudgeBlurRatio)}px)`;
-      fillTaperedPath(tempCtx, denseLower, center, smudgeFn, baseColorString);
-      tempCtx.restore();
-    } else {
-      fillTaperedPath(tempCtx, denseLower, center, smudgeFn, baseColorString);
-    }
+    const smudgeBlurPx =
+      eyeWidth * Math.max(BASE_EDGE_BLUR_RATIO, tuning.underSmudgeBlurRatio ?? 0);
+    tempCtx.save();
+    tempCtx.filter = `blur(${String(smudgeBlurPx)}px)`;
+    fillTaperedPath(tempCtx, denseLower, center, smudgeFn, baseColorString);
+    tempCtx.restore();
   }
 };
 
