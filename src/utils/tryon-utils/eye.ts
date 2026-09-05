@@ -1,16 +1,20 @@
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
 import {
+  EYEBROW_PATTERN_TUNING,
   EYELINER_PATTERN_TUNING,
   EYESHADOW_PATTERN_TUNING,
+  type IEyebrowPatternTuning,
   type IEyeshadowPatternTuning,
   type IEyeStrokePatternTuning,
   KAJAL_PATTERN_TUNING,
   LEFT_EYE_LOWER_INDICES,
   LEFT_EYE_UPPER_INDICES,
+  LEFT_EYEBROW_INDICES,
   NOSE_TIP_INDEX,
   RIGHT_EYE_LOWER_INDICES,
   RIGHT_EYE_UPPER_INDICES,
+  RIGHT_EYEBROW_INDICES,
 } from '@/constants/tryon-constants/eye';
 import type { TDimension, TPoint, TRGBTuple } from '@/types/tryon-types';
 import type { IEyeRenderParams } from '@/types/tryon-types/eye';
@@ -661,6 +665,238 @@ export const applyEyeshadowEye = ({
 
   applyEyeshadowForEye(tempCtx, leftUpper, leftLower, tuning, rgb, alpha);
   applyEyeshadowForEye(tempCtx, rightUpper, rightLower, tuning, rgb, alpha);
+
+  ctx.drawImage(tempCtx.canvas, 0, 0);
+};
+
+/* ================= EYEBROW =====================================================================
+ * 5 patterns, the first EYE finish built on a real, directly-tracked *closed* region
+ * (`LEFT/RIGHT_EYEBROW_INDICES`) rather than an open arc (EYELINER/KAJAL) or a synthesized one
+ * (EYESHADOW's crease line). Bold/Defined Fill, Soft Powder Fill, and Ombre Brow are plain
+ * closed-region fills (flat color, blurred, or gradient); Natural Hair-Stroke and Feathered/
+ * Fluffy draw many individual short tapered strokes across the region instead, for a hair-like
+ * texture - procedural canvas math with deterministic per-stroke variation, not a texture image
+ * asset (see EYEBROW_PATTERN_TUNING's own comment on why).
+ */
+
+// Closed-loop smoothing (quadratic curve through consecutive midpoints, wrapping back to the
+// start) - same technique FACE's own `traceSmoothClosedPath` (face.ts) uses for its own
+// closed-ring regions, written fresh here per this file's self-contained-per-category convention
+// (see this file's own top comment) rather than cross-imported. Reuses this file's own
+// `midpoint`, already defined above for the open-path smoother.
+const traceEyebrowPath = (ctx: CanvasRenderingContext2D, points: TPoint[]): void => {
+  const last = points[points.length - 1];
+  const first = points[0];
+  if (points.length < 3 || !last || !first) return;
+
+  const start = midpoint(last, first);
+  ctx.moveTo(start.x, start.y);
+  points.forEach((point, i) => {
+    const next = points[(i + 1) % points.length];
+    if (!next) return;
+    const mid = midpoint(point, next);
+    ctx.quadraticCurveTo(point.x, point.y, mid.x, mid.y);
+  });
+  ctx.closePath();
+};
+
+// For a *closed* ring, inner (nasal) vs outer (temporal/tail) isn't "first vs last" the way
+// `orderInnerToOuter` resolves it for the open eye arcs above - a ring's own first/last points are
+// simply wherever the index list happens to start/end going around the loop, not necessarily at
+// either anatomical end. This instead scans every point in the ring directly for whichever one
+// sits closest to (inner) and farthest from (outer) the nose tip, so it doesn't need to assume
+// anything about how the ring's own indices happen to be ordered.
+const findInnerOuterPoints = (
+  points: TPoint[],
+  face: NormalizedLandmark[],
+  dimension: TDimension,
+): { inner: TPoint; outer: TPoint } | null => {
+  const first = points[0];
+  const nose = face[NOSE_TIP_INDEX];
+  if (!first || !nose) return null;
+
+  const noseX = nose.x * dimension.width;
+  let inner = first;
+  let outer = first;
+  let minDist = Math.abs(first.x - noseX);
+  let maxDist = minDist;
+
+  points.forEach((p) => {
+    const dist = Math.abs(p.x - noseX);
+    if (dist < minDist) {
+      minDist = dist;
+      inner = p;
+    }
+    if (dist > maxDist) {
+      maxDist = dist;
+      outer = p;
+    }
+  });
+
+  return { inner, outer };
+};
+
+// A deterministic, reproducible per-index "jitter" in [-1, 1] - enough per-stroke variation to
+// avoid a mechanically uniform hair-stroke look, without `Math.random()` (which would make this
+// file's own smoke tests flaky and every render subtly different from the last frame's, unlike
+// every other EYE pattern's fully deterministic output). Classic shader-style hash: an
+// irrational-looking multiplier folded through `sin`, kept in range via its own fractional part.
+const strokeJitter = (index: number, seedOffset: number): number => {
+  const x = Math.sin(index * 12.9898 + seedOffset * 78.233) * 43758.5453;
+  return (x - Math.floor(x)) * 2 - 1;
+};
+
+// Bold/Defined Fill, Soft Powder Fill, Ombre Brow - one flat/blurred/gradient fill of the
+// eyebrow's own closed region.
+const fillEyebrowRegion = (
+  ctx: CanvasRenderingContext2D,
+  points: TPoint[],
+  inner: TPoint,
+  outer: TPoint,
+  tuning: IEyebrowPatternTuning,
+  rgb: TRGBTuple,
+  alpha: number,
+) => {
+  const [r, g, b] = rgb;
+  let fillStyle: string | CanvasGradient;
+
+  if (tuning.highlightRatio !== undefined || tuning.darkenRatio !== undefined) {
+    // Ombre Brow: a plain linear gradient along the brow's own inner->outer axis - lighter at the
+    // front (inner corner), bolder/darker at the tail (outer corner), same `mixTowardWhite`/
+    // `mixTowardBlack` per-channel math EYESHADOW already ported from FACE's own HIGHLIGHTER/
+    // CONTOUR.
+    const [lr, lg, lb] = mixTowardWhite(rgb, tuning.highlightRatio ?? 0);
+    const [dr, dg, db] = tuning.darkenRatio ? mixTowardBlack(rgb, tuning.darkenRatio) : rgb;
+    const gradient = ctx.createLinearGradient(inner.x, inner.y, outer.x, outer.y);
+    gradient.addColorStop(0, toColorString(lr, lg, lb, alpha));
+    gradient.addColorStop(1, toColorString(dr, dg, db, alpha));
+    fillStyle = gradient;
+  } else {
+    fillStyle = toColorString(r, g, b, alpha);
+  }
+
+  const applyFill = () => {
+    ctx.beginPath();
+    traceEyebrowPath(ctx, points);
+    ctx.fillStyle = fillStyle;
+    ctx.fill();
+  };
+
+  if (tuning.blurRatio) {
+    const eyebrowWidth = Math.hypot(outer.x - inner.x, outer.y - inner.y);
+    ctx.save();
+    ctx.filter = `blur(${String(eyebrowWidth * tuning.blurRatio)}px)`;
+    applyFill();
+    ctx.restore();
+  } else {
+    applyFill();
+  }
+};
+
+// Natural Hair-Stroke, Feathered/Fluffy - many short tapered strokes (thick at the base, fine at
+// the tip, same `fillTaperedPath` ribbon primitive every stroke-based EYE finish already uses)
+// running from the ring's own lower edge to its upper edge at evenly-spaced positions along the
+// brow's own length, each nudged by `strokeJitter` for natural variation and blended toward
+// straight-up by `strokeAngleBiasDeg` for the "brushed up" fluffy look.
+const renderEyebrowHairStrokes = (
+  ctx: CanvasRenderingContext2D,
+  points: TPoint[],
+  center: TPoint,
+  inner: TPoint,
+  outer: TPoint,
+  tuning: IEyebrowPatternTuning,
+  rgb: TRGBTuple,
+  alpha: number,
+) => {
+  const strokeCount = tuning.strokeCount;
+  if (!strokeCount) return;
+
+  // The ring's own 10 points run continuously around the loop - the first half traces one edge,
+  // the second returns along the other (see LEFT_EYEBROW_INDICES's own comment) - reversing the
+  // second half lines both halves up running the same rotational direction, so index `i` on one
+  // matches index `i` on the other as "the same position along the brow's length".
+  const half = Math.ceil(points.length / 2);
+  const edgeA = smoothOpenPath(points.slice(0, half), 8);
+  const edgeB = smoothOpenPath([...points.slice(half)].reverse(), 8);
+  const sampleCount = Math.min(edgeA.length, edgeB.length);
+  if (sampleCount < 2) return;
+
+  const eyebrowWidth = Math.hypot(outer.x - inner.x, outer.y - inner.y);
+  const strokeWidth = eyebrowWidth * (tuning.strokeWidthRatio ?? 0.045);
+  const biasFraction = Math.min(1, (tuning.strokeAngleBiasDeg ?? 0) / 90);
+  const color = toColorString(rgb[0], rgb[1], rgb[2], Math.min(1, alpha * 0.6));
+
+  for (let i = 0; i < strokeCount; i++) {
+    const t = i / (strokeCount - 1 || 1);
+    const sampleIndex = Math.round(t * (sampleCount - 1));
+    const edgeAPt = edgeA[sampleIndex];
+    const edgeBPt = edgeB[sampleIndex];
+    if (!edgeAPt || !edgeBPt) continue;
+
+    // Which of the two edges is physically "lower" (the base a hair grows from) vs "upper" (the
+    // direction it grows toward) varies by eye/side - comparing y directly (not trusting which
+    // constant array happened to be edgeA/edgeB) keeps this correct regardless.
+    const base = edgeAPt.y > edgeBPt.y ? edgeAPt : edgeBPt;
+    const naturalTip = edgeAPt.y > edgeBPt.y ? edgeBPt : edgeAPt;
+
+    const naturalAngle = Math.atan2(naturalTip.y - base.y, naturalTip.x - base.x);
+    const upAngle = -Math.PI / 2;
+    const angle =
+      naturalAngle + (upAngle - naturalAngle) * biasFraction + strokeJitter(i, 1) * 0.14;
+
+    const naturalLength = Math.hypot(naturalTip.x - base.x, naturalTip.y - base.y);
+    const length = naturalLength * (0.85 + strokeJitter(i, 2) * 0.3);
+    const width = strokeWidth * (0.7 + strokeJitter(i, 3) * 0.3);
+
+    const tip = { x: base.x + Math.cos(angle) * length, y: base.y + Math.sin(angle) * length };
+    fillTaperedPath(ctx, [base, tip], center, (tt) => width * (1 - tt), color);
+  }
+};
+
+const applyEyebrowForEye = (
+  tempCtx: CanvasRenderingContext2D,
+  browPts: TPoint[],
+  inner: TPoint,
+  outer: TPoint,
+  tuning: IEyebrowPatternTuning,
+  rgb: TRGBTuple,
+  alpha: number,
+) => {
+  if (tuning.strokeCount) {
+    renderEyebrowHairStrokes(tempCtx, browPts, centroid(browPts), inner, outer, tuning, rgb, alpha);
+  } else {
+    fillEyebrowRegion(tempCtx, browPts, inner, outer, tuning, rgb, alpha);
+  }
+};
+
+export const applyEyebrowEye = ({
+  face,
+  ctx,
+  rgb,
+  dimension,
+  alpha,
+  pattern,
+}: IEyeRenderParams) => {
+  // Same safe-lookup reasoning as every other EYE finish above, against EYEBROW's own tuning
+  // table.
+  const tuning = (EYEBROW_PATTERN_TUNING as Record<string, IEyebrowPatternTuning | undefined>)[
+    pattern
+  ];
+  if (!tuning) return;
+
+  const leftPts = toPoints(face, LEFT_EYEBROW_INDICES, dimension);
+  const rightPts = toPoints(face, RIGHT_EYEBROW_INDICES, dimension);
+  if (leftPts.length < 3 || rightPts.length < 3) return;
+
+  const leftEnds = findInnerOuterPoints(leftPts, face, dimension);
+  const rightEnds = findInnerOuterPoints(rightPts, face, dimension);
+  if (!leftEnds || !rightEnds) return;
+
+  const tempCtx = createOffscreenCtx(dimension);
+  if (!tempCtx) return;
+
+  applyEyebrowForEye(tempCtx, leftPts, leftEnds.inner, leftEnds.outer, tuning, rgb, alpha);
+  applyEyebrowForEye(tempCtx, rightPts, rightEnds.inner, rightEnds.outer, tuning, rgb, alpha);
 
   ctx.drawImage(tempCtx.canvas, 0, 0);
 };

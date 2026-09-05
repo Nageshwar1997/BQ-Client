@@ -16,13 +16,14 @@ import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 import { describe, expect, it } from 'vitest';
 
 import {
+  EYEBROW_PATTERNS,
   EYELINER_PATTERNS,
   EYESHADOW_PATTERNS,
   KAJAL_PATTERNS,
 } from '@/constants/tryon-constants/eye';
 import { createOffscreenCtx } from '@/utils/tryon-utils';
 
-import { applyEyelinerEye, applyEyeshadowEye, applyKajalEye } from './eye';
+import { applyEyebrowEye, applyEyelinerEye, applyEyeshadowEye, applyKajalEye } from './eye';
 
 // Same fixture-face approach as face.smoke.test.ts/lip.smoke.test.ts (see their own comments) -
 // a deterministic sunflower-seed spiral guarantees every index any of these functions might read
@@ -190,6 +191,61 @@ describe('applyEyeshadowEye smoke test', () => {
 
     expect(() => {
       applyEyeshadowEye({
+        face,
+        ctx,
+        rgb: RGB,
+        dimension: DIMENSION,
+        alpha: ALPHA,
+        pattern: 'CLASSIC_THIN',
+      });
+    }).not.toThrow();
+    expect(hasNonTransparentPixel(ctx)).toBe(false);
+  });
+});
+
+describe('applyEyebrowEye smoke test', () => {
+  it.each(EYEBROW_PATTERNS)(
+    '$id pattern renders without throwing and paints at least one pixel',
+    ({ id }) => {
+      const face = makeFixtureFace();
+      const ctx = createOffscreenCtx(DIMENSION);
+      if (!ctx) throw new Error('2D context unavailable - is the `canvas` package installed?');
+
+      expect(() => {
+        applyEyebrowEye({ face, ctx, rgb: RGB, dimension: DIMENSION, alpha: ALPHA, pattern: id });
+      }).not.toThrow();
+      expect(hasNonTransparentPixel(ctx)).toBe(true);
+    },
+  );
+
+  it('an unrecognized pattern id renders nothing rather than throwing', () => {
+    const face = makeFixtureFace();
+    const ctx = createOffscreenCtx(DIMENSION);
+    if (!ctx) throw new Error('2D context unavailable - is the `canvas` package installed?');
+
+    expect(() => {
+      applyEyebrowEye({
+        face,
+        ctx,
+        rgb: RGB,
+        dimension: DIMENSION,
+        alpha: ALPHA,
+        pattern: 'NOT_A_REAL_PATTERN',
+      });
+    }).not.toThrow();
+    expect(hasNonTransparentPixel(ctx)).toBe(false);
+  });
+
+  // Same cross-contamination guard as KAJAL/EYESHADOW's own - EYEBROW's lookup is against
+  // `EYEBROW_PATTERN_TUNING` specifically, not any pattern id that merely exists somewhere in
+  // this file.
+  it('an EYELINER pattern id renders nothing when applied as an EYEBROW pattern', () => {
+    const face = makeFixtureFace();
+    const ctx = createOffscreenCtx(DIMENSION);
+    if (!ctx) throw new Error('2D context unavailable - is the `canvas` package installed?');
+
+    expect(() => {
+      applyEyebrowEye({
         face,
         ctx,
         rgb: RGB,

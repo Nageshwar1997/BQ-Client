@@ -22,6 +22,19 @@ export const LEFT_EYE_LOWER_INDICES = [133, 155, 154, 153, 145, 144, 163, 33];
 export const RIGHT_EYE_UPPER_INDICES = [362, 398, 384, 385, 386, 387, 388, 466, 263];
 export const RIGHT_EYE_LOWER_INDICES = [263, 249, 390, 373, 374, 380, 381, 382, 362];
 
+// MediaPipe's standard eyebrow ring - a real, directly-tracked closed loop (unlike EYESHADOW's
+// own synthesized crease line), same points FACE's own `LEFT_EYEBROW_INDICES`/
+// `RIGHT_EYEBROW_INDICES` use for its full-face washes' exclusion holes - duplicated rather than
+// imported per this file's own self-contained-per-category rule (see this section's own opening
+// comment). Ordered continuously around the loop (first half traces one edge, second half returns
+// along the other) - EYEBROW's own renderer (utils/tryon-utils/eye.ts) splits it into the two
+// edges directly by array position rather than re-deriving them, and determines inner (nasal) vs
+// outer (temporal/tail) by comparing each point's own x-distance to the nose tip at render time,
+// same "don't assume which numeric index is anatomically which side" reasoning `orderInnerToOuter`
+// already uses for the eye rings above.
+export const LEFT_EYEBROW_INDICES = [70, 63, 105, 66, 107, 55, 65, 52, 53, 46];
+export const RIGHT_EYEBROW_INDICES = [300, 293, 334, 296, 336, 285, 295, 282, 283, 276];
+
 // Same nose-tip landmark FACE's own `isFaceTurnedTooMuch` uses, duplicated here per this file's
 // own self-contained-per-category rule - used purely to tell which end of an eye's upper/lower
 // arc is the inner (nasal) corner vs the outer (temporal) one, by comparing x-distance, rather
@@ -342,6 +355,91 @@ export const EYESHADOW_PATTERN_TUNING: Record<TEyeshadowPattern, IEyeshadowPatte
   },
 };
 
+/* ================= EYEBROW ======================================================================
+ * 5 patterns - the first EYE finish built on a *real, directly-tracked* closed region
+ * (`LEFT/RIGHT_EYEBROW_INDICES` above) rather than a stroke along an arc (EYELINER/KAJAL) or a
+ * synthesized region (EYESHADOW's own crease line). Two are plain closed-region fills (Bold/
+ * Defined, Soft Powder) or a fill with a gradient (Ombre); the other two (Natural Hair-Stroke,
+ * Feathered/Fluffy) draw many individual short strokes across the region instead of one flat
+ * fill, for a hair-like texture - procedural (canvas path math, deterministic per-stroke jitter),
+ * not a texture image asset, keeping this consistent with every other EYE finish's own "pure
+ * landmark + canvas math, no runtime image assets" approach (only the *pattern-preview icons* are
+ * images, generated once and shipped, same as every other EYE finish's own icon set). See
+ * docs/tryons/EYE-PLAN.md for the full design reasoning and docs/tryons/EYEBROW.md for this
+ * finish's own tracker.
+ *
+ * Ratios below are relative to the eyebrow's own detected width (inner-to-outer/tail distance),
+ * same convention every other EYE finish already uses.
+ */
+
+export type TEyebrowPattern =
+  | 'NATURAL_HAIR_STROKE'
+  | 'SOFT_POWDER_FILL'
+  | 'BOLD_DEFINED_FILL'
+  | 'OMBRE_BROW'
+  | 'FEATHERED_FLUFFY';
+
+export const EYEBROW_PATTERNS: IEyePatternOption[] = [
+  {
+    id: 'NATURAL_HAIR_STROKE',
+    label: 'Natural Hair-Stroke',
+    image: '/images/tryon/eye/eyebrow/Natural-Hair-Stroke.webp',
+  },
+  {
+    id: 'SOFT_POWDER_FILL',
+    label: 'Soft Powder Fill',
+    image: '/images/tryon/eye/eyebrow/Soft-Powder-Fill.webp',
+  },
+  {
+    id: 'BOLD_DEFINED_FILL',
+    label: 'Bold / Defined Fill',
+    image: '/images/tryon/eye/eyebrow/Bold-Defined-Fill.webp',
+  },
+  {
+    id: 'OMBRE_BROW',
+    label: 'Ombre Brow',
+    image: '/images/tryon/eye/eyebrow/Ombre-Brow.webp',
+  },
+  {
+    id: 'FEATHERED_FLUFFY',
+    label: 'Feathered / Fluffy',
+    image: '/images/tryon/eye/eyebrow/Feathered-Fluffy.webp',
+  },
+];
+
+// Same "tasteful default rather than nothing" reasoning as every other EYE finish's own default -
+// Soft Powder Fill, the most universally-flattering/subtle of the 5 (a defined block or visible
+// hair-strokes both read as more of a styling choice than a safe starting point).
+export const EYEBROW_DEFAULT_PATTERN: TEyebrowPattern = 'SOFT_POWDER_FILL';
+
+export interface IEyebrowPatternTuning {
+  // Soft Powder Fill only - diffused edges, same `ctx.filter` blur technique every other EYE
+  // finish's own soft pattern already uses.
+  blurRatio?: number;
+  // Ombre Brow only - `mixTowardWhite`/`mixTowardBlack` ratios for the lighter front-end tone and
+  // the bolder tail-end tone of its own gradient (same per-channel math EYESHADOW ported from
+  // FACE's HIGHLIGHTER/CONTOUR).
+  highlightRatio?: number;
+  darkenRatio?: number;
+  // Natural Hair-Stroke/Feathered Fluffy only - presence of `strokeCount` is what this file's
+  // renderer (utils/tryon-utils/eye.ts) dispatches on to pick the hair-stroke code path over the
+  // plain closed-region fill one.
+  strokeCount?: number;
+  // Degrees the strokes lean away from the brow's own local growth direction, toward straight up
+  // - 0 reads as hairs lying flat along the brow's natural line (Natural Hair-Stroke), a larger
+  // value reads as hairs brushed upward (Feathered/Fluffy's own "soap-brow" look).
+  strokeAngleBiasDeg?: number;
+  strokeWidthRatio?: number;
+}
+
+export const EYEBROW_PATTERN_TUNING: Record<TEyebrowPattern, IEyebrowPatternTuning> = {
+  BOLD_DEFINED_FILL: {},
+  SOFT_POWDER_FILL: { blurRatio: 0.05 },
+  OMBRE_BROW: { highlightRatio: 0.35, darkenRatio: 0.18 },
+  NATURAL_HAIR_STROKE: { strokeCount: 46, strokeAngleBiasDeg: 10, strokeWidthRatio: 0.045 },
+  FEATHERED_FLUFFY: { strokeCount: 40, strokeAngleBiasDeg: 32, strokeWidthRatio: 0.05 },
+};
+
 // Which pattern id a shopper lands on the moment they open a given pattern-bearing EYE finish,
 // before they've touched the picker themselves - `EyeEngineBase.applyEffect` falls back to this
 // (keyed by `state.type`) whenever `state.pattern` is still unset, and `TryOnModal` uses the same
@@ -354,6 +452,7 @@ export const EYE_DEFAULT_PATTERNS: Partial<Record<TEyeFinish, string>> = {
   EYELINER: EYELINER_DEFAULT_PATTERN,
   KAJAL: KAJAL_DEFAULT_PATTERN,
   EYESHADOW: EYESHADOW_DEFAULT_PATTERN,
+  EYEBROW: EYEBROW_DEFAULT_PATTERN,
 };
 
 // Which EYE finishes have a pattern picker at all, and which option list to show for each -
@@ -365,14 +464,15 @@ export const EYE_PATTERNS: Partial<Record<TEyeFinish, IEyePatternOption[]>> = {
   EYELINER: EYELINER_PATTERNS,
   KAJAL: KAJAL_PATTERNS,
   EYESHADOW: EYESHADOW_PATTERNS,
+  EYEBROW: EYEBROW_PATTERNS,
 };
 
 /* ================= RANGE BOUNDS ================================================================
  * Same shape/role as LIP_RANGE_BOUNDS/FACE_RANGE_BOUNDS - the intensity slider's bounds, one
- * entry per finish. EYELINER/KAJAL/EYESHADOW have dedicated rendering so far (see EYE-PLAN.md's
- * build order) - the other 4 are placeholders (their own eventual intended character, not
- * validated tuning), revisited once each gets its own dedicated renderer, same as every FACE
- * finish did.
+ * entry per finish. EYELINER/KAJAL/EYESHADOW/EYEBROW have dedicated rendering so far (see
+ * EYE-PLAN.md's build order) - the other 3 are placeholders (their own eventual intended
+ * character, not validated tuning), revisited once each gets its own dedicated renderer, same as
+ * every FACE finish did.
  */
 export const EYE_RANGE_BOUNDS: Record<TEyeFinish, IRangeBounds> = {
   // Real intensity here is mostly carried by the pattern's own width/blur tuning above (same
@@ -390,7 +490,9 @@ export const EYE_RANGE_BOUNDS: Record<TEyeFinish, IRangeBounds> = {
   // range shape (BLUSH/HIGHLIGHTER-ish) rather than EYELINER/KAJAL's boosted one, revisited if
   // real-photo testing finds this too faint the same way EYELINER's own placeholder was.
   EYESHADOW: { min: 0.15, max: 0.7, default: 0.4 },
-  EYEBROW: { min: 0.1, max: 0.6, default: 0.3 },
+  // A brow fill (even "soft powder") needs to read as clearly-defined hair color, not a faint
+  // wash - closer to EYELINER/KAJAL's own boosted range than EYESHADOW's softer one.
+  EYEBROW: { min: 0.3, max: 0.85, default: 0.55 },
   MASCARA: { min: 0.1, max: 0.6, default: 0.3 },
   LASHES: { min: 0.1, max: 0.6, default: 0.3 },
   BROWGEL: { min: 0.05, max: 0.3, default: 0.12 },

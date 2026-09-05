@@ -6,39 +6,27 @@ _Tracking model: face landmarks (eye/brow region — precision-heavy, thin lines
 
 > **Build plan**: EYE is the first category with a **color + pattern** dimension (LIP/FACE were color-only) — which subcategories get a pattern, what the pattern options are, and the suggested build order are all planned out in [EYE-PLAN.md](./EYE-PLAN.md), written before any EYE code exists.
 
-> **Per-subcategory tracking**: same convention FACE's own tracker docs already established - as a subcategory actually gets built, it gets its own dedicated tracker file and this file's own inline checklist for it gets replaced with a summary-row + link. EYELINER, KAJAL, and EYESHADOW are built so far - [EYELINER.md](./EYELINER.md), [KAJAL.md](./KAJAL.md) (same underlying stroke primitive, per [EYE-PLAN.md](./EYE-PLAN.md)'s own build order - "EYELINER + KAJAL together"), [EYESHADOW.md](./EYESHADOW.md) (a genuinely new region-wash primitive, reusing the stroke primitive's own geometry helpers). The other 4 are still the generic placeholder checklist shape every category starts with (see FACE.md's own history).
+> **Per-subcategory tracking**: same convention FACE's own tracker docs already established - as a subcategory actually gets built, it gets its own dedicated tracker file and this file's own inline checklist for it gets replaced with a summary-row + link. EYELINER, KAJAL, EYESHADOW, and EYEBROW are built so far - [EYELINER.md](./EYELINER.md), [KAJAL.md](./KAJAL.md) (same underlying stroke primitive, per [EYE-PLAN.md](./EYE-PLAN.md)'s own build order - "EYELINER + KAJAL together"), [EYESHADOW.md](./EYESHADOW.md) (a genuinely new region-wash primitive), [EYEBROW.md](./EYEBROW.md) (a real closed-region primitive plus a new procedural hair-stroke technique). The other 3 are still the generic placeholder checklist shape every category starts with (see FACE.md's own history).
 
 ## Summary
 
 | Subcategory | Live (0/4) | Upload (0/4) | Overall                        |
 | ----------- | ---------- | ------------ | ------------------------------ |
-| EYEBROW     | 0/4        | 0/4          | 0%                             |
+| EYEBROW     | 3/4        | 3/4          | 75% — [detail](./EYEBROW.md)   |
 | EYELINER    | 3/4        | 3/4          | 75% — [detail](./EYELINER.md)  |
 | KAJAL       | 3/4        | 3/4          | 75% — [detail](./KAJAL.md)     |
 | EYESHADOW   | 3/4        | 3/4          | 75% — [detail](./EYESHADOW.md) |
 | MASCARA     | 0/4        | 0/4          | 0%                             |
 | LASHES      | 0/4        | 0/4          | 0%                             |
 | BROWGEL     | 0/4        | 0/4          | 0%                             |
-| **Total**   | **9/28**   | **9/28**     | **32.1% (18/56)**              |
+| **Total**   | **12/28**  | **12/28**    | **42.9% (24/56)**              |
 
 ## Details
 
 <details>
-<summary><strong>EYEBROW</strong> — 0%</summary>
+<summary><strong>EYEBROW</strong> — 75% — see <a href="./EYEBROW.md">EYEBROW.md</a> for the full checklist, design notes, and quality score</summary>
 
-**Live**
-
-- [ ] Camera capture + brow-region landmark tracking wired
-- [ ] Brow-hair stroke fill rendered along brow shape in real-time
-- [ ] Shade/variant picker functional (linked to product variants)
-- [ ] Performance & cross-device QA (FPS, lighting conditions)
-
-**Upload**
-
-- [ ] Photo upload + brow-region landmark detection on static image
-- [ ] Brow-hair stroke fill applied to image
-- [ ] Shade/variant picker functional
-- [ ] Output preview/download QA
+Ab yaha inline nahi hai - apni dedicated file mil chuki hai: **[EYEBROW.md](./EYEBROW.md)**.
 
 </details>
 

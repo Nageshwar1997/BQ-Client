@@ -5,7 +5,12 @@ import {
 } from '@/constants/tryon-constants/eye';
 import type { IApplyEffectParams } from '@/types/tryon-types';
 import type { IEyeAssets, IEyeTryOnState, TEyeFinish } from '@/types/tryon-types/eye';
-import { applyEyelinerEye, applyEyeshadowEye, applyKajalEye } from '@/utils/tryon-utils/eye';
+import {
+  applyEyebrowEye,
+  applyEyelinerEye,
+  applyEyeshadowEye,
+  applyKajalEye,
+} from '@/utils/tryon-utils/eye';
 
 import { TryOnEngineBase } from '../../TryOnEngineBase';
 
@@ -14,10 +19,10 @@ import { TryOnEngineBase } from '../../TryOnEngineBase';
 // rendering as that category's most basic finish, MATTE/FOUNDATION), EYE's subcategories are
 // different *product types* applied to different regions (a brow fill and a lash-line liner
 // aren't variants of the same effect the way two lipstick finishes are) - falling back to
-// EYELINER's rendering for, say, an unsupported EYEBROW pick would paint the wrong region
+// EYELINER's rendering for, say, an unsupported MASCARA pick would paint the wrong region
 // entirely. So this just skips rendering (with a console warning) rather than substituting a
 // mismatched effect.
-const UNSUPPORTED_EYE_FINISHES = new Set<TEyeFinish>(['EYEBROW', 'MASCARA', 'LASHES', 'BROWGEL']);
+const UNSUPPORTED_EYE_FINISHES = new Set<TEyeFinish>(['MASCARA', 'LASHES', 'BROWGEL']);
 
 /**
  * EYE category engine - fresh design (not ported from any reference implementation, see
@@ -89,6 +94,9 @@ export abstract class EyeEngineBase extends TryOnEngineBase<IEyeTryOnState> {
         return;
       case 'EYESHADOW':
         applyEyeshadowEye({ face, ctx, rgb, dimension, alpha, pattern });
+        return;
+      case 'EYEBROW':
+        applyEyebrowEye({ face, ctx, rgb, dimension, alpha, pattern });
         return;
     }
   }
