@@ -15,10 +15,10 @@ import 'canvas';
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 import { describe, expect, it } from 'vitest';
 
-import { EYELINER_PATTERNS } from '@/constants/tryon-constants/eye';
+import { EYELINER_PATTERNS, KAJAL_PATTERNS } from '@/constants/tryon-constants/eye';
 import { createOffscreenCtx } from '@/utils/tryon-utils';
 
-import { applyEyelinerEye } from './eye';
+import { applyEyelinerEye, applyKajalEye } from './eye';
 
 // Same fixture-face approach as face.smoke.test.ts/lip.smoke.test.ts (see their own comments) -
 // a deterministic sunflower-seed spiral guarantees every index any of these functions might read
@@ -80,6 +80,63 @@ describe('applyEyelinerEye smoke test', () => {
         dimension: DIMENSION,
         alpha: ALPHA,
         pattern: 'NOT_A_REAL_PATTERN',
+      });
+    }).not.toThrow();
+    expect(hasNonTransparentPixel(ctx)).toBe(false);
+  });
+});
+
+describe('applyKajalEye smoke test', () => {
+  it.each(KAJAL_PATTERNS)(
+    '$id pattern renders without throwing and paints at least one pixel',
+    ({ id }) => {
+      const face = makeFixtureFace();
+      const ctx = createOffscreenCtx(DIMENSION);
+      if (!ctx) throw new Error('2D context unavailable - is the `canvas` package installed?');
+
+      expect(() => {
+        applyKajalEye({ face, ctx, rgb: RGB, dimension: DIMENSION, alpha: ALPHA, pattern: id });
+      }).not.toThrow();
+      expect(hasNonTransparentPixel(ctx)).toBe(true);
+    },
+  );
+
+  it('an unrecognized pattern id renders nothing rather than throwing', () => {
+    const face = makeFixtureFace();
+    const ctx = createOffscreenCtx(DIMENSION);
+    if (!ctx) throw new Error('2D context unavailable - is the `canvas` package installed?');
+
+    expect(() => {
+      applyKajalEye({
+        face,
+        ctx,
+        rgb: RGB,
+        dimension: DIMENSION,
+        alpha: ALPHA,
+        pattern: 'NOT_A_REAL_PATTERN',
+      });
+    }).not.toThrow();
+    expect(hasNonTransparentPixel(ctx)).toBe(false);
+  });
+
+  // KAJAL's own EYELINER-id cross-contamination guard - `applyKajalEye`'s lookup is against
+  // `KAJAL_PATTERN_TUNING` specifically, not any pattern id that merely exists somewhere in this
+  // file. A stale `state.pattern` left over from switching finishes without re-picking one should
+  // render nothing, not silently reuse EYELINER's own tuning for a KAJAL pick (see
+  // `applyKajalEye`'s own comment on why).
+  it('an EYELINER pattern id renders nothing when applied as a KAJAL pattern', () => {
+    const face = makeFixtureFace();
+    const ctx = createOffscreenCtx(DIMENSION);
+    if (!ctx) throw new Error('2D context unavailable - is the `canvas` package installed?');
+
+    expect(() => {
+      applyKajalEye({
+        face,
+        ctx,
+        rgb: RGB,
+        dimension: DIMENSION,
+        alpha: ALPHA,
+        pattern: 'CLASSIC_THIN',
       });
     }).not.toThrow();
     expect(hasNonTransparentPixel(ctx)).toBe(false);

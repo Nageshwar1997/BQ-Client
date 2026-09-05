@@ -2,13 +2,13 @@ import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
 import {
   EYELINER_PATTERN_TUNING,
-  type IEyelinerPatternTuning,
+  type IEyeStrokePatternTuning,
+  KAJAL_PATTERN_TUNING,
   LEFT_EYE_LOWER_INDICES,
   LEFT_EYE_UPPER_INDICES,
   NOSE_TIP_INDEX,
   RIGHT_EYE_LOWER_INDICES,
   RIGHT_EYE_UPPER_INDICES,
-  type TEyelinerPattern,
 } from '@/constants/tryon-constants/eye';
 import type { TDimension, TPoint } from '@/types/tryon-types';
 import type { IEyeRenderParams } from '@/types/tryon-types/eye';
@@ -255,23 +255,30 @@ const lashToWingWidth =
     return peak * (1 - wt) + tip * wt;
   };
 
-const renderEyelinerForEye = (
+// Generic per-eye orchestration for the shared tapered-stroke primitive - takes an already-
+// resolved tuning object rather than a finish-specific pattern id, so it has no idea whether
+// EYELINER or KAJAL (or any future finish reusing this) is the one calling it. `primaryArc` is
+// whichever arc this finish actually decorates (EYELINER's upper lash line, KAJAL's lower lash
+// line/waterline - see KAJAL_PATTERN_TUNING's own comment on why that's the only structural
+// difference between the two); `secondaryArc` is only read for `tuning.underlinerWidthRatio`
+// (EYELINER's Underliner pattern only - KAJAL's own tuning table never sets that field, so this
+// parameter is simply unused whenever `applyKajalEye` calls in).
+const renderTaperedStrokeForEye = (
   tempCtx: CanvasRenderingContext2D,
-  upperArc: TPoint[],
-  lowerArc: TPoint[],
-  pattern: TEyelinerPattern,
+  primaryArc: TPoint[],
+  secondaryArc: TPoint[],
+  tuning: IEyeStrokePatternTuning,
   color: string,
 ) => {
-  const tuning = EYELINER_PATTERN_TUNING[pattern];
-  const first = upperArc[0];
-  const last = upperArc[upperArc.length - 1];
+  const first = primaryArc[0];
+  const last = primaryArc[primaryArc.length - 1];
   if (!first || !last) return;
 
   const eyeWidth = Math.hypot(last.x - first.x, last.y - first.y);
   const horizontalSign = Math.sign(last.x - first.x) || 1;
-  const center = centroid([...upperArc, ...lowerArc]);
+  const center = centroid([...primaryArc, ...secondaryArc]);
 
-  const lashPts = smoothOpenPath(upperArc, 10);
+  const lashPts = smoothOpenPath(primaryArc, 10);
   let pts = lashPts;
   let widthFn: (t: number) => number;
 
@@ -329,12 +336,29 @@ const renderEyelinerForEye = (
     }
   }
 
-  if (tuning.underlinerWidthRatio && lowerArc.length >= 2) {
-    const denseLower = smoothOpenPath(lowerArc, 10);
+  if (tuning.underlinerWidthRatio && secondaryArc.length >= 2) {
+    const denseSecondary = smoothOpenPath(secondaryArc, 10);
     const width = eyeWidth * tuning.underlinerWidthRatio;
-    fillTaperedPath(tempCtx, denseLower, center, () => width, color);
+    fillTaperedPath(tempCtx, denseSecondary, center, () => width, color);
   }
 };
+
+// Both eyes' upper+lower arcs, ordered inner-to-outer - shared setup every `apply<Finish>Eye`
+// entry point below needs, regardless of which arc it ends up treating as "primary".
+const getOrderedEyeArcs = (face: NormalizedLandmark[], dimension: TDimension) => ({
+  leftUpper: orderInnerToOuter(toPoints(face, LEFT_EYE_UPPER_INDICES, dimension), face, dimension),
+  leftLower: orderInnerToOuter(toPoints(face, LEFT_EYE_LOWER_INDICES, dimension), face, dimension),
+  rightUpper: orderInnerToOuter(
+    toPoints(face, RIGHT_EYE_UPPER_INDICES, dimension),
+    face,
+    dimension,
+  ),
+  rightLower: orderInnerToOuter(
+    toPoints(face, RIGHT_EYE_LOWER_INDICES, dimension),
+    face,
+    dimension,
+  ),
+});
 
 export const applyEyelinerEye = ({
   face,
@@ -350,7 +374,7 @@ export const applyEyelinerEye = ({
   // as a generic dictionary rather than asserting the narrow type first, to keep this a real
   // runtime guard instead of a statically-always-true one `noUncheckedIndexedAccess` would trust
   // completely as soon as the key type itself claimed to be the closed `TEyelinerPattern` union.
-  const tuning = (EYELINER_PATTERN_TUNING as Record<string, IEyelinerPatternTuning | undefined>)[
+  const tuning = (EYELINER_PATTERN_TUNING as Record<string, IEyeStrokePatternTuning | undefined>)[
     pattern
   ];
   if (!tuning) return;
@@ -358,33 +382,44 @@ export const applyEyelinerEye = ({
   const [r, g, b] = rgb;
   const color = toColorString(r, g, b, alpha);
 
-  const leftUpper = orderInnerToOuter(
-    toPoints(face, LEFT_EYE_UPPER_INDICES, dimension),
-    face,
-    dimension,
-  );
-  const leftLower = orderInnerToOuter(
-    toPoints(face, LEFT_EYE_LOWER_INDICES, dimension),
-    face,
-    dimension,
-  );
-  const rightUpper = orderInnerToOuter(
-    toPoints(face, RIGHT_EYE_UPPER_INDICES, dimension),
-    face,
-    dimension,
-  );
-  const rightLower = orderInnerToOuter(
-    toPoints(face, RIGHT_EYE_LOWER_INDICES, dimension),
-    face,
-    dimension,
-  );
+  const { leftUpper, leftLower, rightUpper, rightLower } = getOrderedEyeArcs(face, dimension);
   if (leftUpper.length < 2 || rightUpper.length < 2) return;
 
   const tempCtx = createOffscreenCtx(dimension);
   if (!tempCtx) return;
 
-  renderEyelinerForEye(tempCtx, leftUpper, leftLower, pattern as TEyelinerPattern, color);
-  renderEyelinerForEye(tempCtx, rightUpper, rightLower, pattern as TEyelinerPattern, color);
+  // EYELINER decorates the upper lash line - the lower arc is only read for its own Underliner
+  // pattern's second pass.
+  renderTaperedStrokeForEye(tempCtx, leftUpper, leftLower, tuning, color);
+  renderTaperedStrokeForEye(tempCtx, rightUpper, rightLower, tuning, color);
+
+  ctx.drawImage(tempCtx.canvas, 0, 0);
+};
+
+export const applyKajalEye = ({ face, ctx, rgb, dimension, alpha, pattern }: IEyeRenderParams) => {
+  // Same safe-lookup reasoning as `applyEyelinerEye` above, against KAJAL's own tuning table -
+  // `pattern` genuinely could be an EYELINER id here (a stale `state.pattern` left over from
+  // switching finishes without picking a new pattern yet), which must render nothing rather than
+  // silently reusing EYELINER's own tuning for a KAJAL pick.
+  const tuning = (KAJAL_PATTERN_TUNING as Record<string, IEyeStrokePatternTuning | undefined>)[
+    pattern
+  ];
+  if (!tuning) return;
+
+  const [r, g, b] = rgb;
+  const color = toColorString(r, g, b, alpha);
+
+  const { leftUpper, leftLower, rightUpper, rightLower } = getOrderedEyeArcs(face, dimension);
+  if (leftLower.length < 2 || rightLower.length < 2) return;
+
+  const tempCtx = createOffscreenCtx(dimension);
+  if (!tempCtx) return;
+
+  // KAJAL decorates the lower lash line/waterline instead - primary/secondary swapped relative to
+  // `applyEyelinerEye`. KAJAL_PATTERN_TUNING never sets `underlinerWidthRatio`, so the upper arc
+  // passed as `secondaryArc` here is simply never read.
+  renderTaperedStrokeForEye(tempCtx, leftLower, leftUpper, tuning, color);
+  renderTaperedStrokeForEye(tempCtx, rightLower, rightUpper, tuning, color);
 
   ctx.drawImage(tempCtx.canvas, 0, 0);
 };

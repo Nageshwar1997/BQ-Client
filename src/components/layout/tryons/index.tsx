@@ -8,7 +8,11 @@ import type { IEyeTryOnState } from '@/classes/tryon/categories/eye';
 import type { IFaceTryOnState } from '@/classes/tryon/categories/face';
 import type { ILipTryOnState } from '@/classes/tryon/categories/lip';
 import { ModalWrapper } from '@/components/layout/modals/ModalWrapper';
-import { EYE_PATTERNS, EYE_RANGE_BOUNDS } from '@/constants/tryon-constants/eye';
+import {
+  EYE_DEFAULT_PATTERNS,
+  EYE_PATTERNS,
+  EYE_RANGE_BOUNDS,
+} from '@/constants/tryon-constants/eye';
 import { FACE_RANGE_BOUNDS } from '@/constants/tryon-constants/face';
 import { LIP_RANGE_BOUNDS } from '@/constants/tryon-constants/lip';
 import useDebounce from '@/hooks/useDebounce';
@@ -503,10 +507,19 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                         range: flow.engineState?.range ?? rangeBounds.default,
                         // Persists the pattern picker's position across Live<->Upload toggles
                         // too, same reasoning as `color`/`range` above - `IEyeTryOnState` only
-                        // (LIP/FACE's `flow.engineState` can never have a `pattern` field, so
-                        // this reads `undefined` there rather than a type error, falling back to
-                        // EYELINER_DEFAULT_PATTERN via `EyeEngineBase.getInitialState()`).
-                        pattern: (flow.engineState as IEyeTryOnState | null)?.pattern ?? undefined,
+                        // (LIP/FACE's `flow.engineState` can never have a `pattern` field, so this
+                        // reads `undefined` there rather than a type error). Falls back to this
+                        // *subCategory's own* default pattern, not `EyeEngineBase.getInitialState()`'s
+                        // placeholder - an object-spread key set to `undefined` still overrides
+                        // the base value it's spread onto (`{...getInitialState(), pattern:
+                        // undefined}` really does end up `undefined`, it doesn't fall through to
+                        // the base), and since EYELINER/KAJAL use separate pattern-id namespaces,
+                        // only a lookup keyed by the actual subCategory gives the right one for
+                        // both - a single fixed fallback would be wrong for whichever finish it
+                        // wasn't written for.
+                        pattern:
+                          (flow.engineState as IEyeTryOnState | null)?.pattern ??
+                          EYE_DEFAULT_PATTERNS[tryOn.subCategory],
                       }}
                       onStateChange={(engineState) => {
                         setFlow((prev) => ({ ...prev, engineState }));

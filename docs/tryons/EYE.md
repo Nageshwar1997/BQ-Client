@@ -6,7 +6,7 @@ _Tracking model: face landmarks (eye/brow region — precision-heavy, thin lines
 
 > **Build plan**: EYE is the first category with a **color + pattern** dimension (LIP/FACE were color-only) — which subcategories get a pattern, what the pattern options are, and the suggested build order are all planned out in [EYE-PLAN.md](./EYE-PLAN.md), written before any EYE code exists.
 
-> **Per-subcategory tracking**: same convention FACE's own tracker docs already established - as a subcategory actually gets built, it gets its own dedicated tracker file and this file's own inline checklist for it gets replaced with a summary-row + link. EYELINER is the first one built - [EYELINER.md](./EYELINER.md). The other 6 are still the generic placeholder checklist shape every category starts with (see FACE.md's own history).
+> **Per-subcategory tracking**: same convention FACE's own tracker docs already established - as a subcategory actually gets built, it gets its own dedicated tracker file and this file's own inline checklist for it gets replaced with a summary-row + link. EYELINER and KAJAL are built so far - [EYELINER.md](./EYELINER.md), [KAJAL.md](./KAJAL.md) (same underlying primitive, per [EYE-PLAN.md](./EYE-PLAN.md)'s own build order - "EYELINER + KAJAL together"). The other 5 are still the generic placeholder checklist shape every category starts with (see FACE.md's own history).
 
 ## Summary
 
@@ -14,12 +14,12 @@ _Tracking model: face landmarks (eye/brow region — precision-heavy, thin lines
 | ----------- | ---------- | ------------ | ----------------------------- |
 | EYEBROW     | 0/4        | 0/4          | 0%                            |
 | EYELINER    | 3/4        | 3/4          | 75% — [detail](./EYELINER.md) |
-| KAJAL       | 0/4        | 0/4          | 0%                            |
+| KAJAL       | 3/4        | 3/4          | 75% — [detail](./KAJAL.md)    |
 | EYESHADOW   | 0/4        | 0/4          | 0%                            |
 | MASCARA     | 0/4        | 0/4          | 0%                            |
 | LASHES      | 0/4        | 0/4          | 0%                            |
 | BROWGEL     | 0/4        | 0/4          | 0%                            |
-| **Total**   | **3/28**   | **3/28**     | **10.7% (6/56)**              |
+| **Total**   | **6/28**   | **6/28**     | **21.4% (12/56)**             |
 
 ## Details
 
@@ -50,21 +50,9 @@ Ab yaha inline nahi hai - apni dedicated file mil chuki hai: **[EYELINER.md](./E
 </details>
 
 <details>
-<summary><strong>KAJAL</strong> — 0%</summary>
+<summary><strong>KAJAL</strong> — 75% — see <a href="./KAJAL.md">KAJAL.md</a> for the full checklist, design notes, and quality score</summary>
 
-**Live**
-
-- [ ] Camera capture + waterline/inner-rim tracking wired
-- [ ] Soft smudged stroke rendered along waterline in real-time
-- [ ] Shade/variant picker functional
-- [ ] Performance & cross-device QA
-
-**Upload**
-
-- [ ] Photo upload + waterline/inner-rim detection on static image
-- [ ] Soft smudged stroke applied along waterline on image
-- [ ] Shade/variant picker functional
-- [ ] Output preview/download QA
+Ab yaha inline nahi hai - apni dedicated file mil chuki hai: **[KAJAL.md](./KAJAL.md)**.
 
 </details>
 

@@ -28,19 +28,49 @@ export const RIGHT_EYE_LOWER_INDICES = [263, 249, 390, 373, 374, 380, 381, 382, 
 // than trusting a specific numeric index to always mean "inner" regardless of which eye/side.
 export const NOSE_TIP_INDEX = 1;
 
-/* ================= EYELINER ====================================================================
- * 7 patterns, all built on one shared primitive: a tapered stroke following the upper lash line
- * (thin near the inner corner, thicker near the outer), optionally extended past the outer
- * corner with a curved "wing". See docs/tryons/EYE-PLAN.md for the full design reasoning and
- * docs/tryons/EYELINER.md for this finish's own tracker.
+/* ================= SHARED STROKE-TUNING SHAPE =================================================
+ * EYELINER and KAJAL (see their own sections below) are both the *same* tapered-stroke primitive
+ * (utils/tryon-utils/eye.ts's `renderTaperedStrokeForEye`) - one continuous filled path along an
+ * eye-ring arc, thin near the inner corner, thicker near the outer, optionally extended past the
+ * outer corner with a curved "wing", optionally blurred. `KAJAL`'s own build note in
+ * docs/tryons/EYE-PLAN.md says as much explicitly ("no new code beyond parameter tuning once the
+ * shared primitive exists") - so both finishes' own per-pattern tuning tables share one interface
+ * shape rather than each declaring a near-identical one, and the render function itself takes a
+ * resolved tuning object rather than a finish-specific pattern id, so it has no idea which finish
+ * is even calling it.
  *
  * Every ratio below is relative to the eye's own detected width (inner-to-outer corner distance
  * in pixel space) - same "scale off the feature's own size, not a fixed pixel constant" reasoning
  * every other placement/size constant in this app already follows (e.g. FACE's
- * CONCEALER_BLOB_WIDTH_RATIO). Starting values, ported from the same proportions used to build
- * the 7 pattern-preview icons (public/images/tryon/eye/eyeliner/) on a fixed 500px canvas
- * (360px eye-width there) - expected to get visually tuned once rendering, same as every other
- * placement constant in this app.
+ * CONCEALER_BLOB_WIDTH_RATIO).
+ */
+
+export interface IEyeWingTuning {
+  lengthRatio: number;
+  angleDeg: number;
+  curveRatio: number;
+}
+
+export interface IEyeStrokePatternTuning {
+  baseWidthRatio: number;
+  peakWidthRatio: number;
+  tipWidthRatio: number;
+  wing?: IEyeWingTuning;
+  secondWing?: IEyeWingTuning;
+  blurRatio?: number;
+  // EYELINER-only (its Underliner pattern adds a second pass tracing the *other* arc) - left
+  // optional on the shared shape rather than a separate KAJAL-less interface, same "unused
+  // optional fields are fine" convention every other per-finish tuning record in this app follows
+  // (e.g. FACE finishes' own tuning records don't each get a bespoke interface either).
+  underlinerWidthRatio?: number;
+}
+
+/* ================= EYELINER ====================================================================
+ * 7 patterns. See docs/tryons/EYE-PLAN.md for the full design reasoning and docs/tryons/
+ * EYELINER.md for this finish's own tracker. Starting values, ported from the same proportions
+ * used to build the 7 pattern-preview icons (public/images/tryon/eye/eyeliner/) on a fixed 500px
+ * canvas (360px eye-width there) - expected to get visually tuned once rendering, same as every
+ * other placement constant in this app.
  */
 
 export type TEyelinerPattern =
@@ -82,36 +112,11 @@ export const EYELINER_PATTERNS: IEyePatternOption[] = [
   { id: 'UNDERLINER', label: 'Underliner', image: '/images/tryon/eye/eyeliner/Underliner.webp' },
 ];
 
-// Which EYE finishes have a pattern picker at all, and which option list to show for each -
-// `Partial` on purpose, same reasoning as `TRY_ON_INSTRUCTIONS` (constants/tryon-constants/
-// index.ts): a finish without its own dedicated rendering yet (or one that's color-only by
-// design, like BROWGEL - see EYE-PLAN.md) has no real pattern list to show. `TryOnModal` reads
-// this to decide whether to render `TryOnPatternSwatches` at all for the current subCategory.
-export const EYE_PATTERNS: Partial<Record<TEyeFinish, IEyePatternOption[]>> = {
-  EYELINER: EYELINER_PATTERNS,
-};
-
 // The pattern a fresh EYELINER selection starts on before the shopper picks one explicitly -
 // same "blank-slate needs *a* value" reasoning as LIP_DEFAULT_RANGE/FACE_DEFAULT_RANGE, just for
 // `pattern` instead of `range`. Classic Thin, the least visually aggressive option, so a shopper
 // who never touches the pattern picker still gets a tasteful default rather than nothing.
 export const EYELINER_DEFAULT_PATTERN: TEyelinerPattern = 'CLASSIC_THIN';
-
-interface IEyelinerWingTuning {
-  lengthRatio: number;
-  angleDeg: number;
-  curveRatio: number;
-}
-
-export interface IEyelinerPatternTuning {
-  baseWidthRatio: number;
-  peakWidthRatio: number;
-  tipWidthRatio: number;
-  wing?: IEyelinerWingTuning;
-  secondWing?: IEyelinerWingTuning;
-  blurRatio?: number;
-  underlinerWidthRatio?: number;
-}
 
 // `baseWidthRatio` (the inner-corner end) used to sit at roughly 40-55% of `peakWidthRatio` -
 // mathematically a smooth taper, but on a real photo (eye width ~110-150px at typical canvas
@@ -123,7 +128,7 @@ export interface IEyelinerPatternTuning {
 // itself, not the base) - found via a real-photo pixel-level check, not just the synthetic
 // fixture (which, at a smaller test canvas, never made the base thin enough in absolute pixels to
 // expose this).
-export const EYELINER_PATTERN_TUNING: Record<TEyelinerPattern, IEyelinerPatternTuning> = {
+export const EYELINER_PATTERN_TUNING: Record<TEyelinerPattern, IEyeStrokePatternTuning> = {
   CLASSIC_THIN: { baseWidthRatio: 0.032, peakWidthRatio: 0.042, tipWidthRatio: 0.042 },
   BOLD_THICK: { baseWidthRatio: 0.062, peakWidthRatio: 0.09, tipWidthRatio: 0.09 },
   WINGED_CAT_EYE: {
@@ -154,6 +159,87 @@ export const EYELINER_PATTERN_TUNING: Record<TEyelinerPattern, IEyelinerPatternT
   },
 };
 
+/* ================= KAJAL =======================================================================
+ * 4 patterns, the exact same tapered-stroke primitive EYELINER uses (see the shared-shape comment
+ * above) - the only structural difference is *which* arc it traces: kajal sits on the lower
+ * lash-line/waterline, not the upper one, so `applyKajalEye` (utils/tryon-utils/eye.ts) passes
+ * `LEFT/RIGHT_EYE_LOWER_INDICES` as the primary arc instead of the upper ones EYELINER uses. See
+ * docs/tryons/EYE-PLAN.md for the full design reasoning and docs/tryons/KAJAL.md for this finish's
+ * own tracker. Ratios ported from the same proportions used to build the 4 pattern-preview icons
+ * (public/images/tryon/eye/kajal/) on a fixed 500px canvas (420px eye-width there).
+ */
+
+export type TKajalPattern =
+  'THIN_WATERLINE' | 'TIGHTLINE_LOWER_LASH' | 'SMUDGED_SMOKEY' | 'FULL_BOLD_KOHL';
+
+export const KAJAL_PATTERNS: IEyePatternOption[] = [
+  {
+    id: 'THIN_WATERLINE',
+    label: 'Thin Waterline',
+    image: '/images/tryon/eye/kajal/Thin-Waterline.webp',
+  },
+  {
+    id: 'TIGHTLINE_LOWER_LASH',
+    label: 'Tightline Lower Lash',
+    image: '/images/tryon/eye/kajal/Tightline-Lower-Lash.webp',
+  },
+  {
+    id: 'SMUDGED_SMOKEY',
+    label: 'Smudged / Smokey',
+    image: '/images/tryon/eye/kajal/Smudged-Smokey-Kajal.webp',
+  },
+  {
+    id: 'FULL_BOLD_KOHL',
+    label: 'Full Bold Kohl',
+    image: '/images/tryon/eye/kajal/Full-Bold-Kohl.webp',
+  },
+];
+
+// Same "tasteful default rather than nothing" reasoning as `EYELINER_DEFAULT_PATTERN` - Thin
+// Waterline, the most universally-flattering/subtle of the 4, rather than jumping straight to
+// Full Bold Kohl.
+export const KAJAL_DEFAULT_PATTERN: TKajalPattern = 'THIN_WATERLINE';
+
+// No `wing` on any of these - kajal's own "extending slightly past the outer corner" (Full Bold
+// Kohl) is a much shorter flick than EYELINER's Winged/Double Wing, close enough to a plain wider
+// tip that it's handled by `tipWidthRatio` alone rather than `buildWingPoints`, keeping this table
+// (and `renderTaperedStrokeForEye`'s call for it) exactly as simple as EYE-PLAN.md's own build
+// note promised ("no new code beyond parameter tuning").
+export const KAJAL_PATTERN_TUNING: Record<TKajalPattern, IEyeStrokePatternTuning> = {
+  THIN_WATERLINE: { baseWidthRatio: 0.026, peakWidthRatio: 0.034, tipWidthRatio: 0.03 },
+  TIGHTLINE_LOWER_LASH: { baseWidthRatio: 0.014, peakWidthRatio: 0.016, tipWidthRatio: 0.014 },
+  SMUDGED_SMOKEY: {
+    baseWidthRatio: 0.05,
+    peakWidthRatio: 0.07,
+    tipWidthRatio: 0.06,
+    blurRatio: 0.05,
+  },
+  FULL_BOLD_KOHL: { baseWidthRatio: 0.055, peakWidthRatio: 0.07, tipWidthRatio: 0.08 },
+};
+
+// Which pattern id a shopper lands on the moment they open a given pattern-bearing EYE finish,
+// before they've touched the picker themselves - `EyeEngineBase.applyEffect` falls back to this
+// (keyed by `state.type`) whenever `state.pattern` is still unset, and `TryOnModal` uses the same
+// map so the picker's own "currently applied" swatch matches what's actually being rendered from
+// the very first frame. Two entries now that KAJAL exists alongside EYELINER - each finish's
+// pattern ids are their own separate namespace (KAJAL's `THIN_WATERLINE` means nothing looked up
+// against `EYELINER_PATTERN_TUNING` and vice versa), so a single flat default would be wrong for
+// whichever finish it wasn't written for.
+export const EYE_DEFAULT_PATTERNS: Partial<Record<TEyeFinish, string>> = {
+  EYELINER: EYELINER_DEFAULT_PATTERN,
+  KAJAL: KAJAL_DEFAULT_PATTERN,
+};
+
+// Which EYE finishes have a pattern picker at all, and which option list to show for each -
+// `Partial` on purpose, same reasoning as `TRY_ON_INSTRUCTIONS` (constants/tryon-constants/
+// index.ts): a finish without its own dedicated rendering yet (or one that's color-only by
+// design, like BROWGEL - see EYE-PLAN.md) has no real pattern list to show. `TryOnModal` reads
+// this to decide whether to render `TryOnPatternSwatches` at all for the current subCategory.
+export const EYE_PATTERNS: Partial<Record<TEyeFinish, IEyePatternOption[]>> = {
+  EYELINER: EYELINER_PATTERNS,
+  KAJAL: KAJAL_PATTERNS,
+};
+
 /* ================= RANGE BOUNDS ================================================================
  * Same shape/role as LIP_RANGE_BOUNDS/FACE_RANGE_BOUNDS - the intensity slider's bounds, one
  * entry per finish. Only EYELINER has dedicated rendering so far (see EYE-PLAN.md's build
@@ -165,7 +251,12 @@ export const EYE_RANGE_BOUNDS: Record<TEyeFinish, IRangeBounds> = {
   // "don't rely purely on the slider" reasoning BBCREAM_BASE_ALPHA's own comment used) - this
   // range just controls how opaque/dark the liner reads, not its shape.
   EYELINER: { min: 0.3, max: 1, default: 0.7 },
-  KAJAL: { min: 0.05, max: 0.3, default: 0.15 },
+  // Was a much lower {min:0.05,max:0.3,default:0.15} placeholder before KAJAL had any real
+  // rendering - EYELINER's own real-photo testing found alpha that low reads as "no product at
+  // all" against real lash/skin texture (see EYELINER_PATTERN_TUNING's own comment on the same
+  // discovery), so this starts from that same lesson already applied rather than repeating the
+  // same round of real-photo tuning to rediscover it.
+  KAJAL: { min: 0.3, max: 1, default: 0.7 },
   EYESHADOW: { min: 0.1, max: 0.6, default: 0.3 },
   EYEBROW: { min: 0.1, max: 0.6, default: 0.3 },
   MASCARA: { min: 0.1, max: 0.6, default: 0.3 },

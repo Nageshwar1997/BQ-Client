@@ -1,7 +1,11 @@
-import { EYE_DEFAULT_RANGE, EYELINER_DEFAULT_PATTERN } from '@/constants/tryon-constants/eye';
+import {
+  EYE_DEFAULT_PATTERNS,
+  EYE_DEFAULT_RANGE,
+  EYELINER_DEFAULT_PATTERN,
+} from '@/constants/tryon-constants/eye';
 import type { IApplyEffectParams } from '@/types/tryon-types';
 import type { IEyeAssets, IEyeTryOnState, TEyeFinish } from '@/types/tryon-types/eye';
-import { applyEyelinerEye } from '@/utils/tryon-utils/eye';
+import { applyEyelinerEye, applyKajalEye } from '@/utils/tryon-utils/eye';
 
 import { TryOnEngineBase } from '../../TryOnEngineBase';
 
@@ -15,7 +19,6 @@ import { TryOnEngineBase } from '../../TryOnEngineBase';
 // mismatched effect.
 const UNSUPPORTED_EYE_FINISHES = new Set<TEyeFinish>([
   'EYEBROW',
-  'KAJAL',
   'EYESHADOW',
   'MASCARA',
   'LASHES',
@@ -38,9 +41,10 @@ export abstract class EyeEngineBase extends TryOnEngineBase<IEyeTryOnState> {
       // LipEngineBase/FaceEngineBase's identical comment. Uses the category-wide
       // `EYE_DEFAULT_RANGE` rather than borrowing any one finish's own default.
       range: EYE_DEFAULT_RANGE,
-      // Same "blank until picked" reasoning as `color`/`type` - EYELINER's own default
-      // (`EYELINER_DEFAULT_PATTERN`) only actually applies once `type` is 'EYELINER'; this is
-      // just the pre-selection placeholder.
+      // Same "blank until picked" reasoning as `color`/`type` - no `type` yet to look up a real
+      // per-finish default from (`EYE_DEFAULT_PATTERNS`, used once `type` is actually known - see
+      // `applyEffect` below), so this just needs *some* starting value rather than the correct
+      // one; any pattern-bearing finish's own id would do equally well as a placeholder here.
       pattern: EYELINER_DEFAULT_PATTERN,
       cameraReady: false,
       imageReady: false,
@@ -73,11 +77,21 @@ export abstract class EyeEngineBase extends TryOnEngineBase<IEyeTryOnState> {
     }
 
     const alpha = state.range;
-    const pattern = state.pattern ?? EYELINER_DEFAULT_PATTERN;
+    // Finish-aware default, not a flat `?? EYELINER_DEFAULT_PATTERN` - EYELINER's and KAJAL's
+    // pattern ids are separate namespaces (see `EYE_DEFAULT_PATTERNS`'s own comment), so a fixed
+    // fallback would hand KAJAL an EYELINER id it can't look anything up with. `EYE_DEFAULT_
+    // PATTERNS` always has an entry for both finishes reachable here (the only two not caught by
+    // `UNSUPPORTED_EYE_FINISHES` above) - the final `?? ''` only exists to satisfy `pattern:
+    // string`; it isn't asserting that case can't happen, and if it somehow did, the tuning
+    // lookup inside `applyEyelinerEye`/`applyKajalEye` would just safely render nothing.
+    const pattern = state.pattern ?? EYE_DEFAULT_PATTERNS[state.type] ?? '';
 
     switch (state.type) {
       case 'EYELINER':
         applyEyelinerEye({ face, ctx, rgb, dimension, alpha, pattern });
+        return;
+      case 'KAJAL':
+        applyKajalEye({ face, ctx, rgb, dimension, alpha, pattern });
         return;
     }
   }
