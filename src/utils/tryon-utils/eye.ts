@@ -2,6 +2,8 @@ import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
 import {
   EYELINER_PATTERN_TUNING,
+  EYESHADOW_PATTERN_TUNING,
+  type IEyeshadowPatternTuning,
   type IEyeStrokePatternTuning,
   KAJAL_PATTERN_TUNING,
   LEFT_EYE_LOWER_INDICES,
@@ -10,7 +12,7 @@ import {
   RIGHT_EYE_LOWER_INDICES,
   RIGHT_EYE_UPPER_INDICES,
 } from '@/constants/tryon-constants/eye';
-import type { TDimension, TPoint } from '@/types/tryon-types';
+import type { TDimension, TPoint, TRGBTuple } from '@/types/tryon-types';
 import type { IEyeRenderParams } from '@/types/tryon-types/eye';
 import { createOffscreenCtx, toColorString } from '@/utils/tryon-utils';
 
@@ -146,36 +148,54 @@ const outwardNormalsAlongPath = (pts: TPoint[], center: TPoint): TPoint[] => {
   return normals;
 };
 
-// Fills the tapered ribbon as a chain of small quads (one per adjacent point pair) instead of one
-// single polygon that walks all the way out along the offset edge and all the way back along the
-// path. That single-polygon approach is a textbook offset-curve trap: wherever the path bends
-// tighter than the offset width being applied there (exactly what a wing's sharp launch off the
-// lash line does at its tightest patterns), the outer edge crosses itself - and a single filled
-// path that crosses itself can render as visually disconnected lobes with a gap between them,
-// which is what the "wing not attached" reports kept showing, on whichever eye's own real corner
-// geometry happened to bend sharply enough in a given photo (a bilateral-symmetric synthetic
-// fixture never reproduced it, since it never got a real bend that sharp on either side).
+// The same offset-along-normals math `fillTaperedPath`/`buildTaperedRibbonPath` below both need
+// (an EYESHADOW pattern that traces the *outer* edge itself - Cut Crease's own crease line - needs
+// these points directly, not just a filled/clipped shape built from them), factored out once
+// rather than duplicated.
+const offsetPointsAlongNormals = (
+  pts: TPoint[],
+  center: TPoint,
+  distanceFn: (t: number) => number,
+): TPoint[] => {
+  const normals = outwardNormalsAlongPath(pts, center);
+  return pts.map((p, i) => {
+    const n = normals[i] ?? { x: 0, y: -1 };
+    const d = distanceFn(i / (pts.length - 1));
+    return { x: p.x + n.x * d, y: p.y + n.y * d };
+  });
+};
+
+// Builds the tapered-ribbon path (a chain of small quads, one per adjacent point pair) on `ctx`
+// without filling or clipping it - `fillTaperedPath` below is the common "just fill it" case,
+// but EYESHADOW's gradient-based patterns (Two-Tone Gradient, Halo Eye) need the same shape as a
+// *clip* region instead, so callers can choose `ctx.fill()` or `ctx.clip()` after this returns.
+//
+// Quads instead of one single polygon that walks all the way out along the offset edge and all
+// the way back along the path - that single-polygon approach is a textbook offset-curve trap:
+// wherever the path bends tighter than the offset width being applied there (exactly what a
+// wing's sharp launch off the lash line does at its tightest patterns), the outer edge crosses
+// itself - and a single filled path that crosses itself can render as visually disconnected lobes
+// with a gap between them, which is what the "wing not attached" reports kept showing, on
+// whichever eye's own real corner geometry happened to bend sharply enough in a given photo (a
+// bilateral-symmetric synthetic fixture never reproduced it, since it never got a real bend that
+// sharp on either side).
 //
 // Every quad here is wound the same rotational direction (path point i -> i+1 -> that point's own
 // outer offset -> back), so even where two quads overlap each other (the tight-bend case above),
-// the canvas's nonzero winding fill rule keeps that overlap solid instead of canceling it to a
-// gap - and because it's still one `fill()` call across every quad, the color's own alpha still
-// only blends once, not per-quad.
-const fillTaperedPath = (
+// the canvas's nonzero winding fill/clip rule keeps that overlap solid instead of canceling it to
+// a gap.
+const buildTaperedRibbonPath = (
   ctx: CanvasRenderingContext2D,
   pts: TPoint[],
   center: TPoint,
   widthFn: (t: number) => number,
-  color: string,
-) => {
-  if (pts.length < 2) return;
+): void => {
+  if (pts.length < 2) {
+    ctx.beginPath();
+    return;
+  }
 
-  const normals = outwardNormalsAlongPath(pts, center);
-  const outer = pts.map((p, i) => {
-    const n = normals[i] ?? { x: 0, y: -1 };
-    const w = widthFn(i / (pts.length - 1));
-    return { x: p.x + n.x * w, y: p.y + n.y * w };
-  });
+  const outer = offsetPointsAlongNormals(pts, center, widthFn);
 
   ctx.beginPath();
   for (let i = 0; i < pts.length - 1; i++) {
@@ -190,6 +210,18 @@ const fillTaperedPath = (
     ctx.lineTo(o0.x, o0.y);
     ctx.closePath();
   }
+};
+
+// One `fill()` call across every quad in the built path, so the color's own alpha still only
+// blends once, not per-quad.
+const fillTaperedPath = (
+  ctx: CanvasRenderingContext2D,
+  pts: TPoint[],
+  center: TPoint,
+  widthFn: (t: number) => number,
+  color: string,
+) => {
+  buildTaperedRibbonPath(ctx, pts, center, widthFn);
   ctx.fillStyle = color;
   ctx.fill();
 };
@@ -420,6 +452,196 @@ export const applyKajalEye = ({ face, ctx, rgb, dimension, alpha, pattern }: IEy
   // passed as `secondaryArc` here is simply never read.
   renderTaperedStrokeForEye(tempCtx, leftLower, leftUpper, tuning, color);
   renderTaperedStrokeForEye(tempCtx, rightLower, rightUpper, tuning, color);
+
+  ctx.drawImage(tempCtx.canvas, 0, 0);
+};
+
+/* ================= EYESHADOW ===================================================================
+ * A genuinely new primitive for this file - washes the whole eyelid *region* (the lash line up to
+ * a synthesized crease line) rather than tracing a thin stroke the way EYELINER/KAJAL do. See
+ * `EYESHADOW_PATTERN_TUNING`'s own comment (constants/tryon-constants/eye.ts) for why that crease
+ * line itself is synthesized (offsetting the lash-line arc upward) rather than tracked - no
+ * dedicated MediaPipe landmark ring exists for it. Dispatch is by which optional tuning fields are
+ * set, same convention `renderTaperedStrokeForEye` above already established for EYELINER's own
+ * pattern variety, rather than switching on the pattern id string directly.
+ */
+
+// Mixes `rgb` toward white by `ratio` (0 = unchanged, 1 = pure white) - same plain per-channel
+// math FACE's own `mixTowardWhite` (face.ts) uses, duplicated here per this file's own
+// self-contained-per-category convention (see this file's own top comment) rather than
+// cross-imported.
+const mixTowardWhite = (rgb: TRGBTuple, ratio: number): TRGBTuple => {
+  const [r, g, b] = rgb;
+  return [r + (255 - r) * ratio, g + (255 - g) * ratio, b + (255 - b) * ratio];
+};
+
+// Mirror image of `mixTowardWhite` above - mixes toward black instead, same reasoning (and the
+// same math FACE's own `mixTowardBlack` uses).
+const mixTowardBlack = (rgb: TRGBTuple, ratio: number): TRGBTuple => {
+  const [r, g, b] = rgb;
+  return [r * (1 - ratio), g * (1 - ratio), b * (1 - ratio)];
+};
+
+// The lid band's own height curve across `t` (0 at the inner corner, 1 at the outer) -
+// `Math.sin(Math.PI * t)` alone gives a smooth single arch (0 at both ends, peak at the middle);
+// raising it to `sharpness` reshapes that arch without needing a second "taper zone" parameter the
+// way EYELINER's own wing/tip ratios do - below 1 flattens the peak into a wider plateau (more
+// even coverage across the lid, not just a peak in the middle), above 1 narrows it into a tighter
+// peak concentrated at the center.
+const eyelidBandHeight =
+  (peakHeight: number, sharpness: number) =>
+  (t: number): number =>
+    peakHeight * Math.sin(Math.PI * t) ** sharpness;
+
+const applyEyeshadowForEye = (
+  tempCtx: CanvasRenderingContext2D,
+  upperArc: TPoint[],
+  lowerArc: TPoint[],
+  tuning: IEyeshadowPatternTuning,
+  rgb: TRGBTuple,
+  alpha: number,
+) => {
+  const first = upperArc[0];
+  const last = upperArc[upperArc.length - 1];
+  if (!first || !last) return;
+
+  const eyeWidth = Math.hypot(last.x - first.x, last.y - first.y);
+  const center = centroid([...upperArc, ...lowerArc]);
+  const lashPts = smoothOpenPath(upperArc, 10);
+  const heightFn = eyelidBandHeight(eyeWidth * tuning.bandHeightRatio, tuning.peakSharpness);
+
+  // Cut Crease/Halo Eye read as actual depth against a darkened base tone rather than the shade's
+  // raw color - same "read as the real cosmetic effect, not just a colored patch" reasoning
+  // FACE's own CONTOUR/HIGHLIGHTER already use for their own darken/whiten.
+  const baseColor = tuning.darkenRatio ? mixTowardBlack(rgb, tuning.darkenRatio) : rgb;
+  const [br, bg, bb] = baseColor;
+  const baseColorString = toColorString(br, bg, bb, alpha);
+
+  const renderBand = () => {
+    fillTaperedPath(tempCtx, lashPts, center, heightFn, baseColorString);
+    // Smokey Eye/Under-Eye Smudge: a second, narrower pass hugging the lash line on top of the
+    // soft main wash, for the "concentrated near the lash line" look neither a flat wash nor a
+    // uniform blur alone gives.
+    if (tuning.concentratedHeightRatio) {
+      const concentratedFn = eyelidBandHeight(
+        eyeWidth * tuning.concentratedHeightRatio,
+        tuning.concentratedPeakSharpness ?? tuning.peakSharpness,
+      );
+      fillTaperedPath(tempCtx, lashPts, center, concentratedFn, baseColorString);
+    }
+  };
+
+  if (tuning.blurRatio) {
+    tempCtx.save();
+    tempCtx.filter = `blur(${String(eyeWidth * tuning.blurRatio)}px)`;
+    renderBand();
+    tempCtx.restore();
+  } else {
+    renderBand();
+  }
+
+  // Cut Crease: a crisp, unblurred stroke exactly along the synthesized crease line (the band's
+  // own outer edge at full height) - the "sharp defined line" a soft wash alone can't give.
+  if (tuning.creaseLineWidthRatio) {
+    const creasePts = offsetPointsAlongNormals(lashPts, center, heightFn);
+    const creaseColor = toColorString(br, bg, bb, Math.min(1, alpha * 1.3));
+    const creaseWidth = eyeWidth * tuning.creaseLineWidthRatio;
+    fillTaperedPath(tempCtx, creasePts, center, () => creaseWidth, creaseColor);
+  }
+
+  // Two-Tone Gradient/Halo Eye: an extra lighter tone laid over the same band shape, clipped to
+  // its exact tapered-ribbon outline so neither ever paints past the lid itself - a plain vertical
+  // linear fade for Two-Tone (lighter toward the crease/brow-bone side, the base tone toward the
+  // lash line - see EYESHADOW_PATTERN_TUNING's own comment on why "toward the brow bone" is this
+  // band's own top edge rather than a separately-tracked brow landmark), or a radial glow
+  // concentrated at the band's own horizontal center for Halo (light middle, the darker base tone
+  // still showing at the corners and crease).
+  if (tuning.highlightRatio) {
+    const [hr, hg, hb] = mixTowardWhite(rgb, tuning.highlightRatio);
+
+    tempCtx.save();
+    buildTaperedRibbonPath(tempCtx, lashPts, center, heightFn);
+    tempCtx.clip();
+
+    if (tuning.darkenRatio) {
+      const mid = lashPts[Math.round((lashPts.length - 1) / 2)];
+      if (mid) {
+        const dx = mid.x - center.x;
+        const dy = mid.y - center.y;
+        const len = Math.hypot(dx, dy) || 1;
+        const glowOffset = heightFn(0.5) * 0.4;
+        const glowCenter = {
+          x: mid.x + (dx / len) * glowOffset,
+          y: mid.y + (dy / len) * glowOffset,
+        };
+        const gradient = tempCtx.createRadialGradient(
+          glowCenter.x,
+          glowCenter.y,
+          0,
+          glowCenter.x,
+          glowCenter.y,
+          eyeWidth * 0.22,
+        );
+        gradient.addColorStop(0, toColorString(hr, hg, hb, alpha * 0.85));
+        gradient.addColorStop(1, toColorString(hr, hg, hb, 0));
+        tempCtx.fillStyle = gradient;
+        tempCtx.fillRect(0, 0, tempCtx.canvas.width, tempCtx.canvas.height);
+      }
+    } else {
+      const topPts = offsetPointsAlongNormals(lashPts, center, heightFn);
+      const topY = Math.min(...topPts.map((p) => p.y));
+      const bottomY = Math.max(...lashPts.map((p) => p.y));
+      const gradient = tempCtx.createLinearGradient(0, topY, 0, bottomY);
+      gradient.addColorStop(0, toColorString(hr, hg, hb, alpha));
+      gradient.addColorStop(1, baseColorString);
+      tempCtx.fillStyle = gradient;
+      tempCtx.fillRect(0, 0, tempCtx.canvas.width, tempCtx.canvas.height);
+    }
+    tempCtx.restore();
+  }
+
+  // Under-Eye Smudge: a soft second pass along the lower lash line too - EYELINER's own
+  // Underliner pattern is the same "second pass on the other arc" idea.
+  if (tuning.underSmudgeHeightRatio && lowerArc.length >= 2) {
+    const denseLower = smoothOpenPath(lowerArc, 10);
+    const smudgeFn = eyelidBandHeight(
+      eyeWidth * tuning.underSmudgeHeightRatio,
+      tuning.peakSharpness,
+    );
+    if (tuning.underSmudgeBlurRatio) {
+      tempCtx.save();
+      tempCtx.filter = `blur(${String(eyeWidth * tuning.underSmudgeBlurRatio)}px)`;
+      fillTaperedPath(tempCtx, denseLower, center, smudgeFn, baseColorString);
+      tempCtx.restore();
+    } else {
+      fillTaperedPath(tempCtx, denseLower, center, smudgeFn, baseColorString);
+    }
+  }
+};
+
+export const applyEyeshadowEye = ({
+  face,
+  ctx,
+  rgb,
+  dimension,
+  alpha,
+  pattern,
+}: IEyeRenderParams) => {
+  // Same safe-lookup reasoning as `applyEyelinerEye`/`applyKajalEye` above, against EYESHADOW's
+  // own tuning table.
+  const tuning = (EYESHADOW_PATTERN_TUNING as Record<string, IEyeshadowPatternTuning | undefined>)[
+    pattern
+  ];
+  if (!tuning) return;
+
+  const { leftUpper, leftLower, rightUpper, rightLower } = getOrderedEyeArcs(face, dimension);
+  if (leftUpper.length < 2 || rightUpper.length < 2) return;
+
+  const tempCtx = createOffscreenCtx(dimension);
+  if (!tempCtx) return;
+
+  applyEyeshadowForEye(tempCtx, leftUpper, leftLower, tuning, rgb, alpha);
+  applyEyeshadowForEye(tempCtx, rightUpper, rightLower, tuning, rgb, alpha);
 
   ctx.drawImage(tempCtx.canvas, 0, 0);
 };

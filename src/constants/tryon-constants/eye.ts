@@ -217,17 +217,143 @@ export const KAJAL_PATTERN_TUNING: Record<TKajalPattern, IEyeStrokePatternTuning
   FULL_BOLD_KOHL: { baseWidthRatio: 0.055, peakWidthRatio: 0.07, tipWidthRatio: 0.08 },
 };
 
+/* ================= EYESHADOW ===================================================================
+ * 6 patterns - the first EYE finish that washes a whole *region* (the eyelid, lash line up to the
+ * crease) rather than tracing a thin line the way EYELINER/KAJAL do. No dedicated MediaPipe
+ * landmark ring exists for the crease itself (only the lash-line ring and the eyebrow ring are
+ * real tracked points) - the "crease" used below is synthesized by offsetting the upper lash-line
+ * arc upward (the exact same `outwardNormalsAlongPath` direction-math EYELINER/KAJAL already use
+ * for their own width offset, just repurposed here for a much larger, region-sized offset instead
+ * of a stroke width) - same "approximate off a real landmark rather than inventing a new tracked
+ * point" reasoning `applyForeheadExtension` (face.ts) already uses for FOUNDATION's own
+ * hairline-to-forehead extension. See docs/tryons/EYE-PLAN.md for the full design reasoning and
+ * docs/tryons/EYESHADOW.md for this finish's own tracker.
+ *
+ * Every ratio below is relative to the eye's own detected width, same convention EYELINER/KAJAL
+ * already use.
+ */
+
+export type TEyeshadowPattern =
+  | 'SINGLE_WASH'
+  | 'TWO_TONE_GRADIENT'
+  | 'SMOKEY_EYE'
+  | 'CUT_CREASE'
+  | 'HALO_EYE'
+  | 'UNDER_EYE_SMUDGE';
+
+export const EYESHADOW_PATTERNS: IEyePatternOption[] = [
+  {
+    id: 'SINGLE_WASH',
+    label: 'Single Wash',
+    image: '/images/tryon/eye/eyeshadow/Single-Wash.webp',
+  },
+  {
+    id: 'TWO_TONE_GRADIENT',
+    label: 'Two-Tone Gradient',
+    image: '/images/tryon/eye/eyeshadow/Two-Tone-Gradient.webp',
+  },
+  {
+    id: 'SMOKEY_EYE',
+    label: 'Smokey Eye',
+    image: '/images/tryon/eye/eyeshadow/Smokey-Eye.webp',
+  },
+  {
+    id: 'CUT_CREASE',
+    label: 'Cut Crease',
+    image: '/images/tryon/eye/eyeshadow/Cut-Crease.webp',
+  },
+  {
+    id: 'HALO_EYE',
+    label: 'Halo Eye',
+    image: '/images/tryon/eye/eyeshadow/Halo-Eye.webp',
+  },
+  {
+    id: 'UNDER_EYE_SMUDGE',
+    label: 'Under-Eye Smudge',
+    image: '/images/tryon/eye/eyeshadow/Under-Eye-Smudge.webp',
+  },
+];
+
+// Same "tasteful default rather than nothing" reasoning as EYELINER/KAJAL's own defaults - a flat
+// single-color wash is the least visually aggressive of the 6, and the one every other pattern is
+// itself built on top of.
+export const EYESHADOW_DEFAULT_PATTERN: TEyeshadowPattern = 'SINGLE_WASH';
+
+export interface IEyeshadowPatternTuning {
+  // Peak height the wash reaches above the lash line (mid-lid), ratio of eyeWidth.
+  bandHeightRatio: number;
+  // Shapes the band's own height curve across `t` (`Math.sin(Math.PI * t) ** peakSharpness`,
+  // 0 at both corners either way) - 1 is a plain smooth arch, below 1 flattens the top into a
+  // wider plateau (more coverage across the lid, not just a peak in the middle), above 1
+  // narrows it into a tighter peak. Replaces a separate fixed "taper zone" ratio - one knob
+  // shapes the whole curve instead of two describing a flat-middle-plus-ramped-ends shape.
+  peakSharpness: number;
+  // Soft/feathered edge - `ctx.filter` blur, same technique EYELINER's own Smokey/Smudged
+  // patterns already established.
+  blurRatio?: number;
+  // Smokey Eye/Under-Eye Smudge only - a second, shorter, less-blurred band hugging the lash
+  // line on top of the soft main wash, for the "concentrated dark near the lash line" look.
+  concentratedHeightRatio?: number;
+  concentratedPeakSharpness?: number;
+  // Two-Tone Gradient/Halo Eye only - how far toward white the lighter tone leans
+  // (`mixTowardWhite`, same per-channel math FACE's own HIGHLIGHTER_WHITEN_RATIO uses).
+  highlightRatio?: number;
+  // Cut Crease/Halo Eye only - how far toward black the darker tone leans (`mixTowardBlack`,
+  // same math FACE's own CONTOUR_DARKEN_RATIO uses).
+  darkenRatio?: number;
+  // Cut Crease only - width of the crisp stroke traced exactly along the synthesized crease line.
+  creaseLineWidthRatio?: number;
+  // Under-Eye Smudge only - how far below the lower lash line the smudge extends, and its own
+  // blur (EYELINER's own Underliner pattern is the same "second pass on the other arc" idea).
+  underSmudgeHeightRatio?: number;
+  underSmudgeBlurRatio?: number;
+}
+
+export const EYESHADOW_PATTERN_TUNING: Record<TEyeshadowPattern, IEyeshadowPatternTuning> = {
+  SINGLE_WASH: { bandHeightRatio: 0.34, peakSharpness: 0.6 },
+  TWO_TONE_GRADIENT: { bandHeightRatio: 0.4, peakSharpness: 0.6, highlightRatio: 0.4 },
+  SMOKEY_EYE: {
+    bandHeightRatio: 0.36,
+    peakSharpness: 0.6,
+    blurRatio: 0.05,
+    concentratedHeightRatio: 0.15,
+    concentratedPeakSharpness: 1.4,
+  },
+  CUT_CREASE: {
+    bandHeightRatio: 0.34,
+    peakSharpness: 0.5,
+    darkenRatio: 0.3,
+    creaseLineWidthRatio: 0.02,
+  },
+  HALO_EYE: {
+    bandHeightRatio: 0.36,
+    peakSharpness: 0.6,
+    highlightRatio: 0.5,
+    darkenRatio: 0.25,
+  },
+  UNDER_EYE_SMUDGE: {
+    bandHeightRatio: 0.32,
+    peakSharpness: 0.6,
+    blurRatio: 0.06,
+    concentratedHeightRatio: 0.13,
+    concentratedPeakSharpness: 1.4,
+    underSmudgeHeightRatio: 0.12,
+    underSmudgeBlurRatio: 0.05,
+  },
+};
+
 // Which pattern id a shopper lands on the moment they open a given pattern-bearing EYE finish,
 // before they've touched the picker themselves - `EyeEngineBase.applyEffect` falls back to this
 // (keyed by `state.type`) whenever `state.pattern` is still unset, and `TryOnModal` uses the same
 // map so the picker's own "currently applied" swatch matches what's actually being rendered from
-// the very first frame. Two entries now that KAJAL exists alongside EYELINER - each finish's
-// pattern ids are their own separate namespace (KAJAL's `THIN_WATERLINE` means nothing looked up
-// against `EYELINER_PATTERN_TUNING` and vice versa), so a single flat default would be wrong for
-// whichever finish it wasn't written for.
+// the very first frame. Three entries now - each finish's pattern ids are their own separate
+// namespace (KAJAL's `THIN_WATERLINE` means nothing looked up against `EYELINER_PATTERN_TUNING`,
+// EYESHADOW's `SINGLE_WASH` means nothing looked up against either), so a single flat default
+// would be wrong for whichever finish it wasn't written for.
 export const EYE_DEFAULT_PATTERNS: Partial<Record<TEyeFinish, string>> = {
   EYELINER: EYELINER_DEFAULT_PATTERN,
   KAJAL: KAJAL_DEFAULT_PATTERN,
+  EYESHADOW: EYESHADOW_DEFAULT_PATTERN,
 };
 
 // Which EYE finishes have a pattern picker at all, and which option list to show for each -
@@ -238,13 +364,15 @@ export const EYE_DEFAULT_PATTERNS: Partial<Record<TEyeFinish, string>> = {
 export const EYE_PATTERNS: Partial<Record<TEyeFinish, IEyePatternOption[]>> = {
   EYELINER: EYELINER_PATTERNS,
   KAJAL: KAJAL_PATTERNS,
+  EYESHADOW: EYESHADOW_PATTERNS,
 };
 
 /* ================= RANGE BOUNDS ================================================================
  * Same shape/role as LIP_RANGE_BOUNDS/FACE_RANGE_BOUNDS - the intensity slider's bounds, one
- * entry per finish. Only EYELINER has dedicated rendering so far (see EYE-PLAN.md's build
- * order) - the other 6 are placeholders (their own eventual intended character, not validated
- * tuning), revisited once each gets its own dedicated renderer, same as every FACE finish did.
+ * entry per finish. EYELINER/KAJAL/EYESHADOW have dedicated rendering so far (see EYE-PLAN.md's
+ * build order) - the other 4 are placeholders (their own eventual intended character, not
+ * validated tuning), revisited once each gets its own dedicated renderer, same as every FACE
+ * finish did.
  */
 export const EYE_RANGE_BOUNDS: Record<TEyeFinish, IRangeBounds> = {
   // Real intensity here is mostly carried by the pattern's own width/blur tuning above (same
@@ -257,7 +385,11 @@ export const EYE_RANGE_BOUNDS: Record<TEyeFinish, IRangeBounds> = {
   // discovery), so this starts from that same lesson already applied rather than repeating the
   // same round of real-photo tuning to rediscover it.
   KAJAL: { min: 0.3, max: 1, default: 0.7 },
-  EYESHADOW: { min: 0.1, max: 0.6, default: 0.3 },
+  // A region wash reads differently than a thin stroke at the same alpha (more surface area
+  // covers for it even at a lower opacity) - starts from FACE's own eyelid-adjacent finishes'
+  // range shape (BLUSH/HIGHLIGHTER-ish) rather than EYELINER/KAJAL's boosted one, revisited if
+  // real-photo testing finds this too faint the same way EYELINER's own placeholder was.
+  EYESHADOW: { min: 0.15, max: 0.7, default: 0.4 },
   EYEBROW: { min: 0.1, max: 0.6, default: 0.3 },
   MASCARA: { min: 0.1, max: 0.6, default: 0.3 },
   LASHES: { min: 0.1, max: 0.6, default: 0.3 },
