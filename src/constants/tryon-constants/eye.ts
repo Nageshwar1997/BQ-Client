@@ -38,7 +38,7 @@ export const NOSE_TIP_INDEX = 1;
  * in pixel space) - same "scale off the feature's own size, not a fixed pixel constant" reasoning
  * every other placement/size constant in this app already follows (e.g. FACE's
  * CONCEALER_BLOB_WIDTH_RATIO). Starting values, ported from the same proportions used to build
- * the 7 pattern-preview icons (public/images/tryon/eyes/eyeliners/) on a fixed 500px canvas
+ * the 7 pattern-preview icons (public/images/tryon/eye/eyeliner/) on a fixed 500px canvas
  * (360px eye-width there) - expected to get visually tuned once rendering, same as every other
  * placement constant in this app.
  */
@@ -56,30 +56,30 @@ export const EYELINER_PATTERNS: IEyePatternOption[] = [
   {
     id: 'CLASSIC_THIN',
     label: 'Classic Thin',
-    image: '/images/tryon/eyes/eyeliners/Classic-Thin.webp',
+    image: '/images/tryon/eye/eyeliner/Classic-Thin.webp',
   },
   {
     id: 'BOLD_THICK',
     label: 'Bold / Thick',
-    image: '/images/tryon/eyes/eyeliners/Bold-Thick.webp',
+    image: '/images/tryon/eye/eyeliner/Bold-Thick.webp',
   },
   {
     id: 'WINGED_CAT_EYE',
     label: 'Winged / Cat-eye',
-    image: '/images/tryon/eyes/eyeliners/Winged-Cat-Eye.webp',
+    image: '/images/tryon/eye/eyeliner/Winged-Cat-Eye.webp',
   },
   {
     id: 'DOUBLE_WING',
     label: 'Double Wing',
-    image: '/images/tryon/eyes/eyeliners/Double-Wing.webp',
+    image: '/images/tryon/eye/eyeliner/Double-Wing.webp',
   },
   {
     id: 'SMOKEY_SMUDGED',
     label: 'Smokey / Smudged',
-    image: '/images/tryon/eyes/eyeliners/Smokey-Smudged.webp',
+    image: '/images/tryon/eye/eyeliner/Smokey-Smudged.webp',
   },
-  { id: 'TIGHTLINE', label: 'Tightline', image: '/images/tryon/eyes/eyeliners/Tightline.webp' },
-  { id: 'UNDERLINER', label: 'Underliner', image: '/images/tryon/eyes/eyeliners/Underliner.webp' },
+  { id: 'TIGHTLINE', label: 'Tightline', image: '/images/tryon/eye/eyeliner/Tightline.webp' },
+  { id: 'UNDERLINER', label: 'Underliner', image: '/images/tryon/eye/eyeliner/Underliner.webp' },
 ];
 
 // Which EYE finishes have a pattern picker at all, and which option list to show for each -

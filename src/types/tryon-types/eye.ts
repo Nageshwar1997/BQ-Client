@@ -32,7 +32,7 @@ export interface IEyeRenderParams extends IRenderEffectBaseParams {
 
 // One selectable pattern/style - `id` is what `state.pattern` holds and what render functions
 // switch on, `label` is shopper-facing copy, `image` is the preview thumbnail shown in the
-// pattern picker (public/images/tryon/eyes/<finish>/ - see EYE-PLAN.md's own build note on
+// pattern picker (public/images/tryon/eye/<finish>/ - see EYE-PLAN.md's own build note on
 // which finishes reuse which asset style).
 export interface IEyePatternOption {
   id: string;
