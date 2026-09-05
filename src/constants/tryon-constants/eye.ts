@@ -113,34 +113,44 @@ export interface IEyelinerPatternTuning {
   underlinerWidthRatio?: number;
 }
 
+// `baseWidthRatio` (the inner-corner end) used to sit at roughly 40-55% of `peakWidthRatio` -
+// mathematically a smooth taper, but on a real photo (eye width ~110-150px at typical canvas
+// resolutions) that worked out to only ~2-3px, thin enough to read as "no liner there at all"
+// against real eyelash texture - the finish looked like it stopped short of the inner corner
+// even though it was technically still drawing something. Bumped to ~70-80% of peak across every
+// pattern (a much gentler taper, closer to how real eyeliner actually reads - fairly consistent
+// thickness along the lash line, with the dramatic width change concentrated in the wing/flick
+// itself, not the base) - found via a real-photo pixel-level check, not just the synthetic
+// fixture (which, at a smaller test canvas, never made the base thin enough in absolute pixels to
+// expose this).
 export const EYELINER_PATTERN_TUNING: Record<TEyelinerPattern, IEyelinerPatternTuning> = {
-  CLASSIC_THIN: { baseWidthRatio: 0.022, peakWidthRatio: 0.039, tipWidthRatio: 0.039 },
-  BOLD_THICK: { baseWidthRatio: 0.044, peakWidthRatio: 0.089, tipWidthRatio: 0.089 },
+  CLASSIC_THIN: { baseWidthRatio: 0.032, peakWidthRatio: 0.042, tipWidthRatio: 0.042 },
+  BOLD_THICK: { baseWidthRatio: 0.062, peakWidthRatio: 0.09, tipWidthRatio: 0.09 },
   WINGED_CAT_EYE: {
-    baseWidthRatio: 0.022,
-    peakWidthRatio: 0.056,
+    baseWidthRatio: 0.032,
+    peakWidthRatio: 0.06,
     tipWidthRatio: 0,
     wing: { lengthRatio: 0.194, angleDeg: 24, curveRatio: 0.039 },
   },
   DOUBLE_WING: {
-    baseWidthRatio: 0.022,
-    peakWidthRatio: 0.056,
+    baseWidthRatio: 0.032,
+    peakWidthRatio: 0.06,
     tipWidthRatio: 0,
     wing: { lengthRatio: 0.194, angleDeg: 24, curveRatio: 0.039 },
     secondWing: { lengthRatio: 0.153, angleDeg: 12, curveRatio: 0.028 },
   },
   SMOKEY_SMUDGED: {
-    baseWidthRatio: 0.061,
-    peakWidthRatio: 0.144,
-    tipWidthRatio: 0.144,
+    baseWidthRatio: 0.085,
+    peakWidthRatio: 0.15,
+    tipWidthRatio: 0.15,
     blurRatio: 0.044,
   },
-  TIGHTLINE: { baseWidthRatio: 0.011, peakWidthRatio: 0.011, tipWidthRatio: 0.011 },
+  TIGHTLINE: { baseWidthRatio: 0.016, peakWidthRatio: 0.016, tipWidthRatio: 0.016 },
   UNDERLINER: {
-    baseWidthRatio: 0.022,
-    peakWidthRatio: 0.039,
-    tipWidthRatio: 0.039,
-    underlinerWidthRatio: 0.022,
+    baseWidthRatio: 0.032,
+    peakWidthRatio: 0.042,
+    tipWidthRatio: 0.042,
+    underlinerWidthRatio: 0.028,
   },
 };
 

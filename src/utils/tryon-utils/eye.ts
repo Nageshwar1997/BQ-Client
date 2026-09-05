@@ -44,22 +44,41 @@ const orderInnerToOuter = (
   return Math.abs(first.x - noseX) <= Math.abs(last.x - noseX) ? points : [...points].reverse();
 };
 
-// Real MediaPipe landmarks are already fairly densely spaced along the eyelid margin (unlike
-// LIP/FACE's much sparser, more curved rings, which is why `traceSmoothClosedPath` there needs
-// real quadratic-curve smoothing) - this just linearly subdivides between each pair for a
-// smooth-enough per-pixel width taper, not smoothing away real angularity.
-const densify = (points: TPoint[], samplesPerSegment: number): TPoint[] => {
+const midpoint = (a: TPoint, b: TPoint): TPoint => ({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 });
+
+// Real MediaPipe landmarks are fairly densely spaced along the eyelid margin, but a *linear*
+// subdivision between them (an earlier version of this) still kinks sharply exactly at each of
+// the 9 original landmark points, especially visible at wider widths (Bold/Thick, Smokey) -
+// subdividing a straight segment more finely doesn't round it, it just adds colinear points.
+// Same quadratic-curve-through-midpoints technique `traceSmoothClosedPath` (face.ts/lip.ts)
+// already uses for exactly this reason, adapted for an *open* path - the smoothing happens
+// between interior points; the real first/last points (the actual corners the rest of this file
+// keys off - `orderInnerToOuter`'s ends, the wing's own base) stay exact, not shifted to a
+// midpoint.
+const smoothOpenPath = (points: TPoint[], samplesPerSegment: number): TPoint[] => {
   const first = points[0];
-  if (points.length < 2 || !first) return points;
+  if (points.length < 3 || !first) return points;
+
   const dense: TPoint[] = [first];
+  let current = first;
+
   for (let i = 0; i < points.length - 1; i++) {
-    const p0 = points[i];
-    const p1 = points[i + 1];
-    if (!p0 || !p1) continue;
+    const control = points[i + 1];
+    const afterControl = points[i + 2];
+    if (!control) continue;
+    // Last segment: land exactly on the real final point instead of a midpoint, same reasoning
+    // as keeping the first point exact above.
+    const end = afterControl ? midpoint(control, afterControl) : control;
+
     for (let s = 1; s <= samplesPerSegment; s++) {
       const t = s / samplesPerSegment;
-      dense.push({ x: p0.x + (p1.x - p0.x) * t, y: p0.y + (p1.y - p0.y) * t });
+      const mt = 1 - t;
+      dense.push({
+        x: mt * mt * current.x + 2 * mt * t * control.x + t * t * end.x,
+        y: mt * mt * current.y + 2 * mt * t * control.y + t * t * end.y,
+      });
     }
+    current = end;
   }
   return dense;
 };
@@ -69,20 +88,79 @@ const centroid = (points: TPoint[]): TPoint => {
   return { x: sum.x / points.length, y: sum.y / points.length };
 };
 
-// Points away from the eye's own center, at `p` - deliberately NOT derived from the local path
-// tangent (a rotate-the-tangent-90-degrees formula only points the right way for one specific
-// path direction, and MediaPipe's left/right eye arcs run in *mirrored* directions - inner corner
-// sits on the opposite side left vs right - so a fixed rotation sign would come out correct for
-// one eye and inverted for the other). "Away from the eye's own centroid" is direction-agnostic:
-// it always points outward (up, into the brow, for the upper lash line; down, away from the eye,
-// for the lower one) regardless of which eye or which way its arc happens to be ordered.
-const outwardNormal = (p: TPoint, center: TPoint): TPoint => {
-  const dx = p.x - center.x;
-  const dy = p.y - center.y;
-  const len = Math.hypot(dx, dy) || 1;
-  return { x: dx / len, y: dy / len };
+// The width-offset direction at every point of `pts` - perpendicular to the path's own *local*
+// travel direction (so it stays correctly perpendicular everywhere along a curving path,
+// including out on a wing, where "away from the eye's centroid" and "perpendicular to the wing"
+// can point in visibly different directions the further the wing travels). The rotate-a-tangent-
+// 90-degrees step alone isn't enough on its own, though: MediaPipe's left/right eye arcs run in
+// *mirrored* directions, so a fixed rotation sign comes out correct for one eye and inverted for
+// the other - and re-deciding the sign independently at *every* point by testing against the
+// centroid (an earlier version of this) turned out unreliable far out on the wing, where a
+// point's own direction from the centroid stops reliably matching "which side is outward" -
+// causing the sign to flip mid-wing, self-intersecting the filled polygon into what looked like
+// a gap between the lash-line part and a disconnected wing fragment.
+//
+// Fixed by deciding the sign only *once*, from the centroid, at the path's own first point - then
+// propagating it by continuity: each subsequent point's normal is whichever of the two
+// perpendicular candidates stays closest (by dot product) to the *previous* point's own chosen
+// normal, never re-derived from the centroid again. A smoothly rotating direction field along the
+// path, the same "parallel transport" idea a proper curve-offset implementation would use,
+// instead of a per-point test that can disagree with its neighbors.
+const outwardNormalsAlongPath = (pts: TPoint[], center: TPoint): TPoint[] => {
+  const normals: TPoint[] = [];
+  let prev: TPoint | null = null;
+
+  for (let i = 0; i < pts.length; i++) {
+    const a = pts[Math.max(0, i - 1)];
+    const b = pts[Math.min(pts.length - 1, i + 1)];
+    const p = pts[i];
+    if (!a || !b || !p) {
+      normals.push(prev ?? { x: 0, y: -1 });
+      continue;
+    }
+
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    const len = Math.hypot(dx, dy) || 1;
+    let nx = -dy / len;
+    let ny = dx / len;
+
+    if (prev) {
+      if (nx * prev.x + ny * prev.y < 0) {
+        nx = -nx;
+        ny = -ny;
+      }
+    } else {
+      const towardX = p.x - center.x;
+      const towardY = p.y - center.y;
+      if (nx * towardX + ny * towardY < 0) {
+        nx = -nx;
+        ny = -ny;
+      }
+    }
+
+    prev = { x: nx, y: ny };
+    normals.push(prev);
+  }
+
+  return normals;
 };
 
+// Fills the tapered ribbon as a chain of small quads (one per adjacent point pair) instead of one
+// single polygon that walks all the way out along the offset edge and all the way back along the
+// path. That single-polygon approach is a textbook offset-curve trap: wherever the path bends
+// tighter than the offset width being applied there (exactly what a wing's sharp launch off the
+// lash line does at its tightest patterns), the outer edge crosses itself - and a single filled
+// path that crosses itself can render as visually disconnected lobes with a gap between them,
+// which is what the "wing not attached" reports kept showing, on whichever eye's own real corner
+// geometry happened to bend sharply enough in a given photo (a bilateral-symmetric synthetic
+// fixture never reproduced it, since it never got a real bend that sharp on either side).
+//
+// Every quad here is wound the same rotational direction (path point i -> i+1 -> that point's own
+// outer offset -> back), so even where two quads overlap each other (the tight-bend case above),
+// the canvas's nonzero winding fill rule keeps that overlap solid instead of canceling it to a
+// gap - and because it's still one `fill()` call across every quad, the color's own alpha still
+// only blends once, not per-quad.
 const fillTaperedPath = (
   ctx: CanvasRenderingContext2D,
   pts: TPoint[],
@@ -90,25 +168,28 @@ const fillTaperedPath = (
   widthFn: (t: number) => number,
   color: string,
 ) => {
-  const first = pts[0];
-  if (!first) return;
+  if (pts.length < 2) return;
 
+  const normals = outwardNormalsAlongPath(pts, center);
   const outer = pts.map((p, i) => {
-    const n = outwardNormal(p, center);
+    const n = normals[i] ?? { x: 0, y: -1 };
     const w = widthFn(i / (pts.length - 1));
     return { x: p.x + n.x * w, y: p.y + n.y * w };
   });
 
   ctx.beginPath();
-  ctx.moveTo(first.x, first.y);
-  outer.forEach((p) => {
-    ctx.lineTo(p.x, p.y);
-  });
-  for (let i = pts.length - 1; i >= 0; i--) {
-    const p = pts[i];
-    if (p) ctx.lineTo(p.x, p.y);
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[i];
+    const p1 = pts[i + 1];
+    const o0 = outer[i];
+    const o1 = outer[i + 1];
+    if (!p0 || !p1 || !o0 || !o1) continue;
+    ctx.moveTo(p0.x, p0.y);
+    ctx.lineTo(p1.x, p1.y);
+    ctx.lineTo(o1.x, o1.y);
+    ctx.lineTo(o0.x, o0.y);
+    ctx.closePath();
   }
-  ctx.closePath();
   ctx.fillStyle = color;
   ctx.fill();
 };
@@ -190,7 +271,7 @@ const renderEyelinerForEye = (
   const horizontalSign = Math.sign(last.x - first.x) || 1;
   const center = centroid([...upperArc, ...lowerArc]);
 
-  const lashPts = densify(upperArc, 10);
+  const lashPts = smoothOpenPath(upperArc, 10);
   let pts = lashPts;
   let widthFn: (t: number) => number;
 
@@ -249,7 +330,7 @@ const renderEyelinerForEye = (
   }
 
   if (tuning.underlinerWidthRatio && lowerArc.length >= 2) {
-    const denseLower = densify(lowerArc, 10);
+    const denseLower = smoothOpenPath(lowerArc, 10);
     const width = eyeWidth * tuning.underlinerWidthRatio;
     fillTaperedPath(tempCtx, denseLower, center, () => width, color);
   }
