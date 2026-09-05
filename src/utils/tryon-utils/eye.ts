@@ -1,6 +1,7 @@
 import type { NormalizedLandmark } from '@mediapipe/tasks-vision';
 
 import {
+  BROWGEL_TUNING,
   EYEBROW_PATTERN_TUNING,
   EYELINER_PATTERN_TUNING,
   EYESHADOW_PATTERN_TUNING,
@@ -897,6 +898,40 @@ export const applyEyebrowEye = ({
 
   applyEyebrowForEye(tempCtx, leftPts, leftEnds.inner, leftEnds.outer, tuning, rgb, alpha);
   applyEyebrowForEye(tempCtx, rightPts, rightEnds.inner, rightEnds.outer, tuning, rgb, alpha);
+
+  ctx.drawImage(tempCtx.canvas, 0, 0);
+};
+
+/* ================= BROWGEL =====================================================================
+ * No pattern picker - color/alpha only (see BROWGEL_TUNING's own comment, constants/tryon-
+ * constants/eye.ts, for why). Reuses EYEBROW's own region + fill code directly - same eyebrow
+ * ring, same `fillEyebrowRegion` primitive - with one fixed tuning value instead of a per-pattern
+ * lookup, so there's no pattern-id validation to do here the way every other EYE finish's own
+ * entry point needs.
+ */
+
+export const applyBrowgelEye = ({ face, ctx, rgb, dimension, alpha }: IEyeRenderParams) => {
+  const leftPts = toPoints(face, LEFT_EYEBROW_INDICES, dimension);
+  const rightPts = toPoints(face, RIGHT_EYEBROW_INDICES, dimension);
+  if (leftPts.length < 3 || rightPts.length < 3) return;
+
+  const leftEnds = findInnerOuterPoints(leftPts, face, dimension);
+  const rightEnds = findInnerOuterPoints(rightPts, face, dimension);
+  if (!leftEnds || !rightEnds) return;
+
+  const tempCtx = createOffscreenCtx(dimension);
+  if (!tempCtx) return;
+
+  fillEyebrowRegion(tempCtx, leftPts, leftEnds.inner, leftEnds.outer, BROWGEL_TUNING, rgb, alpha);
+  fillEyebrowRegion(
+    tempCtx,
+    rightPts,
+    rightEnds.inner,
+    rightEnds.outer,
+    BROWGEL_TUNING,
+    rgb,
+    alpha,
+  );
 
   ctx.drawImage(tempCtx.canvas, 0, 0);
 };

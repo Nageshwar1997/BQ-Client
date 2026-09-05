@@ -440,6 +440,16 @@ export const EYEBROW_PATTERN_TUNING: Record<TEyebrowPattern, IEyebrowPatternTuni
   FEATHERED_FLUFFY: { strokeCount: 40, strokeAngleBiasDeg: 32, strokeWidthRatio: 0.05 },
 };
 
+/* ================= BROWGEL ======================================================================
+ * No pattern picker - color/alpha only (see EYE-PLAN.md's own reasoning: a brow gel's whole job is
+ * setting/tinting the hairs already there, it has no distinct "shape" variants the way a liner or
+ * eyeshadow does, so forcing a pattern dimension onto it wouldn't match any real product). Reuses
+ * EYEBROW's own closed-region fill primitive directly (`fillEyebrowRegion` in utils/tryon-utils/
+ * eye.ts) with one fixed tuning value instead of a per-pattern lookup table - a sheer, softly
+ * blurred wash over the same eyebrow ring, one setting rather than five to choose between.
+ */
+export const BROWGEL_TUNING: IEyebrowPatternTuning = { blurRatio: 0.035 };
+
 // Which pattern id a shopper lands on the moment they open a given pattern-bearing EYE finish,
 // before they've touched the picker themselves - `EyeEngineBase.applyEffect` falls back to this
 // (keyed by `state.type`) whenever `state.pattern` is still unset, and `TryOnModal` uses the same
@@ -469,8 +479,8 @@ export const EYE_PATTERNS: Partial<Record<TEyeFinish, IEyePatternOption[]>> = {
 
 /* ================= RANGE BOUNDS ================================================================
  * Same shape/role as LIP_RANGE_BOUNDS/FACE_RANGE_BOUNDS - the intensity slider's bounds, one
- * entry per finish. EYELINER/KAJAL/EYESHADOW/EYEBROW have dedicated rendering so far (see
- * EYE-PLAN.md's build order) - the other 3 are placeholders (their own eventual intended
+ * entry per finish. EYELINER/KAJAL/EYESHADOW/EYEBROW/BROWGEL have dedicated rendering so far (see
+ * EYE-PLAN.md's build order) - the other 2 are placeholders (their own eventual intended
  * character, not validated tuning), revisited once each gets its own dedicated renderer, same as
  * every FACE finish did.
  */
@@ -495,6 +505,11 @@ export const EYE_RANGE_BOUNDS: Record<TEyeFinish, IRangeBounds> = {
   EYEBROW: { min: 0.3, max: 0.85, default: 0.55 },
   MASCARA: { min: 0.1, max: 0.6, default: 0.3 },
   LASHES: { min: 0.1, max: 0.6, default: 0.3 },
+  // Deliberately the softest range of any EYE finish - a setting gel reads as a sheer tint over
+  // the hairs already there, not a defined color the way EYEBROW's own fill patterns are meant
+  // to. Already matched this shape as a placeholder before real rendering existed; kept as-is
+  // rather than boosted like EYELINER/EYEBROW's own placeholders needed, since "barely-there" is
+  // the actual intended character here, not an artifact of never having been tuned.
   BROWGEL: { min: 0.05, max: 0.3, default: 0.12 },
 };
 

@@ -6,6 +6,7 @@ import {
 import type { IApplyEffectParams } from '@/types/tryon-types';
 import type { IEyeAssets, IEyeTryOnState, TEyeFinish } from '@/types/tryon-types/eye';
 import {
+  applyBrowgelEye,
   applyEyebrowEye,
   applyEyelinerEye,
   applyEyeshadowEye,
@@ -22,7 +23,7 @@ import { TryOnEngineBase } from '../../TryOnEngineBase';
 // EYELINER's rendering for, say, an unsupported MASCARA pick would paint the wrong region
 // entirely. So this just skips rendering (with a console warning) rather than substituting a
 // mismatched effect.
-const UNSUPPORTED_EYE_FINISHES = new Set<TEyeFinish>(['MASCARA', 'LASHES', 'BROWGEL']);
+const UNSUPPORTED_EYE_FINISHES = new Set<TEyeFinish>(['MASCARA', 'LASHES']);
 
 /**
  * EYE category engine - fresh design (not ported from any reference implementation, see
@@ -76,13 +77,15 @@ export abstract class EyeEngineBase extends TryOnEngineBase<IEyeTryOnState> {
     }
 
     const alpha = state.range;
-    // Finish-aware default, not a flat `?? EYELINER_DEFAULT_PATTERN` - EYELINER's and KAJAL's
-    // pattern ids are separate namespaces (see `EYE_DEFAULT_PATTERNS`'s own comment), so a fixed
-    // fallback would hand KAJAL an EYELINER id it can't look anything up with. `EYE_DEFAULT_
-    // PATTERNS` always has an entry for both finishes reachable here (the only two not caught by
-    // `UNSUPPORTED_EYE_FINISHES` above) - the final `?? ''` only exists to satisfy `pattern:
-    // string`; it isn't asserting that case can't happen, and if it somehow did, the tuning
-    // lookup inside `applyEyelinerEye`/`applyKajalEye` would just safely render nothing.
+    // Finish-aware default, not a flat `?? EYELINER_DEFAULT_PATTERN` - each pattern-bearing
+    // finish's own ids are a separate namespace (see `EYE_DEFAULT_PATTERNS`'s own comment), so a
+    // fixed fallback would hand one finish another's id it can't look anything up with.
+    // `EYE_DEFAULT_PATTERNS` has no entry for BROWGEL at all (it has no pattern picker - see
+    // `BROWGEL_TUNING`'s own comment) - `pattern` ends up `''` or a stale leftover value for it,
+    // which is harmless since `applyBrowgelEye` never reads this field. The final `?? ''` only
+    // exists to satisfy `pattern: string`; it isn't asserting the lookup always succeeds, and if
+    // it didn't, the tuning lookup inside whichever pattern-bearing finish's own entry point would
+    // just safely render nothing.
     const pattern = state.pattern ?? EYE_DEFAULT_PATTERNS[state.type] ?? '';
 
     switch (state.type) {
@@ -97,6 +100,9 @@ export abstract class EyeEngineBase extends TryOnEngineBase<IEyeTryOnState> {
         return;
       case 'EYEBROW':
         applyEyebrowEye({ face, ctx, rgb, dimension, alpha, pattern });
+        return;
+      case 'BROWGEL':
+        applyBrowgelEye({ face, ctx, rgb, dimension, alpha, pattern });
         return;
     }
   }

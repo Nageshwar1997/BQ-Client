@@ -23,7 +23,13 @@ import {
 } from '@/constants/tryon-constants/eye';
 import { createOffscreenCtx } from '@/utils/tryon-utils';
 
-import { applyEyebrowEye, applyEyelinerEye, applyEyeshadowEye, applyKajalEye } from './eye';
+import {
+  applyBrowgelEye,
+  applyEyebrowEye,
+  applyEyelinerEye,
+  applyEyeshadowEye,
+  applyKajalEye,
+} from './eye';
 
 // Same fixture-face approach as face.smoke.test.ts/lip.smoke.test.ts (see their own comments) -
 // a deterministic sunflower-seed spiral guarantees every index any of these functions might read
@@ -255,5 +261,22 @@ describe('applyEyebrowEye smoke test', () => {
       });
     }).not.toThrow();
     expect(hasNonTransparentPixel(ctx)).toBe(false);
+  });
+});
+
+// BROWGEL has no pattern picker (color/alpha only - see BROWGEL_TUNING's own comment), so unlike
+// every other EYE finish's own smoke-test block, there's no per-pattern `it.each`, no
+// unrecognized-pattern-id case, and no cross-contamination case to check - `applyBrowgelEye` never
+// reads `pattern` at all, so passing a stray value there can't affect anything.
+describe('applyBrowgelEye smoke test', () => {
+  it('renders without throwing and paints at least one pixel', () => {
+    const face = makeFixtureFace();
+    const ctx = createOffscreenCtx(DIMENSION);
+    if (!ctx) throw new Error('2D context unavailable - is the `canvas` package installed?');
+
+    expect(() => {
+      applyBrowgelEye({ face, ctx, rgb: RGB, dimension: DIMENSION, alpha: ALPHA, pattern: '' });
+    }).not.toThrow();
+    expect(hasNonTransparentPixel(ctx)).toBe(true);
   });
 });
