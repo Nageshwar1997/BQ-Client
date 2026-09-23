@@ -592,7 +592,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                           : 'bg-primary-invert/70 text-primary border-primary/10'
                       }`}
                     >
-                      <Icon icon="solar:transfer-horizontal-linear" className="size-4" />
+                      <Icon icon="iconamoon:compare-fill" className="size-4" />
                     </button>
 
                     <button
