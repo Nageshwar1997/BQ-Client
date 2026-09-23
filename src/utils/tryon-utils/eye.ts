@@ -735,24 +735,83 @@ export const applyEyeshadowEye = ({
  * asset (see EYEBROW_PATTERN_TUNING's own comment on why).
  */
 
-// Closed-loop smoothing (quadratic curve through consecutive midpoints, wrapping back to the
-// start) - same technique FACE's own `traceSmoothClosedPath` (face.ts) uses for its own
-// closed-ring regions, written fresh here per this file's self-contained-per-category convention
-// (see this file's own top comment) rather than cross-imported. Reuses this file's own
-// `midpoint`, already defined above for the open-path smoother.
-const traceEyebrowPath = (ctx: CanvasRenderingContext2D, points: TPoint[]): void => {
-  const last = points[points.length - 1];
-  const first = points[0];
-  if (points.length < 3 || !last || !first) return;
+// Straight-line trace through the raw landmark ring, matching commverse's own `clipLipsOnFace`
+// (their generically-named polygon-clip helper, reused there for eyebrows) - an earlier version
+// ran a quadratic-curve-through-midpoints smoothing pass (mirroring FACE's `traceSmoothClosedPath`)
+// but at only 10 sparse points that "cuts every corner" technique inflated the brow into a
+// uniformly round arch that didn't track the real eyebrow's own (less regular, more angular)
+// silhouette. Pure straight lines fixed that, but then read as visibly jagged at each of the 10
+// landmark kinks - reported directly against a real render as "too curvy" (kinked, not rounded).
+// This instead rounds every corner by a *small* amount: at each vertex, pull back along both
+// adjoining edges by `EYEBROW_CORNER_ROUND_RATIO` and connect those two pulled-back points with a
+// `quadraticCurveTo` through the real vertex - unlike the old midpoint technique (which always
+// rounded a full 50% of every edge), this only softens a small fraction near each vertex, keeping
+// the overall silhouette close to the straight-line trace. The ring's own inner and outer/tail
+// points (`findInnerOuterPoints`' own `inner`/`outer`, matched back to their own index in `points`
+// rather than assumed from array position - `LEFT/RIGHT_EYEBROW_INDICES` now has an extra tail
+// point appended, see its own comment, so the ring isn't a clean array-half split anymore) get a
+// *larger* `EYEBROW_END_ROUND_RATIO` - a deliberately looser, softer taper there rather than a
+// precise geometric point, per a follow-up request to make the ends look a bit "sloppy"/organic.
+// The outer/tail point's own *upper* neighbor (whichever of its two adjoining vertices has the
+// smaller y) gets an even larger `EYEBROW_OUTER_TOP_ROUND_RATIO` still - a follow-up request
+// specifically to loosen up the ear-side end further, from its top edge.
+const EYEBROW_CORNER_ROUND_RATIO = 0.1;
+const EYEBROW_END_ROUND_RATIO = 0.45;
+const EYEBROW_OUTER_TOP_ROUND_RATIO = 0.7;
 
-  const start = midpoint(last, first);
-  ctx.moveTo(start.x, start.y);
-  points.forEach((point, i) => {
-    const next = points[(i + 1) % points.length];
-    if (!next) return;
-    const mid = midpoint(point, next);
-    ctx.quadraticCurveTo(point.x, point.y, mid.x, mid.y);
+const traceEyebrowPath = (
+  ctx: CanvasRenderingContext2D,
+  points: TPoint[],
+  inner: TPoint,
+  outer: TPoint,
+): void => {
+  const n = points.length;
+  const first = points[0];
+  if (n < 3 || !first) return;
+
+  // Every index below is already wrapped into [0, n) via modulo, so this never actually falls
+  // back to `first` - just satisfies `noUncheckedIndexedAccess` without a per-call null check.
+  const at = (i: number): TPoint => points[((i % n) + n) % n] ?? first;
+
+  const closestIndexTo = (target: TPoint): number => {
+    let best = 0;
+    let bestDist = Infinity;
+    for (let i = 0; i < n; i++) {
+      const d = Math.hypot(at(i).x - target.x, at(i).y - target.y);
+      if (d < bestDist) {
+        bestDist = d;
+        best = i;
+      }
+    }
+    return best;
+  };
+
+  const outerIndex = closestIndexTo(outer);
+  const innerIndex = closestIndexTo(inner);
+  const outerUpperIndex =
+    at(outerIndex - 1).y <= at(outerIndex + 1).y ? (outerIndex - 1 + n) % n : (outerIndex + 1) % n;
+
+  const ratioAt = (i: number) => {
+    if (i === outerUpperIndex) return EYEBROW_OUTER_TOP_ROUND_RATIO;
+    if (i === outerIndex || i === innerIndex) return EYEBROW_END_ROUND_RATIO;
+    return EYEBROW_CORNER_ROUND_RATIO;
+  };
+  const towardRatio = (a: TPoint, b: TPoint, ratio: number): TPoint => ({
+    x: a.x + (b.x - a.x) * ratio,
+    y: a.y + (b.y - a.y) * ratio,
   });
+  const pullBackFromPrev = (i: number) => towardRatio(at(i), at(i - 1), ratioAt(i));
+  const pullBackFromNext = (i: number) => towardRatio(at(i), at(i + 1), ratioAt(i));
+
+  const start = pullBackFromPrev(0);
+  ctx.moveTo(start.x, start.y);
+  for (let i = 0; i < n; i++) {
+    const vertex = at(i);
+    const cornerEnd = pullBackFromNext(i);
+    ctx.quadraticCurveTo(vertex.x, vertex.y, cornerEnd.x, cornerEnd.y);
+    const nextCornerStart = pullBackFromPrev(i + 1);
+    ctx.lineTo(nextCornerStart.x, nextCornerStart.y);
+  }
   ctx.closePath();
 };
 
@@ -791,6 +850,24 @@ const findInnerOuterPoints = (
 
   return { inner, outer };
 };
+
+// MediaPipe's own 10-point eyebrow ring traces the brow's *detected* extent, which for a
+// fuller/bushier real brow can sit visibly inside the actual hair - most noticeably at the tail,
+// where hair tapers off past the ring's last point rather than stopping there. Two synthetic fixes
+// were tried here in turn - scaling every point outward from the ring's own centroid
+// (`dilateAroundCentroid`, since removed), then additionally extending the tail corner's own two
+// edges along their local tangent (`traceEyebrowPathTapered`, since removed) - both were geometric
+// guesses standing in for landmark data we didn't have yet. Checked directly against commverse's
+// own `left_eyebrow_indices`/`right_eyebrow_indices` (src/commverse/.../data/index.ts): they
+// include one extra real tail-side landmark (156 left / 383 right) that neither of our own guesses
+// matched - commverse's own rendering (plain straight lines through the raw ring, no synthesized
+// margin at all) gets the tail's correct extent purely from that one real point. Added the same
+// point to `LEFT/RIGHT_EYEBROW_INDICES` (constants/tryon-constants/eye.ts) instead of continuing to
+// synthesize a margin - real landmark data beats a geometric approximation of it. Deliberately kept
+// out of the *hair-stroke* patterns' own ring (see `applyEyebrowForEye`'s own comment): that extra
+// point sits down toward the eye's own outer corner rather than along the brow's own hair line, so
+// `renderEyebrowHairStrokes`' per-position edge sampling stays on the original 10-point ring, which
+// was already independently confirmed correct.
 
 // A deterministic, reproducible per-index "jitter" in [-1, 1] - enough per-stroke variation to
 // avoid a mechanically uniform hair-stroke look, without `Math.random()` (which would make this
@@ -833,7 +910,7 @@ const fillEyebrowRegion = (
 
   const applyFill = () => {
     ctx.beginPath();
-    traceEyebrowPath(ctx, points);
+    traceEyebrowPath(ctx, points, inner, outer);
     ctx.fillStyle = fillStyle;
     ctx.fill();
   };
@@ -909,6 +986,10 @@ const renderEyebrowHairStrokes = (
   }
 };
 
+// `browPts` includes the extra tail-side landmark `LEFT/RIGHT_EYEBROW_INDICES` appends (see its
+// own comment) - correct for the fill boundary, but that point sits down toward the eye's own
+// outer corner rather than along the brow's own hair line, so hair-stroke patterns sample their
+// own edges from the original 10-point ring (everything but that last, appended point) instead.
 const applyEyebrowForEye = (
   tempCtx: CanvasRenderingContext2D,
   browPts: TPoint[],
@@ -919,7 +1000,17 @@ const applyEyebrowForEye = (
   alpha: number,
 ) => {
   if (tuning.strokeCount) {
-    renderEyebrowHairStrokes(tempCtx, browPts, centroid(browPts), inner, outer, tuning, rgb, alpha);
+    const hairStrokePts = browPts.slice(0, 10);
+    renderEyebrowHairStrokes(
+      tempCtx,
+      hairStrokePts,
+      centroid(hairStrokePts),
+      inner,
+      outer,
+      tuning,
+      rgb,
+      alpha,
+    );
   } else {
     fillEyebrowRegion(tempCtx, browPts, inner, outer, tuning, rgb, alpha);
   }

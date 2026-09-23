@@ -23,17 +23,23 @@ export const RIGHT_EYE_UPPER_INDICES = [362, 398, 384, 385, 386, 387, 388, 466, 
 export const RIGHT_EYE_LOWER_INDICES = [263, 249, 390, 373, 374, 380, 381, 382, 362];
 
 // MediaPipe's standard eyebrow ring - a real, directly-tracked closed loop (unlike EYESHADOW's
-// own synthesized crease line), same points FACE's own `LEFT_EYEBROW_INDICES`/
+// own synthesized crease line), same 10 points FACE's own `LEFT_EYEBROW_INDICES`/
 // `RIGHT_EYEBROW_INDICES` use for its full-face washes' exclusion holes - duplicated rather than
 // imported per this file's own self-contained-per-category rule (see this section's own opening
-// comment). Ordered continuously around the loop (first half traces one edge, second half returns
-// along the other) - EYEBROW's own renderer (utils/tryon-utils/eye.ts) splits it into the two
+// comment), PLUS one extra tail-side point (156 left / 383 right) appended at the end - checked
+// directly against commverse's own `left_eyebrow_indices`/`right_eyebrow_indices`
+// (src/commverse/.../data/index.ts), which include the same extra point (commverse's own right set
+// swaps it in for 282 instead of adding it; adding keeps both sides symmetric here). That one real
+// landmark is what actually gives the tail its correct real-world extent - not a synthesized
+// margin - confirmed directly against a real render once added. Ordered continuously around the
+// loop (first half traces one edge, second half returns along the other, with the extra tail point
+// bridging the two) - EYEBROW's own renderer (utils/tryon-utils/eye.ts) splits it into the two
 // edges directly by array position rather than re-deriving them, and determines inner (nasal) vs
 // outer (temporal/tail) by comparing each point's own x-distance to the nose tip at render time,
 // same "don't assume which numeric index is anatomically which side" reasoning `orderInnerToOuter`
 // already uses for the eye rings above.
-export const LEFT_EYEBROW_INDICES = [70, 63, 105, 66, 107, 55, 65, 52, 53, 46];
-export const RIGHT_EYEBROW_INDICES = [300, 293, 334, 296, 336, 285, 295, 282, 283, 276];
+export const LEFT_EYEBROW_INDICES = [70, 63, 105, 66, 107, 55, 65, 52, 53, 46, 156];
+export const RIGHT_EYEBROW_INDICES = [300, 293, 334, 296, 336, 285, 295, 282, 283, 276, 383];
 
 // Same nose-tip landmark FACE's own `isFaceTurnedTooMuch` uses, duplicated here per this file's
 // own self-contained-per-category rule - used purely to tell which end of an eye's upper/lower
