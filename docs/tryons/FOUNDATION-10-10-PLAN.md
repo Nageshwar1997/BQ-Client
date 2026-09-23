@@ -9,7 +9,7 @@ Last review score: **~7.5/10** (breakdown in [FOUNDATION.md](./FOUNDATION.md#qua
 **Explicitly out of scope for this plan:**
 
 - FACE ke baaki 7 subcategories (CONCEALER/HIGHLIGHTER/BLUSH/CONTOUR/BRONZER/BBCREAM/COMPACTPOWDER) — abhi unbuilt, [FACE.md](./FACE.md) me tracked, apna alag kaam hoga.
-- EYE/HAIR/NAIL/SKIN categories — [README.md](./README.md) me tracked.
+- EYE/HAIR/NAIL categories — [README.md](./README.md) me tracked.
 
 ## Score breakdown (before → after this round)
 

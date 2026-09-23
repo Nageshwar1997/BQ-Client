@@ -9,7 +9,7 @@ Last review score: **8.5/10** (breakdown below). Sabhi 11 subcategories (MATTE/S
 **Explicitly out of scope for this plan:**
 
 - "Add to Cart" tryon screen ke andar — deferred, alag se karenge baad me.
-- EYE/HAIR/FACE/NAIL/SKIN categories — LIP se alag roadmap item hai, [README.md](./README.md) me tracked.
+- EYE/HAIR/FACE/NAIL categories — LIP se alag roadmap item hai, [README.md](./README.md) me tracked.
 
 ## Score breakdown (current → target)
 
@@ -74,7 +74,7 @@ Ye ek hi section thi jo **mujhse nahi ho sakti thi** — sandboxed browser pane 
 
 Score-table ke 4 extra rows (Architecture/Feature completeness/Performance/Code hygiene) ab tak sirf hedge the, real re-check nahi hua tha. Ab kiya:
 
-- [x] **Architecture: 9.5 → 10/10.** Poore is session me jitne bhi bugs mile (`cleanup()` ka listener-wipe, missing catch-all `setError`, RAF loop ka missing try/catch) - sab **implementation-level bugs the, koi bhi structural redesign nahi maanga**. Abstract-base (`TryOnEngineBase`) + 2 generic mixins (`withLiveCamera`/`withImageUpload`) ka design Live aur Upload dono modes ke liye bina kisi change ke hold hua, aur docs (`README.md`) ke hisaab se yehi design agle 5 categories (EYE/HAIR/FACE/NAIL/SKIN) ke liye zero-duplication reuse hoga. Koi concrete unaddressed gap nahi mila - original review ka 9.5 sirf ek reflexive "kuch to hoga" hedge tha, real finding nahi. Isliye ab honestly 10/10.
+- [x] **Architecture: 9.5 → 10/10.** Poore is session me jitne bhi bugs mile (`cleanup()` ka listener-wipe, missing catch-all `setError`, RAF loop ka missing try/catch) - sab **implementation-level bugs the, koi bhi structural redesign nahi maanga**. Abstract-base (`TryOnEngineBase`) + 2 generic mixins (`withLiveCamera`/`withImageUpload`) ka design Live aur Upload dono modes ke liye bina kisi change ke hold hua, aur docs (`README.md`) ke hisaab se yehi design agle 5 categories (EYE/HAIR/FACE/NAIL) ke liye zero-duplication reuse hoga. Koi concrete unaddressed gap nahi mila - original review ka 9.5 sirf ek reflexive "kuch to hoga" hedge tha, real finding nahi. Isliye ab honestly 10/10.
 - [x] **Code hygiene: 9 → 10/10.** Fresh scan kiya poore LIP feature (`src/classes/tryon`, `utils/tryon-utils/lip.ts`, `utils/tryon-utils/index.ts`, saari tryon components, hooks, constants) - `TODO`/`FIXME`/`HACK`/`: any`/`as any` **zero matches**. Ek real cheez mili: [`applyLipTexture`](../../src/utils/tryon-utils/lip.ts) `export` tha jabki koi doosri file isse import nahi karti (sirf isi file ke andar 5 jagah use hota hai) - jabki baaki sab internal helpers (`isBrightColor`, `fillColor`, `clipLipsOnFace`, etc.) private hai. Fix kiya - `export` hataya, ab pattern consistent hai. `tsc`/`eslint`/`prettier`/tests (52/52) sab clean iske baad bhi.
 - [x] **Performance: 9 → 10/10.** Code-side sab kuch is session me hi ho chuka tha (DPR cap 2x pe, compare-slider RAF-throttled, `object-fit` WeakMap-cached, GPU→CPU landmarker fallback, shared FaceLandmarker cache) - sirf real FPS/lighting/thermal numbers missing the. #4 ke end-to-end real-device pass se wo mil gaye, isliye ab genuinely 10/10.
 

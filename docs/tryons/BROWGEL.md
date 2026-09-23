@@ -43,7 +43,7 @@ _Tracking model: face landmarks (eyebrow ring). Depends on the shared face-landm
 
 Same 9 dimensions used for [LIP-10-10-PLAN.md](./LIP-10-10-PLAN.md), [FOUNDATION-10-10-PLAN.md](./FOUNDATION-10-10-PLAN.md), and every FACE/EYELINER/KAJAL/EYESHADOW/EYEBROW finish's own tracker.
 
-> **Status**: Freshly built, ab tak ki sabse simple EYE finish, kaafi margin se (ek fixed tuning value, zero nayi geometry, zero naya UI surface). Full real-device QA (Live mode, multiple devices/lighting) abhi bhi shuru nahi hua, aur - is session ke apne standing convention ke hisaab se - deliberately deferred hai jab tak har planned EYE/HAIR/NAIL/SKIN subcategory exist na kar le, sirf ye ek nahi.
+> **Status**: Freshly built, ab tak ki sabse simple EYE finish, kaafi margin se (ek fixed tuning value, zero nayi geometry, zero naya UI surface). Full real-device QA (Live mode, multiple devices/lighting) abhi bhi shuru nahi hua, aur - is session ke apne standing convention ke hisaab se - deliberately deferred hai jab tak har planned EYE/HAIR/NAIL subcategory exist na kar le, sirf ye ek nahi.
 
 | #   | Dimension            | Score   | Kyun                                                                                                                                                                                                                                                     |
 | --- | -------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

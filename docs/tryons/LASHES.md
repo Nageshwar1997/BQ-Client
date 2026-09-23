@@ -47,7 +47,7 @@ _Tracking model: face landmarks (upper lash-line arc). Depends on the shared fac
 
 Same 9 dimensions used for [LIP-10-10-PLAN.md](./LIP-10-10-PLAN.md), [FOUNDATION-10-10-PLAN.md](./FOUNDATION-10-10-PLAN.md), and every FACE/EYELINER/KAJAL/EYESHADOW/EYEBROW/BROWGEL/MASCARA finish's own tracker.
 
-> **Status**: Freshly built, EYE category ka last planned subcategory, ek real photo pe sab 5 patterns ke across end-to-end proven. Full real-device QA (Live mode, multiple devices/lighting) abhi bhi shuru nahi hua, aur - is session ke apne standing convention ke hisaab se - deliberately deferred hai jab tak har planned EYE/HAIR/NAIL/SKIN subcategory exist na kar le, sirf ye ek nahi.
+> **Status**: Freshly built, EYE category ka last planned subcategory, ek real photo pe sab 5 patterns ke across end-to-end proven. Full real-device QA (Live mode, multiple devices/lighting) abhi bhi shuru nahi hua, aur - is session ke apne standing convention ke hisaab se - deliberately deferred hai jab tak har planned EYE/HAIR/NAIL subcategory exist na kar le, sirf ye ek nahi.
 
 | #   | Dimension            | Score   | Kyun                                                                                                                                                                                                                                                                                     |
 | --- | -------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -61,7 +61,7 @@ Same 9 dimensions used for [LIP-10-10-PLAN.md](./LIP-10-10-PLAN.md), [FOUNDATION
 | 8   | Performance          | 5/10    | MASCARA jaisa hi per-frame draw-call profile (Dramatic/Voluminous ke liye per eye ~58 tak individual tapered-fill calls) - real FPS numbers dimension #4/real-device testing pe depend karte hain, aur ye (MASCARA ke baad) doosri EYE finish hai jahan ye ek genuine open question hai. |
 | 9   | Code hygiene         | 10/10 ✅ | Fresh code - `TODO`/`FIXME`/`: any` zero matches, `tsc`/`eslint` clean (ek transient typo mid-edit fix karne ke baad, commit tak pahunchne se pehle catch kiya).                                                                                                                         |
 
-**Overall**: ~**7.7/10** — KAJAL ke apne opening shape ke barabar, ab tak ki kisi bhi pattern-bearing EYE finish ka sabse highest, kyunki isko koi nayi rendering primitives bilkul nahi chahiye thi. Next step (jab ready ho): poore EYE category ke across real-device Live + Upload QA, ek baar HAIR/NAIL/SKIN bhi exist kar lein (is session ke apne standing deferred-QA convention ke hisaab se) - ya [README.md](./README.md) ke apne suggested build order ke hisaab se agli Try-On category pe move on karna (HAIR next).
+**Overall**: ~**7.7/10** — KAJAL ke apne opening shape ke barabar, ab tak ki kisi bhi pattern-bearing EYE finish ka sabse highest, kyunki isko koi nayi rendering primitives bilkul nahi chahiye thi. Next step (jab ready ho): poore EYE category ke across real-device Live + Upload QA, ek baar HAIR/NAIL bhi exist kar lein (is session ke apne standing deferred-QA convention ke hisaab se) - ya [README.md](./README.md) ke apne suggested build order ke hisaab se agli Try-On category pe move on karna (HAIR next).
 
 ---
 

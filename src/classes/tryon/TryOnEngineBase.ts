@@ -21,7 +21,7 @@ import { getSharedFaceLandmarker } from './FaceLandmarkerCache';
 
 /**
  * Category-agnostic engine machinery shared by every Try-On category (LIP today, EYE/FACE/
- * HAIR/SKIN later): state pub-sub, abort-safe lifecycle, canvas sizing, the compare-slider
+ * HAIR later): state pub-sub, abort-safe lifecycle, canvas sizing, the compare-slider
  * split-screen render, and snapshot capture. Ported from the reference implementation's
  * `<Category>BaseClass` pattern, generalized over `TState`/`TAssets` so this file is written
  * once - a category only ever needs to extend it and fill in the five abstract members below,

@@ -2,7 +2,7 @@
 
 [← Back to master tracker](./README.md)
 
-_Tracking model: hand/finger landmarks — LIP/EYE/FACE/HAIR/SKIN ke face-landmark engine se **poori tarah alag engine**. Face-based categories ke baad ye build karo taaki shared Try-On shell/patterns pehle se ek baar prove ho chuke hon._
+_Tracking model: hand/finger landmarks — LIP/EYE/FACE/HAIR ke face-landmark engine se **poori tarah alag engine**. Face-based categories ke baad ye build karo taaki shared Try-On shell/patterns pehle se ek baar prove ho chuke hon._
 
 ## Summary
 

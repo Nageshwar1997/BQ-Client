@@ -1,6 +1,6 @@
 # Try-On Feature — Master Tracker
 
-Virtual tryon ko 6 main categories me build karna hai — **LIP, EYE, HAIR, FACE, NAIL, SKIN** — har ek ke apne subcategories, aur har subcategory do modes me kaam kare:
+Virtual tryon ko 5 main categories me build karna hai — **LIP, EYE, HAIR, FACE, NAIL** — har ek ke apne subcategories, aur har subcategory do modes me kaam kare.
 
 - **Live mode** — webcam se real-time tryon
 - **Upload mode** — user apni photo upload karke tryon dekh sake
@@ -11,7 +11,7 @@ Per-category detail aur checklist alag file me hai. Ye file sirf overall status 
 
 ## Shared prerequisites (ye pehle banao — sabko block karte hain)
 
-- [x] Face-landmark tracking engine select + integrate — MediaPipe `@mediapipe/tasks-vision`, shared/cached singleton — [FaceLandmarkerCache.ts](../../src/classes/tryon/FaceLandmarkerCache.ts). LIP/EYE/FACE/HAIR/SKIN sab isi ko reuse kar sakte hain (same face mesh, alag landmark indices bas). Model file (~3.7MB) self-hosted hai (`public/models/tryon/face_landmarker.task`), Google ke CDN se nahi — uska `Cache-Control` sirf 1-hour tha, isliye self-host + [vercel.json](../../vercel.json) me explicit `max-age=31536000, immutable` header diya. WASM runtime jsDelivr se hi aata hai (usko already 1-saal immutable milta hai, move karne ki zaroorat nahi thi). Model kabhi update karna ho to naya file yahi path pe manually download/replace karna hoga - sirf pinned version number badalna kaafi nahi hoga (jaisa WASM ke liye hai)
+- [x] Face-landmark tracking engine select + integrate — MediaPipe `@mediapipe/tasks-vision`, shared/cached singleton — [FaceLandmarkerCache.ts](../../src/classes/tryon/FaceLandmarkerCache.ts). LIP/EYE/FACE/HAIR sab isi ko reuse kar sakte hain (same face mesh, alag landmark indices bas). Model file (~3.7MB) self-hosted hai (`public/models/tryon/face_landmarker.task`), Google ke CDN se nahi — uska `Cache-Control` sirf 1-hour tha, isliye self-host + [vercel.json](../../vercel.json) me explicit `max-age=31536000, immutable` header diya. WASM runtime jsDelivr se hi aata hai (usko already 1-saal immutable milta hai, move karne ki zaroorat nahi thi). Model kabhi update karna ho to naya file yahi path pe manually download/replace karna hoga - sirf pinned version number badalna kaafi nahi hoga (jaisa WASM ke liye hai)
 - [ ] Hand/finger-landmark tracking engine select + integrate — sirf NAIL ke liye alag model chahiye
 - [x] Shared camera-access module (permission handling, live `<video>` stream, mirror) — [withLiveCamera.ts](../../src/classes/tryon/withLiveCamera.ts) (mixin, ek baar likha, saari categories reuse karengi)
 - [x] Shared photo-upload module (file input, preview, image validation) — [useTryOnUpload.ts](../../src/hooks/useTryOnUpload.ts) (validation) + [withImageUpload.ts](../../src/classes/tryon/withImageUpload.ts) (mixin, load+detect+render)
@@ -30,8 +30,7 @@ Inme se koi bhi cheez kisi ek category ke andar dobara nahi likhni — ek baar y
 | HAIR        | 4             | 0% (0/32)           | [HAIR.md](./HAIR.md)                                                                                                                                                                                                                                                                                              |
 | FACE        | 8             | 78.125% (50/64)     | [FACE.md](./FACE.md) — FOUNDATION [detail](./FOUNDATION.md) ✅, BLUSH [detail](./BLUSH.md), CONCEALER [detail](./CONCEALER.md), HIGHLIGHTER [detail](./HIGHLIGHTER.md), CONTOUR [detail](./CONTOUR.md), BRONZER [detail](./BRONZER.md), BBCREAM [detail](./BBCREAM.md), COMPACTPOWDER [detail](./COMPACTPOWDER.md) |
 | NAIL        | 5             | 0% (0/40)           | [NAIL.md](./NAIL.md)                                                                                                                                                                                                                                                                                              |
-| SKIN        | 3 (5 dropped) | 0% (0/24)           | [SKIN.md](./SKIN.md) — [build plan](./SKIN-PLAN.md) — sirf MASK/MOISTURIZER/EYECREAM planned hain, baaki 5 visual-tryon scope se drop (wajah SKIN-PLAN.md me)                                                                                                                                                     |
-| **Overall** | **38**        | **59.2% (180/304)** | —                                                                                                                                                                                                                                                                                                                 |
+| **Overall** | **35**        | **64.3% (180/280)** |                                                                                                                                                                                                                                                                                                                   |
 
 ## Suggested build order
 
@@ -40,7 +39,6 @@ Inme se koi bhi cheez kisi ek category ke andar dobara nahi likhni — ek baar y
 3. **EYE** ✅ saari 7 subcategories built (EYELINER, KAJAL, EYESHADOW, EYEBROW, BROWGEL, MASCARA, LASHES) — pending real-device QA, jaisa FACE ka bhi hai
 4. **HAIR** — segmentation-based (landmark nahi, poore strand ka mask), alag technique
 5. **NAIL** — naya tracking model (hand/finger) integrate karna padega, isliye baad me
-6. **SKIN** — sabse last, kyunki ismein "shade tryon" nahi, "finish/glow simulation" hai (koi real product shade nahi hoti) — build plan ban chuka hai, [SKIN-PLAN.md](./SKIN-PLAN.md) dekho. Scope bhi finalize ho chuka: sirf **MASK, MOISTURIZER, EYECREAM** (priority order mein, visual-impact ke against) - SERUM/TONER/SUNSCREEN/CLEANSER/EXFOLIATOR dropped, inka effect is app ke landmark-only constraint ke saath deliberately subtle/invisible reh jaata
 
 ## Progress kaise track karein
 
@@ -48,6 +46,6 @@ Har subcategory ke 8 checklist items hain — 4 Live mode ke, 4 Upload mode ke. 
 
 - **Subcategory %** = checked items / 8
 - **Category %** = us category ke total checked items / total items (summary table upar hi bana hua hai har file me)
-- **Overall %** = sabhi 344 items me se checked / 344
+- **Overall %** = sabhi 280 items me se checked
 
 Jab bhi kaam land ho, checklist update karo + is file ke summary table ka % bhi update karo (ya mujhe bol do, main recompute kar dunga).
