@@ -20,6 +20,7 @@ import {
   EYELINER_PATTERNS,
   EYESHADOW_PATTERNS,
   KAJAL_PATTERNS,
+  MASCARA_PATTERNS,
 } from '@/constants/tryon-constants/eye';
 import { createOffscreenCtx } from '@/utils/tryon-utils';
 
@@ -29,6 +30,7 @@ import {
   applyEyelinerEye,
   applyEyeshadowEye,
   applyKajalEye,
+  applyMascaraEye,
 } from './eye';
 
 // Same fixture-face approach as face.smoke.test.ts/lip.smoke.test.ts (see their own comments) -
@@ -278,5 +280,60 @@ describe('applyBrowgelEye smoke test', () => {
       applyBrowgelEye({ face, ctx, rgb: RGB, dimension: DIMENSION, alpha: ALPHA, pattern: '' });
     }).not.toThrow();
     expect(hasNonTransparentPixel(ctx)).toBe(true);
+  });
+});
+
+describe('applyMascaraEye smoke test', () => {
+  it.each(MASCARA_PATTERNS)(
+    '$id pattern renders without throwing and paints at least one pixel',
+    ({ id }) => {
+      const face = makeFixtureFace();
+      const ctx = createOffscreenCtx(DIMENSION);
+      if (!ctx) throw new Error('2D context unavailable - is the `canvas` package installed?');
+
+      expect(() => {
+        applyMascaraEye({ face, ctx, rgb: RGB, dimension: DIMENSION, alpha: ALPHA, pattern: id });
+      }).not.toThrow();
+      expect(hasNonTransparentPixel(ctx)).toBe(true);
+    },
+  );
+
+  it('an unrecognized pattern id renders nothing rather than throwing', () => {
+    const face = makeFixtureFace();
+    const ctx = createOffscreenCtx(DIMENSION);
+    if (!ctx) throw new Error('2D context unavailable - is the `canvas` package installed?');
+
+    expect(() => {
+      applyMascaraEye({
+        face,
+        ctx,
+        rgb: RGB,
+        dimension: DIMENSION,
+        alpha: ALPHA,
+        pattern: 'NOT_A_REAL_PATTERN',
+      });
+    }).not.toThrow();
+    expect(hasNonTransparentPixel(ctx)).toBe(false);
+  });
+
+  // Same cross-contamination guard as KAJAL/EYESHADOW/EYEBROW's own - MASCARA's lookup is against
+  // `MASCARA_PATTERN_TUNING` specifically, not any pattern id that merely exists somewhere in this
+  // file.
+  it('an EYELINER pattern id renders nothing when applied as a MASCARA pattern', () => {
+    const face = makeFixtureFace();
+    const ctx = createOffscreenCtx(DIMENSION);
+    if (!ctx) throw new Error('2D context unavailable - is the `canvas` package installed?');
+
+    expect(() => {
+      applyMascaraEye({
+        face,
+        ctx,
+        rgb: RGB,
+        dimension: DIMENSION,
+        alpha: ALPHA,
+        pattern: 'CLASSIC_THIN',
+      });
+    }).not.toThrow();
+    expect(hasNonTransparentPixel(ctx)).toBe(false);
   });
 });

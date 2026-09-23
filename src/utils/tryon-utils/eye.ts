@@ -8,10 +8,12 @@ import {
   type IEyebrowPatternTuning,
   type IEyeshadowPatternTuning,
   type IEyeStrokePatternTuning,
+  type IMascaraPatternTuning,
   KAJAL_PATTERN_TUNING,
   LEFT_EYE_LOWER_INDICES,
   LEFT_EYE_UPPER_INDICES,
   LEFT_EYEBROW_INDICES,
+  MASCARA_PATTERN_TUNING,
   NOSE_TIP_INDEX,
   RIGHT_EYE_LOWER_INDICES,
   RIGHT_EYE_UPPER_INDICES,
@@ -932,6 +934,113 @@ export const applyBrowgelEye = ({ face, ctx, rgb, dimension, alpha }: IEyeRender
     rgb,
     alpha,
   );
+
+  ctx.drawImage(tempCtx.canvas, 0, 0);
+};
+
+/* ================= MASCARA =====================================================================
+ * 4 patterns, the first EYE finish needing a genuinely new "lash-stroke" primitive - see
+ * `MASCARA_PATTERN_TUNING`'s own comment (constants/tryon-constants/eye.ts) for the full design
+ * reasoning. Every lash is one small tapered, curving stroke rooted on the upper lash line.
+ */
+
+// Rotates `angle` toward straight-up (`-90°`, canvas coordinates) by `fraction` of the way there -
+// same "blend a direction toward absolute up" idea EYEBROW's own `strokeAngleBiasDeg` already
+// uses, reused here to curl a lash's own direction progressively over its length instead of
+// leaving it running dead straight from its root.
+const rotateTowardUp = (angle: number, fraction: number): number => {
+  const upAngle = -Math.PI / 2;
+  return angle + (upAngle - angle) * fraction;
+};
+
+// One curved, tapering lash - `steps` short straight segments whose own direction rotates
+// gradually from `rootAngle` toward straight-up by `curlFraction` of the way there, rather than a
+// single straight segment (a real lash curls as it grows, it doesn't run dead straight then bend
+// once at the tip).
+const buildLashPoints = (
+  root: TPoint,
+  rootAngle: number,
+  curlFraction: number,
+  length: number,
+  steps = 10,
+): TPoint[] => {
+  const pts: TPoint[] = [root];
+  let current = root;
+  const segmentLength = length / steps;
+
+  for (let i = 1; i <= steps; i++) {
+    const t = i / steps;
+    const angle = rotateTowardUp(rootAngle, curlFraction * t);
+    current = {
+      x: current.x + Math.cos(angle) * segmentLength,
+      y: current.y + Math.sin(angle) * segmentLength,
+    };
+    pts.push(current);
+  }
+  return pts;
+};
+
+const renderMascaraForEye = (
+  tempCtx: CanvasRenderingContext2D,
+  upperArc: TPoint[],
+  tuning: IMascaraPatternTuning,
+  color: string,
+) => {
+  const first = upperArc[0];
+  const last = upperArc[upperArc.length - 1];
+  if (!first || !last) return;
+
+  const eyeWidth = Math.hypot(last.x - first.x, last.y - first.y);
+  const horizontalSign = Math.sign(last.x - first.x) || 1;
+  const lashPts = smoothOpenPath(upperArc, 8);
+  const center = centroid(lashPts);
+  const normals = outwardNormalsAlongPath(lashPts, center);
+
+  const strokeWidth = eyeWidth * tuning.strokeWidthRatio;
+  const strokeLength = eyeWidth * tuning.strokeLengthRatio;
+  const fanOutRad = ((tuning.fanOutDeg ?? 0) * Math.PI) / 180;
+
+  for (let i = 0; i < tuning.strokeCount; i++) {
+    const t = i / (tuning.strokeCount - 1 || 1);
+    const sampleIndex = Math.round(t * (lashPts.length - 1));
+    const root = lashPts[sampleIndex];
+    const normal = normals[sampleIndex];
+    if (!root || !normal) continue;
+
+    const rootAngle = Math.atan2(normal.y, normal.x) + fanOutRad * horizontalSign * t;
+    const length = strokeLength * (0.85 + strokeJitter(i, 1) * 0.3);
+    const curl = tuning.curlFraction * (0.8 + strokeJitter(i, 2) * 0.4);
+    const width = strokeWidth * (0.75 + strokeJitter(i, 3) * 0.3);
+
+    const lashPoints = buildLashPoints(root, rootAngle, curl, length);
+    fillTaperedPath(tempCtx, lashPoints, center, (tt) => width * (1 - tt), color);
+  }
+};
+
+export const applyMascaraEye = ({
+  face,
+  ctx,
+  rgb,
+  dimension,
+  alpha,
+  pattern,
+}: IEyeRenderParams) => {
+  const tuning = (MASCARA_PATTERN_TUNING as Record<string, IMascaraPatternTuning | undefined>)[
+    pattern
+  ];
+  if (!tuning) return;
+
+  const [r, g, b] = rgb;
+  const color = toColorString(r, g, b, alpha);
+
+  const { leftUpper, rightUpper } = getOrderedEyeArcs(face, dimension);
+  if (leftUpper.length < 2 || rightUpper.length < 2) return;
+
+  const tempCtx = createOffscreenCtx(dimension);
+  if (!tempCtx) return;
+
+  renderMascaraForEye(tempCtx, leftUpper, tuning, color);
+  renderMascaraForEye(tempCtx, rightUpper, tuning, color);
 
   ctx.drawImage(tempCtx.canvas, 0, 0);
 };

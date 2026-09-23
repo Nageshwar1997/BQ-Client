@@ -440,6 +440,77 @@ export const EYEBROW_PATTERN_TUNING: Record<TEyebrowPattern, IEyebrowPatternTuni
   FEATHERED_FLUFFY: { strokeCount: 40, strokeAngleBiasDeg: 32, strokeWidthRatio: 0.05 },
 };
 
+/* ================= MASCARA ======================================================================
+ * 4 patterns - the first EYE finish needing a genuinely new "lash-stroke" primitive (no reuse from
+ * LIP/FACE, per EYE-PLAN.md's own build note): many small curved strokes generated along the upper
+ * lash line, each one thick at the root and tapering to a fine tip (the exact same
+ * `fillTaperedPath` ribbon primitive every other stroke-based EYE finish already shares), curving
+ * from its own root direction toward straight-up over its own length instead of running straight -
+ * same "blend a direction toward absolute up" technique EYEBROW's own `strokeAngleBiasDeg` already
+ * uses for its Feathered/Fluffy pattern, reused here for lash *curl* instead of brow-hair lean.
+ * Procedural (canvas path math, deterministic per-stroke jitter via the same `strokeJitter` hash
+ * EYEBROW's own hair-strokes use), not a texture image asset - same "pure landmark + canvas math"
+ * approach every EYE finish's actual rendering already follows. See docs/tryons/EYE-PLAN.md for the
+ * full design reasoning and docs/tryons/MASCARA.md for this finish's own tracker.
+ *
+ * Ratios below are relative to the eye's own detected width, same convention every other EYE
+ * finish already uses.
+ */
+
+export type TMascaraPattern = 'NATURAL' | 'VOLUMIZING' | 'DRAMATIC_LENGTH' | 'CURLED';
+
+export const MASCARA_PATTERNS: IEyePatternOption[] = [
+  { id: 'NATURAL', label: 'Natural', image: '/images/tryon/eye/mascara/Natural.webp' },
+  { id: 'VOLUMIZING', label: 'Volumizing', image: '/images/tryon/eye/mascara/Volumizing.webp' },
+  {
+    id: 'DRAMATIC_LENGTH',
+    label: 'Dramatic / Length',
+    image: '/images/tryon/eye/mascara/Dramatic-Length.webp',
+  },
+  { id: 'CURLED', label: 'Curled', image: '/images/tryon/eye/mascara/Curled.webp' },
+];
+
+// Same "tasteful default rather than nothing" reasoning as every other EYE finish's own default -
+// Natural, the least visually aggressive of the 4.
+export const MASCARA_DEFAULT_PATTERN: TMascaraPattern = 'NATURAL';
+
+export interface IMascaraPatternTuning {
+  strokeCount: number;
+  strokeWidthRatio: number;
+  strokeLengthRatio: number;
+  // 0 = each lash runs perfectly straight along its own root (outward-normal) direction, 1 = it
+  // curls all the way to straight-up by its own tip regardless of where its root pointed -
+  // Natural/Volumizing want a slight natural curl, Curled wants this pushed hard.
+  curlFraction: number;
+  // Dramatic/Length only - extra outward rotation applied to each lash's own root direction,
+  // scaled by how far along the lash line it sits (0 at the inner corner, full amount at the
+  // outer) - the "fanned out toward the temple" look real dramatic-length mascara reads as.
+  fanOutDeg?: number;
+}
+
+export const MASCARA_PATTERN_TUNING: Record<TMascaraPattern, IMascaraPatternTuning> = {
+  NATURAL: {
+    strokeCount: 32,
+    strokeWidthRatio: 0.016,
+    strokeLengthRatio: 0.09,
+    curlFraction: 0.15,
+  },
+  VOLUMIZING: {
+    strokeCount: 52,
+    strokeWidthRatio: 0.026,
+    strokeLengthRatio: 0.1,
+    curlFraction: 0.2,
+  },
+  DRAMATIC_LENGTH: {
+    strokeCount: 36,
+    strokeWidthRatio: 0.018,
+    strokeLengthRatio: 0.16,
+    curlFraction: 0.25,
+    fanOutDeg: 18,
+  },
+  CURLED: { strokeCount: 36, strokeWidthRatio: 0.018, strokeLengthRatio: 0.1, curlFraction: 0.55 },
+};
+
 /* ================= BROWGEL ======================================================================
  * No pattern picker - color/alpha only (see EYE-PLAN.md's own reasoning: a brow gel's whole job is
  * setting/tinting the hairs already there, it has no distinct "shape" variants the way a liner or
@@ -463,6 +534,7 @@ export const EYE_DEFAULT_PATTERNS: Partial<Record<TEyeFinish, string>> = {
   KAJAL: KAJAL_DEFAULT_PATTERN,
   EYESHADOW: EYESHADOW_DEFAULT_PATTERN,
   EYEBROW: EYEBROW_DEFAULT_PATTERN,
+  MASCARA: MASCARA_DEFAULT_PATTERN,
 };
 
 // Which EYE finishes have a pattern picker at all, and which option list to show for each -
@@ -475,14 +547,15 @@ export const EYE_PATTERNS: Partial<Record<TEyeFinish, IEyePatternOption[]>> = {
   KAJAL: KAJAL_PATTERNS,
   EYESHADOW: EYESHADOW_PATTERNS,
   EYEBROW: EYEBROW_PATTERNS,
+  MASCARA: MASCARA_PATTERNS,
 };
 
 /* ================= RANGE BOUNDS ================================================================
  * Same shape/role as LIP_RANGE_BOUNDS/FACE_RANGE_BOUNDS - the intensity slider's bounds, one
- * entry per finish. EYELINER/KAJAL/EYESHADOW/EYEBROW/BROWGEL have dedicated rendering so far (see
- * EYE-PLAN.md's build order) - the other 2 are placeholders (their own eventual intended
- * character, not validated tuning), revisited once each gets its own dedicated renderer, same as
- * every FACE finish did.
+ * entry per finish. EYELINER/KAJAL/EYESHADOW/EYEBROW/BROWGEL/MASCARA have dedicated rendering so
+ * far (see EYE-PLAN.md's build order) - LASHES is the only placeholder left (its own eventual
+ * intended character, not validated tuning), revisited once it gets its own dedicated renderer,
+ * same as every FACE finish did.
  */
 export const EYE_RANGE_BOUNDS: Record<TEyeFinish, IRangeBounds> = {
   // Real intensity here is mostly carried by the pattern's own width/blur tuning above (same
@@ -503,7 +576,10 @@ export const EYE_RANGE_BOUNDS: Record<TEyeFinish, IRangeBounds> = {
   // A brow fill (even "soft powder") needs to read as clearly-defined hair color, not a faint
   // wash - closer to EYELINER/KAJAL's own boosted range than EYESHADOW's softer one.
   EYEBROW: { min: 0.3, max: 0.85, default: 0.55 },
-  MASCARA: { min: 0.1, max: 0.6, default: 0.3 },
+  // Individual lash strokes are thin, same "a thin shape needs boosted alpha to actually read
+  // against real texture" lesson EYELINER/KAJAL/EYEBROW's own placeholders all needed real-photo
+  // testing to discover - starting from that lesson already applied instead of rediscovering it.
+  MASCARA: { min: 0.3, max: 0.85, default: 0.6 },
   LASHES: { min: 0.1, max: 0.6, default: 0.3 },
   // Deliberately the softest range of any EYE finish - a setting gel reads as a sheer tint over
   // the hairs already there, not a defined color the way EYEBROW's own fill patterns are meant

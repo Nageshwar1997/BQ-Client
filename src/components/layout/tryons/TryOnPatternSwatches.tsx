@@ -59,7 +59,7 @@ const TryOnPatternSwatches = ({
                 {active && (
                   <Icon
                     icon="solar:check-circle-bold"
-                    className="absolute right-0 bottom-0 size-4 text-white drop-shadow-[0_0_2px_rgba(0,0,0,0.8)]"
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-4 text-white drop-shadow-[0_0_2px_rgba(0,0,0,0.8)]"
                   />
                 )}
               </button>

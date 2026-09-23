@@ -6,7 +6,7 @@ _Tracking model: face landmarks (eye/brow region — precision-heavy, thin lines
 
 > **Build plan**: EYE is the first category with a **color + pattern** dimension (LIP/FACE were color-only) — which subcategories get a pattern, what the pattern options are, and the suggested build order are all planned out in [EYE-PLAN.md](./EYE-PLAN.md), written before any EYE code exists.
 
-> **Per-subcategory tracking**: same convention FACE's own tracker docs already established - as a subcategory actually gets built, it gets its own dedicated tracker file and this file's own inline checklist for it gets replaced with a summary-row + link. EYELINER, KAJAL, EYESHADOW, EYEBROW, and BROWGEL are built so far - [EYELINER.md](./EYELINER.md), [KAJAL.md](./KAJAL.md) (same underlying stroke primitive, per [EYE-PLAN.md](./EYE-PLAN.md)'s own build order - "EYELINER + KAJAL together"), [EYESHADOW.md](./EYESHADOW.md) (a genuinely new region-wash primitive), [EYEBROW.md](./EYEBROW.md) (a real closed-region primitive plus a new procedural hair-stroke technique), [BROWGEL.md](./BROWGEL.md) (color-only, reusing EYEBROW's own fill primitive directly). The other 2 are still the generic placeholder checklist shape every category starts with (see FACE.md's own history).
+> **Per-subcategory tracking**: same convention FACE's own tracker docs already established - as a subcategory actually gets built, it gets its own dedicated tracker file and this file's own inline checklist for it gets replaced with a summary-row + link. EYELINER, KAJAL, EYESHADOW, EYEBROW, BROWGEL, and MASCARA are built so far - [EYELINER.md](./EYELINER.md), [KAJAL.md](./KAJAL.md) (same underlying stroke primitive, per [EYE-PLAN.md](./EYE-PLAN.md)'s own build order - "EYELINER + KAJAL together"), [EYESHADOW.md](./EYESHADOW.md) (a genuinely new region-wash primitive), [EYEBROW.md](./EYEBROW.md) (a real closed-region primitive plus a new procedural hair-stroke technique), [BROWGEL.md](./BROWGEL.md) (color-only, reusing EYEBROW's own fill primitive directly), [MASCARA.md](./MASCARA.md) (a genuinely new curved lash-stroke primitive). Only LASHES is still the generic placeholder checklist shape every category starts with (see FACE.md's own history).
 
 ## Summary
 
@@ -16,10 +16,10 @@ _Tracking model: face landmarks (eye/brow region — precision-heavy, thin lines
 | EYELINER    | 3/4        | 3/4          | 75% — [detail](./EYELINER.md)  |
 | KAJAL       | 3/4        | 3/4          | 75% — [detail](./KAJAL.md)     |
 | EYESHADOW   | 3/4        | 3/4          | 75% — [detail](./EYESHADOW.md) |
-| MASCARA     | 0/4        | 0/4          | 0%                             |
+| MASCARA     | 3/4        | 3/4          | 75% — [detail](./MASCARA.md)   |
 | LASHES      | 0/4        | 0/4          | 0%                             |
 | BROWGEL     | 3/4        | 3/4          | 75% — [detail](./BROWGEL.md)   |
-| **Total**   | **15/28**  | **15/28**    | **53.6% (30/56)**              |
+| **Total**   | **18/28**  | **18/28**    | **64.3% (36/56)**              |
 
 ## Details
 
@@ -52,21 +52,9 @@ Ab yaha inline nahi hai - apni dedicated file mil chuki hai: **[EYESHADOW.md](./
 </details>
 
 <details>
-<summary><strong>MASCARA</strong> — 0%</summary>
+<summary><strong>MASCARA</strong> — 75% — see <a href="./MASCARA.md">MASCARA.md</a> for the full checklist, design notes, and quality score</summary>
 
-**Live**
-
-- [ ] Camera capture + lash-strand tracking wired
-- [ ] Lash darkening/volumizing overlay rendered in real-time
-- [ ] Shade/variant picker functional
-- [ ] Performance & cross-device QA
-
-**Upload**
-
-- [ ] Photo upload + lash-strand detection on static image
-- [ ] Lash darkening/volumizing overlay applied to image
-- [ ] Shade/variant picker functional
-- [ ] Output preview/download QA
+Ab yaha inline nahi hai - apni dedicated file mil chuki hai: **[MASCARA.md](./MASCARA.md)**.
 
 </details>
 
