@@ -61,7 +61,11 @@ const FaceUploadStage = forwardRef<ITryOnStageRef<IFaceTryOnState>, IFaceUploadS
     return (
       <div className="relative size-full">
         {!!imageUrl && (
-          <img src={imageUrl} alt="Background" className="size-full object-cover blur-md" />
+          <img
+            src={imageUrl}
+            alt="Background"
+            className="absolute inset-0 size-full object-cover blur-md"
+          />
         )}
         <canvas
           ref={canvas1Ref}
