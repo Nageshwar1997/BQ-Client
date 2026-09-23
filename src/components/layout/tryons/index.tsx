@@ -39,6 +39,7 @@ import TryOnPatternSwatches from './TryOnPatternSwatches';
 import TryOnRangeSlider from './TryOnRangeSlider';
 import TryOnShadeSwatches from './TryOnShadeSwatches';
 import TryOnSidebar from './TryOnSidebar';
+import TryOnTopControls from './TryOnTopControls';
 
 interface ITryOnModalProps {
   isOpen: boolean;
@@ -578,33 +579,17 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
 
                   {/* Above TryOnCompareSlider's full-canvas z-4 drag surface, so the toggle
                     itself (to turn compare back off) stays clickable while it's active. */}
-                  <div className="absolute top-3 right-3 z-5 flex items-center gap-2">
-                    <button
-                      type="button"
-                      aria-label={
-                        compareCanvas ? 'Hide before/after compare' : 'Compare before/after'
-                      }
-                      onClick={handleCompareToggle}
-                      disabled={!canInteract || !flow.engineState?.color}
-                      className={`flex size-9 cursor-pointer items-center justify-center rounded-full border backdrop-blur-xs transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-50 ${
-                        compareCanvas
-                          ? 'bg-sky-blue-burst border-transparent text-white'
-                          : 'bg-primary-invert/70 text-primary border-primary/10'
-                      }`}
-                    >
-                      <Icon icon="iconamoon:compare-fill" className="size-4" />
-                    </button>
-
-                    <button
-                      type="button"
-                      aria-label="Download snapshot"
-                      onClick={handleDownload}
-                      disabled={!canInteract || !flow.engineState?.color || !!compareCanvas}
-                      className="bg-primary-invert/70 text-primary border-primary/10 flex size-9 cursor-pointer items-center justify-center rounded-full border backdrop-blur-xs disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                      <Icon icon="solar:download-linear" className="size-4" />
-                    </button>
-                  </div>
+                  <TryOnTopControls
+                    compareProps={{
+                      active: !!compareCanvas,
+                      disabled: !canInteract || !flow.engineState?.color,
+                      onClick: handleCompareToggle,
+                    }}
+                    downloadProps={{
+                      disabled: !canInteract || !flow.engineState?.color || !!compareCanvas,
+                      onClick: handleDownload,
+                    }}
+                  />
 
                   {/* Hidden while comparing - both would otherwise sit on top of the drag
                     surface and fight it for clicks, and neither is meaningful mid-comparison. */}
