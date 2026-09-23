@@ -2,115 +2,115 @@
 
 [← Back to master tracker](./README.md) · [← Back to EYE category](./EYE.md)
 
-_Planning doc, written 2026-09-04 for the EYE build session starting 2026-09-05 ("kal"). Not a progress tracker (that's [EYE.md](./EYE.md), still all-unbuilt placeholders) - this captures the **design decisions** made before writing any code, same reason [LIP-10-10-PLAN.md](./LIP-10-10-PLAN.md)/[FOUNDATION-10-10-PLAN.md](./FOUNDATION-10-10-PLAN.md) exist as their own docs instead of being buried in a chat log._
+_Planning doc, 2026-09-04 ko likha gaya EYE build session ke liye jo 2026-09-05 ("kal") se shuru hona tha. Progress tracker nahi hai (wo [EYE.md](./EYE.md) hai, abhi bhi saare unbuilt placeholders) - ye un **design decisions** ko capture karta hai jo koi bhi code likhne se pehle liye gaye, same reason [LIP-10-10-PLAN.md](./LIP-10-10-PLAN.md)/[FOUNDATION-10-10-PLAN.md](./FOUNDATION-10-10-PLAN.md) apni alag doc me hain, chat log me dabi hui nahi._
 
-## Why this doc exists
+## Ye doc kyun banaya
 
-LIP (11 finishes) and FACE (8 finishes) were both **color-only** - one shade, one intensity slider (`state.color` + `state.range`), no second customizable dimension. EYE adds a genuinely new axis: **pattern/style**, on top of color - e.g. EYELINER isn't just "what color" but also "thin vs thick vs winged". This doc plans which of EYE's 7 subcategories get a pattern dimension, what the pattern options are per subcategory, how hard each is to build with this app's existing landmark+Canvas2D primitives (no ML segmentation, same constraint every LIP/FACE finish has followed), and a suggested build order.
+LIP (11 finishes) aur FACE (8 finishes) dono **color-only** the - ek shade, ek intensity slider (`state.color` + `state.range`), koi doosra customizable dimension nahi. EYE ek genuinely nayi axis add karta hai: **pattern/style**, color ke upar - jaise EYELINER sirf "kaunsa color" nahi hai, "thin vs thick vs winged" bhi hai. Ye doc plan karta hai ki EYE ki 7 subcategories mein se kaunsi ko pattern dimension milega, per subcategory pattern options kya hain, is app ke existing landmark+Canvas2D primitives se (koi ML segmentation nahi, same constraint jo har LIP/FACE finish ne follow ki hai) har ek build karna kitna hard hai, aur ek suggested build order.
 
-## Subcategories — pattern or color-only
+## Subcategories — pattern ya color-only
 
-EYE has 7 subcategories (`TRY_ON_MAP.EYE`): EYEBROW, EYELINER, KAJAL, EYESHADOW, MASCARA, LASHES, BROWGEL.
+EYE ki 7 subcategories hain (`TRY_ON_MAP.EYE`): EYEBROW, EYELINER, KAJAL, EYESHADOW, MASCARA, LASHES, BROWGEL.
 
-| Subcategory | Pattern?      | Reuses                                                                                                         | Complexity    |
-| ----------- | ------------- | -------------------------------------------------------------------------------------------------------------- | ------------- |
-| EYELINER    | ✅            | LIP's `applyLinerLips` stroke+blur primitive                                                                   | Easy          |
-| KAJAL       | ✅            | Same stroke+blur primitive as EYELINER                                                                         | Easy          |
-| EYESHADOW   | ✅            | FACE's `drawFeatheredBlob`/gradient primitive, eyelid-shaped                                                   | Easy → Medium |
-| EYEBROW     | ✅            | FACE's flat-fill/wash primitive; texture variant reuses LIP's texture-asset pipeline                           | Easy → Medium |
-| MASCARA     | ✅            | Needs a **new** lash-stroke primitive (doesn't exist yet in any category)                                      | Hard          |
-| LASHES      | ✅            | Needs a **new** primitive too - likely texture-asset based (LIP's SHIMMER/GLOSS pattern), not pure stroke math | Hard          |
-| BROWGEL     | ❌ color-only | FACE's simple sheer-wash pattern (like BBCREAM)                                                                | Easy          |
+| Subcategory | Pattern?     | Reuses                                                                                                                    | Complexity    |
+| ----------- | ------------ | ------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| EYELINER    | ✅            | LIP ka `applyLinerLips` stroke+blur primitive                                                                             | Easy          |
+| KAJAL       | ✅            | Same stroke+blur primitive EYELINER jaisa                                                                                 | Easy          |
+| EYESHADOW   | ✅            | FACE ka `drawFeatheredBlob`/gradient primitive, eyelid-shaped                                                             | Easy → Medium |
+| EYEBROW     | ✅            | FACE ka flat-fill/wash primitive; texture variant LIP ka texture-asset pipeline reuse karta hai                           | Easy → Medium |
+| MASCARA     | ✅            | Ek **nayi** lash-stroke primitive chahiye (abhi kisi bhi category mein exist nahi karti)                                  | Hard          |
+| LASHES      | ✅            | Isko bhi ek **nayi** primitive chahiye - likely texture-asset based (LIP ka SHIMMER/GLOSS pattern), pure stroke math nahi | Hard          |
+| BROWGEL     | ❌ color-only | FACE ka simple sheer-wash pattern (BBCREAM jaisa)                                                                         | Easy          |
 
-**BROWGEL stays color-only** - the real product is just a clear/tinted gel that sets existing brow hairs, it has no distinct "shape" variants the way a liner or eyeshadow does. Forcing a pattern dimension onto it wouldn't match any real product behavior.
+**BROWGEL color-only hi rahega** - real product bas ek clear/tinted gel hai jo existing brow hairs ko set karta hai, iski koi distinct "shape" variants nahi hain jaisa ek liner ya eyeshadow ki hoti hai. Isme pattern dimension force karna kisi real product behavior se match nahi karta.
 
-## Pattern options per subcategory
+## Per subcategory pattern options
 
 ### EYELINER
 
-1. **Classic Thin** - fine single line along the lash line
+1. **Classic Thin** - lash line ke saath ek fine single line
 2. **Bold/Thick** - same line, wider
-3. **Winged/Cat-eye** - a curved flick extending up-and-out past the outer corner
-4. **Double Wing (graphic)** - two flicks, sharper stylized look
+3. **Winged/Cat-eye** - outer corner ke paar ek curved flick jo upar-aur-bahar extend karti hai
+4. **Double Wing (graphic)** - do flicks, sharper stylized look
 5. **Smokey/Smudged** - soft blurred edge, diffused
-6. **Tightline** - very thin, fills lash gaps, barely visible
-7. **Underliner** - liner on the lower lash line too (placement variant, combinable with the above)
+6. **Tightline** - bahut thin, lash gaps fill karta hai, barely visible
+7. **Underliner** - lower lash line pe bhi liner (placement variant, upar walon ke saath combinable)
 
-_Build note_: 1/2/3/6 are direct parameter changes (width/curve/blur) on LIP's existing stroke+blur primitive. 4/7 need multiple strokes but no new primitive.
+_Build note_: 1/2/3/6 LIP ke existing stroke+blur primitive pe direct parameter changes hain (width/curve/blur). 4/7 ko multiple strokes chahiye lekin koi nayi primitive nahi.
 
 ### KAJAL
 
-1. **Thin waterline** - subtle, along the waterline
-2. **Tightline lower lash** - thin, hugging the lower lashes
+1. **Thin waterline** - subtle, waterline ke saath
+2. **Tightline lower lash** - thin, lower lashes ko hugging
 3. **Smudged/Smokey kajal** - thicker, diffused, kohl-like
-4. **Full bold kohl** - thick, traditional, extending slightly past the outer corner
+4. **Full bold kohl** - thick, traditional, outer corner ke thoda paar extend karta hua
 
-_Build note_: All four are the exact same stroke-width + blur-radius combinations EYELINER uses - no new code beyond parameter tuning once the shared primitive exists.
+_Build note_: Sab 4 EYELINER jo use karta hai wahi exact stroke-width + blur-radius combinations hain - shared primitive exist karne ke baad parameter tuning ke alawa koi naya code nahi chahiye.
 
 ### EYESHADOW
 
-1. **Single wash** - one flat color across the whole lid
-2. **Two-tone gradient** - lighter near the brow bone, darker in the crease
-3. **Smokey eye** - concentrated dark near the lash line, feathered/blended upward
-4. **Cut crease** - a sharp defined line at the crease, high-contrast
-5. **Halo eye** - light/shimmer center of the lid, dark at outer corners + crease
-6. **Under-eye smudge** - extends onto the lower lash line too (placement variant)
+1. **Single wash** - poore lid ke across ek flat color
+2. **Two-tone gradient** - brow bone ke kareeb lighter, crease mein darker
+3. **Smokey eye** - lash line ke kareeb concentrated dark, upar feathered/blended
+4. **Cut crease** - crease pe ek sharp defined line, high-contrast
+5. **Halo eye** - lid ka center light/shimmer, outer corners + crease pe dark
+6. **Under-eye smudge** - lower lash line pe bhi extend karta hai (placement variant)
 
-_Build note_: 1/3 are easy (FACE's feathered-blob/gradient primitive, reshaped to the eyelid). 2/5 need a two-color blend (related math, not built yet). 4 is the hardest of the set - needs precise crease-landmark tracing and reads as more failure-prone across different eye shapes.
+_Build note_: 1/3 easy hain (FACE ka feathered-blob/gradient primitive, eyelid ke liye reshaped). 2/5 ko ek two-color blend chahiye (related math, abhi banaya nahi hai). 4 set ka sabse hard hai - precise crease-landmark tracing chahiye aur alag eye shapes ke across zyada failure-prone read hota hai.
 
 ### EYEBROW
 
-1. **Natural hair-stroke** - individual-hair-like texture (needs a texture asset, LIP's texture pipeline)
+1. **Natural hair-stroke** - individual-hair-like texture (ek texture asset chahiye, LIP ka texture pipeline)
 2. **Soft powder fill** - diffused soft fill
 3. **Bold/Defined fill** - solid, sharp-edged fill (pomade/pencil look)
-4. **Ombre brow** - light at the front, bold/dark at the tail (linear gradient)
+4. **Ombre brow** - front pe light, tail pe bold/dark (linear gradient)
 5. **Feathered/Fluffy (soap-brow)** - brushed-up natural look
 
-_Build note_: 2/3 are easy (FACE's flat-fill primitive). 4 is medium (a new but simple linear - not radial - gradient). 1/5 need a texture asset, reusing LIP's texture-loading pattern rather than new infrastructure.
+_Build note_: 2/3 easy hain (FACE ka flat-fill primitive). 4 medium hai (ek naya lekin simple linear - radial nahi - gradient). 1/5 ko ek texture asset chahiye, LIP ka texture-loading pattern reuse karte hue, naya infrastructure nahi.
 
 ### MASCARA
 
 1. **Natural** - subtle length, thin coat
 2. **Volumizing** - thicker, fuller lashes
 3. **Dramatic/Length** - long, fanned-out lashes
-4. **Curled** - extra curl at the tips
+4. **Curled** - tips pe extra curl
 
-_Build note_: Needs a genuinely new "lash-stroke" primitive - small curved strokes generated along the upper lash line. Pattern = stroke count/width/length/curl parameters on that new primitive. Nothing to reuse from LIP/FACE here.
+_Build note_: Ek genuinely nayi "lash-stroke" primitive chahiye - upper lash line ke saath generate hui chhoti curved strokes. Pattern = us nayi primitive pe stroke count/width/length/curl parameters. Yahan LIP/FACE se reuse karne ko kuch nahi hai.
 
 ### LASHES (false-lash styles)
 
-1. **Natural/Everyday** - subtle, blends with real lashes
+1. **Natural/Everyday** - subtle, real lashes ke saath blend hota hai
 2. **Wispy** - feathered, varying lengths
 3. **Dramatic/Voluminous** - thick, full coverage
-4. **Winged** - longer strands toward the outer corner
-5. **Doll-eye** - longer strands in the center
+4. **Winged** - outer corner ki taraf longer strands
+5. **Doll-eye** - center mein longer strands
 
-_Build note_: Same complexity tier as MASCARA, but more likely texture-asset based (one image per style, LIP's SHIMMER/GLOSS approach) than pure procedural stroke math - possibly easier to actually implement than MASCARA despite the similar upfront "new primitive" cost, since art assets sidestep needing new stroke-generation math entirely.
+_Build note_: MASCARA jaisa hi complexity tier, lekin zyada likely texture-asset based (ek image per style, LIP ka SHIMMER/GLOSS approach) pure procedural stroke math se - MASCARA se actually implement karna possibly easier, similar upfront "new primitive" cost ke bawajood, kyunki art assets naye stroke-generation math ki zaroorat ko poori tarah sidestep kar dete hain.
 
 ### BROWGEL
 
-No pattern - color/alpha only, same shape as FACE's BBCREAM (a single sheer wash, no color-mix transform needed).
+Koi pattern nahi - sirf color/alpha, FACE ke BBCREAM jaisa hi shape (ek single sheer wash, koi color-mix transform nahi chahiye).
 
 ## Suggested build order
 
-1. **EYELINER + KAJAL together** - same underlying primitive, two subcategories for the price of one build.
-2. **EYESHADOW** - flat wash + smokey first (easy tier), gradient/halo/cut-crease after.
-3. **EYEBROW** - fill variants (powder/defined) first, texture-based (hair-stroke/fluffy) once the texture-asset pattern is ported over from LIP.
-4. **BROWGEL** - simple, same shape as an existing FACE finish.
-5. **MASCARA, then LASHES** - both need a new primitive/asset pipeline, saved for last same as every other "needs new infrastructure" step in this app's build history (e.g. BRONZER waiting on `fillFaceOvalRegion`'s extraction).
+1. **EYELINER + KAJAL saath mein** - same underlying primitive, ek build ki price me do subcategories.
+2. **EYESHADOW** - pehle flat wash + smokey (easy tier), baad mein gradient/halo/cut-crease.
+3. **EYEBROW** - pehle fill variants (powder/defined), texture-based (hair-stroke/fluffy) ek baar texture-asset pattern LIP se port ho jaye.
+4. **BROWGEL** - simple, ek existing FACE finish jaisa shape.
+5. **MASCARA, phir LASHES** - dono ko ek naya primitive/asset pipeline chahiye, sabse last ke liye saved, is app ki build history ke har doosre "naye infrastructure chahiye" step jaisa (jaise BRONZER `fillFaceOvalRegion`'s extraction ka wait kar raha tha).
 
-## Proposed architecture for the pattern dimension
+## Pattern dimension ke liye proposed architecture
 
-Not yet locked in - a starting proposal to refine once implementation actually starts:
+Abhi lock nahi hua - ek starting proposal jo implementation actually shuru hote hi refine hoga:
 
-- `IEyeTryOnState` (types/tryon-types/eye.ts) extends `IMakeupState<TEyeFinish>` with a new `pattern: string | null` field, the same "blank until picked" shape `color`/`type` already use.
-- `EYE_PATTERN_OPTIONS: Record<TEyeFinish, { id: string; label: string }[]>` (constants/tryon-constants/eye.ts) - per-subcategory list of valid pattern ids, same shape `FACE_RANGE_BOUNDS`/`LIP_RANGE_BOUNDS` already use for per-finish config, so the UI can drive a picker off it directly.
-- `IEyeRenderParams extends IRenderEffectBaseParams { rgb: TRGBTuple; pattern: string }` (types/tryon-types/eye.ts) - following the same object-param + base-type-extend convention LIP/FACE were just retrofitted to (see the earlier session's convention note) - `EyeEngineBase.applyEffect` reads `state.pattern` and passes it straight through to whichever `apply<Finish>Eye` function is selected.
-- Each `apply<Finish>Eye` function switches on `pattern` internally to pick its stroke-width/blur/gradient parameters - same shape LIP's `TEXTURED_FINISH_TUNING` record already uses for its own per-finish tuning table.
+- `IEyeTryOnState` (types/tryon-types/eye.ts) `IMakeupState<TEyeFinish>` extend karta hai ek naye `pattern: string | null` field ke saath, same "jab tak pick na ho tab tak blank" shape jo `color`/`type` already use karte hain.
+- `EYE_PATTERN_OPTIONS: Record<TEyeFinish, { id: string; label: string }[]>` (constants/tryon-constants/eye.ts) - per-subcategory valid pattern ids ki list, same shape jo `FACE_RANGE_BOUNDS`/`LIP_RANGE_BOUNDS` already apni per-finish config ke liye use karte hain, isliye UI ek picker directly isse drive kar sake.
+- `IEyeRenderParams extends IRenderEffectBaseParams { rgb: TRGBTuple; pattern: string }` (types/tryon-types/eye.ts) - same object-param + base-type-extend convention follow karte hue jispe LIP/FACE abhi retrofit hue the (earlier session ka convention note dekho) - `EyeEngineBase.applyEffect` `state.pattern` read karta hai aur jo bhi `apply<Finish>Eye` function select hua use directly pass kar deta hai.
+- Har `apply<Finish>Eye` function `pattern` pe internally switch karta hai apne stroke-width/blur/gradient parameters choose karne ke liye - same shape jo LIP ka `TEXTURED_FINISH_TUNING` record already apni per-finish tuning table ke liye use karta hai.
 
 ## Next steps
 
-Start with EYELINER + KAJAL (lowest risk, shared primitive, validates the whole color+pattern shape end to end) - once that pipeline is proven, the rest follow the build order above. Same per-finish pipeline every LIP/FACE finish already used: constants → render function → engine wiring → smoke test → synthetic visual check → tracker doc.
+EYELINER + KAJAL se start karo (sabse kam risk, shared primitive, poore color+pattern shape ko end to end validate karta hai) - ek baar wo pipeline proven ho jaye, baaki upar wale build order ko follow karte hain. Same per-finish pipeline jo har LIP/FACE finish already use kar chuki hai: constants → render function → engine wiring → smoke test → synthetic visual check → tracker doc.
 
 ---
 

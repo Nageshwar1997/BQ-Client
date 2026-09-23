@@ -2,9 +2,9 @@
 
 [← Back to master tracker](./README.md) · [← Build plan](./SKIN-PLAN.md)
 
-> **Build plan**: SKIN is the first category with no real product "shade" to match — which of the 8 subcategories get a distinct visual, what canvas techniques are actually available given this app's landmark-only (no segmentation) constraint, open questions still needing a decision (CLEANSER/EXFOLIATOR's low visual value, what the shade picker even means here), and the suggested build order are all planned out in [SKIN-PLAN.md](./SKIN-PLAN.md), written before any SKIN code exists.
+> **Build plan**: SKIN pehli category hai jiski koi real product "shade" match karne wali nahi hai — 8 me se kaunsi subcategories ka apna distinct visual banega, is app ke landmark-only (no segmentation) constraint ko dekhte hue actually kaunsi canvas techniques available hain, abhi bhi decision chahne wale open questions (CLEANSER/EXFOLIATOR ki low visual value, yahan shade picker ka matlab hi kya hai), aur suggested build order - sab [SKIN-PLAN.md](./SKIN-PLAN.md) me plan kiya hua hai, koi bhi SKIN code likhne se pehle.
 
-_Tracking model: face landmarks (face-oval region, same `FACE_OVAL_INDICES`/exclusion-hole technique FOUNDATION/BRONZER/BBCREAM/COMPACTPOWDER already use — no real segmentation anywhere in this app, FACE included). Depends on the shared face-landmark engine — see [README.md](./README.md#shared-prerequisites-ye-pehle-banao--sabko-block-karte-hain)._
+_Tracking model: face landmarks (face-oval region, same `FACE_OVAL_INDICES`/exclusion-hole technique jo FOUNDATION/BRONZER/BBCREAM/COMPACTPOWDER already use karte hain — is app me kahin bhi real segmentation nahi hai, FACE bhi nahi). Shared face-landmark engine pe depend karta hai — dekho [README.md](./README.md#shared-prerequisites-ye-pehle-banao--sabko-block-karte-hain)._
 
 ## Summary
 
@@ -27,15 +27,15 @@ _Tracking model: face landmarks (face-oval region, same `FACE_OVAL_INDICES`/excl
 
 **Live**
 
-- [ ] Camera capture + skin-region segmentation wired
-- [ ] Dewy-glow finish simulation overlay rendered in real-time
-- [ ] Variant/intensity picker functional (linked to product variants)
+- [ ] Camera capture + skin-region landmark tracking wired
+- [ ] Dewy-glow finish simulation overlay real-time me render ho
+- [ ] Variant/intensity picker functional (product variants se linked)
 - [ ] Performance & cross-device QA (FPS, lighting conditions)
 
 **Upload**
 
-- [ ] Photo upload + skin-region segmentation on static image
-- [ ] Dewy-glow finish simulation overlay applied to image
+- [ ] Photo upload + skin-region landmark detection static image pe
+- [ ] Dewy-glow finish simulation overlay image pe apply ho
 - [ ] Variant/intensity picker functional
 - [ ] Output preview/download QA
 
@@ -46,15 +46,15 @@ _Tracking model: face landmarks (face-oval region, same `FACE_OVAL_INDICES`/excl
 
 **Live**
 
-- [ ] Camera capture + skin-region segmentation wired
-- [ ] Subtle glow/smoothness simulation overlay rendered in real-time
+- [ ] Camera capture + skin-region landmark tracking wired
+- [ ] Subtle glow/smoothness simulation overlay real-time me render ho
 - [ ] Variant/intensity picker functional
 - [ ] Performance & cross-device QA
 
 **Upload**
 
-- [ ] Photo upload + skin-region segmentation on static image
-- [ ] Subtle glow/smoothness simulation overlay applied to image
+- [ ] Photo upload + skin-region landmark detection static image pe
+- [ ] Subtle glow/smoothness simulation overlay image pe apply ho
 - [ ] Variant/intensity picker functional
 - [ ] Output preview/download QA
 
@@ -65,15 +65,15 @@ _Tracking model: face landmarks (face-oval region, same `FACE_OVAL_INDICES`/excl
 
 **Live**
 
-- [ ] Camera capture + skin-region segmentation wired
-- [ ] Even-tone/brightness simulation overlay rendered in real-time
+- [ ] Camera capture + skin-region landmark tracking wired
+- [ ] Even-tone/brightness simulation overlay real-time me render ho
 - [ ] Variant/intensity picker functional
 - [ ] Performance & cross-device QA
 
 **Upload**
 
-- [ ] Photo upload + skin-region segmentation on static image
-- [ ] Even-tone/brightness simulation overlay applied to image
+- [ ] Photo upload + skin-region landmark detection static image pe
+- [ ] Even-tone/brightness simulation overlay image pe apply ho
 - [ ] Variant/intensity picker functional
 - [ ] Output preview/download QA
 
@@ -84,15 +84,15 @@ _Tracking model: face landmarks (face-oval region, same `FACE_OVAL_INDICES`/excl
 
 **Live**
 
-- [ ] Camera capture + skin-region segmentation wired
-- [ ] Before/after clarity simulation overlay rendered in real-time (low AR value — confirm scope first)
+- [ ] Camera capture + skin-region landmark tracking wired
+- [ ] Before/after clarity simulation overlay real-time me render ho (low AR value — pehle scope confirm karo)
 - [ ] Variant/intensity picker functional
 - [ ] Performance & cross-device QA
 
 **Upload**
 
-- [ ] Photo upload + skin-region segmentation on static image
-- [ ] Before/after clarity simulation overlay applied to image
+- [ ] Photo upload + skin-region landmark detection static image pe
+- [ ] Before/after clarity simulation overlay image pe apply ho
 - [ ] Variant/intensity picker functional
 - [ ] Output preview/download QA
 
@@ -103,15 +103,15 @@ _Tracking model: face landmarks (face-oval region, same `FACE_OVAL_INDICES`/excl
 
 **Live**
 
-- [ ] Camera capture + skin-region segmentation wired
-- [ ] Matte/no-white-cast finish simulation overlay rendered in real-time
+- [ ] Camera capture + skin-region landmark tracking wired
+- [ ] Matte/no-white-cast finish simulation overlay real-time me render ho
 - [ ] Variant/intensity picker functional
 - [ ] Performance & cross-device QA
 
 **Upload**
 
-- [ ] Photo upload + skin-region segmentation on static image
-- [ ] Matte/no-white-cast finish simulation overlay applied to image
+- [ ] Photo upload + skin-region landmark detection static image pe
+- [ ] Matte/no-white-cast finish simulation overlay image pe apply ho
 - [ ] Variant/intensity picker functional
 - [ ] Output preview/download QA
 
@@ -122,15 +122,15 @@ _Tracking model: face landmarks (face-oval region, same `FACE_OVAL_INDICES`/excl
 
 **Live**
 
-- [ ] Camera capture + skin-region segmentation wired
-- [ ] Instant-glow/plumped-skin simulation overlay rendered in real-time
+- [ ] Camera capture + skin-region landmark tracking wired
+- [ ] Instant-glow/plumped-skin simulation overlay real-time me render ho
 - [ ] Variant/intensity picker functional
 - [ ] Performance & cross-device QA
 
 **Upload**
 
-- [ ] Photo upload + skin-region segmentation on static image
-- [ ] Instant-glow/plumped-skin simulation overlay applied to image
+- [ ] Photo upload + skin-region landmark detection static image pe
+- [ ] Instant-glow/plumped-skin simulation overlay image pe apply ho
 - [ ] Variant/intensity picker functional
 - [ ] Output preview/download QA
 
@@ -142,14 +142,14 @@ _Tracking model: face landmarks (face-oval region, same `FACE_OVAL_INDICES`/excl
 **Live**
 
 - [ ] Camera capture + under-eye region tracking wired
-- [ ] Brightness/de-puff simulation overlay rendered in real-time
+- [ ] Brightness/de-puff simulation overlay real-time me render ho
 - [ ] Variant/intensity picker functional
 - [ ] Performance & cross-device QA
 
 **Upload**
 
-- [ ] Photo upload + under-eye region detection on static image
-- [ ] Brightness/de-puff simulation overlay applied to image
+- [ ] Photo upload + under-eye region detection static image pe
+- [ ] Brightness/de-puff simulation overlay image pe apply ho
 - [ ] Variant/intensity picker functional
 - [ ] Output preview/download QA
 
@@ -160,15 +160,15 @@ _Tracking model: face landmarks (face-oval region, same `FACE_OVAL_INDICES`/excl
 
 **Live**
 
-- [ ] Camera capture + skin-region segmentation wired
-- [ ] Smooth-texture simulation overlay rendered in real-time
+- [ ] Camera capture + skin-region landmark tracking wired
+- [ ] Smooth-texture simulation overlay real-time me render ho
 - [ ] Variant/intensity picker functional
 - [ ] Performance & cross-device QA
 
 **Upload**
 
-- [ ] Photo upload + skin-region segmentation on static image
-- [ ] Smooth-texture simulation overlay applied to image
+- [ ] Photo upload + skin-region landmark detection static image pe
+- [ ] Smooth-texture simulation overlay image pe apply ho
 - [ ] Variant/intensity picker functional
 - [ ] Output preview/download QA
 
@@ -176,4 +176,4 @@ _Tracking model: face landmarks (face-oval region, same `FACE_OVAL_INDICES`/excl
 
 ---
 
-[← Back to master tracker](./README.md)
+[← Back to master tracker](./README.md) · [← Build plan](./SKIN-PLAN.md)

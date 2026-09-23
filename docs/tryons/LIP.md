@@ -8,19 +8,19 @@ _Tracking model: face landmarks (lip contour ring). Depends on the shared face-l
 
 ## Summary
 
-| Subcategory | Live (4/4) | Upload (4/4) | Overall             |
-| ----------- | ---------- | ------------ | ------------------- |
-| MATTE       | 4/4        | 4/4          | 100%                |
-| SATIN       | 4/4        | 4/4          | 100%                |
-| GLOSS       | 4/4        | 4/4          | 100%                |
-| SHIMMER     | 4/4        | 4/4          | 100%                |
-| STAIN       | 4/4        | 4/4          | 100%                |
-| BALM        | 4/4        | 4/4          | 100%                |
-| LINER       | 4/4        | 4/4          | 100%                |
-| CRAYON      | 4/4        | 4/4          | 100%                |
-| OIL         | 4/4        | 4/4          | 100%                |
-| METALLIC    | 4/4        | 4/4          | 100%                |
-| PLUMPER     | 4/4        | 4/4          | 100%                |
+| Subcategory | Live (4/4) | Upload (4/4) | Overall            |
+| ----------- | ---------- | ------------ | ------------------ |
+| MATTE       | 4/4        | 4/4          | 100%               |
+| SATIN       | 4/4        | 4/4          | 100%               |
+| GLOSS       | 4/4        | 4/4          | 100%               |
+| SHIMMER     | 4/4        | 4/4          | 100%               |
+| STAIN       | 4/4        | 4/4          | 100%               |
+| BALM        | 4/4        | 4/4          | 100%               |
+| LINER       | 4/4        | 4/4          | 100%               |
+| CRAYON      | 4/4        | 4/4          | 100%               |
+| OIL         | 4/4        | 4/4          | 100%               |
+| METALLIC    | 4/4        | 4/4          | 100%               |
+| PLUMPER     | 4/4        | 4/4          | 100%               |
 | **Total**   | **44/44**  | **44/44**    | **100% (88/88)** ✅ |
 
 ## Details
@@ -31,14 +31,14 @@ _Tracking model: face landmarks (lip contour ring). Depends on the shared face-l
 **Live**
 
 - [x] Camera capture + lip-landmark tracking wired
-- [x] Flat matte-color blend (no shine) rendered in real-time
-- [x] Shade/variant picker functional (linked to product variants)
+- [x] Flat matte-color blend (koi shine nahi) real-time me render hota hai
+- [x] Shade/variant picker functional (product variants se linked)
 - [x] Performance & cross-device QA (FPS, lighting conditions)
 
 **Upload**
 
-- [x] Photo upload + lip-landmark detection on static image
-- [x] Flat matte-color blend applied to image
+- [x] Photo upload + lip-landmark detection static image pe
+- [x] Flat matte-color blend image pe apply hota hai
 - [x] Shade/variant picker functional
 - [x] Output preview/download QA
 
@@ -50,14 +50,14 @@ _Tracking model: face landmarks (lip contour ring). Depends on the shared face-l
 **Live**
 
 - [x] Camera capture + lip-landmark tracking wired
-- [x] Soft semi-sheen blend (low-gloss highlight) rendered in real-time
+- [x] Soft semi-sheen blend (low-gloss highlight) real-time me render hota hai
 - [x] Shade/variant picker functional
 - [x] Performance & cross-device QA
 
 **Upload**
 
-- [x] Photo upload + lip-landmark detection on static image
-- [x] Soft semi-sheen blend applied to image
+- [x] Photo upload + lip-landmark detection static image pe
+- [x] Soft semi-sheen blend image pe apply hota hai
 - [x] Shade/variant picker functional
 - [x] Output preview/download QA
 
@@ -69,14 +69,14 @@ _Tracking model: face landmarks (lip contour ring). Depends on the shared face-l
 **Live**
 
 - [x] Camera capture + lip-landmark tracking wired
-- [x] Specular highlight + wet-shine overlay rendered in real-time
+- [x] Specular highlight + wet-shine overlay real-time me render hota hai
 - [x] Shade/variant picker functional
 - [x] Performance & cross-device QA
 
 **Upload**
 
-- [x] Photo upload + lip-landmark detection on static image
-- [x] Specular highlight + wet-shine overlay applied to image
+- [x] Photo upload + lip-landmark detection static image pe
+- [x] Specular highlight + wet-shine overlay image pe apply hota hai
 - [x] Shade/variant picker functional
 - [x] Output preview/download QA
 
@@ -88,14 +88,14 @@ _Tracking model: face landmarks (lip contour ring). Depends on the shared face-l
 **Live**
 
 - [x] Camera capture + lip-landmark tracking wired
-- [x] Sparkle/shimmer particle overlay rendered in real-time
+- [x] Sparkle/shimmer particle overlay real-time me render hota hai
 - [x] Shade/variant picker functional
 - [x] Performance & cross-device QA
 
 **Upload**
 
-- [x] Photo upload + lip-landmark detection on static image
-- [x] Sparkle/shimmer particle overlay applied to image
+- [x] Photo upload + lip-landmark detection static image pe
+- [x] Sparkle/shimmer particle overlay image pe apply hota hai
 - [x] Shade/variant picker functional
 - [x] Output preview/download QA
 
@@ -107,14 +107,14 @@ _Tracking model: face landmarks (lip contour ring). Depends on the shared face-l
 **Live**
 
 - [x] Camera capture + lip-landmark tracking wired
-- [x] Translucent low-opacity tint blend rendered in real-time
+- [x] Translucent low-opacity tint blend real-time me render hota hai
 - [x] Shade/variant picker functional
 - [x] Performance & cross-device QA
 
 **Upload**
 
-- [x] Photo upload + lip-landmark detection on static image
-- [x] Translucent low-opacity tint blend applied to image
+- [x] Photo upload + lip-landmark detection static image pe
+- [x] Translucent low-opacity tint blend image pe apply hota hai
 - [x] Shade/variant picker functional
 - [x] Output preview/download QA
 
@@ -126,14 +126,14 @@ _Tracking model: face landmarks (lip contour ring). Depends on the shared face-l
 **Live**
 
 - [x] Camera capture + lip-landmark tracking wired
-- [x] Sheer glossy tint + moisture-shine overlay rendered in real-time
+- [x] Sheer glossy tint + moisture-shine overlay real-time me render hota hai
 - [x] Shade/variant picker functional
 - [x] Performance & cross-device QA
 
 **Upload**
 
-- [x] Photo upload + lip-landmark detection on static image
-- [x] Sheer glossy tint + moisture-shine overlay applied to image
+- [x] Photo upload + lip-landmark detection static image pe
+- [x] Sheer glossy tint + moisture-shine overlay image pe apply hota hai
 - [x] Shade/variant picker functional
 - [x] Output preview/download QA
 
@@ -145,14 +145,14 @@ _Tracking model: face landmarks (lip contour ring). Depends on the shared face-l
 **Live**
 
 - [x] Camera capture + lip-contour edge tracking wired
-- [x] Wide, blurred stroke along the outer lip contour rendered in real-time, hard-clipped to the lip fill region — crisp cutoff on the outward (skin) side, soft natural fade on the inward (lip) side (`applyLinerLips`, `utils/tryon-utils/lip.ts`)
+- [x] Outer lip contour ke saath ek wide, blurred stroke real-time me render hota hai, lip fill region mein hard-clipped - outward (skin) side pe crisp cutoff, inward (lip) side pe soft natural fade (`applyLinerLips`, `utils/tryon-utils/lip.ts`)
 - [x] Shade/variant picker functional
 - [x] Performance & cross-device QA
 
 **Upload**
 
-- [x] Photo upload + lip-contour edge detection on static image
-- [x] Same stroke rendering applied to image
+- [x] Photo upload + lip-contour edge detection static image pe
+- [x] Same stroke rendering image pe apply hoti hai
 - [x] Shade/variant picker functional
 - [x] Output preview/download QA
 
@@ -164,14 +164,14 @@ _Tracking model: face landmarks (lip contour ring). Depends on the shared face-l
 **Live**
 
 - [x] Camera capture + lip-landmark tracking wired
-- [x] Matte stroke-texture fill (waxy finish) rendered in real-time
+- [x] Matte stroke-texture fill (waxy finish) real-time me render hota hai
 - [x] Shade/variant picker functional
 - [x] Performance & cross-device QA
 
 **Upload**
 
-- [x] Photo upload + lip-landmark detection on static image
-- [x] Matte stroke-texture fill applied to image
+- [x] Photo upload + lip-landmark detection static image pe
+- [x] Matte stroke-texture fill image pe apply hota hai
 - [x] Shade/variant picker functional
 - [x] Output preview/download QA
 
@@ -183,14 +183,14 @@ _Tracking model: face landmarks (lip contour ring). Depends on the shared face-l
 **Live**
 
 - [x] Camera capture + lip-landmark tracking wired
-- [x] High-gloss fluid overlay with light-refraction shine rendered in real-time (dedicated `Oil-Upper/Lower.webp` assets, own `TEXTURED_FINISH_TUNING.OIL` entry)
+- [x] High-gloss fluid overlay light-refraction shine ke saath real-time me render hota hai (dedicated `Oil-Upper/Lower.webp` assets, apna `TEXTURED_FINISH_TUNING.OIL` entry)
 - [x] Shade/variant picker functional
 - [x] Performance & cross-device QA
 
 **Upload**
 
-- [x] Photo upload + lip-landmark detection on static image
-- [x] High-gloss fluid overlay applied to image
+- [x] Photo upload + lip-landmark detection static image pe
+- [x] High-gloss fluid overlay image pe apply hota hai
 - [x] Shade/variant picker functional
 - [x] Output preview/download QA
 
@@ -202,14 +202,14 @@ _Tracking model: face landmarks (lip contour ring). Depends on the shared face-l
 **Live**
 
 - [x] Camera capture + lip-landmark tracking wired
-- [x] Chrome/foil reflective texture overlay rendered in real-time (dedicated `Metallic-Upper/Lower.webp` assets, own `TEXTURED_FINISH_TUNING.METALLIC` entry)
+- [x] Chrome/foil reflective texture overlay real-time me render hota hai (dedicated `Metallic-Upper/Lower.webp` assets, apna `TEXTURED_FINISH_TUNING.METALLIC` entry)
 - [x] Shade/variant picker functional
 - [x] Performance & cross-device QA
 
 **Upload**
 
-- [x] Photo upload + lip-landmark detection on static image
-- [x] Chrome/foil reflective texture overlay applied to image
+- [x] Photo upload + lip-landmark detection static image pe
+- [x] Chrome/foil reflective texture overlay image pe apply hota hai
 - [x] Shade/variant picker functional
 - [x] Output preview/download QA
 
@@ -221,14 +221,14 @@ _Tracking model: face landmarks (lip contour ring). Depends on the shared face-l
 **Live**
 
 - [x] Camera capture + lip-landmark tracking wired
-- [x] Gloss-texture overlay rendered in real-time with its own dedicated alpha tuning (`TEXTURED_FINISH_TUNING.PLUMPER`) — deliberately shares GLOSS/SATIN/BALM's texture asset (`GLOSS_OR_SATIN_OR_BALM_OR_PLUMPER_TEXTURE_PATH_*`, see `constants/tryon-constants/lip.ts`) rather than duplicating it, but stays independently swappable later since it's its own named field/tuning entry, not an alias. No geometric volume/distortion effect — not achievable with a canvas-2D color/texture overlay, out of scope
+- [x] Gloss-texture overlay apni dedicated alpha tuning ke saath real-time me render hota hai (`TEXTURED_FINISH_TUNING.PLUMPER`) — deliberately GLOSS/SATIN/BALM ka texture asset share karta hai (`GLOSS_OR_SATIN_OR_BALM_OR_PLUMPER_TEXTURE_PATH_*`, `constants/tryon-constants/lip.ts` dekho) duplicate karne ki jagah, lekin baad mein independently swappable rehta hai kyunki ye apna named field/tuning entry hai, ek alias nahi. Koi geometric volume/distortion effect nahi - ek canvas-2D color/texture overlay se achieve karne layak nahi, scope se bahar
 - [x] Shade/variant picker functional
 - [x] Performance & cross-device QA
 
 **Upload**
 
-- [x] Photo upload + lip-landmark detection on static image
-- [x] Same overlay applied to image
+- [x] Photo upload + lip-landmark detection static image pe
+- [x] Same overlay image pe apply hota hai
 - [x] Shade/variant picker functional
 - [x] Output preview/download QA
 
