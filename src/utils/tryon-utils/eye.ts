@@ -295,6 +295,50 @@ const lashToWingWidth =
     return peak * (1 - wt) + tip * wt;
   };
 
+// How far past a stroke's own real endpoint the corner-fade tail below extends, as a ratio of
+// eye width - short enough to read as a soft point rather than a second wing.
+const CORNER_FADE_LENGTH_RATIO = 0.05;
+
+// A non-winged EYELINER/KAJAL pattern's own `widthFn` reaches full width exactly *at* the last
+// traced landmark (the eye's own real corner) and stops there - a flat, full-width cut, not the
+// soft taper-to-a-point every real liner/kajal actually has at its own outer (and inner) end. This
+// was reported directly against a real render as "doesn't reach the end of the eye" - counter-
+// intuitively, the fix isn't to extend coverage, it's the opposite: commverse's own reference
+// implementation (src/commverse) traces a couple of *extra* landmarks past each corner (borrowed
+// from the lower lid) purely as a taper "runway" - its own width data keeps the corner itself at
+// full width, then fades down only across those extra points, past the corner, so the visible
+// stroke narrows to a soft point a little beyond the eye's own literal edge instead of ending in a
+// hard rectangular cut exactly on it (which, against a real photo, reads as "stopping short"
+// rather than "reaching the end", even though the corner itself is at full width). Synthesized
+// geometrically here (continuing along the stroke's own local end direction by
+// `CORNER_FADE_LENGTH_RATIO` of eye width) instead of relying on commverse's own specific extra
+// landmark indices, so this doesn't touch `LEFT/RIGHT_EYE_UPPER_INDICES` or any other EYE finish
+// that also reads them (EYESHADOW/EYEBROW/MASCARA/LASHES all key off the same constants). Applied
+// unconditionally at both ends: for a winged pattern, `width` there is already the wing's own
+// near-zero tip width, so this is a harmless no-op; for every other pattern, it's the real,
+// previously-missing fade.
+const renderCornerFadeTail = (
+  ctx: CanvasRenderingContext2D,
+  pts: TPoint[],
+  center: TPoint,
+  width: number,
+  eyeWidth: number,
+  color: string,
+  atStart: boolean,
+) => {
+  const a = atStart ? pts[1] : pts[pts.length - 2];
+  const b = atStart ? pts[0] : pts[pts.length - 1];
+  if (!a || !b || width <= 0) return;
+
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  const len = Math.hypot(dx, dy) || 1;
+  const extension = eyeWidth * CORNER_FADE_LENGTH_RATIO;
+  const tip = { x: b.x + (dx / len) * extension, y: b.y + (dy / len) * extension };
+
+  fillTaperedPath(ctx, [b, tip], center, (t) => width * (1 - t), color);
+};
+
 // Generic per-eye orchestration for the shared tapered-stroke primitive - takes an already-
 // resolved tuning object rather than a finish-specific pattern id, so it has no idea whether
 // EYELINER or KAJAL (or any future finish reusing this) is the one calling it. `primaryArc` is
@@ -345,13 +389,21 @@ const renderTaperedStrokeForEye = (
     widthFn = (t) => base + t * (peak - base);
   }
 
+  const renderMainStroke = () => {
+    fillTaperedPath(tempCtx, pts, center, widthFn, color);
+    // See `renderCornerFadeTail`'s own comment - a harmless no-op at the outer end for winged
+    // patterns (already near-zero width there), a real fix everywhere else.
+    renderCornerFadeTail(tempCtx, pts, center, widthFn(0), eyeWidth, color, true);
+    renderCornerFadeTail(tempCtx, pts, center, widthFn(1), eyeWidth, color, false);
+  };
+
   if (tuning.blurRatio) {
     tempCtx.save();
     tempCtx.filter = `blur(${String(eyeWidth * tuning.blurRatio)}px)`;
-    fillTaperedPath(tempCtx, pts, center, widthFn, color);
+    renderMainStroke();
     tempCtx.restore();
   } else {
-    fillTaperedPath(tempCtx, pts, center, widthFn, color);
+    renderMainStroke();
   }
 
   if (tuning.secondWing) {
