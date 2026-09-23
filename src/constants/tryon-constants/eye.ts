@@ -440,21 +440,56 @@ export const EYEBROW_PATTERN_TUNING: Record<TEyebrowPattern, IEyebrowPatternTuni
   FEATHERED_FLUFFY: { strokeCount: 40, strokeAngleBiasDeg: 32, strokeWidthRatio: 0.05 },
 };
 
-/* ================= MASCARA ======================================================================
- * 4 patterns - the first EYE finish needing a genuinely new "lash-stroke" primitive (no reuse from
- * LIP/FACE, per EYE-PLAN.md's own build note): many small curved strokes generated along the upper
- * lash line, each one thick at the root and tapering to a fine tip (the exact same
+/* ================= SHARED LASH-STROKE TUNING SHAPE =============================================
+ * MASCARA and LASHES (see their own sections below) are both the *same* lash-stroke primitive
+ * (utils/tryon-utils/eye.ts's `renderLashStrokesForEye`) - many small curved strokes generated
+ * along the upper lash line, each one thick at the root and tapering to a fine tip (the exact same
  * `fillTaperedPath` ribbon primitive every other stroke-based EYE finish already shares), curving
  * from its own root direction toward straight-up over its own length instead of running straight -
  * same "blend a direction toward absolute up" technique EYEBROW's own `strokeAngleBiasDeg` already
  * uses for its Feathered/Fluffy pattern, reused here for lash *curl* instead of brow-hair lean.
  * Procedural (canvas path math, deterministic per-stroke jitter via the same `strokeJitter` hash
  * EYEBROW's own hair-strokes use), not a texture image asset - same "pure landmark + canvas math"
- * approach every EYE finish's actual rendering already follows. See docs/tryons/EYE-PLAN.md for the
- * full design reasoning and docs/tryons/MASCARA.md for this finish's own tracker.
+ * approach every EYE finish's actual rendering already follows, and a deliberate departure from
+ * EYE-PLAN.md's own original speculation that LASHES would likely need a texture-asset pipeline
+ * instead (written before MASCARA's own lash-stroke primitive existed to reuse) - see
+ * docs/tryons/LASHES.md's own design notes for why extending the existing procedural primitive
+ * turned out cleaner than sourcing/warping actual lash-strip art once MASCARA had already proven
+ * the math out. Same "one interface shape shared instead of two near-identical ones" reasoning
+ * `IEyeStrokePatternTuning` already established for EYELINER/KAJAL.
  *
  * Ratios below are relative to the eye's own detected width, same convention every other EYE
  * finish already uses.
+ */
+
+export interface ILashStrokeTuning {
+  strokeCount: number;
+  strokeWidthRatio: number;
+  strokeLengthRatio: number;
+  // 0 = each lash runs perfectly straight along its own root (outward-normal) direction, 1 = it
+  // curls all the way to straight-up by its own tip regardless of where its root pointed.
+  curlFraction: number;
+  // Extra outward rotation applied to each lash's own root direction, scaled by how far along the
+  // lash line it sits (0 at the inner corner, full amount at the outer) - the "fanned out toward
+  // the temple" look (MASCARA's own Dramatic/Length, LASHES' own Winged).
+  fanOutDeg?: number;
+  // LASHES only - modulates each stroke's own base length by position along the lash line, on top
+  // of its usual per-stroke jitter: `ramp-outer` grows monotonically toward the outer corner
+  // (Winged), `peak-center` is tallest at the horizontal middle and shorter at both corners
+  // (Doll-eye) - the same sine-arch shape EYESHADOW's own `eyelidBandHeight` already uses for
+  // "tall in the middle, tapering at both ends", reused here for length instead of band height.
+  // Omitted entirely means every stroke targets the same base length (every MASCARA pattern, and
+  // LASHES' own Natural/Everyday, Wispy, Dramatic/Voluminous).
+  lengthShape?: { kind: 'ramp-outer' | 'peak-center'; amount: number };
+  // LASHES' own Wispy only - extra per-stroke length jitter on top of the baseline every lash
+  // already gets, for a genuinely irregular (not just longer/shorter by position) feathered look.
+  extraLengthJitter?: number;
+}
+
+/* ================= MASCARA ======================================================================
+ * 4 patterns - the first EYE finish needing the lash-stroke primitive above (no reuse from
+ * LIP/FACE, per EYE-PLAN.md's own build note). See docs/tryons/EYE-PLAN.md for the full design
+ * reasoning and docs/tryons/MASCARA.md for this finish's own tracker.
  */
 
 export type TMascaraPattern = 'NATURAL' | 'VOLUMIZING' | 'DRAMATIC_LENGTH' | 'CURLED';
@@ -474,21 +509,7 @@ export const MASCARA_PATTERNS: IEyePatternOption[] = [
 // Natural, the least visually aggressive of the 4.
 export const MASCARA_DEFAULT_PATTERN: TMascaraPattern = 'NATURAL';
 
-export interface IMascaraPatternTuning {
-  strokeCount: number;
-  strokeWidthRatio: number;
-  strokeLengthRatio: number;
-  // 0 = each lash runs perfectly straight along its own root (outward-normal) direction, 1 = it
-  // curls all the way to straight-up by its own tip regardless of where its root pointed -
-  // Natural/Volumizing want a slight natural curl, Curled wants this pushed hard.
-  curlFraction: number;
-  // Dramatic/Length only - extra outward rotation applied to each lash's own root direction,
-  // scaled by how far along the lash line it sits (0 at the inner corner, full amount at the
-  // outer) - the "fanned out toward the temple" look real dramatic-length mascara reads as.
-  fanOutDeg?: number;
-}
-
-export const MASCARA_PATTERN_TUNING: Record<TMascaraPattern, IMascaraPatternTuning> = {
+export const MASCARA_PATTERN_TUNING: Record<TMascaraPattern, ILashStrokeTuning> = {
   NATURAL: {
     strokeCount: 32,
     strokeWidthRatio: 0.016,
@@ -509,6 +530,76 @@ export const MASCARA_PATTERN_TUNING: Record<TMascaraPattern, IMascaraPatternTuni
     fanOutDeg: 18,
   },
   CURLED: { strokeCount: 36, strokeWidthRatio: 0.018, strokeLengthRatio: 0.1, curlFraction: 0.55 },
+};
+
+/* ================= LASHES (false-lash styles) ==================================================
+ * 5 patterns, the exact same lash-stroke primitive MASCARA uses (see the shared-shape comment
+ * above) - the only new capability needed was per-position length shaping (`lengthShape`) for
+ * Winged/Doll-eye and extra length jitter (`extraLengthJitter`) for Wispy, both added to the
+ * shared tuning interface rather than forking a second one. See docs/tryons/EYE-PLAN.md for the
+ * full design reasoning and docs/tryons/LASHES.md for this finish's own tracker (including why
+ * this ended up procedural rather than the texture-asset approach EYE-PLAN.md originally guessed
+ * at).
+ */
+
+export type TLashesPattern =
+  'NATURAL_EVERYDAY' | 'WISPY' | 'DRAMATIC_VOLUMINOUS' | 'WINGED' | 'DOLL_EYE';
+
+export const LASHES_PATTERNS: IEyePatternOption[] = [
+  {
+    id: 'NATURAL_EVERYDAY',
+    label: 'Natural / Everyday',
+    image: '/images/tryon/eye/lashes/Natural-Everyday.webp',
+  },
+  { id: 'WISPY', label: 'Wispy', image: '/images/tryon/eye/lashes/Wispy.webp' },
+  {
+    id: 'DRAMATIC_VOLUMINOUS',
+    label: 'Dramatic / Voluminous',
+    image: '/images/tryon/eye/lashes/Dramatic-Voluminous.webp',
+  },
+  { id: 'WINGED', label: 'Winged', image: '/images/tryon/eye/lashes/Winged.webp' },
+  { id: 'DOLL_EYE', label: 'Doll-Eye', image: '/images/tryon/eye/lashes/Doll-Eye.webp' },
+];
+
+// Same "tasteful default rather than nothing" reasoning as every other EYE finish's own default -
+// Natural/Everyday, the least visually aggressive of the 5.
+export const LASHES_DEFAULT_PATTERN: TLashesPattern = 'NATURAL_EVERYDAY';
+
+export const LASHES_PATTERN_TUNING: Record<TLashesPattern, ILashStrokeTuning> = {
+  NATURAL_EVERYDAY: {
+    strokeCount: 34,
+    strokeWidthRatio: 0.017,
+    strokeLengthRatio: 0.095,
+    curlFraction: 0.18,
+  },
+  WISPY: {
+    strokeCount: 28,
+    strokeWidthRatio: 0.015,
+    strokeLengthRatio: 0.11,
+    curlFraction: 0.2,
+    extraLengthJitter: 0.5,
+  },
+  DRAMATIC_VOLUMINOUS: {
+    strokeCount: 58,
+    strokeWidthRatio: 0.029,
+    strokeLengthRatio: 0.13,
+    curlFraction: 0.25,
+  },
+  WINGED: {
+    strokeCount: 38,
+    strokeWidthRatio: 0.02,
+    strokeLengthRatio: 0.1,
+    curlFraction: 0.22,
+    fanOutDeg: 22,
+    lengthShape: { kind: 'ramp-outer', amount: 0.9 },
+  },
+  DOLL_EYE: {
+    strokeCount: 38,
+    strokeWidthRatio: 0.02,
+    strokeLengthRatio: 0.1,
+    curlFraction: 0.2,
+    lengthShape: { kind: 'peak-center', amount: 0.6 },
+  },
 };
 
 /* ================= BROWGEL ======================================================================
@@ -535,6 +626,7 @@ export const EYE_DEFAULT_PATTERNS: Partial<Record<TEyeFinish, string>> = {
   EYESHADOW: EYESHADOW_DEFAULT_PATTERN,
   EYEBROW: EYEBROW_DEFAULT_PATTERN,
   MASCARA: MASCARA_DEFAULT_PATTERN,
+  LASHES: LASHES_DEFAULT_PATTERN,
 };
 
 // Which EYE finishes have a pattern picker at all, and which option list to show for each -
@@ -548,14 +640,13 @@ export const EYE_PATTERNS: Partial<Record<TEyeFinish, IEyePatternOption[]>> = {
   EYESHADOW: EYESHADOW_PATTERNS,
   EYEBROW: EYEBROW_PATTERNS,
   MASCARA: MASCARA_PATTERNS,
+  LASHES: LASHES_PATTERNS,
 };
 
 /* ================= RANGE BOUNDS ================================================================
  * Same shape/role as LIP_RANGE_BOUNDS/FACE_RANGE_BOUNDS - the intensity slider's bounds, one
- * entry per finish. EYELINER/KAJAL/EYESHADOW/EYEBROW/BROWGEL/MASCARA have dedicated rendering so
- * far (see EYE-PLAN.md's build order) - LASHES is the only placeholder left (its own eventual
- * intended character, not validated tuning), revisited once it gets its own dedicated renderer,
- * same as every FACE finish did.
+ * entry per finish. Every EYE finish now has dedicated rendering (see EYE-PLAN.md's build order) -
+ * no placeholders left.
  */
 export const EYE_RANGE_BOUNDS: Record<TEyeFinish, IRangeBounds> = {
   // Real intensity here is mostly carried by the pattern's own width/blur tuning above (same
@@ -580,7 +671,9 @@ export const EYE_RANGE_BOUNDS: Record<TEyeFinish, IRangeBounds> = {
   // against real texture" lesson EYELINER/KAJAL/EYEBROW's own placeholders all needed real-photo
   // testing to discover - starting from that lesson already applied instead of rediscovering it.
   MASCARA: { min: 0.3, max: 0.85, default: 0.6 },
-  LASHES: { min: 0.1, max: 0.6, default: 0.3 },
+  // Same "thin individual stroke needs boosted alpha" reasoning as MASCARA - false-lash strands
+  // are the same thin shape, just longer/more varied.
+  LASHES: { min: 0.3, max: 0.85, default: 0.6 },
   // Deliberately the softest range of any EYE finish - a setting gel reads as a sheer tint over
   // the hairs already there, not a defined color the way EYEBROW's own fill patterns are meant
   // to. Already matched this shape as a placeholder before real rendering existed; kept as-is

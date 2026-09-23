@@ -11,6 +11,7 @@ import {
   applyEyelinerEye,
   applyEyeshadowEye,
   applyKajalEye,
+  applyLashesEye,
   applyMascaraEye,
 } from '@/utils/tryon-utils/eye';
 
@@ -20,11 +21,12 @@ import { TryOnEngineBase } from '../../TryOnEngineBase';
 // Unlike LIP's `UNSUPPORTED_LIP_FINISHES`/FACE's `UNSUPPORTED_FACE_FINISHES` (which fall back to
 // rendering as that category's most basic finish, MATTE/FOUNDATION), EYE's subcategories are
 // different *product types* applied to different regions (a brow fill and a lash-line liner
-// aren't variants of the same effect the way two lipstick finishes are) - falling back to
-// EYELINER's rendering for, say, an unsupported LASHES pick would paint the wrong region entirely.
-// So this just skips rendering (with a console warning) rather than substituting a mismatched
-// effect.
-const UNSUPPORTED_EYE_FINISHES = new Set<TEyeFinish>(['LASHES']);
+// aren't variants of the same effect the way two lipstick finishes are) - falling back to one
+// finish's rendering for another unsupported pick would paint the wrong region entirely, so this
+// skips rendering (with a console warning) instead. Empty now that every planned EYE finish (see
+// EYE-PLAN.md) has dedicated rendering - kept rather than removed so a future EYE addition has an
+// obvious place to register itself as still-unsupported while it's being built.
+const UNSUPPORTED_EYE_FINISHES = new Set<TEyeFinish>([]);
 
 /**
  * EYE category engine - fresh design (not ported from any reference implementation, see
@@ -107,6 +109,9 @@ export abstract class EyeEngineBase extends TryOnEngineBase<IEyeTryOnState> {
         return;
       case 'MASCARA':
         applyMascaraEye({ face, ctx, rgb, dimension, alpha, pattern });
+        return;
+      case 'LASHES':
+        applyLashesEye({ face, ctx, rgb, dimension, alpha, pattern });
         return;
     }
   }

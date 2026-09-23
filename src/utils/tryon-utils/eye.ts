@@ -8,8 +8,9 @@ import {
   type IEyebrowPatternTuning,
   type IEyeshadowPatternTuning,
   type IEyeStrokePatternTuning,
-  type IMascaraPatternTuning,
+  type ILashStrokeTuning,
   KAJAL_PATTERN_TUNING,
+  LASHES_PATTERN_TUNING,
   LEFT_EYE_LOWER_INDICES,
   LEFT_EYE_UPPER_INDICES,
   LEFT_EYEBROW_INDICES,
@@ -938,10 +939,10 @@ export const applyBrowgelEye = ({ face, ctx, rgb, dimension, alpha }: IEyeRender
   ctx.drawImage(tempCtx.canvas, 0, 0);
 };
 
-/* ================= MASCARA =====================================================================
- * 4 patterns, the first EYE finish needing a genuinely new "lash-stroke" primitive - see
- * `MASCARA_PATTERN_TUNING`'s own comment (constants/tryon-constants/eye.ts) for the full design
- * reasoning. Every lash is one small tapered, curving stroke rooted on the upper lash line.
+/* ================= MASCARA / LASHES - shared lash-stroke primitive ============================
+ * Both finishes are the exact same primitive - see `ILashStrokeTuning`'s own comment (constants/
+ * tryon-constants/eye.ts) for the full design reasoning. Every lash is one small tapered, curving
+ * stroke rooted on the upper lash line.
  */
 
 // Rotates `angle` toward straight-up (`-90°`, canvas coordinates) by `fraction` of the way there -
@@ -980,10 +981,23 @@ const buildLashPoints = (
   return pts;
 };
 
-const renderMascaraForEye = (
+// LASHES' own Winged/Doll-eye read as one shape only because every stroke's own base length is
+// modulated by where it sits along the lash line, not just its usual per-stroke jitter - `t=0` is
+// the inner corner, `t=1` the outer. `peak-center` reuses the exact same sine-arch shape
+// EYESHADOW's own `eyelidBandHeight` already established for "tall in the middle, tapering at
+// both ends", applied to length instead of band height. Every MASCARA pattern (and LASHES' own
+// Natural/Everyday, Wispy, Dramatic/Voluminous) leaves `lengthShape` unset, so every stroke simply
+// targets the same base length - this returns `1` (a no-op multiplier) for those.
+const lashLengthShapeMultiplier = (tuning: ILashStrokeTuning, t: number): number => {
+  if (!tuning.lengthShape) return 1;
+  const { kind, amount } = tuning.lengthShape;
+  return kind === 'ramp-outer' ? 1 + amount * t : 1 + amount * Math.sin(Math.PI * t);
+};
+
+const renderLashStrokesForEye = (
   tempCtx: CanvasRenderingContext2D,
   upperArc: TPoint[],
-  tuning: IMascaraPatternTuning,
+  tuning: ILashStrokeTuning,
   color: string,
 ) => {
   const first = upperArc[0];
@@ -999,6 +1013,9 @@ const renderMascaraForEye = (
   const strokeWidth = eyeWidth * tuning.strokeWidthRatio;
   const strokeLength = eyeWidth * tuning.strokeLengthRatio;
   const fanOutRad = ((tuning.fanOutDeg ?? 0) * Math.PI) / 180;
+  // Extends (never replaces) the baseline ±0.3 amplitude every lash already gets, so MASCARA's own
+  // patterns (which never set this) render bit-for-bit identically to before this field existed.
+  const lengthJitterAmplitude = 0.3 + (tuning.extraLengthJitter ?? 0);
 
   for (let i = 0; i < tuning.strokeCount; i++) {
     const t = i / (tuning.strokeCount - 1 || 1);
@@ -1008,7 +1025,8 @@ const renderMascaraForEye = (
     if (!root || !normal) continue;
 
     const rootAngle = Math.atan2(normal.y, normal.x) + fanOutRad * horizontalSign * t;
-    const length = strokeLength * (0.85 + strokeJitter(i, 1) * 0.3);
+    const shapedLength = strokeLength * lashLengthShapeMultiplier(tuning, t);
+    const length = shapedLength * (0.85 + strokeJitter(i, 1) * lengthJitterAmplitude);
     const curl = tuning.curlFraction * (0.8 + strokeJitter(i, 2) * 0.4);
     const width = strokeWidth * (0.75 + strokeJitter(i, 3) * 0.3);
 
@@ -1025,9 +1043,7 @@ export const applyMascaraEye = ({
   alpha,
   pattern,
 }: IEyeRenderParams) => {
-  const tuning = (MASCARA_PATTERN_TUNING as Record<string, IMascaraPatternTuning | undefined>)[
-    pattern
-  ];
+  const tuning = (MASCARA_PATTERN_TUNING as Record<string, ILashStrokeTuning | undefined>)[pattern];
   if (!tuning) return;
 
   const [r, g, b] = rgb;
@@ -1039,8 +1055,30 @@ export const applyMascaraEye = ({
   const tempCtx = createOffscreenCtx(dimension);
   if (!tempCtx) return;
 
-  renderMascaraForEye(tempCtx, leftUpper, tuning, color);
-  renderMascaraForEye(tempCtx, rightUpper, tuning, color);
+  renderLashStrokesForEye(tempCtx, leftUpper, tuning, color);
+  renderLashStrokesForEye(tempCtx, rightUpper, tuning, color);
+
+  ctx.drawImage(tempCtx.canvas, 0, 0);
+};
+
+export const applyLashesEye = ({ face, ctx, rgb, dimension, alpha, pattern }: IEyeRenderParams) => {
+  // Same safe-lookup reasoning as every other EYE finish above, against LASHES' own tuning table -
+  // a stale MASCARA pattern id must render nothing here, not silently reuse MASCARA's own tuning,
+  // even though both finishes share the exact same underlying primitive.
+  const tuning = (LASHES_PATTERN_TUNING as Record<string, ILashStrokeTuning | undefined>)[pattern];
+  if (!tuning) return;
+
+  const [r, g, b] = rgb;
+  const color = toColorString(r, g, b, alpha);
+
+  const { leftUpper, rightUpper } = getOrderedEyeArcs(face, dimension);
+  if (leftUpper.length < 2 || rightUpper.length < 2) return;
+
+  const tempCtx = createOffscreenCtx(dimension);
+  if (!tempCtx) return;
+
+  renderLashStrokesForEye(tempCtx, leftUpper, tuning, color);
+  renderLashStrokesForEye(tempCtx, rightUpper, tuning, color);
 
   ctx.drawImage(tempCtx.canvas, 0, 0);
 };
