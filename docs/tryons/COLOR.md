@@ -4,7 +4,7 @@
 
 _Tracking model: pixel segmentation (MediaPipe `ImageSegmenter`, hair-confidence mask), **landmark nahi** - HAIR ki apni poori tarah alag `SegmentationEngineBase`/`withLiveCameraSegmentation`/`withImageUploadSegmentation` stack pe bani hai, LIP/EYE/FACE ka shared `TryOnEngineBase` reuse nahi karti. Poori reasoning [HAIR-PLAN.md](./HAIR-PLAN.md#engine-architecture---shared-tryonenginebase-reuse-nahi-ho-sakta-as-is) mein hai._
 
-> **HAIR ka pehla built finish, aur poore is category ke naye engine/type/rendering stack ka foundation**. **HAIR ki baaki 3 subcategories bhi ab build ho chuki hain** ([HENNA.md](./HENNA.md), [OMBRE.md](./OMBRE.md), [HIGHLIGHTS.md](./HIGHLIGHTS.md)) - HENNA `applyColorHair` ka direct alias nikla, OMBRE aur HIGHLIGHTS dono ne is file ke `buildMaskAlphaLayer` mein add hua optional per-pixel alpha-multiplier param reuse kiya (root-to-tip ramp aur procedural streak-pattern ke liye respectively).
+> **HAIR ka pehla built finish, aur poore is category ke naye engine/type/rendering stack ka foundation**. **HAIR ki baaki 3 subcategories bhi ab build ho chuki hain** ([HENNA.md](./HENNA.md), [OMBRE.md](./OMBRE.md), [HIGHLIGHTS.md](./HIGHLIGHTS.md)) - HENNA `applyColorHair` ka direct alias nikla, OMBRE aur HIGHLIGHTS dono ne is file ke `buildMaskAlphaLayer` mein add hua per-pixel `alphaMultiplier: Float32Array | null` param reuse kiya (root-to-tip ramp aur procedural streak-pattern ke liye respectively) - COLOR/HENNA khud explicitly `null` pass karte hain.
 
 ## Summary
 

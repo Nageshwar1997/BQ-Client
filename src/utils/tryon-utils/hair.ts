@@ -60,13 +60,15 @@ export const getHairDetectionStatus = (mask: IHairMask | null): TFaceDetectionSt
 // manual per-canvas-pixel resample loop - important for Live mode, where this runs every frame
 // (see docs/tryons/HAIR-PLAN.md's Open question 2 on Live-mode performance).
 //
-// `alphaMultiplier`, when given, is a per-pixel 0-1 factor (same length/row-major order as
+// `alphaMultiplier`, when non-`null`, is a per-pixel 0-1 factor (same length/row-major order as
 // `mask.data` itself) that scales that exact pixel's alpha before writing it, on top of the
 // mask's own per-pixel confidence there - OMBRE's root-to-tip fade and HIGHLIGHTS's streak pattern
 // (both below) are the only callers that pass one, each building it differently (a value that
 // only varies by row, or only by column) but landing on this same full-size shape so this
-// function itself never needs to know which; COLOR/HENNA leave every pixel at its full mask
-// confidence (`undefined` treated as `1` everywhere).
+// function itself never needs to know which; COLOR/HENNA pass `null` explicitly, leaving every
+// pixel at its full mask confidence. A required (not optional) param deliberately - every call
+// site has to say explicitly whether it wants a multiplier or not, rather than letting "no
+// multiplier" be an easy-to-miss omitted argument.
 const buildMaskAlphaLayer = (
   mask: IHairMask,
   alphaMultiplier: Float32Array | null,
