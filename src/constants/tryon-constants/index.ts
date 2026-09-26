@@ -12,12 +12,12 @@ import { LIP_LIVE_INSTRUCTIONS, LIP_UPLOAD_INSTRUCTIONS } from './lip';
 // Matches the reference implementation's hardcoded `COSMETIC_MODEL_IMAGES` (same 6 assets,
 // already present under public/images/tryon/models/).
 export const TRYON_MODEL_IMAGES = [
-  '/images/tryon/models/Central-Indian.webp',
-  '/images/tryon/models/East-Indian.webp',
   '/images/tryon/models/North-Indian.webp',
-  '/images/tryon/models/Northeast-Indian.webp',
-  '/images/tryon/models/South-Indian.webp',
+  '/images/tryon/models/East-Indian.webp',
   '/images/tryon/models/West-Indian.webp',
+  '/images/tryon/models/Northeast-Indian.webp',
+  '/images/tryon/models/Central-Indian.webp',
+  '/images/tryon/models/South-Indian.webp',
 ];
 
 export interface ITryOnInstruction {
