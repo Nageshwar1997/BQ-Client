@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import type { IEyeTryOnState } from '@/classes/tryon/categories/eye';
 import type { IFaceTryOnState } from '@/classes/tryon/categories/face';
+import type { IHairTryOnState } from '@/classes/tryon/categories/hair';
 import type { ILipTryOnState } from '@/classes/tryon/categories/lip';
 import { ModalWrapper } from '@/components/layout/modals/ModalWrapper';
 import {
@@ -14,6 +15,7 @@ import {
   EYE_RANGE_BOUNDS,
 } from '@/constants/tryon-constants/eye';
 import { FACE_RANGE_BOUNDS } from '@/constants/tryon-constants/face';
+import { HAIR_RANGE_BOUNDS } from '@/constants/tryon-constants/hair';
 import { LIP_RANGE_BOUNDS } from '@/constants/tryon-constants/lip';
 import useDebounce from '@/hooks/useDebounce';
 import useTryOnUpload from '@/hooks/useTryOnUpload';
@@ -28,6 +30,7 @@ import { InputError } from '@/components/ui/inputs/children';
 import BottomButtons from './BottomButtons';
 import EyeTryOnStage from './eye/EyeTryOnStage';
 import FaceTryOnStage from './face/FaceTryOnStage';
+import HairTryOnStage from './hair/HairTryOnStage';
 import LipTryOnStage from './lip/LipTryOnStage';
 import TryOnBottomSheet from './TryOnBottomSheet';
 import TryOnCompareSlider from './TryOnCompareSlider';
@@ -58,7 +61,7 @@ interface ITryOnFlowState {
   step: 'select' | 'instructions' | 'tryon';
   mode: 'live' | 'upload';
   uploadedImageUrl: string | null;
-  engineState: ILipTryOnState | IFaceTryOnState | IEyeTryOnState | null;
+  engineState: ILipTryOnState | IFaceTryOnState | IEyeTryOnState | IHairTryOnState | null;
 }
 
 // `stageRef` below has to hold whichever category's stage is currently mounted - not the full
@@ -405,7 +408,9 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
         ? LIP_RANGE_BOUNDS[tryOn.subCategory]
         : tryOn?.category === 'EYE'
           ? EYE_RANGE_BOUNDS[tryOn.subCategory]
-          : { min: 0, max: 1, default: 0.5 };
+          : tryOn?.category === 'HAIR'
+            ? HAIR_RANGE_BOUNDS[tryOn.subCategory]
+            : { min: 0, max: 1, default: 0.5 };
 
   // Only meaningful inside the EYE branch below, same "declared up top, next to rangeBounds"
   // reasoning - `undefined` for any EYE subcategory without a pattern picker yet (see
@@ -430,12 +435,16 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
       containerProps={{ className: 'p-0! lg:p-8!' }}
       className="h-full max-h-full! w-full! max-w-full! min-w-[80dvw]! rounded-none! border-0! lg:max-h-[90dvh]! lg:w-auto! lg:rounded-xl! lg:border!"
     >
-      {/* Only LIP, FACE, and EYE have a rendering engine built so far - see
+      {/* Only LIP, FACE, EYE, and HAIR have a rendering engine built so far - see
           docs/tryons/README.md. The discriminant check stays inline (not a separately-computed
-          boolean) so TS keeps narrowing `tryOn` to `{category: 'LIP' | 'FACE' | 'EYE', ...}` for
-          every access inside the branch below - a plain boolean variable would lose that link. */}
+          boolean) so TS keeps narrowing `tryOn` to `{category: 'LIP' | 'FACE' | 'EYE' | 'HAIR',
+          ...}` for every access inside the branch below - a plain boolean variable would lose
+          that link. */}
       {!tryOn ||
-      (tryOn.category !== 'LIP' && tryOn.category !== 'FACE' && tryOn.category !== 'EYE') ? (
+      (tryOn.category !== 'LIP' &&
+        tryOn.category !== 'FACE' &&
+        tryOn.category !== 'EYE' &&
+        tryOn.category !== 'HAIR') ? (
         <div className="flex flex-col items-center gap-2 p-6 text-center">
           <Icon icon="solar:hourglass-linear" className="text-primary/40 size-8" />
           <p className="text-tertiary text-sm">
@@ -521,6 +530,22 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                         pattern:
                           (flow.engineState as IEyeTryOnState | null)?.pattern ??
                           EYE_DEFAULT_PATTERNS[tryOn.subCategory],
+                      }}
+                      onStateChange={(engineState) => {
+                        setFlow((prev) => ({ ...prev, engineState }));
+                      }}
+                    />
+                  ) : tryOn.category === 'HAIR' ? (
+                    <HairTryOnStage
+                      key={retryKey}
+                      // See the matching cast comment on <LipTryOnStage> above.
+                      ref={stageRef as Ref<ITryOnStageRef<IHairTryOnState>>}
+                      mode={flow.mode}
+                      uploadedImageUrl={flow.uploadedImageUrl}
+                      initialState={{
+                        type: tryOn.subCategory,
+                        color: flow.engineState?.color ?? null,
+                        range: flow.engineState?.range ?? rangeBounds.default,
                       }}
                       onStateChange={(engineState) => {
                         setFlow((prev) => ({ ...prev, engineState }));
