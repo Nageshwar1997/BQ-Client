@@ -69,7 +69,7 @@ export const getHairDetectionStatus = (mask: IHairMask | null): TFaceDetectionSt
 // confidence (`undefined` treated as `1` everywhere).
 const buildMaskAlphaLayer = (
   mask: IHairMask,
-  alphaMultiplier?: Float32Array,
+  alphaMultiplier: Float32Array | null,
 ): HTMLCanvasElement | null => {
   const maskCanvas = document.createElement('canvas');
   maskCanvas.width = mask.width;
@@ -103,7 +103,7 @@ const applyHairMaskRecolor = (
   rgb: TRGBTuple,
   dimension: TDimension,
   alpha: number,
-  alphaMultiplier?: Float32Array,
+  alphaMultiplier: Float32Array | null,
 ) => {
   const maskCanvas = buildMaskAlphaLayer(mask, alphaMultiplier);
   if (!maskCanvas) return;
@@ -141,7 +141,7 @@ const applyHairMaskRecolor = (
 };
 
 export const applyColorHair = ({ ctx, mask, rgb, dimension, alpha }: IHairRenderParams) => {
-  applyHairMaskRecolor(ctx, mask, rgb, dimension, alpha);
+  applyHairMaskRecolor(ctx, mask, rgb, dimension, alpha, null);
 };
 
 // HENNA reuses COLOR's exact mechanism, no separate color-math transform - real henna products
