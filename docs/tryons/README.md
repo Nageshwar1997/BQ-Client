@@ -29,7 +29,7 @@ Inme se koi bhi cheez kisi ek category ke andar dobara nahi likhni — ek baar y
 | EYE         | 7             | 75% (42/56) ✅    | [EYE.md](./EYE.md) — EYELINER [detail](./EYELINER.md), KAJAL [detail](./KAJAL.md), EYESHADOW [detail](./EYESHADOW.md), EYEBROW [detail](./EYEBROW.md), BROWGEL [detail](./BROWGEL.md), MASCARA [detail](./MASCARA.md), LASHES [detail](./LASHES.md)                                                                |
 | HAIR        | 4             | 50% (16/32) ✅    | [HAIR.md](./HAIR.md) — [build plan](./HAIR-PLAN.md) — COLOR [detail](./COLOR.md), HENNA [detail](./HENNA.md), OMBRE [detail](./OMBRE.md), HIGHLIGHTS [detail](./HIGHLIGHTS.md) — pehla category jo landmark nahi, pixel segmentation use karta hai, shared engine bhi reuse nahi hota (wajah HAIR-PLAN.md mein)    |
 | FACE        | 8             | 78.125% (50/64)   | [FACE.md](./FACE.md) — FOUNDATION [detail](./FOUNDATION.md) ✅, BLUSH [detail](./BLUSH.md), CONCEALER [detail](./CONCEALER.md), HIGHLIGHTER [detail](./HIGHLIGHTER.md), CONTOUR [detail](./CONTOUR.md), BRONZER [detail](./BRONZER.md), BBCREAM [detail](./BBCREAM.md), COMPACTPOWDER [detail](./COMPACTPOWDER.md) |
-| NAIL        | 5             | 0% (0/40)         | [NAIL.md](./NAIL.md)                                                                                                                                                                                                                                                                                               |
+| NAIL        | 5             | 0% (0/40)         | [NAIL.md](./NAIL.md) — [build plan](./NAIL-PLAN.md) — koi ready-made nail-segmentation model nahi (HAIR ke Hair Segmenter jaisa), isliye hand-landmark + geometric approximation technique planned hai (wajah NAIL-PLAN.md mein)                                                                                   |
 | **Overall** | **35**        | **70% (196/280)** |                                                                                                                                                                                                                                                                                                                    |
 
 ## Suggested build order
@@ -38,7 +38,7 @@ Inme se koi bhi cheez kisi ek category ke andar dobara nahi likhni — ek baar y
 2. **FACE** 🔄 saari 8 subcategories built (FOUNDATION ✅ done 10/10, baaki saat 🔄 pending real-device QA) — same face-landmark engine reuse, thoda bada region set
 3. **EYE** ✅ saari 7 subcategories built (EYELINER, KAJAL, EYESHADOW, EYEBROW, BROWGEL, MASCARA, LASHES) — pending real-device QA, jaisa FACE ka bhi hai
 4. **HAIR** ✅ saari 4 subcategories built (COLOR, HENNA, OMBRE, HIGHLIGHTS) — pending real-device QA, jaisa FACE/EYE ka bhi hai. Segmentation-based (landmark nahi, poore strand ka `ImageSegmenter` confidence mask), shared `TryOnEngineBase` reuse nahi hota, apna parallel `SegmentationEngineBase` chahiye pada - poori reasoning [HAIR-PLAN.md](./HAIR-PLAN.md) mein hai
-5. **NAIL** — naya tracking model (hand/finger) integrate karna padega, isliye baad me
+5. **NAIL** — naya tracking model (hand/finger, MediaPipe `HandLandmarker`) integrate karna padega, isliye baad me — build plan ban chuka hai, [NAIL-PLAN.md](./NAIL-PLAN.md) dekho (shared `TryOnEngineBase` bhi reuse nahi hota, HAIR jaisa hi apna parallel engine chahiye, bas `HandLandmarker`'s sync detect ki wajah se utna divergent nahi)
 
 ## Progress kaise track karein
 
