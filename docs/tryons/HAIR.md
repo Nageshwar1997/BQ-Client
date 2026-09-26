@@ -1,8 +1,10 @@
 # HAIR Try-On Tracker
 
-[← Back to master tracker](./README.md)
+[← Back to master tracker](./README.md) · [← Build plan](./HAIR-PLAN.md)
 
-_Tracking model: hair segmentation (full-strand mask), point landmarks **nahi** — LIP/EYE/FACE se technically different. Isko apna alag segmentation model chahiye, chahe head region locate karne ke liye face-detection step share kar sake._
+_Tracking model: hair segmentation (full-strand mask via MediaPipe `ImageSegmenter` confidence mask), point landmarks **nahi** — LIP/EYE/FACE se technically different, aur shared `TryOnEngineBase`/mixins bhi reuse nahi ho sakte as-is. Full research aur proposed architecture [HAIR-PLAN.md](./HAIR-PLAN.md) mein hai, koi bhi code likhne se pehle likha gaya._
+
+> **Build plan**: HAIR is poore try-on feature ka pehla category hai jo face-landmark tracking use hi nahi karta - isko apna alag `ImageSegmenter`-based pixel-segmentation pipeline chahiye, aur isliye shared `TryOnEngineBase`/`withLiveCamera`/`withImageUpload`/render-param type-hierarchy bhi reuse nahi hote, ek parallel hierarchy banani padegi. 4 subcategories (COLOR, HIGHLIGHTS, HENNA, OMBRE) mein se kisi ko bhi drop nahi kiya gaya - sab genuinely visible effect de sakte hain. Suggested build order: COLOR → HENNA → OMBRE → HIGHLIGHTS. Poori reasoning [HAIR-PLAN.md](./HAIR-PLAN.md) mein hai.
 
 ## Summary
 
