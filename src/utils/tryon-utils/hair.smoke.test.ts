@@ -16,7 +16,7 @@ import { describe, expect, it } from 'vitest';
 import type { IHairMask } from '@/types/tryon-types/hair';
 import { createOffscreenCtx } from '@/utils/tryon-utils';
 
-import { applyColorHair, getHairDetectionStatus } from './hair';
+import { applyColorHair, applyHennaHair, getHairDetectionStatus } from './hair';
 
 const DIMENSION = { width: 200, height: 200 };
 const RGB: [number, number, number] = [140, 60, 30];
@@ -67,6 +67,26 @@ describe('applyColorHair smoke test', () => {
 
     expect(() => {
       applyColorHair({ mask, ctx, rgb: RGB, dimension: DIMENSION, alpha: ALPHA });
+    }).not.toThrow();
+    expect(hasNonTransparentPixel(ctx)).toBe(true);
+  });
+});
+
+describe('applyHennaHair smoke test', () => {
+  it('is the exact same function as applyColorHair (no separate color-math transform)', () => {
+    // See applyHennaHair's own comment (hair.ts) - HENNA's "reddish-brown" comes from which real
+    // product shade gets picked, not from a hardcoded hue baked into the render, so this is a
+    // direct alias, not a wrapper - pinning that down so it can't silently drift into one later
+    // without a deliberate decision.
+    expect(applyHennaHair).toBe(applyColorHair);
+  });
+
+  it('renders without throwing and paints at least one pixel', () => {
+    const mask = makeFixtureMask();
+    const ctx = makeCtx();
+
+    expect(() => {
+      applyHennaHair({ mask, ctx, rgb: RGB, dimension: DIMENSION, alpha: ALPHA });
     }).not.toThrow();
     expect(hasNonTransparentPixel(ctx)).toBe(true);
   });

@@ -130,3 +130,13 @@ const applyHairMaskRecolor = (
 export const applyColorHair = ({ ctx, mask, rgb, dimension, alpha }: IHairRenderParams) => {
   applyHairMaskRecolor(ctx, mask, rgb, dimension, alpha);
 };
+
+// HENNA reuses COLOR's exact mechanism, no separate color-math transform - real henna products
+// come in their own distinct shades (Natural/Red/Burgundy/Black henna etc.), same as any other
+// HAIR product, so the "reddish-brown" character comes from *which* shade the shopper picks (real
+// catalog data, same as every other finish in this app), not from a hardcoded hue baked into the
+// render. Still its own named export - same "every finish gets its own wrapper, even a thin one"
+// convention `applyBrowgelEye` (utils/tryon-utils/eye.ts) already set for EYEBROW's fill
+// primitive - so a future divergence (if HENNA ever needs its own texture/warmth treatment) has
+// an obvious place to land without touching COLOR's own callers.
+export const applyHennaHair = applyColorHair;

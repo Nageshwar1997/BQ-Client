@@ -5,7 +5,7 @@ import type {
   IHairTryOnState,
   THairFinish,
 } from '@/types/tryon-types/hair';
-import { applyColorHair } from '@/utils/tryon-utils/hair';
+import { applyColorHair, applyHennaHair } from '@/utils/tryon-utils/hair';
 
 import { SegmentationEngineBase } from '../../SegmentationEngineBase';
 
@@ -14,7 +14,7 @@ import { SegmentationEngineBase } from '../../SegmentationEngineBase';
 // use. COLOR is HAIR's own "most basic" finish (a full-strand recolor, the foundation every other
 // HAIR finish builds on - see docs/tryons/HAIR-PLAN.md's Subcategories section), the same role
 // FOUNDATION plays for FACE.
-const UNSUPPORTED_HAIR_FINISHES = new Set<THairFinish>(['HIGHLIGHTS', 'HENNA', 'OMBRE']);
+const UNSUPPORTED_HAIR_FINISHES = new Set<THairFinish>(['HIGHLIGHTS', 'OMBRE']);
 
 /**
  * HAIR category engine - fresh design (no reference implementation covers hair recolor at all,
@@ -65,6 +65,9 @@ export abstract class HairEngineBase extends SegmentationEngineBase<IHairTryOnSt
     switch (state.type) {
       case 'COLOR':
         applyColorHair(params);
+        return;
+      case 'HENNA':
+        applyHennaHair(params);
         return;
     }
   }

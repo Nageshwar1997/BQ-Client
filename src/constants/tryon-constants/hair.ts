@@ -6,7 +6,7 @@ import type { ITryOnInstruction } from '.';
 // Same shape/role as `FACE_RANGE_BOUNDS`/`LIP_RANGE_BOUNDS` - the intensity slider's bounds, one
 // entry per finish. `Record<THairFinish, IRangeBounds>` needs every finish keyed regardless of
 // which ones have dedicated rendering yet (see `UNSUPPORTED_HAIR_FINISHES`,
-// classes/tryon/categories/hair/HairEngineBase.ts) - HIGHLIGHTS/HENNA/OMBRE's bounds below are a
+// classes/tryon/categories/hair/HairEngineBase.ts) - HIGHLIGHTS/OMBRE's bounds below are still a
 // starting placeholder (same shape COLOR's own, since they currently render as COLOR's fallback),
 // expected to get their own real values once each finish gets dedicated rendering.
 export const HAIR_RANGE_BOUNDS: Record<THairFinish, IRangeBounds> = {
@@ -18,6 +18,9 @@ export const HAIR_RANGE_BOUNDS: Record<THairFinish, IRangeBounds> = {
   // to get real-device tuned once rendering, same as every other range in this app.
   COLOR: { min: 0.3, max: 1, default: 0.7 },
   HIGHLIGHTS: { min: 0.3, max: 1, default: 0.7 },
+  // Same bounds as COLOR, deliberately - `applyHennaHair` is `applyColorHair` itself (see that
+  // function's own comment, utils/tryon-utils/hair.ts), so there's no separate rendering behavior
+  // here that would call for different bounds.
   HENNA: { min: 0.3, max: 1, default: 0.7 },
   OMBRE: { min: 0.3, max: 1, default: 0.7 },
 };

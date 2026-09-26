@@ -6,19 +6,33 @@ _Tracking model: hair segmentation (full-strand mask via MediaPipe `ImageSegment
 
 > **Build plan**: HAIR is poore try-on feature ka pehla category hai jo face-landmark tracking use hi nahi karta - isko apna alag `ImageSegmenter`-based pixel-segmentation pipeline chahiye, aur isliye shared `TryOnEngineBase`/`withLiveCamera`/`withImageUpload`/render-param type-hierarchy bhi reuse nahi hote, ek parallel hierarchy banani padegi. 4 subcategories (COLOR, HIGHLIGHTS, HENNA, OMBRE) mein se kisi ko bhi drop nahi kiya gaya - sab genuinely visible effect de sakte hain. Suggested build order: COLOR → HENNA → OMBRE → HIGHLIGHTS. Poori reasoning [HAIR-PLAN.md](./HAIR-PLAN.md) mein hai.
 
-> **Per-subcategory tracking**: same convention jo EYE/FACE ke apne tracker docs already establish kar chuke hain - jaise-jaise ek subcategory actually build hoti hai, uski apni dedicated tracker file ban jaati hai aur is file ka apna inline checklist ek summary-row + link se replace ho jaata hai. **COLOR ab build ho chuka hai** (HAIR category ka pehla finish, [COLOR.md](./COLOR.md)) - poore naye segmentation-based engine stack ka foundation, ek real mobile-testing bug (blend-mode luminance-extreme failure) already surface+fix ho chuka hai.
+> **Per-subcategory tracking**: same convention jo EYE/FACE ke apne tracker docs already establish kar chuke hain - jaise-jaise ek subcategory actually build hoti hai, uski apni dedicated tracker file ban jaati hai aur is file ka apna inline checklist ek summary-row + link se replace ho jaata hai. **COLOR aur HENNA ab build ho chuke hain** ([COLOR.md](./COLOR.md), [HENNA.md](./HENNA.md)) - HENNA `applyColorHair` ka direct alias nikla (koi naya render code nahi chahiye pada, [HAIR-PLAN.md](./HAIR-PLAN.md)'s "near-zero marginal cost" prediction exactly sahi nikli), ek real mobile-testing bug (blend-mode luminance-extreme failure, COLOR mein) already surface+fix ho chuka hai.
 
 ## Summary
 
 | Subcategory | Live (0/4) | Upload (0/4) | Overall                    |
 | ----------- | ---------- | ------------ | -------------------------- |
 | COLOR       | 0/4        | 4/4          | 50% — [detail](./COLOR.md) |
+| HENNA       | 0/4        | 4/4          | 50% — [detail](./HENNA.md) |
 | HIGHLIGHTS  | 0/4        | 0/4          | 0%                         |
-| HENNA       | 0/4        | 0/4          | 0%                         |
 | OMBRE       | 0/4        | 0/4          | 0%                         |
-| **Total**   | **0/16**   | **4/16**     | **12.5% (4/32)**           |
+| **Total**   | **0/16**   | **8/16**     | **25% (8/32)**             |
 
 ## Details
+
+<details>
+<summary><strong>COLOR</strong> — 50% — see <a href="./COLOR.md">COLOR.md</a> for the full checklist, design notes, and quality score</summary>
+
+Ab yaha inline nahi hai - apni dedicated file mil chuki hai: **[COLOR.md](./COLOR.md)**.
+
+</details>
+
+<details>
+<summary><strong>HENNA</strong> — 50% — see <a href="./HENNA.md">HENNA.md</a> for the full checklist, design notes, and quality score</summary>
+
+Ab yaha inline nahi hai - apni dedicated file mil chuki hai: **[HENNA.md](./HENNA.md)**.
+
+</details>
 
 <details>
 <summary><strong>HIGHLIGHTS</strong> — 0%</summary>
@@ -34,25 +48,6 @@ _Tracking model: hair segmentation (full-strand mask via MediaPipe `ImageSegment
 
 - [ ] Photo upload + hair-segmentation mask static image pe
 - [ ] Partial-strand streak recolor image pe apply ho
-- [ ] Shade/variant picker functional
-- [ ] Output preview/download QA
-
-</details>
-
-<details>
-<summary><strong>HENNA</strong> — 0%</summary>
-
-**Live**
-
-- [ ] Camera capture + hair-segmentation mask wired
-- [ ] Full-strand warm reddish-brown recolor natural texture ke saath real-time me render ho
-- [ ] Shade/variant picker functional
-- [ ] Performance & cross-device QA
-
-**Upload**
-
-- [ ] Photo upload + hair-segmentation mask static image pe
-- [ ] Full-strand warm reddish-brown recolor image pe apply ho
 - [ ] Shade/variant picker functional
 - [ ] Output preview/download QA
 
