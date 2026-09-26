@@ -8,6 +8,7 @@ import type { IEyeTryOnState } from '@/classes/tryon/categories/eye';
 import type { IFaceTryOnState } from '@/classes/tryon/categories/face';
 import type { IHairTryOnState } from '@/classes/tryon/categories/hair';
 import type { ILipTryOnState } from '@/classes/tryon/categories/lip';
+import type { INailTryOnState } from '@/classes/tryon/categories/nail';
 import { ModalWrapper } from '@/components/layout/modals/ModalWrapper';
 import {
   EYE_DEFAULT_PATTERNS,
@@ -17,6 +18,7 @@ import {
 import { FACE_RANGE_BOUNDS } from '@/constants/tryon-constants/face';
 import { HAIR_RANGE_BOUNDS } from '@/constants/tryon-constants/hair';
 import { LIP_RANGE_BOUNDS } from '@/constants/tryon-constants/lip';
+import { NAIL_RANGE_BOUNDS } from '@/constants/tryon-constants/nail';
 import useDebounce from '@/hooks/useDebounce';
 import useTryOnUpload from '@/hooks/useTryOnUpload';
 import type {
@@ -32,6 +34,7 @@ import EyeTryOnStage from './eye/EyeTryOnStage';
 import FaceTryOnStage from './face/FaceTryOnStage';
 import HairTryOnStage from './hair/HairTryOnStage';
 import LipTryOnStage from './lip/LipTryOnStage';
+import NailTryOnStage from './nail/NailTryOnStage';
 import TryOnBottomSheet from './TryOnBottomSheet';
 import TryOnCompareSlider from './TryOnCompareSlider';
 import TryOnInstructions from './TryOnInstructions';
@@ -61,7 +64,8 @@ interface ITryOnFlowState {
   step: 'select' | 'instructions' | 'tryon';
   mode: 'live' | 'upload';
   uploadedImageUrl: string | null;
-  engineState: ILipTryOnState | IFaceTryOnState | IEyeTryOnState | IHairTryOnState | null;
+  engineState:
+    ILipTryOnState | IFaceTryOnState | IEyeTryOnState | IHairTryOnState | INailTryOnState | null;
 }
 
 // `stageRef` below has to hold whichever category's stage is currently mounted - not the full
@@ -410,7 +414,9 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
           ? EYE_RANGE_BOUNDS[tryOn.subCategory]
           : tryOn?.category === 'HAIR'
             ? HAIR_RANGE_BOUNDS[tryOn.subCategory]
-            : { min: 0, max: 1, default: 0.5 };
+            : tryOn?.category === 'NAIL'
+              ? NAIL_RANGE_BOUNDS[tryOn.subCategory]
+              : { min: 0, max: 1, default: 0.5 };
 
   // Only meaningful inside the EYE branch below, same "declared up top, next to rangeBounds"
   // reasoning - `undefined` for any EYE subcategory without a pattern picker yet (see
@@ -435,22 +441,32 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
       containerProps={{ className: 'p-0! lg:p-8!' }}
       className="h-full max-h-full! w-full! max-w-full! min-w-[80dvw]! rounded-none! border-0! lg:max-h-[90dvh]! lg:w-auto! lg:rounded-xl! lg:border!"
     >
-      {/* Only LIP, FACE, EYE, and HAIR have a rendering engine built so far - see
+      {/* Only LIP, FACE, EYE, HAIR, and NAIL have a rendering engine built so far - see
           docs/tryons/README.md. The discriminant check stays inline (not a separately-computed
-          boolean) so TS keeps narrowing `tryOn` to `{category: 'LIP' | 'FACE' | 'EYE' | 'HAIR',
-          ...}` for every access inside the branch below - a plain boolean variable would lose
-          that link. */}
+          boolean) so TS keeps narrowing `tryOn` to `{category: 'LIP' | 'FACE' | 'EYE' | 'HAIR' |
+          'NAIL', ...}` for every access inside the branch below - a plain boolean variable would
+          lose that link. `TTryOnCategory` only has these same 5 members today, so both this
+          exclusion chain and the `tryOn` check just below it are provably unreachable *right now*
+          - TS narrows `tryOn` to `never` in that branch, which is exactly why both need an
+          explicit disable rather than being simplified away: the moment a 6th category lands in
+          `@beautinique/shared-constants` before this app's own code catches up, this is the
+          fallback that's supposed to catch it, not dead weight to delete. */}
       {!tryOn ||
       (tryOn.category !== 'LIP' &&
         tryOn.category !== 'FACE' &&
         tryOn.category !== 'EYE' &&
-        tryOn.category !== 'HAIR') ? (
+        tryOn.category !== 'HAIR' &&
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        tryOn.category !== 'NAIL') ? (
         <div className="flex flex-col items-center gap-2 p-6 text-center">
           <Icon icon="solar:hourglass-linear" className="text-primary/40 size-8" />
           <p className="text-tertiary text-sm">
-            {tryOn
-              ? `Try-on for ${tryOn.category} is coming soon.`
-              : 'This product has no Try-On configured yet.'}
+            {
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+              tryOn
+                ? `Try-on for ${(tryOn as TTryOnSelection).category} is coming soon.`
+                : 'This product has no Try-On configured yet.'
+            }
           </p>
         </div>
       ) : (
@@ -540,6 +556,22 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                       key={retryKey}
                       // See the matching cast comment on <LipTryOnStage> above.
                       ref={stageRef as Ref<ITryOnStageRef<IHairTryOnState>>}
+                      mode={flow.mode}
+                      uploadedImageUrl={flow.uploadedImageUrl}
+                      initialState={{
+                        type: tryOn.subCategory,
+                        color: flow.engineState?.color ?? null,
+                        range: flow.engineState?.range ?? rangeBounds.default,
+                      }}
+                      onStateChange={(engineState) => {
+                        setFlow((prev) => ({ ...prev, engineState }));
+                      }}
+                    />
+                  ) : tryOn.category === 'NAIL' ? (
+                    <NailTryOnStage
+                      key={retryKey}
+                      // See the matching cast comment on <LipTryOnStage> above.
+                      ref={stageRef as Ref<ITryOnStageRef<INailTryOnState>>}
                       mode={flow.mode}
                       uploadedImageUrl={flow.uploadedImageUrl}
                       initialState={{

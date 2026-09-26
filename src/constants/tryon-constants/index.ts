@@ -4,6 +4,7 @@ import { EYE_LIVE_INSTRUCTIONS, EYE_UPLOAD_INSTRUCTIONS } from './eye';
 import { FACE_LIVE_INSTRUCTIONS, FACE_UPLOAD_INSTRUCTIONS } from './face';
 import { HAIR_LIVE_INSTRUCTIONS, HAIR_UPLOAD_INSTRUCTIONS } from './hair';
 import { LIP_LIVE_INSTRUCTIONS, LIP_UPLOAD_INSTRUCTIONS } from './lip';
+import { NAIL_LIVE_INSTRUCTIONS, NAIL_UPLOAD_INSTRUCTIONS } from './nail';
 
 // Category-agnostic Try-On constants - shared by every category's modal, not just LIP (compare
 // to `./lip.ts`, which is LIP-specific rendering data - every other category has its own
@@ -50,9 +51,9 @@ type TTryOnMode = 'live' | 'upload';
  */
 
 // Central registry - one entry per category that has a real tryon flow built (see `TRY_ON_MAP`
-// in `@beautinique/frontend-types` for the full, eventual category list; LIP/FACE/EYE/HAIR exist
-// so far). `Partial` on purpose: a category without its own tryon flow yet has nothing real to
-// give tips about - `getTryOnInstructions` falls back to an empty list rather than guessing.
+// in `@beautinique/frontend-types` for the full, eventual category list; LIP/FACE/EYE/HAIR/NAIL
+// exist so far). `Partial` on purpose: a category without its own tryon flow yet has nothing real
+// to give tips about - `getTryOnInstructions` falls back to an empty list rather than guessing.
 const TRY_ON_INSTRUCTIONS: Partial<
   Record<TTryOnCategory, Record<TTryOnMode, ITryOnInstruction[]>>
 > = {
@@ -60,6 +61,7 @@ const TRY_ON_INSTRUCTIONS: Partial<
   FACE: { upload: FACE_UPLOAD_INSTRUCTIONS, live: FACE_LIVE_INSTRUCTIONS },
   EYE: { upload: EYE_UPLOAD_INSTRUCTIONS, live: EYE_LIVE_INSTRUCTIONS },
   HAIR: { upload: HAIR_UPLOAD_INSTRUCTIONS, live: HAIR_LIVE_INSTRUCTIONS },
+  NAIL: { upload: NAIL_UPLOAD_INSTRUCTIONS, live: NAIL_LIVE_INSTRUCTIONS },
 };
 
 export const getTryOnInstructions = (

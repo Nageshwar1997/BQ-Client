@@ -6,35 +6,25 @@ _Tracking model: hand/finger landmarks (MediaPipe `HandLandmarker`, 21 points pe
 
 > **Build plan**: NAIL ke liye koi ready-made "nail segmentation" model exist nahi karta (HAIR ke Hair Segmenter jaisa) - iski jagah hand-landmark (fingertip + pehle wale joint) se ek chhota rotated ellipse/rounded-rect approximate kiya jaata hai, har finger ke apne local direction pe. Suggested build order: LIQUID → GEL + DIPPOWDER → GLITTER → CHROME. Poori reasoning [NAIL-PLAN.md](./NAIL-PLAN.md) mein hai.
 
+> **Per-subcategory tracking**: same convention jo EYE/FACE/HAIR ke apne tracker docs already establish kar chuke hain - jaise-jaise ek subcategory actually build hoti hai, uski apni dedicated tracker file ban jaati hai aur is file ka apna inline checklist ek summary-row + link se replace ho jaata hai. **LIQUID ab build ho chuka hai** (NAIL category ka pehla finish, [LIQUID.md](./LIQUID.md)) - poore naye hand-tracking engine stack ka foundation, ek real hand photo pe end-to-end verify hua.
+
 ## Summary
 
-| Subcategory | Live (0/4) | Upload (0/4) | Overall       |
-| ----------- | ---------- | ------------ | ------------- |
-| LIQUID      | 0/4        | 0/4          | 0%            |
-| GEL         | 0/4        | 0/4          | 0%            |
-| DIPPOWDER   | 0/4        | 0/4          | 0%            |
-| GLITTER     | 0/4        | 0/4          | 0%            |
-| CHROME      | 0/4        | 0/4          | 0%            |
-| **Total**   | **0/20**   | **0/20**     | **0% (0/40)** |
+| Subcategory | Live (0/4) | Upload (0/4) | Overall                     |
+| ----------- | ---------- | ------------ | --------------------------- |
+| LIQUID      | 0/4        | 4/4          | 50% — [detail](./LIQUID.md) |
+| GEL         | 0/4        | 0/4          | 0%                          |
+| DIPPOWDER   | 0/4        | 0/4          | 0%                          |
+| GLITTER     | 0/4        | 0/4          | 0%                          |
+| CHROME      | 0/4        | 0/4          | 0%                          |
+| **Total**   | **0/20**   | **4/20**     | **10% (4/40)**              |
 
 ## Details
 
 <details>
-<summary><strong>LIQUID</strong> — 0%</summary>
+<summary><strong>LIQUID</strong> — 50% — see <a href="./LIQUID.md">LIQUID.md</a> for the full checklist, design notes, and quality score</summary>
 
-**Live**
-
-- [ ] Camera capture + hand/finger-landmark tracking wired
-- [ ] Standard-finish full-nail color fill real-time me render ho
-- [ ] Shade/variant picker functional
-- [ ] Performance & cross-device QA
-
-**Upload**
-
-- [ ] Photo upload + hand/finger-landmark detection static image pe
-- [ ] Standard-finish full-nail color fill image pe apply ho
-- [ ] Shade/variant picker functional
-- [ ] Output preview/download QA
+Ab yaha inline nahi hai - apni dedicated file mil chuki hai: **[LIQUID.md](./LIQUID.md)**.
 
 </details>
 
