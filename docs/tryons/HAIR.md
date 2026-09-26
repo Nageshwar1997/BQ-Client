@@ -6,7 +6,7 @@ _Tracking model: hair segmentation (full-strand mask via MediaPipe `ImageSegment
 
 > **Build plan**: HAIR is poore try-on feature ka pehla category hai jo face-landmark tracking use hi nahi karta - isko apna alag `ImageSegmenter`-based pixel-segmentation pipeline chahiye, aur isliye shared `TryOnEngineBase`/`withLiveCamera`/`withImageUpload`/render-param type-hierarchy bhi reuse nahi hote, ek parallel hierarchy banani padegi. 4 subcategories (COLOR, HIGHLIGHTS, HENNA, OMBRE) mein se kisi ko bhi drop nahi kiya gaya - sab genuinely visible effect de sakte hain. Suggested build order: COLOR → HENNA → OMBRE → HIGHLIGHTS. Poori reasoning [HAIR-PLAN.md](./HAIR-PLAN.md) mein hai.
 
-> **Per-subcategory tracking**: same convention jo EYE/FACE ke apne tracker docs already establish kar chuke hain - jaise-jaise ek subcategory actually build hoti hai, uski apni dedicated tracker file ban jaati hai aur is file ka apna inline checklist ek summary-row + link se replace ho jaata hai. **COLOR aur HENNA ab build ho chuke hain** ([COLOR.md](./COLOR.md), [HENNA.md](./HENNA.md)) - HENNA `applyColorHair` ka direct alias nikla (koi naya render code nahi chahiye pada, [HAIR-PLAN.md](./HAIR-PLAN.md)'s "near-zero marginal cost" prediction exactly sahi nikli), ek real mobile-testing bug (blend-mode luminance-extreme failure, COLOR mein) already surface+fix ho chuka hai.
+> **Per-subcategory tracking**: same convention jo EYE/FACE ke apne tracker docs already establish kar chuke hain - jaise-jaise ek subcategory actually build hoti hai, uski apni dedicated tracker file ban jaati hai aur is file ka apna inline checklist ek summary-row + link se replace ho jaata hai. **COLOR, HENNA, aur OMBRE ab build ho chuke hain** ([COLOR.md](./COLOR.md), [HENNA.md](./HENNA.md), [OMBRE.md](./OMBRE.md)) - HENNA `applyColorHair` ka direct alias nikla (koi naya render code nahi chahiye pada), OMBRE ne COLOR ke mask-compositing primitive mein ek optional root-to-tip alpha-ramp param add kiya (genuinely naya rendering behavior, phir bhi koi breaking change nahi). Ek real mobile-testing bug (blend-mode luminance-extreme failure, COLOR mein) already surface+fix ho chuka hai. Sirf HIGHLIGHTS baaki hai.
 
 ## Summary
 
@@ -14,9 +14,9 @@ _Tracking model: hair segmentation (full-strand mask via MediaPipe `ImageSegment
 | ----------- | ---------- | ------------ | -------------------------- |
 | COLOR       | 0/4        | 4/4          | 50% — [detail](./COLOR.md) |
 | HENNA       | 0/4        | 4/4          | 50% — [detail](./HENNA.md) |
+| OMBRE       | 0/4        | 4/4          | 50% — [detail](./OMBRE.md) |
 | HIGHLIGHTS  | 0/4        | 0/4          | 0%                         |
-| OMBRE       | 0/4        | 0/4          | 0%                         |
-| **Total**   | **0/16**   | **8/16**     | **25% (8/32)**             |
+| **Total**   | **0/16**   | **12/16**    | **37.5% (12/32)**          |
 
 ## Details
 
@@ -35,6 +35,13 @@ Ab yaha inline nahi hai - apni dedicated file mil chuki hai: **[HENNA.md](./HENN
 </details>
 
 <details>
+<summary><strong>OMBRE</strong> — 50% — see <a href="./OMBRE.md">OMBRE.md</a> for the full checklist, design notes, and quality score</summary>
+
+Ab yaha inline nahi hai - apni dedicated file mil chuki hai: **[OMBRE.md](./OMBRE.md)**.
+
+</details>
+
+<details>
 <summary><strong>HIGHLIGHTS</strong> — 0%</summary>
 
 **Live**
@@ -48,25 +55,6 @@ Ab yaha inline nahi hai - apni dedicated file mil chuki hai: **[HENNA.md](./HENN
 
 - [ ] Photo upload + hair-segmentation mask static image pe
 - [ ] Partial-strand streak recolor image pe apply ho
-- [ ] Shade/variant picker functional
-- [ ] Output preview/download QA
-
-</details>
-
-<details>
-<summary><strong>OMBRE</strong> — 0%</summary>
-
-**Live**
-
-- [ ] Camera capture + hair-segmentation mask wired
-- [ ] Root-to-tip gradient recolor real-time me render ho
-- [ ] Shade/variant picker functional
-- [ ] Performance & cross-device QA
-
-**Upload**
-
-- [ ] Photo upload + hair-segmentation mask static image pe
-- [ ] Root-to-tip gradient recolor image pe apply ho
 - [ ] Shade/variant picker functional
 - [ ] Output preview/download QA
 

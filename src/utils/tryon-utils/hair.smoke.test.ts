@@ -16,7 +16,7 @@ import { describe, expect, it } from 'vitest';
 import type { IHairMask } from '@/types/tryon-types/hair';
 import { createOffscreenCtx } from '@/utils/tryon-utils';
 
-import { applyColorHair, applyHennaHair, getHairDetectionStatus } from './hair';
+import { applyColorHair, applyHennaHair, applyOmbreHair, getHairDetectionStatus } from './hair';
 
 const DIMENSION = { width: 200, height: 200 };
 const RGB: [number, number, number] = [140, 60, 30];
@@ -89,6 +89,48 @@ describe('applyHennaHair smoke test', () => {
       applyHennaHair({ mask, ctx, rgb: RGB, dimension: DIMENSION, alpha: ALPHA });
     }).not.toThrow();
     expect(hasNonTransparentPixel(ctx)).toBe(true);
+  });
+});
+
+describe('applyOmbreHair smoke test', () => {
+  it('renders without throwing and paints at least one pixel', () => {
+    const mask = makeFixtureMask();
+    const ctx = makeCtx();
+
+    expect(() => {
+      applyOmbreHair({ mask, ctx, rgb: RGB, dimension: DIMENSION, alpha: ALPHA });
+    }).not.toThrow();
+    expect(hasNonTransparentPixel(ctx)).toBe(true);
+  });
+
+  it('leaves the root mostly unrecolored while fully recoloring the tip', () => {
+    // A full-height, full-confidence vertical strip - unlike the radial fixture above, this gives
+    // the root (top row) and tip (bottom row) meaningfully different positions along the
+    // root-to-tip gradient, which is exactly the behavior this test needs to distinguish.
+    const stripMask: IHairMask = {
+      data: new Float32Array(MASK_SIZE * MASK_SIZE).fill(1),
+      width: MASK_SIZE,
+      height: MASK_SIZE,
+    };
+
+    const NEUTRAL_GRAY: [number, number, number] = [150, 150, 150];
+    const ctx = makeCtx();
+    ctx.fillStyle = `rgb(${NEUTRAL_GRAY.join(',')})`;
+    ctx.fillRect(0, 0, DIMENSION.width, DIMENSION.height);
+
+    applyOmbreHair({ mask: stripMask, ctx, rgb: RGB, dimension: DIMENSION, alpha: 1 });
+
+    const [rootR, rootG, rootB] = ctx.getImageData(100, 2, 1, 1).data;
+    const [tipR, tipG, tipB] = ctx.getImageData(100, DIMENSION.height - 2, 1, 1).data;
+    const [grayR, grayG, grayB] = NEUTRAL_GRAY;
+
+    const distanceFromGray = (r: number, g: number, b: number) =>
+      Math.hypot(r - grayR, g - grayG, b - grayB);
+
+    // Root: still close to the original gray (the gradient's own alpha multiplier is ~0 there).
+    expect(distanceFromGray(rootR ?? 0, rootG ?? 0, rootB ?? 0)).toBeLessThan(10);
+    // Tip: clearly shifted toward the target color (multiplier ~1, same as a full COLOR recolor).
+    expect(distanceFromGray(tipR ?? 0, tipG ?? 0, tipB ?? 0)).toBeGreaterThan(30);
   });
 });
 
