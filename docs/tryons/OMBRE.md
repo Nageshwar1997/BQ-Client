@@ -4,7 +4,7 @@
 
 _Tracking model: pixel segmentation (MediaPipe `ImageSegmenter`, hair-confidence mask) - COLOR ka exact wahi engine/rendering stack reuse karta hai, koi naya infra nahi. Poori reasoning [HAIR-PLAN.md](./HAIR-PLAN.md#engine-architecture---shared-tryonenginebase-reuse-nahi-ho-sakta-as-is) mein hai._
 
-> **HAIR ka teesra built finish**. Real ombre hair roots ko natural rehne deta hai aur sirf tips ki taraf gradually recolor karta hai - COLOR ka full-mask recolor isse ek uniform color mein flatten kar deta. `applyOmbreHair` (`utils/tryon-utils/hair.ts`) COLOR/HENNA ka wahi mask + `destination-in` + blend mechanism reuse karta hai, bas ek extra root(0)-to-tip(1) vertical alpha ramp multiply karta hai - [HAIR-PLAN.md](./HAIR-PLAN.md)'s apne planned "mask ka bounding box use karke gradient" idea ke exactly according. HIGHLIGHTS abhi bhi COLOR ke fallback pe render hota hai (`UNSUPPORTED_HAIR_FINISHES`, [HairEngineBase.ts](../../src/classes/tryon/categories/hair/HairEngineBase.ts)).
+> **HAIR ka teesra built finish**. Real ombre hair roots ko natural rehne deta hai aur sirf tips ki taraf gradually recolor karta hai - COLOR ka full-mask recolor isse ek uniform color mein flatten kar deta. `applyOmbreHair` (`utils/tryon-utils/hair.ts`) COLOR/HENNA ka wahi mask + `destination-in` + blend mechanism reuse karta hai, bas ek extra root(0)-to-tip(1) vertical alpha ramp multiply karta hai - [HAIR-PLAN.md](./HAIR-PLAN.md)'s apne planned "mask ka bounding box use karke gradient" idea ke exactly according. HIGHLIGHTS bhi ab build ho chuka hai ([HIGHLIGHTS.md](./HIGHLIGHTS.md)) - HAIR ki saari 4 subcategories complete.
 
 ## Summary
 
@@ -37,7 +37,7 @@ _Tracking model: pixel segmentation (MediaPipe `ImageSegmenter`, hair-confidence
 - **Ramp math**: `buildRootToTipRowAlpha` har row ke liye `(row - minRow) / (maxRow - minRow)` compute karta hai, `[0,1]` pe clamped - root row par ~0 (COLOR/HENNA ka full recolor us row pe near-invisible ho jaata hai), tip row par ~1 (COLOR jaisa hi full recolor). Degenerate case (`span <= 0`, jaise ek extreme close-up crop jahan poora hair ek hi row mein detect ho) fully-recolored pe fallback karta hai, divide-by-zero nahi.
 - **Real-photo verification ka nuance**: dark/black natural hair pe ek dark-toned target color (jaisa blue-violet) ke saath root-to-tip transition screenshot mein subtle dikh sakta hai (root already dark hai, target bhi dark-ish), lekin pixel-level sampling se confirm hota hai ki genuinely kaam kar raha hai (root pixels near-neutral rahe, tip pixels strongly target-hue-shifted). Ek lighter/warmer target (honey-blonde) is app ke apne visual-verification ke liye zyada obvious tha - real ombre products bhi typically isi "dark root, lighter tip" combination mein sabse zyada popular hain.
 - **Ab tak ki verification**: `tsc -b --force`, `eslint`, aur poori `vitest` suite (117/117, `hair.smoke.test.ts` mein 2 naye OMBRE tests samet - render smoke test + ek synthetic root-vs-tip numeric regression test) sab clean/pass hoti hain. Real dev-server browser verification upar Checklist mein describe kiya hai.
-- **Abhi kya baaki hai**: Live camera mode bilkul untested (COLOR/HENNA jaisa hi starting point) - ye specifically OMBRE ke liye zyada relevant hai kyunki gradient anchor har frame recompute hota hai. Real product page ka poora flow bhi untested. HIGHLIGHTS abhi COLOR ke fallback pe render hota hai.
+- **Abhi kya baaki hai**: Live camera mode bilkul untested (COLOR/HENNA jaisa hi starting point) - ye specifically OMBRE ke liye zyada relevant hai kyunki gradient anchor har frame recompute hota hai. Real product page ka poora flow bhi untested. (HAIR ki saari 4 subcategories ab build ho chuki hain - [HIGHLIGHTS.md](./HIGHLIGHTS.md).)
 
 ## Quality score
 
@@ -53,11 +53,11 @@ Same 9 dimensions used for [LIP-10-10-PLAN.md](./LIP-10-10-PLAN.md), [FOUNDATION
 | 4   | Real-device QA       | 1/10     | Live camera mode bilkul test nahi hua; Upload mode ko engine-level ek real photo/browser verification mili (do shades, pixel-sampled).                                                         |
 | 5   | UX polish            | 6/10     | Shared shade picker/intensity slider reuse karta hai, real product-page flow abhi kabhi exercise nahi hua.                                                                                     |
 | 6   | Architecture         | 8/10     | Clean incremental extension (`buildMaskAlphaLayer`'s optional param) - COLOR/HENNA ka apna behavior bilkul unchanged rehta hai, koi breaking change nahi.                                      |
-| 7   | Feature completeness | 7/10     | 4 mein se 3 HAIR finish ka apna dedicated rendering hai, sirf HIGHLIGHTS fallback pe hai.                                                                                                      |
+| 7   | Feature completeness | 7/10     | 4 mein se 3 HAIR finish ka apna dedicated rendering hai (is file ke likhe jaane ke waqt) - HIGHLIGHTS ab ban chuka hai ([HIGHLIGHTS.md](./HIGHLIGHTS.md)), HAIR ki saari 4 complete.           |
 | 8   | Performance          | 6/10     | Ek extra full-mask pass (`findHairVerticalExtent`) add hui hai per-render - COLOR/HENNA se thoda zyada compute, lekin still ek chhoti (mask-resolution) array pe, koi real profiling nahi hui. |
 | 9   | Code hygiene         | 10/10 ✅ | Fresh code - `TODO`/`FIXME`/`: any` zero matches, `tsc`/`eslint` clean.                                                                                                                        |
 
-**Overall**: ~**7/10** — genuinely naya rendering behavior successfully add hua, real photo pe confirm hua, koi regression COLOR/HENNA mein nahi aaya. Next step: HIGHLIGHTS (naya procedural streak-pattern chahiye, sabse uncertain math) - [HAIR-PLAN.md](./HAIR-PLAN.md#suggested-build-order)'s build order ke hisaab se, HAIR ka aakhri planned finish.
+**Overall**: ~**7/10** — genuinely naya rendering behavior successfully add hua, real photo pe confirm hua, koi regression COLOR/HENNA mein nahi aaya. **HAIR category ab poori tarah build ho chuki hai** - HIGHLIGHTS bhi ban chuka hai ([HIGHLIGHTS.md](./HIGHLIGHTS.md)).
 
 ---
 

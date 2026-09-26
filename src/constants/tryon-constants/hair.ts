@@ -4,11 +4,7 @@ import type { THairFinish } from '@/types/tryon-types/hair';
 import type { ITryOnInstruction } from '.';
 
 // Same shape/role as `FACE_RANGE_BOUNDS`/`LIP_RANGE_BOUNDS` - the intensity slider's bounds, one
-// entry per finish. `Record<THairFinish, IRangeBounds>` needs every finish keyed regardless of
-// which ones have dedicated rendering yet (see `UNSUPPORTED_HAIR_FINISHES`,
-// classes/tryon/categories/hair/HairEngineBase.ts) - HIGHLIGHTS's bounds below are still a
-// starting placeholder (same shape COLOR's own, since it currently renders as COLOR's fallback),
-// expected to get its own real values once it gets dedicated rendering.
+// entry per finish.
 export const HAIR_RANGE_BOUNDS: Record<THairFinish, IRangeBounds> = {
   // No reference equivalent (no reference implementation covers hair recolor at all - see
   // docs/tryons/HAIR-PLAN.md's Research section) - own judgment call. The `'color'` blend
@@ -17,6 +13,11 @@ export const HAIR_RANGE_BOUNDS: Record<THairFinish, IRangeBounds> = {
   // visibility), so this doesn't need FOUNDATION's wide 0.1-0.8 range to read clearly - expected
   // to get real-device tuned once rendering, same as every other range in this app.
   COLOR: { min: 0.3, max: 1, default: 0.7 },
+  // Same bounds as COLOR for now - `applyHighlightsHair` only recolors a handful of narrow streak
+  // columns (`buildStreakColumnIntensity`, utils/tryon-utils/hair.ts), so at the same raw alpha it
+  // reads as much less color overall than COLOR's full-strand wash. Kept identical rather than
+  // compensating with a higher default here, same "let real-device testing tune it, don't guess
+  // twice" reasoning OMBRE's own entry below already uses.
   HIGHLIGHTS: { min: 0.3, max: 1, default: 0.7 },
   // Same bounds as COLOR, deliberately - `applyHennaHair` is `applyColorHair` itself (see that
   // function's own comment, utils/tryon-utils/hair.ts), so there's no separate rendering behavior

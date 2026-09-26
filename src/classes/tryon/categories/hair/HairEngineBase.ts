@@ -5,7 +5,12 @@ import type {
   IHairTryOnState,
   THairFinish,
 } from '@/types/tryon-types/hair';
-import { applyColorHair, applyHennaHair, applyOmbreHair } from '@/utils/tryon-utils/hair';
+import {
+  applyColorHair,
+  applyHennaHair,
+  applyHighlightsHair,
+  applyOmbreHair,
+} from '@/utils/tryon-utils/hair';
 
 import { SegmentationEngineBase } from '../../SegmentationEngineBase';
 
@@ -13,8 +18,10 @@ import { SegmentationEngineBase } from '../../SegmentationEngineBase';
 // with a console warning" landing-spot pattern LIP/FACE's own `UNSUPPORTED_<CATEGORY>_FINISHES`
 // use. COLOR is HAIR's own "most basic" finish (a full-strand recolor, the foundation every other
 // HAIR finish builds on - see docs/tryons/HAIR-PLAN.md's Subcategories section), the same role
-// FOUNDATION plays for FACE.
-const UNSUPPORTED_HAIR_FINISHES = new Set<THairFinish>(['HIGHLIGHTS']);
+// FOUNDATION plays for FACE. Empty now that every HAIR finish has dedicated rendering - kept
+// (rather than deleted) as the landing spot for any future HAIR finish added later, same as
+// FACE/LIP's own sets never got removed either.
+const UNSUPPORTED_HAIR_FINISHES = new Set<THairFinish>([]);
 
 /**
  * HAIR category engine - fresh design (no reference implementation covers hair recolor at all,
@@ -71,6 +78,9 @@ export abstract class HairEngineBase extends SegmentationEngineBase<IHairTryOnSt
         return;
       case 'OMBRE':
         applyOmbreHair(params);
+        return;
+      case 'HIGHLIGHTS':
+        applyHighlightsHair(params);
         return;
     }
   }

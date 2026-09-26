@@ -16,7 +16,13 @@ import { describe, expect, it } from 'vitest';
 import type { IHairMask } from '@/types/tryon-types/hair';
 import { createOffscreenCtx } from '@/utils/tryon-utils';
 
-import { applyColorHair, applyHennaHair, applyOmbreHair, getHairDetectionStatus } from './hair';
+import {
+  applyColorHair,
+  applyHennaHair,
+  applyHighlightsHair,
+  applyOmbreHair,
+  getHairDetectionStatus,
+} from './hair';
 
 const DIMENSION = { width: 200, height: 200 };
 const RGB: [number, number, number] = [140, 60, 30];
@@ -131,6 +137,71 @@ describe('applyOmbreHair smoke test', () => {
     expect(distanceFromGray(rootR ?? 0, rootG ?? 0, rootB ?? 0)).toBeLessThan(10);
     // Tip: clearly shifted toward the target color (multiplier ~1, same as a full COLOR recolor).
     expect(distanceFromGray(tipR ?? 0, tipG ?? 0, tipB ?? 0)).toBeGreaterThan(30);
+  });
+});
+
+describe('applyHighlightsHair smoke test', () => {
+  it('renders without throwing and paints at least one pixel', () => {
+    const mask = makeFixtureMask();
+    const ctx = makeCtx();
+
+    expect(() => {
+      applyHighlightsHair({ mask, ctx, rgb: RGB, dimension: DIMENSION, alpha: ALPHA });
+    }).not.toThrow();
+    expect(hasNonTransparentPixel(ctx)).toBe(true);
+  });
+
+  it('produces a deterministic streak pattern - some columns recolored, others left alone', () => {
+    // A fully-confident mask spanning the whole frame - unlike the radial fixture above, every
+    // column starts at the same mask confidence, so any color variation across columns has to
+    // come from the streak pattern itself, not from the mask's own shape.
+    const fullMask: IHairMask = {
+      data: new Float32Array(MASK_SIZE * MASK_SIZE).fill(1),
+      width: MASK_SIZE,
+      height: MASK_SIZE,
+    };
+
+    const NEUTRAL_GRAY: [number, number, number] = [150, 150, 150];
+    const [grayR, grayG, grayB] = NEUTRAL_GRAY;
+    const distanceFromGray = (r: number, g: number, b: number) =>
+      Math.hypot(r - grayR, g - grayG, b - grayB);
+
+    const ctx = makeCtx();
+    ctx.fillStyle = `rgb(${NEUTRAL_GRAY.join(',')})`;
+    ctx.fillRect(0, 0, DIMENSION.width, DIMENSION.height);
+
+    applyHighlightsHair({ mask: fullMask, ctx, rgb: RGB, dimension: DIMENSION, alpha: 1 });
+
+    const midRow = Math.floor(DIMENSION.height / 2);
+    const distances: number[] = [];
+    for (let x = 0; x < DIMENSION.width; x += 4) {
+      const [r, g, b] = ctx.getImageData(x, midRow, 1, 1).data;
+      distances.push(distanceFromGray(r ?? 0, g ?? 0, b ?? 0));
+    }
+
+    // Genuine streaks, not a uniform wash: some sampled columns stay close to the original gray
+    // (between streaks) while others shift clearly toward the target color (a streak center) -
+    // this is exactly what would fail if the pattern accidentally recolored every column equally.
+    expect(Math.min(...distances)).toBeLessThan(10);
+    expect(Math.max(...distances)).toBeGreaterThan(30);
+  });
+
+  it('is deterministic - the same mask size produces the exact same pattern every time', () => {
+    // Two separate `applyHighlightsHair` calls (not shared state) - if this ever regressed to a
+    // `Math.random()`-seeded pattern, this would flake instead of consistently pass, unlike a
+    // genuinely fixed-seed pattern which reproduces pixel-for-pixel every time (see this file's
+    // own top comment on why a per-frame-random pattern would flicker in Live mode).
+    const mask = makeFixtureMask();
+
+    const ctxA = makeCtx();
+    applyHighlightsHair({ mask, ctx: ctxA, rgb: RGB, dimension: DIMENSION, alpha: ALPHA });
+
+    const ctxB = makeCtx();
+    applyHighlightsHair({ mask, ctx: ctxB, rgb: RGB, dimension: DIMENSION, alpha: ALPHA });
+
+    expect(ctxA.getImageData(0, 0, DIMENSION.width, DIMENSION.height).data).toEqual(
+      ctxB.getImageData(0, 0, DIMENSION.width, DIMENSION.height).data,
+    );
   });
 });
 

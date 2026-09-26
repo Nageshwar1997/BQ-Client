@@ -60,13 +60,16 @@ export const getHairDetectionStatus = (mask: IHairMask | null): TFaceDetectionSt
 // manual per-canvas-pixel resample loop - important for Live mode, where this runs every frame
 // (see docs/tryons/HAIR-PLAN.md's Open question 2 on Live-mode performance).
 //
-// `rowAlphaMultiplier`, when given, scales an entire row's alpha by an extra 0-1 factor before
-// writing it, on top of that row's own per-pixel mask confidence - OMBRE's root-to-tip fade
-// (`applyOmbreHair` below) is the only caller that passes one; COLOR/HENNA leave every row at its
-// full mask confidence (`undefined` treated as `1` everywhere).
+// `alphaMultiplier`, when given, is a per-pixel 0-1 factor (same length/row-major order as
+// `mask.data` itself) that scales that exact pixel's alpha before writing it, on top of the
+// mask's own per-pixel confidence there - OMBRE's root-to-tip fade and HIGHLIGHTS's streak pattern
+// (both below) are the only callers that pass one, each building it differently (a value that
+// only varies by row, or only by column) but landing on this same full-size shape so this
+// function itself never needs to know which; COLOR/HENNA leave every pixel at its full mask
+// confidence (`undefined` treated as `1` everywhere).
 const buildMaskAlphaLayer = (
   mask: IHairMask,
-  rowAlphaMultiplier?: Float32Array,
+  alphaMultiplier?: Float32Array,
 ): HTMLCanvasElement | null => {
   const maskCanvas = document.createElement('canvas');
   maskCanvas.width = mask.width;
@@ -76,8 +79,7 @@ const buildMaskAlphaLayer = (
 
   const imageData = maskCtx.createImageData(mask.width, mask.height);
   mask.data.forEach((confidence, i) => {
-    const row = Math.floor(i / mask.width);
-    const multiplier = rowAlphaMultiplier ? (rowAlphaMultiplier[row] ?? 1) : 1;
+    const multiplier = alphaMultiplier ? (alphaMultiplier[i] ?? 1) : 1;
     const offset = i * 4;
     imageData.data[offset] = 255;
     imageData.data[offset + 1] = 255;
@@ -101,9 +103,9 @@ const applyHairMaskRecolor = (
   rgb: TRGBTuple,
   dimension: TDimension,
   alpha: number,
-  rowAlphaMultiplier?: Float32Array,
+  alphaMultiplier?: Float32Array,
 ) => {
-  const maskCanvas = buildMaskAlphaLayer(mask, rowAlphaMultiplier);
+  const maskCanvas = buildMaskAlphaLayer(mask, alphaMultiplier);
   if (!maskCanvas) return;
 
   // A flat rect of the target color at the render canvas's own size, punched down to just the
@@ -152,28 +154,25 @@ export const applyColorHair = ({ ctx, mask, rgb, dimension, alpha }: IHairRender
 // an obvious place to land without touching COLOR's own callers.
 export const applyHennaHair = applyColorHair;
 
-/* ================= OMBRE (root-to-tip gradient) ================================================
- * Real ombre hair keeps the roots close to their natural color and only gradually recolors toward
- * the tips - COLOR's own full-mask recolor would flatten that into one uniform color end to end.
- * This reuses the exact same mask + `destination-in` + blend mechanism as COLOR/HENNA, it just
- * multiplies each row's own mask alpha by an extra root(0)-to-tip(1) ramp first, anchored to the
- * mask's own vertical extent of confidently-hair pixels - not the raw 0..height range, since a
- * headshot rarely fills the frame top-to-bottom, and anchoring to the actual hair bounding box is
- * what makes the "root" end of the ramp land on the actual visible roots.
+/* ================= EXTENT (shared by OMBRE + HIGHLIGHTS) =======================================
+ * Both OMBRE's root-to-tip ramp and HIGHLIGHTS's streak pattern below need to anchor themselves to
+ * where the hair actually *is* in the frame - the raw 0..width/0..height mask range would mostly
+ * be background for a typical headshot. Both derive that from the mask's own confident-hair
+ * pixels, just along different axes.
  */
 
 // A lower bar than `HAIR_DETECTION_CONFIDENCE_THRESHOLD` on purpose - this only decides "does this
-// row count as part of the hair's own vertical extent at all" (for anchoring the gradient), not
-// "should this exact pixel be recolored" (the mask's own per-pixel confidence, multiplied in
+// row/column count as part of the hair's own extent at all" (for anchoring a gradient/pattern),
+// not "should this exact pixel be recolored" (the mask's own per-pixel confidence, multiplied in
 // afterwards via `buildMaskAlphaLayer`, still handles that).
-const OMBRE_EXTENT_CONFIDENCE_THRESHOLD = 0.3;
+const HAIR_EXTENT_CONFIDENCE_THRESHOLD = 0.3;
 
 const findHairVerticalExtent = (mask: IHairMask): { minRow: number; maxRow: number } => {
   let minRow = mask.height;
   let maxRow = -1;
 
   mask.data.forEach((confidence, i) => {
-    if (confidence < OMBRE_EXTENT_CONFIDENCE_THRESHOLD) return;
+    if (confidence < HAIR_EXTENT_CONFIDENCE_THRESHOLD) return;
     const row = Math.floor(i / mask.width);
     if (row < minRow) minRow = row;
     if (row > maxRow) maxRow = row;
@@ -181,24 +180,141 @@ const findHairVerticalExtent = (mask: IHairMask): { minRow: number; maxRow: numb
 
   // No row met the threshold - shouldn't happen once `getHairDetectionStatus` has already gated
   // on 'detected', but keeps this safe to call standalone. Falls back to the mask's own full
-  // height so the gradient still spans something sensible instead of dividing by a zero-length
+  // height so the caller still spans something sensible instead of dividing by a zero-length
   // range.
   return maxRow < minRow ? { minRow: 0, maxRow: mask.height - 1 } : { minRow, maxRow };
 };
 
-const buildRootToTipRowAlpha = (mask: IHairMask): Float32Array => {
+const findHairHorizontalExtent = (mask: IHairMask): { minCol: number; maxCol: number } => {
+  let minCol = mask.width;
+  let maxCol = -1;
+
+  mask.data.forEach((confidence, i) => {
+    if (confidence < HAIR_EXTENT_CONFIDENCE_THRESHOLD) return;
+    const col = i % mask.width;
+    if (col < minCol) minCol = col;
+    if (col > maxCol) maxCol = col;
+  });
+
+  return maxCol < minCol ? { minCol: 0, maxCol: mask.width - 1 } : { minCol, maxCol };
+};
+
+/* ================= OMBRE (root-to-tip gradient) ================================================
+ * Real ombre hair keeps the roots close to their natural color and only gradually recolors toward
+ * the tips - COLOR's own full-mask recolor would flatten that into one uniform color end to end.
+ * This reuses the exact same mask + `destination-in` + blend mechanism as COLOR/HENNA, it just
+ * multiplies each pixel's own mask alpha by an extra root(0)-to-tip(1) ramp first (constant across
+ * a row, varying only by which row), anchored to the mask's own vertical extent above - not the
+ * raw 0..height range, since a headshot rarely fills the frame top-to-bottom, and anchoring to the
+ * actual hair bounding box is what makes the "root" end of the ramp land on the actual visible
+ * roots.
+ */
+
+const buildRootToTipAlphaMultiplier = (mask: IHairMask): Float32Array => {
   const { minRow, maxRow } = findHairVerticalExtent(mask);
   const span = maxRow - minRow;
 
-  const rowAlpha = new Float32Array(mask.height);
+  const multiplier = new Float32Array(mask.data.length);
   for (let row = 0; row < mask.height; row++) {
     // `span <= 0` (every confident row landed on one exact line - degenerate, e.g. an extreme
     // close-up crop) falls back to fully recolored rather than dividing by zero.
-    rowAlpha[row] = span <= 0 ? 1 : Math.min(1, Math.max(0, (row - minRow) / span));
+    const rowValue = span <= 0 ? 1 : Math.min(1, Math.max(0, (row - minRow) / span));
+    const rowStart = row * mask.width;
+    multiplier.fill(rowValue, rowStart, rowStart + mask.width);
   }
-  return rowAlpha;
+  return multiplier;
 };
 
 export const applyOmbreHair = ({ ctx, mask, rgb, dimension, alpha }: IHairRenderParams) => {
-  applyHairMaskRecolor(ctx, mask, rgb, dimension, alpha, buildRootToTipRowAlpha(mask));
+  applyHairMaskRecolor(ctx, mask, rgb, dimension, alpha, buildRootToTipAlphaMultiplier(mask));
+};
+
+/* ================= HIGHLIGHTS (procedural streak pattern) ======================================
+ * A confidence mask has no per-strand structure to read a real highlight placement from (see this
+ * file's own top comment) - the best available approximation is a procedural pattern of soft
+ * vertical streaks layered on top of the same mask, so only *some* columns across the hair get
+ * recolored rather than the whole thing. Full reasoning + honest ceiling on how close this gets to
+ * a real balayage/foil-highlight look: docs/tryons/HAIR-PLAN.md's Subcategories section.
+ *
+ * Streak positions/widths come from a *fixed-seed* PRNG, never `Math.random()` - the same
+ * "deterministic per-stroke jitter, not per-frame random" reasoning EYEBROW's own procedural
+ * hair-stroke patterns already established (see docs/tryons/EYEBROW.md's Design notes). A
+ * per-frame-random pattern would flicker to a new arrangement on every single render in Live mode;
+ * a fixed seed means the exact same streaks land in the exact same place every time, for as long
+ * as the mask's own width doesn't change.
+ */
+
+// A small, self-contained PRNG (mulberry32) - deterministic purely from its own seed, no
+// dependency on `Math.random()`'s own global state. Good enough for placing a handful of streaks;
+// this isn't cryptographic or statistical-quality randomness, just "looks scattered, not obviously
+// patterned".
+const createSeededRandom = (seed: number): (() => number) => {
+  let state = seed;
+  return () => {
+    state = (state + 0x6d2b79f5) | 0;
+    let t = state;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+};
+
+// Arbitrary fixed constant - deliberately never derived from the mask, timestamp, or anything
+// else that could vary frame to frame (see this section's own top comment for why).
+const HIGHLIGHTS_STREAK_SEED = 20260101;
+const HIGHLIGHTS_STREAK_COUNT = 7;
+// Each streak's own width is a random fraction of the hair's *detected horizontal extent*
+// (`findHairHorizontalExtent`), not the whole mask width - narrow enough to read as individual
+// streaks rather than a handful of wide color blocks covering most of the hair.
+const HIGHLIGHTS_STREAK_WIDTH_RATIO_MIN = 0.04;
+const HIGHLIGHTS_STREAK_WIDTH_RATIO_MAX = 0.09;
+
+// One 0-1 "how much of a highlight streak lands on this column" value per mask column, built once
+// from the fixed seed above. Soft (raised-cosine) falloff from each streak's own center, not a
+// hard-edged band - same "soft, not sharp" preference every blob/wash primitive in this app
+// already follows (`drawFeatheredBlob`, `fillFaceOvalRegion`'s own feathering). Overlapping
+// streaks take the max, not the sum, so two streaks crossing near each other still tops out at a
+// normal single-streak intensity instead of over-brightening.
+const buildStreakColumnIntensity = (
+  minCol: number,
+  maxCol: number,
+  width: number,
+): Float32Array => {
+  const random = createSeededRandom(HIGHLIGHTS_STREAK_SEED);
+  const intensity = new Float32Array(width);
+  const hairWidth = Math.max(1, maxCol - minCol);
+
+  for (let s = 0; s < HIGHLIGHTS_STREAK_COUNT; s++) {
+    const centerX = minCol + random() * hairWidth;
+    const widthRatio =
+      HIGHLIGHTS_STREAK_WIDTH_RATIO_MIN +
+      random() * (HIGHLIGHTS_STREAK_WIDTH_RATIO_MAX - HIGHLIGHTS_STREAK_WIDTH_RATIO_MIN);
+    const streakWidth = widthRatio * hairWidth;
+
+    for (let x = 0; x < width; x++) {
+      const distance = Math.abs(x - centerX);
+      if (distance > streakWidth) continue;
+      const falloff = 0.5 * (1 + Math.cos((distance / streakWidth) * Math.PI));
+      intensity[x] = Math.max(intensity[x] ?? 0, falloff);
+    }
+  }
+
+  return intensity;
+};
+
+const buildStreakAlphaMultiplier = (mask: IHairMask): Float32Array => {
+  const { minCol, maxCol } = findHairHorizontalExtent(mask);
+  const columnIntensity = buildStreakColumnIntensity(minCol, maxCol, mask.width);
+
+  // Same column pattern repeated down every row - a highlight streak runs the visible length of
+  // a strand, unlike OMBRE's root-to-tip fade which deliberately varies by row instead.
+  const multiplier = new Float32Array(mask.data.length);
+  for (let row = 0; row < mask.height; row++) {
+    multiplier.set(columnIntensity, row * mask.width);
+  }
+  return multiplier;
+};
+
+export const applyHighlightsHair = ({ ctx, mask, rgb, dimension, alpha }: IHairRenderParams) => {
+  applyHairMaskRecolor(ctx, mask, rgb, dimension, alpha, buildStreakAlphaMultiplier(mask));
 };
