@@ -17,7 +17,8 @@ const Home = () => {
         // Don't change this until the Try-On COLOR flow is completed and stable
         tryOn={{ category: 'HAIR', subCategory: 'COLOR' }}
         shades={[
-          { name: 'Black', hexColor: '#ffffff' },
+          { name: 'Yellow', hexColor: '#FFFF00' },
+          { name: 'White', hexColor: '#FFFFFF' },
           { name: 'Black', hexColor: '#000000' },
           { name: 'Ruby Red', hexColor: '#B0202E' },
           { name: 'Coral Pink', hexColor: '#F2795D' },
