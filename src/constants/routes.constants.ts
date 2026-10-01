@@ -1,6 +1,7 @@
 export const ROUTES = {
   HOME: '/',
   AWARDS: 'awards',
+  TRYONS: 'tryons',
   COMPANY: {
     ABOUT_US: 'about-us',
     TEAM: 'team',

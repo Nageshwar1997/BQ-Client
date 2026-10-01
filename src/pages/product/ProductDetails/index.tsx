@@ -1,22 +1,25 @@
 import { Icon } from '@iconify/react';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 import ApiStatus from '@/components/layout/ApiStatus';
 import { MediaCarouselWithParentMedia } from '@/components/layout/carousels/MediaCarouselWithParentMedia';
 import ScrollableGradientContainer from '@/components/layout/containers/ScrollableGradientContainer';
 import Dropdown from '@/components/layout/dropdown';
+import TryOnModal from '@/components/layout/tryons';
 import Button from '@/components/ui/Button';
 import { QuillContent } from '@/components/ui/QuillContent';
 import usePathParams from '@/hooks/usePathParams';
 import useQueryParams from '@/hooks/useQueryParams';
 import { useGetDashboardProductBySlug } from '@/services/product-service/product.service.query';
 import type { TMediaOption } from '@/types/component.type';
+import type { IShade } from '@/types/tryon-types';
 import { formatDate, formatINRCurrency, isNullOrUndefined } from '@/utils/common.util';
 
 const ProductDetails = () => {
   const { pathParams } = usePathParams();
   const { data: product, isLoading, isError } = useGetDashboardProductBySlug(pathParams.slug ?? '');
-  const { queryParams, setParams,  } = useQueryParams();
+  const { queryParams, setParams } = useQueryParams();
+  const [isTryOnOpen, setIsTryOnOpen] = useState(false);
 
   const variant = useMemo(() => {
     if (!product) return null;
@@ -64,6 +67,16 @@ const ProductDetails = () => {
 
     return index >= 0 ? index : 0;
   }, [media, variant]);
+
+  // Real product shade data (not user-invented via a color picker) - same source as the
+  // "Color" variant swatches already rendered further down this page.
+  const shades = useMemo((): IShade[] => {
+    if (!product?.hasVariants) return [];
+
+    return product.variants
+      .filter((v) => v.type === 'Color')
+      .map((v) => ({ name: v.label, hexColor: v.value }));
+  }, [product]);
 
   const { discount, originalPrice, sellingPrice, stock } = useMemo(() => {
     if (!product) return { discount: 0, sellingPrice: 0, originalPrice: 0, stock: null };
@@ -324,10 +337,24 @@ const ProductDetails = () => {
               <Button
                 content="Try-On"
                 pattern="secondary"
-                buttonProps={{ disabled: !product.tryOn.enabled }}
+                buttonProps={{
+                  disabled: !product.tryOn.enabled,
+                  onClick: () => {
+                    setIsTryOnOpen(true);
+                  },
+                }}
               />
               <Button content="Add Review" pattern="primary" />
             </div>
+
+            <TryOnModal
+              isOpen={isTryOnOpen}
+              onClose={() => {
+                setIsTryOnOpen(false);
+              }}
+              tryOn={product.tryOn.enabled && product.tryOn.configured ? product.tryOn : undefined}
+              shades={shades}
+            />
             <div className="space-y-4">
               {[
                 { title: 'Description', content: product.description },
