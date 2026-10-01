@@ -81,6 +81,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
     handleCompareToggle,
     handleRetry,
     handleDownload,
+    handleResetMakeup,
   } = useTryOnFlow(isOpen);
 
   // Gated on `isTryOnReady`, not read unconditionally - `cameraReady`/`imageReady` and the
@@ -444,6 +445,10 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                       active: !!compareCanvas,
                       disabled: !canInteract || !flow.engineState?.color,
                       onClick: handleCompareToggle,
+                    }}
+                    resetProps={{
+                      disabled: !canInteract || !flow.engineState?.color,
+                      onClick: handleResetMakeup,
                     }}
                     downloadProps={{
                       disabled: !canInteract || !flow.engineState?.color || !!compareCanvas,

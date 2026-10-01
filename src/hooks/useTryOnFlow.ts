@@ -214,6 +214,13 @@ export default function useTryOnFlow(isOpen: boolean) {
     stageRef.current?.setMakeupState({ pattern: patternId });
   };
 
+  // Top-control "Reset" action - clears the applied shade without re-opening the shade list,
+  // same `color: null` semantics `handleShadeSelect` already uses for re-clicking the active
+  // swatch to deselect it (the engine's `applyEffect` treats `color: null` as "nothing to draw").
+  const handleResetMakeup = () => {
+    stageRef.current?.setMakeupState({ color: null });
+  };
+
   // Toggling on always (re)centers the split - toggling off clears it back to the normal
   // full render (`null`), matching `FaceLandmarkerEngineBase`'s own semantics for `comparePosition`.
   const handleCompareToggle = () => {
@@ -262,5 +269,6 @@ export default function useTryOnFlow(isOpen: boolean) {
     handleCompareToggle,
     handleRetry,
     handleDownload,
+    handleResetMakeup,
   };
 }
