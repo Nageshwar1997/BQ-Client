@@ -1,51 +1,19 @@
-import { forwardRef, useImperativeHandle, useRef } from 'react';
+import { forwardRef } from 'react';
 
 import type { INailTryOnState } from '@/classes/tryon/categories/nail';
-import { TRYON_MODE_MAP } from '@/constants/tryon-constants';
-import type { ITryOnStageRef, TTryOnMode } from '@/types/tryon-types';
+import { NailLiveEngine, NailUploadEngine } from '@/classes/tryon/categories/nail';
+import type { ITryOnStageRef } from '@/types/tryon-types';
 
-import NailLiveStage from './NailLiveStage';
-import NailUploadStage from './NailUploadStage';
+import type { ITryOnStageProps } from '../TryOnStage';
+import TryOnStage from '../TryOnStage';
 
-interface INailTryOnStageProps {
-  mode: TTryOnMode;
-  uploadedImageUrl: string | null;
-  initialState?: Partial<INailTryOnState>;
-  onStateChange: (state: INailTryOnState) => void;
-}
+const ENGINES = { Live: NailLiveEngine, Upload: NailUploadEngine };
 
-// Mirrors ../hair/HairTryOnStage.tsx exactly, over the NAIL stage pair instead.
-const NailTryOnStage = forwardRef<ITryOnStageRef<INailTryOnState>, INailTryOnStageProps>(
-  ({ mode, uploadedImageUrl, initialState, onStateChange }, ref) => {
-    const liveRef = useRef<ITryOnStageRef<INailTryOnState> | null>(null);
-    const uploadRef = useRef<ITryOnStageRef<INailTryOnState> | null>(null);
-
-    useImperativeHandle(ref, () => {
-      const getActiveRef = () =>
-        mode === TRYON_MODE_MAP.LIVE ? liveRef.current : uploadRef.current;
-
-      return {
-        setMakeupState: (state) => getActiveRef()?.setMakeupState(state),
-        getState: () => getActiveRef()?.getState(),
-        takeSnapshot: () => getActiveRef()?.takeSnapshot() ?? null,
-        getStream: () => getActiveRef()?.getStream() ?? null,
-        setComparePosition: (value) => getActiveRef()?.setComparePosition(value),
-        getCanvas: () => getActiveRef()?.getCanvas() ?? null,
-      };
-    }, [mode]);
-
-    return mode === TRYON_MODE_MAP.LIVE ? (
-      <NailLiveStage ref={liveRef} initialState={initialState} onStateChange={onStateChange} />
-    ) : (
-      <NailUploadStage
-        ref={uploadRef}
-        imageUrl={uploadedImageUrl}
-        initialState={initialState}
-        onStateChange={onStateChange}
-      />
-    );
-  },
-);
+// Binds the shared TryOnStage to the Nail live/upload engine pair.
+const NailTryOnStage = forwardRef<
+  ITryOnStageRef<INailTryOnState>,
+  Omit<ITryOnStageProps<INailTryOnState>, 'engines'>
+>((props, ref) => <TryOnStage ref={ref} engines={ENGINES} {...props} />);
 
 NailTryOnStage.displayName = 'NailTryOnStage';
 
