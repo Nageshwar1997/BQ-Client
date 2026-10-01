@@ -77,5 +77,8 @@
     "eslint-plugin-react": {
       "eslint": "$eslint"
     }
+  },
+  "allowScripts": {
+    "canvas@3.2.3": true
   }
 }
