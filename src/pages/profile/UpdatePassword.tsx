@@ -103,7 +103,7 @@ const UpdatePassword = () => {
     : setPasswordForm.formState.isDirty;
 
   return (
-    <div className="relative flex w-full gap-4 outline-hidden lg:h-[85dvh]">
+    <div className="relative flex w-full gap-4 lg:h-[85dvh]">
       {/* ================= FORM PANEL ================= */}
       <ScrollableGradientContainer direction="vertical" className="mx-auto max-w-lg">
         <div className="mx-auto flex w-full flex-col items-center gap-6 p-4 sm:p-6">

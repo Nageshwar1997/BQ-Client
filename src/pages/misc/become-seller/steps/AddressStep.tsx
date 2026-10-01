@@ -27,7 +27,7 @@ const AddressStep = ({ form, disabled = false }: IAddressStepProps) => {
   // never stops the applicant from saving/continuing.
   const [pincodeStateMismatch, setPincodeStateMismatch] = useState(false);
 
-  const runPincodeCheck = useDebounce({
+  const { trigger: runPincodeCheck } = useDebounce({
     callback: async (pincode: string, state: TSellerAddressZodSchema['state']) => {
       const matches = await verifyPincodeMatchesState(pincode, state);
       setPincodeStateMismatch(matches === false);

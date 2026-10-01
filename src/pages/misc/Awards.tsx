@@ -18,7 +18,7 @@ const AWARD_STORIES = [
     name: 'Forbes',
     tagline: 'Featured in "Rising Beauty-Tech Startups to Watch"',
     story:
-      'Forbes recognized Beautinique for reimagining how people shop for cosmetics online. The feature centered on our virtual try-on technology, which lets shoppers preview a shade or product live through their camera before it ever reaches checkout, and our marketplace model built around verified sellers and genuine, purchase-only reviews. In an industry where online beauty shopping often means guessing, the piece called out our attempt to replace that guesswork with real confidence.',
+      'Forbes recognized Beautinique for reimagining how people shop for cosmetics online. The feature centered on our virtual Try-On technology, which lets shoppers preview a shade or product live through their camera before it ever reaches checkout, and our marketplace model built around verified sellers and genuine, purchase-only reviews. In an industry where online beauty shopping often means guessing, the piece called out our attempt to replace that guesswork with real confidence.',
   },
   {
     key: 'TalentAward',

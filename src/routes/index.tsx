@@ -6,7 +6,7 @@ import { ROUTES } from '@/constants/routes.constants';
 import { authenticate, guestOnly } from '@/middlewares';
 import ErrorBoundary from '@/pages/error/ErrorBoundary';
 
-const { AUTH, AWARDS, COMPANY, DISCOVER, HOME, LEGAL, PRODUCTS, PROFILE, QUICK_LINKS, SERVICES } =
+const { AUTH, AWARDS, COMPANY, DISCOVER, HOME, LEGAL, PRODUCTS, PROFILE, QUICK_LINKS, SERVICES, TRYONS } =
   ROUTES;
 
 // Wraps a page's dynamic import into the function react-router's `lazy` route property expects.
@@ -118,6 +118,10 @@ const routes: RouteObject[] = [
             lazy: loadPage(() => import('@/pages/profile/Notifications')),
           },
         ],
+      },
+      {
+        path: TRYONS,
+        lazy: loadPage(() => import('@/pages/tryons')),
       },
       {
         path: LEGAL.ACCESSIBILITY,
