@@ -30,7 +30,7 @@ const QUICK_FACTS = [
   {
     icon: 'solar:magic-stick-2-linear',
     title: 'Known For',
-    description: 'Virtual try-on technology that lets shoppers preview products before buying.',
+    description: 'Virtual Try-On technology that lets shoppers preview products before buying.',
   },
   {
     icon: 'solar:shield-check-linear',
@@ -73,7 +73,7 @@ const PressMedia = () => {
             />
             <p className="text-secondary text-xs leading-relaxed sm:text-sm">
               Featured in Forbes&apos; &quot;Rising Beauty-Tech Startups to Watch,&quot; recognizing
-              our virtual try-on technology and marketplace model.
+              our virtual Try-On technology and marketplace model.
             </p>
           </div>
           <Link

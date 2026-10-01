@@ -65,7 +65,7 @@ const OUR_VALUES = [
   {
     icon: 'solar:lightbulb-linear',
     title: 'Innovation',
-    description: 'From virtual try-on to smart recommendations, we keep pushing forward.',
+    description: 'From virtual Try-On to smart recommendations, we keep pushing forward.',
   },
 ] as const;
 
@@ -124,7 +124,7 @@ const AboutUs = () => {
           meant guessing whether a shade would actually suit you, whether a seller could be trusted,
           or whether a glowing review was even real. We set out to build a marketplace that removes
           that guesswork &mdash; connecting verified independent sellers with shoppers, backed by
-          tools like virtual try-on and genuine, purchase-only reviews, so every order feels like a
+          tools like virtual Try-On and genuine, purchase-only reviews, so every order feels like a
           sure thing instead of a gamble.
         </p>
       </StaticPageSection>

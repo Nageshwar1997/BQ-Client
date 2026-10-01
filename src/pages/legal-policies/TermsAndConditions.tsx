@@ -75,7 +75,7 @@ const TermsAndConditions = () => {
           Welcome to <BeautiniqueLink />. These Terms & Conditions (&quot;Terms&quot;) govern your
           access to and use of our website, mobile experience, and services, including browsing,
           purchasing products, selling as a partner, and using features like reviews and virtual
-          try-on. By creating an account or using this platform in any way, you agree to comply with
+          Try-On. By creating an account or using this platform in any way, you agree to comply with
           these Terms in full.
         </p>
       </StaticPageSection>
@@ -175,7 +175,7 @@ const TermsAndConditions = () => {
 
       <StaticPageSection title="Virtual Try-On Feature" className="gap-3">
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
-          Our virtual try-on feature may request access to your device camera to render product
+          Our virtual Try-On feature may request access to your device camera to render product
           previews. Camera access is used only to power this feature in real time and is not stored
           or shared by us beyond what is required to provide the preview. By using this feature, you
           consent to this temporary use of your camera.

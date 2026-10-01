@@ -11,7 +11,7 @@ const AUTH_HIGHLIGHTS = [
 
 const Auth = () => {
   return (
-    <div className="relative flex h-dvh min-h-dvh w-full gap-4 p-4 outline-hidden">
+    <div className="relative flex h-dvh min-h-dvh w-full gap-4 p-4">
       {/* ================= LEFT SHOWCASE PANEL ================= */}
       <BrandShowcasePanel
         title="BEAUTINIQUE"

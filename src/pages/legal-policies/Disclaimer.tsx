@@ -30,7 +30,7 @@ const QUICK_OVERVIEW = [
   {
     icon: 'solar:eye-scan-linear',
     title: 'Try-On Is a Preview',
-    description: 'Virtual try-on colors are an approximation, not an exact match.',
+    description: 'Virtual Try-On colors are an approximation, not an exact match.',
   },
   {
     icon: 'solar:link-linear',
@@ -53,7 +53,7 @@ const Disclaimer = () => {
         description={
           <>
             Please read this page carefully. It explains what you can and can&apos;t rely on when
-            using <BeautiniqueLink /> &mdash; from product descriptions to our virtual try-on
+            using <BeautiniqueLink /> &mdash; from product descriptions to our virtual Try-On
             experience.
           </>
         }
@@ -103,7 +103,7 @@ const Disclaimer = () => {
 
       <StaticPageSection title="Virtual Try-On & Preview Accuracy" className="gap-3">
         <p className="text-secondary text-sm leading-relaxed sm:text-base">
-          Our virtual try-on feature is designed to give you a general sense of how a shade or
+          Our virtual Try-On feature is designed to give you a general sense of how a shade or
           product might look. Actual results can vary based on your camera, screen calibration,
           lighting conditions, and skin tone, and should be treated as a guide rather than an exact
           preview of the physical product.
