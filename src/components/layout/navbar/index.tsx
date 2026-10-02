@@ -359,7 +359,7 @@ export const Navbar = () => {
                       <div className="flex items-center gap-2">
                         <Icon
                           icon="solar:alt-arrow-down-linear"
-                          className={`text-primary hover:text-blue-crayola-c size-6 transition-colors duration-300`}
+                          className={`text-primary hover:text-blue-crayola-c size-6 transition-all duration-300 ease-in-out ${isActive ? 'rotate-180' : ''}`}
                           onClick={(e) => {
                             const target = resolveCategoryPath(category.path, category.slug);
 
@@ -367,10 +367,6 @@ export const Navbar = () => {
                             e.stopPropagation();
                             void navigate(target);
                           }}
-                        />
-                        <Icon
-                          icon="solar:alt-arrow-down-linear"
-                          className={`text-primary size-6 transition-transform duration-300 ease-in-out ${isActive ? 'rotate-180' : ''}`}
                         />
                       </div>
                     </div>
