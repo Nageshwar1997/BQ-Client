@@ -188,7 +188,7 @@ const LoginForm = () => {
               text="Forgot Password?"
               type="accent"
               path={`/${ROUTES.AUTH.BASE}/${ROUTES.AUTH.FORGOT_PASSWORD}`}
-              className="text-xs font-semibold whitespace-nowrap hover:underline"
+              className="text-xs font-semibold hover:underline"
             />
           </p>
 
