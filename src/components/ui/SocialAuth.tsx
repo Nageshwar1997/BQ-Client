@@ -1,9 +1,26 @@
 import { Icon } from '@iconify/react';
 import { Link } from 'react-router-dom';
 
-import { OAUTH_DATA, OAUTH_REDIRECT_KEY } from '@/constants/common.constants';
+import { API_METHODS_AND_URLS } from '@/constants/api.constants';
+import { OAUTH_REDIRECT_KEY, PROVIDER_ICON_MAP } from '@/constants/common.constants';
+import envs from '@/envs';
 import usePathParams from '@/hooks/usePathParams';
 import useQueryParams from '@/hooks/useQueryParams';
+
+const OAUTH_DATA = [
+  {
+    icon: PROVIDER_ICON_MAP.GOOGLE,
+    redirectUrl: `${envs.urls.gateway}${API_METHODS_AND_URLS.user_service.auth.login.oauth.google.redirect.url}`,
+  },
+  {
+    icon: PROVIDER_ICON_MAP.GITHUB,
+    redirectUrl: `${envs.urls.gateway}${API_METHODS_AND_URLS.user_service.auth.login.oauth.github.redirect.url}`,
+  },
+  {
+    icon: PROVIDER_ICON_MAP.LINKEDIN,
+    redirectUrl: `${envs.urls.gateway}${API_METHODS_AND_URLS.user_service.auth.login.oauth.linkedin.redirect.url}`,
+  },
+] as const;
 
 const SocialAuth = () => {
   const { pathname } = usePathParams();

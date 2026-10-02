@@ -1,9 +1,7 @@
 import type { TAuthProvider } from '@beautinique/frontend-types';
 
 import type { StepperStep } from '@/components/ui/Stepper';
-import envs from '@/envs';
 
-import { API_METHODS_AND_URLS } from './api.constants';
 import { ROUTES } from './routes.constants';
 
 export const LOADING_RINGS_DATA = [
@@ -271,18 +269,3 @@ export const PROVIDER_ICON_MAP: Record<TAuthProvider, string> = {
   LINKEDIN: 'devicon:linkedin',
   GITHUB: 'devicon:github',
 };
-
-export const OAUTH_DATA = [
-  {
-    icon: PROVIDER_ICON_MAP.GOOGLE,
-    redirectUrl: `${envs.urls.gateway}${API_METHODS_AND_URLS.user_service.auth.login.oauth.google.redirect.url}`,
-  },
-  {
-    icon: PROVIDER_ICON_MAP.GITHUB,
-    redirectUrl: `${envs.urls.gateway}${API_METHODS_AND_URLS.user_service.auth.login.oauth.github.redirect.url}`,
-  },
-  {
-    icon: PROVIDER_ICON_MAP.LINKEDIN,
-    redirectUrl: `${envs.urls.gateway}${API_METHODS_AND_URLS.user_service.auth.login.oauth.linkedin.redirect.url}`,
-  },
-] as const;

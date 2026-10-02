@@ -1,5 +1,4 @@
 import HomeHero from './HomeHero';
-import HomeVideoCarousel from './HomeVideoCarousel';
 
 // Dev scratch-canvas for building the Try-On flow in isolation - opened by
 // default with a mock LIP/MATTE selection so it's visible without going
@@ -8,7 +7,7 @@ import HomeVideoCarousel from './HomeVideoCarousel';
 const Home = () => {
   return (
     <div className="h-full w-full lg:-mt-16">
-      <HomeVideoCarousel />
+      {/* <HomeVideoCarousel /> */}
       <HomeHero />
     </div>
   );
