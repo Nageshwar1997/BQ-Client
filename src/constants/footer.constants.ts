@@ -1,6 +1,6 @@
 import { ROUTES } from './routes.constants';
 
-const { COMPANY, LEGAL, PRODUCTS, PROFILE, QUICK_LINKS, SERVICES } = ROUTES;
+const { COMPANY, LEGAL, PROFILE, QUICK_LINKS, SERVICES } = ROUTES;
 
 export const FOOTER_CATEGORIES = [
   {
@@ -31,17 +31,6 @@ export const FOOTER_CATEGORIES = [
         path: `/${ROUTES.PROFILE.BASE}/${ROUTES.PROFILE.BECOME_SELLER}`,
         private: true,
       },
-    ],
-  },
-  {
-    title: 'Products',
-    options: [
-      { title: 'For You', path: `/${PRODUCTS.BASE}` },
-      { title: 'Lip Care', path: `/${PRODUCTS.BASE}` },
-      { title: 'Special Collection', path: `/${PRODUCTS.BASE}` },
-      { title: 'Face Care', path: `/${PRODUCTS.BASE}` },
-      { title: 'Skin Care', path: `/${PRODUCTS.BASE}` },
-      { title: 'Eye Care', path: `/${PRODUCTS.BASE}` },
     ],
   },
   {

@@ -9,7 +9,6 @@ import type {
 } from 'react';
 
 import type { TOAST_TYPE } from '@/constants/common.constants';
-import type { FOOTER_CATEGORIES } from '@/constants/footer.constants';
 
 import type { TCategory } from './api.type';
 import type { TGradientPos, TScrollDirection } from './hook.type';
@@ -86,12 +85,6 @@ export interface IModalWrapper extends IClassName, IChildren {
   header?: { title?: string; showCloseIcon?: boolean };
   closeOnOutsideClick?: boolean;
   style?: ComponentProps<'div'>['style'];
-}
-
-export interface IFooterOptionList {
-  options: (typeof FOOTER_CATEGORIES)[number]['options'];
-  title?: string;
-  isFirst?: boolean;
 }
 
 export interface IVideoPlayer extends IClassName {

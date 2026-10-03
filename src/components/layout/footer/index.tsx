@@ -9,7 +9,13 @@ import { ROUTES } from '@/constants/routes.constants';
 import useAuthNavigate from '@/hooks/useAuthNavigate';
 import usePathParams from '@/hooks/usePathParams';
 import useThemeStore from '@/stores/theme.store';
-import { type IFooterOptionList } from '@/types/component.type';
+import type { TL1Category } from '@/types/api.type';
+
+interface IFooterOptionList {
+  options: (typeof FOOTER_CATEGORIES)[number]['options'];
+  title?: string;
+  isFirst?: boolean;
+}
 
 const FooterOptionList = ({ isFirst = false, title, options }: IFooterOptionList) => {
   const authNavigate = useAuthNavigate();
@@ -40,7 +46,7 @@ const FooterOptionList = ({ isFirst = false, title, options }: IFooterOptionList
   );
 };
 
-const Footer = () => {
+const Footer = ({ categories }: { categories: TL1Category[] | undefined }) => {
   const theme = useThemeStore((s) => s.theme);
 
   const year = new Date().getFullYear();
@@ -89,7 +95,18 @@ const Footer = () => {
         </div>
         <div className="text-battleship-davys-gray-invert mt-6 grid w-full grid-cols-2 gap-6 px-4 text-sm sm:grid-cols-3 md:px-0 lg:grid-cols-5 lg:gap-10 xl:gap-20">
           <div className="border-silver/30 col-span-3 w-full border-b lg:hidden" />
-          {FOOTER_CATEGORIES.map((category, index) => (
+          {[
+            ...FOOTER_CATEGORIES.slice(0, 2),
+            {
+              title: 'Products',
+              options:
+                categories?.map((c) => ({
+                  title: `${c.name} Care`.replace('Collections Care', 'Collection'),
+                  path: `/${ROUTES.PRODUCTS.BASE}/${c.slug}`,
+                })) ?? Array.from({ length: 5 }, () => ({ title: '* * * * *', path: '' })),
+            },
+            ...FOOTER_CATEGORIES.slice(2, 4),
+          ].map((category, index) => (
             <Fragment key={index}>
               {index === 1 && (
                 <div className="border-b-silver/30 col-span-3 w-full border-b sm:hidden" />

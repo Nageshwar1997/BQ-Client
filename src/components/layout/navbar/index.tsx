@@ -1,3 +1,4 @@
+import { EMPTY_ARRAY } from '@beautinique/frontend-constants';
 import { Icon } from '@iconify/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -8,11 +9,10 @@ import { ABOUT, FOR_YOU, NAVBAR_TOP_LAYER_DATA } from '@/constants/navbar.consta
 import { ROUTES } from '@/constants/routes.constants';
 import useAuthNavigate from '@/hooks/useAuthNavigate';
 import usePathParams from '@/hooks/usePathParams';
-import { useGetCategoriesHierarchy } from '@/services/product-service/category.service.query';
 import useUserStore from '@/stores/user.store';
 import type { TCategoryHierarchy } from '@/types/api.type';
 import type { IClassName } from '@/types/component.type';
-import { resolveCategoryPath, toaster } from '@/utils/common.util';
+import { resolveCategoryPath } from '@/utils/common.util';
 
 import { Feedback, type IUserMenuIconsHandle, UserMenuIcons } from './children/grand-children';
 import HoveredCategory from './children/HoveredCategory';
@@ -111,12 +111,14 @@ const Category = ({
   );
 };
 
-export const Navbar = () => {
+export const Navbar = ({
+  categories: categoriesData = EMPTY_ARRAY,
+}: {
+  categories: TCategoryHierarchy[] | undefined;
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navbarRef = useRef<HTMLDivElement>(null);
   const userMenuIconsRef = useRef<IUserMenuIconsHandle>(null);
-
-  const { data, isError, error } = useGetCategoriesHierarchy();
 
   const authenticated = useUserStore((s) => s.authenticated);
 
@@ -130,7 +132,7 @@ export const Navbar = () => {
   const [isNavbarHovered, setIsNavbarHovered] = useState(false);
   const isMountedRef = useRef(false);
 
-  const categories = useMemo(() => [FOR_YOU, ...(data ?? []), ABOUT], [data]);
+  const categories = useMemo(() => [FOR_YOU, ...categoriesData, ABOUT], [categoriesData]);
 
   const isNonTransparent = [ROUTES.PRODUCTS.BASE].some((val) => paths.includes(val));
 
@@ -232,12 +234,6 @@ export const Navbar = () => {
       document.body.style.overflow = 'unset';
     };
   }, [isMobileNavbarOpened]);
-
-  useEffect(() => {
-    if (isError) {
-      toaster.error({ title: 'Oops! Error', description: error.message });
-    }
-  }, [isError, error]);
 
   return (
     <div
