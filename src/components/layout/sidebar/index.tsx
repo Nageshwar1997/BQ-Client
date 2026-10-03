@@ -1,3 +1,4 @@
+import { USER_ROLE_MAP } from '@beautinique/frontend-constants';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -7,6 +8,7 @@ import { SIDEBAR_DATA } from '@/constants/common.constants';
 import useIsSmallScreen from '@/hooks/useIsSmallScreen';
 import usePathParams from '@/hooks/usePathParams';
 import { useLogout } from '@/services/user-service/auth.service.query';
+import useUserStore from '@/stores/user.store';
 
 import ScrollableGradientContainer from '../containers/ScrollableGradientContainer';
 
@@ -36,6 +38,7 @@ const SidebarItem = ({
 const Sidebar = () => {
   const { pathname, paths } = usePathParams();
   const isMobile = useIsSmallScreen(767);
+  const user = useUserStore((s) => s.user);
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const { mutateAsync: logout } = useLogout();
 
@@ -61,6 +64,9 @@ const Sidebar = () => {
             const path = 'path' in item ? item.path : '';
             const isSameRoute = path === pathname || paths.includes(path);
             const isSameIndex = hoveredIdx === index;
+            const isUser = user?.role === USER_ROLE_MAP.USER;
+
+            if (item.title === 'Become a Seller' && !isUser) return null;
 
             return (
               <Tooltip key={index} title={item.title} placement={'right'} required={!isMobile}>
