@@ -19,10 +19,10 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
-    "@beautinique/frontend-constants": "^1.0.10",
-    "@beautinique/frontend-styles": "^1.0.0",
-    "@beautinique/frontend-zod": "^1.0.25",
-    "@beautinique/shared-utils": "^1.0.8",
+    "@beautinique/frontend-constants": "^1.1.0",
+    "@beautinique/frontend-styles": "^1.1.0",
+    "@beautinique/frontend-zod": "^1.1.0",
+    "@beautinique/shared-utils": "^1.1.0",
     "@iconify/react": "^6.0.2",
     "@mediapipe/tasks-vision": "1.0.1",
     "@tanstack/react-table": "^9.2.6",
@@ -45,7 +45,7 @@
     "zustand": "^5.0.15"
   },
   "devDependencies": {
-    "@beautinique/frontend-types": "^1.0.24",
+    "@beautinique/frontend-types": "^1.1.0",
     "@eslint/js": "^10.0.1",
     "@hookform/resolvers": "^5.9.1",
     "@tailwindcss/typography": "^0.5.20",
