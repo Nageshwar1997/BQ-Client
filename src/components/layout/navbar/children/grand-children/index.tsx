@@ -1,3 +1,4 @@
+import { useOutsideClick } from '@beautinique/frontend-hooks';
 import { Icon } from '@iconify/react';
 import { type Ref, useImperativeHandle, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -6,7 +7,6 @@ import GradientText from '@/components/ui/GradientText';
 import Theme from '@/components/ui/Theme';
 import { ROUTES } from '@/constants/routes.constants';
 import useAuthNavigate from '@/hooks/useAuthNavigate';
-import { useOutsideClick } from '@/hooks/useOutsideClick';
 import usePathParams from '@/hooks/usePathParams';
 import type { TCategoryHierarchyNode, TLevel2, TLevel3 } from '@/types/api.type';
 import type { IChildren, IClassName } from '@/types/component.type';

@@ -1,8 +1,8 @@
+import { useOutsideClick } from '@beautinique/frontend-hooks';
 import { Icon } from '@iconify/react';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import { useOutsideClick } from '@/hooks/useOutsideClick';
 import type { ISelect } from '@/types/input.type';
 
 import { InputError, InputIcon, InputLabel } from './children';
@@ -104,7 +104,7 @@ const Select = ({
             onClick={handleToggle}
           >
             <span
-              className={`flex-1 truncate py-2 xl:py-3 first-letter:capitalize ${!selected?.value ? 'text-primary/30' : ''}`}
+              className={`flex-1 truncate py-2 first-letter:capitalize xl:py-3 ${!selected?.value ? 'text-primary/30' : ''}`}
             >
               {selected?.label ?? selectProps.placeholder}
             </span>
@@ -153,7 +153,9 @@ const Select = ({
                       setIsOpen(false);
                     }}
                   >
-                    <span className="flex-1 text-left text-[13px] first-letter:capitalize">{option.label}</span>
+                    <span className="flex-1 text-left text-[13px] first-letter:capitalize">
+                      {option.label}
+                    </span>
                     {active && (
                       <Icon icon="solar:unread-linear" className="text-primary size-4 md:size-5" />
                     )}
