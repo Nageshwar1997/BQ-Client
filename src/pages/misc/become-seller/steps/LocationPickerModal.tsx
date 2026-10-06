@@ -1,3 +1,4 @@
+import { useDebounce } from '@beautinique/frontend-hooks';
 import { Icon } from '@iconify/react';
 import { OlaMaps } from 'olamaps-web-sdk';
 import { useEffect, useRef, useState } from 'react';
@@ -8,7 +9,6 @@ import envs from '@/envs';
 import useAutocompleteSuggestions, {
   type IPlacePrediction,
 } from '@/hooks/useAutocompleteSuggestions';
-import useDebounce from '@/hooks/useDebounce';
 import useLocationPicker, { type ISelectedLocation } from '@/hooks/useLocationPicker';
 import useThemeStore from '@/stores/theme.store';
 

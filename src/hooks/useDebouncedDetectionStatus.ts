@@ -1,8 +1,7 @@
+import { useDebounce } from '@beautinique/frontend-hooks';
 import { useEffect, useState } from 'react';
 
 import type { TDetectionStatus } from '@/types/tryon-types';
-
-import useDebounce from './useDebounce';
 
 // How long a non-'detected' detection-status reading has to hold continuously before this hook's
 // returned value actually changes to it - showing a "not in frame"/"turned" overlay the instant a
@@ -24,7 +23,7 @@ export default function useDebouncedDetectionStatus(
 ): TDetectionStatus | undefined {
   const [debouncedStatus, setDebouncedStatus] = useState<TDetectionStatus | undefined>(undefined);
 
-  // Shared debounce-a-callback hook (see useDebounce.ts) instead of a hand-rolled setTimeout/
+  // Shared debounce-a-callback hook (see useDebounce in '@beautinique/frontend-hooks') instead of a hand-rolled setTimeout/
   // cleanup pair - owns the timer/cleanup mechanics, this just supplies what to call and when.
   // `cancel` matters here specifically - see the effect below.
   const { trigger: debounceStatus, cancel: cancelDebounce } = useDebounce<

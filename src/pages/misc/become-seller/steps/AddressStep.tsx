@@ -1,3 +1,4 @@
+import { useDebounce } from '@beautinique/frontend-hooks';
 import type { TSellerAddressZodSchema } from '@beautinique/frontend-types';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
@@ -7,7 +8,6 @@ import Button from '@/components/ui/Button';
 import Input from '@/components/ui/inputs/Input';
 import Select from '@/components/ui/inputs/Select';
 import { SELLER_ADDRESS_INPUT_MAP_DATA } from '@/constants/input.constants';
-import useDebounce from '@/hooks/useDebounce';
 import type { ISelectedLocation } from '@/hooks/useLocationPicker';
 import { verifyPincodeMatchesState } from '@/utils/olaMaps.util';
 
