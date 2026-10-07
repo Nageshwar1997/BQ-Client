@@ -1,3 +1,4 @@
+import { usePathParams, useQueryParams } from '@beautinique/frontend-hooks';
 import { Icon } from '@iconify/react';
 import { useMemo, useState } from 'react';
 
@@ -8,8 +9,6 @@ import Dropdown from '@/components/layout/dropdown';
 import TryOnModal from '@/components/layout/tryons';
 import Button from '@/components/ui/Button';
 import { QuillContent } from '@/components/ui/QuillContent';
-import usePathParams from '@/hooks/usePathParams';
-import useQueryParams from '@/hooks/useQueryParams';
 import { useGetDashboardProductBySlug } from '@/services/product-service/product.service.query';
 import type { TMediaOption } from '@/types/component.type';
 import type { IShade } from '@/types/tryon-types';

@@ -1,11 +1,10 @@
+import { usePathParams, useQueryParams } from '@beautinique/frontend-hooks';
 import { Icon } from '@iconify/react';
 import { Link } from 'react-router-dom';
 
 import { API_METHODS_AND_URLS } from '@/constants/api.constants';
 import { OAUTH_REDIRECT_KEY, PROVIDER_ICON_MAP } from '@/constants/common.constants';
 import envs from '@/envs';
-import usePathParams from '@/hooks/usePathParams';
-import useQueryParams from '@/hooks/useQueryParams';
 
 const OAUTH_DATA = [
   {

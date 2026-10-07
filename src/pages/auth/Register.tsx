@@ -1,3 +1,4 @@
+import { usePathParams, useQueryParams } from '@beautinique/frontend-hooks';
 import type {
   TEmailZodSchema,
   TOtpZodSchema,
@@ -25,8 +26,6 @@ import {
   REGISTER_INPUT_MAP_DATA,
 } from '@/constants/input.constants';
 import { ROUTES } from '@/constants/routes.constants';
-import usePathParams from '@/hooks/usePathParams';
-import useQueryParams from '@/hooks/useQueryParams';
 import {
   useRegisterAndSaveUser,
   useRegisterResendOtp,

@@ -1,12 +1,11 @@
 import { USER_ROLE_MAP } from '@beautinique/frontend-constants';
-import { useIsSmallScreen } from '@beautinique/frontend-hooks';
+import { useIsSmallScreen, usePathParams } from '@beautinique/frontend-hooks';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import Tooltip from '@/components/ui/Tooltip';
 import { SIDEBAR_DATA } from '@/constants/common.constants';
-import usePathParams from '@/hooks/usePathParams';
 import { useLogout } from '@/services/user-service/auth.service.query';
 import useUserStore from '@/stores/user.store';
 

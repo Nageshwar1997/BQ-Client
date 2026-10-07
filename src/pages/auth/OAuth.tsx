@@ -1,11 +1,10 @@
+import { usePathParams, useQueryParams } from '@beautinique/frontend-hooks';
 import { useEffect } from 'react';
 
 import ApiStatus from '@/components/layout/ApiStatus';
 import GradientText from '@/components/ui/GradientText';
 import { OAUTH_REDIRECT_KEY } from '@/constants/common.constants';
 import { ROUTES } from '@/constants/routes.constants';
-import usePathParams from '@/hooks/usePathParams';
-import useQueryParams from '@/hooks/useQueryParams';
 import { useGetSessionUser } from '@/services/user-service/user.service.query';
 import useUserStore from '@/stores/user.store';
 

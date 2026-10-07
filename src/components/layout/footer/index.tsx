@@ -1,3 +1,4 @@
+import { usePathParams } from '@beautinique/frontend-hooks';
 import { Icon } from '@iconify/react';
 import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
@@ -7,7 +8,6 @@ import GradientText from '@/components/ui/GradientText';
 import { FOOTER_AWARDS, FOOTER_CATEGORIES, SOCIAL_MEDIA_LINKS } from '@/constants/footer.constants';
 import { ROUTES } from '@/constants/routes.constants';
 import useAuthNavigate from '@/hooks/useAuthNavigate';
-import usePathParams from '@/hooks/usePathParams';
 import useThemeStore from '@/stores/theme.store';
 import type { TL1Category } from '@/types/api.type';
 

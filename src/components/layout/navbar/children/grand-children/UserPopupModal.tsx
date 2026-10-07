@@ -1,3 +1,4 @@
+import { usePathParams, useQueryParams } from '@beautinique/frontend-hooks';
 import { Icon } from '@iconify/react';
 
 import { ModalWrapper } from '@/components/layout/modals/ModalWrapper';
@@ -6,8 +7,6 @@ import Divider from '@/components/ui/Divider';
 import { USER_MENU_POPUP_DATA } from '@/constants/navbar.constants';
 import { ROUTES } from '@/constants/routes.constants';
 import useAuthNavigate from '@/hooks/useAuthNavigate';
-import usePathParams from '@/hooks/usePathParams';
-import useQueryParams from '@/hooks/useQueryParams';
 import { useLogout } from '@/services/user-service/auth.service.query';
 import useUserStore from '@/stores/user.store';
 import type { IModalWrapper } from '@/types/component.type';

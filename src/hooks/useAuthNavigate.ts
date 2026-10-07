@@ -1,8 +1,7 @@
+import { usePathParams, useQueryParams } from '@beautinique/frontend-hooks';
+
 import { OAUTH_REDIRECT_KEY } from '@/constants/common.constants';
 import useUserStore from '@/stores/user.store';
-
-import usePathParams from './usePathParams';
-import useQueryParams from './useQueryParams';
 
 // Navigates immediately for public paths (or if already logged in); for private ones while
 // logged out, remembers the target path and opens the login modal instead. sessionStorage (not

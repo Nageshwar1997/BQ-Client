@@ -1,3 +1,4 @@
+import { usePathParams, useQueryParams } from '@beautinique/frontend-hooks';
 import type { TLoginZodSchema, TPasswordZodSchema } from '@beautinique/frontend-types';
 import { loginZodSchema } from '@beautinique/frontend-zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,8 +15,6 @@ import SocialAuth from '@/components/ui/SocialAuth';
 import { OAUTH_REDIRECT_KEY } from '@/constants/common.constants';
 import { BASE_PASSWORD_KEYS, LOGIN_INPUT_MAP_DATA } from '@/constants/input.constants';
 import { ROUTES } from '@/constants/routes.constants';
-import usePathParams from '@/hooks/usePathParams';
-import useQueryParams from '@/hooks/useQueryParams';
 import { useLogin } from '@/services/user-service/auth.service.query';
 import useUserStore from '@/stores/user.store';
 import { setErrorToForm } from '@/utils/form.util';
@@ -72,7 +71,7 @@ const LoginForm = () => {
         if (paths.includes(ROUTES.AUTH.BASE)) {
           void navigate(ROUTES.HOME);
         } else if (queryParams.login) {
-          removeParams(['login']);
+          removeParams(['login'], { replace: true });
         }
       },
 
@@ -195,7 +194,7 @@ const LoginForm = () => {
           {/* ================= ACTION BUTTONS ================= */}
           <div className="flex gap-4 sm:col-span-2">
             {/* -------- Back Button -------- */}
-            <Link to={ROUTES.HOME} className="w-full">
+            <Link to={ROUTES.HOME} replace={!!queryParams.login} className="w-full">
               <Button pattern="secondary" content="Back" />
             </Link>
 

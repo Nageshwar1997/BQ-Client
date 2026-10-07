@@ -1,4 +1,5 @@
 import { SORT_MAP } from '@beautinique/frontend-constants';
+import { useQueryParams } from '@beautinique/frontend-hooks';
 import type { TProductStatus, TSort } from '@beautinique/frontend-types';
 import { Icon } from '@iconify/react';
 import { useEffect } from 'react';
@@ -17,7 +18,6 @@ import {
   TableRowCell,
 } from '@/components/layout/table';
 import { PRODUCTS_TABLE_TITLES } from '@/constants/api.constants';
-import useQueryParams from '@/hooks/useQueryParams';
 import { useGetDashboardProducts } from '@/services/product-service/product.service.query';
 import type { TProductSortBy } from '@/types/api.type';
 import { formatDate, formatINRCurrency } from '@/utils/common.util';
