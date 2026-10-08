@@ -60,7 +60,7 @@ const Register = () => {
   });
 
   /* ================= 5. Local State ================= */
-  const [currentStep, setCurrentStep] = useState<'send' | 'verify' | 'save'>('save');
+  const [currentStep, setCurrentStep] = useState<'send' | 'verify' | 'save'>('send');
 
   const [showPasswords, setShowPasswords] =
     useState<Record<keyof TPasswordsZodSchema, boolean>>(BASE_PASSWORDS_VISIBILITY);
