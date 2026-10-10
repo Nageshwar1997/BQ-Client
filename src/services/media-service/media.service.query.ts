@@ -1,10 +1,10 @@
+import { withProgressToast } from '@beautinique/frontend-components';
 import { useMutation } from '@tanstack/react-query';
 
 import { mediaApi } from '@/classes/apis';
 import { API_QUERY_KEYS } from '@/constants/api.constants';
 import type { ITitleDescription } from '@/types/component.type';
 import { handleApiErrorToaster, handleApiSuccessToaster } from '@/utils/api.util';
-import { withProgressToast } from '@/utils/common.util';
 
 const { upload } = API_QUERY_KEYS.media_service;
 

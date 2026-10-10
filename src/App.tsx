@@ -1,3 +1,4 @@
+import { ToastContainer } from '@beautinique/frontend-components';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useEffect } from 'react';
@@ -6,7 +7,6 @@ import { RouterProvider } from 'react-router-dom';
 import LoadingScreen from './components/layout/loaders/LoadingScreen';
 import WakeUpProgress from './components/layout/loaders/WakeUpProgress';
 import NetworkStatusToaster from './components/layout/NetworkStatusToaster';
-import ToastContainer from './components/ui/Toaster';
 import { queryClient } from './configs/queryClient';
 import envs from './envs';
 import useWakeUp from './hooks/useWakeUp';

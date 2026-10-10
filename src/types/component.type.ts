@@ -7,8 +7,6 @@ import type {
   VideoHTMLAttributes,
 } from 'react';
 
-import type { TOAST_TYPE } from '@/constants/common.constants';
-
 import type { TCategory } from './api.type';
 import type { TGradientPos, TScrollDirection } from './hook.type';
 import type { IOption, TInputIcons } from './input.type';
@@ -97,7 +95,7 @@ export interface ICatActionHandle {
 export type TCatTable = ICatActionHandle & ICatModal;
 
 interface TCustomConfirmModal extends IChildren {
-  type: typeof TOAST_TYPE.custom;
+  type: 'custom';
   title?: never;
   description?: never;
   buttons?: Partial<Record<'left' | 'right', Omit<ITextButton, 'pattern'>>>;

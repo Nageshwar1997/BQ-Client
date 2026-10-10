@@ -1,10 +1,10 @@
+import { toaster } from '@beautinique/frontend-components';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { productApi } from '@/classes/apis';
 import { API_QUERY_KEYS } from '@/constants/api.constants';
 import type { IGetDashboardProductsQuery } from '@/types/api.type';
 import { handleApiErrorToaster, handleApiSuccessToaster } from '@/utils/api.util';
-import { toaster } from '@/utils/common.util';
 
 const { draft, get } = API_QUERY_KEYS.product_service.product;
 

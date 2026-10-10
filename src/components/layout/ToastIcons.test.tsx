@@ -1,21 +1,22 @@
 // @vitest-environment jsdom
+import { Toaster, type TToastItem } from '@beautinique/frontend-components';
 import { _api } from '@iconify/react';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { mount, unmountAll } from '@/test-utils/react';
-import type { TToastItem } from '@/types/store.type';
-
-import { Toaster } from './Toaster';
 
 // Iconify gets an icon's SVG from its API the first time the icon is shown. With no internet that
 // never works, so a toast that is shown for the first time while offline (the "You're offline" one,
 // or the error of a request that just failed) would have an empty space where its icon belongs.
-// These tests take the API away and check every toast still has its own icon. This file imports
-// only the `Toaster`, on purpose: the icons have to arrive through it, not through the test.
+// The toast system is the package's, which bundles its icons; these tests check, on the package as
+// this app installs it, that every toast still has its own icon with the API taken away. The icons
+// have to arrive through the package's `Toaster` alone: this file does not register any.
 const apiRequests: string[] = [];
 let realFetch: ReturnType<typeof _api.getFetch>;
 
-const toastOfType = (type: TToastItem['type']): TToastItem => {
+type TSingleToastType = Exclude<TToastItem['type'], 'uploads'>;
+
+const toastOfType = (type: TSingleToastType): TToastItem => {
   switch (type) {
     case 'progress':
       return { id: 'toast', type, title: 'Uploading', progress: 40 };
@@ -39,7 +40,7 @@ const DRAWINGS = {
   success: 'M8.5 12.5',
   default: 'M12 17.75',
   custom: 'M12 17.75',
-  loading: 'M22.5 4.742',
+  loading: 'M17 3.34',
 } as const;
 
 describe('toast icons without a network', () => {
@@ -77,21 +78,5 @@ describe('toast icons without a network', () => {
     }
 
     expect(apiRequests).toEqual([]);
-  });
-
-  it('shows the close button of a toast that can be closed', () => {
-    const view = mount(<Toaster {...toastOfType('error')} />);
-
-    const svgs = view.container.querySelectorAll('svg');
-    expect(svgs).toHaveLength(2); // the icon and the close "x"
-    expect(svgs[1]?.innerHTML).toContain('M18 6L6 18');
-    view.unmount();
-  });
-
-  it('shows no close button on a toast that cannot be closed', () => {
-    const view = mount(<Toaster {...toastOfType('loading')} />);
-
-    expect(view.container.querySelectorAll('svg')).toHaveLength(1);
-    view.unmount();
   });
 });

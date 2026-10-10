@@ -1,4 +1,4 @@
-import { Button } from '@beautinique/frontend-components';
+import { Button, toaster } from '@beautinique/frontend-components';
 import { usePathParams } from '@beautinique/frontend-hooks';
 import type {
   TEmailZodSchema,
@@ -28,7 +28,6 @@ import {
   useForgotPasswordVerifyOtp,
 } from '@/services/user-service/auth.service.query';
 import useUserStore from '@/stores/user.store';
-import { toaster } from '@/utils/common.util';
 import { setErrorToForm } from '@/utils/form.util';
 
 const ForgotPassword = () => {

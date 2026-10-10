@@ -1,9 +1,9 @@
+import { toaster } from '@beautinique/frontend-components';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { userApi } from '@/classes/apis';
 import { API_QUERY_KEYS } from '@/constants/api.constants';
 import { handleApiErrorToaster, handleApiSuccessToaster } from '@/utils/api.util';
-import { toaster } from '@/utils/common.util';
 
 const { session, update, password } = API_QUERY_KEYS.user_service.user;
 

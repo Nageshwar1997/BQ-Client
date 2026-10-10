@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
+import { useToastStore } from '@beautinique/frontend-components';
 import { onlineStatusStore } from '@beautinique/frontend-hooks';
 import { act } from 'react';
 import { afterEach, beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest';
 
-import useToastStore from '@/stores/toast.store';
 import { mount, unmountAll } from '@/test-utils/react';
 
 import NetworkStatusToaster from './NetworkStatusToaster';

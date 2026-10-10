@@ -1,3 +1,4 @@
+import { toaster } from '@beautinique/frontend-components';
 import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
@@ -9,7 +10,6 @@ import useAuthLogoutListener from '@/hooks/useAuthLogoutListener';
 import useAutoRefreshAccessToken from '@/hooks/useAutoRefreshAccessToken';
 import useAutoRetry from '@/hooks/useAutoRetry';
 import { useGetCategoriesHierarchy } from '@/services/product-service/category.service.query';
-import { toaster } from '@/utils/common.util';
 
 const Layout = () => {
   const { data: categories, isError, error } = useGetCategoriesHierarchy();

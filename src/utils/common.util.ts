@@ -1,37 +1,8 @@
 import type { IconProps } from '@iconify/react';
 
-import { TOAST_TYPE, VIDEO_PLACEHOLDER } from '@/constants/common.constants';
+import { VIDEO_PLACEHOLDER } from '@/constants/common.constants';
 import { DUMMY_FEEDBACKS } from '@/constants/navbar.constants';
 import { ROUTES } from '@/constants/routes.constants';
-import useToastStore from '@/stores/toast.store';
-import type {
-  ICustomToast,
-  IDefaultToast,
-  ILoadingToast,
-  IProgressToast,
-  TProgressToastOptions,
-} from '@/types/store.type';
-
-const { add, update, remove } = useToastStore.getState();
-export const toaster = {
-  success: (data: Omit<IDefaultToast, 'type'>) => add({ ...data, type: TOAST_TYPE.success }),
-  error: (data: Omit<IDefaultToast, 'type'>) => add({ ...data, type: TOAST_TYPE.error }),
-  warning: (data: Omit<IDefaultToast, 'type'>) => add({ ...data, type: TOAST_TYPE.warning }),
-  loading: (data: Omit<ILoadingToast, 'type'>) => add({ ...data, type: TOAST_TYPE.loading }),
-  custom: (data: ICustomToast) => add(data),
-  progress: {
-    start: (data: Omit<IProgressToast, 'type'>) => add({ ...data, type: TOAST_TYPE.progress }),
-    update: (toastId: string, progress: number) => {
-      update.progress(toastId, progress);
-    },
-    end: (toastId: string) => {
-      remove(toastId);
-    },
-  },
-  remove: (toastId: string) => {
-    remove(toastId);
-  },
-};
 
 export const isDeepEqual = <T>(
   obj1: T,
@@ -243,28 +214,6 @@ export const formatINRCurrency = (amount: number): string =>
     minimumFractionDigits: Number.isInteger(amount) ? 0 : 2,
     maximumFractionDigits: 2,
   }).format(amount);
-
-export const withProgressToast = async <T>({
-  title,
-  description,
-  request,
-}: TProgressToastOptions<T>): Promise<T> => {
-  const toastId = toaster.progress.start({ title, description, progress: 0 });
-
-  try {
-    const response = await request((event) => {
-      if (!event.total) return;
-
-      toaster.progress.update(toastId, Math.round((event.loaded * 100) / event.total));
-    });
-
-    toaster.progress.update(toastId, 100);
-
-    return response;
-  } finally {
-    toaster.progress.end(toastId);
-  }
-};
 
 export const formatDate = (date: Date | string | number, options?: Intl.DateTimeFormatOptions) => {
   return new Intl.DateTimeFormat('en-IN', {
