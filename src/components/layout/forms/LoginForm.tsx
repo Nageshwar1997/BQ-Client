@@ -1,3 +1,4 @@
+import { Button } from '@beautinique/frontend-components';
 import { usePathParams, useQueryParams } from '@beautinique/frontend-hooks';
 import type { TLoginZodSchema, TPasswordZodSchema } from '@beautinique/frontend-types';
 import { loginZodSchema } from '@beautinique/frontend-zod';
@@ -7,7 +8,6 @@ import { Controller, useForm, useWatch } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
 import AuthBottomInstructions from '@/components/ui/AuthBottomInstructions';
-import Button from '@/components/ui/Button';
 import GradientText from '@/components/ui/GradientText';
 import Input from '@/components/ui/inputs/Input';
 import Radio from '@/components/ui/inputs/Radio';

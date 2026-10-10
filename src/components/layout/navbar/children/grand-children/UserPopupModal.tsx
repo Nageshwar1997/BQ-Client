@@ -1,8 +1,8 @@
+import { Button } from '@beautinique/frontend-components';
 import { usePathParams, useQueryParams } from '@beautinique/frontend-hooks';
 import { Icon } from '@iconify/react';
 
 import { ModalWrapper } from '@/components/layout/modals/ModalWrapper';
-import Button from '@/components/ui/Button';
 import Divider from '@/components/ui/Divider';
 import { USER_MENU_POPUP_DATA } from '@/constants/navbar.constants';
 import { ROUTES } from '@/constants/routes.constants';

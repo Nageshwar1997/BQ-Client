@@ -1,14 +1,15 @@
+import type { ITextButton } from '@beautinique/frontend-components';
 import type { AxiosProgressEvent } from 'axios';
 import type { ReactNode } from 'react';
 
 import type { TOAST_TYPE } from '@/constants/common.constants';
 
 import type { IUser } from './api.type';
-import type { IButton, IClassName, ITitleDescription } from './component.type';
+import type { IClassName, ITitleDescription } from './component.type';
 
 interface IBaseToast extends IClassName {
   icon?: ReactNode;
-  buttonProps?: Partial<IButton>;
+  buttonProps?: Partial<ITextButton>;
 }
 
 interface IToastClosable {

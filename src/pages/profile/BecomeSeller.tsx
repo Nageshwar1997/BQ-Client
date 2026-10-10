@@ -1,3 +1,4 @@
+import { Button } from '@beautinique/frontend-components';
 import { IMAGE_FORMATS, MAX_IMAGE_SIZE } from '@beautinique/frontend-constants';
 import type {
   TConfirmDetailsZodSchema,
@@ -23,7 +24,6 @@ import { Navigate, useNavigate } from 'react-router-dom';
 
 import LoadingPage from '@/components/layout/loaders/LoadingPage';
 import { HighlightNote, StaticPageHeader } from '@/components/layout/static-page';
-import Button from '@/components/ui/Button';
 import GradientText from '@/components/ui/GradientText';
 import Stepper from '@/components/ui/Stepper';
 import { SELLER_FORM_ID_MAP, SELLER_ONBOARDING_STEPS } from '@/constants/form.constants';

@@ -1,3 +1,4 @@
+import { Button } from '@beautinique/frontend-components';
 import { usePathParams, useQueryParams } from '@beautinique/frontend-hooks';
 import { Icon } from '@iconify/react';
 import { useMemo, useState } from 'react';
@@ -7,7 +8,6 @@ import { MediaCarouselWithParentMedia } from '@/components/layout/carousels/Medi
 import ScrollableGradientContainer from '@/components/layout/containers/ScrollableGradientContainer';
 import Dropdown from '@/components/layout/dropdown';
 import TryOnModal from '@/components/layout/tryons';
-import Button from '@/components/ui/Button';
 import { QuillContent } from '@/components/ui/QuillContent';
 import { useGetDashboardProductBySlug } from '@/services/product-service/product.service.query';
 import type { TMediaOption } from '@/types/component.type';

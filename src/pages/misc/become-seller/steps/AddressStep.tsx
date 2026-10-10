@@ -1,10 +1,10 @@
+import { Button } from '@beautinique/frontend-components';
 import { useDebounce } from '@beautinique/frontend-hooks';
 import type { TSellerAddressZodSchema } from '@beautinique/frontend-types';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import { Controller, type UseFormReturn } from 'react-hook-form';
 
-import Button from '@/components/ui/Button';
 import Input from '@/components/ui/inputs/Input';
 import Select from '@/components/ui/inputs/Select';
 import { SELLER_ADDRESS_INPUT_MAP_DATA } from '@/constants/input.constants';

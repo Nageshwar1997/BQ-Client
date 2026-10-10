@@ -1,6 +1,6 @@
+import { Button } from '@beautinique/frontend-components';
 import { Link } from 'react-router-dom';
 
-import Button from '@/components/ui/Button';
 import { ROUTES } from '@/constants/routes.constants';
 import useThemeStore from '@/stores/theme.store';
 import useUserStore from '@/stores/user.store';

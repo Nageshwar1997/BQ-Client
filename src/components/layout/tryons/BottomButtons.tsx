@@ -1,4 +1,5 @@
-import Button from '@/components/ui/Button';
+import { Button } from '@beautinique/frontend-components';
+
 import { TRYON_MODE_MAP } from '@/constants/tryon-constants';
 import type { TTryOnMode } from '@/types/tryon-types';
 

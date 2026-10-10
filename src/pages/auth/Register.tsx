@@ -1,3 +1,4 @@
+import { Button } from '@beautinique/frontend-components';
 import { usePathParams, useQueryParams } from '@beautinique/frontend-hooks';
 import type {
   TEmailZodSchema,
@@ -12,7 +13,6 @@ import { useForm, useWatch } from 'react-hook-form';
 
 import BorderGradient from '@/components/layout/containers/BorderGradient';
 import AuthBottomInstructions from '@/components/ui/AuthBottomInstructions';
-import Button from '@/components/ui/Button';
 import GradientText from '@/components/ui/GradientText';
 import Input from '@/components/ui/inputs/Input';
 import Resend from '@/components/ui/Resend';

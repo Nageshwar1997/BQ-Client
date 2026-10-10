@@ -1,3 +1,4 @@
+import { Button } from '@beautinique/frontend-components';
 import { AUTH_PROVIDER_MAP } from '@beautinique/frontend-constants';
 import { usePathParams } from '@beautinique/frontend-hooks';
 import type { TChangePasswordZodSchema, TSetPasswordZodSchema } from '@beautinique/frontend-types';
@@ -11,7 +12,6 @@ import BorderGradient from '@/components/layout/containers/BorderGradient';
 import BrandShowcasePanel from '@/components/layout/containers/BrandShowcasePanel';
 import ScrollableGradientContainer from '@/components/layout/containers/ScrollableGradientContainer';
 import AuthBottomInstructions from '@/components/ui/AuthBottomInstructions';
-import Button from '@/components/ui/Button';
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
 import Input from '@/components/ui/inputs/Input';

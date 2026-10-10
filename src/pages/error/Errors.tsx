@@ -1,6 +1,6 @@
+import { Button } from '@beautinique/frontend-components';
 import { isRouteErrorResponse, Link, useRouteError } from 'react-router-dom';
 
-import Button from '@/components/ui/Button';
 import { ROUTES } from '@/constants/routes.constants';
 import envs from '@/envs';
 

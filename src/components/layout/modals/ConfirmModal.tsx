@@ -1,8 +1,8 @@
+import { Button } from '@beautinique/frontend-components';
 import { useQueryParams } from '@beautinique/frontend-hooks';
 import { Icon } from '@iconify/react';
 import { useMemo } from 'react';
 
-import Button from '@/components/ui/Button';
 import GradientText from '@/components/ui/GradientText';
 import { TOAST_TYPE } from '@/constants/common.constants';
 import type { TConfirmModal } from '@/types/component.type';

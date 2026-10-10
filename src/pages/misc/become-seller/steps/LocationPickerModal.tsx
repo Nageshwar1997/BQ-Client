@@ -1,10 +1,10 @@
+import { Button } from '@beautinique/frontend-components';
 import { useDebounce } from '@beautinique/frontend-hooks';
 import { Icon } from '@iconify/react';
 import { OlaMaps } from 'olamaps-web-sdk';
 import { useEffect, useRef, useState } from 'react';
 
 import { ModalWrapper } from '@/components/layout/modals/ModalWrapper';
-import Button from '@/components/ui/Button';
 import envs from '@/envs';
 import useAutocompleteSuggestions, {
   type IPlacePrediction,

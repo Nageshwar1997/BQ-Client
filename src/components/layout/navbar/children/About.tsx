@@ -1,6 +1,6 @@
+import { Button } from '@beautinique/frontend-components';
 import { Link } from 'react-router-dom';
 
-import Button from '@/components/ui/Button';
 import GradientText from '@/components/ui/GradientText';
 import { ROUTES } from '@/constants/routes.constants';
 import type { TCategoryHierarchyNode, TLevel2 } from '@/types/api.type';

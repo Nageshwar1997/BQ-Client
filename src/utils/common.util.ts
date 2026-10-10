@@ -5,7 +5,7 @@ import { TOAST_TYPE, TOOLTIP_GAP, VIDEO_PLACEHOLDER } from '@/constants/common.c
 import { DUMMY_FEEDBACKS } from '@/constants/navbar.constants';
 import { ROUTES } from '@/constants/routes.constants';
 import useToastStore from '@/stores/toast.store';
-import type { IButton, ITooltip } from '@/types/component.type';
+import type { ITooltip } from '@/types/component.type';
 import type {
   ICustomToast,
   IDefaultToast,
@@ -13,22 +13,6 @@ import type {
   IProgressToast,
   TProgressToastOptions,
 } from '@/types/store.type';
-
-export const getButtonCss = (pattern: IButton['pattern']) => {
-  switch (pattern) {
-    case 'primary':
-      return 'text-white bg-sky-blue-burst shadow-primary-btn hover:shadow-primary-btn-hover';
-    case 'secondary':
-      return 'text-secondary-invert bg-secondary shadow-secondary-btn hover:shadow-secondary-btn-hover';
-    case 'tertiary':
-      return 'text-tertiary-invert bg-tertiary shadow-tertiary-btn hover:shadow-tertiary-btn-hover';
-    case 'outline':
-      return 'text-primary border border-primary shadow-outline-btn hover:shadow-outline-btn-hover';
-    case 'transparent':
-    default:
-      return 'shadow-inner shadow-primary/20 hover:shadow-primary/30 bg-transparent border border-primary/30 text-secondary rotate-180 [&>span]:-rotate-180';
-  }
-};
 
 export const getTooltipPosition = (
   rect: DOMRect,

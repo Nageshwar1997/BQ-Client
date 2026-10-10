@@ -1,9 +1,9 @@
+import { Button } from '@beautinique/frontend-components';
 import { IMAGE_MIMES } from '@beautinique/frontend-constants';
 import type { TTryOnCategory } from '@beautinique/frontend-types';
 import { Icon } from '@iconify/react';
 import { type ChangeEvent, useMemo, useRef } from 'react';
 
-import Button from '@/components/ui/Button';
 import GradientText from '@/components/ui/GradientText';
 import { getTryOnInstructions, TRYON_MODE_MAP } from '@/constants/tryon-constants';
 import type { TTryOnMode } from '@/types/tryon-types';

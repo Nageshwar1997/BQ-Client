@@ -1,5 +1,6 @@
 import '@/configs/toast-icons'; // bundles the icons below, so they also show without a network
 
+import { Button } from '@beautinique/frontend-components';
 import { Icon } from '@iconify/react';
 import { type ComponentProps, useCallback, useEffect, useRef, useState } from 'react';
 
@@ -7,8 +8,6 @@ import { TOAST_TYPE } from '@/constants/common.constants';
 import useToastStore from '@/stores/toast.store';
 import type { IClassName } from '@/types/component.type';
 import type { TToast, TToastItem } from '@/types/store.type';
-
-import Button from './Button';
 
 const CircularProgress = ({ progress, ...props }: { progress: number } & ComponentProps<'svg'>) => {
   const radius = 10;

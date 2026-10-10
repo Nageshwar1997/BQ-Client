@@ -1,10 +1,10 @@
+import { Button } from '@beautinique/frontend-components';
 import { EMPTY_ARRAY } from '@beautinique/frontend-constants';
 import { usePathParams } from '@beautinique/frontend-hooks';
 import { Icon } from '@iconify/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import Button from '@/components/ui/Button';
 import LinearGradient from '@/components/ui/LinearGradient';
 import { ABOUT, FOR_YOU, NAVBAR_TOP_LAYER_DATA } from '@/constants/navbar.constants';
 import { ROUTES } from '@/constants/routes.constants';

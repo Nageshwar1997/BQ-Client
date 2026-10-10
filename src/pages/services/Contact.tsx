@@ -1,3 +1,4 @@
+import { Button } from '@beautinique/frontend-components';
 import { COUNTRIES_MAP } from '@beautinique/frontend-constants';
 import type { TCreateContactQueryZodSchema } from '@beautinique/frontend-types';
 import { createContactQueryZodSchema } from '@beautinique/frontend-zod';
@@ -6,7 +7,6 @@ import { Icon } from '@iconify/react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { StaticPageHeader, StaticPageLayout } from '@/components/layout/static-page';
-import Button from '@/components/ui/Button';
 import Divider from '@/components/ui/Divider';
 import GradientText from '@/components/ui/GradientText';
 import Input from '@/components/ui/inputs/Input';

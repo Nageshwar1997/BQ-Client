@@ -1,6 +1,5 @@
-import type { IconProps } from '@iconify/react';
+import type { IButton, ITextButton } from '@beautinique/frontend-components';
 import type {
-  ButtonHTMLAttributes,
   ComponentProps,
   ReactElement,
   ReactNode,
@@ -24,14 +23,6 @@ export interface IContainerClassName {
 
 export interface IChildren {
   children: ReactNode | ReactElement;
-}
-
-export interface IButton extends IClassName {
-  buttonProps?: Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'content'>;
-  content: IconProps | string;
-  pattern: 'primary' | 'secondary' | 'tertiary' | 'outline' | 'transparent';
-  leftIcon?: IconProps;
-  rightIcon?: IconProps;
 }
 
 export interface ILoading extends IClassName {
@@ -114,7 +105,7 @@ interface TCustomConfirmModal extends IChildren {
   type: typeof TOAST_TYPE.custom;
   title?: never;
   description?: never;
-  buttons?: Partial<Record<'left' | 'right', Omit<IButton, 'pattern'>>>;
+  buttons?: Partial<Record<'left' | 'right', Omit<ITextButton, 'pattern'>>>;
 }
 
 interface IDefaultConfirmModal {
@@ -126,7 +117,7 @@ interface IDefaultConfirmModal {
   children?: never;
   title: string;
   description?: string;
-  buttons: Partial<Record<'left' | 'right', Omit<IButton, 'pattern'>>>;
+  buttons: Partial<Record<'left' | 'right', Omit<ITextButton, 'pattern'>>>;
 }
 
 export type TConfirmModal = (TCustomConfirmModal | IDefaultConfirmModal) & {
