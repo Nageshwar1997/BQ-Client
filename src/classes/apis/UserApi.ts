@@ -1,4 +1,3 @@
-import { HEADERS_MAP, USER_ROLE_MAP } from '@beautinique/frontend-constants';
 import type {
   TChangePasswordZodSchema,
   TEmailZodSchema,
@@ -50,11 +49,7 @@ export class AuthApi extends ApiRequest {
   /* ===================== LOGIN API ===================== */
 
   public login = (data: TLoginZodSchema) => {
-    return this.request<IUser>({
-      ...this.routes.login.manual,
-      data,
-      headers: { [HEADERS_MAP.loginRole]: USER_ROLE_MAP.USER },
-    });
+    return this.request<IUser>({ ...this.routes.login.manual, data });
   };
 
   /* ===================== PASSWORD API ===================== */

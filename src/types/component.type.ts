@@ -55,11 +55,6 @@ export interface ITitleDescription {
   description?: string | ReactNode;
 }
 
-export interface ITooltip extends IClassName, IChildren, ITitleDescription, IContainerClassName {
-  placement?: 'top' | 'bottom' | 'left' | 'right';
-  required?: boolean;
-}
-
 type TBaseStatus = ITitleDescription & IClassName & { divider?: boolean };
 
 type TErrorStatus = TBaseStatus & { status: 'error' };

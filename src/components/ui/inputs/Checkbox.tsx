@@ -1,8 +1,8 @@
+import { Tooltip } from '@beautinique/frontend-components';
 import type { ChangeEvent } from 'react';
 
 import type { ICheckbox } from '@/types/input.type';
 
-import Tooltip from '../Tooltip';
 import { InputError } from './children';
 
 const Checkbox = ({

@@ -1,10 +1,10 @@
+import { Tooltip } from '@beautinique/frontend-components';
 import { USER_ROLE_MAP } from '@beautinique/frontend-constants';
 import { useIsSmallScreen, usePathParams } from '@beautinique/frontend-hooks';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import Tooltip from '@/components/ui/Tooltip';
 import { SIDEBAR_DATA } from '@/constants/common.constants';
 import { useLogout } from '@/services/user-service/auth.service.query';
 import useUserStore from '@/stores/user.store';
@@ -23,7 +23,7 @@ const SidebarItem = ({
   return (
     <div className="flex cursor-pointer flex-col items-center gap-1">
       <span
-        className={`border-primary/50 size-6 w-fit shrink-0 rounded-lg border p-1 md:size-9 md:p-1.5 ${isSameRoute ? 'bg-accent-duo shadow-secondary-btn' : 'hover:bg-secondary-invert/40 hover:shadow-tertiary-btn bg-secondary-invert/30'}`}
+        className={`border-primary/50 size-6 shrink-0 rounded-lg border p-1 md:size-9 md:p-1.5 ${isSameRoute ? 'bg-accent-duo shadow-secondary-btn' : 'hover:bg-secondary-invert/40 hover:shadow-tertiary-btn bg-secondary-invert/30'}`}
       >
         <Icon icon={icon} className={`size-full ${isSameRoute ? 'text-white' : 'text-tertiary'}`} />
       </span>
@@ -69,6 +69,7 @@ const Sidebar = () => {
 
             return (
               <Tooltip key={index} title={item.title} placement={'right'} required={!isMobile}>
+                {/* <p>{isMobile.toString()}</p> */}
                 {path ? (
                   <Link
                     to={path}

@@ -1,3 +1,4 @@
+import type { ITooltip } from '@beautinique/frontend-components';
 import type { IconProps } from '@iconify/react';
 import type Quill from 'quill';
 import type { ToolbarProps } from 'quill/modules/toolbar';
@@ -21,7 +22,6 @@ import type {
   IContainerClassName,
   IQuillImageRef,
   ITitleDescription,
-  ITooltip,
 } from './component.type';
 
 export type TInputIcon = IconProps | ReactElement;
