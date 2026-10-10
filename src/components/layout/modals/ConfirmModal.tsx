@@ -4,21 +4,20 @@ import { Icon } from '@iconify/react';
 import { useMemo } from 'react';
 
 import GradientText from '@/components/ui/GradientText';
-import { TOAST_TYPE } from '@/constants/common.constants';
 import type { TConfirmModal } from '@/types/component.type';
 
 import { ModalWrapper } from './ModalWrapper';
 
 const cardConfig = (type: TConfirmModal['type']) => {
   switch (type) {
-    case TOAST_TYPE.success:
+    case 'success':
       return { icon: 'solar:check-circle-linear', rgb: 'var(--primary-green-rgb)' };
-    case TOAST_TYPE.error:
+    case 'error':
       return { icon: 'solar:danger-triangle-linear', rgb: 'var(--primary-red-rgb)' };
-    case TOAST_TYPE.warning:
+    case 'warning':
       return { icon: 'solar:danger-triangle-linear', rgb: 'var(--primary-yellow-rgb)' };
-    case TOAST_TYPE.default:
-    case TOAST_TYPE.custom:
+    case 'default':
+    case 'custom':
     default:
       return { icon: 'solar:info-circle-outline', rgb: 'var(--primary-rgb)' };
   }
@@ -57,7 +56,7 @@ export const ConfirmModal = ({
       }}
     >
       <div className="grid w-full place-items-center gap-6">
-        {type === TOAST_TYPE.custom ? (
+        {type === 'custom' ? (
           children
         ) : (
           <>
