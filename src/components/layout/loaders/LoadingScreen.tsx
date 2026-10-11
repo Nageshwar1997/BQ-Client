@@ -1,7 +1,7 @@
+import type { IClassName } from '@beautinique/frontend-components';
 import { type ReactNode, useEffect, useMemo, useState } from 'react';
 
 import { BEAUTY_FACTS } from '@/constants/common.constants';
-import type { IClassName } from '@/types/component.type';
 
 import Teddy from './teddy';
 

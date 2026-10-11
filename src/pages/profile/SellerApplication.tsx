@@ -1,10 +1,9 @@
+import { Badge, GradientText } from '@beautinique/frontend-components';
 import type { TSellerApprovalStatus } from '@beautinique/frontend-types';
 import { Navigate } from 'react-router-dom';
 
 import ApiStatus from '@/components/layout/ApiStatus';
 import { StaticPageHeader } from '@/components/layout/static-page';
-import Badge from '@/components/ui/Badge';
-import GradientText from '@/components/ui/GradientText';
 import { ROUTES } from '@/constants/routes.constants';
 import { useGetMySeller } from '@/services/organization-service/seller.service.query';
 import { formatDate } from '@/utils/common.util';

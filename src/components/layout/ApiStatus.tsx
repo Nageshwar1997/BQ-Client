@@ -1,9 +1,8 @@
+import { Divider, GradientText } from '@beautinique/frontend-components';
 import { Icon } from '@iconify/react';
 
 import type { TApiStatus } from '@/types/component.type';
 
-import Divider from '../ui/Divider';
-import GradientText from '../ui/GradientText';
 import LoadingRings from './loaders/LoadingRings';
 
 const ApiDescription = ({ status, ...props }: TApiStatus) => {
@@ -25,13 +24,17 @@ const ApiDescription = ({ status, ...props }: TApiStatus) => {
         />
       </div>
 
-      <GradientText
-        type="silver"
-        className="text-sm text-shadow-sm sm:text-base md:text-lg"
-        text={typeof title === 'string' ? title : ''}
-      >
-        {title && typeof title !== 'string' ? title : undefined}
-      </GradientText>
+      {title && typeof title !== 'string' ? (
+        <GradientText type="silver" className="text-sm text-shadow-sm sm:text-base md:text-lg">
+          {title}
+        </GradientText>
+      ) : (
+        <GradientText
+          type="silver"
+          className="text-sm text-shadow-sm sm:text-base md:text-lg"
+          text={typeof title === 'string' ? title : ''}
+        />
+      )}
       {description && (
         <div className="text-silver-jet text-center text-xs leading-6 font-normal sm:text-sm">
           {description}

@@ -1,7 +1,7 @@
+import { GradientText } from '@beautinique/frontend-components';
 import { Icon } from '@iconify/react';
 
 import ApiStatus from '@/components/layout/ApiStatus';
-import GradientText from '@/components/ui/GradientText';
 
 interface IDiscoverEmptyPage {
   icon: string;

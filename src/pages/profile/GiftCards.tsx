@@ -1,4 +1,4 @@
-import GradientText from '@/components/ui/GradientText';
+import { GradientText } from '@beautinique/frontend-components';
 
 const GiftCards = () => {
   return (

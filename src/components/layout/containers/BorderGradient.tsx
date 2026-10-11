@@ -1,4 +1,4 @@
-import type { IChildren, IClassName, IContainerClassName } from '@/types/component.type';
+import type { IChildren, IClassName, IContainerClassName } from '@beautinique/frontend-components';
 
 const BorderGradient = ({
   children,

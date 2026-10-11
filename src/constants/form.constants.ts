@@ -1,6 +1,5 @@
+import type { IStepperStep } from '@beautinique/frontend-components/stepper';
 import { CATEGORY_LEVELS_MAP } from '@beautinique/frontend-constants';
-
-import type { StepperStep } from '@/components/ui/Stepper';
 
 const passwords = { password: '', confirmPassword: '' };
 
@@ -65,7 +64,7 @@ export const SELLER_STEPPER_STEP_COUNT_MAP = Object.fromEntries(
   [K in keyof typeof SELLER_FORM_ID_MAP]: K;
 };
 
-export const SELLER_ONBOARDING_STEPS: StepperStep[] = [
+export const SELLER_ONBOARDING_STEPS: IStepperStep[] = [
   {
     title: 'Business details',
     description: 'Business name, type, GSTIN and PAN',

@@ -1,7 +1,7 @@
+import { GradientText } from '@beautinique/frontend-components';
 import { Icon } from '@iconify/react';
 import { useEffect } from 'react';
 
-import GradientText from '@/components/ui/GradientText';
 import type { IModalWrapper } from '@/types/component.type';
 
 import ScrollableGradientContainer from '../containers/ScrollableGradientContainer';

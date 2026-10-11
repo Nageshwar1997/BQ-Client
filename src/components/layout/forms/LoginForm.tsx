@@ -1,4 +1,4 @@
-import { Button } from '@beautinique/frontend-components';
+import { Button, GradientText } from '@beautinique/frontend-components';
 import { usePathParams, useQueryParams } from '@beautinique/frontend-hooks';
 import type { TLoginZodSchema, TPasswordZodSchema } from '@beautinique/frontend-types';
 import { loginZodSchema } from '@beautinique/frontend-zod';
@@ -8,7 +8,6 @@ import { Controller, useForm, useWatch } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
 import AuthBottomInstructions from '@/components/ui/AuthBottomInstructions';
-import GradientText from '@/components/ui/GradientText';
 import Input from '@/components/ui/inputs/Input';
 import Radio from '@/components/ui/inputs/Radio';
 import SocialAuth from '@/components/ui/SocialAuth';
@@ -186,7 +185,8 @@ const LoginForm = () => {
             <GradientText
               text="Forgot Password?"
               type="accent"
-              path={`/${ROUTES.AUTH.BASE}/${ROUTES.AUTH.FORGOT_PASSWORD}`}
+              as={Link}
+              to={`/${ROUTES.AUTH.BASE}/${ROUTES.AUTH.FORGOT_PASSWORD}`}
               className="text-xs font-semibold hover:underline"
             />
           </p>
@@ -217,7 +217,8 @@ const LoginForm = () => {
           <GradientText
             text="Register"
             type="accent"
-            path={`/${ROUTES.AUTH.BASE}/${ROUTES.AUTH.REGISTER}`}
+            as={Link}
+            to={`/${ROUTES.AUTH.BASE}/${ROUTES.AUTH.REGISTER}`}
             className="text-xs font-semibold md:text-sm"
           />
         </div>

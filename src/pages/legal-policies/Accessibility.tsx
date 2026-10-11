@@ -1,3 +1,4 @@
+import { Divider } from '@beautinique/frontend-components';
 import { Icon } from '@iconify/react';
 
 import {
@@ -10,7 +11,6 @@ import {
   StaticPageLayout,
   StaticPageSection,
 } from '@/components/layout/static-page';
-import Divider from '@/components/ui/Divider';
 import { formatDate } from '@/utils/common.util';
 
 const ACCESSIBILITY_FEATURES = [

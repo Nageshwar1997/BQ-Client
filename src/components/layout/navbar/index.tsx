@@ -1,17 +1,16 @@
-import { Button } from '@beautinique/frontend-components';
+import { Button, type IClassName } from '@beautinique/frontend-components';
+import { LinearGradient } from '@beautinique/frontend-components/linear-gradient';
 import { EMPTY_ARRAY } from '@beautinique/frontend-constants';
 import { usePathParams } from '@beautinique/frontend-hooks';
 import { Icon } from '@iconify/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import LinearGradient from '@/components/ui/LinearGradient';
 import { ABOUT, FOR_YOU, NAVBAR_TOP_LAYER_DATA } from '@/constants/navbar.constants';
 import { ROUTES } from '@/constants/routes.constants';
 import useAuthNavigate from '@/hooks/useAuthNavigate';
 import useUserStore from '@/stores/user.store';
 import type { TCategoryHierarchy } from '@/types/api.type';
-import type { IClassName } from '@/types/component.type';
 import { resolveCategoryPath } from '@/utils/common.util';
 
 import { Feedback, type IUserMenuIconsHandle, UserMenuIcons } from './children/grand-children';

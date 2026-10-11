@@ -1,4 +1,5 @@
-import { Button } from '@beautinique/frontend-components';
+import { Button, GradientText } from '@beautinique/frontend-components';
+import { Resend } from '@beautinique/frontend-components/resend';
 import { usePathParams, useQueryParams } from '@beautinique/frontend-hooks';
 import type {
   TEmailZodSchema,
@@ -10,12 +11,11 @@ import { emailZodSchema, otpZodSchema, registerZodSchema } from '@beautinique/fr
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 
 import BorderGradient from '@/components/layout/containers/BorderGradient';
 import AuthBottomInstructions from '@/components/ui/AuthBottomInstructions';
-import GradientText from '@/components/ui/GradientText';
 import Input from '@/components/ui/inputs/Input';
-import Resend from '@/components/ui/Resend';
 import SocialAuth from '@/components/ui/SocialAuth';
 import { OAUTH_REDIRECT_KEY } from '@/constants/common.constants';
 import {
@@ -342,7 +342,8 @@ const Register = () => {
           <GradientText
             text="Login"
             type="accent"
-            path={`/${ROUTES.AUTH.BASE}`}
+            as={Link}
+            to={`/${ROUTES.AUTH.BASE}`}
             className="text-xs font-semibold md:text-sm"
           />
         </div>

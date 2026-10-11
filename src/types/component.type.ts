@@ -1,4 +1,11 @@
-import type { IButton, ITextButton } from '@beautinique/frontend-components';
+import type {
+  IButton,
+  IChildren,
+  IClassName,
+  IContainerClassName,
+  ITextButton,
+  ITitleDescription,
+} from '@beautinique/frontend-components';
 import type {
   ComponentProps,
   ReactElement,
@@ -11,18 +18,6 @@ import type { TCategory } from './api.type';
 import type { TGradientPos, TScrollDirection } from './hook.type';
 import type { IOption, TInputIcons } from './input.type';
 
-export interface IClassName {
-  className?: string;
-}
-
-export interface IContainerClassName {
-  containerClassName?: string;
-}
-
-export interface IChildren {
-  children: ReactNode | ReactElement;
-}
-
 export interface ILoading extends IClassName {
   text: string;
 }
@@ -30,27 +25,6 @@ export interface ILoading extends IClassName {
 export interface IScrollableGradientContainer extends IClassName, IChildren, IContainerClassName {
   gradientClassNames?: Partial<Record<TGradientPos, string>>;
   direction: TScrollDirection;
-}
-
-export interface ILinerGradient extends IClassName {
-  position: TGradientPos;
-}
-
-export interface IGradientText extends IClassName, Partial<IChildren> {
-  text: string;
-  type: 'accent' | 'silver';
-  path?: string;
-}
-
-export interface IResend extends IClassName {
-  label: string;
-  count: number;
-  onResend?: () => void;
-}
-
-export interface ITitleDescription {
-  title: string | ReactNode;
-  description?: string | ReactNode;
 }
 
 type TBaseStatus = ITitleDescription & IClassName & { divider?: boolean };

@@ -1,14 +1,18 @@
+import {
+  GradientText,
+  type IChildren,
+  type IClassName,
+  Theme,
+} from '@beautinique/frontend-components';
 import { useOutsideClick, usePathParams } from '@beautinique/frontend-hooks';
 import { Icon } from '@iconify/react';
 import { type Ref, useImperativeHandle, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import GradientText from '@/components/ui/GradientText';
-import Theme from '@/components/ui/Theme';
 import { ROUTES } from '@/constants/routes.constants';
 import useAuthNavigate from '@/hooks/useAuthNavigate';
+import useThemeStore from '@/stores/theme.store';
 import type { TCategoryHierarchyNode, TLevel2, TLevel3 } from '@/types/api.type';
-import type { IChildren, IClassName } from '@/types/component.type';
 import { getTodaysFeedback, resolveCategoryPath } from '@/utils/common.util';
 
 import UserPopupModal from './UserPopupModal';
@@ -175,7 +179,7 @@ export const UserMenuIcons = ({
         onClose={() => setIsOpen((prev) => ({ ...prev, search: false }))}
       /> */}
       <div className={`flex items-center gap-2 md:gap-3 xl:gap-5 ${className}`}>
-        <Theme />
+        <Theme store={useThemeStore} />
         {!paths.includes('search') && (
           <Icon
             icon="solar:magnifer-linear"

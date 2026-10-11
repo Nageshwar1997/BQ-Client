@@ -1,10 +1,9 @@
+import { GradientText, type IChildren, type IClassName } from '@beautinique/frontend-components';
 import { Icon } from '@iconify/react';
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
-import GradientText from '@/components/ui/GradientText';
 import { ROUTES } from '@/constants/routes.constants';
-import type { IChildren, IClassName } from '@/types/component.type';
 import { formatDate } from '@/utils/common.util';
 
 // Shared shell for the "static content" pages (company/legal/services/misc info pages) — every

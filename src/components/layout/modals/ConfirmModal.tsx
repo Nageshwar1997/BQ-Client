@@ -1,9 +1,8 @@
-import { Button } from '@beautinique/frontend-components';
+import { Button, GradientText } from '@beautinique/frontend-components';
 import { useQueryParams } from '@beautinique/frontend-hooks';
 import { Icon } from '@iconify/react';
 import { useMemo } from 'react';
 
-import GradientText from '@/components/ui/GradientText';
 import type { TConfirmModal } from '@/types/component.type';
 
 import { ModalWrapper } from './ModalWrapper';

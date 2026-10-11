@@ -1,8 +1,9 @@
+import { GradientText } from '@beautinique/frontend-components';
 import { usePathParams, useQueryParams } from '@beautinique/frontend-hooks';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 import ApiStatus from '@/components/layout/ApiStatus';
-import GradientText from '@/components/ui/GradientText';
 import { OAUTH_REDIRECT_KEY } from '@/constants/common.constants';
 import { ROUTES } from '@/constants/routes.constants';
 import { useGetSessionUser } from '@/services/user-service/user.service.query';
@@ -64,14 +65,20 @@ const OAuth = () => {
         showError ? (
           <>
             There was a problem signing you in. Please{' '}
-            <GradientText type="accent" path={`/${ROUTES.AUTH.BASE}`} text="Try again" />.
+            <GradientText as={Link} type="accent" to={`/${ROUTES.AUTH.BASE}`} text="Try again" />.
           </>
         ) : isSuccess ? (
           'Redirecting you back shortly...'
         ) : (
           <>
             There was a problem finding user details. Please{' '}
-            <GradientText type="silver" path={`/${ROUTES.SERVICES.CONTACT}`} text="Contact Us" />.
+            <GradientText
+              as={Link}
+              type="silver"
+              to={`/${ROUTES.SERVICES.CONTACT}`}
+              text="Contact Us"
+            />
+            .
           </>
         )
       }

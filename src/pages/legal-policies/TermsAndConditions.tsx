@@ -1,3 +1,5 @@
+import { Divider } from '@beautinique/frontend-components';
+
 import {
   BeautiniqueLink,
   Checklist,
@@ -9,7 +11,6 @@ import {
   StaticPageLayout,
   StaticPageSection,
 } from '@/components/layout/static-page';
-import Divider from '@/components/ui/Divider';
 
 const QUICK_OVERVIEW = [
   {

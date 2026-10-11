@@ -1,9 +1,9 @@
+import { Divider, type IClassName } from '@beautinique/frontend-components';
 import { isNullOrUndefined } from '@beautinique/shared-utils';
 import { Icon } from '@iconify/react';
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 
-import Divider from '@/components/ui/Divider';
-import type { IClassName, IMediaCarouselWithParent } from '@/types/component.type';
+import type { IMediaCarouselWithParent } from '@/types/component.type';
 
 import MediaCarousel from './MediaCarousel';
 

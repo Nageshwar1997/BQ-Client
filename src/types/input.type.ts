@@ -1,4 +1,9 @@
-import type { ITooltip } from '@beautinique/frontend-components';
+import type {
+  IClassName,
+  IContainerClassName,
+  ITitleDescription,
+  ITooltip,
+} from '@beautinique/frontend-components';
 import type { IconProps } from '@iconify/react';
 import type Quill from 'quill';
 import type { ToolbarProps } from 'quill/modules/toolbar';
@@ -17,12 +22,7 @@ import type {
   UseFormSetValue,
 } from 'react-hook-form';
 
-import type {
-  IClassName,
-  IContainerClassName,
-  IQuillImageRef,
-  ITitleDescription,
-} from './component.type';
+import type { IQuillImageRef } from './component.type';
 
 export type TInputIcon = IconProps | ReactElement;
 

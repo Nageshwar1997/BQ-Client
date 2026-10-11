@@ -1,3 +1,4 @@
+import type { IChildren } from '@beautinique/frontend-components';
 import {
   IMAGE_FORMATS,
   IMAGE_MIMES,
@@ -15,7 +16,7 @@ import { type ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import MediaCarousel from '@/components/layout/carousels/MediaCarousel';
 import { MediaModal } from '@/components/layout/modals/MediaModal';
-import type { IChildren, TMediaResource } from '@/types/component.type';
+import type { TMediaResource } from '@/types/component.type';
 import type { IFileInput } from '@/types/input.type';
 import { isIconProps } from '@/utils/common.util';
 

@@ -1,7 +1,6 @@
+import { GradientText } from '@beautinique/frontend-components';
 import { Icon } from '@iconify/react';
 import type { ReactNode } from 'react';
-
-import GradientText from '@/components/ui/GradientText';
 
 interface ITryOnBottomSheetProps {
   isOpen: boolean;

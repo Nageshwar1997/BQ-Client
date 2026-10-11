@@ -1,10 +1,9 @@
+import { Divider, GradientText } from '@beautinique/frontend-components';
 import { usePathParams } from '@beautinique/frontend-hooks';
 import { Icon } from '@iconify/react';
 import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
-import Divider from '@/components/ui/Divider';
-import GradientText from '@/components/ui/GradientText';
 import { FOOTER_AWARDS, FOOTER_CATEGORIES, SOCIAL_MEDIA_LINKS } from '@/constants/footer.constants';
 import { ROUTES } from '@/constants/routes.constants';
 import useAuthNavigate from '@/hooks/useAuthNavigate';

@@ -1,6 +1,6 @@
+import type { IClassName } from '@beautinique/frontend-components';
 import { useEffect, useRef } from 'react';
 
-import type { IClassName } from '@/types/component.type';
 import { sanitizeQuillHtml } from '@/utils/input.util';
 
 export const QuillContent = ({ content, className = '' }: IClassName & { content: string }) => {

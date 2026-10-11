@@ -1,4 +1,5 @@
-import { Button } from '@beautinique/frontend-components';
+import { Button, GradientText } from '@beautinique/frontend-components';
+import { Stepper } from '@beautinique/frontend-components/stepper';
 import { IMAGE_FORMATS, MAX_IMAGE_SIZE } from '@beautinique/frontend-constants';
 import type {
   TConfirmDetailsZodSchema,
@@ -24,8 +25,6 @@ import { Navigate, useNavigate } from 'react-router-dom';
 
 import LoadingPage from '@/components/layout/loaders/LoadingPage';
 import { HighlightNote, StaticPageHeader } from '@/components/layout/static-page';
-import GradientText from '@/components/ui/GradientText';
-import Stepper from '@/components/ui/Stepper';
 import { SELLER_FORM_ID_MAP, SELLER_ONBOARDING_STEPS } from '@/constants/form.constants';
 import { ROUTES } from '@/constants/routes.constants';
 import { useUploadSingleMedia } from '@/services/media-service/media.service.query';
@@ -242,6 +241,7 @@ const BecomeSellerWizard = ({
       />
 
       <Stepper
+        label="Seller application steps"
         steps={SELLER_ONBOARDING_STEPS}
         activeStep={activeStep}
         onStepClick={(step) => {

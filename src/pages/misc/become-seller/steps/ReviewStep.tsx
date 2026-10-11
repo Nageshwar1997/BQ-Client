@@ -1,3 +1,4 @@
+import { GradientText } from '@beautinique/frontend-components';
 import type {
   TConfirmDetailsZodSchema,
   TSellerAddressZodSchema,
@@ -8,7 +9,6 @@ import type {
 import { useEffect, useMemo } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 
-import GradientText from '@/components/ui/GradientText';
 import Checkbox from '@/components/ui/inputs/Checkbox';
 
 interface IReviewStepProps {

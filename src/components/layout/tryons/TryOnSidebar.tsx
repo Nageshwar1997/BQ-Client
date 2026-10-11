@@ -1,9 +1,8 @@
+import { Divider, GradientText } from '@beautinique/frontend-components';
 import type { TTryOnCategory } from '@beautinique/frontend-types';
 import { Icon } from '@iconify/react';
 import { type RefObject } from 'react';
 
-import Divider from '@/components/ui/Divider';
-import GradientText from '@/components/ui/GradientText';
 import { TRYON_MODE_MAP, TRYON_MODE_OPTIONS } from '@/constants/tryon-constants';
 import type { TTryOnMode } from '@/types/tryon-types';
 

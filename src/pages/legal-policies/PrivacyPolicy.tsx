@@ -1,3 +1,4 @@
+import { Divider, GradientText } from '@beautinique/frontend-components';
 import { Link } from 'react-router-dom';
 
 import {
@@ -11,8 +12,6 @@ import {
   StaticPageLayout,
   StaticPageSection,
 } from '@/components/layout/static-page';
-import Divider from '@/components/ui/Divider';
-import GradientText from '@/components/ui/GradientText';
 import { ROUTES } from '@/constants/routes.constants';
 
 const QUICK_OVERVIEW = [
