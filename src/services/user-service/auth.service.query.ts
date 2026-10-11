@@ -1,4 +1,3 @@
-import { toaster } from '@beautinique/frontend-components';
 import { usePathParams } from '@beautinique/frontend-hooks';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -7,6 +6,7 @@ import { API_QUERY_KEYS } from '@/constants/api.constants';
 import { PRIVATE_ROUTE_PREFIXES, ROUTES } from '@/constants/routes.constants';
 import useUserStore from '@/stores/user.store';
 import { handleApiErrorToaster, handleApiSuccessToaster } from '@/utils/api.util';
+import { toaster } from '@/utils/toaster';
 
 const { login, logout, password, register } = API_QUERY_KEYS.user_service.auth;
 

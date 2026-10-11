@@ -1,4 +1,4 @@
-import { Button, toaster } from '@beautinique/frontend-components';
+import { Button } from '@beautinique/frontend-components';
 import { AUTH_PROVIDER_MAP } from '@beautinique/frontend-constants';
 import type { TUpdateUserZodSchema } from '@beautinique/frontend-types';
 import { updateUserZodSchema } from '@beautinique/frontend-zod';
@@ -18,6 +18,7 @@ import { useUploadSingleMedia } from '@/services/media-service/media.service.que
 import { useUpdateUser } from '@/services/user-service/user.service.query';
 import useUserStore from '@/stores/user.store';
 import { formatDate, getUpdatedFields } from '@/utils/common.util';
+import { toaster } from '@/utils/toaster';
 
 import AvatarUpload from './children/AvatarUpload';
 

@@ -1,4 +1,3 @@
-import { toaster } from '@beautinique/frontend-components';
 import { IMAGE_FORMATS, IMAGE_MIMES, MAX_IMAGE_SIZE } from '@beautinique/frontend-constants';
 import type { TImageFormat, TImageMime } from '@beautinique/frontend-types';
 import { formatFileSize } from '@beautinique/shared-utils';
@@ -12,6 +11,8 @@ import type { RefObject } from 'react';
 import { DEFAULT_QUILL_LINK_ID } from '@/constants/input.constants';
 import type { IQuillImageRef } from '@/types/component.type';
 import type { IQuillToolbar, IToolBarOptions, TQuillToolbar } from '@/types/input.type';
+
+import { toaster } from './toaster';
 
 // Sanitizes HTML produced/loaded by the Quill editor before it's written into any DOM (the
 // editable root, or `QuillContent`'s read-only render target) or persisted. Needed independent of

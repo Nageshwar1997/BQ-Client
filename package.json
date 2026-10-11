@@ -19,9 +19,10 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
-    "@beautinique/frontend-components": "^1.0.5",
+    "@beautinique/frontend-components": "^1.0.7",
     "@beautinique/frontend-constants": "^1.1.0",
     "@beautinique/frontend-hooks": "^1.0.8",
+    "@beautinique/frontend-stores": "^1.1.1",
     "@beautinique/frontend-styles": "^1.1.0",
     "@beautinique/frontend-zod": "^1.1.0",
     "@beautinique/shared-utils": "^1.1.0",

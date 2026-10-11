@@ -1,4 +1,4 @@
-import { Button, toaster } from '@beautinique/frontend-components';
+import { Button } from '@beautinique/frontend-components';
 import { usePathParams, useQueryParams } from '@beautinique/frontend-hooks';
 import type {
   TEmailZodSchema,
@@ -34,6 +34,7 @@ import {
 } from '@/services/user-service/auth.service.query';
 import useUserStore from '@/stores/user.store';
 import { setErrorToForm } from '@/utils/form.util';
+import { toaster } from '@/utils/toaster';
 
 const Register = () => {
   /* ================= 1. Store Hooks ================= */

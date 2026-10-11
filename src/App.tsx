@@ -12,6 +12,7 @@ import envs from './envs';
 import useWakeUp from './hooks/useWakeUp';
 import router from './router';
 import useThemeStore from './stores/theme.store';
+import useToastStore from './stores/toast.store';
 
 function App() {
   const theme = useThemeStore((s) => s.theme);
@@ -31,7 +32,7 @@ function App() {
         </LoadingScreen>
       ) : (
         <QueryClientProvider client={queryClient}>
-          <ToastContainer />
+          <ToastContainer store={useToastStore} />
           {/* Toasts "You're offline" / "Connecting to internet..." / "Back online" */}
           <NetworkStatusToaster />
           <div className="mx-auto h-full w-full max-w-480">

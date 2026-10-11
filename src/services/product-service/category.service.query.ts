@@ -1,4 +1,3 @@
-import { toaster } from '@beautinique/frontend-components';
 import { EMPTY_ARRAY } from '@beautinique/frontend-constants';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -6,6 +5,7 @@ import { categoryApi } from '@/classes/apis';
 import { API_QUERY_KEYS } from '@/constants/api.constants';
 import type { TL1Category, TL2Category, TL3Category } from '@/types/api.type';
 import { handleApiErrorToaster, handleApiSuccessToaster } from '@/utils/api.util';
+import { toaster } from '@/utils/toaster';
 
 const { get, add, update, delete: remove } = API_QUERY_KEYS.product_service.category;
 

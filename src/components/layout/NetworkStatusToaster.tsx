@@ -1,6 +1,7 @@
-import { toaster } from '@beautinique/frontend-components';
 import { useOnlineStatus } from '@beautinique/frontend-hooks';
 import { useEffect, useRef } from 'react';
+
+import { toaster } from '@/utils/toaster';
 
 // How long "Back online" stays on screen. Offline and connecting stay until the status changes.
 const BACK_ONLINE_TOAST_MS = 3000;
