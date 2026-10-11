@@ -76,8 +76,6 @@ export const USER_KEY = 'user' as const;
 // them back to it instead of always landing on home.
 export const OAUTH_REDIRECT_KEY = 'oauth_redirect_path' as const;
 
-export const TOOLTIP_GAP = 15 as const;
-
 export const SIDEBAR_DATA = [
   {
     title: 'Profile',
