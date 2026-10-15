@@ -1,10 +1,10 @@
+import type { IChildren } from '@beautinique/frontend-components';
 import { useOutsideClick } from '@beautinique/frontend-hooks';
 import { Icon } from '@iconify/react';
 import { type ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import ApiStatus from '@/components/layout/ApiStatus';
-import type { IChildren } from '@/types/component.type';
 import type {
   IHierarchySelect,
   IHierarchySelectOption,
