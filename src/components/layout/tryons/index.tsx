@@ -8,7 +8,7 @@ import type { IFaceTryOnState } from '@/classes/tryon/categories/face';
 import type { IHairTryOnState } from '@/classes/tryon/categories/hair';
 import type { ILipTryOnState } from '@/classes/tryon/categories/lip';
 import type { INailTryOnState } from '@/classes/tryon/categories/nail';
-import { TRYON_MODE_MAP } from '@/constants/tryon-constants';
+import { TRYON_CATEGORY_OPTIONS, TRYON_MODE_MAP } from '@/constants/tryon-constants';
 import {
   EYE_DEFAULT_PATTERNS,
   EYE_PATTERNS,
@@ -225,6 +225,14 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
   // EYE_PATTERNS's own comment), which the render below already treats as "don't show the row".
   const eyePatterns = tryOn?.category === 'EYE' ? EYE_PATTERNS[tryOn.subCategory] : undefined;
 
+  // Feeds the context chip over the canvas ("Lipstick - Live") - same category icon the `/tryons`
+  // browse page uses for that category, and the raw `SUB_CATEGORY` token made readable
+  // (`LIP_GLOSS` -> "lip gloss", capitalized by CSS).
+  const categoryIcon =
+    TRYON_CATEGORY_OPTIONS.find(({ category }) => category === tryOn?.category)?.icon ??
+    'solar:magic-stick-3-linear';
+  const subCategoryLabel = tryOn?.subCategory.replaceAll('_', ' ').toLowerCase() ?? '';
+
   return (
     <ModalWrapper
       isOpen={isOpen}
@@ -260,8 +268,16 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
         tryOn.category !== 'HAIR' &&
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         tryOn.category !== 'NAIL') ? (
-        <div className="flex flex-col items-center gap-2 p-6 text-center">
-          <Icon icon="solar:hourglass-linear" className="text-primary/40 size-8" />
+        <div className="mx-auto flex max-w-sm flex-col items-center gap-3 p-8 text-center">
+          <span className="bg-primary/5 flex size-14 items-center justify-center rounded-2xl">
+            <Icon icon="solar:hourglass-linear" className="text-primary/50 size-7" />
+          </span>
+          <p className="text-primary text-base font-semibold">
+            {
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+              tryOn ? 'Coming soon' : 'Try-On not available'
+            }
+          </p>
           <p className="text-tertiary text-sm">
             {
               // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -281,8 +297,14 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
               the sidebar's width without an explicit size here - `min-w-[80dvw]!` on ModalWrapper
               sidesteps that. Below `lg:` this stacks into a column instead - the sidebar's own
               content moves into the bottom sheets further down, so there's nothing to fit here. */}
-          <div className="flex h-full w-full flex-col gap-3 lg:flex-row">
-            <div className="border-primary/10 relative min-h-0 flex-1 overflow-hidden rounded-2xl border">
+          <div className="flex h-full w-full flex-col gap-3 lg:flex-row lg:gap-4">
+            {/* The stage panel. Select/instructions get a faint brand wash at the top (the canvas
+              step doesn't - it's fully covered by the camera/photo anyway). */}
+            <div
+              className={`border-primary/10 bg-secondary-invert relative min-h-0 flex-1 overflow-hidden rounded-3xl border shadow-sm ${
+                flow.step === 'tryon' ? '' : 'from-blue-crayola-c/10 bg-linear-to-b to-transparent'
+              }`}
+            >
               {flow.step === 'select' ? (
                 <TryOnModeSelect onSelect={handleSelectMode} />
               ) : flow.step === 'instructions' ? (
@@ -436,6 +458,31 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                     />
                   )}
 
+                  {/* Context chip - what's being tried on, and in which mode. Purely informational
+                    (`pointer-events-none`, so it can never steal a drag from the compare surface
+                    underneath it); `max-w` leaves room for the top-right toolbar on narrow screens. */}
+                  <div className="pointer-events-none absolute top-3 left-3 z-5 flex max-w-[calc(100%-9.5rem)] items-center gap-2 rounded-full border border-white/15 bg-black/40 py-1.5 pr-3 pl-1.5 shadow-lg backdrop-blur-md sm:max-w-[calc(100%-11.5rem)]">
+                    <span className="bg-accent-duo flex size-6 shrink-0 items-center justify-center rounded-full sm:size-7">
+                      <Icon icon={categoryIcon} className="size-3.5 text-white sm:size-4" />
+                    </span>
+                    <span className="truncate text-xs font-medium text-white capitalize sm:text-sm">
+                      {subCategoryLabel}
+                    </span>
+                    <span
+                      aria-hidden
+                      className="hidden size-1 shrink-0 rounded-full bg-white/40 sm:block"
+                    />
+                    <span className="hidden shrink-0 items-center gap-1.5 text-xs text-white/75 sm:flex">
+                      {flow.mode === TRYON_MODE_MAP.LIVE && isTryOnReady && (
+                        <span
+                          aria-hidden
+                          className="size-1.5 rounded-full bg-red-500 motion-safe:animate-pulse"
+                        />
+                      )}
+                      {flow.mode === TRYON_MODE_MAP.LIVE ? 'Live' : 'Photo'}
+                    </span>
+                  </div>
+
                   {/* Above TryOnCompareSlider's full-canvas z-4 drag surface, so the toggle
                     itself (to turn compare back off) stays clickable while it's active. */}
                   <TryOnTopControls
@@ -455,9 +502,12 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                   />
 
                   {/* Hidden while comparing - both would otherwise sit on top of the drag
-                    surface and fight it for clicks, and neither is meaningful mid-comparison. */}
+                    surface and fight it for clicks, and neither is meaningful mid-comparison.
+                    The dock itself is click-through (`pointer-events-none`, with its direct
+                    children opted back in) so its soft scrim - there to keep the glass cards
+                    readable over a bright photo - never blocks anything but the cards. */}
                   <div
-                    className={`absolute inset-x-0 bottom-0 z-3 flex flex-col items-center gap-2 ${compareCanvas ? 'hidden' : ''}`}
+                    className={`pointer-events-none absolute inset-x-0 bottom-0 z-3 flex flex-col items-center gap-2 bg-linear-to-t from-black/55 via-black/25 to-transparent px-2 pt-12 pb-2 sm:px-3 sm:pb-3 *:pointer-events-auto ${compareCanvas ? 'hidden' : ''}`}
                   >
                     {/* Intensity slider - only meaningful once a shade is actually applied. */}
                     {flow.engineState?.color && (
@@ -500,7 +550,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
 
             {/* Large screens only - unchanged from before. Below `lg:`, this same content is
               reachable through the two bottom-sheet triggers instead (just below). */}
-            <div className="hidden flex-col gap-2 lg:flex">
+            <div className="hidden min-h-0 flex-col gap-2 lg:flex">
               <TryOnSidebar
                 category={tryOn.category}
                 mode={flow.mode}

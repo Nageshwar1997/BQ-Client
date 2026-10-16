@@ -123,28 +123,31 @@ const TryOnCompareSlider = ({ canvas, onDrag, className = '' }: ITryOnCompareSli
   return (
     <div
       ref={containerRef}
-      className={`absolute inset-0 z-4 touch-none ${className}`}
+      className={`absolute inset-0 z-4 cursor-ew-resize touch-none ${className}`}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
     >
-      {/* Fixed corner labels - not tied to the drag position, just marking which side is which. */}
-      <div className="pointer-events-none absolute inset-x-3 bottom-3 flex justify-between text-[10px]/none font-semibold text-white">
-        <span className="bg-primary-invert/60 rounded-sm px-1.5 pt-1 pb-0.5 backdrop-blur-xs">
+      {/* Fixed corner labels - not tied to the drag position, just marking which side is which.
+          Dark glass / brand gradient (not theme tokens) so they read over any photo. */}
+      <div className="pointer-events-none absolute inset-x-3 bottom-3 flex justify-between text-[10px]/none font-semibold tracking-wide text-white uppercase sm:text-xs/none">
+        <span className="rounded-full border border-white/15 bg-black/45 px-2.5 pt-1.5 pb-1 shadow-md backdrop-blur-md">
           Before
         </span>
-        <span className="bg-sky-blue-burst rounded-sm px-1.5 pt-1 pb-0.5">After</span>
+        <span className="bg-sky-blue-burst shadow-secondary-btn rounded-full px-2.5 pt-1.5 pb-1">
+          After
+        </span>
       </div>
 
       <div
-        className="pointer-events-none absolute inset-y-0 w-px bg-white/80"
+        className="pointer-events-none absolute inset-y-0 w-0.5 -translate-x-1/2 bg-white shadow-[0_0_10px_rgba(0,0,0,0.45)]"
         style={{ left: `${String(dividerLeftPercent)}%` }}
       />
       <div
-        className="border-primary/10 bg-primary-invert/80 text-primary pointer-events-none absolute top-1/2 flex size-9 items-center justify-center rounded-full border shadow-md backdrop-blur-xs"
+        className="pointer-events-none absolute top-1/2 flex size-10 items-center justify-center rounded-full bg-white text-black/70 shadow-lg ring-4 ring-white/30"
         style={{ left: `${String(dividerLeftPercent)}%`, transform: 'translate(-50%, -50%)' }}
       >
-        <Icon icon="solar:arrow-left-linear" className="size-3" />
-        <Icon icon="solar:arrow-right-linear" className="-ml-0.5 size-3" />
+        <Icon icon="solar:arrow-left-linear" className="size-3.5" />
+        <Icon icon="solar:arrow-right-linear" className="-ml-0.5 size-3.5" />
       </div>
     </div>
   );

@@ -22,6 +22,9 @@ interface ITryOnInstructions {
 }
 
 // Step 2 of the flow - shown after picking Live/Upload, before the engine ever mounts.
+//
+// Same scroll-outside/center-inside split as TryOnModeSelect (see its own comment) so a long tip
+// list on a short screen scrolls instead of getting its top clipped.
 const TryOnInstructions = ({
   mode,
   category,
@@ -33,6 +36,7 @@ const TryOnInstructions = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const instructions = useMemo(() => getTryOnInstructions(category, mode), [category, mode]);
+  const isLive = mode === TRYON_MODE_MAP.LIVE;
 
   const handleChoosePhoto = () => {
     fileInputRef.current?.click();
@@ -45,48 +49,73 @@ const TryOnInstructions = ({
   };
 
   return (
-    <div
-      className={`mx-auto flex h-full max-w-md flex-col items-center justify-center p-4 text-center ${className}`}
-    >
-      <span className="mb-2 size-8 shrink-0">
-        <Icon
-          icon={mode === TRYON_MODE_MAP.LIVE ? 'solar:camera-linear' : 'solar:gallery-add-linear'}
-          className="text-primary/60 size-full"
-        />
-      </span>
-      <GradientText
-        type="silver"
-        text="Tips for a great result"
-        className="mb-3 text-lg font-semibold"
-      />
-      <ul className="mb-4 space-y-2.5 text-left">
-        {instructions.map(({ icon, text }) => (
-          <li key={text} className="flex items-start gap-2">
-            <span className="size-4 shrink-0">
-              <Icon icon={icon} className="text-primary/60 size-full" />
-            </span>
-            <span className="text-tertiary text-xs lg:text-sm">{text}</span>
-          </li>
-        ))}
-      </ul>
-      <div className="mt-1 flex w-full items-center justify-center gap-3">
-        <Button pattern="secondary" content="Back" buttonProps={{ onClick: onBack }} />
-        <Button
-          pattern="primary"
-          content="Continue"
-          buttonProps={{ onClick: mode === TRYON_MODE_MAP.LIVE ? onStartLive : handleChoosePhoto }}
-        />
-      </div>
+    <div className={`h-full overflow-y-auto ${className}`}>
+      <div className="mx-auto flex min-h-full w-full max-w-lg flex-col items-center justify-center gap-5 p-5 text-center sm:p-8">
+        <div className="flex flex-col items-center gap-3">
+          <span className="bg-accent-duo shadow-secondary-btn flex size-14 shrink-0 items-center justify-center rounded-2xl sm:size-16">
+            <Icon
+              icon={isLive ? 'solar:camera-linear' : 'solar:gallery-add-linear'}
+              className="size-7 text-white sm:size-8"
+            />
+          </span>
+          <div className="flex flex-col gap-1">
+            <GradientText
+              type="accent"
+              text="Tips for a great result"
+              className="mx-auto text-xl font-semibold sm:text-2xl"
+            />
+            <p className="text-tertiary text-xs sm:text-sm">
+              {isLive
+                ? "We'll ask for camera access next - these tips help it find you quickly."
+                : 'Pick a clear, front-facing photo - these tips make the biggest difference.'}
+            </p>
+          </div>
+        </div>
 
-      {mode === TRYON_MODE_MAP.UPLOAD && (
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept={IMAGE_MIMES.join(', ')}
-          className="sr-only"
-          onChange={handleFileChange}
-        />
-      )}
+        <ul
+          className={`grid w-full gap-2.5 text-left ${instructions.length > 3 ? 'sm:grid-cols-2' : ''}`}
+        >
+          {instructions.map(({ icon, text }, index) => (
+            <li
+              key={text}
+              className="border-primary/10 bg-secondary-invert flex items-start gap-3 rounded-xl border p-3"
+            >
+              <span className="bg-blue-crayola-c/10 text-blue-crayola-c flex size-8 shrink-0 items-center justify-center rounded-lg">
+                <Icon icon={icon} className="size-4.5" />
+              </span>
+              <span className="text-secondary pt-1 text-xs leading-5 sm:text-sm">
+                <span className="sr-only">{`Tip ${String(index + 1)}: `}</span>
+                {text}
+              </span>
+            </li>
+          ))}
+        </ul>
+
+        <div className="flex w-full items-center justify-center gap-3 pt-1">
+          <Button
+            pattern="secondary"
+            content="Back"
+            leftIcon={{ icon: 'solar:arrow-left-linear' }}
+            buttonProps={{ onClick: onBack }}
+          />
+          <Button
+            pattern="primary"
+            content={isLive ? 'Start camera' : 'Choose photo'}
+            rightIcon={{ icon: isLive ? 'solar:camera-linear' : 'solar:gallery-send-linear' }}
+            buttonProps={{ onClick: isLive ? onStartLive : handleChoosePhoto }}
+          />
+        </div>
+
+        {!isLive && (
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept={IMAGE_MIMES.join(', ')}
+            className="sr-only"
+            onChange={handleFileChange}
+          />
+        )}
+      </div>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import { ScrollableGradientContainer } from '@beautinique/frontend-components';
 import type { TTryOnCategory } from '@beautinique/frontend-types';
+import { Icon } from '@iconify/react';
 
 import {
   TRYON_MODE_MAP,
@@ -66,7 +67,8 @@ const TryOnModelList = ({
 }: ITryOnModelListProps) => (
   <ScrollableGradientContainer
     direction={direction}
-    className={`${direction === 'vertical' ? '[&>div]:justify-start' : ''} ${disabled ? 'opacity-50' : ''} ${className}`}
+    label="Models"
+    className={`[&>div]:gap-2.5 ${direction === 'vertical' ? '[&>div]:justify-start' : 'py-1'} ${disabled ? 'opacity-50' : ''} ${className}`}
   >
     {getModelImages(category).map((url) => {
       const label = getModelLabel(url);
@@ -82,11 +84,36 @@ const TryOnModelList = ({
           onClick={() => {
             onModelSelect(url);
           }}
-          className={`aspect-square shrink-0 cursor-pointer overflow-hidden rounded-2xl border-2 transition-colors duration-300 focus-visible:-outline-offset-1 disabled:cursor-not-allowed ${
-            direction === 'horizontal' ? 'size-20' : ''
-          } ${selected ? 'border-primary' : 'border-primary/10 hover:border-primary/30'}`}
+          className={`group relative aspect-square shrink-0 cursor-pointer overflow-hidden rounded-2xl border-2 transition-all duration-300 focus-visible:-outline-offset-1 disabled:cursor-not-allowed ${
+            direction === 'horizontal' ? 'size-20 sm:size-24' : ''
+          } ${
+            selected
+              ? 'border-blue-crayola-c shadow-secondary-btn'
+              : 'border-primary/10 hover:border-primary/40 hover:shadow-md'
+          }`}
         >
-          <img src={url} alt={label} className="size-full object-cover" />
+          <img
+            src={url}
+            alt={label}
+            loading="lazy"
+            className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+          {/* Name caption - the `aria-label` above already carries it for assistive tech, this is
+              just so a sighted shopper can tell the (visually similar) photos apart too. */}
+          <span
+            aria-hidden
+            className="absolute inset-x-0 bottom-0 truncate bg-linear-to-t from-black/70 to-transparent px-1.5 pt-4 pb-1 text-center text-[10px] leading-none font-medium text-white"
+          >
+            {label}
+          </span>
+          {selected && (
+            <span
+              aria-hidden
+              className="bg-blue-crayola-c absolute top-1 right-1 flex size-5 items-center justify-center rounded-full text-white shadow-md"
+            >
+              <Icon icon="solar:check-read-linear" className="size-3.5" />
+            </span>
+          )}
         </button>
       );
     })}

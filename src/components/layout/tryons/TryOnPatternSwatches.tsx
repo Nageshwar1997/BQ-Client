@@ -14,11 +14,11 @@ interface ITryOnPatternSwatchesProps {
 }
 
 // EYE-only row, shown alongside TryOnShadeSwatches for finishes that have a `pattern` dimension
-// (see docs/tryons/EYE-PLAN.md) - same swatch-strip shape as the shade picker, but each option is
-// a preview thumbnail image (the style itself) rather than a flat color circle, since "which
-// pattern" isn't something a color swatch can show. No deselect-to-null here (unlike shade
-// swatches) - a pattern always has *some* value once a pattern-bearing finish is picked (see
-// EYELINER_DEFAULT_PATTERN), there's no "no pattern" state to toggle back to.
+// (see docs/tryons/EYE-PLAN.md) - same swatch-strip shape and frosted-glass card as the shade
+// picker, but each option is a preview thumbnail image (the style itself) rather than a flat color
+// circle, since "which pattern" isn't something a color swatch can show. No deselect-to-null here
+// (unlike shade swatches) - a pattern always has *some* value once a pattern-bearing finish is
+// picked (see EYELINER_DEFAULT_PATTERN), there's no "no pattern" state to toggle back to.
 const TryOnPatternSwatches = ({
   patterns,
   appliedPattern,
@@ -28,16 +28,27 @@ const TryOnPatternSwatches = ({
 }: ITryOnPatternSwatchesProps) => {
   if (!patterns.length) return null;
 
+  const appliedLabel = patterns.find((option) => option.id === appliedPattern)?.label;
+
   return (
     <div
-      className={`bg-primary-invert/10 rounded-b-2xl backdrop-blur-xs ${disabled ? 'opacity-50' : ''} ${className}`}
+      className={`mx-auto w-full max-w-2xl rounded-2xl border border-white/10 bg-black/35 shadow-lg backdrop-blur-md transition-opacity duration-300 ${disabled ? 'opacity-50' : ''} ${className}`}
     >
+      <div className="flex items-center justify-between gap-3 px-4 pt-2.5 text-[11px] sm:text-xs">
+        <span className="font-medium text-white/80">
+          Styles <span className="text-white/50">({patterns.length})</span>
+        </span>
+        <span className="truncate font-semibold text-white" aria-live="polite">
+          {appliedLabel ?? 'Pick a style'}
+        </span>
+      </div>
       <ScrollableGradientContainer
         direction="horizontal"
-        className="px-4 py-3 [&>div]:gap-3"
+        label="Styles"
+        className="px-4 pt-2.5 pb-2.5 [&>div]:gap-3"
         gradientClassNames={{
-          left: 'from-primary-invert/30 w-10!',
-          right: 'from-primary-invert/30 w-10!',
+          left: 'from-black/60! w-8!',
+          right: 'from-black/60! w-8!',
         }}
       >
         {patterns.map((option) => {
@@ -48,21 +59,32 @@ const TryOnPatternSwatches = ({
               <button
                 type="button"
                 aria-label={`Apply ${option.label} pattern`}
+                aria-pressed={active}
                 disabled={disabled}
                 onClick={() => {
                   onSelect(option.id);
                 }}
-                className={`group relative flex size-12 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 bg-white transition-colors duration-300 disabled:cursor-not-allowed ${active ? 'border-white' : 'border-white/30 hover:border-white/60'}`}
+                className={`group relative flex size-11 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-white transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white disabled:cursor-not-allowed sm:size-12 ${
+                  active
+                    ? 'scale-110 ring-2 ring-white ring-offset-2 ring-offset-black/60'
+                    : 'border-2 border-white/30 hover:scale-105 hover:border-white/70'
+                }`}
               >
                 <img src={option.image} alt={option.label} className="size-full object-cover" />
                 {active && (
-                  <Icon
-                    icon="solar:check-circle-bold"
-                    className="absolute top-1/2 left-1/2 size-4 -translate-x-1/2 -translate-y-1/2 text-white drop-shadow-[0_0_2px_rgba(0,0,0,0.8)]"
-                  />
+                  <span className="absolute inset-0 flex items-center justify-center bg-black/25">
+                    <Icon
+                      icon="solar:check-circle-bold"
+                      className="size-5 text-white drop-shadow-[0_0_3px_rgba(0,0,0,0.6)]"
+                    />
+                  </span>
                 )}
               </button>
-              <p className="max-w-14 truncate text-center text-[10px] text-white">{option.label}</p>
+              <p
+                className={`max-w-14 truncate text-center text-[10px] ${active ? 'font-semibold text-white' : 'text-white/60'}`}
+              >
+                {option.label}
+              </p>
             </div>
           );
         })}

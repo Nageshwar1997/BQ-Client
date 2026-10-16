@@ -15,7 +15,10 @@ interface ITryOnShadeSwatchesProps {
 }
 
 // Bottom-of-canvas shade strip - mirrors the reference's Variants.tsx (circular swatch, active
-// state = border + check icon), driven by real product shade data, not a color-wheel input.
+// state = ring + check icon), driven by real product shade data, not a color-wheel input. Sits on
+// the same dark frosted glass as the rest of the dock (see TryOnModal) since it floats over
+// arbitrary camera/photo content, and names the applied shade up top so the shopper isn't left
+// squinting at a tiny per-swatch caption to know what they're wearing.
 const TryOnShadeSwatches = ({
   shades,
   appliedColor,
@@ -25,16 +28,27 @@ const TryOnShadeSwatches = ({
 }: ITryOnShadeSwatchesProps) => {
   if (!shades.length) return null;
 
+  const appliedShade = shades.find((shade) => shade.hexColor === appliedColor);
+
   return (
     <div
-      className={`bg-primary-invert/10 rounded-b-2xl backdrop-blur-xs ${disabled ? 'opacity-50' : ''} ${className}`}
+      className={`mx-auto w-full max-w-2xl rounded-2xl border border-white/10 bg-black/35 shadow-lg backdrop-blur-md transition-opacity duration-300 ${disabled ? 'opacity-50' : ''} ${className}`}
     >
+      <div className="flex items-center justify-between gap-3 px-4 pt-2.5 text-[11px] sm:text-xs">
+        <span className="font-medium text-white/80">
+          Shades <span className="text-white/50">({shades.length})</span>
+        </span>
+        <span className="truncate font-semibold text-white" aria-live="polite">
+          {appliedShade?.name ?? 'Tap a shade to apply'}
+        </span>
+      </div>
       <ScrollableGradientContainer
         direction="horizontal"
-        className="px-4 py-3 [&>div]:gap-3"
+        label="Shades"
+        className="px-4 pt-2.5 pb-2.5 [&>div]:gap-3"
         gradientClassNames={{
-          left: 'from-primary-invert/30 w-10!',
-          right: 'from-primary-invert/30 w-10!',
+          left: 'from-black/60! w-8!',
+          right: 'from-black/60! w-8!',
         }}
       >
         {shades.map((shade) => {
@@ -49,7 +63,11 @@ const TryOnShadeSwatches = ({
                 onClick={() => {
                   onSelect(active ? null : shade.hexColor);
                 }}
-                className={`group flex size-12 cursor-pointer items-center justify-center rounded-full border-2 transition-colors duration-300 disabled:cursor-not-allowed ${active ? 'border-white' : 'border-white/30 hover:border-white/60'}`}
+                className={`group flex size-10 cursor-pointer items-center justify-center rounded-full transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white disabled:cursor-not-allowed sm:size-11 ${
+                  active
+                    ? 'scale-110 ring-2 ring-white ring-offset-2 ring-offset-black/60'
+                    : 'border-2 border-white/30 hover:scale-105 hover:border-white/70'
+                }`}
                 style={{ backgroundColor: shade.hexColor }}
               >
                 {active ? (
@@ -57,22 +75,26 @@ const TryOnShadeSwatches = ({
                     {/* Selected: filled check, swaps to a "remove" icon on hover. */}
                     <Icon
                       icon="solar:check-circle-bold"
-                      className="size-5 text-white group-hover:hidden"
+                      className="size-5 text-white drop-shadow-[0_0_3px_rgba(0,0,0,0.6)] group-hover:hidden"
                     />
                     <Icon
                       icon="solar:close-circle-bold"
-                      className="hidden size-5 text-white group-hover:block"
+                      className="hidden size-5 text-white drop-shadow-[0_0_3px_rgba(0,0,0,0.6)] group-hover:block"
                     />
                   </>
                 ) : (
                   // Not selected: an outline check preview, only on hover.
                   <Icon
                     icon="solar:check-circle-linear"
-                    className="hidden size-5 text-white/90 group-hover:block"
+                    className="hidden size-5 text-white/90 drop-shadow-[0_0_3px_rgba(0,0,0,0.6)] group-hover:block"
                   />
                 )}
               </button>
-              <p className="max-w-14 truncate text-center text-[10px] text-white">{shade.name}</p>
+              <p
+                className={`max-w-14 truncate text-center text-[10px] ${active ? 'font-semibold text-white' : 'text-white/60'}`}
+              >
+                {shade.name}
+              </p>
             </div>
           );
         })}

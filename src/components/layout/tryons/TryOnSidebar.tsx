@@ -1,4 +1,4 @@
-import { Divider, GradientText } from '@beautinique/frontend-components';
+import { GradientText } from '@beautinique/frontend-components';
 import type { TTryOnCategory } from '@beautinique/frontend-types';
 import { Icon } from '@iconify/react';
 import { type RefObject } from 'react';
@@ -26,9 +26,16 @@ interface ITryOnSidebarProps {
   modelsDisabled?: boolean;
 }
 
-// Right-side sidebar: the mode-toggle box + Divider stay fixed at the top (not part of any
-// scroll region at all - they're a plain sibling above it, not a sticky element sharing the
-// scroll container), and only the preset model photos below scroll.
+// Short labels for the sidebar's narrow segmented toggle - `TRYON_MODE_OPTIONS`'s own titles
+// ("Try it Live"/"Upload Photo") are written for the wide mode-select cards and don't fit here.
+const MODE_SHORT_LABEL: Record<TTryOnMode, string> = {
+  [TRYON_MODE_MAP.LIVE]: 'Live',
+  [TRYON_MODE_MAP.UPLOAD]: 'Photo',
+};
+
+// Right-side sidebar: the mode-toggle card + models heading stay fixed at the top (not part of any
+// scroll region at all - they're plain siblings above it, not sticky elements sharing the scroll
+// container), and only the preset model photos below scroll.
 const TryOnSidebar = ({
   category,
   mode,
@@ -43,7 +50,7 @@ const TryOnSidebar = ({
     // `min-h-0` lets this shrink below its content's natural height instead of pushing the
     // modal taller - required for the models list below to actually clip/scroll rather than
     // just growing.
-    <div className="flex min-h-0 w-28 flex-1 flex-col gap-3 sm:w-32">
+    <div className="flex min-h-0 w-28 flex-1 flex-col gap-3 sm:w-32 xl:w-36">
       <div className="border-primary/10 bg-secondary-invert relative aspect-square w-full shrink-0 overflow-hidden rounded-2xl border">
         {mode === TRYON_MODE_MAP.LIVE && cameraReady && (
           <video
@@ -61,32 +68,46 @@ const TryOnSidebar = ({
             className="absolute inset-0 size-full object-cover blur-sm"
           />
         )}
-        <div className="bg-primary-invert/20 absolute inset-0 flex flex-col items-center justify-center gap-2">
-          <div className="border-primary/20 bg-secondary-invert flex h-8 w-16 shrink-0 items-center overflow-hidden rounded-lg border">
-            {TRYON_MODE_OPTIONS.map((option) => (
-              <button
-                key={option.mode}
-                type="button"
-                aria-label={option.title}
-                onClick={() => {
-                  onModeToggle(option.mode);
-                }}
-                className={`flex size-full cursor-pointer items-center justify-center p-1.5 ${
-                  option.mode === mode ? 'bg-sky-blue-burst text-white' : 'text-secondary'
-                }`}
-              >
-                <Icon icon={option.icon} className="size-full" />
-              </button>
-            ))}
+        <div className="bg-primary-invert/30 absolute inset-0 flex flex-col items-center justify-center gap-2 p-2">
+          <div
+            role="group"
+            aria-label="Try-On mode"
+            className="border-primary/10 bg-secondary-invert/90 flex w-full shrink-0 flex-col gap-0.5 rounded-xl border p-0.5 shadow-md backdrop-blur-md xl:flex-row"
+          >
+            {TRYON_MODE_OPTIONS.map((option) => {
+              const active = option.mode === mode;
+
+              return (
+                <button
+                  key={option.mode}
+                  type="button"
+                  aria-label={option.title}
+                  aria-pressed={active}
+                  onClick={() => {
+                    onModeToggle(option.mode);
+                  }}
+                  className={`focus-visible:outline-blue-crayola-c flex flex-1 cursor-pointer items-center justify-center gap-1 rounded-[10px] px-1.5 py-1.5 text-[11px] font-medium transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-1 ${
+                    active
+                      ? 'bg-sky-blue-burst shadow-secondary-btn text-white'
+                      : 'text-secondary hover:bg-primary/5'
+                  }`}
+                >
+                  <Icon icon={option.icon} className="size-3.5 shrink-0" />
+                  {MODE_SHORT_LABEL[option.mode]}
+                </button>
+              );
+            })}
           </div>
-          <GradientText
-            type="silver"
-            text={mode === TRYON_MODE_MAP.LIVE ? 'Camera' : 'Upload'}
-            className="text-xs font-semibold"
-          />
         </div>
       </div>
-      <Divider className="shrink-0" />
+
+      <div className="flex shrink-0 items-center gap-2">
+        <span className="text-primary/60 text-[11px] font-semibold tracking-wide uppercase">
+          Models
+        </span>
+        <span aria-hidden className="bg-hr-line h-px flex-1" />
+      </div>
+
       <TryOnModelList
         direction="vertical"
         category={category}
