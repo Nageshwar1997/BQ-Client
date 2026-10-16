@@ -4,6 +4,9 @@ interface ITryOnTopControlsProps {
   compareProps: { disabled: boolean; onClick: () => void; active: boolean };
   resetProps: { disabled: boolean; onClick: () => void };
   downloadProps: { disabled: boolean; onClick: () => void };
+  // Omitted where the browser can't fullscreen an arbitrary element (iPhone Safari) - the button
+  // simply isn't rendered there rather than shown and dead.
+  fullscreenProps?: { disabled: boolean; onClick: () => void; active: boolean };
 }
 
 interface IControlButtonProps {
@@ -46,7 +49,12 @@ const ControlButton = ({
   </button>
 );
 
-const TryOnTopControls = ({ compareProps, resetProps, downloadProps }: ITryOnTopControlsProps) => (
+const TryOnTopControls = ({
+  compareProps,
+  resetProps,
+  downloadProps,
+  fullscreenProps,
+}: ITryOnTopControlsProps) => (
   <div
     role="toolbar"
     aria-label="Try-On actions"
@@ -75,6 +83,22 @@ const TryOnTopControls = ({ compareProps, resetProps, downloadProps }: ITryOnTop
       disabled={downloadProps.disabled}
       onClick={downloadProps.onClick}
     />
+    {fullscreenProps && (
+      <>
+        <span aria-hidden className="h-4 w-px bg-white/20" />
+        <ControlButton
+          icon={
+            fullscreenProps.active ? 'solar:quit-full-screen-linear' : 'solar:full-screen-linear'
+          }
+          // Stable name, same reasoning as the compare toggle above - `aria-pressed` carries state.
+          label="Full screen"
+          active={fullscreenProps.active}
+          isToggle
+          disabled={fullscreenProps.disabled}
+          onClick={fullscreenProps.onClick}
+        />
+      </>
+    )}
   </div>
 );
 

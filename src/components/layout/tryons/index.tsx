@@ -1,7 +1,7 @@
 import { InputError, ModalWrapper } from '@beautinique/frontend-components';
 import type { TTryOnSelection } from '@beautinique/frontend-types';
 import { Icon } from '@iconify/react';
-import type { Ref } from 'react';
+import { type Ref, useRef } from 'react';
 
 import type { IEyeTryOnState } from '@/classes/tryon/categories/eye';
 import type { IFaceTryOnState } from '@/classes/tryon/categories/face';
@@ -19,6 +19,7 @@ import { HAIR_RANGE_BOUNDS } from '@/constants/tryon-constants/hair';
 import { LIP_RANGE_BOUNDS } from '@/constants/tryon-constants/lip';
 import { NAIL_RANGE_BOUNDS } from '@/constants/tryon-constants/nail';
 import useDebouncedDetectionStatus from '@/hooks/useDebouncedDetectionStatus';
+import useFullscreen from '@/hooks/useFullscreen';
 import useTryOnFlow from '@/hooks/useTryOnFlow';
 import type { IShade, ITryOnStageRef, TDetectionStatus } from '@/types/tryon-types';
 
@@ -30,6 +31,7 @@ import LipTryOnStage from './lip/LipTryOnStage';
 import NailTryOnStage from './nail/NailTryOnStage';
 import TryOnBottomSheet from './TryOnBottomSheet';
 import TryOnCompareSlider from './TryOnCompareSlider';
+import TryOnDock from './TryOnDock';
 import TryOnInstructions from './TryOnInstructions';
 import TryOnModelList from './TryOnModelList';
 import TryOnModeSelect from './TryOnModeSelect';
@@ -81,6 +83,15 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
     handleDownload,
     handleResetMakeup,
   } = useTryOnFlow(isOpen);
+
+  // Fullscreen targets the whole stage panel (not just the canvas), so the toolbar, context chip
+  // and dock all come along - hiding the dock (its own handle) then gives a clean, full-size view.
+  const panelRef = useRef<HTMLDivElement>(null);
+  const {
+    isSupported: canFullscreen,
+    isFullscreen,
+    toggle: handleFullscreenToggle,
+  } = useFullscreen(panelRef);
 
   // Gated on `isTryOnReady`, not read unconditionally - `cameraReady`/`imageReady` and the
   // engine's own `detectionStatus` field (`IMakeupBaseState`, every category's engine base reuses
@@ -301,9 +312,10 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
             {/* The stage panel. Select/instructions get a faint brand wash at the top (the canvas
               step doesn't - it's fully covered by the camera/photo anyway). */}
             <div
-              className={`border-primary/10 bg-secondary-invert relative min-h-0 flex-1 overflow-hidden rounded-3xl border shadow-sm ${
-                flow.step === 'tryon' ? '' : 'from-blue-crayola-c/10 bg-linear-to-b to-transparent'
-              }`}
+              ref={panelRef}
+              className={`border-primary/10 bg-secondary-invert relative min-h-0 flex-1 overflow-hidden shadow-sm ${
+                isFullscreen ? 'rounded-none border-0' : 'rounded-3xl border'
+              } ${flow.step === 'tryon' ? '' : 'from-blue-crayola-c/10 bg-linear-to-b to-transparent'}`}
             >
               {flow.step === 'select' ? (
                 <TryOnModeSelect onSelect={handleSelectMode} />
@@ -461,7 +473,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                   {/* Context chip - what's being tried on, and in which mode. Purely informational
                     (`pointer-events-none`, so it can never steal a drag from the compare surface
                     underneath it); `max-w` leaves room for the top-right toolbar on narrow screens. */}
-                  <div className="pointer-events-none absolute top-3 left-3 z-5 flex max-w-[calc(100%-9.5rem)] items-center gap-2 rounded-full border border-white/15 bg-black/40 py-1.5 pr-3 pl-1.5 shadow-lg backdrop-blur-md sm:max-w-[calc(100%-11.5rem)]">
+                  <div className="pointer-events-none absolute top-3 left-3 z-5 flex max-w-[calc(100%-12.5rem)] items-center gap-2 rounded-full border border-white/15 bg-black/40 py-1.5 pr-3 pl-1.5 shadow-lg backdrop-blur-md sm:max-w-[calc(100%-14.5rem)]">
                     <span className="bg-accent-duo flex size-6 shrink-0 items-center justify-center rounded-full sm:size-7">
                       <Icon icon={categoryIcon} className="size-3.5 text-white sm:size-4" />
                     </span>
@@ -499,15 +511,26 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                       disabled: !canInteract || !flow.engineState?.color || !!compareCanvas,
                       onClick: handleDownload,
                     }}
+                    // Not rendered at all where the browser can't fullscreen an element. Stays
+                    // enabled while already fullscreen, so there's always a way back out even if
+                    // readiness drops (e.g. the camera errors) mid-session.
+                    fullscreenProps={
+                      canFullscreen
+                        ? {
+                            active: isFullscreen,
+                            disabled: !isTryOnReady && !isFullscreen,
+                            onClick: handleFullscreenToggle,
+                          }
+                        : undefined
+                    }
                   />
 
-                  {/* Hidden while comparing - both would otherwise sit on top of the drag
-                    surface and fight it for clicks, and neither is meaningful mid-comparison.
-                    The dock itself is click-through (`pointer-events-none`, with its direct
-                    children opted back in) so its soft scrim - there to keep the glass cards
-                    readable over a bright photo - never blocks anything but the cards. */}
-                  <div
-                    className={`pointer-events-none absolute inset-x-0 bottom-0 z-3 flex flex-col items-center gap-2 bg-linear-to-t from-black/55 via-black/25 to-transparent px-2 pt-12 pb-2 *:pointer-events-auto sm:px-3 sm:pb-3 ${compareCanvas ? 'hidden' : ''}`}
+                  {/* Hidden while comparing - it would otherwise sit on top of the drag surface
+                    and fight it for clicks, and isn't meaningful mid-comparison. Otherwise the
+                    shopper can collapse it with its own handle (open by default). */}
+                  <TryOnDock
+                    hidden={!!compareCanvas}
+                    appliedColor={flow.engineState?.color ?? null}
                   >
                     {/* Intensity slider - only meaningful once a shade is actually applied. */}
                     {flow.engineState?.color && (
@@ -543,7 +566,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                         disabled={!canInteract}
                       />
                     )}
-                  </div>
+                  </TryOnDock>
                 </>
               )}
             </div>
