@@ -1,3 +1,4 @@
+import { ScrollableGradientContainer } from '@beautinique/frontend-components';
 import type { TTryOnCategory } from '@beautinique/frontend-types';
 
 import {
@@ -7,8 +8,6 @@ import {
   TRYON_MODEL_IMAGES_HAND,
 } from '@/constants/tryon-constants';
 import type { TTryOnMode } from '@/types/tryon-types';
-
-import ScrollableGradientContainer from '../containers/ScrollableGradientContainer';
 
 // `/images/tryon/models/(face/hand/hair)/Central-Indian.webp` -> "Central Indian" - every button below used to
 // share the exact same generic `alt="Model"`/no aria-label, so a screen reader announced every

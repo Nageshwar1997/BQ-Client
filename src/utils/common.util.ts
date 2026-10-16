@@ -1,4 +1,4 @@
-import type { IconProps } from '@iconify/react';
+import type { TPlayerProps } from '@beautinique/frontend-components/media';
 
 import { VIDEO_PLACEHOLDER } from '@/constants/common.constants';
 import { DUMMY_FEEDBACKS } from '@/constants/navbar.constants';
@@ -207,6 +207,12 @@ export const convertVideoToPoster = (videoUrl: string): Promise<string> => {
   });
 };
 
+/** What the video players of the shared components get: the posters of this app and its placeholder. */
+export const VIDEO_PLAYER_PROPS: TPlayerProps = {
+  getPoster: (src) => convertVideoToPoster(src),
+  placeholder: VIDEO_PLACEHOLDER,
+};
+
 export const formatINRCurrency = (amount: number): string =>
   new Intl.NumberFormat('en-IN', {
     style: 'currency',
@@ -222,10 +228,6 @@ export const formatDate = (date: Date | string | number, options?: Intl.DateTime
     year: 'numeric',
     ...options,
   }).format(new Date(date));
-};
-
-export const isIconProps = (value: unknown): value is IconProps => {
-  return typeof value === 'object' && value !== null && 'icon' in value;
 };
 
 /* ========== NULL CHECK FUNCTION ========== */

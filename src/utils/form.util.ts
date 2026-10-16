@@ -1,7 +1,6 @@
+import type { IFileInput } from '@beautinique/frontend-components/file-input';
 import type { TFieldErrors } from '@beautinique/frontend-types';
 import type { FieldErrors, FieldValues, Path, UseFormSetError } from 'react-hook-form';
-
-import type { IFileInput } from '@/types/input.type';
 
 export const setErrorToForm = <T extends FieldValues>(
   setError: UseFormSetError<T>,

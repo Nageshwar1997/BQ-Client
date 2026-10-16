@@ -1,7 +1,6 @@
-import { Divider, GradientText } from '@beautinique/frontend-components';
+import { ApiStatus, Divider, GradientText } from '@beautinique/frontend-components';
 import { Link } from 'react-router-dom';
 
-import ApiStatus from '@/components/layout/ApiStatus';
 import {
   EmailUsAction,
   StaticPageCTA,

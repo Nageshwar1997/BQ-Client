@@ -1,3 +1,14 @@
+import {
+  ApiStatus,
+  LoadingText,
+  ScrollableGradientContainer,
+  Table,
+  TableBody,
+  TableHead,
+  TableHeadCell,
+  TableRow,
+  TableRowCell,
+} from '@beautinique/frontend-components';
 import { SORT_MAP } from '@beautinique/frontend-constants';
 import { useQueryParams } from '@beautinique/frontend-hooks';
 import type { TProductStatus, TSort } from '@beautinique/frontend-types';
@@ -6,17 +17,6 @@ import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
 
-import ApiStatus from '@/components/layout/ApiStatus';
-import ScrollableGradientContainer from '@/components/layout/containers/ScrollableGradientContainer';
-import LoadingText from '@/components/layout/loaders/LoadingText';
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeadCell,
-  TableRow,
-  TableRowCell,
-} from '@/components/layout/table';
 import { PRODUCTS_TABLE_TITLES } from '@/constants/api.constants';
 import { useGetDashboardProducts } from '@/services/product-service/product.service.query';
 import type { TProductSortBy } from '@/types/api.type';

@@ -1,4 +1,4 @@
-import { Button, GradientText } from '@beautinique/frontend-components';
+import { BorderGradient, Button, GradientText, Input } from '@beautinique/frontend-components';
 import { Resend } from '@beautinique/frontend-components/resend';
 import { usePathParams } from '@beautinique/frontend-hooks';
 import type {
@@ -11,9 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import BorderGradient from '@/components/layout/containers/BorderGradient';
 import AuthBottomInstructions from '@/components/ui/AuthBottomInstructions';
-import Input from '@/components/ui/inputs/Input';
 import { FORM_DEFAULT_VALUES } from '@/constants/form.constants';
 import {
   EMAIL_INPUT_DATA,
@@ -230,6 +228,7 @@ const ForgotPassword = () => {
                   icons={{
                     right: {
                       icon: showPasswords[input.name] ? 'lucide:eye-off' : 'lucide:eye',
+                      label: showPasswords[input.name] ? 'Hide password' : 'Show password',
                       onClick: () => {
                         togglePasswordVisibility(input.name);
                       },

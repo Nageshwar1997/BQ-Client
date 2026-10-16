@@ -1,23 +1,25 @@
+import { SocialAuth as SocialAuthLinks } from '@beautinique/frontend-components/auth';
 import { usePathParams, useQueryParams } from '@beautinique/frontend-hooks';
-import { Icon } from '@iconify/react';
-import { Link } from 'react-router-dom';
 
 import { API_METHODS_AND_URLS } from '@/constants/api.constants';
 import { OAUTH_REDIRECT_KEY, PROVIDER_ICON_MAP } from '@/constants/common.constants';
 import envs from '@/envs';
 
-const OAUTH_DATA = [
+const OAUTH_PROVIDERS = [
   {
+    name: 'Google',
     icon: PROVIDER_ICON_MAP.GOOGLE,
-    redirectUrl: `${envs.urls.gateway}${API_METHODS_AND_URLS.user_service.auth.login.oauth.google.redirect.url}`,
+    href: `${envs.urls.gateway}${API_METHODS_AND_URLS.user_service.auth.login.oauth.google.redirect.url}`,
   },
   {
+    name: 'GitHub',
     icon: PROVIDER_ICON_MAP.GITHUB,
-    redirectUrl: `${envs.urls.gateway}${API_METHODS_AND_URLS.user_service.auth.login.oauth.github.redirect.url}`,
+    href: `${envs.urls.gateway}${API_METHODS_AND_URLS.user_service.auth.login.oauth.github.redirect.url}`,
   },
   {
+    name: 'LinkedIn',
     icon: PROVIDER_ICON_MAP.LINKEDIN,
-    redirectUrl: `${envs.urls.gateway}${API_METHODS_AND_URLS.user_service.auth.login.oauth.linkedin.redirect.url}`,
+    href: `${envs.urls.gateway}${API_METHODS_AND_URLS.user_service.auth.login.oauth.linkedin.redirect.url}`,
   },
 ] as const;
 
@@ -42,18 +44,7 @@ const SocialAuth = () => {
     sessionStorage.setItem(OAUTH_REDIRECT_KEY, redirect ?? fallbackPath);
   };
 
-  return (
-    <div className="flex items-center justify-center gap-4">
-      {OAUTH_DATA.map(({ icon, redirectUrl }, index) => (
-        <Link key={index} to={redirectUrl} className="block" onClick={handleOAuthStart}>
-          <Icon
-            icon={icon}
-            className="border-primary/40 shadow-primary/50 h-12 w-12 shrink-0 rounded-xl border bg-white/90 p-2.5 shadow-sm backdrop-blur-sm transition-transform duration-500 hover:scale-110"
-          />
-        </Link>
-      ))}
-    </div>
-  );
+  return <SocialAuthLinks providers={OAUTH_PROVIDERS} onProviderClick={handleOAuthStart} />;
 };
 
 export default SocialAuth;

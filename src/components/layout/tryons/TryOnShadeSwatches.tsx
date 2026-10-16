@@ -1,8 +1,7 @@
+import { ScrollableGradientContainer } from '@beautinique/frontend-components';
 import { Icon } from '@iconify/react';
 
 import type { IShade } from '@/types/tryon-types';
-
-import ScrollableGradientContainer from '../containers/ScrollableGradientContainer';
 
 interface ITryOnShadeSwatchesProps {
   shades: IShade[];

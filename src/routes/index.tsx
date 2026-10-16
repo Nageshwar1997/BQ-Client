@@ -1,13 +1,24 @@
+import { LoadingScreen } from '@beautinique/frontend-components/loading-screen';
 import { type ComponentType } from 'react';
 import { Outlet, type RouteObject } from 'react-router-dom';
 
-import LoadingScreen from '@/components/layout/loaders/LoadingScreen';
 import { ROUTES } from '@/constants/routes.constants';
 import { authenticate, guestOnly } from '@/middlewares';
 import ErrorBoundary from '@/pages/error/ErrorBoundary';
 
-const { AUTH, AWARDS, COMPANY, DISCOVER, HOME, LEGAL, PRODUCTS, PROFILE, QUICK_LINKS, SERVICES, TRYONS } =
-  ROUTES;
+const {
+  AUTH,
+  AWARDS,
+  COMPANY,
+  DISCOVER,
+  HOME,
+  LEGAL,
+  PRODUCTS,
+  PROFILE,
+  QUICK_LINKS,
+  SERVICES,
+  TRYONS,
+} = ROUTES;
 
 // Wraps a page's dynamic import into the function react-router's `lazy` route property expects.
 // The import itself must stay a literal `() => import('@/path')` callback (not a variable path)

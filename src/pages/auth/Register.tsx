@@ -1,4 +1,4 @@
-import { Button, GradientText } from '@beautinique/frontend-components';
+import { BorderGradient, Button, GradientText, Input } from '@beautinique/frontend-components';
 import { Resend } from '@beautinique/frontend-components/resend';
 import { usePathParams, useQueryParams } from '@beautinique/frontend-hooks';
 import type {
@@ -13,9 +13,7 @@ import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
-import BorderGradient from '@/components/layout/containers/BorderGradient';
 import AuthBottomInstructions from '@/components/ui/AuthBottomInstructions';
-import Input from '@/components/ui/inputs/Input';
 import SocialAuth from '@/components/ui/SocialAuth';
 import { OAUTH_REDIRECT_KEY } from '@/constants/common.constants';
 import {
@@ -279,6 +277,9 @@ const Register = () => {
                               icon: showPasswords[input.name as keyof TPasswordsZodSchema]
                                 ? 'lucide:eye-off'
                                 : 'lucide:eye',
+                              label: showPasswords[input.name as keyof TPasswordsZodSchema]
+                                ? 'Hide password'
+                                : 'Show password',
                               onClick: () => {
                                 togglePasswordVisibility(input.name as keyof TPasswordsZodSchema);
                               },

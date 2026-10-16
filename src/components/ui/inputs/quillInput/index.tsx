@@ -1,5 +1,6 @@
 import '@beautinique/frontend-styles/quill-input.css';
 
+import { InputError, InputLabel } from '@beautinique/frontend-components';
 import Quill, { Delta } from 'quill';
 import { forwardRef, useEffect, useRef } from 'react';
 
@@ -17,8 +18,6 @@ import {
   sanitizeQuillHtml,
   toggleLinkId,
 } from '@/utils/input.util';
-
-import { InputError, InputLabel } from '../children';
 
 Quill.register('formats/image', QuillImgBlot, true);
 Quill.register('modules/headingIds', enableQuillHeadingIds);

@@ -1,18 +1,27 @@
-import { Button } from '@beautinique/frontend-components';
+import {
+  ApiStatus,
+  Button,
+  Dropdown,
+  ScrollableGradientContainer,
+} from '@beautinique/frontend-components';
+import {
+  MediaCarouselWithParentMedia,
+  type TMediaOption,
+} from '@beautinique/frontend-components/media';
 import { usePathParams, useQueryParams } from '@beautinique/frontend-hooks';
 import { Icon } from '@iconify/react';
 import { useMemo, useState } from 'react';
 
-import ApiStatus from '@/components/layout/ApiStatus';
-import { MediaCarouselWithParentMedia } from '@/components/layout/carousels/MediaCarouselWithParentMedia';
-import ScrollableGradientContainer from '@/components/layout/containers/ScrollableGradientContainer';
-import Dropdown from '@/components/layout/dropdown';
 import TryOnModal from '@/components/layout/tryons';
 import { QuillContent } from '@/components/ui/QuillContent';
 import { useGetDashboardProductBySlug } from '@/services/product-service/product.service.query';
-import type { TMediaOption } from '@/types/component.type';
 import type { IShade } from '@/types/tryon-types';
-import { formatDate, formatINRCurrency, isNullOrUndefined } from '@/utils/common.util';
+import {
+  formatDate,
+  formatINRCurrency,
+  isNullOrUndefined,
+  VIDEO_PLAYER_PROPS,
+} from '@/utils/common.util';
 
 const ProductDetails = () => {
   const { pathParams } = usePathParams();
@@ -98,6 +107,7 @@ const ProductDetails = () => {
                 media={media}
                 needButtonControls={false}
                 selected={selectedMediaIndex}
+                playerProps={VIDEO_PLAYER_PROPS}
               />
               <div className="absolute inset-x-0 top-0 flex items-center justify-between px-4 py-2">
                 <span className="bg-razzle-dazzle-rose-c rounded-full px-2 pt-1 pb-0.5 text-sm">

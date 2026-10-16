@@ -3,58 +3,10 @@ import type {
   IChildren,
   IClassName,
   IContainerClassName,
-  ITextButton,
-  ITitleDescription,
 } from '@beautinique/frontend-components';
-import type {
-  ComponentProps,
-  ReactElement,
-  ReactNode,
-  RefObject,
-  VideoHTMLAttributes,
-} from 'react';
+import type { ReactElement, ReactNode } from 'react';
 
 import type { TCategory } from './api.type';
-import type { TGradientPos, TScrollDirection } from './hook.type';
-import type { IOption, TInputIcons } from './input.type';
-
-export interface ILoading extends IClassName {
-  text: string;
-}
-
-export interface IScrollableGradientContainer extends IClassName, IChildren, IContainerClassName {
-  gradientClassNames?: Partial<Record<TGradientPos, string>>;
-  direction: TScrollDirection;
-}
-
-type TBaseStatus = ITitleDescription & IClassName & { divider?: boolean };
-
-type TErrorStatus = TBaseStatus & { status: 'error' };
-type TEmptyStatus = TBaseStatus & { status: 'empty' };
-type TSuccessStatus = TBaseStatus & { status: 'success' };
-type TLoadingStatus = IClassName & { status: 'loading'; text?: string };
-
-export type TApiStatus = TErrorStatus | TEmptyStatus | TSuccessStatus | TLoadingStatus;
-
-export interface IModalWrapper extends IClassName, IChildren {
-  isOpen: boolean;
-  onClose: () => void;
-  containerProps?: ComponentProps<'div'>;
-  header?: { title?: string; showCloseIcon?: boolean };
-  closeOnOutsideClick?: boolean;
-  style?: ComponentProps<'div'>['style'];
-}
-
-export interface IVideoPlayer extends IClassName {
-  videoProps: VideoHTMLAttributes<HTMLVideoElement>;
-  ref?: RefObject<HTMLVideoElement | null>;
-  showPosterOnly?: boolean;
-}
-
-export interface IBreadcrumb extends IClassName {
-  customPath?: string;
-  customPaths?: string[];
-}
 
 export interface ICatModal {
   category: TCategory;
@@ -68,54 +20,6 @@ export interface ICatActionHandle {
 
 export type TCatTable = ICatActionHandle & ICatModal;
 
-interface TCustomConfirmModal extends IChildren {
-  type: 'custom';
-  title?: never;
-  description?: never;
-  buttons?: Partial<Record<'left' | 'right', Omit<ITextButton, 'pattern'>>>;
-}
-
-interface IDefaultConfirmModal {
-  type: 'success' | 'error' | 'warning' | 'default';
-  children?: never;
-  title: string;
-  description?: string;
-  buttons: Partial<Record<'left' | 'right', Omit<ITextButton, 'pattern'>>>;
-}
-
-export type TConfirmModal = (TCustomConfirmModal | IDefaultConfirmModal) & {
-  modalProps?: Omit<IModalWrapper, 'children' | 'closeOnOutsideClick'>;
-};
-
-export type TMediaResource = 'image' | 'video';
-
-export interface TMediaOption {
-  type: TMediaResource;
-  url: string;
-}
-
-export interface IVideo {
-  videoProps: VideoHTMLAttributes<HTMLVideoElement>;
-  ref?: RefObject<HTMLVideoElement | null>;
-}
-
-export interface IMediaCarousel
-  extends IClassName, Pick<IScrollableGradientContainer, 'gradientClassNames'> {
-  media: TMediaOption[];
-  selected?: number | null;
-  onClick: (index: number) => void;
-  thumbnailRefs?: RefObject<(HTMLDivElement | null)[]>;
-  handleRemove?: (index: number) => void;
-}
-
-export interface IMediaCarouselWithParent
-  extends
-    IClassName,
-    Partial<Pick<IVideo, 'videoProps'>>,
-    Pick<IMediaCarousel, 'media' | 'selected' | 'handleRemove'> {
-  needButtonControls?: boolean;
-}
-
 export interface IQuillImageRef {
   id: string;
   file: File;
@@ -127,25 +31,6 @@ export interface IPageWrapper extends IChildren, IContainerClassName, IClassName
     components?: ReactElement[];
     buttons?: Partial<IButton & IChildren>[];
   } & Partial<IChildren>;
-}
-
-export interface IDropdownOptions extends IClassName {
-  options: IOption[];
-  selected: string;
-  onChange: (opt: IOption) => void;
-  onSelect?: () => void;
-}
-
-export interface IDropdown extends IClassName, Partial<Pick<IDropdownOptions, 'options'>> {
-  title: string | ReactElement;
-  icons?: TInputIcons;
-  children: ReactElement<{ onSelect?: () => void }>;
-  closeOnOutsideClick?: boolean;
-  isAbsolute?: boolean;
-  showShadow?: boolean;
-  closeOnOptionClick?: boolean;
-  isRounded?: boolean;
-  defaultOpen?: boolean;
 }
 
 export interface INavbar extends IClassName, Partial<IChildren> {

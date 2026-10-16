@@ -1,8 +1,8 @@
+import { ModalWrapper } from '@beautinique/frontend-components';
 import { useQueryParams } from '@beautinique/frontend-hooks';
 import { useCallback, useEffect } from 'react';
 
 import LoginForm from '../forms/LoginForm';
-import { ModalWrapper } from './ModalWrapper';
 
 const AuthModal = () => {
   const { queryParams, removeParams } = useQueryParams();
@@ -20,7 +20,7 @@ const AuthModal = () => {
   useEffect(onClose, []);
 
   return (
-    <ModalWrapper isOpen={!!queryParams.login} onClose={onClose}>
+    <ModalWrapper isOpen={!!queryParams.login} onClose={onClose} label="Login">
       <LoginForm />
     </ModalWrapper>
   );

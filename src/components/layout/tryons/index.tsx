@@ -1,4 +1,4 @@
-// eslint-disable-next-line simple-import-sort/imports
+import { InputError, ModalWrapper } from '@beautinique/frontend-components';
 import type { TTryOnSelection } from '@beautinique/frontend-types';
 import { Icon } from '@iconify/react';
 import type { Ref } from 'react';
@@ -8,7 +8,7 @@ import type { IFaceTryOnState } from '@/classes/tryon/categories/face';
 import type { IHairTryOnState } from '@/classes/tryon/categories/hair';
 import type { ILipTryOnState } from '@/classes/tryon/categories/lip';
 import type { INailTryOnState } from '@/classes/tryon/categories/nail';
-import { ModalWrapper } from '@/components/layout/modals/ModalWrapper';
+import { TRYON_MODE_MAP } from '@/constants/tryon-constants';
 import {
   EYE_DEFAULT_PATTERNS,
   EYE_PATTERNS,
@@ -22,8 +22,6 @@ import useDebouncedDetectionStatus from '@/hooks/useDebouncedDetectionStatus';
 import useTryOnFlow from '@/hooks/useTryOnFlow';
 import type { IShade, ITryOnStageRef, TDetectionStatus } from '@/types/tryon-types';
 
-import { InputError } from '@/components/ui/inputs/children';
-import { TRYON_MODE_MAP } from '@/constants/tryon-constants';
 import BottomButtons from './BottomButtons';
 import EyeTryOnStage from './eye/EyeTryOnStage';
 import FaceTryOnStage from './face/FaceTryOnStage';

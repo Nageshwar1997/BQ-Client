@@ -1,4 +1,11 @@
-import { Button, Divider, GradientText } from '@beautinique/frontend-components';
+import {
+  Button,
+  Divider,
+  GradientText,
+  Input,
+  Select,
+  Textarea,
+} from '@beautinique/frontend-components';
 import { COUNTRIES_MAP } from '@beautinique/frontend-constants';
 import type { TCreateContactQueryZodSchema } from '@beautinique/frontend-types';
 import { createContactQueryZodSchema } from '@beautinique/frontend-zod';
@@ -7,9 +14,6 @@ import { Icon } from '@iconify/react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { StaticPageHeader, StaticPageLayout } from '@/components/layout/static-page';
-import Input from '@/components/ui/inputs/Input';
-import Select from '@/components/ui/inputs/Select';
-import Textarea from '@/components/ui/inputs/Textarea';
 import { CONTACT_INPUT_MAP_DATA } from '@/constants/input.constants';
 import { useCreateContactQuery } from '@/services/organization-service/contact.service.query';
 

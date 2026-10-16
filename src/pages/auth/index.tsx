@@ -1,7 +1,7 @@
+import { ScrollableGradientContainer } from '@beautinique/frontend-components';
 import { Outlet } from 'react-router-dom';
 
 import BrandShowcasePanel from '@/components/layout/containers/BrandShowcasePanel';
-import ScrollableGradientContainer from '@/components/layout/containers/ScrollableGradientContainer';
 
 const AUTH_HIGHLIGHTS = [
   { icon: 'solar:shield-check-linear', text: 'Verified Sellers' },

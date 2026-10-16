@@ -1,4 +1,4 @@
-import { Button, Divider, GradientText } from '@beautinique/frontend-components';
+import { Button, Divider, GradientText, Input } from '@beautinique/frontend-components';
 import { AUTH_PROVIDER_MAP } from '@beautinique/frontend-constants';
 import type { TUpdateUserZodSchema } from '@beautinique/frontend-types';
 import { updateUserZodSchema } from '@beautinique/frontend-zod';
@@ -8,7 +8,6 @@ import { useState } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
-import Input from '@/components/ui/inputs/Input';
 import { PROVIDER_ICON_MAP } from '@/constants/common.constants';
 import { UPDATE_USER_INPUT_MAP_DATA } from '@/constants/input.constants';
 import { ROUTES } from '@/constants/routes.constants';
@@ -174,6 +173,7 @@ const Profile = () => {
               ...(!editableFields.has(field.name) && {
                 right: {
                   icon: 'solar:pen-2-linear',
+                  label: `Edit ${field.label}`,
                   onClick: () => {
                     setEditableFields((prev) => new Set(prev).add(field.name));
                   },

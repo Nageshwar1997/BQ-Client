@@ -1,9 +1,8 @@
-import { GradientText } from '@beautinique/frontend-components';
+import { ApiStatus, GradientText } from '@beautinique/frontend-components';
 import { usePathParams, useQueryParams } from '@beautinique/frontend-hooks';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import ApiStatus from '@/components/layout/ApiStatus';
 import { OAUTH_REDIRECT_KEY } from '@/constants/common.constants';
 import { ROUTES } from '@/constants/routes.constants';
 import { useGetSessionUser } from '@/services/user-service/user.service.query';

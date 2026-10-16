@@ -1,4 +1,10 @@
-import { Button, GradientText } from '@beautinique/frontend-components';
+import {
+  BorderGradient,
+  Button,
+  GradientText,
+  Input,
+  Radio,
+} from '@beautinique/frontend-components';
 import { usePathParams, useQueryParams } from '@beautinique/frontend-hooks';
 import type { TLoginZodSchema, TPasswordZodSchema } from '@beautinique/frontend-types';
 import { loginZodSchema } from '@beautinique/frontend-zod';
@@ -8,8 +14,6 @@ import { Controller, useForm, useWatch } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
 import AuthBottomInstructions from '@/components/ui/AuthBottomInstructions';
-import Input from '@/components/ui/inputs/Input';
-import Radio from '@/components/ui/inputs/Radio';
 import SocialAuth from '@/components/ui/SocialAuth';
 import { OAUTH_REDIRECT_KEY } from '@/constants/common.constants';
 import { BASE_PASSWORD_KEYS, LOGIN_INPUT_MAP_DATA } from '@/constants/input.constants';
@@ -17,8 +21,6 @@ import { ROUTES } from '@/constants/routes.constants';
 import { useLogin } from '@/services/user-service/auth.service.query';
 import useUserStore from '@/stores/user.store';
 import { setErrorToForm } from '@/utils/form.util';
-
-import BorderGradient from '../containers/BorderGradient';
 
 const LoginForm = () => {
   /* ================= 1. External / Store Hooks ================= */
@@ -169,6 +171,7 @@ const LoginForm = () => {
                       ? {
                           right: {
                             icon: showPassword ? 'lucide:eye-off' : 'lucide:eye',
+                            label: showPassword ? 'Hide password' : 'Show password',
                             onClick: togglePasswordVisibility,
                             className: 'cursor-pointer',
                           },

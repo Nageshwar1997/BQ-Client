@@ -1,4 +1,4 @@
-import { Tooltip } from '@beautinique/frontend-components';
+import { ScrollableGradientContainer, Tooltip } from '@beautinique/frontend-components';
 import { USER_ROLE_MAP } from '@beautinique/frontend-constants';
 import { useIsSmallScreen, usePathParams } from '@beautinique/frontend-hooks';
 import { Icon } from '@iconify/react';
@@ -8,8 +8,6 @@ import { Link } from 'react-router-dom';
 import { SIDEBAR_DATA } from '@/constants/common.constants';
 import { useLogout } from '@/services/user-service/auth.service.query';
 import useUserStore from '@/stores/user.store';
-
-import ScrollableGradientContainer from '../containers/ScrollableGradientContainer';
 
 const SidebarItem = ({
   isSameRoute,

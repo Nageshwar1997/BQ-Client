@@ -1,10 +1,11 @@
 import { Button, GradientText } from '@beautinique/frontend-components';
+import { TestimonialCarousel } from '@beautinique/frontend-components/testimonials';
 import { Link } from 'react-router-dom';
 
+import { TESTIMONIALS } from '@/constants/navbar.constants';
 import { ROUTES } from '@/constants/routes.constants';
 import type { TCategoryHierarchyNode, TLevel2 } from '@/types/api.type';
 
-import { TestimonialCarousel } from '../../carousels/TestimonialCarousel';
 import { CategoryLabel, CategorySection, L2Category } from './grand-children';
 
 const About = ({
@@ -37,7 +38,7 @@ const About = ({
         </CategorySection>
         <CategorySection className="space-y-1 md:space-y-2 md:pb-2">
           <CategoryLabel name="Peoples Love BQ" />
-          <TestimonialCarousel />
+          <TestimonialCarousel testimonials={TESTIMONIALS} interval={2000} />
         </CategorySection>
       </div>
     </L2Category>

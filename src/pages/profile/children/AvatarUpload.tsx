@@ -1,8 +1,8 @@
+import { InputError } from '@beautinique/frontend-components';
 import { IMAGE_MIMES } from '@beautinique/frontend-constants';
 import { Icon } from '@iconify/react';
 import { type ChangeEvent, type InputHTMLAttributes, useEffect, useState } from 'react';
 
-import { InputError } from '@/components/ui/inputs/children';
 import useUserStore from '@/stores/user.store';
 
 const getInitials = (firstName: string, lastName: string) =>

@@ -1,8 +1,9 @@
+import { FileInput } from '@beautinique/frontend-components/file-input';
 import type { TSellerDocumentsZodSchema } from '@beautinique/frontend-types';
 import { Controller, type UseFormReturn } from 'react-hook-form';
 
-import FileInput from '@/components/ui/inputs/FileInput';
 import { SELLER_DOCUMENTS_INPUT_MAP_DATA } from '@/constants/input.constants';
+import { VIDEO_PLAYER_PROPS } from '@/utils/common.util';
 
 interface IDocumentsStepProps {
   form: UseFormReturn<TSellerDocumentsZodSchema>;
@@ -37,6 +38,7 @@ const DocumentsStep = ({ form, disabled = false }: IDocumentsStepProps) => {
                     : undefined
                 }
                 containerClassName="sm:col-span-2"
+                playerProps={VIDEO_PLAYER_PROPS}
               />
             );
           }}

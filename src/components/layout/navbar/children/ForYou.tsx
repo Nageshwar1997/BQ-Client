@@ -1,3 +1,4 @@
+import { VideoPlayer } from '@beautinique/frontend-components/media';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
 
@@ -5,7 +6,6 @@ import { FOR_YOU_VIDEOS_DATA } from '@/constants/navbar.constants';
 import type { TCategoryHierarchyNode, TLevel2 } from '@/types/api.type';
 import { resolveCategoryPath } from '@/utils/common.util';
 
-import VideoPlayer from '../../media/VideoPlayer';
 import { CategoryLabel, CategorySection, L3Category } from './grand-children';
 
 const ForYou = ({

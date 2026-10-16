@@ -1,4 +1,4 @@
-import { Button, GradientText } from '@beautinique/frontend-components';
+import { Button, GradientText, LoadingPage } from '@beautinique/frontend-components';
 import { Stepper } from '@beautinique/frontend-components/stepper';
 import { IMAGE_FORMATS, MAX_IMAGE_SIZE } from '@beautinique/frontend-constants';
 import type {
@@ -23,7 +23,6 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Navigate, useNavigate } from 'react-router-dom';
 
-import LoadingPage from '@/components/layout/loaders/LoadingPage';
 import { HighlightNote, StaticPageHeader } from '@/components/layout/static-page';
 import { SELLER_FORM_ID_MAP, SELLER_ONBOARDING_STEPS } from '@/constants/form.constants';
 import { ROUTES } from '@/constants/routes.constants';

@@ -1,16 +1,23 @@
 import { Button, Divider } from '@beautinique/frontend-components';
 import { usePathParams, useQueryParams } from '@beautinique/frontend-hooks';
 import { Icon } from '@iconify/react';
+import { useEffect } from 'react';
 
-import { ModalWrapper } from '@/components/layout/modals/ModalWrapper';
 import { USER_MENU_POPUP_DATA } from '@/constants/navbar.constants';
 import { ROUTES } from '@/constants/routes.constants';
 import useAuthNavigate from '@/hooks/useAuthNavigate';
 import { useLogout } from '@/services/user-service/auth.service.query';
 import useUserStore from '@/stores/user.store';
-import type { IModalWrapper } from '@/types/component.type';
 
-const UserPopupModal = ({ isOpen, onClose }: Pick<IModalWrapper, 'isOpen' | 'onClose'>) => {
+interface IUserPopupModal {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+// A popover under the navbar's user icon, not a dialog: it is drawn inside the icon's `relative`
+// wrapper (no backdrop, no portal), so the navbar's outside-click handler on that wrapper sees a
+// press on it as inside, and closes it only for a press elsewhere.
+const UserPopupModal = ({ isOpen, onClose }: IUserPopupModal) => {
   const { navigate } = usePathParams();
   const authNavigate = useAuthNavigate();
 
@@ -23,17 +30,27 @@ const UserPopupModal = ({ isOpen, onClose }: Pick<IModalWrapper, 'isOpen' | 'onC
     onClose();
   };
 
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen || queryParams.login === 'true') return null;
 
   return (
-    <ModalWrapper
-      isOpen={isOpen}
-      onClose={onClose}
-      containerProps={{
-        className:
-          'absolute! inset-auto top-11 left-1/2 w-48 -translate-x-1/2 transform p-0! rounded-lg',
-      }}
-      className="bg-tertiary-invert rounded-lg!"
+    <div
+      role="group"
+      aria-label="Account menu"
+      className="bg-tertiary-invert border-primary/20 absolute top-11 left-1/2 z-100 w-48 -translate-x-1/2 rounded-lg border p-4 shadow-lg"
     >
       <div className="w-full space-y-2">
         <div className="mx-auto flex flex-col items-center space-y-2">
@@ -98,7 +115,7 @@ const UserPopupModal = ({ isOpen, onClose }: Pick<IModalWrapper, 'isOpen' | 'onC
           )}
         </div>
       </div>
-    </ModalWrapper>
+    </div>
   );
 };
 
