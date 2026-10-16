@@ -16,7 +16,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import BrandShowcasePanel from '@/components/layout/containers/BrandShowcasePanel';
-import AuthBottomInstructions from '@/components/ui/AuthBottomInstructions';
+import AuthInstructions from '@/components/ui/AuthInstructions';
 import {
   BASE_PASSWORDS_VISIBILITY,
   CHANGE_PASSWORD_INPUT_MAP_DATA,
@@ -236,7 +236,7 @@ const UpdatePassword = () => {
             </form>
 
             {/* ================= EXTRA INFO ================= */}
-            <AuthBottomInstructions />
+            <AuthInstructions />
           </BorderGradient>
         </div>
       </ScrollableGradientContainer>

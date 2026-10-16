@@ -13,7 +13,7 @@ import { useState } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
-import AuthBottomInstructions from '@/components/ui/AuthBottomInstructions';
+import AuthInstructions from '@/components/ui/AuthInstructions';
 import SocialAuth from '@/components/ui/SocialAuth';
 import { OAUTH_REDIRECT_KEY } from '@/constants/common.constants';
 import { BASE_PASSWORD_KEYS, LOGIN_INPUT_MAP_DATA } from '@/constants/input.constants';
@@ -227,7 +227,7 @@ const LoginForm = () => {
         </div>
 
         {/* ================= EXTRA INFO ================= */}
-        <AuthBottomInstructions />
+        <AuthInstructions />
       </BorderGradient>
     </div>
   );

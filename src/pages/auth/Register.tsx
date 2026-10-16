@@ -13,7 +13,7 @@ import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
-import AuthBottomInstructions from '@/components/ui/AuthBottomInstructions';
+import AuthInstructions from '@/components/ui/AuthInstructions';
 import SocialAuth from '@/components/ui/SocialAuth';
 import { OAUTH_REDIRECT_KEY } from '@/constants/common.constants';
 import {
@@ -350,7 +350,7 @@ const Register = () => {
         </div>
 
         {/* ================= EXTRA INFO ================= */}
-        <AuthBottomInstructions />
+        <AuthInstructions />
       </BorderGradient>
     </div>
   );

@@ -11,7 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import AuthBottomInstructions from '@/components/ui/AuthBottomInstructions';
+import AuthInstructions from '@/components/ui/AuthInstructions';
 import { FORM_DEFAULT_VALUES } from '@/constants/form.constants';
 import {
   EMAIL_INPUT_DATA,
@@ -280,7 +280,7 @@ const ForgotPassword = () => {
         </form>
 
         {/* ================= EXTRA INFO ================= */}
-        <AuthBottomInstructions />
+        <AuthInstructions />
       </BorderGradient>
     </div>
   );
