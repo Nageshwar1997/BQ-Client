@@ -6,13 +6,16 @@ import { type RefObject, useCallback, useEffect, useState } from 'react';
  * rather than its own flag, so leaving with Esc / the browser's own exit gesture keeps the button
  * in sync too.
  *
- * `isSupported` is false where the Fullscreen API doesn't cover arbitrary elements (iPhone Safari
- * only fullscreens a `<video>`) - callers should hide the button there instead of showing one that
- * silently does nothing.
+ * `isSupported` is the one thing callers should gate the button on. `document.fullscreenEnabled`
+ * already separates the browsers that matter (confirmed on a real iPhone: Chrome - which enables
+ * element fullscreen - has it, Safari doesn't); on top of that a request that gets refused flips it
+ * to false, so a browser that claims support but won't deliver ends up without the button instead of
+ * with one that does nothing.
  */
 export default function useFullscreen(targetRef: RefObject<HTMLElement | null>) {
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const isSupported = document.fullscreenEnabled;
+  const [wasRefused, setWasRefused] = useState(false);
+  const isSupported = document.fullscreenEnabled && !wasRefused;
 
   useEffect(() => {
     const handleChange = () => {
@@ -37,7 +40,7 @@ export default function useFullscreen(targetRef: RefObject<HTMLElement | null>) 
     }
 
     target.requestFullscreen().catch(() => {
-      // Refused (e.g. the browser blocked it) - nothing to recover, the button just stays as-is.
+      setWasRefused(true);
     });
   }, [targetRef]);
 
