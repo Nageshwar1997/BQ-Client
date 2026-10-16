@@ -6,7 +6,7 @@ import { captureSnapShot, renderCompareSlider, resizeElements } from '@/utils/tr
 import { getHairDetectionStatus } from '@/utils/tryon-utils/hair';
 
 import { extractHairMask, getSharedHairSegmenter } from './HairSegmenterCache';
-import { TryOnStateEngine } from './TryOnStateEngine';
+import { TRYON_LOAD_ERROR, TryOnStateEngine } from './TryOnStateEngine';
 
 /**
  * `FaceLandmarkerEngineBase`'s exact counterpart for segmentation-tracked categories - same state
@@ -135,7 +135,7 @@ export abstract class HairSegmenterEngineBase<TState extends IMakeupState, TAsse
       // Same "don't call cleanup()" reasoning as `FaceLandmarkerEngineBase.startTryOn` - this
       // engine is still mounted and still subscribed-to by the React wrapper.
       this.segmenter = null;
-      this.updateState.setError("Couldn't set up the Try-On. Check your connection and try again.");
+      this.updateState.setError(TRYON_LOAD_ERROR);
     }
   }
 

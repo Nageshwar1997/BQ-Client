@@ -18,7 +18,7 @@ import {
 } from '@/utils/tryon-utils';
 
 import { getSharedFaceLandmarker } from './FaceLandmarkerCache';
-import { TryOnStateEngine } from './TryOnStateEngine';
+import { TRYON_LOAD_ERROR, TryOnStateEngine } from './TryOnStateEngine';
 
 /**
  * Category-agnostic engine machinery shared by every Try-On category (LIP today, EYE/FACE/
@@ -167,7 +167,7 @@ export abstract class FaceLandmarkerEngineBase<TState extends IMakeupState, TAss
       // the whole stage. Setup never got far enough to produce a usable landmarker, so only that
       // reference needs dropping.
       this.landmarker = null;
-      this.updateState.setError("Couldn't set up the Try-On. Check your connection and try again.");
+      this.updateState.setError(TRYON_LOAD_ERROR);
     }
   }
 

@@ -88,11 +88,19 @@ export interface IApplyEffectParams<TState, TAssets> extends IRenderTargetParams
 // 'detected': good enough to try makeup on.
 export type TDetectionStatus = 'detected' | 'not-in-frame' | 'not-clear' | 'turned';
 
+// What the not-ready overlay shows when setup fails (camera, photo, model load): a short heading and
+// the sentence under it. Always both - so an error can never reach the screen without a heading.
+export interface ITryOnError {
+  title: string;
+  description: string;
+}
+
 export interface IMakeupBaseState {
   cameraReady: boolean;
   imageReady: boolean;
   tryOnStarted: boolean;
-  error?: string;
+  // Absent while there's nothing wrong.
+  error?: ITryOnError;
   detectionStatus: TDetectionStatus;
 }
 
@@ -202,7 +210,7 @@ export interface IDetectableEngine {
   cleanup(): void;
 
   updateState: {
-    setError: (message: string | undefined) => void;
+    setError: (error: ITryOnError | undefined) => void;
     setCameraReady: (value: boolean) => void;
     setImageReady: (value: boolean) => void;
   };

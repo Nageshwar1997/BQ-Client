@@ -1,4 +1,4 @@
-import { InputError, ModalWrapper } from '@beautinique/frontend-components';
+import { ModalWrapper } from '@beautinique/frontend-components';
 import type { TTryOnSelection } from '@beautinique/frontend-types';
 import { Icon } from '@iconify/react';
 import { type Ref, useRef } from 'react';
@@ -68,7 +68,6 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
     retryKey,
     stageRef,
     cameraVideoRef,
-    uploadError,
     isTryOnReady,
     handleSelectMode,
     handleStartLive,
@@ -122,21 +121,20 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
   // detection-status guide further down uses) - split out here since it's a 2x2 matrix (loading/
   // error x live/upload), too much for the JSX to carry inline. `notReadyError` set is exactly
   // when this used to switch from a spinner to an error card, so the icon/title mirror that
-  // same split.
+  // same split. An error always carries its own title and description (see `ITryOnError`), so only
+  // the loading copy is per-mode.
   const notReadyError = flow.engineState?.error;
   const notReadyIcon = notReadyError
     ? 'solar:danger-triangle-linear'
     : flow.mode === TRYON_MODE_MAP.LIVE
       ? 'solar:videocamera-record-linear'
       : 'solar:gallery-add-linear';
-  const notReadyTitle = notReadyError
-    ? flow.mode === TRYON_MODE_MAP.LIVE
-      ? 'Camera unavailable'
-      : "Couldn't process photo"
-    : flow.mode === TRYON_MODE_MAP.LIVE
+  const notReadyTitle =
+    notReadyError?.title ??
+    (flow.mode === TRYON_MODE_MAP.LIVE
       ? 'Waiting for camera permission...'
-      : 'Processing photo...';
-  const notReadyDescription = notReadyError ?? 'This should only take a moment.';
+      : 'Processing photo...');
+  const notReadyDescription = notReadyError?.description ?? 'This should only take a moment.';
 
   // `detectionStatus` is one shared state field every category's engine reuses (see
   // `HandLandmarkerEngineBase`/`HairSegmenterEngineBase`'s own comments), but what it's actually
@@ -587,7 +585,6 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                 // already inside 'tryon' and still not ready, never on the earlier steps.
                 modelsDisabled={flow.step === 'tryon' && !isTryOnReady}
               />
-              <InputError error={uploadError} className="text-center" />
             </div>
 
             <BottomButtons
@@ -597,7 +594,6 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
               onModeToggle={handleModeToggle}
               onModelsClick={setActiveSheet}
             />
-            <InputError error={uploadError} className="text-center lg:hidden" />
           </div>
           <TryOnBottomSheet
             isOpen={activeSheet === 'models'}

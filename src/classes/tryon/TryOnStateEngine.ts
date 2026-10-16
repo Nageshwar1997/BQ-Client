@@ -1,4 +1,4 @@
-import type { IMakeupState, TRGBTuple } from '@/types/tryon-types';
+import type { IMakeupState, ITryOnError, TRGBTuple } from '@/types/tryon-types';
 import { hexToRGBA } from '@/utils/tryon-utils';
 
 // The state pub-sub + init/destroy lifecycle bookkeeping that `FaceLandmarkerEngineBase`/
@@ -13,6 +13,15 @@ import { hexToRGBA } from '@/utils/tryon-utils';
 // as plain callbacks (not by extending an abstract class) specifically so this file never needs to
 // know it's being composed *by* an abstract class with those as abstract members - it only needs
 // two functions.
+// Shown when an engine can't finish setting up - the detector's WASM/model files (fetched from a
+// CDN) or the category's assets didn't load. Shared by every engine base, since the cause and the
+// fix (check the connection, Retry) are the same whichever tracking model failed.
+export const TRYON_LOAD_ERROR: ITryOnError = {
+  title: "Couldn't load Try-On",
+  description:
+    'The Try-On needs a few files from the internet. Check your connection, then tap Retry.',
+};
+
 export class TryOnStateEngine<TState extends IMakeupState> {
   private state: TState;
   private cachedRGB: TRGBTuple | null = null;
@@ -100,8 +109,8 @@ export class TryOnStateEngine<TState extends IMakeupState> {
       this.notify();
     },
 
-    setError: (message: string | undefined) => {
-      this.state = { ...this.state, error: message };
+    setError: (error: ITryOnError | undefined) => {
+      this.state = { ...this.state, error };
       this.notify();
     },
 

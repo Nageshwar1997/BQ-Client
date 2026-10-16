@@ -91,7 +91,7 @@ export default function useTryOnFlow(isOpen: boolean) {
   const stageRef = useRef<ITryOnStageColorRangeRef>(null);
   const cameraVideoRef = useRef<HTMLVideoElement>(null);
 
-  const { previewUrl, error: uploadError, setFile, reset: resetUpload } = useTryOnUpload();
+  const { previewUrl, setFile, reset: resetUpload } = useTryOnUpload();
 
   // Shared readiness check - drives both TryOnModal's not-ready overlay and disabling
   // shade/model selection until the stage can actually act on either.
@@ -158,8 +158,8 @@ export default function useTryOnFlow(isOpen: boolean) {
   // own status overlay covers the "processing photo" loading state until `imageReady`. Only
   // advances on a file `setFile` actually accepted - staying on 'instructions' when it's
   // rejected (oversized, wrong type) leaves the engine unmounted rather than stuck forever on
-  // its own loading overlay for an image that's never coming, with `uploadError`'s rejection
-  // message rendered right below it at the same time (see `useTryOnUpload.setFile`'s comment).
+  // its own loading overlay for an image that's never coming, with the rejection toast showing at
+  // the same time (see `useTryOnUpload.setFile`'s comment).
   const handleFileSelected = (file: File) => {
     resetUpload();
     if (!setFile(file)) return;
@@ -256,7 +256,6 @@ export default function useTryOnFlow(isOpen: boolean) {
     retryKey,
     stageRef,
     cameraVideoRef,
-    uploadError,
     isTryOnReady,
     handleSelectMode,
     handleStartLive,

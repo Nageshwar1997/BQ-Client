@@ -62,7 +62,10 @@ export function withImageUpload<TState extends IMakeupState>(
         if (err instanceof DOMException && err.name === 'AbortError') return;
         console.error('Image load failed', err);
         this.updateState.setImageReady(false);
-        this.updateState.setError("Couldn't process that photo. Try a different one.");
+        this.updateState.setError({
+          title: "Couldn't process photo",
+          description: "We couldn't read that photo. Try a different one.",
+        });
       }
     }
 

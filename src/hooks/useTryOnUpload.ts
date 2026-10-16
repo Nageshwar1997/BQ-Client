@@ -3,13 +3,19 @@ import type { TImageFormat, TImageMime } from '@beautinique/frontend-types';
 import { formatFileSize } from '@beautinique/shared-utils';
 import { useEffect, useState } from 'react';
 
+import { toaster } from '@/utils/toaster';
+
+const ALLOWED_FILE_SIZE = 5 * MB;
+
 // Upload-mode file handling for the Try-On flow: same size/mime/extension
 // validation as `insertImageIntoQuill` in `utils/input.util.ts`, and the same
 // `URL.createObjectURL`/`revokeObjectURL` preview lifecycle as `AvatarUpload.tsx`.
+//
+// A rejected file is reported through a toast (not an inline error in the modal) - the toaster is
+// app-wide and sits above the modal, and there's no leftover error state to clear afterwards.
 const useTryOnUpload = () => {
   const [file, setFileState] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [error, setError] = useState('');
 
   useEffect(() => {
     if (!file) {
@@ -34,12 +40,13 @@ const useTryOnUpload = () => {
   // know whether it's safe to advance the flow into the 'tryon' step, which mounts the engine
   // against `file`/`previewUrl` - advancing on a rejected file would mount it against nothing,
   // stuck showing a "processing..." loading overlay forever since no image ever arrives, right
-  // alongside this hook's own rejection message rendered elsewhere on the same screen.
+  // alongside this hook's own rejection toast.
   const setFile = (candidate: File): boolean => {
-    if (candidate.size > 5 * MB) {
-      setError(
-        `Image size is ${formatFileSize(candidate.size)}. Max allowed size is ${formatFileSize(5 * MB)}.`,
-      );
+    if (candidate.size > ALLOWED_FILE_SIZE) {
+      toaster.error({
+        title: 'Photo is too large',
+        description: `This photo is ${formatFileSize(candidate.size)}. Please choose one under ${formatFileSize(ALLOWED_FILE_SIZE)}.`,
+      });
       return false;
     }
 
@@ -50,23 +57,22 @@ const useTryOnUpload = () => {
       !ext ||
       !IMAGE_FORMATS.includes(ext as TImageFormat)
     ) {
-      setError(
-        `File extension is .${ext ?? 'unknown'}. Allowed extensions are ${IMAGE_FORMATS.join(', ')}.`,
-      );
+      toaster.error({
+        title: 'Unsupported photo type',
+        description: `.${ext ?? 'unknown'} files aren't supported. Please use ${IMAGE_FORMATS.join(', ')}.`,
+      });
       return false;
     }
 
-    setError('');
     setFileState(candidate);
     return true;
   };
 
   const reset = () => {
     setFileState(null);
-    setError('');
   };
 
-  return { file, previewUrl, error, setFile, reset };
+  return { file, previewUrl, setFile, reset };
 };
 
 export default useTryOnUpload;

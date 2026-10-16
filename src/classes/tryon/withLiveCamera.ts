@@ -4,6 +4,11 @@ import type {
   ITryOnLiveEngineRef,
   TRunningMode,
 } from '@/types/tryon-types';
+import {
+  getCameraErrorMessage,
+  getCameraSupportError,
+  type TCameraFailureStage,
+} from '@/utils/tryon-utils/camera';
 
 type TEngineConstructor<TState extends IMakeupState> = abstract new (
   canvas1: HTMLCanvasElement,
@@ -87,6 +92,20 @@ export function withLiveCamera<TState extends IMakeupState>(
       this.isRunning = true;
       this.updateState.setError(undefined);
 
+      // Checked up front rather than left to throw - without a secure context / `mediaDevices`
+      // there's nothing to call, and the reason to show differs from every real failure below.
+      const unsupported = getCameraSupportError();
+      if (unsupported) {
+        this.isRunning = false;
+        this.updateState.setError(unsupported);
+        return;
+      }
+
+      // Both `getUserMedia` and the `play()` after it can throw NotAllowedError, but they mean
+      // different things (denied permission vs. a blocked autoplay) - so the catch below needs to
+      // know which of the two it was.
+      let stage: TCameraFailureStage = 'request';
+
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: 'user' },
@@ -101,6 +120,7 @@ export function withLiveCamera<TState extends IMakeupState>(
         }
 
         this.stream = stream;
+        stage = 'playback';
         this.video.srcObject = stream;
         await this.video.play();
 
@@ -112,18 +132,18 @@ export function withLiveCamera<TState extends IMakeupState>(
         this.updateState.setCameraReady(true);
         this.loop(token);
       } catch (err) {
-        if (err instanceof DOMException && err.name === 'AbortError') return;
-        console.error('startCamera failed', err);
-        this.isRunning = false;
+        // A newer start/stop already took over this camera - whatever this attempt threw is stale
+        // (an intentional teardown also lands here, as an AbortError from `play()`), so it must not
+        // touch the newer attempt's state. Any *other* error - including an AbortError the browser
+        // raised itself - is a real failure and gets reported below.
+        if (signal.aborted || token !== this.restartToken) return;
 
-        const denied =
-          err instanceof DOMException &&
-          (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError');
-        this.updateState.setError(
-          denied
-            ? 'Camera access was denied. Allow camera access in your browser settings and try again.'
-            : "Couldn't access your camera. Make sure it's connected and not in use by another app.",
-        );
+        console.error('startCamera failed', err);
+        // Release whatever was already acquired - a stream whose preview then failed to play would
+        // otherwise keep the camera (and its indicator light) on behind the error overlay.
+        this.stopCamera();
+
+        this.updateState.setError(getCameraErrorMessage(err, stage));
       }
     }
 
@@ -201,9 +221,10 @@ export function withLiveCamera<TState extends IMakeupState>(
       } catch (err) {
         console.error('Live render loop failed', err);
         this.stopCamera();
-        this.updateState.setError(
-          'Something went wrong with the live preview. Try restarting the camera.',
-        );
+        this.updateState.setError({
+          title: 'Live preview stopped',
+          description: 'Something interrupted the live preview. Tap Retry to restart the camera.',
+        });
         return;
       }
 

@@ -11,7 +11,7 @@ import { captureSnapShot, renderCompareSlider, resizeElements } from '@/utils/tr
 import { getHandDetectionStatus } from '@/utils/tryon-utils/nail';
 
 import { getSharedHandLandmarker } from './HandLandmarkerCache';
-import { TryOnStateEngine } from './TryOnStateEngine';
+import { TRYON_LOAD_ERROR, TryOnStateEngine } from './TryOnStateEngine';
 
 /**
  * `FaceLandmarkerEngineBase`'s counterpart for hand-tracked categories - same state pub-sub,
@@ -152,7 +152,7 @@ export abstract class HandLandmarkerEngineBase<TState extends IMakeupState, TAss
       // Same "don't call cleanup()" reasoning as `FaceLandmarkerEngineBase`/`HairSegmenterEngineBase` -
       // this engine is still mounted and still subscribed-to by the React wrapper.
       this.handLandmarker = null;
-      this.updateState.setError("Couldn't set up the Try-On. Check your connection and try again.");
+      this.updateState.setError(TRYON_LOAD_ERROR);
     }
   }
 
