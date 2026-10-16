@@ -132,6 +132,9 @@ export interface ITryOnLiveEngineRef<TState> extends ITryOnEngineBaseRef<TState>
 
 export interface ITryOnUploadEngineRef<TState> extends ITryOnEngineBaseRef<TState> {
   loadImageUrl: (url: string) => Promise<void>;
+  // Repaints the current photo without any state change - the stage calls it when the canvas's
+  // box resizes (window resize/rotate), since Upload mode has no render loop to re-fit it.
+  redraw: () => void;
 }
 
 // Minimal imperative surface a category's `<Category>TryOnStage` exposes to the orchestrating

@@ -92,6 +92,11 @@ export abstract class HairSegmenterEngineBase<TState extends IMakeupState, TAsse
     if (this.getRunningMode() === 'IMAGE') this.onStateUpdated();
   }
 
+  // See FaceLandmarkerEngineBase.redraw.
+  public redraw() {
+    if (this.getRunningMode() === 'IMAGE') this.onStateUpdated();
+  }
+
   public setMirror(value: boolean) {
     this.isMirrored = value;
   }

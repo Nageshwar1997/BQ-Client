@@ -507,7 +507,7 @@ const TryOnModal = ({ isOpen, onClose, tryOn, shades }: ITryOnModalProps) => {
                     children opted back in) so its soft scrim - there to keep the glass cards
                     readable over a bright photo - never blocks anything but the cards. */}
                   <div
-                    className={`pointer-events-none absolute inset-x-0 bottom-0 z-3 flex flex-col items-center gap-2 bg-linear-to-t from-black/55 via-black/25 to-transparent px-2 pt-12 pb-2 sm:px-3 sm:pb-3 *:pointer-events-auto ${compareCanvas ? 'hidden' : ''}`}
+                    className={`pointer-events-none absolute inset-x-0 bottom-0 z-3 flex flex-col items-center gap-2 bg-linear-to-t from-black/55 via-black/25 to-transparent px-2 pt-12 pb-2 *:pointer-events-auto sm:px-3 sm:pb-3 ${compareCanvas ? 'hidden' : ''}`}
                   >
                     {/* Intensity slider - only meaningful once a shade is actually applied. */}
                     {flow.engineState?.color && (

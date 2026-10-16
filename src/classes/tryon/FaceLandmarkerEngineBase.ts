@@ -113,6 +113,13 @@ export abstract class FaceLandmarkerEngineBase<TState extends IMakeupState, TAss
     if (this.getRunningMode() === 'IMAGE') this.onStateUpdated();
   }
 
+  // Repaints without touching any state - for when only the canvas's *box* changed (window
+  // resize/rotate). Upload mode only paints on a state change, so without this the canvas keeps
+  // the CSS size `resizeElements` last gave it; Live mode re-fits on every frame already.
+  public redraw() {
+    if (this.getRunningMode() === 'IMAGE') this.onStateUpdated();
+  }
+
   public setMirror(value: boolean) {
     this.isMirrored = value;
   }

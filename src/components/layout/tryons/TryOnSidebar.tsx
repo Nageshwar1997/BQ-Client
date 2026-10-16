@@ -1,4 +1,3 @@
-import { GradientText } from '@beautinique/frontend-components';
 import type { TTryOnCategory } from '@beautinique/frontend-types';
 import { Icon } from '@iconify/react';
 import { type RefObject } from 'react';

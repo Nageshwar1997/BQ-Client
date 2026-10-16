@@ -70,8 +70,34 @@ function TryOnUploadStageInner<TState extends IMakeupState>(
     if (imageUrl) void engineRef.current?.loadImageUrl(imageUrl);
   }, [imageUrl]);
 
+  // Upload mode has no render loop - the canvas is only re-fitted to its box (`resizeElements`)
+  // when something repaints it, so a window resize / phone rotate would otherwise leave the photo
+  // at its old size (cropped or tiny) until the shopper's next shade tap. Re-fit on any change to
+  // this box instead, coalesced to one repaint per frame. (Live mode repaints every frame anyway.)
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+
+    let rafId: number | null = null;
+    const observer = new ResizeObserver(() => {
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        engineRef.current?.redraw();
+      });
+    });
+    observer.observe(root);
+
+    return () => {
+      observer.disconnect();
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    };
+  }, []);
+
   return (
-    <div className="relative size-full">
+    <div ref={rootRef} className="relative size-full">
       {!!imageUrl && (
         <img
           src={imageUrl}
