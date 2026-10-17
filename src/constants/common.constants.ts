@@ -141,20 +141,6 @@ export const CATEGORY_STEPPER_STEP_COUNT_MAP = Object.fromEntries(
   CATEGORY_STEPPER_STEP_COUNT.map((type) => [type, type]),
 ) as { [K in (typeof CATEGORY_STEPPER_STEP_COUNT)[number]]: K };
 
-export const TOAST_TYPES = [
-  'success',
-  'error',
-  'warning',
-  'progress',
-  'loading',
-  'default',
-  'custom',
-] as const;
-
-export const TOAST_TYPE = Object.fromEntries(TOAST_TYPES.map((type) => [type, type])) as {
-  [K in (typeof TOAST_TYPES)[number]]: K;
-};
-
 export const VIDEO_PLACEHOLDER = '/images/Video-Placeholder.webp';
 
 export const PRODUCT_VARIANT_ACTIONS = [
