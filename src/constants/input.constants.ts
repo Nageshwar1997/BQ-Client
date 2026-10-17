@@ -8,8 +8,6 @@ import {
 } from '@beautinique/frontend-constants';
 import type { TPasswordsZodSchema } from '@beautinique/frontend-types';
 
-import type { TQuillToolbar } from '@/types/input.type';
-
 export const BASE_PASSWORD_KEYS: readonly (keyof TPasswordsZodSchema)[] = [
   'password',
   'confirmPassword',
@@ -492,19 +490,4 @@ export const CONTACT_INPUT_MAP_DATA = [
     placeholder: 'How can we help?',
     autoComplete: 'off',
   },
-] as const;
-
-export const DEFAULT_QUILL_LINK_ID = 'custom-link-btn' as const;
-
-export const defaultQuillToolbar: TQuillToolbar = [
-  [{ header: [false, 6, 5, 4, 3, 2, 1] }],
-  ['bold', 'italic', 'underline', 'strike'],
-  [{ color: [] }, { background: [] }],
-  [{ list: 'ordered' }, { list: 'bullet' }],
-  [{ script: 'sub' }, { script: 'super' }],
-  [{ indent: '-1' }, { indent: '+1' }],
-  [{ align: [] }],
-  [{ direction: 'rtl' }],
-  ['link', 'image', 'video'],
-  ['code', 'clean'],
 ] as const;

@@ -9,12 +9,12 @@ import {
   type TMediaOption,
 } from '@beautinique/frontend-components/media';
 import { usePathParams, useQueryParams } from '@beautinique/frontend-hooks';
+import { QuillContent } from '@beautinique/frontend-quill';
 import type { IShade } from '@beautinique/frontend-tryon';
 import { Icon } from '@iconify/react';
 import { useMemo, useState } from 'react';
 
 import TryOnModal from '@/components/layout/tryons';
-import { QuillContent } from '@/components/ui/QuillContent';
 import { useGetDashboardProductBySlug } from '@/services/product-service/product.service.query';
 import {
   formatDate,

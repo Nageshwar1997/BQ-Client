@@ -20,12 +20,6 @@ export interface ICatActionHandle {
 
 export type TCatTable = ICatActionHandle & ICatModal;
 
-export interface IQuillImageRef {
-  id: string;
-  file: File;
-  blobUrl: string;
-}
-
 export interface IPageWrapper extends IChildren, IContainerClassName, IClassName {
   navbar?: {
     components?: ReactElement[];
