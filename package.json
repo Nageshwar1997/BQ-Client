@@ -24,7 +24,7 @@
     "@beautinique/frontend-hooks": "^1.0.8",
     "@beautinique/frontend-stores": "^1.1.1",
     "@beautinique/frontend-styles": "^1.1.0",
-    "@beautinique/frontend-tryon": "^1.0.3",
+    "@beautinique/frontend-tryon": "^1.0.4",
     "@beautinique/frontend-zod": "^1.1.0",
     "@beautinique/shared-utils": "^1.1.0",
     "@iconify/react": "^6.0.2",
