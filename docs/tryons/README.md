@@ -1,5 +1,7 @@
 # Try-On Feature — Master Tracker
 
+> **Code moved (2026-10-17).** Try-On ka code ab is app me nahi hai — wo package me hai: [`@beautinique/frontend-tryon`](https://www.npmjs.com/package/@beautinique/frontend-tryon) (code) + [`@beautinique/frontend-tryon-assets`](https://www.npmjs.com/package/@beautinique/frontend-tryon-assets) (models + images), source `BQ-Packages/packages/frontend/tryon`. Is app me sirf [`components/layout/tryons`](../../src/components/layout/tryons/index.tsx) (toast wala chhota wrapper) aur [`pages/tryons`](../../src/pages/tryons/index.tsx) bacha hai. Neeche ke files (ye tracker + `LIP/FACE/EYE/HAIR/NAIL.md`) **design history** hain — kyun aisa banaya, kya try kiya — isliye yahi rakhe hain; unme `src/...` ke jo links hain wo purane paths hain (ab package me, `BQ-Packages/packages/frontend/tryon/src/...`). Package ka README: `BQ-Packages/packages/frontend/tryon/README.md`.
+
 Virtual tryon ko 5 main categories me build karna hai — **LIP, EYE, HAIR, FACE, NAIL** — har ek ke apne subcategories, aur har subcategory do modes me kaam kare.
 
 - **Live mode** — webcam se real-time tryon

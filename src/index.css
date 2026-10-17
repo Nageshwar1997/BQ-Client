@@ -7,5 +7,8 @@
    node_modules): without it the Button comes out unstyled. After the styles, before app.css. */
 @import '@beautinique/frontend-components/source.css';
 
+/* The same for @beautinique/frontend-tryon (the Try-On modal): without it the modal is unstyled. */
+@import '@beautinique/frontend-tryon/source.css';
+
 /* BQ-Client's own css - keep AFTER the package so it can add to / override it. */
 @import './app.css';

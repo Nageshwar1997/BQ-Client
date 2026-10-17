@@ -1,11 +1,11 @@
 import { TRY_ON_MAP } from '@beautinique/frontend-constants';
+import { getTryOnShades, TRYON_CATEGORY_OPTIONS } from '@beautinique/frontend-tryon';
 import type { TTryOnSelection } from '@beautinique/frontend-types';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
 
 import { StaticPageHeader, StaticPageLayout } from '@/components/layout/static-page';
 import TryOnModal from '@/components/layout/tryons';
-import { getTryOnShades, TRYON_CATEGORY_OPTIONS } from '@/constants/tryon-constants';
 
 const HOW_IT_WORKS = [
   {
