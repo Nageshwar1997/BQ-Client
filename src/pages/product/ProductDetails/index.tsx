@@ -14,18 +14,17 @@ import type { IShade } from '@beautinique/frontend-tryon';
 import { Icon } from '@iconify/react';
 import { useMemo, useState } from 'react';
 
+import ApiError from '@/classes/ApiError';
 import TryOnModal from '@/components/layout/tryons';
-import { useGetDashboardProductBySlug } from '@/services/product-service/product.service.query';
-import {
-  formatDate,
-  formatINRCurrency,
-  isNullOrUndefined,
-  VIDEO_PLAYER_PROPS,
-} from '@/utils/common.util';
+import { useGetProductBySlug } from '@/services/product-service/product.service.query';
+import { AVAILABILITY_LABELS, getAvailability } from '@/utils/availability.util';
+import { formatINRCurrency, VIDEO_PLAYER_PROPS } from '@/utils/common.util';
 
 const ProductDetails = () => {
   const { pathParams } = usePathParams();
-  const { data: product, isLoading, isError } = useGetDashboardProductBySlug(pathParams.slug ?? '');
+  const { data: product, isLoading, isError, error } = useGetProductBySlug(pathParams.slug ?? '');
+  // a product that is not published (or is not there) is a 404: not "failed to load"
+  const isNotFound = error instanceof ApiError && error.statusCode === 404;
   const { queryParams, setParams } = useQueryParams();
   const [isTryOnOpen, setIsTryOnOpen] = useState(false);
 
@@ -86,14 +85,22 @@ const ProductDetails = () => {
       .map((v) => ({ name: v.label, hexColor: v.value }));
   }, [product]);
 
-  const { discount, originalPrice, sellingPrice, stock } = useMemo(() => {
-    if (!product) return { discount: 0, sellingPrice: 0, originalPrice: 0, stock: null };
+  const { discount, originalPrice, sellingPrice } = useMemo(() => {
+    if (!product) return { discount: 0, sellingPrice: 0, originalPrice: 0 };
     return {
       discount: variant?.discount ?? product.discount,
       sellingPrice: variant?.sellingPrice ?? product.sellingPrice,
       originalPrice: variant?.originalPrice ?? product.originalPrice,
-      stock: product.hasVariants ? variant?.stock : 'stock' in product ? product.stock : null,
     };
+  }, [product, variant]);
+
+  // A product with variants says nothing about its stock until one of them is chosen.
+  const availability = useMemo(() => {
+    if (!product) return undefined;
+
+    const source = product.hasVariants ? variant : product;
+
+    return source ? getAvailability(source) : undefined;
   }, [product, variant]);
 
   return (
@@ -154,51 +161,6 @@ const ProductDetails = () => {
               </span>
               <span className="text-tertiary text-sm">({product.totalReviews} reviews)</span>
             </div>
-            {/* HISTORY */}
-            {product.history && (
-              <div className="bg-tertiary-invert/50 border-battleship-davys-gray/20 rounded-2xl border p-5">
-                <div className="">
-                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {product.history.approvedAt && (
-                      <div>
-                        <p className="text-silver-jet-2 text-xs font-medium tracking-wider uppercase">
-                          Approved On
-                        </p>
-                        <p className="text-primary mt-1 font-semibold">
-                          {formatDate(product.history.approvedAt)}
-                        </p>
-                      </div>
-                    )}
-                    {product.history.blockedAt && (
-                      <div>
-                        <p className="text-silver-jet-2 text-xs font-medium tracking-wider uppercase">
-                          Blocked On
-                        </p>
-                        <p className="text-primary mt-1 font-semibold">
-                          {formatDate(product.history.blockedAt)}
-                        </p>
-                      </div>
-                    )}
-                    {product.history.rejectedAt && (
-                      <div>
-                        <p className="text-silver-jet-2 text-xs font-medium tracking-wider uppercase">
-                          Blocked On
-                        </p>
-                        <p className="text-primary mt-1 font-semibold">
-                          {formatDate(product.history.rejectedAt)}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                  {!!product.history.rejectReason && (
-                    <div className="mt-4">
-                      <p className="text-primary-red text-sm font-semibold">Rejection Reason:</p>
-                      <p className="text-tertiary text-[13px]">{product.history.rejectReason}</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
             {/* DETAILS */}
             <div className="bg-tertiary-invert/50 border-battleship-davys-gray/20 rounded-2xl border p-5">
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -208,13 +170,6 @@ const ProductDetails = () => {
                   </p>
                   <p className="text-primary mt-1 font-semibold">{product.category.name}</p>
                 </div>
-                <div>
-                  <p className="text-silver-jet-2 text-xs font-medium tracking-wider uppercase">
-                    SKU
-                  </p>
-                  <p className="text-primary mt-1 font-semibold">{product.sku}</p>
-                </div>
-
                 <div>
                   <p className="text-silver-jet-2 text-xs font-medium tracking-wider uppercase">
                     Slug
@@ -238,18 +193,18 @@ const ProductDetails = () => {
                 {discount.toFixed(Number.isInteger(discount) ? 0 : 2)}% off)
               </p>
             </div>
-            {!isNullOrUndefined(stock) && (
+            {availability && (
               <div className="bg-tertiary-invert/50 rounded-lg px-4 py-3">
                 <div className="flex items-center gap-2 text-sm">
                   <div
-                    className={`shrink-0 rounded-full p-1 ${stock ? 'bg-jade-c/40' : 'bg-princeton-orange-c/40'}`}
+                    className={`shrink-0 rounded-full p-1 ${availability === 'out-of-stock' ? 'bg-princeton-orange-c/40' : 'bg-jade-c/40'}`}
                   >
                     <div
-                      className={`rounded-full p-1 ${stock ? 'bg-jade-c' : 'bg-princeton-orange-c'}`}
+                      className={`rounded-full p-1 ${availability === 'out-of-stock' ? 'bg-princeton-orange-c' : 'bg-jade-c'}`}
                     />
                   </div>
                   <span className="text-secondary/70 leading-normal font-medium">
-                    {stock ? `${String(stock)} in stock` : 'Out of stock'}
+                    {AVAILABILITY_LABELS[availability]}
                   </span>
                 </div>
               </div>
@@ -389,13 +344,13 @@ const ProductDetails = () => {
       ) : (
         <ApiStatus
           className="min-h-[80dvh]"
-          status={isLoading ? 'loading' : isError ? 'error' : 'empty'}
+          status={isLoading ? 'loading' : isError && !isNotFound ? 'error' : 'empty'}
           text={isLoading ? 'Loading Product...' : undefined}
-          title={isError ? 'Failed to load product' : 'Product not found'}
+          title={isError && !isNotFound ? 'Failed to load product' : 'Product not found'}
           description={
-            isError
+            isError && !isNotFound
               ? 'Something went wrong! Please try again.'
-              : 'The requested product could not be found. Please try again.'
+              : 'This product is not available (it may have been removed).'
           }
         />
       )}

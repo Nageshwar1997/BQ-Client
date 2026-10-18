@@ -10,9 +10,7 @@ import type {
   TProductBasicInfoZodSchema,
   TProductDescriptionAndContentZodSchema,
   TProductMediaAndGalleryZodSchema,
-  TProductStatus,
-  TProductWithoutVariantsZodSchema,
-  TProductWithVariantsZodSchema,
+  TProductVariantZodSchema,
   TRegisterZodSchema,
   TSellerApprovalStatus,
   TSellerType,
@@ -144,58 +142,10 @@ export type TGenerateQueryKeys<
       : never;
 };
 
-type TApiTryOn =
+export type TApiTryOn =
   | { enabled: boolean; configured: false }
   | ({ enabled: false; configured: true } & Partial<TTryOnSelection>)
   | ({ enabled: true; configured: true } & TTryOnSelection);
-
-export type TRemoveFileType<T> = {
-  [K in keyof T]: T[K] extends (infer U)[] ? Exclude<U, File>[] : Exclude<T[K], File>;
-};
-
-export type TApiProductBase = IId &
-  ITimeStamp &
-  Pick<TProductBasicInfoZodSchema, 'title' | 'brand' | 'sellingPrice' | 'originalPrice'> &
-  Omit<TProductDescriptionAndContentZodSchema, 'step'> &
-  TRemoveFileType<Omit<TProductMediaAndGalleryZodSchema, 'step'>> & {
-    tryOn: TApiTryOn;
-    seller: string;
-    sku: string;
-    slug: string;
-    discount: number;
-    soldCount: number;
-    returnCount: number;
-    reviews: string[];
-    totalReviews: number;
-    averageRating: number;
-    totalRating: number;
-    status: TProductStatus;
-    history?: {
-      approvedBy?: string | null;
-      approvedAt?: string | null;
-      blockedBy?: string | null;
-      blockedAt?: string | null;
-      rejectedBy?: string | null;
-      rejectedAt?: string | null;
-      rejectReason?: string | null;
-    };
-  };
-
-type TVariant = TRemoveFileType<TProductWithVariantsZodSchema['variants'][number]> & {
-  sku: string;
-  discount: number;
-  images: string[];
-  thumbnail?: string;
-} & IId;
-
-type TApiStockAndVariants =
-  | Omit<TProductWithoutVariantsZodSchema, 'step'>
-  | (Pick<TProductWithVariantsZodSchema, 'hasVariants'> & { variants: TVariant[] });
-
-export type TApiProduct = TApiProductBase & TApiStockAndVariants & { category: string };
-
-export type TApiProductPopulated = TApiProductBase &
-  TApiStockAndVariants & { category: TCategory; seller: unknown };
 
 export interface IPagination {
   page: number;
@@ -225,25 +175,54 @@ export interface IGetProductsQuery {
   sort?: TProductsSort;
 }
 
-export interface IStorefrontColor {
-  label: string;
-  /** The colour itself (a CSS colour). */
-  value: string;
-  thumbnail?: string;
+/**
+ * A type with its files taken out. The forms of the package hold a picture or a video as a `File` (just chosen) or as a
+ * link (already saved), the storefront only ever gets the link: `OmitFile<Pick<TProductMediaAndGalleryZodSchema,
+ * 'images'>>` is `{ images: string[] }`, and an optional field stays optional.
+ */
+export type OmitFile<T> = {
+  [K in keyof T]: T[K] extends (infer U)[] ? Exclude<U, File>[] : Exclude<T[K], File>;
+};
+
+/**
+ * One variant of a product, on the page of the product. What the package already says of a variant (its type, label,
+ * value, prices and pictures - the types of the seller's form, as links) is taken from it; the rest is what the
+ * storefront adds.
+ */
+export interface IStorefrontVariant extends OmitFile<
+  Pick<
+    TProductVariantZodSchema,
+    'type' | 'label' | 'value' | 'originalPrice' | 'sellingPrice' | 'thumbnail' | 'images'
+  >
+> {
+  /** The id of the variant in the address of the page (`?v=`). */
+  sku: string;
+  /** Percent off, 0 when it is not on sale. */
+  discount: number;
   inStock: boolean;
+  /** In stock, but only a few are left. */
+  lowStock: boolean;
 }
 
-/** A product as the card of the storefront shows it. */
-export interface IStorefrontProduct extends IId {
-  title: string;
+/** A colour of a product, as its card shows it: a Color variant (`value` is the colour itself, a CSS colour). */
+export type TStorefrontColor = Pick<
+  IStorefrontVariant,
+  'label' | 'value' | 'thumbnail' | 'inStock'
+>;
+
+/**
+ * A product as the card of the storefront shows it. The title, brand, prices, short description and thumbnail are the
+ * package's types of the same fields; the rest is what the storefront adds.
+ */
+export interface IStorefrontProduct
+  extends
+    IId,
+    Pick<TProductBasicInfoZodSchema, 'title' | 'brand' | 'originalPrice' | 'sellingPrice'>,
+    Pick<TProductDescriptionAndContentZodSchema, 'shortDescription'>,
+    OmitFile<Pick<TProductMediaAndGalleryZodSchema, 'thumbnail'>> {
   slug: string;
-  brand: string;
-  shortDescription: string;
-  thumbnail: string;
   /** A second image, shown when the card is hovered. */
   hoverImage?: string;
-  originalPrice: number;
-  sellingPrice: number;
   /** Percent off, 0 when it is not on sale. */
   discount: number;
   averageRating: number;
@@ -254,10 +233,28 @@ export interface IStorefrontProduct extends IId {
   lowStock: boolean;
   hasTryOn: boolean;
   hasVariants: boolean;
-  colors: IStorefrontColor[];
+  colors: TStorefrontColor[];
   /** How many colours the product has in all (`colors` holds the first few). */
   colorCount: number;
   createdAt: string;
+}
+
+/**
+ * A product as its own page shows it (`GET /product/:slug`, public): the card's fields, the texts of the package
+ * (the description and the rest, HTML of the editor), and what only the page has. Nothing here is about the seller,
+ * the review of the product or the stock count: the stock is `inStock` / `lowStock`.
+ */
+export interface IStorefrontProductDetails
+  extends
+    Omit<IStorefrontProduct, 'hoverImage' | 'hasTryOn' | 'colors' | 'colorCount'>,
+    Pick<
+      TProductDescriptionAndContentZodSchema,
+      'description' | 'instructions' | 'ingredients' | 'additional'
+    >,
+    OmitFile<Pick<TProductMediaAndGalleryZodSchema, 'images' | 'video'>> {
+  category: { _id: string; name: string };
+  tryOn: TApiTryOn;
+  variants: IStorefrontVariant[];
 }
 
 export interface IStorefrontFilters {

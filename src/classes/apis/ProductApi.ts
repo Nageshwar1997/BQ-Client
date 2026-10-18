@@ -8,7 +8,7 @@ import type {
   IGetProductsQuery,
   IId,
   IProductsResponse,
-  TApiProductPopulated,
+  IStorefrontProductDetails,
   TCategory,
   TCategoryHierarchy,
   TL1Category,
@@ -90,8 +90,9 @@ export class ProductApi extends ApiRequest {
     });
   };
 
-  public getDashboardProductBySlug = (slug: string) => {
-    const { method, url } = this.routes.get.dashboard.bySlug;
-    return this.request<TApiProductPopulated>({ method, url: url({ slug }) });
+  /** The public page of a product (published products only; a 404 for any other). */
+  public getProductBySlug = (slug: string) => {
+    const { method, url } = this.routes.get.bySlug;
+    return this.request<IStorefrontProductDetails>({ method, url: url({ slug }) });
   };
 }

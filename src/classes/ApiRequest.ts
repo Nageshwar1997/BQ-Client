@@ -282,6 +282,7 @@ export class ApiRequest {
           message: errResp?.data.message ?? 'API Error occurred',
           globalErrors: errResp?.data.globalErrors,
           fieldErrors: errResp?.data.fieldErrors,
+          statusCode: errResp?.status,
         });
       }
 

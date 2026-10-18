@@ -1,5 +1,6 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import ApiError from '@/classes/ApiError';
 import { productApi } from '@/classes/apis';
 import { API_QUERY_KEYS } from '@/constants/api.constants';
 import { PRODUCTS_PAGE_SIZE } from '@/constants/product-listing.constants';
@@ -114,11 +115,17 @@ export const useGetProducts = (query: Omit<IGetProductsQuery, 'page' | 'limit'>)
   });
 };
 
-export const useGetDashboardProductBySlug = (slug: string) => {
+/**
+ * The page of one product. A product that is not there (a 404) is not tried again - the answer will not change -
+ * while any other failure is, as every other request is.
+ */
+export const useGetProductBySlug = (slug: string) => {
   return useQuery({
-    queryKey: [...get.dashboard.bySlug({ slug }), slug],
-    queryFn: () => productApi.getDashboardProductBySlug(slug),
+    queryKey: get.bySlug({ slug }),
+    queryFn: () => productApi.getProductBySlug(slug),
     enabled: !!slug,
     select: (data) => data.data,
+    retry: (failureCount, error) =>
+      !(error instanceof ApiError && error.statusCode === 404) && failureCount < 3,
   });
 };
