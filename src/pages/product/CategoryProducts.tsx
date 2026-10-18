@@ -34,7 +34,7 @@ const CategoryProducts = () => {
 
   if (isLoading) {
     return (
-      <div className="mx-auto grid w-full max-w-[1600px] grid-cols-2 gap-4 px-3 pt-24 sm:px-5 md:grid-cols-4 lg:px-8">
+      <div className="mx-auto grid w-full max-w-[1600px] grid-cols-1 gap-4 px-3 pt-24 min-[350px]:grid-cols-2 sm:px-5 md:grid-cols-4 lg:px-8">
         {Array.from({ length: 8 }, (_, index) => (
           <ProductCardSkeleton key={index} />
         ))}

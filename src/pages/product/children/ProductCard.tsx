@@ -92,17 +92,17 @@ const ProductCard = ({ product, priority = false }: IProductCard) => {
           />
         )}
 
-        <div className="absolute inset-x-2.5 top-2.5 flex items-start justify-between gap-2">
+        <div className="absolute inset-x-2.5 top-2.5 flex items-start justify-between gap-2 text-[10px]/3">
           {discount > 0 ? (
-            <span className="bg-accent-duo rounded-full px-2.5 py-1 text-xs font-bold text-white shadow-sm">
+            <span className="bg-accent-duo rounded-full px-2.5 py-1 font-bold text-white shadow-sm">
               {discount}% off
             </span>
           ) : (
             <span />
           )}
           {hasTryOn && (
-            <span className="bg-primary-invert/80 border-primary/10 flex items-center gap-1 rounded-full border px-2 py-1 text-xs font-semibold backdrop-blur-md">
-              <Icon icon="solar:magic-stick-3-linear" className="size-3.5" aria-hidden="true" />
+            <span className="bg-primary-invert/80 border-primary/10 flex items-center gap-1 rounded-full border px-2 py-1 font-semibold backdrop-blur-md">
+              <Icon icon="solar:magic-stick-3-linear" className="size-3" aria-hidden="true" />
               Try on
             </span>
           )}

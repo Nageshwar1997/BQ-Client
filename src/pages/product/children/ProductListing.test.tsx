@@ -187,6 +187,25 @@ describe('ProductListing', () => {
     expect(render(loaded(1)).text()).not.toContain('1 products');
   });
 
+  it('puts one card in a row under 350px, and two from 350px, for the products and for the loading cards', () => {
+    const products = render(loaded(3)).container.querySelector('section ul');
+
+    expect(products?.className).toContain('grid-cols-1');
+    expect(products?.className).toContain('min-[350px]:grid-cols-2');
+    // and does not start with two (that is what is too narrow on a small phone)
+    expect(products?.className).not.toMatch(/(^|s)grid-cols-2(s|$)/);
+    unmountAll();
+
+    const loading = render({
+      ...loaded(0),
+      data: undefined,
+      isLoading: true,
+    }).container.querySelector('section > div');
+
+    expect(loading?.className).toContain('grid-cols-1');
+    expect(loading?.className).toContain('min-[350px]:grid-cols-2');
+  });
+
   it('draws a card for each product', () => {
     expect(render(loaded(5)).cards()).toHaveLength(5);
   });
@@ -373,9 +392,87 @@ describe('ProductListing', () => {
     expect(container.querySelectorAll('section ul > li')).toHaveLength(4 + 4);
   });
 
-  it('has the filters beside the list on a wide screen', () => {
+  it('has the filters beside the list on a wide screen, and no sheet', () => {
     const { container } = render(loaded(2));
 
     expect(container.querySelector('aside[aria-label="Filters"]')).not.toBeNull();
+    expect(container.textContent).not.toContain('Show 2 products');
+    expect(document.querySelector('[role="dialog"]')).toBeNull();
+  });
+
+  describe('on a narrow screen', () => {
+    beforeEach(() => {
+      vi.stubGlobal(
+        'matchMedia',
+        (query: string) =>
+          ({
+            matches: true,
+            media: query,
+            addEventListener: vi.fn(),
+            removeEventListener: vi.fn(),
+          }) as unknown as MediaQueryList,
+      );
+    });
+
+    const openSheet = (view: ReturnType<typeof render>) => {
+      press(
+        [...view.container.querySelectorAll('button')].find((button) =>
+          button.textContent.startsWith('Filters'),
+        ),
+      );
+
+      const dialog = document.querySelector<HTMLElement>('[role="dialog"]');
+
+      if (!dialog) throw new Error('The sheet did not open');
+
+      return dialog;
+    };
+
+    it('has no sidebar, and opens the filters in a sheet from the "Filters" button', () => {
+      const view = render(loaded(2));
+
+      expect(view.container.querySelector('aside[aria-label="Filters"]')).toBeNull();
+      expect(document.querySelector('[role="dialog"]')).toBeNull();
+
+      const dialog = openSheet(view);
+
+      expect(dialog.textContent).toContain('Brand');
+      expect(dialog.textContent).toContain('Show 2 products');
+    });
+
+    it('keeps the buttons of the sheet over the filters that scroll under them', () => {
+      const dialog = openSheet(render(loaded(2)));
+      const buttons = [...dialog.querySelectorAll('button')].find((button) =>
+        button.textContent.startsWith('Show'),
+      );
+      const bar = buttons?.parentElement;
+
+      // the bar sticks to the bottom and is above anything with a z-index inside the filters (the slider, the radios)
+      expect(bar?.className).toContain('sticky');
+      expect(bar?.className).toContain('z-40');
+      // and what is inside the filters stays inside them
+      const filters = bar?.previousElementSibling;
+
+      expect(filters?.className).toContain('isolate');
+      expect(filters?.textContent).toContain('Brand');
+    });
+
+    it('closes the sheet with its "Show N products" button, and with Escape', () => {
+      const view = render(loaded(2));
+
+      openSheet(view);
+      press(
+        [...document.querySelectorAll('button')].find((button) =>
+          button.textContent.startsWith('Show'),
+        ),
+      );
+      expect(document.querySelector('[role="dialog"]')).toBeNull();
+
+      openSheet(view);
+      act(() => {
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      });
+      expect(document.querySelector('[role="dialog"]')).toBeNull();
+    });
   });
 });
