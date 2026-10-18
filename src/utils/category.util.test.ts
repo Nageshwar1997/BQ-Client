@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import type { TCategoryHierarchy } from '@/types/api.type';
 
-import { findCategoryBySlugs } from './category.util';
+import { findCategoryBySlugs, findCategoryTrailById } from './category.util';
 
 const tree = [
   {
@@ -102,5 +102,34 @@ describe('findCategoryBySlugs', () => {
 
   it('stops at the first slug that is missing (the shorter address is the category)', () => {
     expect(findCategoryBySlugs(tree, ['face', undefined, 'foundation'])?.category._id).toBe('face');
+  });
+});
+
+describe('findCategoryTrailById', () => {
+  const ids = (id: string) => findCategoryTrailById(tree, id)?.map((category) => category._id);
+
+  it('is the main category alone for the id of a main category', () => {
+    expect(ids('face')).toEqual(['face']);
+    expect(ids('collections')).toEqual(['collections']);
+  });
+
+  it('is the categories from the main one down to a final category (the category of a product)', () => {
+    expect(ids('foundation')).toEqual(['face', 'face-makeup', 'foundation']);
+    expect(ids('collections-face')).toEqual(['collections', 'sugar-pop', 'collections-face']);
+  });
+
+  it('is the categories down to a sub category', () => {
+    expect(ids('face-makeup')).toEqual(['face', 'face-makeup']);
+  });
+
+  it('is undefined for an id the tree does not have, and for no tree', () => {
+    expect(ids('nope')).toBeUndefined();
+    expect(findCategoryTrailById([], 'face')).toBeUndefined();
+  });
+
+  it('finds the right one among categories that have the same slug (it follows ids, not slugs)', () => {
+    // `face` is the slug of a main category and of a final one under Collections
+    expect(findCategoryTrailById(tree, 'collections-face')?.at(-1)?.slug).toBe('face');
+    expect(ids('face')).toEqual(['face']);
   });
 });

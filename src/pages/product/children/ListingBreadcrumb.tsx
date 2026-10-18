@@ -8,10 +8,18 @@ import { buildCategoryProductsPath, toAbsolutePath } from '@/utils/common.util';
 interface IListingBreadcrumb {
   /** The categories from the main one down to the one the page is of. */
   trail: TCategoryNode[];
+  /**
+   * The page is not a category but something in it (a product): its name is the last step, and every category of the
+   * trail is a link.
+   */
+  current?: string;
 }
 
-/** Home / Products / Face / Face Makeup / Foundation - the shared breadcrumb, with the paths of this app and its router. */
-const ListingBreadcrumb = ({ trail }: IListingBreadcrumb) => {
+/**
+ * Home / Products / Face / Face Makeup / Foundation (/ Velvet Matte Lipstick) - the shared breadcrumb, with the paths of
+ * this app and its router.
+ */
+const ListingBreadcrumb = ({ trail, current }: IListingBreadcrumb) => {
   const navigate = useNavigate();
 
   const items = [
@@ -21,6 +29,7 @@ const ListingBreadcrumb = ({ trail }: IListingBreadcrumb) => {
       label: category.name,
       href: buildCategoryProductsPath(...trail.slice(0, index + 1).map((item) => item.slug)),
     })),
+    ...(current ? [{ label: current }] : []),
   ];
 
   return (

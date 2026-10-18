@@ -47,3 +47,28 @@ export const findCategoryBySlugs = (
 
   return category ? { category, trail } : undefined;
 };
+
+/**
+ * The categories from the main one down to the category with this id - the trail of a product's category, for its
+ * breadcrumb and for "more like this". `undefined` when the tree has no such category.
+ */
+export const findCategoryTrailById = (
+  categories: TCategoryHierarchy[],
+  id: string,
+): TCategoryNode[] | undefined => {
+  const walk = (nodes: TCategoryNode[], trail: TCategoryNode[]): TCategoryNode[] | undefined => {
+    for (const node of nodes) {
+      const next = [...trail, node];
+
+      if (node._id === id) return next;
+
+      const found = walk(node.subcategories ?? [], next);
+
+      if (found) return found;
+    }
+
+    return undefined;
+  };
+
+  return walk(categories, []);
+};

@@ -13,10 +13,10 @@ const category = (slug: string, name: string, level: 1 | 2 | 3) =>
 
 const Where = () => <output data-testid="where">{useLocation().pathname}</output>;
 
-const render = (trail: TCategoryNode[]) => {
+const render = (trail: TCategoryNode[], currentName?: string) => {
   const view = mount(
     <MemoryRouter initialEntries={['/products/somewhere']}>
-      <ListingBreadcrumb trail={trail} />
+      <ListingBreadcrumb trail={trail} current={currentName} />
       <Where />
     </MemoryRouter>,
   );
@@ -79,6 +79,33 @@ describe('ListingBreadcrumb', () => {
       ['Face Makeup', '/products/face/face-makeup'],
     ]);
     expect(current()?.textContent).toBe('Foundation');
+  });
+
+  it('ends with the name of the page when the page is a product: every category is then a link', () => {
+    const { links, current } = render(
+      [
+        category('face', 'Face', 1),
+        category('face-makeup', 'Face Makeup', 2),
+        category('foundation', 'Foundation', 3),
+      ],
+      'Velvet Matte Lipstick',
+    );
+
+    expect(links().map((link) => [link.textContent, link.getAttribute('href')])).toEqual([
+      ['Home', '/'],
+      ['Products', '/products'],
+      ['Face', '/products/face'],
+      ['Face Makeup', '/products/face/face-makeup'],
+      ['Foundation', '/products/face/face-makeup/foundation'],
+    ]);
+    expect(current()?.textContent).toBe('Velvet Matte Lipstick');
+  });
+
+  it('can be a product that has no category in the trail yet (it is still being found)', () => {
+    const { links, current } = render([], 'Velvet Matte Lipstick');
+
+    expect(links().map((link) => link.textContent)).toEqual(['Home', 'Products']);
+    expect(current()?.textContent).toBe('Velvet Matte Lipstick');
   });
 
   it('goes to a page with the router, without loading the app again', () => {

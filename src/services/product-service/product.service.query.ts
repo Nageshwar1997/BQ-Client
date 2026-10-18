@@ -116,6 +116,27 @@ export const useGetProducts = (query: Omit<IGetProductsQuery, 'page' | 'limit'>)
 };
 
 /**
+ * A few products of a category, the best selling first - the "more like this" of a product page. The caller leaves
+ * the open product out (`pickRelatedProducts`), which is why one more than it shows is asked for.
+ */
+export const useGetRelatedProducts = (categoryId: string | undefined) => {
+  return useQuery({
+    queryKey: [...get.products, 'related', categoryId],
+    queryFn: () =>
+      productApi.getProducts({
+        category: categoryId,
+        page: '1',
+        limit: '5',
+        sort: 'popular',
+      }),
+    enabled: !!categoryId,
+    select: (data) => data.data?.products ?? [],
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  });
+};
+
+/**
  * The page of one product. A product that is not there (a 404) is not tried again - the answer will not change -
  * while any other failure is, as every other request is.
  */

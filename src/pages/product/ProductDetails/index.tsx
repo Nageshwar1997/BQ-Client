@@ -1,351 +1,118 @@
+import { ApiStatus, Button } from '@beautinique/frontend-components';
 import {
-  ApiStatus,
-  Button,
-  Dropdown,
-  ScrollableGradientContainer,
-} from '@beautinique/frontend-components';
-import {
+  type IMediaLabels,
   MediaCarouselWithParentMedia,
-  type TMediaOption,
 } from '@beautinique/frontend-components/media';
 import { usePathParams, useQueryParams } from '@beautinique/frontend-hooks';
-import { QuillContent } from '@beautinique/frontend-quill';
 import type { IShade } from '@beautinique/frontend-tryon';
-import { Icon } from '@iconify/react';
-import { useMemo, useState } from 'react';
+import { type ReactNode, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import ApiError from '@/classes/ApiError';
 import TryOnModal from '@/components/layout/tryons';
+import { ROUTES } from '@/constants/routes.constants';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
+import ListingBreadcrumb from '@/pages/product/children/ListingBreadcrumb';
+import { useGetCategoriesHierarchy } from '@/services/product-service/category.service.query';
 import { useGetProductBySlug } from '@/services/product-service/product.service.query';
-import { AVAILABILITY_LABELS, getAvailability } from '@/utils/availability.util';
-import { formatINRCurrency, VIDEO_PLAYER_PROPS } from '@/utils/common.util';
+import { findCategoryTrailById } from '@/utils/category.util';
+import { toAbsolutePath, VIDEO_PLAYER_PROPS } from '@/utils/common.util';
+import {
+  buildProductMedia,
+  getPricing,
+  getSelectedVariant,
+  getStock,
+  getVariantMediaIndex,
+} from '@/utils/product-details.util';
 
+import AvailabilityNote from './children/AvailabilityNote';
+import PriceBlock from './children/PriceBlock';
+import ProductAccordion from './children/ProductAccordion';
+import ProductDetailsSkeleton from './children/ProductDetailsSkeleton';
+import RatingSummary from './children/RatingSummary';
+import RelatedProducts from './children/RelatedProducts';
+import ShareButton from './children/ShareButton';
+import VariantPicker from './children/VariantPicker';
+
+const Page = ({ children }: { children: ReactNode }) => (
+  <div className="mx-auto w-full max-w-350 px-3 pt-6 pb-16 sm:px-5 lg:px-8">{children}</div>
+);
+
+/**
+ * The page of one product, for a customer: its pictures (and video), what it is called and costs, its rating, the
+ * shades or options to choose from with the price, the pictures and the stock of the one that is chosen, a try-on
+ * where the product has one, the texts about it, and more products of its category. The data is the public product of
+ * the service - published products only; any other is "not available".
+ *
+ * The variant that is chosen is in the address (`?v=`), so a link to a shade is a link to that shade.
+ */
 const ProductDetails = () => {
   const { pathParams } = usePathParams();
-  const { data: product, isLoading, isError, error } = useGetProductBySlug(pathParams.slug ?? '');
-  // a product that is not published (or is not there) is a 404: not "failed to load"
-  const isNotFound = error instanceof ApiError && error.statusCode === 404;
+  const {
+    data: product,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useGetProductBySlug(pathParams.slug ?? '');
+  const { data: categories, isLoading: isCategoriesLoading } = useGetCategoriesHierarchy();
   const { queryParams, setParams } = useQueryParams();
   const [isTryOnOpen, setIsTryOnOpen] = useState(false);
 
-  const variant = useMemo(() => {
-    if (!product) return null;
-    return product.hasVariants
-      ? product.variants.find((variant) => variant.sku === queryParams.v)
-      : null;
-  }, [product, queryParams.v]);
+  useDocumentTitle(product ? `${product.title} | Beautinique` : undefined);
 
-  const media = useMemo(() => {
-    if (!product) return [];
-    const medias: TMediaOption[] = [
-      { url: product.thumbnail, type: 'image' as const },
-      ...product.images.map((image) => ({ url: image, type: 'image' as const })),
-    ];
+  // a product that is not published (or is not there) is a 404: not "failed to load"
+  const isNotFound = error instanceof ApiError && error.statusCode === 404;
 
-    if (product.hasVariants) {
-      product.variants.forEach((variant) => {
-        if (variant.thumbnail) {
-          medias.push({ url: variant.thumbnail, type: 'image' as const });
-        }
+  const variant = useMemo(
+    () => (product ? getSelectedVariant(product, queryParams.v) : undefined),
+    [product, queryParams.v],
+  );
 
-        medias.push(...variant.images.map((image) => ({ url: image, type: 'image' as const })));
-      });
-    }
+  const media = useMemo(() => (product ? buildProductMedia(product) : []), [product]);
 
-    if (product.video) {
-      medias.push({ url: product.video, type: 'video' as const });
-    }
+  // The gallery starts at the product's own picture. It moves to the pictures of a variant when the shopper chooses
+  // one (the address has `?v=` of a variant the product has), not for the one the page picked as the way to start.
+  const isVariantInAddress = !!product?.variants.some((item) => item.sku === queryParams.v);
+  const selectedMediaIndex = isVariantInAddress ? getVariantMediaIndex(media, variant) : 0;
 
-    return medias;
-  }, [product]);
+  const labels = useMemo<Partial<IMediaLabels>>(
+    () => ({
+      preview: (item, index, total) =>
+        `${product?.title ?? 'Product'} - ${item.type === 'video' ? 'video' : `image ${String(index + 1)} of ${String(total)}`}`,
+    }),
+    [product?.title],
+  );
 
-  const selectedMediaIndex = useMemo(() => {
-    if (!variant) {
-      return 0;
-    }
+  // The shades of the try-on are the real colours of the product, never invented.
+  const shades = useMemo(
+    (): IShade[] =>
+      (product?.variants ?? [])
+        .filter((item) => item.type === 'Color')
+        .map((item) => ({ name: item.label, hexColor: item.value })),
+    [product],
+  );
 
-    const mediaUrl = variant.thumbnail ?? variant.images[0];
+  const trail = useMemo(
+    () =>
+      product && categories ? (findCategoryTrailById(categories, product.category._id) ?? []) : [],
+    [product, categories],
+  );
 
-    if (!mediaUrl) {
-      return 0;
-    }
+  if (isLoading) {
+    return (
+      <Page>
+        <ProductDetailsSkeleton />
+      </Page>
+    );
+  }
 
-    const index = media.findIndex((item) => item.type === 'image' && item.url === mediaUrl);
-
-    return index >= 0 ? index : 0;
-  }, [media, variant]);
-
-  // Real product shade data (not user-invented via a color picker) - same source as the
-  // "Color" variant swatches already rendered further down this page.
-  const shades = useMemo((): IShade[] => {
-    if (!product?.hasVariants) return [];
-
-    return product.variants
-      .filter((v) => v.type === 'Color')
-      .map((v) => ({ name: v.label, hexColor: v.value }));
-  }, [product]);
-
-  const { discount, originalPrice, sellingPrice } = useMemo(() => {
-    if (!product) return { discount: 0, sellingPrice: 0, originalPrice: 0 };
-    return {
-      discount: variant?.discount ?? product.discount,
-      sellingPrice: variant?.sellingPrice ?? product.sellingPrice,
-      originalPrice: variant?.originalPrice ?? product.originalPrice,
-    };
-  }, [product, variant]);
-
-  // A product with variants says nothing about its stock until one of them is chosen.
-  const availability = useMemo(() => {
-    if (!product) return undefined;
-
-    const source = product.hasVariants ? variant : product;
-
-    return source ? getAvailability(source) : undefined;
-  }, [product, variant]);
-
-  return (
-    <div className="">
-      {!!product && !!Object.keys(product).length ? (
-        <div className="grid flex-col items-start gap-6 lg:grid-cols-2">
-          <div className="w-full lg:sticky lg:top-37">
-            {/* LEFT SECTION */}
-            <div className="relative w-full">
-              <MediaCarouselWithParentMedia
-                media={media}
-                needButtonControls={false}
-                selected={selectedMediaIndex}
-                playerProps={VIDEO_PLAYER_PROPS}
-              />
-              <div className="absolute inset-x-0 top-0 flex items-center justify-between px-4 py-2">
-                <span className="bg-razzle-dazzle-rose-c rounded-full px-2 pt-1 pb-0.5 text-sm">
-                  -{discount.toFixed(Number.isInteger(discount) ? 0 : 2)}%
-                </span>
-              </div>
-            </div>
-          </div>
-          {/* RIGHT SECTION */}
-          <div className="flex w-full flex-col gap-6 lg:sticky lg:top-37">
-            <div>
-              <p className="text-tertiary mb-1 text-sm font-medium">{product.brand}</p>
-              <h1 className="text-primary mb-2 text-3xl font-bold md:text-4xl">{product.title}</h1>
-              <p className="text-secondary/80 text-base">{product.shortDescription}</p>
-            </div>
-            {/* Rating */}
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-0.5">
-                {Array(5).map((_, index) => {
-                  const fillPercentage = Math.max(
-                    0,
-                    Math.min(100, (product.averageRating - index) * 100),
-                  );
-
-                  return (
-                    <div key={index} className="relative size-5">
-                      <Icon
-                        icon="solar:star-linear"
-                        className="text-silver-jet-2 absolute inset-0 size-5"
-                      />
-
-                      <div
-                        className="absolute inset-0 overflow-hidden"
-                        style={{ width: `${String(fillPercentage)}%` }}
-                      >
-                        <Icon icon="solar:star-bold" className="text-primary-yellow size-5" />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-              <span className="text-secondary leading-none font-semibold">
-                {product.averageRating}
-              </span>
-              <span className="text-tertiary text-sm">({product.totalReviews} reviews)</span>
-            </div>
-            {/* DETAILS */}
-            <div className="bg-tertiary-invert/50 border-battleship-davys-gray/20 rounded-2xl border p-5">
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                <div>
-                  <p className="text-silver-jet-2 text-xs font-medium tracking-wider uppercase">
-                    Category
-                  </p>
-                  <p className="text-primary mt-1 font-semibold">{product.category.name}</p>
-                </div>
-                <div>
-                  <p className="text-silver-jet-2 text-xs font-medium tracking-wider uppercase">
-                    Slug
-                  </p>
-                  <p className="text-primary mt-1 font-semibold break-all">{product.slug}</p>
-                </div>
-              </div>
-            </div>
-            {/* Price */}
-            <div className="bg-tertiary-invert/50 rounded-xl p-4">
-              <div className="flex items-baseline gap-3">
-                <span className="text-razzle-dazzle-rose-c text-3xl font-bold">
-                  {formatINRCurrency(sellingPrice)}
-                </span>
-                <span className="text-tertiary/60 text-xl line-through">
-                  {formatINRCurrency(originalPrice)}
-                </span>
-              </div>
-              <p className="text-jade-c mt-2 text-sm font-medium">
-                Save {formatINRCurrency(originalPrice - sellingPrice)} (
-                {discount.toFixed(Number.isInteger(discount) ? 0 : 2)}% off)
-              </p>
-            </div>
-            {availability && (
-              <div className="bg-tertiary-invert/50 rounded-lg px-4 py-3">
-                <div className="flex items-center gap-2 text-sm">
-                  <div
-                    className={`shrink-0 rounded-full p-1 ${availability === 'out-of-stock' ? 'bg-princeton-orange-c/40' : 'bg-jade-c/40'}`}
-                  >
-                    <div
-                      className={`rounded-full p-1 ${availability === 'out-of-stock' ? 'bg-princeton-orange-c' : 'bg-jade-c'}`}
-                    />
-                  </div>
-                  <span className="text-secondary/70 leading-normal font-medium">
-                    {AVAILABILITY_LABELS[availability]}
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {/* Try On */}
-            <div className="bg-tertiary-invert/50 border-battleship-davys-gray/20 rounded-2xl border p-5">
-              <div className="flex justify-between gap-4">
-                <h4 className="font-semibold">Try On:</h4>
-                <div>
-                  <p className="text-silver-jet-2 text-xs font-medium tracking-wider uppercase">
-                    Category
-                  </p>
-                  <p className="text-primary mt-1 font-semibold">
-                    {product.tryOn.configured ? product.tryOn.category : 'Not Configured'}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-silver-jet-2 text-xs font-medium tracking-wider uppercase">
-                    Sub-category
-                  </p>
-                  <p className="text-primary mt-1 font-semibold">
-                    {product.tryOn.configured ? product.tryOn.subCategory : 'Not Configured'}
-                  </p>
-                </div>
-              </div>
-              <div className="mt-4 flex gap-4">
-                <Button content={product.tryOn.enabled ? 'Disable' : 'Enable'} pattern="tertiary" />
-                <Button content="Configure" pattern="tertiary" />
-              </div>
-            </div>
-
-            {/* Variants */}
-            {product.hasVariants && product.variants.length > 0 && (
-              <div className="space-y-2">
-                {!!variant && (
-                  <p className="text-sm">
-                    <span className="font-semibold">Variant:</span> {variant.label}
-                  </p>
-                )}
-                <ScrollableGradientContainer
-                  direction="horizontal"
-                  containerClassName="max-h-20"
-                  className="[&>div]:justify-start"
-                >
-                  <div className="flex items-center gap-3">
-                    {product.variants.map((v, index) => {
-                      const isColor = v.type === 'Color';
-                      const active = variant?.sku === v.sku;
-                      return (
-                        <div
-                          key={`variant-${String(index)}`}
-                          role="button"
-                          tabIndex={0}
-                          aria-pressed={active}
-                          className={`cursor-pointer text-center text-[11px]/3.5 ${active ? 'text-tertiary' : 'text-tertiary/80'}`}
-                          onClick={() => {
-                            setParams({ v: v.sku });
-                          }}
-                          onKeyDown={(event) => {
-                            if (event.key === 'Enter' || event.key === ' ') {
-                              event.preventDefault();
-                              setParams({ v: v.sku });
-                            }
-                          }}
-                        >
-                          {isColor ? (
-                            <div className={`flex flex-col items-center gap-1`}>
-                              <div
-                                className={`size-12 shrink-0 rounded-full border-2 ${active ? 'border-primary' : 'border-primary/30'}`}
-                                style={{ backgroundColor: v.value }}
-                              />
-                              <p className="line-clamp-2 max-w-12 wrap-break-word">{v.label}</p>
-                            </div>
-                          ) : (
-                            <div className={`flex flex-col items-center gap-1`}>
-                              <div
-                                className={`line-clamp-2 flex h-12 max-w-20 flex-col items-center justify-center rounded-md border-2 px-2 wrap-break-word ${active ? 'border-primary' : 'border-primary/30'}`}
-                              >
-                                {v.value}
-                              </div>
-                              <p className="line-clamp-2 max-w-20 wrap-break-word">{v.label}</p>
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </ScrollableGradientContainer>
-              </div>
-            )}
-
-            <div className="flex gap-4 lg:gap-6">
-              <Button
-                content="Try-On"
-                pattern="secondary"
-                buttonProps={{
-                  disabled: !product.tryOn.enabled,
-                  onClick: () => {
-                    setIsTryOnOpen(true);
-                  },
-                }}
-              />
-              <Button content="Add Review" pattern="primary" />
-            </div>
-
-            <TryOnModal
-              isOpen={isTryOnOpen}
-              onClose={() => {
-                setIsTryOnOpen(false);
-              }}
-              tryOn={product.tryOn.enabled && product.tryOn.configured ? product.tryOn : undefined}
-              shades={shades}
-            />
-            <div className="space-y-4">
-              {[
-                { title: 'Description', content: product.description },
-                { title: 'Usage instructions', content: product.instructions },
-                { title: 'Ingredients', content: product.ingredients },
-                { title: 'Additional Info', content: product.additional },
-              ].map(({ content, title }, index) => {
-                if (!content) return null;
-                return (
-                  <Dropdown
-                    key={index}
-                    title={title}
-                    defaultOpen={index === 0}
-                    className="[&>button]:border-y-primary/30 [&>button]:border-y"
-                  >
-                    <QuillContent content={content} />
-                  </Dropdown>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      ) : (
+  if (!product) {
+    return (
+      <Page>
         <ApiStatus
-          className="min-h-[80dvh]"
-          status={isLoading ? 'loading' : isError && !isNotFound ? 'error' : 'empty'}
-          text={isLoading ? 'Loading Product...' : undefined}
+          className="min-h-[60dvh]"
+          status={isError && !isNotFound ? 'error' : 'empty'}
           title={isError && !isNotFound ? 'Failed to load product' : 'Product not found'}
           description={
             isError && !isNotFound
@@ -353,8 +120,137 @@ const ProductDetails = () => {
               : 'This product is not available (it may have been removed).'
           }
         />
+        <div className="mx-auto w-full max-w-56">
+          {isError && !isNotFound ? (
+            <Button
+              pattern="outline"
+              content="Try again"
+              leftIcon={{ icon: 'solar:refresh-linear' }}
+              buttonProps={{
+                onClick: () => {
+                  void refetch();
+                },
+              }}
+            />
+          ) : (
+            <Link to={toAbsolutePath(ROUTES.PRODUCTS.BASE)} className="block">
+              <Button pattern="outline" content="Browse all products" />
+            </Link>
+          )}
+        </div>
+      </Page>
+    );
+  }
+
+  const { sellingPrice, originalPrice, discount } = getPricing(product, variant);
+  // the try-on of a product is a category and a sub category: a product that has none cannot be tried on
+  const tryOn = product.tryOn.enabled && product.tryOn.configured ? product.tryOn : undefined;
+
+  // "More like this" comes from the category above the product's own (its sub category), which has more products in it
+  const relatedCategory = trail.length > 1 ? trail.at(-2) : trail.at(-1);
+
+  return (
+    <Page>
+      <ListingBreadcrumb trail={trail} current={product.title} />
+
+      <div className="mt-5 grid items-start gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] xl:gap-14">
+        {/* ---- the pictures ---- */}
+        <div className="relative lg:sticky lg:top-24">
+          <div className="bg-secondary-invert border-primary/10 overflow-hidden rounded-3xl border p-2 sm:p-3">
+            <MediaCarouselWithParentMedia
+              media={media}
+              needButtonControls={false}
+              selected={selectedMediaIndex}
+              playerProps={VIDEO_PLAYER_PROPS}
+              labels={labels}
+              className="bg-transparent"
+            />
+          </div>
+
+          {discount > 0 && (
+            <span className="bg-accent-duo absolute top-5 left-5 rounded-full px-3 py-1 text-sm font-bold text-white shadow-sm">
+              {discount}% off
+            </span>
+          )}
+        </div>
+
+        {/* ---- what it is, what it costs, what to choose ---- */}
+        <div className="flex min-w-0 flex-col gap-6">
+          <div className="flex flex-col gap-3">
+            <Link
+              to={`${toAbsolutePath(ROUTES.PRODUCTS.BASE)}?brand=${encodeURIComponent(product.brand)}`}
+              className="text-silver-jet hover:text-blue-crayola-c focus-visible:outline-blue-crayola-c w-fit rounded-sm text-sm font-semibold tracking-widest uppercase outline-offset-2 transition-colors duration-200"
+            >
+              {product.brand}
+            </Link>
+            <h1 className="text-3xl leading-tight font-bold tracking-tight md:text-4xl">
+              {product.title}
+            </h1>
+            <RatingSummary
+              rating={product.averageRating}
+              reviews={product.totalReviews}
+              soldCount={product.soldCount}
+            />
+            <p className="text-tertiary leading-7">{product.shortDescription}</p>
+          </div>
+
+          <PriceBlock
+            sellingPrice={sellingPrice}
+            originalPrice={originalPrice}
+            discount={discount}
+          />
+
+          {product.hasVariants && product.variants.length > 0 && (
+            <VariantPicker
+              variants={product.variants}
+              selectedSku={variant?.sku}
+              onSelect={(sku) => {
+                setParams({ v: sku }, { replace: true });
+              }}
+            />
+          )}
+
+          <AvailabilityNote availability={getStock(product, variant)} />
+
+          <div className="flex flex-col gap-3 sm:flex-row">
+            {tryOn && (
+              <Button
+                pattern="primary"
+                content="Try it on"
+                leftIcon={{ icon: 'solar:magic-stick-3-linear', className: 'size-5' }}
+                buttonProps={{
+                  onClick: () => {
+                    setIsTryOnOpen(true);
+                  },
+                }}
+              />
+            )}
+            <ShareButton title={product.title} />
+          </div>
+
+          <ProductAccordion product={product} />
+        </div>
+      </div>
+
+      {/* Not before the categories are known: it would ask for the product's own category first and then for the one
+          above it - two requests, and a list that changes under the shopper. */}
+      {!isCategoriesLoading && (
+        <RelatedProducts
+          categoryId={relatedCategory?._id ?? product.category._id}
+          categoryName={relatedCategory?.name ?? product.category.name}
+          excludeId={product._id}
+        />
       )}
-    </div>
+
+      <TryOnModal
+        isOpen={isTryOnOpen}
+        onClose={() => {
+          setIsTryOnOpen(false);
+        }}
+        tryOn={tryOn}
+        shades={shades}
+      />
+    </Page>
   );
 };
 
