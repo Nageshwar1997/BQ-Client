@@ -2,7 +2,8 @@ import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tansta
 
 import { productApi } from '@/classes/apis';
 import { API_QUERY_KEYS } from '@/constants/api.constants';
-import type { IGetDashboardProductsQuery } from '@/types/api.type';
+import { PRODUCTS_PAGE_SIZE } from '@/constants/product-listing.constants';
+import type { IGetProductsQuery } from '@/types/api.type';
 import { handleApiErrorToaster, handleApiSuccessToaster } from '@/utils/api.util';
 import { toaster } from '@/utils/toaster';
 
@@ -71,14 +72,21 @@ export const useGetDraftProduct = () => {
   });
 };
 
-export const useGetDashboardProducts = (
-  params: Omit<IGetDashboardProductsQuery, 'page' | 'limit'>,
-) => {
+/**
+ * The public listing of the storefront, a page at a time. A change of the filters starts a new list, and
+ * the old one stays on the screen (`isPlaceholderData`) until the new one comes, so the grid does not
+ * flash empty while a filter is being chosen.
+ */
+export const useGetProducts = (query: Omit<IGetProductsQuery, 'page' | 'limit'>) => {
   return useInfiniteQuery({
-    queryKey: [...get.dashboard.products, ...Object.values(params)],
+    queryKey: [...get.products, query],
     initialPageParam: 1,
     queryFn: ({ pageParam }) =>
-      productApi.getDashboardProducts({ ...params, page: pageParam.toString(), limit: '15' }),
+      productApi.getProducts({
+        ...query,
+        page: pageParam.toString(),
+        limit: PRODUCTS_PAGE_SIZE.toString(),
+      }),
     getNextPageParam: (lastPage) => {
       const pagination = lastPage.data?.pagination;
 
@@ -87,18 +95,22 @@ export const useGetDashboardProducts = (
       return pagination.page < pagination.totalPages ? pagination.page + 1 : undefined;
     },
 
-    staleTime: 5 * 60 * 1000,
-    gcTime: 15 * 60 * 1000,
+    staleTime: 2 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
 
     placeholderData: (prev) => prev,
 
     refetchOnWindowFocus: false,
-    refetchOnMount: true,
     refetchOnReconnect: true,
-    select: (data) => ({
-      products: data.pages.flatMap((page) => page.data?.products ?? []),
-      counts: data.pages[0]?.data?.counts,
-    }),
+    select: (data) => {
+      const first = data.pages[0]?.data;
+
+      return {
+        products: data.pages.flatMap((page) => page.data?.products ?? []),
+        total: first?.pagination.total ?? 0,
+        filters: first?.filters,
+      };
+    },
   });
 };
 

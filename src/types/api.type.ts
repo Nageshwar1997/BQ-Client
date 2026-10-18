@@ -16,7 +16,6 @@ import type {
   TRegisterZodSchema,
   TSellerApprovalStatus,
   TSellerType,
-  TSort,
   TStateOrUT,
   TTerritoryAssignmentReason,
   TTryOnSelection,
@@ -198,30 +197,80 @@ export type TApiProduct = TApiProductBase & TApiStockAndVariants & { category: s
 export type TApiProductPopulated = TApiProductBase &
   TApiStockAndVariants & { category: TCategory; seller: unknown };
 
-export type TProductSortBy = keyof Pick<
-  TApiProduct,
-  'createdAt' | 'updatedAt' | 'title' | 'sellingPrice' | 'originalPrice' | 'soldCount'
->;
-
-export interface IGetDashboardProductsQuery {
-  page: string;
-  limit: string;
-  search?: string;
-  status?: TProductStatus;
-  category?: string;
-  sortBy?: TProductSortBy;
-  sortOrder?: TSort;
-}
-
 export interface IPagination {
   page: number;
   totalPages: number;
 }
 
-export interface IDashboardProductsResponse {
-  products: TApiProductPopulated[];
-  pagination: IPagination;
-  counts: Record<TProductStatus | 'ALL', number>;
+/* ----------------------------- STOREFRONT LISTING ----------------------------- */
+
+export type TProductsSort =
+  'relevance' | 'newest' | 'price-asc' | 'price-desc' | 'popular' | 'rating' | 'discount';
+
+/** What the public product listing is asked for (`GET /product/products`). */
+export interface IGetProductsQuery {
+  page: string;
+  limit: string;
+  search?: string;
+  /** The id of a category of any level: its products are those of every final category under it. */
+  category?: string;
+  /** Sent as repeated keys: `brand=A&brand=B`. */
+  brand?: string[];
+  minPrice?: string;
+  maxPrice?: string;
+  minRating?: string;
+  minDiscount?: string;
+  inStock?: 'true';
+  tryOn?: 'true';
+  sort?: TProductsSort;
+}
+
+export interface IStorefrontColor {
+  label: string;
+  /** The colour itself (a CSS colour). */
+  value: string;
+  thumbnail?: string;
+  inStock: boolean;
+}
+
+/** A product as the card of the storefront shows it. */
+export interface IStorefrontProduct extends IId {
+  title: string;
+  slug: string;
+  brand: string;
+  shortDescription: string;
+  thumbnail: string;
+  /** A second image, shown when the card is hovered. */
+  hoverImage?: string;
+  originalPrice: number;
+  sellingPrice: number;
+  /** Percent off, 0 when it is not on sale. */
+  discount: number;
+  averageRating: number;
+  totalReviews: number;
+  soldCount: number;
+  inStock: boolean;
+  /** In stock, but only a few are left. */
+  lowStock: boolean;
+  hasTryOn: boolean;
+  hasVariants: boolean;
+  colors: IStorefrontColor[];
+  /** How many colours the product has in all (`colors` holds the first few). */
+  colorCount: number;
+  createdAt: string;
+}
+
+export interface IStorefrontFilters {
+  /** The brands of the matching products (every filter but the brand one applied). */
+  brands: { name: string; count: number }[];
+  /** The cheapest and the dearest of the matching products (every filter but the price ones applied). */
+  price: { min: number; max: number } | null;
+}
+
+export interface IProductsResponse {
+  products: IStorefrontProduct[];
+  pagination: IPagination & { limit: number; total: number };
+  filters: IStorefrontFilters;
 }
 
 /* -------------------------------------------------------------------------- */

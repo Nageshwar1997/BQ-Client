@@ -248,6 +248,10 @@ export const buildCategoryProductsPath = (...slugs: (string | undefined)[]) => {
   return `/${ROUTES.PRODUCTS.BASE}/${slugs.join('/')}`;
 };
 
+// The page of one product: /products/product/the-product-slug.
+export const buildProductPath = (slug: string) =>
+  `/${ROUTES.PRODUCTS.BASE}/${ROUTES.PRODUCTS.PRODUCT.BASE}/${slug}`;
+
 // ROUTES values and category.path from the API are stored without a leading slash, so a
 // direct <Link to={path}> resolves relative to the current route. This normalizes any such
 // path to an absolute in-app URL.

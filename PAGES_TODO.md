@@ -21,6 +21,8 @@ Tracks which pages are fully built vs. still just a title-only stub, waiting on 
 | Shipping Info           | `/shipping-info`    | `src/pages/services/ShippingInfo.tsx`             |
 | Contact Us              | `/contact`          | `src/pages/services/Contact.tsx`                  |
 | Partner With Us         | `/partner-with-us`  | `src/pages/company/PartnerWithUs.tsx`             |
+| Products                | `/products`         | `src/pages/product/Products.tsx`                  |
+| Category Products       | `/products/:l1/...` | `src/pages/product/CategoryProducts.tsx`          |
 
 ## ⏳ Pending (stub only — title, no real content yet)
 

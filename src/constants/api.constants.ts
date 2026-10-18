@@ -4,7 +4,6 @@ import {
   SERVICE_NAMES_MAP,
 } from '@beautinique/frontend-constants';
 
-import type { TProductSortBy } from '@/types/api.type';
 import { createQueryKeys, createRouteHelper } from '@/utils/api.util';
 
 const { DELETE, GET, PATCH, POST } = API_METHODS_MAP;
@@ -144,27 +143,6 @@ export const API_ROOT_METHODS_AND_URLS = createRouteHelper(ROOT_METHODS_AND_PATH
 export const API_METHODS_AND_URLS = createRouteHelper(METHODS_AND_PATHS);
 
 export const API_QUERY_KEYS = createQueryKeys(METHODS_AND_PATHS);
-
-export const PRODUCTS_TABLE_TITLES: { label: string; sortKey?: TProductSortBy }[] = [
-  { label: 'S. No' },
-  { label: 'View' },
-  { label: 'Thumbnail' },
-  { label: 'Title', sortKey: 'title' },
-  { label: 'Brand' },
-  { label: 'SP', sortKey: 'sellingPrice' },
-  { label: 'MRP', sortKey: 'originalPrice' },
-  { label: 'Status' },
-  { label: 'Stock' },
-  { label: 'Created At', sortKey: 'createdAt' },
-  { label: 'Updated At', sortKey: 'updatedAt' },
-  { label: 'Try-On' },
-  { label: 'Variants' },
-  { label: 'Sku' },
-  { label: 'Slug' },
-  { label: 'Sold', sortKey: 'soldCount' },
-  { label: 'Returned' },
-  { label: 'Avg. Rating' },
-] as const;
 
 export const PRODUCT_STATUS_TRANSITIONS = {
   [PRODUCT_STATUSES_MAP.PENDING]: [

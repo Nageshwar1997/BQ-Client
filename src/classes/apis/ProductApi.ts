@@ -5,9 +5,9 @@ import type {
 
 import { API_METHODS_AND_URLS } from '@/constants/api.constants';
 import type {
-  IDashboardProductsResponse,
-  IGetDashboardProductsQuery,
+  IGetProductsQuery,
   IId,
+  IProductsResponse,
   TApiProductPopulated,
   TCategory,
   TCategoryHierarchy,
@@ -80,10 +80,13 @@ export class ProductApi extends ApiRequest {
     return this.request<Partial<TDraftProductDetailsZodSchema>>(this.routes.draft.get);
   };
 
-  public getDashboardProducts = (params: IGetDashboardProductsQuery) => {
-    return this.request<IDashboardProductsResponse>({
-      ...this.routes.get.dashboard.products,
+  /** The public listing of the storefront (published products only). */
+  public getProducts = (params: IGetProductsQuery) => {
+    return this.request<IProductsResponse>({
+      ...this.routes.get.products,
       params,
+      // a list goes as repeated keys (`brand=A&brand=B`), which is what the service reads, not `brand[]=A`
+      paramsSerializer: { indexes: null },
     });
   };
 
