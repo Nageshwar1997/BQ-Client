@@ -1,6 +1,5 @@
-import { Icon } from '@iconify/react';
-import { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { Breadcrumb } from '@beautinique/frontend-components/breadcrumb';
+import { useNavigate } from 'react-router-dom';
 
 import { ROUTES } from '@/constants/routes.constants';
 import { type TCategoryNode } from '@/utils/category.util';
@@ -11,52 +10,27 @@ interface IListingBreadcrumb {
   trail: TCategoryNode[];
 }
 
-const LINK =
-  'hover:text-primary focus-visible:outline-blue-crayola-c rounded-sm outline-offset-2 transition-colors duration-200';
-
-/** Home / Products / Face / Face Makeup / Foundation - the last one is the page itself, and is not a link. */
+/** Home / Products / Face / Face Makeup / Foundation - the shared breadcrumb, with the paths of this app and its router. */
 const ListingBreadcrumb = ({ trail }: IListingBreadcrumb) => {
-  const crumbs = [
-    { label: 'Home', to: toAbsolutePath(ROUTES.HOME) },
-    { label: 'Products', to: toAbsolutePath(ROUTES.PRODUCTS.BASE) },
+  const navigate = useNavigate();
+
+  const items = [
+    { label: 'Home', href: toAbsolutePath(ROUTES.HOME) },
+    { label: 'Products', href: toAbsolutePath(ROUTES.PRODUCTS.BASE) },
     ...trail.map((category, index) => ({
       label: category.name,
-      to: buildCategoryProductsPath(...trail.slice(0, index + 1).map((item) => item.slug)),
+      href: buildCategoryProductsPath(...trail.slice(0, index + 1).map((item) => item.slug)),
     })),
   ];
 
   return (
-    <nav aria-label="Breadcrumb">
-      <ol className="text-silver-jet flex flex-wrap items-center gap-1.5 text-xs">
-        {crumbs.map((crumb, index) => {
-          const isLast = index === crumbs.length - 1;
-
-          return (
-            <Fragment key={crumb.label}>
-              <li>
-                {isLast || !crumb.to ? (
-                  <span
-                    aria-current={isLast ? 'page' : undefined}
-                    className="text-primary font-medium"
-                  >
-                    {crumb.label}
-                  </span>
-                ) : (
-                  <Link to={crumb.to} className={LINK}>
-                    {crumb.label}
-                  </Link>
-                )}
-              </li>
-              {!isLast && (
-                <li aria-hidden="true">
-                  <Icon icon="solar:alt-arrow-right-linear" className="size-3" />
-                </li>
-              )}
-            </Fragment>
-          );
-        })}
-      </ol>
-    </nav>
+    <Breadcrumb
+      items={items}
+      onNavigate={(href) => {
+        void navigate(href);
+      }}
+      className="text-silver-jet text-xs"
+    />
   );
 };
 

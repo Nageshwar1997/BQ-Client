@@ -1,3 +1,4 @@
+import { Input } from '@beautinique/frontend-components';
 import { useState } from 'react';
 
 import { formatINRCurrency } from '@/utils/common.util';
@@ -21,9 +22,6 @@ const THUMB =
   '[&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:size-5 [&::-webkit-slider-thumb]:cursor-grab [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-blue-crayola-c [&::-webkit-slider-thumb]:bg-primary-invert [&::-webkit-slider-thumb]:shadow-md ' +
   '[&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:size-5 [&::-moz-range-thumb]:cursor-grab [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-blue-crayola-c [&::-moz-range-thumb]:bg-primary-invert ' +
   'focus-visible:[&::-webkit-slider-thumb]:ring-2 focus-visible:[&::-webkit-slider-thumb]:ring-blue-crayola-c/50 focus-visible:[&::-moz-range-thumb]:ring-2';
-
-const NUMBER_FIELD =
-  'bg-secondary-invert border-primary/15 focus:border-blue-crayola-c w-full rounded-lg border px-2.5 py-2 text-sm outline-none';
 
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
 
@@ -142,49 +140,49 @@ const PriceRangeFilter = ({ bounds, minPrice, maxPrice, onChange }: IPriceRangeF
       </div>
 
       <div className="flex items-center gap-2">
-        <label className="flex-1">
-          <span className="text-silver-jet mb-1 block text-xs">Min (₹)</span>
-          <input
-            type="number"
-            inputMode="numeric"
-            min={floor}
-            max={ceiling}
-            value={draft.low}
-            className={NUMBER_FIELD}
-            onChange={(event) => {
+        <Input
+          label="Min (₹)"
+          containerClassName="flex-1"
+          inputProps={{
+            type: 'number',
+            inputMode: 'numeric',
+            min: floor,
+            max: ceiling,
+            value: draft.low,
+            onChange: (event) => {
               if (event.target.value !== '') moveLow(Number(event.target.value));
-            }}
-            onBlur={() => {
+            },
+            onBlur: () => {
               commit(draft);
-            }}
-            onKeyDown={(event) => {
+            },
+            onKeyDown: (event) => {
               if (event.key === 'Enter') commit(draft);
-            }}
-          />
-        </label>
-        <span aria-hidden="true" className="text-silver-jet mt-5">
+            },
+          }}
+        />
+        <span aria-hidden="true" className="text-silver-jet">
           –
         </span>
-        <label className="flex-1">
-          <span className="text-silver-jet mb-1 block text-xs">Max (₹)</span>
-          <input
-            type="number"
-            inputMode="numeric"
-            min={floor}
-            max={ceiling}
-            value={draft.high}
-            className={NUMBER_FIELD}
-            onChange={(event) => {
+        <Input
+          label="Max (₹)"
+          containerClassName="flex-1"
+          inputProps={{
+            type: 'number',
+            inputMode: 'numeric',
+            min: floor,
+            max: ceiling,
+            value: draft.high,
+            onChange: (event) => {
               if (event.target.value !== '') moveHigh(Number(event.target.value));
-            }}
-            onBlur={() => {
+            },
+            onBlur: () => {
               commit(draft);
-            }}
-            onKeyDown={(event) => {
+            },
+            onKeyDown: (event) => {
               if (event.key === 'Enter') commit(draft);
-            }}
-          />
-        </label>
+            },
+          }}
+        />
       </div>
     </div>
   );

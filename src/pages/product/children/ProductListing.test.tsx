@@ -122,6 +122,24 @@ describe('ProductListing', () => {
     useGetProducts.mockReset();
     observed.length = 0;
 
+    // jsdom has no ResizeObserver either: the breadcrumb (a scroller with a fade) measures itself with one
+    vi.stubGlobal(
+      'ResizeObserver',
+      class {
+        observe() {
+          // the size is never read in these tests
+        }
+
+        unobserve() {
+          // nothing is taken off the watch
+        }
+
+        disconnect() {
+          // nor is the watch ended
+        }
+      },
+    );
+
     // jsdom has no IntersectionObserver: the cards that are watched are kept, to say they came into view
     vi.stubGlobal(
       'IntersectionObserver',

@@ -279,7 +279,7 @@ const ProductListing = ({
         className="text-primary max-h-[88dvh]! max-w-none! rounded-b-none! sm:max-w-md! sm:rounded-b-xl!"
       >
         <div className="w-full min-w-0">{filtersPanel}</div>
-        <div className="bg-primary-invert border-primary/10 sticky bottom-0 -mx-4 mt-4 -mb-4 flex w-[calc(100%+2rem)] gap-3 border-t p-4">
+        <div className="bg-primary-invert border-primary/10 sticky -bottom-4 -mx-4 mt-4 -mb-4 flex w-[calc(100%+2rem)] gap-3 border-t p-4">
           {activeCount > 0 && (
             <Button
               pattern="transparent"

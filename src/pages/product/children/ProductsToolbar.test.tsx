@@ -195,15 +195,19 @@ describe('ProductsToolbar', () => {
 
   it('names the filters button with how many are on, and opens them when it is pressed', () => {
     const closed = render('/products', { activeFilters: 0 });
-    const button = closed.container.querySelector<HTMLButtonElement>('[aria-label^="Filters"]');
+    const button = [...closed.container.querySelectorAll('button')].find((item) =>
+      item.textContent.startsWith('Filters'),
+    );
 
-    expect(button?.getAttribute('aria-label')).toBe('Filters');
+    expect(button?.textContent).toBe('Filters');
     unmountAll();
 
     const open = render('/products', { activeFilters: 3 });
-    const withCount = open.container.querySelector<HTMLButtonElement>('[aria-label^="Filters"]');
+    const withCount = [...open.container.querySelectorAll('button')].find((item) =>
+      item.textContent.startsWith('Filters'),
+    );
 
-    expect(withCount?.getAttribute('aria-label')).toBe('Filters, 3 in use');
+    expect(withCount?.textContent).toBe('Filters (3)');
 
     act(() => {
       withCount?.click();
